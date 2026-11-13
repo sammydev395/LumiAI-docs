@@ -1,0 +1,814 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Marketing_Video_Plan</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="lumiai-marketing-video-plan">LumiAI Marketing Video Plan</h1>
+<p><strong>Company:</strong> DrDev <strong>Product:</strong> LumiAI
+Robotic Arm + Lumi Wand (HiWonder ArmPi Ultra base) + ROSMASTER X3Plus
+companion <strong>Document:</strong> Pipeline + scope for marketing
+video production (handoff doc) <strong>Status:</strong> Planning
+complete — implementation starts on EVO X2 (Ubuntu 24.04)
+<strong>Date:</strong> 2026-06-08</p>
+<blockquote>
+<p><strong>Purpose of this doc.</strong> This is the handoff brief from
+the Windows-side CAD / color / asset-prep work to the EVO X2 Ubuntu side
+where ROS 2 + Gazebo + Blender live. A fresh Claude session (or human)
+reading this should have full context: what decisions are locked in,
+what assets exist where, what's being added tomorrow, and what the first
+deliverable looks like. No re-litigation of decisions already
+settled.</p>
+</blockquote>
+<hr />
+<h2 id="1-hardware-platforms">1. Hardware platforms</h2>
+<p>Two robots in scope:</p>
+<table>
+<thead>
+<tr>
+<th>Robot</th>
+<th>Role</th>
+<th>Chassis</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HiWonder ArmPi Ultra</strong></td>
+<td>Primary LumiAI manipulator</td>
+<td>Mecanum</td>
+<td>6-DOF arm + base; carries Wand via gripper</td>
+</tr>
+<tr>
+<td><strong>Yahboom ROSMASTER X3Plus</strong></td>
+<td>Mobile companion for multi-robot scenes</td>
+<td>Mecanum</td>
+<td>Used for "two robots interacting" sequences</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Control stack (both robots):</strong> all vendor ROS 2 / ROS
+1 / direct-Python code stripped out. Now running standard
+<strong><code>ros2_control</code></strong> with only the <strong>vendor
+STM32 firmware + vendor IK/FK libraries</strong> retained. User reports
+motion + control is "fantastic" — URDFs and control stack are validated
+through real ros2_control usage. <strong>Do not propose URDF
+restructuring.</strong> Additions only.</p>
+<p><strong>Dev machine (sim/render host):</strong> GMKtec EVO X2, Ubuntu
+24.04, AMD Ryzen AI Max+ 395 / Radeon 8060S iGPU / up to 128 GB unified
+memory. Runs <strong>ROS 2 Jazzy natively</strong> (Noble's native
+distro) for the sim/render stack — <strong>Gazebo Harmonic (Gazebo Sim
+8) + MoveIt2 + RViz2</strong>, all clean apt installs. The robot fleet
+stays on <strong>ROS 2 Humble in Docker</strong>; the Jazzy host talks
+to the robots <strong>directly, peer-to-peer, cross-distro over
+DDS</strong> (validated — see §A). <strong>NVIDIA-only tools (Isaac Sim)
+off the table</strong> — Radeon GPU.</p>
+<blockquote>
+<p><strong>Why Jazzy on the host, Humble on the robots?</strong> Humble
+targets Ubuntu 22.04; forcing it onto 24.04 means a source build or
+extra Docker layer. Jazzy + Harmonic + MoveIt2 install cleanly on 24.04
+and interoperate with the Humble fleet over DDS for standard message
+types. The fleet is <strong>not</strong> being migrated — Jazzy is a sim
+island that records from / can drive the Humble robots.</p>
+</blockquote>
+<hr />
+<h2 id="2-cad-asset-inventory">2. CAD asset inventory</h2>
+<p>All on Windows side at <code>cad/Assemblies/</code>.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Full-Assembly-June-End.stp</code></td>
+<td>Full assembly, FreeCAD AP242, named PRODUCTs. Source for all color
+variants.</td>
+</tr>
+<tr>
+<td><code>Full-Assembly-Option1-SafetyLab.stp</code></td>
+<td>Color variant 1 (warm). Not shipping.</td>
+</tr>
+<tr>
+<td><code>Full-Assembly-Option2-Punchy.stp</code></td>
+<td>Color variant 2 (vivid). Superseded by <code>-Split</code>
+below.</td>
+</tr>
+<tr>
+<td><code>Full-Assembly-Option2-Punchy-Split.stp</code></td>
+<td><strong>SHIPPING color scheme.</strong> Base Servo Cover
+geometrically split at Z=99.78 mm for AMS dual-color print.</td>
+</tr>
+<tr>
+<td><code>Full-Assembly-Option3-Industrial.stp</code></td>
+<td>Color variant 3 (muted). Not shipping.</td>
+</tr>
+<tr>
+<td><code>Full Assembly - BigClaw - Camera - Arm.step</code></td>
+<td><strong>Source for the URDF additions.</strong> Contains the three
+components NOT in the URDF: BigClaw gripper, OAK-D S2 + bracket, Lumi
+Wand.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why FreeCAD, not Plasticity, for the source STEP:</strong>
+Plasticity's STEP exporter silently downgrades AP242 → AP203 even with
+the AP242 checkbox set, and writes anonymous
+<code>PRODUCT('0', '0', ...)</code> entries (no assembly tree names).
+FreeCAD's AP242 export via Open CASCADE 7.8 produces correctly named
+PRODUCTs and survives downstream tooling. See
+<code>feedback_plasticity_step_export.md</code> in
+<code>.claude/projects/.../memory/</code> for full repro.</p>
+<hr />
+<h2 id="3-color-scheme--locked-in">3. Color scheme — locked in</h2>
+<p><strong>Shipping scheme: Option 2 Punchy-Split.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Color</th>
+<th>Hex</th>
+<th>RGB (0-1)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fence</td>
+<td>vivid orange</td>
+<td><code>#FF6B35</code></td>
+<td>(1.000, 0.420, 0.208)</td>
+</tr>
+<tr>
+<td>Electronics Bay Left Side Cover</td>
+<td>HiWonder near-black</td>
+<td><code>#0D0101</code></td>
+<td>(0.051, 0.004, 0.004)</td>
+</tr>
+<tr>
+<td>Electronics Bay Right Side Cover</td>
+<td>HiWonder near-black</td>
+<td><code>#0D0101</code></td>
+<td>(0.051, 0.004, 0.004)</td>
+</tr>
+<tr>
+<td>Base Servo Cover (bottom, Z &lt; 99.78 mm)</td>
+<td>HiWonder near-black</td>
+<td><code>#0D0101</code></td>
+<td>(0.051, 0.004, 0.004)</td>
+</tr>
+<tr>
+<td>Base Servo Cover (top, Z ≥ 99.78 mm)</td>
+<td>HiWonder arm blue</td>
+<td><code>#0D4FBA</code></td>
+<td>(0.051, 0.310, 0.729)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why this scheme:</strong> The other parts of the assembly
+(Electronics Bay Front + Back covers, Arm Servos, Couplers, Swivel
+Mounts, Camera, Camera Mount) have HiWonder-locked colors — primarily
+near-black <code>#0D0101</code> + a mid-saturated arm blue family
+(<code>#125487</code>, <code>#0D4FBA</code>, <code>#1355BE</code>,
+<code>#115BBB</code>). The shipping palette deliberately uses:</p>
+<ul>
+<li><strong>Vivid orange Fence</strong> — direct complement of HiWonder
+blue → strongest pop, reads as "safety guard"</li>
+<li><strong>HiWonder near-black L/R covers</strong> — blend with the
+locked HiWonder palette, let the orange and blue carry the visual
+story</li>
+<li><strong>Split base</strong> — black bottom (printed-on-plate side) +
+arm blue top (matches HiWonder arm visually) — printed in two colors on
+Bambu X1C using the AMS</li>
+</ul>
+<p><strong>Geometry split detail:</strong> Z = 99.78 mm is the
+disc-to-tower transition — lands on an existing horizontal face (7444
+mm² of upward-facing disc top). Bottom = wide louvered base flange (38
+mm tall). Top = cylindrical upright tower (37 mm tall, constant 766 mm
+perimeter). Volume split is nearly 50/50.</p>
+<p><strong>Already-rendered marketing stills (static, FreeCAD):</strong>
+<code>D:\LumiAI\cad\renders\Punchy-Split\</code> — 11 stills + 60-frame
+360° turntable mp4 at 1920×1080 white-bg. These are CAD-style product
+shots. <strong>The Gazebo + Blender pipeline below replaces this for any
+video showing actual motion.</strong></p>
+<hr />
+<h2 id="4-marketing-video-pipeline--two-look-from-one-trajectory">4.
+Marketing video pipeline — two-look from one trajectory</h2>
+<p>Decision: <strong>author motion once, render twice.</strong></p>
+<pre><code>URDF + meshes (already validated by ros2_control)
+        │
+   joint trajectory   ← teleop-record real hardware → rosbag
+        │
+   ┌────┴────┐
+   ▼         ▼
+GAZEBO     BLENDER
+realistic   cinematic
+physics     Cycles
+mp4 record  AMD HIP
+            studio lighting</code></pre>
+<p><strong>Why two looks:</strong></p>
+<ul>
+<li><strong>Gazebo Harmonic (Gazebo Sim 8)</strong> — already installed
+via ROS 2 Jazzy. Renders are "engineering-grade" — good enough for
+technical/demo audiences, has real physics. Native video capture via
+<code>gz sim</code> (GUI VideoRecorder plugin) → mp4. Fast
+iteration.</li>
+<li><strong>Blender 4.x + Phobos URDF importer</strong> — Cycles renders
+are cinematic. Full control over lighting, camera, depth of field,
+motion blur. AMD HIP works on the Radeon 8060S. Slower per-shot but
+worth it for hero footage.</li>
+<li>Cut both together in <strong>DaVinci Resolve</strong> (free on
+Linux).</li>
+</ul>
+<p><strong>Trajectory authoring decision: teleoperate real hardware,
+record <code>/joint_states</code> + <code>/cmd_vel</code> to a
+rosbag.</strong> Hand-authored joint angles look mechanical;
+MoveIt-planned trajectories look "engineering correct" but not alive.
+Teleop motion has natural rhythm — much better for marketing. Replay the
+same bag in both Gazebo and Blender.</p>
+<p><strong>Why not Isaac Sim:</strong> photoreal but NVIDIA RTX only.
+Radeon 8060S not supported.</p>
+<hr />
+<h2 id="5-first-deliverable--15-30-sec-proof-of-pipeline-sequence">5.
+First deliverable — 15-30 sec proof-of-pipeline sequence</h2>
+<p><strong>Scope (suggested, finalize on EVO X2):</strong></p>
+<blockquote>
+<p>"LumiAI wakes up, raises Wand, sweeps it 90° L→R. ROSMASTER rolls in
+from frame-left on mecanum. The two 'greet' (small approach + Wand
+wave)."</p>
+</blockquote>
+<p>This tests: arm joint actuation, gripper holding Wand, mecanum base
+motion on both robots, multi-robot scene composition, Wand articulation
+in the LumiAI gripper.</p>
+<p>Produce <strong>both</strong> the Gazebo cut and the Blender cut of
+this same sequence, compare side-by-side, then decide what to scale
+up.</p>
+<hr />
+<h2 id="6-environment--camera-plan">6. Environment + camera plan</h2>
+<h3 id="61-environment--clean-studio-white-infinity-backdrop">6.1
+Environment — clean studio (white infinity backdrop)</h3>
+<p>Pure white "cyc" floor curving up into a white wall. Like an Apple
+product reveal.</p>
+<p><strong>Why:</strong> fastest to set up, no environment competing
+with the robot, works identically in Gazebo (white ambient + bright
+key+fill lights) and Blender (HDRI studio + white floor). Themed
+environments (workbench/lab, modern living room) deferred until the
+pipeline is proven.</p>
+<h3 id="62-camera-moves--4-shot-starter-pack-25-30-sec-total">6.2 Camera
+moves — 4-shot starter pack (~25-30 sec total)</h3>
+<table>
+<thead>
+<tr>
+<th>Shot</th>
+<th>Duration</th>
+<th>Camera</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Opening</strong></td>
+<td>3-5 s</td>
+<td>Slow dolly-in, front-low → 3/4 hero angle</td>
+<td>"Reveal" — car-ad style</td>
+</tr>
+<tr>
+<td><strong>Action wide</strong></td>
+<td>10-15 s</td>
+<td><strong>Locked-off</strong> 3/4 wide, no camera move</td>
+<td>Robot moves across frame, camera doesn't compete</td>
+</tr>
+<tr>
+<td><strong>Feature close-up</strong></td>
+<td>3-5 s</td>
+<td>Slow push-in + rack focus from OAK-D camera → BigClaw + Wand</td>
+<td>"Engineering" beat</td>
+</tr>
+<tr>
+<td><strong>Closing orbit</strong></td>
+<td>5-8 s</td>
+<td>Slow 360° orbit at ~30° elevation, ends where it started</td>
+<td>Recap; reusable as website hero loop</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Principles applied:</strong></p>
+<ol type="1">
+<li><strong>Camera and subject shouldn't both move fast.</strong> When
+the robot does its main action, the camera is locked. When the camera
+moves, the robot holds a pose or does something subtle.</li>
+<li><strong>Every shot has one clear "read."</strong> Opening = reveal.
+Action wide = motion. Close-up = detail. Closing = recap.</li>
+</ol>
+<hr />
+<h2 id="7-urdf-additions-needed-before-pipeline-work">7. URDF additions
+needed before pipeline work</h2>
+<p>Three new components currently in CAD only (in the
+<code>Full Assembly + BigClaw + OAK-D S2 + Wand.stp</code> file) must be
+added to the HiWonder Ultra URDF. <strong>Additive only — do not
+restructure the existing URDF.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>URDF change</th>
+<th>Joint type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BigClaw</strong></td>
+<td>Replace existing OOTB gripper meshes + inertia</td>
+<td>Fixed mount to wrist; <strong>+ 1 revolute</strong> for jaw
+open/close <em>if BigClaw is actuated</em> (TBD — see open
+questions)</td>
+</tr>
+<tr>
+<td><strong>OAK-D S2 + bracket</strong></td>
+<td>Replace aurora camera link (or add new if not yet in URDF) +
+standard <code>camera_optical_frame</code> per ROS REP 103</td>
+<td>Fixed to mount point on bracket</td>
+</tr>
+<tr>
+<td><strong>Wand</strong></td>
+<td>New link, attached to BigClaw jaws (held, not actuated
+independently)</td>
+<td>Fixed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Asset prep:</strong></p>
+<ol type="1">
+<li>Split <code>Full Assembly + BigClaw + OAK-D S2 + Wand.stp</code>
+into per-link STLs (BigClaw body + maybe 2 jaws; OAK-D body + bracket;
+Wand handle + maybe tip if separate). Small FreeCAD script.</li>
+<li>Compute mass/inertia from STL volume × assumed density (PLA/PETG for
+printed parts; HiWonder published mass for BigClaw if available).</li>
+<li>Edit URDF: add new links + joints, retarget existing joints if
+BigClaw reuses the gripper joint.</li>
+<li><code>check_urdf</code> for validity.</li>
+<li>Load in Gazebo Harmonic + RViz to visually verify before pipeline
+work.</li>
+</ol>
+<hr />
+<h2 id="8-tomorrows-work-sequence-evo-x2-session">8. Tomorrow's work
+sequence (EVO X2 session)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Step</th>
+<th>Time estimate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Open this doc in the EVO X2 Claude session for context</td>
+<td>—</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Split <code>Full Assembly + BigClaw + OAK-D S2 + Wand.stp</code>
+into per-link STLs</td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Add BigClaw / OAK-D S2 / Wand links + joints to HiWonder Ultra
+URDF</td>
+<td>30-45 min</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Verify URDF loads cleanly in Gazebo Harmonic</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Install Blender 4.x + Phobos URDF importer; verify import</td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Pick exact first sequence motion (refine §5 wake-up sketch)</td>
+<td>15 min</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Teleop-record the motion on real LumiAI + ROSMASTER → rosbag</td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Replay in Gazebo, record mp4</td>
+<td>30 min</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Replay in Blender (rosbag → joint-angle keyframes via small Python
+bridge), render Cycles mp4</td>
+<td>1-2 hr (Cycles render time)</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Compare side-by-side, decide what to scale up</td>
+<td>15 min</td>
+</tr>
+</tbody>
+</table>
+<p>Realistic first session: steps 0-7 done in a half-day, step 8 running
+in background. Step 9 next session.</p>
+<hr />
+<h2 id="9-open-questions-to-resolve-on-the-evo-x2">9. Open questions to
+resolve on the EVO X2</h2>
+<ol type="1">
+<li><strong>Does the BigClaw actuate?</strong> Does ros2_control already
+drive a gripper joint on the OOTB gripper that we just retarget to
+BigClaw's jaw? Or is BigClaw passive/static for the demo? Affects URDF
+(revolute vs fixed).</li>
+<li><strong>Is the OAK-D wired into ros2_control / a camera
+node?</strong> Or cabled-up but not yet publishing? Affects whether
+<code>camera_optical_frame</code> needs tf population for the demo or
+only visual.</li>
+<li><strong>Where does the Wand sit in the URDF kinematic
+chain?</strong> Confirmed assumption: fixed joint, parented to BigClaw
+jaws (gripped, not independently articulated). Correct for v1.</li>
+<li><strong>Refine the first-sequence motion.</strong> §5 is a sketch —
+finalize specific joint targets / wave amplitude / approach distance on
+the EVO X2.</li>
+</ol>
+<hr />
+<h2 id="10-future-scope-post-first-deliverable">10. Future scope
+(post-first-deliverable)</h2>
+<p>Build on the first sequence:</p>
+<ul>
+<li><strong>60-90 sec full piece.</strong> Add: second locked-off action
+shot at a different angle; top-down "god's-eye" of mecanum dance with
+both robots; final wide group shot.</li>
+<li><strong>Themed environments.</strong> Modern workbench/lab for
+"engineering" cuts. Modern living room for "home robot" framing.</li>
+<li><strong>Additional sequences.</strong> Pick-and-place with BigClaw;
+Wand light show (sync arm motion with Lumi Wand LED patterns); two-robot
+choreographed interaction.</li>
+<li><strong>Hero stills from Blender Cycles.</strong> Re-render the
+existing 11 marketing stills (currently FreeCAD) in Cycles for
+substantially higher quality on key shots.</li>
+</ul>
+<h3 id="101-creator-mode-demo-reel--voice-directed-camera-operator">10.1
+Creator-mode demo reel — voice-directed camera operator</h3>
+<p>A separate reel for <strong>LumiAI Creator</strong> — the desktop
+content-creator product (see the product marketing docs). <strong>Here
+the hero is the creator, not the robot</strong> — the arm is the
+invisible crew. The whole point is hands-free control: the creator
+speaks, the shot reframes, and they never touch anything or step out of
+frame. <em>(Base Creator uses the <strong>phone as its eyes</strong>, so
+on-screen the creator is recording <strong>in the LumiAI app</strong>;
+with today's servos the moves are small pan / tilt / roll reframing
+moves. A following key light is <strong>Halo</strong> — §10.3. The
+<strong>optional OAK-D S2</strong> add-on is what lets the arm track
+while recording in <strong>any</strong> app (TikTok / IG / native) and
+adds the depth dolly — if a shot shows that, caption it "<strong>with
+the OAK-D S2 option</strong>".)</em></p>
+<p><strong>Best captured LIVE, not simulated.</strong> The tooling
+already exists: the live gamepad/voice → arm → Blender link
+(<code>joint_udp_bridge.py</code> + <code>live_link.py</code>) and the
+on-Pi voice stack (whisper.cpp + Piper + VLM). Film the real arm
+operating the creator's phone; use the <strong>phone's own camera
+feed</strong> as a "what it sees" picture-in-picture so the spoken
+command and the resulting framing are both on screen. <em>(The OAK "what
+it sees" PiP belongs to the Halo reel, §10.3 — Creator's eyes are the
+phone.)</em></p>
+<p>Shot list (~30-45 s):</p>
+<table>
+<thead>
+<tr>
+<th>Shot</th>
+<th>Duration</th>
+<th>What the audience sees</th>
+<th>The "read"</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cold open — "Hey, follow me."</strong></td>
+<td>3-5 s</td>
+<td>Creator at a desk speaks; the arm swings the camera to frame them.
+Caption the words on screen.</td>
+<td>Hands-free control is real</td>
+</tr>
+<tr>
+<td><strong>Auto-follow</strong></td>
+<td>5-8 s</td>
+<td>Creator moves along the desk / around the room; the shot tracks them
+smoothly.</td>
+<td>No operator needed</td>
+</tr>
+<tr>
+<td><strong>"Frame the product" / "frame my hands"</strong></td>
+<td>5-8 s</td>
+<td>Creator holds up a product; voice reframes to a tight product shot.
+Split-screen/PiP shows the creator's camera output.</td>
+<td>Voice directs the composition</td>
+</tr>
+<tr>
+<td><strong>"Closer" / "wider"</strong></td>
+<td>3-5 s</td>
+<td>Voice reframes tighter or wider with a small arm move.</td>
+<td>Voice directs the framing</td>
+</tr>
+<tr>
+<td><strong>Reveal the rig</strong></td>
+<td>3-5 s</td>
+<td>Pull back: it's one desk arm, the creator's phone in the cradle (or
+BYO camera on the 1/4"-20 adapter).</td>
+<td>A one-person studio crew</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production notes:</strong></p>
+<ul>
+<li><strong>BYO-camera story:</strong> show a phone <em>and</em> a
+mirrorless swapped onto the same 1/4"-20 adapter.</li>
+<li><strong>Desk mount:</strong> Creator is a desk-clamp (talking-head)
+product. <em>(Overhead / top-down cooking-craft work and the ceiling rig
+are Halo — put those in §10.3.)</em></li>
+<li><strong>Caption the voice commands on screen</strong> — the commands
+ARE the demo.</li>
+<li><strong>Base reel = phone as the camera/eyes, recording in the
+LumiAI app.</strong> If you shoot the "tracks you in TikTok / IG" or the
+depth dolly beat, that's the <strong>OAK-D S2 option</strong> — caption
+it as such; don't let it read as a base-Creator capability. Keep motion
+gentle (small pan / tilt / roll); servo whine reaches the mic, so shoot
+quiet, smooth moves.</li>
+<li>§6.2 principle still holds: when the arm makes its move, keep the
+room camera locked; when the room camera moves, the arm holds a
+pose.</li>
+</ul>
+<h3 id="102-lumi-wand-anywhere-reel--the-light-that-goes-anywhere">10.2
+Lumi Wand Anywhere reel — the light that goes anywhere</h3>
+<p>A short reel for <strong>Lumi Wand Anywhere</strong> (the standalone
+wand: battery + touch LCD + app; 1/4"-20 tripod mount, LCD up). Sells
+portability, color control, and mount-anywhere — NOT specs
+(runtime/lumens/IP are TBD; keep numbers off screen). Shoot for real
+(it's a physical product) or preview in Blender.</p>
+<table>
+<thead>
+<tr>
+<th>Shot</th>
+<th>Duration</th>
+<th>What the audience sees</th>
+<th>The "read"</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Patio at dusk, on a stand</strong></td>
+<td>4-6 s</td>
+<td>Wand on a light stand on a deck/patio; color scenes shift (warm →
+sunset → party) as a hand swipes the phone app.</td>
+<td>Set the mood from your phone</td>
+</tr>
+<tr>
+<td><strong>Bench, LCD-up</strong></td>
+<td>3-5 s</td>
+<td>Wand standing on a workbench, LCD facing up; a finger taps the touch
+LCD to change color/brightness.</td>
+<td>On-device control, no app needed</td>
+</tr>
+<tr>
+<td><strong>Hand-held under a car hood</strong></td>
+<td>3-5 s</td>
+<td>Held as an inspection lamp in a dim engine bay; clean white task
+light.</td>
+<td>A real work light</td>
+</tr>
+<tr>
+<td><strong>Grab-and-go</strong></td>
+<td>3-4 s</td>
+<td>Unscrew from the tripod → walk off holding it → thumb the
+rocker.</td>
+<td>Handheld or mounted, one piece</td>
+</tr>
+<tr>
+<td><strong>Creator fill</strong></td>
+<td>3-5 s</td>
+<td>On a light stand beside a creator; soft RGBW fill on a face /
+product shot.</td>
+<td>Studio color, anywhere</td>
+</tr>
+<tr>
+<td><strong>Same light, two homes</strong></td>
+<td>3-5 s</td>
+<td>Cut between the wand on the Halo arm and the same wand on the
+battery extension.</td>
+<td>One wand, two products</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production notes:</strong></p>
+<ul>
+<li>Show the mount story: one beat screwing onto a tripod (LCD up), one
+beat handheld — "mounts anywhere, or just hold it."</li>
+<li>Lead with color + control (LCD tap, phone swipe) — that's the
+differentiator and it's real.</li>
+<li><strong>No spec overlays</strong> — no runtime, lumens, lux, or IP
+numbers until measured.</li>
+<li>Pairs with the §6.2 camera principle; the white-cyc pipeline (§6.1)
+covers any Blender version.</li>
+</ul>
+<h3
+id="103-halo-creator-reel--depth-aware-moves--following-key-light">10.3
+Halo creator reel — depth-aware moves + following key light</h3>
+<p>A reel for <strong>LumiAI Halo</strong> (the ceiling product) in a
+creator/studio setting — the capabilities Creator does
+<strong>not</strong> have. Halo carries the <strong>OAK-D S2</strong>
+(on-robot depth + independent vision) and the <strong>Lumi
+Wand</strong>, so these shots are honest only on Halo.</p>
+<table>
+<thead>
+<tr>
+<th>Shot</th>
+<th>Duration</th>
+<th>What the audience sees</th>
+<th>The "read"</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Depth-aware dolly</strong></td>
+<td>3-5 s</td>
+<td>The arm physically dollies the camera closer on "zoom in" — a real
+move, driven by the OAK-D's depth.</td>
+<td>A move a tripod can't make</td>
+</tr>
+<tr>
+<td><strong>The following key light</strong></td>
+<td>5-8 s</td>
+<td>Two-unit combo: a second arm's Lumi Wand holds a flattering key
+light on the subject's face as they move.</td>
+<td>An automated lighting crew</td>
+</tr>
+<tr>
+<td><strong>Top-down work shot</strong></td>
+<td>4-6 s</td>
+<td>Ceiling/overhead arm frames a cooking / craft / soldering task from
+above.</td>
+<td>Overhead angles no tripod reaches</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production notes:</strong></p>
+<ul>
+<li>The <strong>key light</strong> is Halo-only (Creator has no Wand).
+The <strong>depth dolly</strong> is also available on <strong>Creator +
+the optional OAK-D S2</strong> — if you shoot it for Creator, caption it
+"with the OAK-D S2 option" rather than folding it into the base §10.1
+reel.</li>
+<li>Same §6.2 camera principle; the depth-dolly shot wants a real OAK-D
+feed, so capture live where possible.</li>
+</ul>
+<hr />
+<h2 id="11-file--path-reference">11. File / path reference</h2>
+<p><strong>Windows side (CAD work):</strong></p>
+<ul>
+<li>Master CAD: <code>cad/freecad/Full-Assembly.FCStd</code></li>
+<li>Shipping color scheme STEP:
+<code>cad/Assemblies/Full-Assembly-Option2-Punchy-Split.stp</code></li>
+<li>New-component STEP (URDF source):
+<code>cad/Assemblies/Full Assembly - BigClaw - Camera - Arm.step</code></li>
+<li>Existing static renders: <code>cad/renders/Punchy-Split/</code></li>
+<li>Color extraction script (reusable):
+<code>D:\tmp\extract_colors.py</code></li>
+<li>Recolor script (reusable): <code>D:\tmp\recolor_step.py</code></li>
+<li>Base-split FreeCAD macro (reusable):
+<code>D:\tmp\split_base.py</code></li>
+<li>FreeCAD render script: <code>D:\tmp\render_punchy.py</code></li>
+</ul>
+<p><strong>EVO X2 side (tomorrow):</strong></p>
+<ul>
+<li>Existing HiWonder ArmPi Ultra URDF:
+<code>&lt;resolve from fleet workspace on EVO X2&gt;</code></li>
+<li>Existing ROSMASTER X3Plus URDF:
+<code>&lt;resolve from fleet workspace on EVO X2&gt;</code></li>
+<li>New-component STEP: <strong>copy from Windows side</strong> (sync
+via <code>scp</code> / shared drive / <code>git pull</code> after the
+cad/ commit pushed at <code>840aefb</code>)</li>
+</ul>
+<p><strong>Tool versions assumed:</strong></p>
+<ul>
+<li>Ubuntu 24.04 LTS</li>
+<li>ROS 2 Jazzy LTS (sim/render host) — fleet robots remain on ROS 2
+Humble in Docker</li>
+<li>Gazebo Harmonic / Gazebo Sim 8 (paired with Jazzy)</li>
+<li>Blender 4.2+ (Phobos add-on for URDF import)</li>
+<li>ffmpeg (for any video stitching)</li>
+<li>DaVinci Resolve (final edit)</li>
+</ul>
+<hr />
+<h2 id="12-whats-already-done-so-we-dont-redo-it">12. What's already
+done (so we don't redo it)</h2>
+<ul>
+<li>✅ FreeCAD AP242 re-export of full assembly with named PRODUCTs</li>
+<li>✅ Three color variants generated, user picked Punchy</li>
+<li>✅ Punchy refined: L/R covers + base bottom changed to HiWonder
+near-black; base top changed to HiWonder arm blue</li>
+<li>✅ Base Servo Cover geometrically split at Z=99.78 mm
+(<code>Full-Assembly-Option2-Punchy-Split.stp</code>)</li>
+<li>✅ 11 static marketing stills + 60-frame 360° turntable mp4
+(FreeCAD-rendered, white-bg, 1920×1080)</li>
+<li>✅ All committed + pushed to <code>origin/main</code> at commit
+<code>840aefb</code></li>
+<li>✅ Pipeline decisions: Gazebo + Blender two-look, teleop-record
+source motion, white cyc environment, 4-shot starter camera plan</li>
+<li>✅ Sim host stack stood up + validated: ROS 2 Jazzy + Gazebo
+Harmonic (Gazebo Sim 8.11) + MoveIt2 + RViz2 on the EVO X2, CycloneDDS +
+<code>ROS_DOMAIN_ID=100</code> matching the fleet</li>
+<li>✅ Cross-distro DDS validated end-to-end (see §A)</li>
+</ul>
+<hr />
+<h2
+id="a-cross-distro-dds--validated-architecture-jazzy-host--humble-fleet">A.
+Cross-distro DDS — validated architecture (Jazzy host ↔︎ Humble
+fleet)</h2>
+<p><strong>Validated on the EVO X2
+(<code>sammydev295-NucBox-EVO-X2</code>) 2026-06-10.</strong> The
+sim/render host runs ROS 2 Jazzy; the robot fleet runs ROS 2 Humble in
+Docker. They communicate <strong>directly, peer-to-peer over DDS — there
+is no broker and no relay container.</strong></p>
+<h3 id="topology">Topology</h3>
+<pre><code>  Ultra      (Humble/Docker, raspberrypistage, --network host) ─┐
+  Rosmaster  (Humble/Docker, jetsonnanodev,    --network host) ─┼─ DDS domain 100, CycloneDDS ─► Jazzy host
+                                                                 │                                (Gazebo / MoveIt2 / Blender)
+              all on 192.168.1.0/24 — flat LAN, no DDS router/bridge needed</code></pre>
+<ul>
+<li><strong>The robots talk to the Jazzy host directly.</strong> The
+local <code>ros2_control_plane</code> Humble container on the EVO X2 is
+<strong>not</strong> a bridge and <strong>not</strong> in the data path
+— it was only a local Humble stand-in used during validation.</li>
+<li>DDS discovery is automatic for every participant sharing
+<code>ROS_DOMAIN_ID=100</code> +
+<code>RMW_IMPLEMENTATION=rmw_cyclonedds_cpp</code> that can route to
+each other on the LAN.</li>
+</ul>
+<h3 id="what-was-tested">What was tested</h3>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Humble (Docker) → Jazzy host, <code>std_msgs/String</code></td>
+<td>✅ received</td>
+</tr>
+<tr>
+<td>Jazzy host discovers full live fleet (<code>/joint_states</code>,
+<code>/tf</code>, <code>/robot_description</code>,
+<code>/depth_cam/*</code>, <code>/rosmaster_oak/*</code>)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><strong>Real fleet standard msg → Jazzy host</strong>
+(<code>/rosmaster_oak/rgb/camera_info</code>, 1280×720)</td>
+<td>✅ decoded cleanly</td>
+</tr>
+<tr>
+<td>Jazzy host → Humble (Docker), reverse direction,
+<strong>unpinned</strong></td>
+<td>❌ discovery OK, <strong>data did not deliver</strong></td>
+</tr>
+<tr>
+<td>Jazzy host → Humble (Docker), reverse direction,
+<strong>NIC-pinned</strong></td>
+<td>✅ received</td>
+</tr>
+</tbody>
+</table>
+<h3 id="gotcha--required-fix-pin-the-nic">Gotcha + required fix: pin the
+NIC</h3>
+<p>The EVO X2 has <strong>two NICs on the same subnet</strong>
+(<code>eno1</code> 192.168.1.33 + <code>wlp195s0</code> 192.168.1.84)
+plus docker bridges. CycloneDDS auto-selects one interface per
+participant, which caused <strong>asymmetric data delivery</strong>
+(robots→host worked, host→robots silently dropped despite discovery
+succeeding). Fix — pin the wired NIC on <strong>every</strong>
+participant (add to <code>.bashrc</code> next to the RMW/domain lines,
+and confirm the robots pin their wired NIC too):</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">CYCLONEDDS_URI</span><span class="op">=</span><span class="st">&#39;&lt;CycloneDDS&gt;&lt;Domain&gt;&lt;General&gt;&lt;Interfaces&gt;&lt;NetworkInterface name=&quot;eno1&quot;/&gt;&lt;/Interfaces&gt;&lt;/General&gt;&lt;/Domain&gt;&lt;/CycloneDDS&gt;&#39;</span></span></code></pre></div>
+<p>Robots→host (the record direction) works even unpinned, but pinning
+is <strong>required</strong> for host→robot (MoveIt2 driving the real
+arm, or replaying a recorded trajectory back to hardware) and makes
+everything deterministic.</p>
+<h3 id="implication-for-the-pipeline">Implication for the pipeline</h3>
+<p>Live DDS to the robots is only needed for the <strong>record</strong>
+step (teleop → MCAP rosbag of <code>/joint_states</code> +
+<code>/cmd_vel</code>). The <strong>render</strong> step replays the bag
+locally into Gazebo/MoveIt/Blender — <strong>robots can be
+offline.</strong> Record direct, then work from the bag.</p>
+<blockquote>
+<p>Benign noise: Humble↔︎Jazzy logs
+<code>Failed to parse type hash ... from USER_DATA '(null)'</code>
+warnings on first discovery (Humble doesn't advertise the RIHS type hash
+Jazzy expects). Data flows correctly regardless; the warnings are a
+one-time discovery transient, not a per-message cost.</p>
+</blockquote></body></html>

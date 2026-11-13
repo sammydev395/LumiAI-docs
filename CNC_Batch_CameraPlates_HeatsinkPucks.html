@@ -1,0 +1,600 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CNC_Batch_CameraPlates_HeatsinkPucks</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="cnc-batch-bench-prep--oak-d-camera-plates--ø54-heatsink-pucks">CNC
+batch bench prep — OAK-D camera plates + Ø54 heatsink pucks</h1>
+<p>Orchestration doc for the recurring CNC batch that cuts OAK-D camera
+mount plates (3× on one aluminium sheet) and Ø54 wand heatsink pucks (2×
+machined in place from the finned bar). Chains the three per-part docs
+below, locks the order, and carries the single-SHARPRO protection
+rules.</p>
+<p><strong>First instance:</strong> 2026-10-21 — 3 OAK-D plates + 2 Ø54
+pucks, this doc's content was authored for that run and stays accurate
+for repeats on the same stock.</p>
+<p><strong>Order (operator, 2026-10-21):</strong> 3 OAK-D camera plates
+first, then 2 Ø54 wand heatsink pucks.</p>
+<p><strong>Why plates first:</strong> only ONE SHARPRO 1/8" O-flute on
+hand (no spare — operator-confirmed 2026-10-21). 6061 aluminium plates
+at 2 mm are low-risk (clean-cutting alloy, thin stock, single pass
+depth-wise); the finned 6063-ish bar is 10 mm deep, through fins, with
+chip-packing risk. If the bit dulls mid-session we lose the pucks, not
+the plates.</p>
+<p><strong>Per-part mechanics live in the existing docs — this doc
+chains the two batches:</strong></p>
+<ul>
+<li><a
+href="CNC_CameraPlate_BatchOf3.html"><code>docs/CNC_CameraPlate_BatchOf3.md</code></a>
+— 3 OAK-D plates (updated for 300×150 6061 sheet)</li>
+<li><a
+href="CNC_CameraPlate_Single.html"><code>docs/CNC_CameraPlate_Single.md</code></a>
+— single-plate mechanics (reference)</li>
+<li><a
+href="CNC_HeatsinkPuck_V910.html"><code>docs/CNC_HeatsinkPuck_V910.md</code></a>
+— Ø54 puck mechanics (updated for finned-bar machining)</li>
+</ul>
+<p><strong>NC audit, both files, 2026-10-21:</strong></p>
+<ul>
+<li><code>cad/exports/cnc/CameraMount_Oak-D.nc</code> — 8/8 UCCNC safety
+checks pass, G21 present. Header updated 2026-10-21 for the 300×150 1060
+sheet.</li>
+<li><code>cad/exports/cnc/lumi_wand_heatsink.nc</code> — all blocking
+checks pass. Header updated 2026-10-21 for finned-extrusion
+machine-from-bar workflow. 3 pre-existing nested <code>(</code> in the
+v9.10 original header (not blocking, UCCNC loads cleanly
+historically).</li>
+</ul>
+<h2 id="stock-reality-operator-photos--answers-2026-10-21">Stock reality
+(operator photos + answers, 2026-10-21)</h2>
+<h3 id="camera-plate-stock">Camera-plate stock</h3>
+<p><strong>One 2 mm 6061 aluminium SHEET (uxcell, ~300 × 150).</strong>
+Previous cut consumed ~115 mm at one end (T-shaped cutout + slot + 2
+small holes). <strong>Clear usable area: ~185 × 150</strong> at the
+other end. Nest 3 plates on this one sheet; <strong>no separate 100 × 60
+blanks on hand</strong>.</p>
+<p>6061 is the preferred alloy for OAK-D plates — cuts cleanly (vs the
+gummy 1060 that's on the base-plate stock), good stiffness and yield for
+the camera-on-wrist-servo load, standard for anodizing / finishing if
+the operator wants a coloured plate later.</p>
+<p><strong>Spare on hand (fallback):</strong> 5052 Al, 200 × 200 × 2 mm,
+blue sandblasted / anodized. Not needed if the 6061 nesting works.</p>
+<h3 id="heatsink-puck-stock">Heatsink-puck stock</h3>
+<p><strong>300 × 60 × 10 mm FINNED heatsink extrusion</strong>,
+black-anodized. Longitudinal fins on ONE face; <strong>10 mm total
+height = base + fin height</strong> (operator-confirmed). Likely 6063
+alloy (common for extrusions); unverified but machines similarly to
+6061. <strong>~200 mm clear bar is left</strong> past the old Ø54 cutout
+at one end (~100 mm consumed from a 300 mm length). <strong>Machine 2
+pucks IN PLACE from the bar — no sawing</strong> (operator
+decision).</p>
+<h2 id="nesting-layout">Nesting layout</h2>
+<h3 id="3-plates-on-the-300--150-6061-sheet">3 plates on the 300 × 150
+6061 sheet</h3>
+<p>Mount the sheet with the <strong>150 dimension along machine
+X</strong>, <strong>300 dimension along machine Y</strong>. Used end
+(T-cutout) at high-Y; clear end at low-Y. Scribe 3
+<strong>NC-zero</strong> marks along the sheet's Y axis before clamping.
+The plate was lifted +6 mm Y on the camera end 2026-10-29 (BigClaw-ear
+clearance) and is <strong>asymmetric about the NC zero</strong> — each
+scribe is 3 mm <strong>south</strong> of its plate's physical centre;
+tail/clear-end side faces Y=0, camera side faces Y=300:</p>
+<table>
+<thead>
+<tr>
+<th>Plate</th>
+<th>NC-zero scribe (X_sheet, Y_sheet from clear-end edge)</th>
+<th>Operator action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>(X_centre, Y=29.5)</td>
+<td>Jog, zero XY at scribe, run NC</td>
+</tr>
+<tr>
+<td>2</td>
+<td>(X_centre, Y=89.5)</td>
+<td>Jog, zero XY at scribe, run NC</td>
+</tr>
+<tr>
+<td>3</td>
+<td>(X_centre, Y=149.5)</td>
+<td>Jog, zero XY at scribe, run NC</td>
+</tr>
+</tbody>
+</table>
+<p>Each plate's cutter envelope: X ± 47.22 (long axis along machine X,
+plate's long 94.44 dim), Y − 24.06 to + 30.05 (short dim 54.11 along Y,
+plate 51). Scribes spaced 60 mm → <strong>5.89 mm web</strong> between
+plate cutter envelopes. Plate 3's camera-side envelope at Y = 179.6,
+leaves <strong>5.45 mm margin</strong> to the Y = 185 boundary before
+the used region. Plate 1's tail-side envelope at Y = 5.44, leaves
+<strong>5.44 mm margin</strong> to the clear-end edge. Web toe clamps
+optional per operator judgment.</p>
+<p>Hold-down (sheet-level):</p>
+<ul>
+<li>3M VHB or foam double-sided tape full-back under the sheet → rigid
+against spoilboard, prevents flex as plates are cut out.</li>
+<li>Edge clamps on the sheet's long edges (clear of the plate row + used
+end).</li>
+<li>M0 bolt-down <strong>per plate</strong> — 4× M3 × ~15 mm SHCS
+through each plate's just-cut OAK-D clearance holes, self-tap into
+virgin spoilboard beneath. Finger-snug.</li>
+</ul>
+<p><strong>No NC changes needed.</strong> Operator re-zeros XY per plate
+on the same loaded NC. No 90° rotation; the sheet orientation picks the
+right axis alignment.</p>
+<h3 id="2-pucks-along-the-finned-bar">2 pucks along the finned bar</h3>
+<p>Mount the whole bar flat on the fixture plate, base-face DOWN (fins
+UP). Clamp bar at both ends past the cutting area.</p>
+<table>
+<thead>
+<tr>
+<th>Puck</th>
+<th>Centre on bar (X_bar from clear-end edge of bar)</th>
+<th>Fixture-plate M3 taps (local to puck centre)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>X = 37 (~10 mm margin past old Ø54 rim at bar's used end)</td>
+<td>(+6.928, +4), (−6.928, +4), (0, −8) at X_offset = 37</td>
+</tr>
+<tr>
+<td>2</td>
+<td>X = 102 (puck 1 + 65 mm centre-to-centre)</td>
+<td>same local pattern at X_offset = 102</td>
+</tr>
+</tbody>
+</table>
+<p>Centre spacing 65 mm → 54 mm puck + <strong>11 mm web</strong> of bar
+between pucks. Puck 2's upper edge at X = 129; leaves <strong>~71 mm of
+bar past puck 2</strong> for a future puck.</p>
+<p><strong>Pre-tap the fixture plate</strong> at 6 positions total (3
+per puck). The fixture plate becomes puck-specific — stays with this
+bar-end machining workflow.</p>
+<p><strong>No NC changes needed.</strong> Operator zeros XY at puck 1
+centre, runs NC, re-zeros XY at puck 2 centre (jog +65 mm in X), runs
+NC.</p>
+<p><strong>Waste behaviour, bar vs. 60 × 60 blank:</strong></p>
+<ul>
+<li>Orbit R=30.175 vs. bar half-width 30 → clips the bar's +Y and −Y
+edges at ±3.24 from each puck's X centre.</li>
+<li><strong>No 4 loose corner offcuts</strong> (that was a 60 × 60 blank
+artifact). The bar stays structurally continuous between pucks and to
+the clamped ends.</li>
+<li>Puck comes free as the only loose piece after OP2. Confirm its 3
+body bolts are still in before OP3 — the free puck is held ONLY by
+them.</li>
+</ul>
+<h2 id="protecting-the-single-sharpro-bit-no-spare">Protecting the
+single SHARPRO bit (no spare)</h2>
+<p><strong>One Ø3.175 1-flute O-flute, 1/4" shank, in 1/4" OZ8 collet.
+If it dulls or breaks, the session stops.</strong></p>
+<h3 id="feeds--doc-both-parts">Feeds + DOC (both parts)</h3>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>S (rpm)</th>
+<th>F XY (mm/min)</th>
+<th>F plunge</th>
+<th>DOC per pass</th>
+<th>Passes</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plates (6061, 2 mm)</td>
+<td>18000</td>
+<td>300 (NC default)</td>
+<td>100</td>
+<td>0.5 mm</td>
+<td>5 (Z = −3.0 breakthrough)</td>
+<td>NC-defaults ship; 6061 cuts cleanly at 0.017 mm/tooth. No F override
+needed.</td>
+</tr>
+<tr>
+<td>Pucks (6063 extrusion, 10 mm through fins)</td>
+<td>18000</td>
+<td>300</td>
+<td>100</td>
+<td>1.0 mm</td>
+<td>10 (Z = −10.05)</td>
+<td>NC default — reduce F override to 50% if chatter at fin peaks</td>
+</tr>
+</tbody>
+</table>
+<p>6061 does not demand the F=600 override that 1060 would. Run the NC's
+native feeds. Keep an eye on the flute for Al pickup — 6xxx can still
+weld if the cutter dulls, just much less aggressively than 1060.</p>
+<h3 id="lubrication--air">Lubrication + air</h3>
+<p><strong>Air blast or compressed-air hose on both parts,
+continuous.</strong> 6061 produces short chips that evacuate well with
+air alone; mist / cutting fluid is nice-to-have, not mandatory on the
+plates (unlike with the 1060 base-plate stock on hand, which stays on
+the shelf today).</p>
+<p>For the pucks, air blast is important during OP2/OP3 — chips pack
+between fins.</p>
+<h3 id="stop-rules-if-the-bit-starts-to-dull-or-weld">Stop rules (if the
+bit starts to dull or weld)</h3>
+<p><strong>Stop IMMEDIATELY if any of these appear</strong>:</p>
+<ol type="1">
+<li><strong>Chatter sound</strong> — pitch rises from steady whine to a
+chirp or screech. Fin-depth passes most likely to trigger.</li>
+<li><strong>Chip appearance changes</strong> — chips go from flakes to
+STRINGERS or MUSH. Stringer = cutter is dragging material, not shearing.
+Mush = material is welding to the flute, then being re-dropped.</li>
+<li><strong>Visible aluminium on the flute</strong> — pause between
+passes, inspect the cutter. Al appears as a silver smear or built-up
+blob on the cutting edge.</li>
+<li><strong>Hot smell / smoke</strong> — cutter is overheating, likely
+dulling.</li>
+<li><strong>Finished edge quality</strong> — rim shows parallel feed
+marks that are uneven in depth. Chatter is "polishing" the edge instead
+of cutting it.</li>
+<li><strong>Material welded in a plate hole or puck slot</strong> —
+pause, pick out with a pin, inspect flute.</li>
+</ol>
+<p><strong>Response:</strong></p>
+<ul>
+<li>Stop at the next M0 (don't abort mid-pass if avoidable).</li>
+<li>Clear the flute (brass pick, isopropyl alcohol, soft brush).</li>
+<li>Resume. If chatter / weld returns within 1 pass, END THE SESSION on
+this bit. Switch to the Milwaukee drill alone (for OP1 only) and save
+the SHARPRO for a replacement run.</li>
+</ul>
+<h3 id="replacement-spec-for-the-order-list">Replacement spec (for the
+order list)</h3>
+<p><strong>SHARPRO 1/8" O-flute, 1/4" shank — exact-match
+spec:</strong></p>
+<ul>
+<li>Cutter diameter: Ø3.175 mm (= 1/8")</li>
+<li>Shank diameter: Ø6.35 mm (= 1/4")</li>
+<li>Flute count: 1 (single-flute O-flute, open-flute for Al chip
+evacuation)</li>
+<li>Flute length: ≥15 mm (long enough for the heatsink puck's 10 mm Z
+depth plus clearance)</li>
+<li>Overall length: ~50 mm (nominal)</li>
+<li>Coating: uncoated OR ZrN (titanium-nitride variants build Al
+faster)</li>
+<li>Geometry: polished O-flute (not Z-flute or compression)</li>
+</ul>
+<p><strong>Vendors:</strong></p>
+<ul>
+<li>Amazon (SHARPRO brand) — original supplier, exact part match</li>
+<li>Harvey Tool part #15102 or equivalent (ZrN, premium)</li>
+<li>Kyocera KSEMAO-040 or equivalent</li>
+<li>Carbide Depot generic single-flute O-flute, 1/8" × 1/4" shank</li>
+<li><strong>Order 2</strong> — one for immediate replacement + one spare
+on the shelf.</li>
+</ul>
+<h2 id="shopping-list--pre-staged-before-session-start">Shopping list —
+pre-staged before session start</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>For</th>
+<th>Qty</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2 mm 6061 Al sheet, uxcell, ~300 × 150</td>
+<td>OAK-D plates</td>
+<td>1 (shared)</td>
+<td>~185 × 150 clear area; 115 mm at one end used. 3 plates nest.
+Fallback: 5052 2 mm, 200 × 200 (blue anodized) on the shelf.</td>
+</tr>
+<tr>
+<td>300 × 60 × 10 mm finned Al extrusion (6063 likely)</td>
+<td>Heatsink pucks</td>
+<td>1 (shared)</td>
+<td>~200 mm clear bar left past the old Ø54 cutout. 2 pucks fit; 1 more
+fits for a future run.</td>
+</tr>
+<tr>
+<td><strong>T1 Milwaukee 1/8" cobalt</strong> (Ø3.175, 135° split
+point)</td>
+<td>Puck OP1 drill</td>
+<td>1</td>
+<td>1/8" OZ8 collet, stick-out 15–18 mm.</td>
+</tr>
+<tr>
+<td><strong>T2 SHARPRO 1/8" O-flute</strong> (1/4" shank)</td>
+<td>Plates + puck OP2/OP3</td>
+<td>1</td>
+<td>1/4" OZ8 collet. <strong>No spare on hand — protect
+it.</strong></td>
+</tr>
+<tr>
+<td>1/8" OZ8 collet</td>
+<td>T1</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>1/4" OZ8 collet</td>
+<td>T2</td>
+<td>1</td>
+<td></td>
+</tr>
+<tr>
+<td>M3 × ~15 mm SHCS</td>
+<td>Plate M0 bolt-down</td>
+<td>12</td>
+<td>4 per plate × 3 plates. Self-tap into virgin spoilboard.</td>
+</tr>
+<tr>
+<td>M3 × ~25 mm SHCS</td>
+<td>Puck M0 #1 bolt-down</td>
+<td>6</td>
+<td>3 per puck × 2 pucks. Into pre-tapped fixture plate.</td>
+</tr>
+<tr>
+<td>Fixture plate</td>
+<td>Puck workholding</td>
+<td>1</td>
+<td>~200 × 100 × 10 mm scrap, pre-tapped M3 at 6 positions (3 per puck,
+offsets <code>(+6.928, +4)</code>, <code>(−6.928, +4)</code>,
+<code>(0, −8)</code> at puck X = 37 and X = 102 from the clear-end edge
+of the bar). Bar-specific; discard after bar is exhausted.</td>
+</tr>
+<tr>
+<td>3M VHB or foam double-sided tape</td>
+<td>Plate sheet + puck bar</td>
+<td>2 strips</td>
+<td>Full-back of the sheet; strip under the bar's clear region.</td>
+</tr>
+<tr>
+<td>Air blast (compressed air hose)</td>
+<td>Both parts</td>
+<td>1</td>
+<td>Required during plate OP1/OP2/OP3 and during puck OP2/OP3 fin-depth
+passes. 6061 and the 6063 extrusion both chip-evacuate well with air
+alone.</td>
+</tr>
+<tr>
+<td>Fresh spoilboard</td>
+<td>Plates</td>
+<td>1</td>
+<td>MDF / HDPE / ply. Plates self-tap M3 into virgin material.</td>
+</tr>
+<tr>
+<td>Brass pick + IPA + soft brush</td>
+<td>Bit maintenance</td>
+<td>1 each</td>
+<td>For clearing Al weld on the flute between passes if signs
+appear.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="session-ordering--plates-first">Session ordering — plates
+first</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Collet</th>
+<th>Tool</th>
+<th>What</th>
+<th>Est. time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0. Mount sheet (VHB + edge clamps), install T2 + 1/4" OZ8, zero Z on
+sheet top, air blast on</td>
+<td>1/4"</td>
+<td>T2 SHARPRO</td>
+<td>setup</td>
+<td>6 min</td>
+</tr>
+<tr>
+<td>1. Plate #1 (zero XY at scribe 1, run NC, M0 bolt-down, OP3)</td>
+<td>1/4"</td>
+<td>T2</td>
+<td>air blast; NC-default feeds</td>
+<td>~15 min</td>
+</tr>
+<tr>
+<td>2. Plate #2 (re-zero XY, run NC, M0, OP3)</td>
+<td>1/4"</td>
+<td>T2</td>
+<td>air blast</td>
+<td>~15 min</td>
+</tr>
+<tr>
+<td>3. Plate #3 (re-zero XY, run NC, M0, OP3)</td>
+<td>1/4"</td>
+<td>T2</td>
+<td>air blast</td>
+<td>~15 min</td>
+</tr>
+<tr>
+<td><strong>4. INSPECT T2</strong> — check flute for Al weld, chatter
+marks, dulling. GO/NO-GO decision for pucks.</td>
+<td>1/4"</td>
+<td>T2</td>
+<td>brass pick + IPA if needed</td>
+<td>3 min</td>
+</tr>
+<tr>
+<td>5. Unbolt 12 M3 from plates, lift plates, remove sheet skeleton,
+clean</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td><strong>COLLET CHANGE A</strong></td>
+<td>1/4" → <strong>1/8"</strong></td>
+<td>T2 off, T1 Milwaukee on</td>
+<td>—</td>
+<td>~3 min</td>
+</tr>
+<tr>
+<td>6. Mount bar on fixture (base-face DOWN, fins UP), tape, zero XY at
+puck 1 centre (X=37 from bar's clear-end edge), zero Z on fin peak</td>
+<td>1/8"</td>
+<td>T1</td>
+<td>setup</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>7. Puck #1 OP1 (drill 3 body holes, M0 #1)</td>
+<td>1/8"</td>
+<td>T1</td>
+<td>air blast</td>
+<td>~30 s cut + 3 min M0</td>
+</tr>
+<tr>
+<td><strong>COLLET CHANGE B</strong> (install 3 M3 × 25 bolts through
+puck 1 body into fixture, swap T1 → T2, re-touch Z on T2)</td>
+<td><strong>1/8" → 1/4"</strong></td>
+<td>T2 SHARPRO on</td>
+<td>—</td>
+<td>~5 min</td>
+</tr>
+<tr>
+<td>8. Puck #1 OP2 (contour, 10 passes), M0 #2 (clear fin chip packing),
+OP3 (keyway)</td>
+<td>1/4"</td>
+<td>T2</td>
+<td>air blast + check for chatter at fin peaks; UCCNC F override 50% if
+chatter</td>
+<td>~8 min cut + 3 min M0</td>
+</tr>
+<tr>
+<td><strong>COLLET CHANGE C</strong></td>
+<td>1/4" → <strong>1/8"</strong></td>
+<td>T2 off, T1 on</td>
+<td>—</td>
+<td>~3 min</td>
+</tr>
+<tr>
+<td>9. Re-zero XY at puck 2 centre (jog +65 mm in X), zero Z on fin
+peak</td>
+<td>1/8"</td>
+<td>T1</td>
+<td>—</td>
+<td>3 min</td>
+</tr>
+<tr>
+<td>10. Puck #2 OP1</td>
+<td>1/8"</td>
+<td>T1</td>
+<td>air blast</td>
+<td>~30 s + 3 min M0</td>
+</tr>
+<tr>
+<td><strong>COLLET CHANGE D</strong> (puck #2 M0 #1 same as puck
+#1)</td>
+<td><strong>1/8" → 1/4"</strong></td>
+<td>T2 on</td>
+<td>—</td>
+<td>~5 min</td>
+</tr>
+<tr>
+<td>11. Puck #2 OP2 + M0 #2 + OP3</td>
+<td>1/4"</td>
+<td>T2</td>
+<td>—</td>
+<td>~8 min + 3 min</td>
+</tr>
+<tr>
+<td>12. End of session — chip cleanup, de-burr all 5 parts</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>15 min</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total:</strong> ~2 h 45 min including setup / cleanup. 4
+collet changes.</p>
+<h2 id="the-6-answers-to-the-ask">The 6 answers to the ask</h2>
+<h3 id="camera-plates-oak-d-6061-al-300--150-sheet">Camera plates
+(OAK-D, 6061 Al, 300 × 150 sheet)</h3>
+<ul>
+<li><strong>Stock + Z depths:</strong> 2 mm 6061 Al (uxcell) sheet, NC
+max cut Z = −3.0. On 2.0 mm stock → 1.0 mm into spoilboard. In the
+clean-breakthrough window. <strong>No NC change needed</strong> —
+unchanged <code>CameraMount_Oak-D.nc</code> stands.</li>
+<li><strong>Nesting:</strong> 3 plates on ONE sheet, NC-zero scribes at
+Y=29.5 / Y=89.5 / Y=149.5 from the sheet's clear-end edge (each scribe 3
+mm south of its plate's physical centre — camera-end lift 2026-10-29
+made the plate asymmetric); re-zero XY per plate on the same NC. Webs
+5.89 mm, end margins 5.44 / 5.45 mm. Full-back VHB keeps sheet rigid as
+plates sever; add web toe clamps if operator judges them needed.</li>
+<li><strong>Tool:</strong> SHARPRO 1/8" O-flute in 1/4" OZ8. <strong>No
+spare on hand</strong> — protect with air blast, inspection after each
+plate.</li>
+<li><strong>Alloy:</strong> 6061, clean-cutting. NC-default feeds (F=300
+at S=18000, 0.5 mm DOC per pass, 5 passes to Z=-3.0). Mild burrs
+expected; 400-grit deburr. <strong>Fallback stock:</strong> 5052 Al 200
+× 200 × 2 mm (blue anodized) on the shelf.</li>
+<li><strong>Stiffness:</strong> 2 mm 6061 OK for OAK-D on wrist servo.
+6061 is already the preferred alloy.</li>
+<li><strong>Runtime:</strong> ~15 min per plate × 3 = ~45 min
+batch.</li>
+<li><strong>M0 bolt-down:</strong> 4× M3 × 15 mm SHCS per plate, through
+just-cut OAK-D clearance holes, self-tap into virgin spoilboard.</li>
+</ul>
+<h3
+id="heatsink-pucks-v910-ø54-finned-6063-extrusion-machined-from-the-bar">Heatsink
+pucks (v9.10, Ø54, finned 6063 extrusion, machined from the bar)</h3>
+<ul>
+<li><strong>Stock:</strong> 300 × 60 × 10 mm finned extrusion (base +
+fins = 10). Clear bar ~200 mm past the old Ø54 cutout. 2 pucks fit.</li>
+<li><strong>Workflow change:</strong> machine IN-PLACE from the bar. No
+sawing. Zero XY at puck 1 centre (X=37 from bar clear-end), run NC,
+re-zero at puck 2 centre (X=102, +65 mm from puck 1).</li>
+<li><strong>Waste:</strong> no 4 loose corner offcuts (that was a 60 ×
+60 blank artifact). Orbit clips ±Y bar edges at ±3.24 from each puck X;
+bar stays structurally continuous.</li>
+<li><strong>Fixture plate:</strong> 6 pre-tapped M3 at puck 1 and puck 2
+offsets. The 3-bolt hold-down works through fins (M3 × 25 SHCS passes
+through fin peak + base above each hole into fixture tap).</li>
+<li><strong>Tooling:</strong> T1 Milwaukee 1/8" cobalt (1/8" OZ8) for
+OP1; T2 SHARPRO 1/8" O-flute (1/4" OZ8) for OP2 + OP3. Collet change at
+puck's own M0 #1.</li>
+<li><strong>Fin cutting:</strong> cutter hits fin peaks first, then
+base. Chips pack in fin valleys — air blast during OP2/OP3 is mandatory.
+If chatter at fin peaks, F override 50%.</li>
+<li><strong>Alloy:</strong> likely 6063 (common for Al extrusions);
+unverified. Machines like 6061 (slightly softer), chip-weld risk lower
+than 1060 but WD-40 helps.</li>
+<li><strong>Runtime per puck:</strong> ~10 min cutting + ~15 min
+operator overhead. ~50 min batch for 2 pucks.</li>
+</ul>
+<h2 id="hazards">Hazards</h2>
+<ul>
+<li><strong>Plates on 6061:</strong> chip evacuation + flute pickup are
+the risks. One SHARPRO, no spare. Air blast on, inspect flute between
+plates, STOP at the first stringer or stuck Al. 6061 behaves cleanly —
+this is low-risk relative to the pucks.</li>
+<li><strong>Puck fin cutting:</strong> chatter at fin peaks (thin
+standing walls) + chip packing in fin valleys. Air blast + F override
+50% if chatter.</li>
+<li><strong>Bar workholding:</strong> VHB under the clear region; clamp
+at both bar ends. If bar flexes during OP2 contour, puck X zero
+drifts.</li>
+<li><strong>Puck M0 #2:</strong> old <code>v9.10</code> doc assumed 4
+loose corner offcuts; from the bar, there are NO loose offcuts. M0 #2 is
+a chip-clearance pause only (clear chips packed in fin valleys around
+the orbit; the puck is the only loose piece and is held by 3 body
+bolts).</li>
+</ul>
+<h2 id="pending-from-operator">Pending from operator</h2>
+<ul>
+<li><strong>Confirm compressed air / blast on hand</strong> before Cycle
+Start on plate 1 (chip evacuation on 6061).</li>
+<li><strong>Confirm 1/8" OZ8 collet and 1/4" OZ8 collet both
+present</strong> (collet changes 4× this session).</li>
+<li>Flute inspection at the step 4 GO/NO-GO decision — if the SHARPRO
+looks damaged, defer the pucks.</li>
+</ul></body></html>

@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1640" height="880" viewBox="0 0 1640 880" font-family="DejaVu Sans, Verdana, Helvetica, sans-serif">
+<defs><marker id="a" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M1,1 L7,4 L1,7" fill="none" stroke="#7a3fb0" stroke-width="1.2"/></marker></defs>
+<rect width="1640" height="880" fill="#fff"/>
+<text x="36.0" y="38.0" font-size="20" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">+Y JOINT CONNECTOR — how both halves seat, and how far they MATE</text>
+<text x="36.0" y="38.0" font-size="20" text-anchor="start" font-weight="700" fill="#111">+Y JOINT CONNECTOR — how both halves seat, and how far they MATE</text>
+<text x="36.0" y="60.0" font-size="11" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">Section on the TANGENTIAL–axial plane (looking radially inward at the 90° meridian), so the horizontal axis is the connector's own long axis.</text>
+<text x="36.0" y="60.0" font-size="11" text-anchor="start" font-weight="400" fill="#555">Section on the TANGENTIAL–axial plane (looking radially inward at the 90° meridian), so the horizontal axis is the connector's own long axis.</text>
+<text x="36.0" y="84.0" font-size="12" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">BOTH panels share ONE Z scale — the ASSEMBLED frame, in which the extension's top face (EXT_H = 172) is wand Z = 0.</text>
+<text x="36.0" y="84.0" font-size="12" text-anchor="start" font-weight="700" fill="#2d6a4f">BOTH panels share ONE Z scale — the ASSEMBLED frame, in which the extension's top face (EXT_H = 172) is wand Z = 0.</text>
+<text x="36.0" y="102.0" font-size="12" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">TWO M2 screws set each board's depth — neither is a seating flange. The WAND's board caps its cradle; the EXTENSION's goes UNDERNEATH, because its cradle is a proud spigot that has to root at the rim.</text>
+<text x="36.0" y="102.0" font-size="12" text-anchor="start" font-weight="700" fill="#2d6a4f">TWO M2 screws set each board's depth — neither is a seating flange. The WAND's board caps its cradle; the EXTENSION's goes UNDERNEATH, because its cradle is a proud spigot that has to root at the rim.</text>
+<path d="M 150 400.5 L 1370 400.5" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="8 5" opacity="0.75"/>
+<text x="1378.0" y="404.5" font-size="9.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">shroud mouth, wand Z = 1.5</text>
+<text x="1378.0" y="404.5" font-size="9.5" text-anchor="start" font-weight="700" fill="#c0392b">shroud mouth, wand Z = 1.5</text>
+<path d="M 150 348.5 L 1370 348.5" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="8 5" opacity="0.75"/>
+<text x="1378.0" y="352.5" font-size="9.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">shell tip, wand Z = 5.5</text>
+<text x="1378.0" y="352.5" font-size="9.5" text-anchor="start" font-weight="700" fill="#c0392b">shell tip, wand Z = 5.5</text>
+<path d="M 150 420.0 L 1370 420.0" stroke="#111" stroke-width="1.2" stroke-dasharray="8 5" opacity="0.75"/>
+<text x="1378.0" y="424.0" font-size="9.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">extension rim = wand Z 0</text>
+<text x="1378.0" y="424.0" font-size="9.5" text-anchor="start" font-weight="700" fill="#111">extension rim = wand Z 0</text>
+<path d="M 150 225.0 L 1370 225.0" stroke="#7a3fb0" stroke-width="1.2" stroke-dasharray="8 5" opacity="0.75"/>
+<text x="1378.0" y="229.0" font-size="9.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">lower driver row, Z = 15.0</text>
+<text x="1378.0" y="229.0" font-size="9.5" text-anchor="start" font-weight="700" fill="#7a3fb0">lower driver row, Z = 15.0</text>
+<rect x="150" y="348.5" width="1220" height="52.0" fill="#c0392b" opacity="0.09"/>
+<path d="M 165.0 348.5 L 165.0 400.5" stroke="#c0392b" stroke-width="1.2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="165.0" y="374.5" font-size="9" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round"></text>
+<text x="165.0" y="374.5" font-size="9" text-anchor="middle" font-weight="700" fill="#c0392b"></text>
+<text x="120.0" y="368.5" font-size="11" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">ENGAGEMENT</text>
+<text x="120.0" y="368.5" font-size="11" text-anchor="middle" font-weight="700" fill="#c0392b">ENGAGEMENT</text>
+<text x="120.0" y="384.5" font-size="14" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">4.0 mm</text>
+<text x="120.0" y="384.5" font-size="14" text-anchor="middle" font-weight="700" fill="#c0392b">4.0 mm</text>
+<text x="120.0" y="400.5" font-size="9" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">of an 8.0 mm shell</text>
+<text x="120.0" y="400.5" font-size="9" text-anchor="middle" font-weight="400" fill="#c0392b">of an 8.0 mm shell</text>
+<text x="480.0" y="150.0" font-size="14" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">WAND side — FEMALE</text>
+<text x="480.0" y="150.0" font-size="14" text-anchor="middle" font-weight="700" fill="#2d4b73">WAND side — FEMALE</text>
+<text x="480.0" y="168.0" font-size="9.5" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">cradle opens DOWN toward the end plate · board caps it at Z = 8.5 · assembly drops in from ABOVE</text>
+<text x="480.0" y="168.0" font-size="9.5" text-anchor="middle" font-weight="400" fill="#5a6b7a">cradle opens DOWN toward the end plate · board caps it at Z = 8.5 · assembly drops in from ABOVE</text>
+<rect x="295.4" y="309.5" width="69.5" height="104.0" fill="#e8eef5" stroke="#2d4b73" stroke-width="2.0"/>
+<rect x="595.0" y="309.5" width="69.5" height="104.0" fill="#e8eef5" stroke="#2d4b73" stroke-width="2.0"/>
+<rect x="366.9" y="309.5" width="226.2" height="91.0" fill="#fff4e5" stroke="#d18b1f" stroke-width="2.0"/>
+<text x="480.0" y="352.0" font-size="10" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">FEMALE — the PINNED part</text>
+<text x="480.0" y="352.0" font-size="10" text-anchor="middle" font-weight="700" fill="#8a6a1f">FEMALE — the PINNED part</text>
+<text x="480.0" y="366.0" font-size="8.5" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">SOLDERED to the board above, hangs into the slot</text>
+<text x="480.0" y="366.0" font-size="8.5" text-anchor="middle" font-weight="400" fill="#8a6a1f">SOLDERED to the board above, hangs into the slot</text>
+<text x="480.0" y="379.0" font-size="8.5" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">NO GLUE on this half</text>
+<text x="480.0" y="379.0" font-size="8.5" text-anchor="middle" font-weight="400" fill="#a8410f">NO GLUE on this half</text>
+<rect x="281.9" y="288.7" width="396.2" height="20.8" fill="#2f6b3f" stroke="#1d4a2a" stroke-width="1.8"/>
+<text x="480.0" y="280.7" font-size="9.5" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">3 × 12 stripboard — 30.48 mm</text>
+<text x="480.0" y="280.7" font-size="9.5" text-anchor="middle" font-weight="700" fill="#1d4a2a">3 × 12 stripboard — 30.48 mm</text>
+<path d="M 331.4 288.7 L 331.4 374.5" stroke="#7a3fb0" stroke-width="3.4"/>
+<circle cx="331.4" cy="288.7" r="4" fill="#7a3fb0"/>
+<path d="M 628.6 288.7 L 628.6 374.5" stroke="#7a3fb0" stroke-width="3.4"/>
+<circle cx="628.6" cy="288.7" r="4" fill="#7a3fb0"/>
+<text x="642.6" y="292.7" font-size="9" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">M2 ×2, ±11.43</text>
+<text x="642.6" y="292.7" font-size="9" text-anchor="start" font-weight="700" fill="#7a3fb0">M2 ×2, ±11.43</text>
+<text x="642.6" y="304.7" font-size="8.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">5.0 mm pilot</text>
+<text x="642.6" y="304.7" font-size="8.5" text-anchor="start" font-weight="400" fill="#7a3fb0">5.0 mm pilot</text>
+<path d="M 398.8 309.5 L 398.8 288.7" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 398.8 288.7 L 398.8 254.7" stroke="#1f6fd0" stroke-width="2.2"/>
+<path d="M 431.2 309.5 L 431.2 288.7" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 431.2 288.7 L 431.2 254.7" stroke="#1f6fd0" stroke-width="2.2"/>
+<path d="M 463.8 309.5 L 463.8 288.7" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 463.8 288.7 L 463.8 254.7" stroke="#1f6fd0" stroke-width="2.2"/>
+<path d="M 496.2 309.5 L 496.2 288.7" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 496.2 288.7 L 496.2 254.7" stroke="#1f6fd0" stroke-width="2.2"/>
+<path d="M 528.8 309.5 L 528.8 288.7" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 528.8 288.7 L 528.8 254.7" stroke="#1f6fd0" stroke-width="2.2"/>
+<path d="M 561.2 309.5 L 561.2 288.7" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 561.2 288.7 L 561.2 254.7" stroke="#1f6fd0" stroke-width="2.2"/>
+<text x="480.0" y="228.7" font-size="9.5" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">6 header POSTS up into the OUTER row (1.8 mm of tail) · 3 pigtails out of the MIDDLE row</text>
+<text x="480.0" y="228.7" font-size="9.5" text-anchor="middle" font-weight="700" fill="#1f6fd0">6 header POSTS up into the OUTER row (1.8 mm of tail) · 3 pigtails out of the MIDDLE row</text>
+<path d="M 364.9 433.5 L 595.0 433.5" stroke="#7a3fb0" stroke-width="1.2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="480.0" y="448.5" font-size="9" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">slot opening 17.7</text>
+<text x="480.0" y="448.5" font-size="9" text-anchor="middle" font-weight="700" fill="#7a3fb0">slot opening 17.7</text>
+<path d="M 690.6 309.5 L 690.6 413.5" stroke="#7a3fb0" stroke-width="1.2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="724.6" y="361.5" font-size="9" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">8.0 deep</text>
+<text x="724.6" y="361.5" font-size="9" text-anchor="middle" font-weight="700" fill="#7a3fb0">8.0 deep</text>
+<text x="480.0" y="241.0" font-size="9.5" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">4.9 mm of air under the driver row</text>
+<text x="480.0" y="241.0" font-size="9.5" text-anchor="middle" font-weight="700" fill="#7a3fb0">4.9 mm of air under the driver row</text>
+<text x="1080.0" y="150.0" font-size="14" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">EXTENSION side — MALE</text>
+<text x="1080.0" y="150.0" font-size="14" text-anchor="middle" font-weight="700" fill="#2d6a4f">EXTENSION side — MALE</text>
+<text x="1080.0" y="168.0" font-size="9.5" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">cradle is RECESSED — its walls capture the shell's base BELOW the rim · nothing stands proud · board goes under the floor</text>
+<text x="1080.0" y="168.0" font-size="9.5" text-anchor="middle" font-weight="400" fill="#5a6b7a">cradle is RECESSED — its walls capture the shell's base BELOW the rim · nothing stands proud · board goes under the floor</text>
+<rect x="895.4" y="452.5" width="369.2" height="32.5" fill="#cfe0d4" stroke="#2d6a4f" stroke-width="2.0"/>
+<text x="887.4" y="472.8" font-size="9" text-anchor="end" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">2.5 floor</text>
+<text x="887.4" y="472.8" font-size="9" text-anchor="end" font-weight="700" fill="#2d6a4f">2.5 floor</text>
+<rect x="895.4" y="420.0" width="69.5" height="32.5" fill="#e8eef5" stroke="#2d6a4f" stroke-width="2.0"/>
+<rect x="1195.0" y="420.0" width="69.5" height="32.5" fill="#e8eef5" stroke="#2d6a4f" stroke-width="2.0"/>
+<rect x="966.9" y="348.5" width="226.2" height="104.0" fill="#d6ecd8" stroke="#2d6a4f" stroke-width="2.0"/>
+<text x="1080.0" y="397.5" font-size="10" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">MALE — the CRIMP SHELL</text>
+<text x="1080.0" y="397.5" font-size="10" text-anchor="middle" font-weight="700" fill="#1d4a2a">MALE — the CRIMP SHELL</text>
+<text x="1080.0" y="411.5" font-size="8.5" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">8.0 mm tall — 2.5 captured by the spigot walls</text>
+<text x="1080.0" y="411.5" font-size="8.5" text-anchor="middle" font-weight="400" fill="#1d4a2a">8.0 mm tall — 2.5 captured by the spigot walls</text>
+<rect x="881.9" y="485.0" width="396.2" height="20.8" fill="#2f6b3f" stroke="#1d4a2a" stroke-width="1.8"/>
+<text x="1080.0" y="521.8" font-size="9.5" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">3 × 12 stripboard — 30.48 mm</text>
+<text x="1080.0" y="521.8" font-size="9.5" text-anchor="middle" font-weight="700" fill="#1d4a2a">3 × 12 stripboard — 30.48 mm</text>
+<path d="M 931.4 459.0 L 931.4 505.8" stroke="#7a3fb0" stroke-width="3.4"/>
+<circle cx="931.4" cy="459.0" r="4" fill="#7a3fb0"/>
+<path d="M 1228.6 459.0 L 1228.6 505.8" stroke="#7a3fb0" stroke-width="3.4"/>
+<circle cx="1228.6" cy="459.0" r="4" fill="#7a3fb0"/>
+<text x="1242.6" y="463.0" font-size="9" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">M2 ×2, ±11.43</text>
+<text x="1242.6" y="463.0" font-size="9" text-anchor="start" font-weight="700" fill="#7a3fb0">M2 ×2, ±11.43</text>
+<text x="1242.6" y="475.0" font-size="8.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">2.0 mm pilot</text>
+<text x="1242.6" y="475.0" font-size="8.5" text-anchor="start" font-weight="400" fill="#7a3fb0">2.0 mm pilot</text>
+<path d="M 998.8 485.0 L 998.8 529.2" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 998.8 529.2 L 998.8 563.2" stroke="#1f6fd0" stroke-width="2.2"/>
+<path d="M 1031.2 485.0 L 1031.2 529.2" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 1031.2 529.2 L 1031.2 563.2" stroke="#1f6fd0" stroke-width="2.2"/>
+<path d="M 1063.8 485.0 L 1063.8 529.2" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 1063.8 529.2 L 1063.8 563.2" stroke="#1f6fd0" stroke-width="2.2"/>
+<path d="M 1096.2 485.0 L 1096.2 529.2" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 1096.2 529.2 L 1096.2 563.2" stroke="#1f6fd0" stroke-width="2.2"/>
+<path d="M 1128.8 485.0 L 1128.8 529.2" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 1128.8 529.2 L 1128.8 563.2" stroke="#1f6fd0" stroke-width="2.2"/>
+<path d="M 1161.2 485.0 L 1161.2 529.2" stroke="#b07a1f" stroke-width="2.4"/>
+<path d="M 1161.2 529.2 L 1161.2 563.2" stroke="#1f6fd0" stroke-width="2.2"/>
+<text x="1080.0" y="569.5" font-size="9.5" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">6 CRIMPED TAILS down through the OUTER row · pigtails from the MIDDLE row into the cavity</text>
+<text x="1080.0" y="569.5" font-size="9.5" text-anchor="middle" font-weight="700" fill="#1f6fd0">6 CRIMPED TAILS down through the OUTER row · pigtails from the MIDDLE row into the cavity</text>
+<path d="M 1290.6 348.5 L 1290.6 452.5" stroke="#7a3fb0" stroke-width="1.2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="1320.6" y="400.5" font-size="9" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">8.0 shell</text>
+<text x="1320.6" y="400.5" font-size="9" text-anchor="middle" font-weight="700" fill="#7a3fb0">8.0 shell</text>
+<path d="M 869.4 420.0 L 869.4 452.5" stroke="#7a3fb0" stroke-width="1.2" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="835.4" y="436.2" font-size="9" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">2.5 captured</text>
+<text x="835.4" y="436.2" font-size="9" text-anchor="middle" font-weight="700" fill="#7a3fb0">2.5 captured</text>
+<text x="36.0" y="600.0" font-size="15" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">What actually holds each piece</text>
+<text x="36.0" y="600.0" font-size="15" text-anchor="start" font-weight="700" fill="#111">What actually holds each piece</text>
+<text x="36.0" y="624.0" font-size="11" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">Wand = the PINNED part</text>
+<text x="36.0" y="624.0" font-size="11" text-anchor="start" font-weight="700" fill="#d18b1f">Wand = the PINNED part</text>
+<text x="250.0" y="624.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">SOLDERED to its stripboard, body hanging DOWN into the pocket, shroud mouth toward the end plate. 3.4 mm posts up through a 1.6 mm board leave 1.8 mm of tail. NO GLUE on this half.</text>
+<text x="250.0" y="624.0" font-size="10" text-anchor="start" font-weight="400" fill="#444">SOLDERED to its stripboard, body hanging DOWN into the pocket, shroud mouth toward the end plate. 3.4 mm posts up through a 1.6 mm board leave 1.8 mm of tail. NO GLUE on this half.</text>
+<text x="36.0" y="646.0" font-size="11" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">Extension = the SHELL</text>
+<text x="36.0" y="646.0" font-size="11" text-anchor="start" font-weight="700" fill="#2d6a4f">Extension = the SHELL</text>
+<text x="250.0" y="646.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">Six SXH crimps, no solder posts. Its rim bottoms on a SHOULDER left in the slab -- not on the stripboard -- and the SPIGOT WALLS capture its lower 2.5 mm on all four sides: a proper pocket bond, not a flat-face one. Only its six tails pass through to the board below.</text>
+<text x="250.0" y="646.0" font-size="10" text-anchor="start" font-weight="400" fill="#444">Six SXH crimps, no solder posts. Its rim bottoms on a SHOULDER left in the slab -- not on the stripboard -- and the SPIGOT WALLS capture its lower 2.5 mm on all four sides: a proper pocket bond, not a flat-face one. Only its six tails pass through to the board below.</text>
+<text x="36.0" y="668.0" font-size="11" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">The extension CRADLE</text>
+<text x="36.0" y="668.0" font-size="11" text-anchor="start" font-weight="700" fill="#5a6b7a">The extension CRADLE</text>
+<text x="250.0" y="668.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">RECESSED — the shell drops into it and every millimetre of the 2.5 mm capture is BELOW the rim, inside this half's Oe70 bore where the boss is fused to the wall over its whole outer face. The top face is FLAT. /!\ It stood 2.5 mm PROUD as a spigot on 2026-10-03, first on a 1 mm cantilever and then on a slab -- making it stronger was the wrong answer to 'will it not be easily breakable'.</text>
+<text x="250.0" y="668.0" font-size="10" text-anchor="start" font-weight="400" fill="#444">RECESSED — the shell drops into it and every millimetre of the 2.5 mm capture is BELOW the rim, inside this half's Oe70 bore where the boss is fused to the wall over its whole outer face. The top face is FLAT. /!\ It stood 2.5 mm PROUD as a spigot on 2026-10-03, first on a 1 mm cantilever and then on a slab -- making it stronger was the wrong answer to 'will it not be easily breakable'.</text>
+<text x="36.0" y="690.0" font-size="11" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">Both stripboards</text>
+<text x="36.0" y="690.0" font-size="11" text-anchor="start" font-weight="700" fill="#7a3fb0">Both stripboards</text>
+<text x="250.0" y="690.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">TWO M2 self-taps each, +-11.43 mm. WAND: drilled DOWN from the board face, 5.0 mm of pilot. EXTENSION: drilled UP into the spigot, only 2.0 mm -- drive those gently.</text>
+<text x="250.0" y="690.0" font-size="10" text-anchor="start" font-weight="400" fill="#444">TWO M2 self-taps each, +-11.43 mm. WAND: drilled DOWN from the board face, 5.0 mm of pilot. EXTENSION: drilled UP into the spigot, only 2.0 mm -- drive those gently.</text>
+<text x="36.0" y="726.0" font-size="11.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">⚠  ONE BOND, ON THE EXTENSION HALF ONLY — the shell into its spigot pocket, a bead on the two END walls. The wand's half is soldered and is never glued.</text>
+<text x="36.0" y="726.0" font-size="11.5" text-anchor="start" font-weight="700" fill="#a8410f">⚠  ONE BOND, ON THE EXTENSION HALF ONLY — the shell into its spigot pocket, a bead on the two END walls. The wand's half is soldered and is never glued.</text>
+<text x="36.0" y="743.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">JST-XH bodies are PA66 nylon, a poor CA-glue substrate — use two-part epoxy. Keep it off the mating face and out of the contacts; this joint is blind, so a fouled contact is found only when the wand will not come up.</text>
+<text x="36.0" y="743.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">JST-XH bodies are PA66 nylon, a poor CA-glue substrate — use two-part epoxy. Keep it off the mating face and out of the contacts; this joint is blind, so a fouled contact is found only when the wand will not come up.</text>
+<text x="36.0" y="768.0" font-size="11.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">⚠  Assembly order, both sides: build the BOARD on the bench first — connector (or crimped tails) and pigtails soldered, continuity-checked — then screw it down.</text>
+<text x="36.0" y="768.0" font-size="11.5" text-anchor="start" font-weight="700" fill="#a8410f">⚠  Assembly order, both sides: build the BOARD on the bench first — connector (or crimped tails) and pigtails soldered, continuity-checked — then screw it down.</text>
+<text x="36.0" y="785.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">This mate is BLIND: it first happens inside a closed shell at week-4 integration, and nothing inside can be re-worked without taking the joint apart again.</text>
+<text x="36.0" y="785.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">This mate is BLIND: it first happens inside a closed shell at week-4 integration, and nothing inside can be re-worked without taking the joint apart again.</text>
+<text x="36.0" y="810.0" font-size="11.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">OPEN —  4.0 mm of engagement is the OPERATOR's number, not a datasheet's — the XH's internal contact-engagement depth is not in hand. PULL-TEST the first pair.</text>
+<text x="36.0" y="810.0" font-size="11.5" text-anchor="start" font-weight="700" fill="#a8410f">OPEN —  4.0 mm of engagement is the OPERATOR's number, not a datasheet's — the XH's internal contact-engagement depth is not in hand. PULL-TEST the first pair.</text>
+<text x="36.0" y="827.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.5" stroke-linejoin="round">Withdrawal goes through the extension-side bond and four M2 screws; the extension’s two are only 2.0 mm deep in PLA-HT.</text>
+<text x="36.0" y="827.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">Withdrawal goes through the extension-side bond and four M2 screws; the extension’s two are only 2.0 mm deep in PLA-HT.</text>
+</svg>

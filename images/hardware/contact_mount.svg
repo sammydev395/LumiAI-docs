@@ -1,0 +1,337 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1580" height="1665" viewBox="0 0 1580 1665" font-family="DejaVu Sans, Verdana, Helvetica, sans-serif">
+<rect width="1580" height="1665" fill="#fff"/>
+<text x="40.0" y="38.0" font-size="20" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">How the Keystone contacts fit into the printed end caps</text>
+<text x="40.0" y="38.0" font-size="20" text-anchor="start" font-weight="700"  fill="#111">How the Keystone contacts fit into the printed end caps</text>
+<text x="40.0" y="60.0" font-size="12" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Keystone 5221 (+) / 5222 (−), "battery contacts for MOLDED CASES" — the family designed for exactly this: a plate screwed, staked or riveted to a plastic wall.</text>
+<text x="40.0" y="60.0" font-size="12" text-anchor="start" font-weight="400"  fill="#555">Keystone 5221 (+) / 5222 (−), "battery contacts for MOLDED CASES" — the family designed for exactly this: a plate screwed, staked or riveted to a plastic wall.</text>
+<text x="40.0" y="78.0" font-size="11" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Plate dimensions from the Keystone K75 catalogue, pp. 18/19/42; cap features live from cad/freecad/lumi_cell_cartridge.py.  These are the 18650-class contacts — they suit a 26700 unchanged (see notes).</text>
+<text x="40.0" y="78.0" font-size="11" text-anchor="start" font-weight="400"  fill="#555">Plate dimensions from the Keystone K75 catalogue, pp. 18/19/42; cap features live from cad/freecad/lumi_cell_cartridge.py.  These are the 18650-class contacts — they suit a 26700 unchanged (see notes).</text>
+<rect x="50" y="135" width="400" height="590" rx="8" fill="#fafbfc" stroke="#dde2e7"/>
+<text x="66.0" y="157.0" font-size="13" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">THE PART — plan view of the plate</text>
+<text x="66.0" y="157.0" font-size="13" text-anchor="start" font-weight="700"  fill="#111">THE PART — plan view of the plate</text>
+<rect x="190.0" y="205.0" width="237.6" height="279.4" rx="8" fill="#cfd6dd" stroke="#8d949c" stroke-width="2.2"/>
+<rect x="180.0" y="330.7" width="10" height="28" fill="#cfd6dd" stroke="#8d949c" stroke-width="2"/>
+<rect x="427.6" y="330.7" width="10" height="28" fill="#cfd6dd" stroke="#8d949c" stroke-width="2"/>
+<circle cx="308.8" cy="344.7" r="78.1" fill="none" stroke="#8d949c" stroke-width="2"/>
+<circle cx="308.8" cy="344.7" r="64.1" fill="none" stroke="#8d949c" stroke-width="1.4"/>
+<rect x="253.8" y="300.7" width="110.0" height="88.0" rx="44.0" fill="#d92b2b" fill-opacity="0.10" stroke="#d92b2b" stroke-width="1.8" stroke-dasharray="6 3"/>
+<circle cx="308.8" cy="233.6" r="15.4" fill="#fff" stroke="#8d949c" stroke-width="2"/>
+<circle cx="308.8" cy="233.6" r="13.2" fill="#c9a227" stroke="#8a6f13" stroke-width="1.2"/>
+<circle cx="308.8" cy="455.8" r="17.3" fill="#fff" stroke="#8d949c" stroke-width="2"/>
+<circle cx="308.8" cy="455.8" r="13.2" fill="#c9a227" stroke="#8a6f13" stroke-width="1.2"/>
+<text x="164.0" y="237.6" font-size="11" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Ø1.40</text>
+<text x="164.0" y="237.6" font-size="11" text-anchor="end" font-weight="700"  fill="#111">Ø1.40</text>
+<text x="164.0" y="252.6" font-size="9.5" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">M1.2 screw</text>
+<text x="164.0" y="252.6" font-size="9.5" text-anchor="end" font-weight="700"  fill="#8a6f13">M1.2 screw</text>
+<text x="164.0" y="459.8" font-size="11" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Ø1.57</text>
+<text x="164.0" y="459.8" font-size="11" text-anchor="end" font-weight="700"  fill="#111">Ø1.57</text>
+<text x="164.0" y="474.8" font-size="9.5" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">M1.2 screw</text>
+<text x="164.0" y="474.8" font-size="9.5" text-anchor="end" font-weight="700"  fill="#8a6f13">M1.2 screw</text>
+<text x="308.8" y="191.0" font-size="11" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">10.8 wide</text>
+<text x="308.8" y="191.0" font-size="11" text-anchor="middle" font-weight="400"  fill="#555">10.8 wide</text>
+<text x="168.0" y="348.7" font-size="11" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">12.7</text>
+<text x="168.0" y="348.7" font-size="11" text-anchor="end" font-weight="400"  fill="#555">12.7</text>
+<text x="168.0" y="362.7" font-size="9.5" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">tall</text>
+<text x="168.0" y="362.7" font-size="9.5" text-anchor="end" font-weight="400"  fill="#555">tall</text>
+<text x="308.8" y="510.4" font-size="10.5" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">two struck-out SIDE EARS at mid-height</text>
+<text x="308.8" y="510.4" font-size="10.5" text-anchor="middle" font-weight="700"  fill="#c9a227">two struck-out SIDE EARS at mid-height</text>
+<text x="308.8" y="525.4" font-size="9.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Keystone's anti-rotation / retention feature</text>
+<text x="308.8" y="525.4" font-size="9.5" text-anchor="middle" font-weight="400"  fill="#555">Keystone's anti-rotation / retention feature</text>
+<text x="66.0" y="546.4" font-size="9.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">dashed = in the CAP behind it: 5 × 4 wire slot</text>
+<text x="66.0" y="546.4" font-size="9.5" text-anchor="start" font-weight="700"  fill="#d92b2b">dashed = in the CAP behind it: 5 × 4 wire slot</text>
+<text x="66.0" y="576.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Plate</text>
+<text x="66.0" y="576.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="#111">Plate</text>
+<text x="190.0" y="576.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">0.51 mm steel, nickel plate</text>
+<text x="190.0" y="576.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">0.51 mm steel, nickel plate</text>
+<text x="66.0" y="596.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Holes</text>
+<text x="66.0" y="596.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="#111">Holes</text>
+<text x="190.0" y="596.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Ø1.40 + Ø1.57, ~10.1 mm apart on the CL</text>
+<text x="190.0" y="596.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">Ø1.40 + Ø1.57, ~10.1 mm apart on the CL</text>
+<text x="66.0" y="616.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Fixing</text>
+<text x="66.0" y="616.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="#111">Fixing</text>
+<text x="190.0" y="616.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">2× M1.2 × 2.5 self-tapping, plate unmodified</text>
+<text x="190.0" y="616.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">2× M1.2 × 2.5 self-tapping, plate unmodified</text>
+<text x="66.0" y="636.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Button (5221)</text>
+<text x="66.0" y="636.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="#111">Button (5221)</text>
+<text x="190.0" y="636.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Ø7.1, stands 1.4 proud</text>
+<text x="190.0" y="636.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">Ø7.1, stands 1.4 proud</text>
+<text x="66.0" y="656.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Spring (5222)</text>
+<text x="66.0" y="656.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="#111">Spring (5222)</text>
+<text x="190.0" y="656.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">free height 10.5, working ~5.2</text>
+<text x="190.0" y="656.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">free height 10.5, working ~5.2</text>
+<text x="66.0" y="676.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Pair installed</text>
+<text x="66.0" y="676.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="#111">Pair installed</text>
+<text x="190.0" y="676.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">6.6 mm on top of the cell (K75 p.42)</text>
+<text x="190.0" y="676.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">6.6 mm on top of the cell (K75 p.42)</text>
+<text x="66.0" y="696.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Wire</text>
+<text x="66.0" y="696.4" font-size="10.5" text-anchor="start" font-weight="700"  fill="#111">Wire</text>
+<text x="190.0" y="696.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">18 AWG silicone, soldered to the BACK</text>
+<text x="190.0" y="696.4" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">18 AWG silicone, soldered to the BACK</text>
+<rect x="470" y="120" width="530" height="580" rx="8" fill="#fafbfc" stroke="#dde2e7"/>
+<text x="735.0" y="144.0" font-size="13" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">SPRUNG CAP  —  plate in a 0.9 pocket, INBOARD face</text>
+<text x="735.0" y="144.0" font-size="13" text-anchor="middle" font-weight="700"  fill="#111">SPRUNG CAP  —  plate in a 0.9 pocket, INBOARD face</text>
+<text x="735.0" y="162.0" font-size="9.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">spring on the cell side · its reaction PRESSES the plate into the cap — the screws only locate</text>
+<text x="735.0" y="162.0" font-size="9.5" text-anchor="middle" font-weight="400"  fill="#555">spring on the cell side · its reaction PRESSES the plate into the cap — the screws only locate</text>
+<rect x="751.4" y="268.0" width="46.2" height="292.0" fill="#e6f5ec" stroke="#128a4e" stroke-width="2.4"/>
+<text x="774.5" y="578.0" font-size="10" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">printed cap, 3.3 mm</text>
+<text x="774.5" y="578.0" font-size="10" text-anchor="middle" font-weight="700"  fill="#128a4e">printed cap, 3.3 mm</text>
+<rect x="751.4" y="322.3" width="12.6" height="183.4" fill="#fff" stroke="#128a4e" stroke-width="1.6"/>
+<text x="774.5" y="593.0" font-size="9.5" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">0.9 pocket, 13.1 long · 2.4 of cap under it</text>
+<text x="774.5" y="593.0" font-size="9.5" text-anchor="middle" font-weight="700"  fill="#128a4e">0.9 pocket, 13.1 long · 2.4 of cap under it</text>
+<text x="774.5" y="606.0" font-size="9" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">plate 0.51 sits 0.39 below the rim</text>
+<text x="774.5" y="606.0" font-size="9" text-anchor="middle" font-weight="400"  fill="#555">plate 0.51 sits 0.39 below the rim</text>
+<rect x="764.0" y="386.0" width="34.8" height="56.0" fill="#fff" stroke="none"/>
+<line x1="764.0" y1="386.0" x2="797.6" y2="386.0" stroke="#128a4e" stroke-width="1.6"/>
+<line x1="764.0" y1="442.0" x2="797.6" y2="442.0" stroke="#128a4e" stroke-width="1.6"/>
+<rect x="764.0" y="336.3" width="33.6" height="14.0" fill="#fff" stroke="#128a4e" stroke-width="1" stroke-dasharray="3 2"/>
+<rect x="764.0" y="477.7" width="33.6" height="14.0" fill="#fff" stroke="#128a4e" stroke-width="1" stroke-dasharray="3 2"/>
+<rect x="756.0" y="325.1" width="8.0" height="177.8" fill="#8d949c" stroke="#3f464d" stroke-width="1.4"/>
+<rect x="484.0" y="278.0" width="199.2" height="272.0" fill="#f6f4ee" stroke="#9a9384" stroke-width="2"/>
+<path d="M 484.0 278.0 l 14 -5 l 14 10 l 14 -10 l 14 10 l 14 -5" fill="none" stroke="#fff" stroke-width="3"/>
+<path d="M 484.0 550.0 l 14 -5 l 14 10 l 14 -10 l 14 10 l 14 -5" fill="none" stroke="#fff" stroke-width="3"/>
+<text x="583.6" y="410.0" font-size="12" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">26700 cell</text>
+<text x="583.6" y="410.0" font-size="12" text-anchor="middle" font-weight="700"  fill="#111">26700 cell</text>
+<text x="583.6" y="426.0" font-size="9.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">flat top, Ø26</text>
+<text x="583.6" y="426.0" font-size="9.5" text-anchor="middle" font-weight="400"  fill="#555">flat top, Ø26</text>
+<path d="M 754.0 363.2 L 746.1 463.2 L 738.3 366.4 L 730.4 460.0 L 722.5 369.6 L 714.7 456.8 L 706.8 372.8 L 698.9 453.6 L 691.1 376.0 L 683.2 450.4" fill="none" stroke="#1f6fd0" stroke-width="2.4" stroke-linejoin="round"/>
+<line x1="754.0" y1="363.2" x2="754.0" y2="464.8" stroke="#1f6fd0" stroke-width="3"/>
+<text x="675.2" y="340.0" font-size="11" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">5222 spring</text>
+<text x="675.2" y="340.0" font-size="11" text-anchor="end" font-weight="700"  fill="#1f6fd0">5222 spring</text>
+<text x="675.2" y="354.0" font-size="9.5" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">10.5 free → ~5.2 working</text>
+<text x="675.2" y="354.0" font-size="9.5" text-anchor="end" font-weight="400"  fill="#555">10.5 free → ~5.2 working</text>
+<text x="675.2" y="368.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">pushes plate and cell APART,</text>
+<text x="675.2" y="368.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="#1f6fd0">pushes plate and cell APART,</text>
+<text x="675.2" y="381.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">so the plate goes INTO its pocket</text>
+<text x="675.2" y="381.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="#1f6fd0">so the plate goes INTO its pocket</text>
+<rect x="756.0" y="334.9" width="35.0" height="16.8" fill="#c9a227" stroke="#8a6f13" stroke-width="1.1"/>
+<line x1="766.5" y1="334.9" x2="768.5" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="770.0" y1="334.9" x2="772.0" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="773.5" y1="334.9" x2="775.5" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="777.0" y1="334.9" x2="779.0" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="780.5" y1="334.9" x2="782.5" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="784.0" y1="334.9" x2="786.0" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="787.5" y1="334.9" x2="789.5" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<rect x="746.2" y="329.3" width="9.8" height="28.0" rx="3" fill="#c9a227" stroke="#8a6f13" stroke-width="1.2"/>
+<rect x="756.0" y="476.3" width="35.0" height="16.8" fill="#c9a227" stroke="#8a6f13" stroke-width="1.1"/>
+<line x1="766.5" y1="476.3" x2="768.5" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="770.0" y1="476.3" x2="772.0" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="773.5" y1="476.3" x2="775.5" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="777.0" y1="476.3" x2="779.0" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="780.5" y1="476.3" x2="782.5" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="784.0" y1="476.3" x2="786.0" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="787.5" y1="476.3" x2="789.5" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<rect x="746.2" y="470.7" width="9.8" height="28.0" rx="3" fill="#c9a227" stroke="#8a6f13" stroke-width="1.2"/>
+<text x="809.6" y="313.3" font-size="10" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">2× M1.2 × 2.5 self-tapping</text>
+<text x="809.6" y="313.3" font-size="10" text-anchor="start" font-weight="700"  fill="#8a6f13">2× M1.2 × 2.5 self-tapping</text>
+<text x="809.6" y="326.3" font-size="9.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">through the plate's own holes,</text>
+<text x="809.6" y="326.3" font-size="9.5" text-anchor="start" font-weight="400"  fill="#8a6f13">through the plate's own holes,</text>
+<text x="809.6" y="339.3" font-size="9.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">into Ø1 pilots through the cap</text>
+<text x="809.6" y="339.3" font-size="9.5" text-anchor="start" font-weight="400"  fill="#8a6f13">into Ø1 pilots through the cap</text>
+<text x="809.6" y="353.3" font-size="9.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">the spring presses the plate in:</text>
+<text x="809.6" y="353.3" font-size="9.5" text-anchor="start" font-weight="700"  fill="#128a4e">the spring presses the plate in:</text>
+<text x="809.6" y="366.3" font-size="9.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">these screws only LOCATE</text>
+<text x="809.6" y="366.3" font-size="9.5" text-anchor="start" font-weight="700"  fill="#128a4e">these screws only LOCATE</text>
+<line x1="737.1" y1="363.2" x2="755.1" y2="363.2" stroke="#a8410f" stroke-width="1"/>
+<line x1="737.1" y1="357.3" x2="755.1" y2="357.3" stroke="#a8410f" stroke-width="1"/>
+<path d="M 741.1 360.3 L 677.2 312.0" fill="none" stroke="#a8410f" stroke-width="1"/>
+<text x="675.2" y="298.0" font-size="10.5" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">0.43 clear</text>
+<text x="675.2" y="298.0" font-size="10.5" text-anchor="end" font-weight="700"  fill="#a8410f">0.43 clear</text>
+<text x="675.2" y="311.0" font-size="9" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">spring base Ø7.25 (measured)</text>
+<text x="675.2" y="311.0" font-size="9" text-anchor="end" font-weight="400"  fill="#555">spring base Ø7.25 (measured)</text>
+<text x="675.2" y="323.0" font-size="9" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">vs M1.2 head edge r 4.05</text>
+<text x="675.2" y="323.0" font-size="9" text-anchor="end" font-weight="400"  fill="#555">vs M1.2 head edge r 4.05</text>
+<path d="M 821.7 556.0 L 821.7 414.0 L 786.4 414.0" fill="none" stroke="#8a1c1c" stroke-width="48.2" stroke-linejoin="round"/>
+<path d="M 821.7 556.0 L 821.7 414.0 L 786.4 414.0" fill="none" stroke="#f3b9b9" stroke-width="44.7" stroke-linejoin="round"/>
+<path d="M 786.4 414.0 L 765.0 414.0" fill="none" stroke="#d92b2b" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="766.0" cy="414.0" r="4" fill="#9aa1a8" stroke="#3f464d" stroke-width="1"/>
+<text x="863.8" y="422.0" font-size="9" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">joint at the plate's</text>
+<text x="863.8" y="422.0" font-size="9" text-anchor="start" font-weight="700"  fill="#d92b2b">joint at the plate's</text>
+<text x="863.8" y="434.0" font-size="9" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">back, slot centre</text>
+<text x="863.8" y="434.0" font-size="9" text-anchor="start" font-weight="700"  fill="#d92b2b">back, slot centre</text>
+<text x="863.8" y="446.0" font-size="8.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">strain relief:</text>
+<text x="863.8" y="446.0" font-size="8.5" text-anchor="start" font-weight="400"  fill="#555">strain relief:</text>
+<text x="863.8" y="457.0" font-size="8.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">off the part, §16.5</text>
+<text x="863.8" y="457.0" font-size="8.5" text-anchor="start" font-weight="400"  fill="#555">off the part, §16.5</text>
+<text x="984.0" y="620.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">18 AWG SILICONE (Ø3.3) up a 5 × 4 WIRE SLOT under the plate centre</text>
+<text x="984.0" y="620.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="#d92b2b">18 AWG SILICONE (Ø3.3) up a 5 × 4 WIRE SLOT under the plate centre</text>
+<text x="984.0" y="633.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">bare end soldered to the plate's BACK · insulation stops in the slot mouth</text>
+<text x="984.0" y="633.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="#d92b2b">bare end soldered to the plate's BACK · insulation stops in the slot mouth</text>
+<text x="984.0" y="646.0" font-size="9" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">slot 4 in this cut: 0.7 spare round the lead · 2.55 wall to each pilot</text>
+<text x="984.0" y="646.0" font-size="9" text-anchor="end" font-weight="400"  fill="#555">slot 4 in this cut: 0.7 spare round the lead · 2.55 wall to each pilot</text>
+<text x="986.0" y="692.0" font-size="10" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">OUTBOARD — links + taps live here ▶</text>
+<text x="986.0" y="692.0" font-size="10" text-anchor="end" font-weight="700"  fill="#128a4e">OUTBOARD — links + taps live here ▶</text>
+<rect x="1015" y="120" width="530" height="580" rx="8" fill="#fafbfc" stroke="#dde2e7"/>
+<text x="1280.0" y="144.0" font-size="13" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">RIGID CAP  —  plate in a 0.9 pocket, INBOARD face</text>
+<text x="1280.0" y="144.0" font-size="13" text-anchor="middle" font-weight="700"  fill="#111">RIGID CAP  —  plate in a 0.9 pocket, INBOARD face</text>
+<text x="1280.0" y="162.0" font-size="9.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">the same part as the sprung cap · the cell presses the button INTO its pocket</text>
+<text x="1280.0" y="162.0" font-size="9.5" text-anchor="middle" font-weight="400"  fill="#555">the same part as the sprung cap · the cell presses the button INTO its pocket</text>
+<rect x="1296.4" y="268.0" width="46.2" height="292.0" fill="#e6f5ec" stroke="#128a4e" stroke-width="2.4"/>
+<text x="1319.5" y="578.0" font-size="10" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">printed cap, 3.3 mm</text>
+<text x="1319.5" y="578.0" font-size="10" text-anchor="middle" font-weight="700"  fill="#128a4e">printed cap, 3.3 mm</text>
+<rect x="1296.4" y="322.3" width="12.6" height="183.4" fill="#fff" stroke="#128a4e" stroke-width="1.6"/>
+<text x="1319.5" y="593.0" font-size="9.5" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">0.9 pocket, 13.1 long · 2.4 of cap under it</text>
+<text x="1319.5" y="593.0" font-size="9.5" text-anchor="middle" font-weight="700"  fill="#128a4e">0.9 pocket, 13.1 long · 2.4 of cap under it</text>
+<text x="1319.5" y="606.0" font-size="9" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">plate 0.51 sits 0.39 below the rim</text>
+<text x="1319.5" y="606.0" font-size="9" text-anchor="middle" font-weight="400"  fill="#555">plate 0.51 sits 0.39 below the rim</text>
+<rect x="1309.0" y="386.0" width="34.8" height="56.0" fill="#fff" stroke="none"/>
+<line x1="1309.0" y1="386.0" x2="1342.6" y2="386.0" stroke="#128a4e" stroke-width="1.6"/>
+<line x1="1309.0" y1="442.0" x2="1342.6" y2="442.0" stroke="#128a4e" stroke-width="1.6"/>
+<rect x="1309.0" y="336.3" width="33.6" height="14.0" fill="#fff" stroke="#128a4e" stroke-width="1" stroke-dasharray="3 2"/>
+<rect x="1309.0" y="477.7" width="33.6" height="14.0" fill="#fff" stroke="#128a4e" stroke-width="1" stroke-dasharray="3 2"/>
+<rect x="1301.0" y="325.1" width="8.0" height="177.8" fill="#8d949c" stroke="#3f464d" stroke-width="1.4"/>
+<rect x="1029.0" y="278.0" width="252.4" height="272.0" fill="#f6f4ee" stroke="#9a9384" stroke-width="2"/>
+<path d="M 1029.0 278.0 l 14 -5 l 14 10 l 14 -10 l 14 10 l 14 -5" fill="none" stroke="#fff" stroke-width="3"/>
+<path d="M 1029.0 550.0 l 14 -5 l 14 10 l 14 -10 l 14 10 l 14 -5" fill="none" stroke="#fff" stroke-width="3"/>
+<text x="1155.2" y="410.0" font-size="12" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">26700 cell</text>
+<text x="1155.2" y="410.0" font-size="12" text-anchor="middle" font-weight="700"  fill="#111">26700 cell</text>
+<text x="1155.2" y="426.0" font-size="9.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">flat top, Ø26</text>
+<text x="1155.2" y="426.0" font-size="9.5" text-anchor="middle" font-weight="400"  fill="#555">flat top, Ø26</text>
+<path d="M 1301.0 364.3 Q 1261.8 414.0 1301.0 463.7 Z" fill="#d92b2b" opacity="0.9"/>
+<text x="1232.2" y="352.3" font-size="11" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">5221 button</text>
+<text x="1232.2" y="352.3" font-size="11" text-anchor="end" font-weight="700"  fill="#d92b2b">5221 button</text>
+<text x="1232.2" y="366.3" font-size="9.5" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Ø7.1, 1.4 proud</text>
+<text x="1232.2" y="366.3" font-size="9.5" text-anchor="end" font-weight="400"  fill="#555">Ø7.1, 1.4 proud</text>
+<rect x="1301.0" y="334.9" width="35.0" height="16.8" fill="#c9a227" stroke="#8a6f13" stroke-width="1.1"/>
+<line x1="1311.5" y1="334.9" x2="1313.5" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1315.0" y1="334.9" x2="1317.0" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1318.5" y1="334.9" x2="1320.5" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1322.0" y1="334.9" x2="1324.0" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1325.5" y1="334.9" x2="1327.5" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1329.0" y1="334.9" x2="1331.0" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1332.5" y1="334.9" x2="1334.5" y2="351.7" stroke="#8a6f13" stroke-width="0.8"/>
+<rect x="1291.2" y="329.3" width="9.8" height="28.0" rx="3" fill="#c9a227" stroke="#8a6f13" stroke-width="1.2"/>
+<rect x="1301.0" y="476.3" width="35.0" height="16.8" fill="#c9a227" stroke="#8a6f13" stroke-width="1.1"/>
+<line x1="1311.5" y1="476.3" x2="1313.5" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1315.0" y1="476.3" x2="1317.0" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1318.5" y1="476.3" x2="1320.5" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1322.0" y1="476.3" x2="1324.0" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1325.5" y1="476.3" x2="1327.5" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1329.0" y1="476.3" x2="1331.0" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<line x1="1332.5" y1="476.3" x2="1334.5" y2="493.1" stroke="#8a6f13" stroke-width="0.8"/>
+<rect x="1291.2" y="470.7" width="9.8" height="28.0" rx="3" fill="#c9a227" stroke="#8a6f13" stroke-width="1.2"/>
+<text x="1354.6" y="313.3" font-size="10" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">2× M1.2 × 2.5 self-tapping</text>
+<text x="1354.6" y="313.3" font-size="10" text-anchor="start" font-weight="700"  fill="#8a6f13">2× M1.2 × 2.5 self-tapping</text>
+<text x="1354.6" y="326.3" font-size="9.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">through the plate's own holes,</text>
+<text x="1354.6" y="326.3" font-size="9.5" text-anchor="start" font-weight="400"  fill="#8a6f13">through the plate's own holes,</text>
+<text x="1354.6" y="339.3" font-size="9.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">into Ø1 pilots through the cap</text>
+<text x="1354.6" y="339.3" font-size="9.5" text-anchor="start" font-weight="400"  fill="#8a6f13">into Ø1 pilots through the cap</text>
+<path d="M 1366.7 556.0 L 1366.7 414.0 L 1331.4 414.0" fill="none" stroke="#8a1c1c" stroke-width="48.2" stroke-linejoin="round"/>
+<path d="M 1366.7 556.0 L 1366.7 414.0 L 1331.4 414.0" fill="none" stroke="#f3b9b9" stroke-width="44.7" stroke-linejoin="round"/>
+<path d="M 1331.4 414.0 L 1310.0 414.0" fill="none" stroke="#d92b2b" stroke-width="3" stroke-linejoin="round"/>
+<circle cx="1311.0" cy="414.0" r="4" fill="#9aa1a8" stroke="#3f464d" stroke-width="1"/>
+<text x="1408.8" y="422.0" font-size="9" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">joint at the plate's</text>
+<text x="1408.8" y="422.0" font-size="9" text-anchor="start" font-weight="700"  fill="#d92b2b">joint at the plate's</text>
+<text x="1408.8" y="434.0" font-size="9" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">back, slot centre</text>
+<text x="1408.8" y="434.0" font-size="9" text-anchor="start" font-weight="700"  fill="#d92b2b">back, slot centre</text>
+<text x="1408.8" y="446.0" font-size="8.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">strain relief:</text>
+<text x="1408.8" y="446.0" font-size="8.5" text-anchor="start" font-weight="400"  fill="#555">strain relief:</text>
+<text x="1408.8" y="457.0" font-size="8.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">off the part, §16.5</text>
+<text x="1408.8" y="457.0" font-size="8.5" text-anchor="start" font-weight="400"  fill="#555">off the part, §16.5</text>
+<text x="1529.0" y="620.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">18 AWG SILICONE (Ø3.3) up a 5 × 4 WIRE SLOT under the plate centre</text>
+<text x="1529.0" y="620.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="#d92b2b">18 AWG SILICONE (Ø3.3) up a 5 × 4 WIRE SLOT under the plate centre</text>
+<text x="1529.0" y="633.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">bare end soldered to the plate's BACK · insulation stops in the slot mouth</text>
+<text x="1529.0" y="633.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="#d92b2b">bare end soldered to the plate's BACK · insulation stops in the slot mouth</text>
+<text x="1529.0" y="646.0" font-size="9" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">slot 4 in this cut: 0.7 spare round the lead · 2.55 wall to each pilot</text>
+<text x="1529.0" y="646.0" font-size="9" text-anchor="end" font-weight="400"  fill="#555">slot 4 in this cut: 0.7 spare round the lead · 2.55 wall to each pilot</text>
+<text x="1531.0" y="692.0" font-size="10" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">OUTBOARD — links + taps live here ▶</text>
+<text x="1531.0" y="692.0" font-size="10" text-anchor="end" font-weight="700"  fill="#128a4e">OUTBOARD — links + taps live here ▶</text>
+<rect x="50" y="736" width="1495" height="430" rx="8" fill="#fafbfc" stroke="#dde2e7"/>
+<text x="68.0" y="760.0" font-size="13" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">SECTION B — across the plate at mid-height (along X): the wire slot</text>
+<text x="68.0" y="760.0" font-size="13" text-anchor="start" font-weight="700"  fill="#111">SECTION B — across the plate at mid-height (along X): the wire slot</text>
+<text x="68.0" y="778.0" font-size="9.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">both caps, all eight positions, the same way round (POCKET_ROT 0 / 0) · X / Y = the pocket's own axes = the cap's</text>
+<text x="68.0" y="778.0" font-size="9.5" text-anchor="start" font-weight="400"  fill="#555">both caps, all eight positions, the same way round (POCKET_ROT 0 / 0) · X / Y = the pocket's own axes = the cap's</text>
+<rect x="362.9" y="806.0" width="62.7" height="342.0" fill="#e6f5ec" stroke="#128a4e" stroke-width="2.4"/>
+<rect x="361.9" y="847.8" width="18.1" height="258.4" fill="#fff" stroke="#128a4e" stroke-width="1.4"/>
+<rect x="380.0" y="929.5" width="47.1" height="95.0" fill="#fff" stroke="#128a4e" stroke-width="1.4"/>
+<rect x="362.7" y="848.6" width="16.5" height="256.8" fill="#fff"/>
+<rect x="380.8" y="930.3" width="45.5" height="93.4" fill="#fff"/>
+<rect x="360.9" y="848.6" width="3" height="256.8" fill="#fff"/>
+<rect x="372.0" y="874.4" width="8.0" height="205.2" fill="#8d949c" stroke="#3f464d" stroke-width="1.4"/>
+<circle cx="458.0" cy="977.0" r="31.3" fill="#f3b9b9" stroke="#8a1c1c" stroke-width="1.4"/>
+<circle cx="458.0" cy="977.0" r="9.7" fill="#c87533"/>
+<path d="M 410.4 977.0 L 382.0 977.0" fill="none" stroke="#d92b2b" stroke-width="2.4" stroke-dasharray="5 3"/>
+<circle cx="383.0" cy="977.0" r="4" fill="#9aa1a8" stroke="#3f464d" stroke-width="1"/>
+<line x1="288.0" y1="853.5" x2="364.9" y2="853.5" stroke="#999" stroke-width="0.9"/>
+<text x="282.0" y="851.5" font-size="10" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">pocket 0.9 + ear relief</text>
+<text x="282.0" y="851.5" font-size="10" text-anchor="end" font-weight="700"  fill="#128a4e">pocket 0.9 + ear relief</text>
+<text x="282.0" y="864.5" font-size="9" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">±6.8 at mid-height</text>
+<text x="282.0" y="864.5" font-size="9" text-anchor="end" font-weight="400"  fill="#555">±6.8 at mid-height</text>
+<line x1="288.0" y1="942.8" x2="414.2" y2="942.8" stroke="#999" stroke-width="0.9"/>
+<text x="282.0" y="940.8" font-size="10" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">wire slot 5 long</text>
+<text x="282.0" y="940.8" font-size="10" text-anchor="end" font-weight="700"  fill="#d92b2b">wire slot 5 long</text>
+<text x="282.0" y="953.8" font-size="9" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">× 4 (panels above), full 3.3</text>
+<text x="282.0" y="953.8" font-size="9" text-anchor="end" font-weight="400"  fill="#555">× 4 (panels above), full 3.3</text>
+<line x1="288.0" y1="1075.8" x2="376.0" y2="1075.8" stroke="#999" stroke-width="0.9"/>
+<text x="282.0" y="1073.8" font-size="10" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">plate 10.8 — seats FLAT</text>
+<text x="282.0" y="1073.8" font-size="10" text-anchor="end" font-weight="700"  fill="#3f464d">plate 10.8 — seats FLAT</text>
+<text x="282.0" y="1086.8" font-size="9" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">on the pocket floor; nothing under it</text>
+<text x="282.0" y="1086.8" font-size="9" text-anchor="end" font-weight="400"  fill="#555">on the pocket floor; nothing under it</text>
+<text x="356.9" y="1164.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">◀ INBOARD (cell)</text>
+<text x="356.9" y="1164.0" font-size="9.5" text-anchor="end" font-weight="700"  fill="#555">◀ INBOARD (cell)</text>
+<text x="431.6" y="1164.0" font-size="9.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">OUTBOARD ▶</text>
+<text x="431.6" y="1164.0" font-size="9.5" text-anchor="start" font-weight="700"  fill="#128a4e">OUTBOARD ▶</text>
+<text x="505.3" y="973.0" font-size="9.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">18 AWG silicone lead, Ø3.3,</text>
+<text x="505.3" y="973.0" font-size="9.5" text-anchor="start" font-weight="700"  fill="#d92b2b">18 AWG silicone lead, Ø3.3,</text>
+<text x="505.3" y="986.0" font-size="9" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">leaving along ±Y (into the page)</text>
+<text x="505.3" y="986.0" font-size="9" text-anchor="start" font-weight="400"  fill="#555">leaving along ±Y (into the page)</text>
+<text x="505.3" y="999.0" font-size="9" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">bare end soldered at the slot centre</text>
+<text x="505.3" y="999.0" font-size="9" text-anchor="start" font-weight="700"  fill="#d92b2b">bare end soldered at the slot centre</text>
+<text x="770.0" y="812.0" font-size="10.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">WIRE SLOT — obround 5 (X) × 4 (Y) through the full 3.3 cap, centred under each plate.</text>
+<text x="770.0" y="812.0" font-size="10.5" text-anchor="start" font-weight="700"  fill="#d92b2b">WIRE SLOT — obround 5 (X) × 4 (Y) through the full 3.3 cap, centred under each plate.</text>
+<text x="770.0" y="829.0" font-size="10" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Long axis at right angles to the plate's two M1.2 holes (on the Y centreline, ±5.05): 2.55 wall to each pilot.</text>
+<text x="770.0" y="829.0" font-size="10" text-anchor="start" font-weight="400"  fill="#555">Long axis at right angles to the plate's two M1.2 holes (on the Y centreline, ±5.05): 2.55 wall to each pilot.</text>
+<text x="770.0" y="846.0" font-size="10" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">18 AWG SILICONE, Ø3.3, passes with 0.7 spare. Bare end up from the OUTBOARD face, soldered</text>
+<text x="770.0" y="846.0" font-size="10" text-anchor="start" font-weight="400"  fill="#555">18 AWG SILICONE, Ø3.3, passes with 0.7 spare. Bare end up from the OUTBOARD face, soldered</text>
+<text x="770.0" y="863.0" font-size="10" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">to the BACK of the plate; the insulation stops in the slot mouth.</text>
+<text x="770.0" y="863.0" font-size="10" text-anchor="start" font-weight="400"  fill="#555">to the BACK of the plate; the insulation stops in the slot mouth.</text>
+<text x="770.0" y="897.0" font-size="10.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">STRAIN RELIEF is done OFF the part — Soldering Guide §16.5: shell anchor → RTV tack → RTV-potted slot → joint.</text>
+<text x="770.0" y="897.0" font-size="10.5" text-anchor="start" font-weight="700"  fill="#111">STRAIN RELIEF is done OFF the part — Soldering Guide §16.5: shell anchor → RTV tack → RTV-potted slot → joint.</text>
+<text x="770.0" y="931.0" font-size="10.5" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">SAME WAY ROUND ON BOTH CAPS — the caps are one part: a lead passes straight down the slot either way.</text>
+<text x="770.0" y="931.0" font-size="10.5" text-anchor="start" font-weight="700"  fill="#111">SAME WAY ROUND ON BOTH CAPS — the caps are one part: a lead passes straight down the slot either way.</text>
+<text x="40.0" y="1200.0" font-size="11" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">The four features the printed cap needs, per cell position  (live from lumi_cell_cartridge.py, _contact_pocket)</text>
+<text x="40.0" y="1200.0" font-size="11" text-anchor="start" font-weight="700"  fill="#111">The four features the printed cap needs, per cell position  (live from lumi_cell_cartridge.py, _contact_pocket)</text>
+<text x="40.0" y="1217.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">1  POCKET — 11.2 × 13.1 mm, 0.9 deep, centred on the cell axis, on the INBOARD face of BOTH caps. The 0.51 plate sits 0.39 below the rim, so the pocket walls</text>
+<text x="40.0" y="1217.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">1  POCKET — 11.2 × 13.1 mm, 0.9 deep, centred on the cell axis, on the INBOARD face of BOTH caps. The 0.51 plate sits 0.39 below the rim, so the pocket walls</text>
+<text x="40.0" y="1234.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">     stop it rotating and spread the contact load into plastic. 0.2/side round the plate: the caps print OUTBOARD FACE DOWN, so the pocket floor is a clean TOP surface (no bridge).</text>
+<text x="40.0" y="1234.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">     stop it rotating and spread the contact load into plastic. 0.2/side round the plate: the caps print OUTBOARD FACE DOWN, so the pocket floor is a clean TOP surface (no bridge).</text>
+<text x="40.0" y="1251.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">2  EAR SLOTS — widen the pocket 1.2 mm further left and right at mid-height. That is where Keystone's two struck-out side ears sit. In an injection-moulded case they bite; in printed PETG just let them locate.</text>
+<text x="40.0" y="1251.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">2  EAR SLOTS — widen the pocket 1.2 mm further left and right at mid-height. That is where Keystone's two struck-out side ears sit. In an injection-moulded case they bite; in printed PETG just let them locate.</text>
+<text x="40.0" y="1268.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">3  TWO SCREWS — M1.2 × 2.5 self-tapping, through the plate's OWN Ø1.40 and Ø1.57 holes (10.1 mm apart), into Ø1 pilots that run right through the 2.4 mm of cap under</text>
+<text x="40.0" y="1268.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">3  TWO SCREWS — M1.2 × 2.5 self-tapping, through the plate's OWN Ø1.40 and Ø1.57 holes (10.1 mm apart), into Ø1 pilots that run right through the 2.4 mm of cap under</text>
+<text x="40.0" y="1285.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">     the 0.9 pocket (~8 turns of the 2.5 mm screw engage, at P0.25). Every plate, BOTH caps. The plates go in unmodified, so there is no edge blow-out. Head ~0.7 proud — under the cell, which starts 1.01 up.</text>
+<text x="40.0" y="1285.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">     the 0.9 pocket (~8 turns of the 2.5 mm screw engage, at P0.25). Every plate, BOTH caps. The plates go in unmodified, so there is no edge blow-out. Head ~0.7 proud — under the cell, which starts 1.01 up.</text>
+<text x="40.0" y="1302.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">4  WIRE SLOT (BOTH caps) — an obround slot 5 (X) × 4 (Y) through the full 3.3 cap, CENTRED under the plate, long axis at right angles</text>
+<text x="40.0" y="1302.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">4  WIRE SLOT (BOTH caps) — an obround slot 5 (X) × 4 (Y) through the full 3.3 cap, CENTRED under the plate, long axis at right angles</text>
+<text x="40.0" y="1319.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">     to the line of its two screw holes (2.55 wall to each pilot). 18 AWG SILICONE (Ø3.3) passes with 0.7 spare: the bare end comes up from the OUTBOARD face and is soldered</text>
+<text x="40.0" y="1319.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">     to the line of its two screw holes (2.55 wall to each pilot). 18 AWG SILICONE (Ø3.3) passes with 0.7 spare: the bare end comes up from the OUTBOARD face and is soldered</text>
+<text x="40.0" y="1336.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">     to the BACK of the plate; the insulation stops in the slot mouth. Strain relief is done off the part (Soldering Guide §16.5). Section B above.</text>
+<text x="40.0" y="1336.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">     to the BACK of the plate; the insulation stops in the slot mouth. Strain relief is done off the part (Soldering Guide §16.5). Section B above.</text>
+<text x="40.0" y="1370.0" font-size="11" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Both caps: the SAME part</text>
+<text x="40.0" y="1370.0" font-size="11" text-anchor="start" font-weight="700"  fill="#128a4e">Both caps: the SAME part</text>
+<text x="40.0" y="1387.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">The spring pushes plate and cell APART. With the plate on the INBOARD face that reaction presses the plate INTO its pocket, exactly as a cell presses the 5221 button into the rigid cap,</text>
+<text x="40.0" y="1387.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">The spring pushes plate and cell APART. With the plate on the INBOARD face that reaction presses the plate INTO its pocket, exactly as a cell presses the 5221 button into the rigid cap,</text>
+<text x="40.0" y="1404.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">so the two M1.2 screws only locate (the spring load is substantial, continuous and off-axis). Their heads sit beside the spring's base coil: measured Ø7.25 (r 3.625)</text>
+<text x="40.0" y="1404.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">so the two M1.2 screws only locate (the spring load is substantial, continuous and off-axis). Their heads sit beside the spring's base coil: measured Ø7.25 (r 3.625)</text>
+<text x="40.0" y="1421.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">vs head inner edge r 4.05 → 0.43 mm clear. Same pocket, same 2 screws, same wire slot, 4 Ø1 pilots for the spacer's M1.2 × 3 screws, Ø2.2 tap hole on +X on both:</text>
+<text x="40.0" y="1421.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">vs head inner edge r 4.05 → 0.43 mm clear. Same pocket, same 2 screws, same wire slot, 4 Ø1 pilots for the spacer's M1.2 × 3 screws, Ø2.2 tap hole on +X on both:</text>
+<text x="40.0" y="1438.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">the sprung cap is the rigid cap, flipped into the assembly.</text>
+<text x="40.0" y="1438.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">the sprung cap is the rigid cap, flipped into the assembly.</text>
+<text x="40.0" y="1472.0" font-size="11" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">YES — 18650 contacts DO suit a 26700, confirmed</text>
+<text x="40.0" y="1472.0" font-size="11" text-anchor="start" font-weight="700"  fill="#128a4e">YES — 18650 contacts DO suit a 26700, confirmed</text>
+<text x="40.0" y="1489.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">A cylindrical-cell contact is sized to the cell's END FACE, not its diameter: the 10.8 × 12.7 plate touches the middle of a Ø26 flat top exactly as it touches a Ø18 one. What changes with cell size in Keystone's</text>
+<text x="40.0" y="1489.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">A cylindrical-cell contact is sized to the cell's END FACE, not its diameter: the 10.8 × 12.7 plate touches the middle of a Ø26 flat top exactly as it touches a Ø18 one. What changes with cell size in Keystone's</text>
+<text x="40.0" y="1506.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">catalogue is the compartment length "L", and that is our printed part. Buy the real 5221/5222 from DigiKey/Mouser rather than an Amazon assortment though — 8 contacts is a ~$5 line item and it guarantees the</text>
+<text x="40.0" y="1506.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">catalogue is the compartment length "L", and that is our printed part. Buy the real 5221/5222 from DigiKey/Mouser rather than an Amazon assortment though — 8 contacts is a ~$5 line item and it guarantees the</text>
+<text x="40.0" y="1523.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">pocket in the print matches the plate that turns up.</text>
+<text x="40.0" y="1523.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">pocket in the print matches the plate that turns up.</text>
+<text x="40.0" y="1557.0" font-size="11" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">⚠ The real cost of springs: resistance, not length</text>
+<text x="40.0" y="1557.0" font-size="11" text-anchor="start" font-weight="700"  fill="#a8410f">⚠ The real cost of springs: resistance, not length</text>
+<text x="40.0" y="1574.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">Published measurements of 18650-holder spring contacts run 30-100 mΩ each. Four in series at our 2.6 A pack current is 0.3-1.0 V and 0.8-2.7 W — up to 8 % of a 12.8 V pack, as heat, inside the tube. A soldered</text>
+<text x="40.0" y="1574.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">Published measurements of 18650-holder spring contacts run 30-100 mΩ each. Four in series at our 2.6 A pack current is 0.3-1.0 V and 0.8-2.7 W — up to 8 % of a 12.8 V pack, as heat, inside the tube. A soldered</text>
+<text x="40.0" y="1591.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">nickel-strip pack has none of this; it is the actual price of user-replaceable cells. The standard fix is a SPRING BYPASS: a loose strand of fine tinned copper soldered from the spring's base coil to its tip coil,</text>
+<text x="40.0" y="1591.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">nickel-strip pack has none of this; it is the actual price of user-replaceable cells. The standard fix is a SPRING BYPASS: a loose strand of fine tinned copper soldered from the spring's base coil to its tip coil,</text>
+<text x="40.0" y="1608.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">longer than the spring so it never fights the travel. It solders because the spring is nickel PLATED — the same reason nickel strip wets in a second on this bench while the cell caps refused to wet at all.</text>
+<text x="40.0" y="1608.0" font-size="10.5" text-anchor="start" font-weight="400"  fill="#555">longer than the spring so it never fights the travel. It solders because the spring is nickel PLATED — the same reason nickel strip wets in a second on this bench while the cell caps refused to wet at all.</text>
+<text x="40.0" y="1625.0" font-size="11" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.2" stroke-linejoin="round">TO DO — MEASURE a real 5222 four-wire at 2.6 A before committing. It is one number and it decides whether the bypass is optional or mandatory.</text>
+<text x="40.0" y="1625.0" font-size="11" text-anchor="start" font-weight="700"  fill="#a8410f">TO DO — MEASURE a real 5222 four-wire at 2.6 A before committing. It is one number and it decides whether the bypass is optional or mandatory.</text>
+</svg>

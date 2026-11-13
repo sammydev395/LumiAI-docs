@@ -1,0 +1,954 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wand_Bench_Test_Phases</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="wand-bench-test--3-phase-incremental-rig-india-build-2026-08">Wand
+Bench Test — 3-Phase Incremental Rig (India build, 2026-08)</h1>
+<p><strong>Purpose:</strong> stand up the ENTIRE wand electrically on
+the bench — in three phases that progressively replace breadboard
+jumpers with the real rails, JST-XH cables, and connectors — so that
+<strong>everything that will live inside the clamshell has already
+passed on its final wiring</strong> before assembly. Nothing goes into
+the shells unproven.</p>
+<p><strong>Master:</strong> LiLyGO T-Display-S3
+<strong>NON-TOUCH</strong> running <a
+href="../firmware/wand_extension/README.html"><code>firmware/wand_extension/</code></a>
+— <strong>SDA = GPIO 17 / SCL = GPIO 18</strong> (<a
+href="../firmware/wand_extension/src/config.h"><code>src/config.h</code></a>;
+the pre-2026-08-27 18/17 assignment was a swap, fixed at first hardware
+bring-up). <strong>There is no CST816 on this unit — the I²C bus is
+exclusively ours.</strong> (The touch LiLyGO is FAULTY and retired; the
+<strong>Waveshare</strong> board takes over at shell integration — <a
+href="Wand_and_Wand_Extension_Build_Plan.html#50a-waveshare-lcd-board-port--prerequisite-for-everything-below">build
+plan §5.0a</a> — but every phase below runs on the bench LiLyGO.)
+<strong>Supplies:</strong> bench PSU 0–30 V/5 A, and from Phase 2 on,
+the extension pack (4S LiFePO4 + 10 A BMS, <a
+href="Wand_and_Wand_Extension_Build_Plan.html#26-parallel-track--extension-electronics-bench-bring-up">build
+plan §2.6</a>).</p>
+<p><strong>Standing gates that govern every phase</strong> (<a
+href="Wand_and_Wand_Extension_Build_Plan.html#1-standing-constraints--one-way-gates">build
+plan §1</a>):</p>
+<ul>
+<li><strong><code>INVRT=0</code></strong> (cleared) <strong>+
+<code>OUTDRV=1</code></strong> (totem-pole, required by the pull-downs —
+<a
+href="Lumi_Wand_Integration.html#62a-pwm-polarity--bench-resolution-2026-09-01">Integration
+§6.2a</a>; firmware <code>config.h</code>) verified by firmware at boot
+(fail-loud) — never bypass. ⚠️ Reversed 2026-09-01: KESHY is
+<strong>active-HIGH</strong> (<a
+href="Lumi_Wand_Integration.html#62a-pwm-polarity--bench-resolution-2026-09-01">Integration
+§6.2a</a>).</li>
+<li>⚠️ <strong>UNBONDED-STAR THERMAL LIMIT:</strong> until the 8329TCM
+epoxy bond, a star merely resting on the heatsink has a poor heat path —
+<strong>≤30 s per channel at 700 mA, ≤10 s all-channels.</strong>
+<strong>Mitigation (use it): the M3 washer clamp</strong> (below) gives
+clamped metal contact — with it, per-channel runs can extend to a few
+minutes; keep all-channels-full to ≤60 s and watch the TMP102.</li>
+<li><strong>M3 WASHER CLAMP (as-built heatsink v9.8.2, <a
+href="../cad/exports/cnc/lumi_wand_heatsink.nc"><code>exports/cnc/lumi_wand_heatsink.nc</code></a>):</strong>
+the puck has 3× M3 clearance through-holes at r=8 mm / 30°-150°-270°,
+each 3 mm outside the two adjacent star edges. Bench clamp: M3×12–16
+screw down each hole, largest flat washer from the kit (Ø12+ for ~3 mm
+overlap onto BOTH neighboring stars) with a <strong>nylon washer as the
+contact layer</strong> (star pads are on the periphery — nylon can't
+short them), M3 nut underneath (raise the puck on two strips so nuts
+clear). <strong>Clock each star's pads away from its two contact points.
+Snug only, alternating between the 3 screws</strong> — overtightening
+bows the star and lifts its center. The same 3 screws serve as the
+epoxy-cure fixture later.</li>
+<li>PCA9685 V+ terminal is NEVER powered (signal-only design, <a
+href="Lumi_Wand_Integration.html#63-pca9685-breakout">Integration
+§6.3</a>).</li>
+<li>Single-point ground: PSU GND, LiLyGO GND, and (Phase 2+) pack GND
+tie at ONE node.</li>
+<li>The epoxy bond happens ONLY after Phase 3 passes (<a
+href="Electronics_Assembly_Guide.html#124-heatsink-bonding--mg-8329tcm-thermal-epoxy">Assembly
+Guide §12.4</a>).</li>
+</ul>
+<hr />
+<h2
+id="phase-0--the-bench-test-star-do-this-first-everything-else-depends-on-it">Phase
+0 — the bench-test star (do this first; everything else depends on
+it)</h2>
+<p>Stars arrive with <strong>bare pads — no pigtails</strong>. Until one
+star has wires on it there is no load to test a driver with, so this is
+the true first task of the build, ahead of the §2.1 driver sweep.</p>
+<ol type="1">
+<li>Take <strong>one non-build star</strong> out of the spares — not one
+of the three that go on the heatsink.</li>
+<li>Solder pigtails at 380–400 °C (<a
+href="Electronics_Soldering_Guide.html#10-part-6-led-mcpcb--wire-to-pad-solder-technique-46">Soldering
+Guide §10</a>). One channel is enough for the driver sweep; all four
+makes it a general-purpose bench load. Use longer leads than the build
+stars (~25–30 cm) so it reaches around the bench.
+<ul>
+<li><strong>Terminate the far end in a 2-pin FEMALE connector</strong>
+(dupont or JST-XH) rather than bare wire. This star gets plugged and
+unplugged <strong>15 times</strong> during the §2.1 driver sweep — a
+plug turns that into a second per module instead of re-clipping leads
+each time, and it removes the slip-and-short risk the bare-pad warning
+below is about. <strong>Female, not male:</strong> the driver presents
+the pins — the KESHY's LED output is on its 7-pin header and there is no
+screw terminal. ⚠️ <strong>This sweep runs BEFORE the header pins are
+clipped</strong> to their 2.0 mm build stubs; after clipping, nothing
+plugs onto them (<a
+href="Electronics_Assembly_Guide.html#122-driver-end--soldered-to-the-keshys-clipped-header-stubs">Assembly
+Guide §12.2</a>).</li>
+</ul></li>
+<li>Label it <strong>"BENCH TEST — not for build"</strong> with tape or
+a marker and keep it in its own bag. It gets abused across 15 driver
+checks; it should never end up in the wand.</li>
+<li>Do <strong>not</strong> alligator-clip bare pads instead. The pads
+are small, contact is unreliable mid-reading, and a slipped clip shorts
+the die.</li>
+</ol>
+<p><em>This star is the load for <a
+href="Wand_and_Wand_Extension_Build_Plan.html#21-driver-bench-verify--all-123-keshy-modules">build
+plan §2.1</a> and for any later "does this driver still work" question.
+<strong>No heatsink required</strong> for those checks — each module
+runs only a few seconds at a time; kill the PSU between modules rather
+than leaving the star lit while you write down readings.</em></p>
+<h2
+id="phase-1--minimal-breadboard-rig-1-star-4-drivers-pca9685-tmp102-heatsink">Phase
+1 — minimal breadboard rig (1 star, 4 drivers, PCA9685, TMP102,
+heatsink)</h2>
+<p><strong>Soldering prerequisites (in this order):</strong> 0.
+<strong>⚠️ The LiLyGO has NO HEADERS FITTED</strong> (found at the bench
+2026-08-28) — bare 2.54 mm pads on the <strong>back</strong>, display
+bonded to the front. Nothing below can be wired until this is resolved.
+🔴 <strong>A header is not possible — the display overhangs the hole
+rows.</strong> Solder <strong>4 wires to the back-side rings</strong>
+(<code>3V</code>/<code>GND</code>/<code>17</code>/<code>18</code>), wire
+entering the barrel only, never through: <a
+href="Electronics_Soldering_Guide.html#15-part-11-lilygo-t-display-s3-bench-board--wires-to-the-back-side-rings">Soldering
+Guide §15</a>. <strong>The back view is MIRRORED — identify pads by
+meter, never by counting</strong>, and note 3V3 reads 0 V until the
+board has booted (GPIO 15 gates that rail).</p>
+<ol type="1">
+<li><strong>Bench-test star</strong> (Phase 0 above) — needed before any
+driver can be current-checked.</li>
+<li><strong>TMP102 mod</strong>: ADD0 cut + V+ bridge → 0x49, then the
+4-pin header (<a
+href="Electronics_Soldering_Guide.html#7-part-3-tmp102-wand--address-mod-0x48--0x49--header-solder">Soldering
+Guide §7</a>, technique <a
+href="Electronics_Soldering_Guide.html#45-trace-cut--bridge-tmp102-add0-style-relocation">§4.5</a>).
+Continuity-verify cut AND bridge before power.</li>
+<li><strong>One RGBW cool star</strong> (a real build star): solder its
+8 pigtails (~15 cm 26 AWG, label R+/R−/G+/G−/B+/B−/W+/W−) at 380–400 °C
+(<a
+href="Electronics_Soldering_Guide.html#10-part-6-led-mcpcb--wire-to-pad-solder-technique-46">Soldering
+Guide §10</a>).</li>
+<li><strong>4× pull-down resistors, 1 kΩ–10 kΩ</strong> — any axial on
+hand; they live in the breadboard for this phase, nothing gets soldered
+to a driver. Without them a driver with no PWM jumper sits at
+<strong>full brightness</strong> (<a
+href="Lumi_Wand_Integration.html#62a-pwm-polarity--bench-resolution-2026-09-01">Integration
+§6.2a</a>).</li>
+<li><strong>4 KESHY drivers</strong>: loupe + straighten headers + bench
+current check per <a
+href="Wand_and_Wand_Extension_Build_Plan.html#21-driver-bench-verify--all-123-keshy-modules">build
+plan §2.1</a> (do all 15 while you're at it — the other 11 wait for
+Phase 3). Reminders from that section: the <strong>loupe pass is visual
+only</strong> (IC silk + sense network); <strong>DMM in series</strong>
+means the meter sits <em>inside</em> the LED loop on the <strong>10 A DC
+range</strong>, not probing across it; <strong>PWM untouched =
+floating</strong>, whose default state on these modules is <strong>LED
+ON at full current</strong> (that is what makes the current reading
+possible); and the active-LOW spot check is a <strong>3.3 V</strong>
+jumper held on the PWM pin, LED must go dark and recover when released.
+<strong>Take the 3.3 V from the LiLyGO's <code>3V3</code> pin</strong>
+with GND common to the driver — not from a USB charger (5 V) and not
+from the bench PSU (single output, already at 13.8 V). A loose LiFePO4
+cell works only with ~1 kΩ in series; see the source box in <a
+href="Wand_and_Wand_Extension_Build_Plan.html#21-driver-bench-verify--all-123-keshy-modules">build
+plan §2.1</a>.</li>
+</ol>
+<p><strong>Wiring (breadboard carries signals + 3V3 only; 13.8 V goes
+point-to-point):</strong></p>
+<blockquote>
+<p>✅ <strong>Phases 0–1 PASSED in India and are the PROVEN BASELINE for
+every later wand</strong> — stars, PCA9685, KESHY drivers with the 1 kΩ
+pull-down, single-wire PWM, <code>INVRT=0</code> /
+<code>OUTDRV=1</code>. Do not re-prove them. <strong>What a new wand
+adds (2026-10-24, <a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">Integration
+§10.5.9</a>):</strong> leads soldered to the driver pads with the KESHY
+header <strong>trimmed</strong>, the 3-rail → cradle topology, the
+channel ↔︎ seat map, and KESHY-only seats at 60° / 300°. <strong>On a
+trimmed board, probe the pads, not the header:</strong>
+<code>VIN+</code> = <code>IN+</code> corner · <code>VIN−</code> =
+<code>IN−</code> corner · <code>PWM</code> = the pad beside
+<code>IN−</code> · <code>LED+</code> / <code>LED−</code> = the LED-end
+corners. Beep board 1's pads to the header pins <strong>before</strong>
+trimming.</p>
+</blockquote>
+<p><strong>KESHY header map</strong> — silk-confirmed 2026-09-01, every
+driver reference below uses these pin numbers:</p>
+<pre><code>1 VIN+   2 VIN+   3 VIN−   4 VIN−   5 PWM   6 LED+   7 LED−</code></pre>
+<p><em>Pins 1≡2 and 3≡4 are commoned on the board (measured), so one pin
+per rail is enough.</em></p>
+<p><strong>Channel map — one driver per star colour.</strong> ⚠️
+<strong>The bench rig is NOT wired in the doc-canonical order</strong>
+(found 2026-09-05):</p>
+<table>
+<thead>
+<tr>
+<th>PCA9685 output</th>
+<th>Driver</th>
+<th><strong>As-wired colour</strong></th>
+<th><em>Canonical (Integration §10.3)</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CH0</strong></td>
+<td>driver 1</td>
+<td><strong>G</strong></td>
+<td><em>R</em></td>
+</tr>
+<tr>
+<td><strong>CH1</strong></td>
+<td>driver 2</td>
+<td><strong>W</strong></td>
+<td><em>G</em></td>
+</tr>
+<tr>
+<td><strong>CH2</strong></td>
+<td>driver 3</td>
+<td><strong>R</strong></td>
+<td><em>B</em></td>
+</tr>
+<tr>
+<td><strong>CH3</strong></td>
+<td>driver 4</td>
+<td><strong>B</strong></td>
+<td><em>W</em></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Firmware carries the as-wired map, so the app is correct as
+it stands</strong> — <code>CH_OFF_R/G/B/W</code> in <a
+href="../firmware/wand_extension/src/config.h"><code>config.h</code></a>
+is the single source of truth for presets, and <code>webui.h</code>
+holds the matching map in its JS. <strong>Keep those two in
+sync.</strong></p>
+<p>⚠️ <strong>Phase 3 decision, don't let it slide:</strong> when the
+real 24-wire bundle is soldered, either wire it to match this map or
+reset the four defines (and the webui copy) to canonical. Doing neither
+leaves a rig whose colours are right and a production wand whose colours
+are not.</p>
+<p><em>Rebuild the rig in a different order and the app will lie about
+colours until those defines are updated — that is exactly how this was
+found.</em></p>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+<th>Via</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LiLyGO <strong>GPIO17 (SDA) / GPIO18 (SCL)</strong> / 3V3 / GND</td>
+<td>breadboard SDA / SCL / 3V3 / GND rails</td>
+<td>M-M jumpers — ⚠️ pins per <a
+href="../firmware/wand_extension/src/config.h"><code>config.h</code></a>,
+not the vendor silk</td>
+</tr>
+<tr>
+<td><strong>PCA9685 <code>OE</code> → breadboard GND rail</strong></td>
+<td>—</td>
+<td><code>OE</code> is active-LOW output enable. Tie it low so the
+<code>OUTNE[1:0]</code> state never matters. <em>(Added 2026-09-05 —
+this row was missing. It was <strong>not</strong> the cause of that
+day's all-channels-on fault, but the pin should be tied regardless of
+what MODE2 holds.)</em></td>
+</tr>
+<tr>
+<td>Breadboard SDA/SCL/3V3/GND</td>
+<td>PCA9685 (<strong>0x41</strong> — A0 bridged) + TMP102 (0x49)</td>
+<td>jumpers — TMP102 sits in the breadboard; rest it against the
+heatsink for a plausible reading. <strong>PCA9685 VCC on 3.3 V, never 5
+V.</strong> <strong>Leave the PCA's green screw terminal EMPTY</strong>
+— it is <code>V+</code> (servo rail), not the logic supply (<a
+href="Lumi_Wand_Integration.html#630-vcc-vs-v-vs-oe--the-three-pins-this-boards-labelling-hides-written-2026-09-01">Integration
+§6.3.0</a>)</td>
+</tr>
+<tr>
+<td><strong>PCA9685 CH0/1/2/3 — the <code>PWM</code> pin of each 3-pin
+group</strong> (outer pin; the middle <code>V+</code> and the group's
+own <code>GND</code> stay unused)</td>
+<td><strong>driver 1/2/3/4 pin 5 (<code>PWM</code>)</strong></td>
+<td>one M-M jumper per channel, PCA → breadboard row → driver.
+<strong>The PCA's 220 Ω on-board series resistor is already in this
+path</strong> — that is why the driven pin reads ~2.6 V, not 3.3 V</td>
+</tr>
+<tr>
+<td><strong>⚠️ Pull-down: 1 kΩ–10 kΩ, one per driver (4
+total)</strong></td>
+<td><strong>one leg in the breadboard row carrying that channel's PWM
+jumper · other leg in the breadboard GND rail</strong></td>
+<td><strong>Entirely in the breadboard — NOT soldered to the driver, and
+no wire back to pin 4.</strong> <code>VIN−</code> and the GND rail are
+the <strong>same node</strong> once the PSU return is tied to the rail,
+so the rail <em>is</em> pin 4 electrically. This stays clean because the
+LED return current goes <strong>point-to-point PSU → pin 3</strong> and
+never enters the breadboard rails — the GND rail carries only
+signal-level current, so there is no drop to speak of. Any axial you
+have works here, fat ones included. <em>Soldering to the module is a
+wand-build step, not a bench step — its purpose is failing dark when a
+connector drops off, which is meaningless on a jumper rig.</em></td>
+</tr>
+<tr>
+<td>Bench PSU 13.8 V <strong>+</strong> (start CC-limited 0.5 A, raise
+to 1.5 A once clean)</td>
+<td><strong>each driver pin 1 (<code>VIN+</code>)</strong>, wired
+point-to-point</td>
+<td>22 AWG — <strong>not through breadboard bus bars</strong> (fine at 4
+drivers, but build the habit)</td>
+</tr>
+<tr>
+<td>Bench PSU <strong>−</strong></td>
+<td><strong>each driver pin 3 (<code>VIN−</code>)</strong>
+point-to-point · <strong>plus ONE wire to the breadboard GND
+rail</strong></td>
+<td>⚠️ <strong>That single wire is what makes the whole rig share a
+reference.</strong> The drivers reach common ground <strong>at the
+PSU</strong>, not at the breadboard — nothing runs from the breadboard
+to a <code>VIN−</code> pin. The breadboard GND rail carries
+<strong>PCA9685 GND · TMP102 GND · LiLyGO GND · all four pull-down legs
+· this one wire from the PSU return.</strong> Without it the LiLyGO/PCA
+(laptop USB) and the drivers (floating bench PSU) are two isolated
+supplies with no defined offset, the PWM signal has no return path, and
+channels behave erratically rather than failing cleanly.</td>
+</tr>
+<tr>
+<td><strong>Driver pin 6 (<code>LED+</code>)</strong></td>
+<td>star channel <strong>+</strong> pigtail</td>
+<td>direct. ⚠️ <strong><code>LED+</code> is pin 6, <code>LED−</code> is
+pin 7 — in that order.</strong> Backwards reverse-biases the
+channel</td>
+</tr>
+<tr>
+<td><strong>Driver pin 7 (<code>LED−</code>)</strong></td>
+<td>star channel <strong>−</strong> pigtail</td>
+<td>direct</td>
+</tr>
+<tr>
+<td>Star (unbonded)</td>
+<td>heatsink top face</td>
+<td><strong>M3 washer clamp</strong> (see gates above) — clamped dry
+contact; pads clocked away from washers</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>What the pull-downs are for on this rig.</strong> Every
+driver's <code>PWM</code> pin floats to <strong>5.28 V</strong> on an
+internal pull-up, and the driver is <strong>active-HIGH</strong> — so an
+unconnected PWM pin means that channel is at <strong>full
+brightness</strong>. Without the four resistors, any channel whose
+jumper is not yet in place lights up the moment the PSU comes on. Full
+detail: <a
+href="Lumi_Wand_Integration.html#62a-pwm-polarity--bench-resolution-2026-09-01">Integration
+§6.2a</a>.</p>
+</blockquote>
+<blockquote>
+<h3
+id="red_circle-root-cause-on-file--all-channels-full-on-2026-09-05">🔴
+ROOT CAUSE ON FILE — all-channels-full-on, 2026-09-05</h3>
+<p><strong>The bench was running pre-fix firmware.</strong> The
+<code>INVRT=0</code> correction was committed hours earlier and never
+flashed; the board still held the old build, whose
+<code>PCA9685_REQUIRE_INVRT 1</code> <strong>set INVRT on
+purpose</strong> and refused to boot without it. On an active-HIGH
+driver that makes a commanded duty of 0 drive every output HIGH —
+including CH15, which the firmware never writes. <strong>Reflashing
+fixed it.</strong></p>
+<p><strong>Symptoms, and why each one pointed at the chip rather than
+the wiring:</strong></p>
+<ul>
+<li>Channels came on only once <strong>SDA/SCL</strong> were connected —
+i.e. the moment the firmware could configure the PCA.</li>
+<li><strong>CH15 read 3.23 V.</strong> Firmware never touches that
+channel, so the state was chip-wide, not a per-channel write.</li>
+<li><strong><code>OE</code> tied to GND changed nothing</strong> —
+outputs enabled and still driven high.</li>
+</ul>
+<p><strong><code>OUTNE</code> was NOT the cause</strong>, despite an
+in-flight theory that said so. The dump read <code>MODE2=0x04</code>,
+the chip's reset default, so <code>OUTNE</code> was <code>00</code>
+throughout — and <code>OUTNE</code> only has any effect when
+<code>OE</code> is HIGH, which the GND jumper had already ruled out.
+Firmware now forces <code>OUTNE=00</code> anyway as defensive practice;
+that change is correct but it fixed nothing here.</p>
+<p><strong>The lesson worth keeping: a committed fix is not a flashed
+fix.</strong> Before debugging LED behaviour, confirm the build on the
+board is the build in the repo. The boot dump exists for exactly that —
+<code>[pca] MODE1=.. MODE2=.. (INVRT=.. OUTDRV=.. OUTNE=..)</code>.</p>
+<p><strong>Healthy boot looks like:</strong>
+<code>MODE1=0x20 MODE2=0x04 (INVRT=0 OUTDRV=1 OUTNE=0)</code> ·
+<code>LED0 ON=0000 OFF=1000 (full-off bit=1)</code> · all channels dark
+with the PSU up. ✅ Confirmed 2026-09-05.</p>
+</blockquote>
+<p><strong>Test checklist:</strong></p>
+<ol type="1">
+<li><p>Power LiLyGO (USB) → LCD shows <code>PCA9685 OK 0x41</code>; bus
+scan lists <strong>exactly 0x41 and 0x49 — nothing else</strong>. A scan
+showing 0x40 = the A0 bridge is missing (or, on a robot bus, the HAT's
+INA219 — which is supposed to be there). Any other extra or missing
+address → stop, fix. (No CST816 on the non-touch unit; an unexpected
+address is a wiring fault, not a touch controller.)</p></li>
+<li><p>PSU on at 0.5 A CC → quiescent current near zero (all channels
+off — proves <code>INVRT=0</code> took; <strong>stuck-on = a stale
+<code>INVRT=1</code>, or a missing pull-down letting a PWM line float to
+5.28 V</strong>; firmware should have halted on the former). 2a.
+<strong>Pull-down check — ✅ VERIFIED ON THE BENCH 2026-09-05.</strong>
+With the PSU on and everything connected: | Pull out | Result | Meaning
+| |---|---|---| | <strong>PWM jumper only</strong> (resistor still in) |
+channel stays <strong>dark</strong> ✅ | the pull-down is holding the
+pin down — this is the test that matters | | <strong>PWM jumper AND
+resistor</strong> | channel goes <strong>full bright</strong> | the pin
+floats to 5.28 V into an active-HIGH input — the exact failure the
+resistor prevents | | resistor only (jumper still in) | stays dark |
+proves nothing — the PCA is actively driving the pin low through ~250 Ω,
+which swamps the 423 kΩ internal pull-up either way |</p>
+<p>Repeat the first row on each driver as you build it. ⚠️ If a channel
+lights with the jumper out, that driver's pull-down is missing, in the
+wrong breadboard row, or its other leg is not on the GND rail.</p></li>
+<li><p>Phone → <code>LumiWand</code> AP → LED1 sliders: R, G, B, W
+individually 0→100→0 — smooth dimming, correct colors, no
+flicker.</p></li>
+<li><p>DMM in series with one LED lead at 100 %: <strong>600–700
+mA</strong>. ✅ <strong>MEASURED 700 mA exactly, and 350 mA at 50 %
+(2026-09-05).</strong></p>
+<ul>
+<li><strong>The sense network is confirmed independently of the LED
+lighting at all.</strong> <code>1R00 ‖ 1R00 ‖ R400 = 0.222 Ω</code>
+against <code>V_REF ≈ 0.155 V</code> predicts <strong>0.698 A</strong>
+(<a
+href="Lumi_Wand_Integration.html#62-driver-module-spec--keshy-3w-the-only-driver-in-the-wand">Integration
+§6.2</a>). Measured 700 mA.</li>
+<li><strong>The 350 mA at half duty is the more informative
+number.</strong> Linear halving means the driver switches cleanly
+full-on/full-off under PWM with no analog droop or partial regulation at
+reduced duty — consistent with the enable-style input characterised in
+<a
+href="Lumi_Wand_Integration.html#62a-pwm-polarity--bench-resolution-2026-09-01">§6.2a</a>,
+and it is what lets average current track duty linearly, which the
+thermal model assumes.</li>
+</ul></li>
+<li><p>Color-mix spot check (R+B, all-4 ≤10 s). 5a. <strong>Button-2
+channel sweep</strong> — see the procedure box below. <em>(Split out of
+step 5 on 2026-09-06; it was one line with no procedure, which is why it
+kept getting deferred.)</em></p></li>
+<li><p>TMP102 reading plausible (~ambient; pinch it — number
+moves).</p></li>
+</ol>
+<blockquote>
+<h3 id="white_check_mark-phase-1-complete--2026-09-06">✅ PHASE 1
+COMPLETE — 2026-09-06</h3>
+<p><strong>Every step passed: 1, 2, 2a, 3, 4, 5 (colour mix), 5a (BTN2
+sweep) and 6.</strong> Bus clean at 0x40/0x49, all channels dark at
+boot, pull-down verified, R/G/B/W each dim smoothly from the phone, 700
+mA at full and 350 mA at half, TMP102 live, and the channel sweep walks
+all four wired channels one at a time.</p>
+<p>Bus clean at 0x40/0x49, all channels dark at boot, pull-down
+verified, R/G/B/W each dim smoothly from the phone UI with correct
+colours, AP up with a client connected, TMP102 reading 26.5 °C.
+<strong>Step 4 measured 700 mA at full and 350 mA at half</strong> — the
+sense network confirmed against its predicted 0.698 A, and linear
+duty-to-current confirmed. ⏳ <strong>Only the BTN2 channel sweep is
+outstanding.</strong></p>
+<p><em>Cosmetic note: the status line used to read
+<code>TMP102   26.5 C  fan 20%</code> and clipped at <code>fan 2</code>
+on the 170 px panel, which reads like a fan-duty bug and is not one.
+Shortened to <code>TMP 26.5C  fan 20%</code> (2026-09-05).</em></p>
+</blockquote>
+<blockquote>
+<h3 id="step-5a--the-btn2-channel-sweep-in-full">Step 5a — the BTN2
+channel sweep, in full</h3>
+<p><strong>What it is:</strong> a built-in self-test in the wand
+firmware. It walks <strong>all 12 PCA9685 LED channels one at a
+time</strong>, ramping each 0 → 100 % → 0, so you see every channel come
+up and go down in isolation without touching a phone or a slider. It is
+the cheapest way to catch a dead channel, a swapped pair or a driver
+that never enables.</p>
+<p><strong>The button:</strong> front <strong>button 2</strong> on the
+LiLyGO T-Display-S3 — <strong>GPIO 14</strong>,
+<code>INPUT_PULLUP</code>, active-LOW (<a
+href="../firmware/wand_extension/src/config.h"><code>config.h</code></a>
+<code>PIN_BTN_USER</code>). ⚠️ <strong>It fires on RELEASE, not
+press</strong> — the handler debounces 30 ms, then waits for the button
+to come back HIGH before starting (<a
+href="../firmware/wand_extension/src/main.cpp"><code>main.cpp</code></a>).
+A press-and-hold does nothing until you let go.</p>
+<p><strong>Also reachable over the air</strong>, if the button is
+awkward with the rig wired up: <code>POST /api/preset</code> with
+<code>name=sweep</code> to the <code>LumiWand</code> AP. Same
+routine.</p>
+<p><strong>What it does, exactly:</strong> for <code>ch</code> 0 → 11,
+ramp <code>0→100</code> then <code>100→0</code> in <strong>5 % steps at
+30 ms</strong>, then force that channel off. The LCD shows
+<code>Sweep ch N/11</code> throughout.</p>
+<table>
+<tbody>
+<tr>
+<td>Per channel</td>
+<td>42 steps × 30 ms ≈ <strong>1.3 s</strong></td>
+</tr>
+<tr>
+<td>All 12 channels</td>
+<td>≈ <strong>15 s</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Procedure</strong></p>
+<ol type="1">
+<li>Rig powered and passing steps 1-5 (bus clean, channels dimming,
+current in range).</li>
+<li>Press and <strong>release</strong> button 2. The LCD switches to a
+navy sweep screen.</li>
+<li>Watch the four wired channels ramp up and down in turn, then let it
+run to the end.</li>
+<li>LCD returns to the normal status line. Channels all off.</li>
+</ol>
+<p><strong>What you should see on the breadboard rig — read this before
+you call it a failure:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sweep step</th>
+<th>Channel</th>
+<th>As-wired colour</th>
+<th>Expect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ch 0</td>
+<td>0</td>
+<td><strong>GREEN</strong></td>
+<td>ramps up and down</td>
+</tr>
+<tr>
+<td>ch 1</td>
+<td>1</td>
+<td><strong>WHITE</strong></td>
+<td>ramps up and down</td>
+</tr>
+<tr>
+<td>ch 2</td>
+<td>2</td>
+<td><strong>RED</strong></td>
+<td>ramps up and down</td>
+</tr>
+<tr>
+<td>ch 3</td>
+<td>3</td>
+<td><strong>BLUE</strong></td>
+<td>ramps up and down</td>
+</tr>
+<tr>
+<td>ch 4-11</td>
+<td>—</td>
+<td>nothing wired</td>
+<td><strong>~10 s of no light while the LCD keeps counting</strong></td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>The last ~10 seconds look like a hang. They are
+not.</strong> Only 4 drivers are on the breadboard; channels 4-11 are
+sweeping into open air. The colour order is <strong>G, W, R, B</strong>
+because the rig is wired to
+<code>CH_OFF_G=0 / CH_OFF_W=1 / CH_OFF_R=2 / CH_OFF_B=3</code> — not the
+canonical R,G,B,W.</p>
+<p><strong>PASS =</strong> all four wired channels ramp smoothly up and
+back down, <strong>one at a time with no other channel
+lighting</strong>, in the G-W-R-B order above, and the LCD returns to
+the status line by itself.</p>
+<p><strong>FAIL modes worth knowing:</strong> two channels lighting
+together → a crossed PWM lead at the PCA or a swapped driver input. A
+channel that stays on after its ramp → suspect that channel's pull-down.
+A channel that never lights → that driver, its PWM jumper, or its LED
+pair.</p>
+</blockquote>
+<p><strong>Phase 1 PASS =</strong> clean bus scan · 4 channels dim
+correctly · current in range · TMP102 live. <em>This closes <a
+href="Wand_and_Wand_Extension_Build_Plan.html#23-firmware-first-light--breadboard-rig">build
+plan §2.3</a> with margin.</em></p>
+<hr />
+<blockquote>
+<h1 id="us-everything-from-phase-2-on-is-usa-work">🇺🇸 EVERYTHING FROM
+PHASE 2 ON IS USA WORK</h1>
+<p><strong>Operator, 2026-09-23.</strong> Phases 0–1 ran in India and
+are <strong>closed</strong>. Phase 2 onward has not been done and will
+be done on the USA bench.</p>
+<p><strong>There are three rails, every rail connector is berg, and
+there is no sidewall connector</strong> — the tether lands on a
+<strong>6-pin in the END PLATE</strong>. <a
+href="Lumi_Wand_Integration.html#-wand-topology--three-rails-one-inlet">Topology</a>.</p>
+<p>🔴 <strong>Before Phase 2 can start:</strong> build all
+<strong>three</strong> ST1 rails (<a
+href="Wand_and_Wand_Extension_Build_Plan.html#37-build-the-three-st1-rails-usa-the-work-32-no-longer-does-in-india">build
+plan §3.7</a>) and meter <strong><code>GND-logic ↔︎ GND-power</code>
+OPEN</strong> on each. ✅ <em>The check looks for a solder bridge: there
+are no cuts, and the two grounds are adjacent separate strips (4 and
+5).</em></p>
+</blockquote>
+<h2
+id="phase-2--one-rail-replaces-the-power-side-first-real-connectors">Phase
+2 — one rail replaces the power side (first real connectors)</h2>
+<p>✅ <strong>All three rails are the same board</strong>, so this phase
+is the same work whichever one you build first. Build the one that
+carries the <strong>fan</strong> if you want Phase 3 to follow on
+without re-cabling. Layout: <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">the
+rail layout</a>.</p>
+<p><strong>Build:</strong> per <a
+href="Electronics_Soldering_Guide.html#94--the-st1-rail--what-you-actually-build-v911-three-of-them-and-nothing-to-cut">Soldering
+Guide §9.4</a>. <strong>No track cuts, no link wire.</strong></p>
+<p><strong>Crimp batch for this phase</strong> (<a
+href="Electronics_Assembly_Guide.html#3-jst-xh-254-mm-crimping-the-fleet-standard-connector">Assembly
+Guide §3</a>):</p>
+<ul>
+<li><strong>Bench-feed cable:</strong> the bench now feeds the rail
+exactly the way the wand does — through the rail's own berg landings,
+<strong>not</strong> through a wall connector: <strong>2-pin berg →
+<code>PWR IN</code> (col 12)</strong> carrying 13.8 V +
+<code>GND-power</code>, and <strong>4-pin berg → <code>SIG IN</code>
+(col 7)</strong> carrying SDA/SCL/3V3 + <code>GND-logic</code>. ⚡
+<strong>Tie <code>GND-power</code> and <code>GND-logic</code> together
+AT THE PSU</strong> — on the bench that tie is the star point, standing
+in for the bay.</li>
+<li><strong>Extension pigtail:</strong> <strong>6-pin</strong> male for
+the pack side — V+ / <code>GND-power</code> / SDA / SCL / 3V3 /
+<code>GND-logic</code>. ✅ <strong>Unchanged, and it is now the same
+6-pin the bay tether uses</strong> — one interface for both SKUs.</li>
+<li><strong>4× driver-power 2-pin</strong> cables. <em>Driver leads are
+SOLDERED to the clipped header stubs (DP 22 AWG, DW single wire, DL),
+Dupont at the rail / PCA end only (<a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">Integration
+§10.5.9</a>). Solder four drivers' leads for this phase
+instead.</em></li>
+<li><strong>No inter-rail adapters.</strong> The rails are fed as a
+<strong>star</strong> from the end plate and none feeds another, so
+there is nothing to crimp between them.</li>
+</ul>
+<p><strong>Sequence:</strong></p>
+<ol type="1">
+<li><strong>Rail smoke test FIRST</strong>, unloaded: 5 V CC 100 mA into
+<code>PWR IN</code>; meter every landing for the right net and confirm
+all fifteen pairs <strong>OPEN</strong> — adjacent strips first, since a
+short is a solder bridge now.</li>
+<li>Re-plumb the Phase 1 rig: <strong>PSU into <code>PWR IN</code> +
+<code>SIG IN</code></strong> (grounds tied at the supply) and the
+LiLyGO/Waveshare onto the rail's <code>SIG IN</code> taps.</li>
+<li><strong>Pack in:</strong> unplug the bench feed and run the wand off
+the pack. ✅ <strong>How the pack lands is no longer an open
+item</strong> — it arrives on the <strong>6-pin at the end
+plate</strong>, the same connector the bay tether uses.</li>
+</ol>
+<p><strong>Phase 2 PASS =</strong> one rail's nets verified (all 15
+pairs OPEN) · Phase-1 tests pass through the rail and real cables · same
+on pack power via the extension.</p>
+<h2
+id="phase-3--the-other-two-rails--full-cable-set-everything-still-on-the-bench">Phase
+3 — the other two rails + full cable set (everything, still on the
+bench)</h2>
+<p><strong>Build:</strong> the remaining two rails — <strong>same board,
+same layout</strong>. <strong>Rail 30 carries <code>SIG IN</code>,
+<code>PCA</code>, <code>TMP</code> and <code>FAN</code>; rail 150 is
+power-only (driver + <code>PWR IN</code> berg); rail 270 is power-only
+with NO berg: its four DP leads (240° / 300°) and P270 solder straight
+into its holes</strong> (its plugs foul the PCA, CAD fdda60c).
+<strong>The PCA arrives with its I/O lead already soldered</strong>
+(top-end header trimmed, <code>OE</code>→<code>GND</code> at the pads).
+Phase-3 rail checks add: rail 270 strip 6 ↔︎ 5 OPEN;
+<code>OE</code>↔︎<code>GND</code> 0 Ω; PCA lead to rail 30 col 11
+continuity. (Rails 150 / 270 get no logic pigtail: <a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">Integration
+§10.5.9</a>).</p>
+<p><strong>Sequence:</strong></p>
+<ol type="1">
+<li>Unloaded smoke test on each (same 5 V/100 mA method; PCA + TMP102
+wake through their real cables → bus scan clean).</li>
+<li>Full rig: 12 drivers <strong>in their seats per the channel ↔︎ seat
+map</strong> (<a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">Integration
+§10.5.9</a>; KESHY at all 12 seats), PWM as <strong>one wire per
+driver</strong> into the per-star 4-pin housings — ✅ <strong>4 per
+rail, every one 30° from its own rail</strong> — 3 stars resting on the
+heatsink, PCA9685 on its <strong>4-pin</strong> cable, TMP102 on its
+4-pin socket, fan on ch13.</li>
+<li>Run the <a
+href="Wand_and_Wand_Extension_Build_Plan.html#42-gated-bring-up--on-extension-power">build
+plan §4.2 gates</a> A/B/C on pack power: bus scan → all 12 channels →
+fan curve.</li>
+<li><strong>All-12 full-power, ≤10 s bursts</strong> (unbonded stars!):
+<strong>~2.4 A</strong> draw — ⚠️ <em>corrected 2026-09-01, this line
+said ~6.7 A</em>. Runs on the bench PSU.</li>
+<li>Log every connector as verified (a checklist per socket — this list
+is the assembly sign-off).</li>
+</ol>
+<p><strong>Phase 3 PASS =</strong> every board, driver, star, cable and
+connector that will enter the clamshell has passed on its final wiring,
+on battery power.</p>
+<h2 id="after-phase-3--the-one-way-steps-in-order">After Phase 3 — the
+one-way steps, in order</h2>
+<ol type="1">
+<li><strong>Epoxy day</strong> (<a
+href="Electronics_Assembly_Guide.html#124-heatsink-bonding--mg-8329tcm-thermal-epoxy">Assembly
+Guide §12.4</a>): bond 3 verified stars + TMP102 → <strong>re-fit the M3
+washer clamp over the fresh epoxy as the cure fixture</strong> (even
+pressure → thin, strong bond line) → 24 h cure, no power → remove clamp
+post-cure.</li>
+<li>Post-cure re-verify: every channel + 0x49 + <strong>Gate D
+thermal-bond proof</strong> (30 s full-bright → ΔT ≥ 5 °C — only
+meaningful now that the bond exists) + 1 h soak with the fan curve.</li>
+<li>Clamshell assembly per <a
+href="Wand_and_Wand_Extension_Build_Plan.html#41-handle-assembly">build
+plan §4.1</a> — purely mechanical now; every electrical element was
+proven in Phase 3.</li>
+</ol>
+<p><strong>Deliberately NOT bench-testable:</strong> enclosed thermals
+(shells change airflow — week-4 enclosed re-run), gripper-ear/ring
+mechanics, and the glue-cradle B2B mate. <strong>Because the B2B mate
+can't be rehearsed, print its proto-board fallback in week 1</strong>
+(<a
+href="Wand_and_Wand_Extension_Build_Plan.html#25-rocker--extension-dry-fits">build
+plan §2.5</a>).</p>
+<p><strong>Board swap point:</strong> every phase above runs on the
+<strong>bench LiLyGO (non-touch)</strong>. The
+<strong>Waveshare</strong> takes over at shell integration and needs its
+own firmware port first — <a
+href="Wand_and_Wand_Extension_Build_Plan.html#50a-waveshare-lcd-board-port--prerequisite-for-everything-below">build
+plan §5.0a</a>. When you re-run Phase 1 with the Waveshare to prove that
+port, the bus scan <strong>will</strong> gain the CST816 touch address
+(~0x15) — that is expected on that board, and only on that board.</p>
+<hr />
+<h2
+id="usa-bench--emitter--optic-evaluation-e2-optics-in-hand-2026-09-21--meter-in-hand-2026-09-30--ready-to-run">USA
+Bench — Emitter &amp; Optic Evaluation <em>(E2 optics IN HAND 2026-09-21
+· meter IN HAND 2026-09-30 — READY TO RUN)</em></h2>
+<p><strong>Decision status: the generic RGBW star STAYS for
+now.</strong> Nothing about the current build changes. This section
+settles two questions that gate the <a
+href="Lumi_Wand_Integration.html#54-60-w-variant--concept-direction-2026-09-06">60
+W Pro SKU</a> <strong>and the content-creator key-light SKU</strong>
+(on-camera skin tones + flicker are the same two gates). Both were
+blocked on a lux / CRI / flicker meter the bench did not have —
+<strong>now resolved: an OPPLE Light Master IV arrived
+2026-09-30</strong>, which reads <strong>lux, CCT, DUV, CRI (Ra), R1–R14
+(incl. R9), and flicker % / stroboscopic index</strong> off a phone app.
+E1 and E2 can now be run — this is the instrument the whole
+emitter/optic/flicker decision was waiting on.</p>
+<p>Two <strong>independent</strong> experiments sharing one rig and one
+session:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Question</th>
+<th>Decides</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>E1</strong></td>
+<td>Generic star vs <strong>Cree XM-L Color RGBW</strong>, side by
+side</td>
+<td>Whether the CRI gate actually bites — i.e. whether a commercial SKU
+can ship the generic part at ~<span
+class="math inline">3<em>o</em><em>r</em><em>m</em><em>u</em><em>s</em><em>t</em><em>c</em><em>a</em><em>r</em><em>r</em><em>y</em><em>t</em><em>h</em><em>e</em><em>C</em><em>r</em><em>e</em><em>e</em><em>a</em><em>t</em> </span>19.49</td>
+</tr>
+<tr>
+<td><strong>E2</strong></td>
+<td><strong>15° vs 45° vs 120°</strong> optic, same emitter ✅
+<strong>all three delivered 2026-09-21</strong> (uxcell 20 mm + black
+holder, 10 pc each)</td>
+<td>Whether narrowing the beam really beats adding watts, and whether
+colour fringing kills it. ⚠️ <strong>30° is NOT in hand</strong> — the
+middle point of the original plan is missing; 120° is a useful wide
+reference but is not a spotlight candidate. Order the 30° if the 15→45
+gap turns out to matter.</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="kit--status-meter--optics--generic-stars-now-in-hand-only-the-cree-left-to-buy">Kit
+— status (meter + optics + generic stars now IN HAND; only the Cree left
+to buy)</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>~Cost</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✅ <strong>OPPLE Light Master IV</strong> — <strong>IN HAND
+2026-09-30</strong> (the R1–R14 model; Type-C)</td>
+<td>~$38</td>
+<td>Measures <strong>lux, CCT, DUV, CRI (Ra), R1–R14 incl. R9, flicker %
++ stroboscopic index</strong> off a phone app. One device closes
+<strong>both</strong> open gates — colour rendering <em>and</em> the 1
+kHz PWM flicker question. ⚠️ <strong>Validate it once against a known
+high-CRI source before trusting readings</strong> (Method 0)</td>
+</tr>
+<tr>
+<td><strong>3× Cree XM-L Color RGBW</strong> (<a
+href="https://www.ledsupply.com/leds/cree-xml-rgbw-star-led">LEDsupply</a>)</td>
+<td>~$58</td>
+<td>Three, not one — see the binning note below</td>
+</tr>
+<tr>
+<td>3× generic star</td>
+<td>in hand</td>
+<td>The incumbent</td>
+</tr>
+<tr>
+<td>15° + 45° <strong>beaded</strong> 20 mm lens 10-packs</td>
+<td>a few $</td>
+<td>E2. <strong>Beaded, not water-clear</strong> — <a
+href="Lumi_Wand_Integration.html#542-what-60-w-actually-buys--photometrics-2026-09-06">why</a></td>
+</tr>
+<tr>
+<td>IR thermometer</td>
+<td>~$20, optional</td>
+<td>MCPCB temp at soak</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="method--validate-the-instrument-first-then-five-things-that-decide-whether-the-results-mean-anything">Method
+— validate the instrument first, then five things that decide whether
+the results mean anything</h3>
+<p><strong>0. Validate the meter first — it's a ~$38 consumer
+photometer, not a lab spectroradiometer.</strong> Before trusting any
+generic-emitter number, point it at a source you <em>know</em> is
+high-CRI (a quality photo light / a known 95+ bulb) and confirm it reads
+high — an unvalidated reading is not evidence. Treat
+<strong>absolute</strong> CRI/R9 as ±a few points; everything in E1/E2
+is a <strong>relative A/B on the same meter</strong> (generic vs Cree,
+centre vs edge, PWM vs analog), which is what it is reliable for. Don't
+touch the white sensor window, and keep distance/geometry identical
+between samples.</p>
+<ol type="1">
+<li><strong>Fixed geometry.</strong> Tape-mark the fixture and the
+meter. Dark room, same ambient for every reading. Any change between
+runs invalidates the comparison, and it is the easiest thing to get
+wrong.</li>
+<li><strong>Measure at thermal equilibrium.</strong> Record at <strong>t
+= 0 and t = 30 min</strong>. LEDs droop 10-20 % as the junction heats —
+comparing a cold star against a hot one measures warm-up, not the
+emitter.</li>
+<li><strong>Same drive current, verified.</strong> 700 mA for both.
+<strong>DMM in series — do not assume the driver.</strong></li>
+<li><strong>Swap only the star.</strong> Same heatsink, same bond, same
+driver, same optic. If the thermal path differs, the experiment is
+measuring the bond.</li>
+<li><strong>Three samples of each part.</strong> ⚠️ <strong>This is the
+one most likely to decide the outcome.</strong> Generic emitters vary
+far more part-to-part than branded ones, and you cannot ship consistent
+fixtures from an inconsistent bin. One sample tells you nothing about
+what arrives in a reel.</li>
+</ol>
+<h3
+id="e1--measurements-per-emitter-per-channel-r--g--b--w-separately-then-all-on">E1
+— measurements, per emitter, per channel (R / G / B / W separately, then
+all-on)</h3>
+<table>
+<thead>
+<tr>
+<th>Measure</th>
+<th>Instrument</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vf at 700 mA</td>
+<td>DMM across the die</td>
+<td>Also feeds the power budget</td>
+</tr>
+<tr>
+<td>Lux at 1 m, centre</td>
+<td>Opple</td>
+<td>Fixed geometry</td>
+</tr>
+<tr>
+<td>CCT + duv</td>
+<td>Opple</td>
+<td>White channel and all-on. <strong>duv shows green/pink
+cast</strong>, which CRI alone hides</td>
+</tr>
+<tr>
+<td>CRI (Ra) + <strong>R9</strong></td>
+<td>Opple</td>
+<td>R9 (deep red) is where cheap white dies fail hardest and it is what
+makes skin and merchandise look right</td>
+</tr>
+<tr>
+<td>Flicker % + frequency</td>
+<td>Opple</td>
+<td>Tests the <strong>1 kHz PWM gate</strong> — do it at 100 %, 50 % and
+10 % duty</td>
+</tr>
+<tr>
+<td>MCPCB temp at 30 min</td>
+<td>IR thermometer</td>
+<td>Same heatsink both</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Decision criteria — write these down before measuring, not
+after:</strong></p>
+<ul>
+<li><strong>Generic Ra ≥ 85 and R9 ≥ 20</strong> → generic is viable for
+retail/hospitality. Ship it, save ~<span
+class="math inline">100/<em>u</em><em>n</em><em>i</em><em>t</em><em>o</em><em>n</em><em>t</em><em>h</em><em>e</em><em>P</em><em>r</em><em>o</em><em>a</em><em>n</em><em>d</em> </span>50
+on the standard wand.</li>
+<li><strong>Generic Ra &lt; 80 or R9 ≤ 0</strong> → Cree is required for
+any commercial SKU. <em>(R9 at or below zero is common on cheap RGBW
+white dies and is an immediate disqualifier for merchandise
+lighting.)</em></li>
+<li><strong>Sample-to-sample spread &gt; ~500 K CCT or &gt; ~15 %
+lux</strong> → <strong>generic is not production-viable regardless of
+its average</strong>, because consistent fixtures cannot be built from
+an inconsistent bin. <strong>This is the most likely failure and the
+strongest reason to run three of each.</strong></li>
+</ul>
+<h3 id="e2--optic">E2 — optic</h3>
+<p>Same emitter throughout, swap only the cup: <strong>15° beaded · 30°
+(current) · 45° beaded.</strong></p>
+<ol type="1">
+<li>Lux at <strong>2 m and 3 m</strong>, centre, white only then
+all-on.</li>
+<li><strong>Beam angle by measurement</strong> — sweep off-axis and find
+where lux falls to 50 % of centre. Compare against the nominal angle on
+the packet; expect the real beam to be <strong>wider</strong>, because a
+5 × 5 mm four-die source under-fills an optic designed for a 3.45 mm
+die.</li>
+<li><strong>Photograph the beam on a white wall at ~2 m, all four dies
+on</strong> — look for <strong>coloured fringing at the beam
+edge</strong> (the failure mode). The photo shows it; now also
+<strong>quantify it with the Light Master: read CCT + DUV at beam centre
+vs. beam edge.</strong> A large centre-to-edge delta <em>is</em>
+colour-over-angle, in numbers. This is exactly what a multi-die TIR
+optic (<strong>LEDiL RGBX</strong> / Carclo) is designed to collapse —
+measure the RGBX the same centre-vs-edge way when it is in hand, and it
+should flatten that delta vs. the flashlight collimators.</li>
+<li>Compare measured centre-beam candela against the predictions in <a
+href="Lumi_Wand_Integration.html#542-what-60-w-actually-buys--photometrics-2026-09-06">§5.4.2</a>.</li>
+</ol>
+<p><strong>Decide from measurements, not from the nominal
+angle.</strong> Predicted: 30° → 15° should be worth ~2× usable distance
+against ~1.41× for doubling the power. If fringing makes 15° unusable,
+the fallback is a TIR optic designed for multi-die RGBW (Ledil /
+Carclo), not a flashlight collimator.</p>
+<h3 id="record-it">Record it</h3>
+<p>Log every reading into a table in this section as it is taken —
+emitter, sample #, channel, current, distance, lux, CCT, duv, Ra, R9,
+flicker, temp, timestamp. <strong>An un-recorded measurement is an
+experiment that has to be run twice.</strong></p></body></html>

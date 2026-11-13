@@ -1,0 +1,497 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1660" height="1364" viewBox="0 0 1660 1364"><rect width="1660" height="1364" fill="#fff"/>
+<rect x="742.0" y="250.0" width="176.0" height="620.0" rx="5" fill="#0f5132" fill-opacity="0.06" stroke="#0f5132" stroke-width="2"/>
+<rect x="814.0" y="258.0" width="32" height="604.0" rx="3" fill="#333" fill-opacity="0.10" stroke="#666" stroke-width="1.2" stroke-dasharray="4 3"/>
+<text x="830.0" y="176.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Geekworm G469</text>
+<text x="830.0" y="176.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="middle" font-weight="700" fill="#0f5132">Geekworm G469</text>
+<text x="830.0" y="192.0" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">seated on the header — either way round works</text>
+<text x="830.0" y="192.0" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="400" fill="#777">seated on the header — either way round works</text>
+<text x="830.0" y="890.0" font-family="DejaVu Sans, Arial" font-size="10" text-anchor="middle" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">pass-through 2×20 down the centre</text>
+<text x="830.0" y="890.0" font-family="DejaVu Sans, Arial" font-size="10" text-anchor="middle" font-weight="400" fill="#999">pass-through 2×20 down the centre</text>
+<text x="732.0" y="224.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">ODD pins — inner / jumper side</text>
+<text x="732.0" y="224.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="end" font-weight="700" fill="#0f5132">ODD pins — inner / jumper side</text>
+<text x="928.0" y="224.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">EVEN pins — outer side</text>
+<text x="928.0" y="224.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="700" fill="#0f5132">EVEN pins — outer side</text>
+<text x="830.0" y="210.0" font-family="DejaVu Sans, Arial" font-size="10" text-anchor="middle" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">pins 39 / 40 end (top)</text>
+<text x="830.0" y="210.0" font-family="DejaVu Sans, Arial" font-size="10" text-anchor="middle" font-weight="400" fill="#999">pins 39 / 40 end (top)</text>
+<rect x="684.0" y="854.0" width="292.0" height="27.0" rx="4" fill="none" stroke="#b3261e" stroke-width="2"/>
+<text x="830.0" y="916.0" font-family="DejaVu Sans, Arial" font-size="11" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">breakout silk “1” = this end (bottom) — where the INA226 bring-up jumpers were</text>
+<text x="830.0" y="916.0" font-family="DejaVu Sans, Arial" font-size="11" text-anchor="middle" font-weight="700" fill="#b3261e">breakout silk “1” = this end (bottom) — where the INA226 bring-up jumpers were</text>
+<text x="492.0" y="948.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">FFC → toward the ARM / DROK side (blue stripe UP)</text>
+<text x="492.0" y="948.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="middle" font-weight="700" fill="#1f6fd0">FFC → toward the ARM / DROK side (blue stripe UP)</text>
+<line x1="322.0" y1="960.0" x2="682.0" y2="960.0" stroke="#1f6fd0" stroke-width="2.4" stroke-dasharray="7 4"/>
+<rect x="733.0" y="857.5" width="8" height="15" rx="2" fill="#c0392b" stroke="#c0392b" stroke-width="1.8"/>
+<text x="722.0" y="869.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">3V3   1</text>
+<text x="722.0" y="869.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#c0392b">3V3   1</text>
+<rect x="636.0" y="858.5" width="22" height="14" rx="7" fill="#d1770c"/>
+<text x="647.0" y="869.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
+<text x="647.0" y="869.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
+<line x1="626.0" y1="865.5" x2="484.0" y2="865.5" stroke="#c0392b" stroke-width="1.6"/>
+<text x="476.0" y="862.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">chain VCC (INA226 . INA226-BATT . TMP102-bay) + wand 3V3</text>
+<text x="476.0" y="862.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#c0392b">chain VCC (INA226 . INA226-BATT . TMP102-bay) + wand 3V3</text>
+<text x="476.0" y="876.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">wand signal leg lands 1 . 3 . 5, return at 9</text>
+<text x="476.0" y="876.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">wand signal leg lands 1 . 3 . 5, return at 9</text>
+<text x="622.0" y="861.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">3V3</text>
+<text x="622.0" y="861.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">3V3</text>
+<rect x="733.0" y="826.5" width="8" height="15" rx="2" fill="#1f6fd0" stroke="#1f6fd0" stroke-width="1.8"/>
+<text x="722.0" y="838.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">SDA   3</text>
+<text x="722.0" y="838.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#1f6fd0">SDA   3</text>
+<rect x="636.0" y="827.5" width="22" height="14" rx="7" fill="#d1770c"/>
+<text x="647.0" y="838.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
+<text x="647.0" y="838.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
+<line x1="626.0" y1="834.5" x2="484.0" y2="834.5" stroke="#1f6fd0" stroke-width="1.6"/>
+<text x="476.0" y="831.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">bay I2C chain SDA (INA226 . INA226-BATT . TMP102-bay)</text>
+<text x="476.0" y="831.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#1f6fd0">bay I2C chain SDA (INA226 . INA226-BATT . TMP102-bay)</text>
+<text x="476.0" y="845.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">-&gt; wand SIG OUT SDA</text>
+<text x="476.0" y="845.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">-&gt; wand SIG OUT SDA</text>
+<text x="622.0" y="830.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO2</text>
+<text x="622.0" y="830.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GPIO2</text>
+<rect x="733.0" y="795.5" width="8" height="15" rx="2" fill="#1f6fd0" stroke="#1f6fd0" stroke-width="1.8"/>
+<text x="722.0" y="807.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">SCL   5</text>
+<text x="722.0" y="807.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#1f6fd0">SCL   5</text>
+<rect x="636.0" y="796.5" width="22" height="14" rx="7" fill="#d1770c"/>
+<text x="647.0" y="807.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
+<text x="647.0" y="807.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
+<line x1="626.0" y1="803.5" x2="484.0" y2="803.5" stroke="#1f6fd0" stroke-width="1.6"/>
+<text x="476.0" y="800.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">bay I2C chain SCL (INA226 . INA226-BATT . TMP102-bay)</text>
+<text x="476.0" y="800.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#1f6fd0">bay I2C chain SCL (INA226 . INA226-BATT . TMP102-bay)</text>
+<text x="476.0" y="814.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">-&gt; wand SIG OUT SCL</text>
+<text x="476.0" y="814.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">-&gt; wand SIG OUT SCL</text>
+<text x="622.0" y="799.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO3</text>
+<text x="622.0" y="799.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GPIO3</text>
+<rect x="733.0" y="764.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="722.0" y="776.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">IO4   7</text>
+<text x="722.0" y="776.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" fill="#b8bec6">IO4   7</text>
+<rect x="733.0" y="733.5" width="8" height="15" rx="2" fill="#1f6fd0" stroke="#1f6fd0" stroke-width="1.8"/>
+<text x="722.0" y="745.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GND   9</text>
+<text x="722.0" y="745.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#1f6fd0">GND   9</text>
+<rect x="636.0" y="734.5" width="22" height="14" rx="7" fill="#d1770c"/>
+<text x="647.0" y="745.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
+<text x="647.0" y="745.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
+<line x1="626.0" y1="741.5" x2="484.0" y2="741.5" stroke="#1f6fd0" stroke-width="1.6"/>
+<text x="476.0" y="738.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">chain GND (INA226 . INA226-BATT . TMP102-bay) + wand GND</text>
+<text x="476.0" y="738.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#1f6fd0">chain GND (INA226 . INA226-BATT . TMP102-bay) + wand GND</text>
+<text x="476.0" y="752.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">STAR GROUND - never at the block; INA226-BATT GND screw EMPTY</text>
+<text x="476.0" y="752.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">STAR GROUND - never at the block; INA226-BATT GND screw EMPTY</text>
+<text x="622.0" y="737.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GND</text>
+<text x="622.0" y="737.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GND</text>
+<rect x="733.0" y="702.5" width="8" height="15" rx="2" fill="#2f8f4e" stroke="#2f8f4e" stroke-width="1.8"/>
+<text x="722.0" y="714.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">IO17 11</text>
+<text x="722.0" y="714.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#2f8f4e">IO17 11</text>
+<line x1="626.0" y1="710.5" x2="484.0" y2="710.5" stroke="#2f8f4e" stroke-width="1.6"/>
+<text x="476.0" y="713.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">HC-SR501 FR OUT</text>
+<text x="476.0" y="713.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#2f8f4e">HC-SR501 FR OUT</text>
+<text x="622.0" y="706.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO17</text>
+<text x="622.0" y="706.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GPIO17</text>
+<rect x="733.0" y="671.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="722.0" y="683.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">IO27 13</text>
+<text x="722.0" y="683.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" fill="#b8bec6">IO27 13</text>
+<rect x="733.0" y="640.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="722.0" y="652.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">IO22 15</text>
+<text x="722.0" y="652.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" fill="#b8bec6">IO22 15</text>
+<rect x="733.0" y="609.5" width="8" height="15" rx="2" fill="#c0392b" stroke="#c0392b" stroke-width="1.8"/>
+<text x="722.0" y="621.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">3V3  17</text>
+<text x="722.0" y="621.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#c0392b">3V3  17</text>
+<rect x="636.0" y="610.5" width="22" height="14" rx="7" fill="#d1770c"/>
+<text x="647.0" y="621.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
+<text x="647.0" y="621.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
+<line x1="626.0" y1="617.5" x2="484.0" y2="617.5" stroke="#c0392b" stroke-width="1.6"/>
+<text x="476.0" y="614.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Fan-1 + Fan-2 tach pull-ups (TMP102-bay moved to the chain)</text>
+<text x="476.0" y="614.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#c0392b">Fan-1 + Fan-2 tach pull-ups (TMP102-bay moved to the chain)</text>
+<text x="476.0" y="628.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">nearest 3V3 to the tach screws -- 6 rows, not 14</text>
+<text x="476.0" y="628.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">nearest 3V3 to the tach screws -- 6 rows, not 14</text>
+<text x="622.0" y="613.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">3V3</text>
+<text x="622.0" y="613.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">3V3</text>
+<rect x="733.0" y="578.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="722.0" y="590.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">MOSI 19</text>
+<text x="722.0" y="590.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" fill="#b8bec6">MOSI 19</text>
+<rect x="733.0" y="547.5" width="8" height="15" rx="2" fill="#7a3fb0" stroke="#7a3fb0" stroke-width="1.8"/>
+<text x="722.0" y="559.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">MISO 21</text>
+<text x="722.0" y="559.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#7a3fb0">MISO 21</text>
+<line x1="626.0" y1="555.5" x2="484.0" y2="555.5" stroke="#7a3fb0" stroke-width="1.6"/>
+<text x="476.0" y="552.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">ZE15-CO PIN8 TXD</text>
+<text x="476.0" y="552.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#7a3fb0">ZE15-CO PIN8 TXD</text>
+<text x="476.0" y="566.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">2nd PL011 - your label will read MISO</text>
+<text x="476.0" y="566.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">2nd PL011 - your label will read MISO</text>
+<text x="622.0" y="551.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO9</text>
+<text x="622.0" y="551.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GPIO9</text>
+<rect x="733.0" y="516.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="722.0" y="528.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">SCLK 23</text>
+<text x="722.0" y="528.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" fill="#b8bec6">SCLK 23</text>
+<rect x="733.0" y="485.5" width="8" height="15" rx="2" fill="#7a3fb0" stroke="#7a3fb0" stroke-width="1.8"/>
+<text x="722.0" y="497.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GND  25</text>
+<text x="722.0" y="497.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#7a3fb0">GND  25</text>
+<line x1="626.0" y1="493.5" x2="484.0" y2="493.5" stroke="#7a3fb0" stroke-width="1.6"/>
+<text x="476.0" y="490.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">ZE15-CO GND</text>
+<text x="476.0" y="490.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#7a3fb0">ZE15-CO GND</text>
+<text x="476.0" y="504.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">assigned 2026-10-11 - beside its UART pair 21/24</text>
+<text x="476.0" y="504.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">assigned 2026-10-11 - beside its UART pair 21/24</text>
+<text x="622.0" y="489.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GND</text>
+<text x="622.0" y="489.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GND</text>
+<rect x="733.0" y="454.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="722.0" y="466.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">IDSD 27</text>
+<text x="722.0" y="466.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" fill="#b8bec6">IDSD 27</text>
+<rect x="733.0" y="423.5" width="8" height="15" rx="2" fill="#d1770c" stroke="#d1770c" stroke-width="1.8"/>
+<text x="722.0" y="435.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">IO5  29</text>
+<text x="722.0" y="435.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#d1770c">IO5  29</text>
+<rect x="636.0" y="424.5" width="22" height="14" rx="7" fill="#d1770c"/>
+<text x="647.0" y="435.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
+<text x="647.0" y="435.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
+<line x1="626.0" y1="431.5" x2="484.0" y2="431.5" stroke="#d1770c" stroke-width="1.6"/>
+<text x="476.0" y="428.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Fan-1 TACH (green, pin 3)</text>
+<text x="476.0" y="428.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#d1770c">Fan-1 TACH (green, pin 3)</text>
+<text x="476.0" y="442.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">+ 10k pull-up, other end on 3V3 (17)</text>
+<text x="476.0" y="442.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">+ 10k pull-up, other end on 3V3 (17)</text>
+<text x="622.0" y="427.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO5</text>
+<text x="622.0" y="427.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GPIO5</text>
+<rect x="733.0" y="392.5" width="8" height="15" rx="2" fill="#d1770c" stroke="#d1770c" stroke-width="1.8"/>
+<text x="722.0" y="404.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">IO6  31</text>
+<text x="722.0" y="404.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#d1770c">IO6  31</text>
+<rect x="636.0" y="393.5" width="22" height="14" rx="7" fill="#d1770c"/>
+<text x="647.0" y="404.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
+<text x="647.0" y="404.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
+<line x1="626.0" y1="400.5" x2="484.0" y2="400.5" stroke="#d1770c" stroke-width="1.6"/>
+<text x="476.0" y="397.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Fan-2 TACH (green, pin 3)</text>
+<text x="476.0" y="397.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#d1770c">Fan-2 TACH (green, pin 3)</text>
+<text x="476.0" y="411.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">+ 10k pull-up, other end on 3V3 (17)</text>
+<text x="476.0" y="411.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">+ 10k pull-up, other end on 3V3 (17)</text>
+<text x="622.0" y="396.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO6</text>
+<text x="622.0" y="396.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GPIO6</text>
+<rect x="733.0" y="361.5" width="8" height="15" rx="2" fill="#9aa0a6" stroke="#9aa0a6" stroke-width="1.8"/>
+<text x="722.0" y="373.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">IO13 33</text>
+<text x="722.0" y="373.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#9aa0a6">IO13 33</text>
+<line x1="626.0" y1="369.5" x2="484.0" y2="369.5" stroke="#9aa0a6" stroke-width="1.6"/>
+<text x="476.0" y="372.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">reserved 2nd PWM - leave unused</text>
+<text x="476.0" y="372.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#9aa0a6">reserved 2nd PWM - leave unused</text>
+<text x="622.0" y="365.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO13</text>
+<text x="622.0" y="365.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GPIO13</text>
+<rect x="733.0" y="330.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="722.0" y="342.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">IO19 35</text>
+<text x="722.0" y="342.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" fill="#b8bec6">IO19 35</text>
+<rect x="733.0" y="299.5" width="8" height="15" rx="2" fill="#9aa0a6" stroke="#9aa0a6" stroke-width="1.8"/>
+<text x="722.0" y="311.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">IO26 37</text>
+<text x="722.0" y="311.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="700" fill="#9aa0a6">IO26 37</text>
+<line x1="626.0" y1="307.5" x2="484.0" y2="307.5" stroke="#9aa0a6" stroke-width="1.6"/>
+<text x="476.0" y="304.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">INA226 ALERT - RESERVED</text>
+<text x="476.0" y="304.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#9aa0a6">INA226 ALERT - RESERVED</text>
+<text x="476.0" y="318.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">do not wire until the hw latch exists</text>
+<text x="476.0" y="318.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">do not wire until the hw latch exists</text>
+<text x="622.0" y="303.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO26</text>
+<text x="622.0" y="303.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GPIO26</text>
+<rect x="733.0" y="268.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="722.0" y="280.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GND  39</text>
+<text x="722.0" y="280.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="end" font-weight="400" fill="#b8bec6">GND  39</text>
+<rect x="919.0" y="857.5" width="8" height="15" rx="2" fill="#2f8f4e" stroke="#2f8f4e" stroke-width="1.8"/>
+<text x="938.0" y="869.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none"> 2 5V  </text>
+<text x="938.0" y="869.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#2f8f4e"> 2 5V  </text>
+<rect x="1002.0" y="858.5" width="22" height="14" rx="7" fill="#8a5000"/>
+<text x="1013.0" y="869.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×4</text>
+<text x="1013.0" y="869.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×4</text>
+<line x1="1034.0" y1="865.5" x2="1178.0" y2="865.5" stroke="#2f8f4e" stroke-width="1.6"/>
+<text x="1186.0" y="862.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">4x HC-SR501 VCC</text>
+<text x="1186.0" y="862.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#2f8f4e">4x HC-SR501 VCC</text>
+<text x="1186.0" y="876.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">4 individual leads, ONE AIRIC violet ferrule (no Ys)</text>
+<text x="1186.0" y="876.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">4 individual leads, ONE AIRIC violet ferrule (no Ys)</text>
+<text x="1038.0" y="861.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">5V</text>
+<text x="1038.0" y="861.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">5V</text>
+<rect x="919.0" y="826.5" width="8" height="15" rx="2" fill="#c0392b" stroke="#c0392b" stroke-width="1.8"/>
+<text x="938.0" y="838.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none"> 4 5V  </text>
+<text x="938.0" y="838.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#c0392b"> 4 5V  </text>
+<rect x="1002.0" y="827.5" width="22" height="14" rx="7" fill="#8a5000"/>
+<text x="1013.0" y="838.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×3</text>
+<text x="1013.0" y="838.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×3</text>
+<line x1="1034.0" y1="834.5" x2="1178.0" y2="834.5" stroke="#c0392b" stroke-width="1.6"/>
+<text x="1186.0" y="831.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">SPS30 VDD (pin 1) + ZE15-CO VCC † + Ultra: Pi5 cooler red</text>
+<text x="1186.0" y="831.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#c0392b">SPS30 VDD (pin 1) + ZE15-CO VCC † + Ultra: Pi5 cooler red</text>
+<text x="1186.0" y="845.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">5 V rail; x3 on Ultra only (all 26 AWG)</text>
+<text x="1186.0" y="845.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">5 V rail; x3 on Ultra only (all 26 AWG)</text>
+<text x="1038.0" y="830.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">5V</text>
+<text x="1038.0" y="830.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">5V</text>
+<rect x="919.0" y="795.5" width="8" height="15" rx="2" fill="#2f8f4e" stroke="#2f8f4e" stroke-width="1.8"/>
+<text x="938.0" y="807.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none"> 6 GND </text>
+<text x="938.0" y="807.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#2f8f4e"> 6 GND </text>
+<rect x="1002.0" y="796.5" width="22" height="14" rx="7" fill="#8a5000"/>
+<text x="1013.0" y="807.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×4</text>
+<text x="1013.0" y="807.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×4</text>
+<line x1="1034.0" y1="803.5" x2="1178.0" y2="803.5" stroke="#2f8f4e" stroke-width="1.6"/>
+<text x="1186.0" y="800.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">4x HC-SR501 GND</text>
+<text x="1186.0" y="800.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#2f8f4e">4x HC-SR501 GND</text>
+<text x="1186.0" y="814.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">4 individual leads, ONE AIRIC violet ferrule (no Ys)</text>
+<text x="1186.0" y="814.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">4 individual leads, ONE AIRIC violet ferrule (no Ys)</text>
+<text x="1038.0" y="799.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GND</text>
+<text x="1038.0" y="799.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GND</text>
+<rect x="919.0" y="764.5" width="8" height="15" rx="2" fill="#7a3fb0" stroke="#7a3fb0" stroke-width="1.8"/>
+<text x="938.0" y="776.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none"> 8 TXD </text>
+<text x="938.0" y="776.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#7a3fb0"> 8 TXD </text>
+<line x1="1034.0" y1="772.5" x2="1178.0" y2="772.5" stroke="#7a3fb0" stroke-width="1.6"/>
+<text x="1186.0" y="769.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">SPS30 RX (pin 2)</text>
+<text x="1186.0" y="769.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#7a3fb0">SPS30 RX (pin 2)</text>
+<text x="1186.0" y="783.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">uart0 TXD - free the console</text>
+<text x="1186.0" y="783.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">uart0 TXD - free the console</text>
+<text x="1038.0" y="768.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO14</text>
+<text x="1038.0" y="768.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GPIO14</text>
+<rect x="919.0" y="733.5" width="8" height="15" rx="2" fill="#7a3fb0" stroke="#7a3fb0" stroke-width="1.8"/>
+<text x="938.0" y="745.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">10 RXD </text>
+<text x="938.0" y="745.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#7a3fb0">10 RXD </text>
+<line x1="1034.0" y1="741.5" x2="1178.0" y2="741.5" stroke="#7a3fb0" stroke-width="1.6"/>
+<text x="1186.0" y="738.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">SPS30 TX (pin 3)</text>
+<text x="1186.0" y="738.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#7a3fb0">SPS30 TX (pin 3)</text>
+<text x="1186.0" y="752.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">uart0 RXD</text>
+<text x="1186.0" y="752.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">uart0 RXD</text>
+<text x="1038.0" y="737.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO15</text>
+<text x="1038.0" y="737.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GPIO15</text>
+<rect x="919.0" y="702.5" width="8" height="15" rx="2" fill="#0e7c86" stroke="#0e7c86" stroke-width="1.8"/>
+<text x="938.0" y="714.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">12 IO18</text>
+<text x="938.0" y="714.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#0e7c86">12 IO18</text>
+<line x1="1034.0" y1="710.5" x2="1178.0" y2="710.5" stroke="#0e7c86" stroke-width="1.6"/>
+<text x="1186.0" y="707.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">ULTRA ONLY: Pi5 cooler PWM (blue)</text>
+<text x="1186.0" y="707.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#0e7c86">ULTRA ONLY: Pi5 cooler PWM (blue)</text>
+<text x="1186.0" y="721.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">PWM0 ch2 - via JST-SH pigtail, 26 AWG</text>
+<text x="1186.0" y="721.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">PWM0 ch2 - via JST-SH pigtail, 26 AWG</text>
+<text x="1038.0" y="706.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO18</text>
+<text x="1038.0" y="706.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GPIO18</text>
+<rect x="919.0" y="671.5" width="8" height="15" rx="2" fill="#0e7c86" stroke="#0e7c86" stroke-width="1.8"/>
+<text x="938.0" y="683.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">14 GND </text>
+<text x="938.0" y="683.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#0e7c86">14 GND </text>
+<line x1="1034.0" y1="679.5" x2="1178.0" y2="679.5" stroke="#0e7c86" stroke-width="1.6"/>
+<text x="1186.0" y="676.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">ULTRA ONLY: Pi5 cooler GND (black)</text>
+<text x="1186.0" y="676.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#0e7c86">ULTRA ONLY: Pi5 cooler GND (black)</text>
+<text x="1186.0" y="690.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">own return (Halo v1: TMP102-bay GND)</text>
+<text x="1186.0" y="690.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">own return (Halo v1: TMP102-bay GND)</text>
+<text x="1038.0" y="675.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GND</text>
+<text x="1038.0" y="675.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GND</text>
+<rect x="919.0" y="640.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="938.0" y="652.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">16 IO23</text>
+<text x="938.0" y="652.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="400" fill="#b8bec6">16 IO23</text>
+<rect x="919.0" y="609.5" width="8" height="15" rx="2" fill="#0e7c86" stroke="#0e7c86" stroke-width="1.8"/>
+<text x="938.0" y="621.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">18 IO24</text>
+<text x="938.0" y="621.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#0e7c86">18 IO24</text>
+<line x1="1034.0" y1="617.5" x2="1178.0" y2="617.5" stroke="#0e7c86" stroke-width="1.6"/>
+<text x="1186.0" y="614.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">ULTRA ONLY: Pi5 cooler TACH (yellow)</text>
+<text x="1186.0" y="614.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#0e7c86">ULTRA ONLY: Pi5 cooler TACH (yellow)</text>
+<text x="1186.0" y="628.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">internal pull-up - NEVER 5 V</text>
+<text x="1186.0" y="628.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">internal pull-up - NEVER 5 V</text>
+<text x="1038.0" y="613.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO24</text>
+<text x="1038.0" y="613.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GPIO24</text>
+<rect x="919.0" y="578.5" width="8" height="15" rx="2" fill="#7a3fb0" stroke="#7a3fb0" stroke-width="1.8"/>
+<text x="938.0" y="590.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">20 GND </text>
+<text x="938.0" y="590.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#7a3fb0">20 GND </text>
+<line x1="1034.0" y1="586.5" x2="1178.0" y2="586.5" stroke="#7a3fb0" stroke-width="1.6"/>
+<text x="1186.0" y="583.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">SPS30 GND (ZH pin 5)</text>
+<text x="1186.0" y="583.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#7a3fb0">SPS30 GND (ZH pin 5)</text>
+<text x="1186.0" y="597.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">assigned 2026-10-11 - own return per sensor</text>
+<text x="1186.0" y="597.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">assigned 2026-10-11 - own return per sensor</text>
+<text x="1038.0" y="582.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GND</text>
+<text x="1038.0" y="582.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GND</text>
+<rect x="919.0" y="547.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="938.0" y="559.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">22 IO25</text>
+<text x="938.0" y="559.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="400" fill="#b8bec6">22 IO25</text>
+<rect x="919.0" y="516.5" width="8" height="15" rx="2" fill="#7a3fb0" stroke="#7a3fb0" stroke-width="1.8"/>
+<text x="938.0" y="528.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">24 CE0 </text>
+<text x="938.0" y="528.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#7a3fb0">24 CE0 </text>
+<line x1="1034.0" y1="524.5" x2="1178.0" y2="524.5" stroke="#7a3fb0" stroke-width="1.6"/>
+<text x="1186.0" y="521.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">ZE15-CO PIN7 RXD</text>
+<text x="1186.0" y="521.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#7a3fb0">ZE15-CO PIN7 RXD</text>
+<text x="1186.0" y="535.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">2nd PL011 - your label will read CE0</text>
+<text x="1186.0" y="535.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">2nd PL011 - your label will read CE0</text>
+<text x="1038.0" y="520.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO8</text>
+<text x="1038.0" y="520.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GPIO8</text>
+<rect x="919.0" y="485.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="938.0" y="497.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">26 CE1 </text>
+<text x="938.0" y="497.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="400" fill="#b8bec6">26 CE1 </text>
+<rect x="919.0" y="454.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="938.0" y="466.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">28 IDSC</text>
+<text x="938.0" y="466.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="400" fill="#b8bec6">28 IDSC</text>
+<rect x="919.0" y="423.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
+<text x="938.0" y="435.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">30 GND </text>
+<text x="938.0" y="435.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="400" fill="#b8bec6">30 GND </text>
+<rect x="919.0" y="392.5" width="8" height="15" rx="2" fill="#d1770c" stroke="#d1770c" stroke-width="1.8"/>
+<text x="938.0" y="404.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">32 IO12</text>
+<text x="938.0" y="404.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#d1770c">32 IO12</text>
+<rect x="1002.0" y="393.5" width="22" height="14" rx="7" fill="#d1770c"/>
+<text x="1013.0" y="404.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
+<text x="1013.0" y="404.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
+<line x1="1034.0" y1="400.5" x2="1178.0" y2="400.5" stroke="#d1770c" stroke-width="1.6"/>
+<text x="1186.0" y="397.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">BOTH NF-A4x20 PWM (blue, pin 4)</text>
+<text x="1186.0" y="397.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#d1770c">BOTH NF-A4x20 PWM (blue, pin 4)</text>
+<text x="1186.0" y="411.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">25 kHz, paralleled - input is high-Z</text>
+<text x="1186.0" y="411.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">25 kHz, paralleled - input is high-Z</text>
+<text x="1038.0" y="396.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO12</text>
+<text x="1038.0" y="396.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GPIO12</text>
+<rect x="919.0" y="361.5" width="8" height="15" rx="2" fill="#9aa0a6" stroke="#9aa0a6" stroke-width="1.8"/>
+<text x="938.0" y="373.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">34 GND </text>
+<text x="938.0" y="373.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#9aa0a6">34 GND </text>
+<line x1="1034.0" y1="369.5" x2="1178.0" y2="369.5" stroke="#9aa0a6" stroke-width="1.6"/>
+<text x="1186.0" y="366.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">signal-GND jumper - RESERVED</text>
+<text x="1186.0" y="366.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#9aa0a6">signal-GND jumper - RESERVED</text>
+<text x="1186.0" y="380.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">ON HOLD, not installed - Power_Bay S11.2.2</text>
+<text x="1186.0" y="380.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">ON HOLD, not installed - Power_Bay S11.2.2</text>
+<text x="1038.0" y="365.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GND</text>
+<text x="1038.0" y="365.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GND</text>
+<rect x="919.0" y="330.5" width="8" height="15" rx="2" fill="#2f8f4e" stroke="#2f8f4e" stroke-width="1.8"/>
+<text x="938.0" y="342.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">36 IO16</text>
+<text x="938.0" y="342.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#2f8f4e">36 IO16</text>
+<line x1="1034.0" y1="338.5" x2="1178.0" y2="338.5" stroke="#2f8f4e" stroke-width="1.6"/>
+<text x="1186.0" y="341.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">HC-SR501 FL OUT</text>
+<text x="1186.0" y="341.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#2f8f4e">HC-SR501 FL OUT</text>
+<text x="1038.0" y="334.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO16</text>
+<text x="1038.0" y="334.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GPIO16</text>
+<rect x="919.0" y="299.5" width="8" height="15" rx="2" fill="#2f8f4e" stroke="#2f8f4e" stroke-width="1.8"/>
+<text x="938.0" y="311.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">38 IO20</text>
+<text x="938.0" y="311.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#2f8f4e">38 IO20</text>
+<line x1="1034.0" y1="307.5" x2="1178.0" y2="307.5" stroke="#2f8f4e" stroke-width="1.6"/>
+<text x="1186.0" y="310.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">HC-SR501 BL OUT</text>
+<text x="1186.0" y="310.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#2f8f4e">HC-SR501 BL OUT</text>
+<text x="1038.0" y="303.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO20</text>
+<text x="1038.0" y="303.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GPIO20</text>
+<rect x="919.0" y="268.5" width="8" height="15" rx="2" fill="#2f8f4e" stroke="#2f8f4e" stroke-width="1.8"/>
+<text x="938.0" y="280.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">40 IO21</text>
+<text x="938.0" y="280.5" font-family="DejaVu Sans Mono, monospace" font-size="11.5" text-anchor="start" font-weight="700" fill="#2f8f4e">40 IO21</text>
+<line x1="1034.0" y1="276.5" x2="1178.0" y2="276.5" stroke="#2f8f4e" stroke-width="1.6"/>
+<text x="1186.0" y="279.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">HC-SR501 BR OUT</text>
+<text x="1186.0" y="279.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="600" fill="#2f8f4e">HC-SR501 BR OUT</text>
+<text x="1038.0" y="272.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO21</text>
+<text x="1038.0" y="272.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="start" font-weight="400" fill="#9aa0a6">GPIO21</text>
+<text x="40.0" y="48.0" font-family="DejaVu Sans, Arial" font-size="22" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Power-bay G469 — every wire that lands on it</text>
+<text x="40.0" y="48.0" font-family="DejaVu Sans, Arial" font-size="22" text-anchor="start" font-weight="700" fill="#111">Power-bay G469 — every wire that lands on it</text>
+<text x="40.0" y="74.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Transcribed from EXTERNAL_SENSOR_INTEGRATION_PLAN.md · “Master connection map” — that table is the source of truth; if this drawing disagrees with it, it is wrong.</text>
+<text x="40.0" y="74.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#666">Transcribed from EXTERNAL_SENSOR_INTEGRATION_PLAN.md · “Master connection map” — that table is the source of truth; if this drawing disagrees with it, it is wrong.</text>
+<text x="40.0" y="96.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">21 of the 40 terminals carry wire (24 on Ultra; 2 more are drawn, labelled and deliberately UNWIRED). THE BOARD SHIPS BLANK — the names below are the labels you apply (S4 step 3), and they are Pi FUNCTION names, not GPIO numbers.</text>
+<text x="40.0" y="96.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#666">21 of the 40 terminals carry wire (24 on Ultra; 2 more are drawn, labelled and deliberately UNWIRED). THE BOARD SHIPS BLANK — the names below are the labels you apply (S4 step 3), and they are Pi FUNCTION names, not GPIO numbers.</text>
+<text x="40.0" y="114.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Drawn in the BAY'S orientation, matching the label sheet: pin 1 bottom, odd row left. The vendor product photo is mirrored from this — do not read the two together.</text>
+<text x="40.0" y="114.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#b3261e">Drawn in the BAY'S orientation, matching the label sheet: pin 1 bottom, odd row left. The vendor product photo is mirrored from this — do not read the two together.</text>
+<text x="40.0" y="132.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">CARRIER BUILD (2026-10-23): the bay I²C devices DAISY-CHAIN (INA226 → INA226-BATT → TMP102-bay), one conductor per net here. Halo v1 AS-BUILT differs until its carrier: TMP102-bay on its own run to 3V3 17 / GND 14.</text>
+<text x="40.0" y="132.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#1f5fbf">CARRIER BUILD (2026-10-23): the bay I²C devices DAISY-CHAIN (INA226 → INA226-BATT → TMP102-bay), one conductor per net here. Halo v1 AS-BUILT differs until its carrier: TMP102-bay on its own run to 3V3 17 / GND 14.</text>
+<rect x="40" y="146" width="13" height="13" rx="2" fill="#1f6fd0"/>
+<text x="59.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">I²C — shared 100 kHz bus</text>
+<text x="59.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#444">I²C — shared 100 kHz bus</text>
+<rect x="230.0" y="146" width="13" height="13" rx="2" fill="#2f8f4e"/>
+<text x="249.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">PIR motion × 4</text>
+<text x="249.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#444">PIR motion × 4</text>
+<rect x="350.0" y="146" width="13" height="13" rx="2" fill="#d1770c"/>
+<text x="369.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Bay fans — SIGNAL only</text>
+<text x="369.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#444">Bay fans — SIGNAL only</text>
+<rect x="526.0" y="146" width="13" height="13" rx="2" fill="#7a3fb0"/>
+<text x="545.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">UART sensors</text>
+<text x="545.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#444">UART sensors</text>
+<rect x="632.0" y="146" width="13" height="13" rx="2" fill="#c0392b"/>
+<text x="651.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Device power off the header</text>
+<text x="651.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#444">Device power off the header</text>
+<rect x="843.0" y="146" width="13" height="13" rx="2" fill="#9aa0a6"/>
+<text x="862.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Reserved — not wired</text>
+<text x="862.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#444">Reserved — not wired</text>
+<rect x="1005.0" y="146" width="13" height="13" rx="2" fill="#0e7c86"/>
+<text x="1024.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Ultra-only Pi5 cooler</text>
+<text x="1024.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#444">Ultra-only Pi5 cooler</text>
+<rect x="1174.0" y="146" width="22" height="14" rx="7" fill="#d1770c"/>
+<text x="1185.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="10" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×n</text>
+<text x="1185.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="10" text-anchor="middle" font-weight="700" fill="#fff">×n</text>
+<text x="1202.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">2 conductors in one ferrule</text>
+<text x="1202.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#444">2 conductors in one ferrule</text>
+<rect x="1397.0" y="146" width="22" height="14" rx="7" fill="#8a5000"/>
+<text x="1408.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="10" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×n</text>
+<text x="1408.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="10" text-anchor="middle" font-weight="700" fill="#fff">×n</text>
+<text x="1425.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">3-4: PIR 5V/GND, Ultra pin 4</text>
+<text x="1425.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#444">3-4: PIR 5V/GND, Ultra pin 4</text>
+<rect x="40" y="972.0" width="392" height="272" rx="7" fill="#b5179e" fill-opacity="0.05" stroke="#b5179e" stroke-width="1.8"/>
+<text x="56.0" y="998.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">The wand tether is 6 nets on TWO connectors</text>
+<text x="56.0" y="998.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" fill="#b5179e">The wand tether is 6 nets on TWO connectors</text>
+<text x="56.0" y="1022.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">SIG leg → end-plate inlet 3/4/5 — from THIS board</text>
+<text x="56.0" y="1022.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">SIG leg → end-plate inlet 3/4/5 — from THIS board</text>
+<text x="56.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    SDA   ←  terminal SDA  (pin 3)</text>
+<text x="56.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    SDA   ←  terminal SDA  (pin 3)</text>
+<text x="56.0" y="1058.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    SCL   ←  terminal SCL  (pin 5)</text>
+<text x="56.0" y="1058.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    SCL   ←  terminal SCL  (pin 5)</text>
+<text x="56.0" y="1076.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    3V3   ←  terminal 3V3  (pin 1)</text>
+<text x="56.0" y="1076.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    3V3   ←  terminal 3V3  (pin 1)</text>
+<text x="56.0" y="1094.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">PWR leg → inlet 1/2/6 — mostly NOT this board</text>
+<text x="56.0" y="1094.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">PWR leg → inlet 1/2/6 — mostly NOT this board</text>
+<text x="56.0" y="1112.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    +13.8 V    ←  D-1459 block, A1 (V+ bus)</text>
+<text x="56.0" y="1112.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    +13.8 V    ←  D-1459 block, A1 (V+ bus)</text>
+<text x="56.0" y="1130.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    GND-power  ←  D-1459 block, B1 (GND bus)</text>
+<text x="56.0" y="1130.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    GND-power  ←  D-1459 block, B1 (GND bus)</text>
+<text x="56.0" y="1148.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    GND-logic  ←  terminal GND (pin 9)  ← NEW 09-24</text>
+<text x="56.0" y="1148.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    GND-logic  ←  terminal GND (pin 9)  ← NEW 09-24</text>
+<text x="56.0" y="1166.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GND-logic is the wand's STAR GROUND. It returns the</text>
+<text x="56.0" y="1166.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">GND-logic is the wand's STAR GROUND. It returns the</text>
+<text x="56.0" y="1184.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    PCA9685 + TMP102 ONLY; the drivers go home on</text>
+<text x="56.0" y="1184.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    PCA9685 + TMP102 ONLY; the drivers go home on</text>
+<text x="56.0" y="1202.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    GND-power. The rail bus is CUT between them.</text>
+<text x="56.0" y="1202.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    GND-power. The rail bus is CUT between them.</text>
+<text x="56.0" y="1220.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    Land it at the D-1459 and the fix is undone.</text>
+<text x="56.0" y="1220.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    Land it at the D-1459 and the fix is undone.</text>
+<text x="56.0" y="1230.0" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Two grounds, one meeting point, and it is pin 9 — not the block.</text>
+<text x="56.0" y="1230.0" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#888">Two grounds, one meeting point, and it is pin 9 — not the block.</text>
+<rect x="454" y="972.0" width="372" height="272" rx="7" fill="#5a6672" fill-opacity="0.05" stroke="#5a6672" stroke-width="1.8"/>
+<text x="470.0" y="998.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Off this board entirely — power, not signal</text>
+<text x="470.0" y="998.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" fill="#5a6672">Off this board entirely — power, not signal</text>
+<text x="470.0" y="1022.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Bay fans — +12 V and power GND</text>
+<text x="470.0" y="1022.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">Bay fans — +12 V and power GND</text>
+<text x="470.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    PSU CH1 13.8 V direct → yellow (pin 2), per fan</text>
+<text x="470.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    PSU CH1 13.8 V direct → yellow (pin 2), per fan</text>
+<text x="470.0" y="1058.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    D-1459 B3 / B4 (GND bus) → black (pin 1)</text>
+<text x="470.0" y="1058.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    D-1459 B3 / B4 (GND bus) → black (pin 1)</text>
+<text x="470.0" y="1076.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    1N5408 diode chain RETIRED 2026-08-09</text>
+<text x="470.0" y="1076.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    1N5408 diode chain RETIRED 2026-08-09</text>
+<text x="470.0" y="1094.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Only the 4-wire signal quartet is on the G469:</text>
+<text x="470.0" y="1094.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">Only the 4-wire signal quartet is on the G469:</text>
+<text x="470.0" y="1112.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    PWM (32) + tach (29, 31) + GND ref (34)</text>
+<text x="470.0" y="1112.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    PWM (32) + tach (29, 31) + GND ref (34)</text>
+<text x="470.0" y="1230.0" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Star-ground at the distribution block, not at the breakout.</text>
+<text x="470.0" y="1230.0" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#888">Star-ground at the distribution block, not at the breakout.</text>
+<rect x="848" y="972.0" width="352" height="272" rx="7" fill="#c0392b" fill-opacity="0.05" stroke="#c0392b" stroke-width="1.8"/>
+<text x="864.0" y="998.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">3V3 — two screws, four loads, PINNED</text>
+<text x="864.0" y="998.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" fill="#c0392b">3V3 — two screws, four loads, PINNED</text>
+<text x="864.0" y="1022.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">pin 1   ×2   I²C chain VCC · wand SIG OUT 3V3</text>
+<text x="864.0" y="1022.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">pin 1   ×2   I²C chain VCC · wand SIG OUT 3V3</text>
+<text x="864.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">        chain = INA226 + INA226-BATT + TMP102-bay</text>
+<text x="864.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">        chain = INA226 + INA226-BATT + TMP102-bay</text>
+<text x="864.0" y="1058.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">pin 17  ×2   both 10k tach pull-ups</text>
+<text x="864.0" y="1058.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">pin 17  ×2   both 10k tach pull-ups</text>
+<text x="864.0" y="1076.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">        nearest 3V3 to the tach screws: 6 rows, not 14</text>
+<text x="864.0" y="1076.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">        nearest 3V3 to the tach screws: 6 rows, not 14</text>
+<text x="864.0" y="1094.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Whole 3V3 rail draws ~11 mA — load never mattered.</text>
+<text x="864.0" y="1094.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">Whole 3V3 rail draws ~11 mA — load never mattered.</text>
+<text x="864.0" y="1112.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    Conductors per screw did. RETIRED: “spread the</text>
+<text x="864.0" y="1112.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    Conductors per screw did. RETIRED: “spread the</text>
+<text x="864.0" y="1130.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    load” — that is how 3 of 5 went uncounted (2026-09).</text>
+<text x="864.0" y="1130.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    load” — that is how 3 of 5 went uncounted (2026-09).</text>
+<text x="864.0" y="1230.0" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">5 V / GND: SPS30 + ZE15-CO harness rail, drawn on pin 4 †.</text>
+<text x="864.0" y="1230.0" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#888">5 V / GND: SPS30 + ZE15-CO harness rail, drawn on pin 4 †.</text>
+<rect x="1228" y="972.0" width="392" height="340" rx="7" fill="#2f8f4e" fill-opacity="0.05" stroke="#2f8f4e" stroke-width="1.8"/>
+<text x="1244.0" y="998.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">×2 / ×3 — SETTLED, not a constraint</text>
+<text x="1244.0" y="998.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" fill="#2f8f4e">×2 / ×3 — SETTLED, not a constraint</text>
+<text x="1244.0" y="1022.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Bench 2026-09-23: FOUR 26 AWG into one ferrule,</text>
+<text x="1244.0" y="1022.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">Bench 2026-09-23: FOUR 26 AWG into one ferrule,</text>
+<text x="1244.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    crimped cleanly. Nothing here needs four.</text>
+<text x="1244.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    crimped cleanly. Nothing here needs four.</text>
+<text x="1244.0" y="1058.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">The most any terminal carries is FOUR (PIR 5V/GND):</text>
+<text x="1244.0" y="1058.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">The most any terminal carries is FOUR (PIR 5V/GND):</text>
+<text x="1244.0" y="1076.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    4× 26 AWG = 0.52 mm² = the bench-proven case;</text>
+<text x="1244.0" y="1076.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    4× 26 AWG = 0.52 mm² = the bench-proven case;</text>
+<text x="1244.0" y="1094.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    PIR leads: own 3 x 26 AWG silicone (built 10-23)</text>
+<text x="1244.0" y="1094.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    PIR leads: own 3 x 26 AWG silicone (built 10-23)</text>
+<text x="1244.0" y="1112.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    2× 24 AWG (fan PWM)  = 0.410 mm²</text>
+<text x="1244.0" y="1112.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    2× 24 AWG (fan PWM)  = 0.410 mm²</text>
+<text x="1244.0" y="1130.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">So: ONE ferrule per terminal, everywhere.</text>
+<text x="1244.0" y="1130.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">So: ONE ferrule per terminal, everywhere.</text>
+<text x="1244.0" y="1148.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    No centre-header pins. No splice pigtails.</text>
+<text x="1244.0" y="1148.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    No centre-header pins. No splice pigtails.</text>
+<text x="1244.0" y="1166.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    No twin-entry ferrules. Nothing to order.</text>
+<text x="1244.0" y="1166.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    No twin-entry ferrules. Nothing to order.</text>
+<text x="1244.0" y="1184.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">The badges are informational — how many wires go</text>
+<text x="1244.0" y="1184.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">The badges are informational — how many wires go</text>
+<text x="1244.0" y="1202.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    into that one ferrule, so you size the strip and</text>
+<text x="1244.0" y="1202.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    into that one ferrule, so you size the strip and</text>
+<text x="1244.0" y="1220.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    twist them before it goes in the crimper.</text>
+<text x="1244.0" y="1220.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    twist them before it goes in the crimper.</text>
+<text x="1244.0" y="1238.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Collars do not fight the 2.6 mm pitch either.</text>
+<text x="1244.0" y="1238.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">Collars do not fight the 2.6 mm pitch either.</text>
+<text x="1244.0" y="1256.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    As-built: ferrules on CONSECUTIVE terminals, collars</text>
+<text x="1244.0" y="1256.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    As-built: ferrules on CONSECUTIVE terminals, collars</text>
+<text x="1244.0" y="1274.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    side by side. The collar sits behind the terminal in</text>
+<text x="1244.0" y="1274.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    side by side. The collar sits behind the terminal in</text>
+<text x="1244.0" y="1292.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">    free air; the pitch only constrains the barrel entry.</text>
+<text x="1244.0" y="1292.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">    free air; the pitch only constrains the barrel entry.</text>
+<text x="1244.0" y="1298.0" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">INA226 chain proven end to end: 0x44 / 13.71 V through pins 1·3·5·9.</text>
+<text x="1244.0" y="1298.0" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="start" font-weight="400" fill="#888">INA226 chain proven end to end: 0x44 / 13.71 V through pins 1·3·5·9.</text>
+</svg>

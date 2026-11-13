@@ -1,0 +1,206 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1980" height="1060" viewBox="0 0 1980 1060" font-family="DejaVu Sans, Arial, sans-serif"><rect width="100%" height="100%" fill="#fff"/>
+<text x="40" y="44" font-size="21" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">THE JOINT STRIPBOARD — one pattern, built TWICE (wand FEMALE · extension MALE)</text>
+<text x="40" y="44" font-size="21" text-anchor="start" font-weight="700"  fill="#111">THE JOINT STRIPBOARD — one pattern, built TWICE (wand FEMALE · extension MALE)</text>
+<text x="40" y="70" font-size="14" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">3 strips × 12 columns · 6.85 × 30.48 mm (inner edge trimmed) · strips run ACROSS the rows, so every COLUMN is one net · ZERO track cuts</text>
+<text x="40" y="70" font-size="14" text-anchor="start" font-weight="700"  fill="#2d6a4f">3 strips × 12 columns · 6.85 × 30.48 mm (inner edge trimmed) · strips run ACROSS the rows, so every COLUMN is one net · ZERO track cuts</text>
+<polygon points="257.0,240.9 332.8,207.0 1213.2,207.0 1289.0,240.9 1289.0,465.0 257.0,465.0" fill="#f3e4cf" stroke="#b08a5a" stroke-width="2"/>
+<rect x="290.0" y="222.0" width="20" height="228.0" rx="3" fill="#c98a45" opacity="0.45"/>
+<rect x="376.0" y="222.0" width="20" height="228.0" rx="3" fill="#c98a45" opacity="0.45"/>
+<rect x="462.0" y="222.0" width="20" height="228.0" rx="3" fill="#c98a45" opacity="0.45"/>
+<rect x="548.0" y="222.0" width="20" height="228.0" rx="3" fill="#d92b2b" opacity="0.9"/>
+<rect x="634.0" y="222.0" width="20" height="228.0" rx="3" fill="#2f2f2f" opacity="0.9"/>
+<rect x="720.0" y="222.0" width="20" height="228.0" rx="3" fill="#1f6fd0" opacity="0.9"/>
+<rect x="806.0" y="222.0" width="20" height="228.0" rx="3" fill="#128a4e" opacity="0.9"/>
+<rect x="892.0" y="222.0" width="20" height="228.0" rx="3" fill="#e08a00" opacity="0.9"/>
+<rect x="978.0" y="222.0" width="20" height="228.0" rx="3" fill="#7a3fb0" opacity="0.9"/>
+<rect x="1064.0" y="222.0" width="20" height="228.0" rx="3" fill="#c98a45" opacity="0.45"/>
+<rect x="1150.0" y="222.0" width="20" height="228.0" rx="3" fill="#c98a45" opacity="0.45"/>
+<rect x="1236.0" y="222.0" width="20" height="228.0" rx="3" fill="#c98a45" opacity="0.45"/>
+<circle cx="300" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="300" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="300" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="300" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">1</text>
+<text x="300" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">1</text>
+<text x="300" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">-13.97</text>
+<text x="300" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">-13.97</text>
+<circle cx="386" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="386" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="386" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="386" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">2</text>
+<text x="386" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">2</text>
+<text x="386" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">-11.43</text>
+<text x="386" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">-11.43</text>
+<circle cx="472" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="472" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="472" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="472" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">3</text>
+<text x="472" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">3</text>
+<text x="472" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">-8.89</text>
+<text x="472" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">-8.89</text>
+<circle cx="558" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="558" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="558" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="558" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">4</text>
+<text x="558" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">4</text>
+<text x="558" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">-6.35</text>
+<text x="558" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">-6.35</text>
+<circle cx="644" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="644" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="644" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="644" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">5</text>
+<text x="644" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">5</text>
+<text x="644" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">-3.81</text>
+<text x="644" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">-3.81</text>
+<circle cx="730" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="730" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="730" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="730" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">6</text>
+<text x="730" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">6</text>
+<text x="730" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">-1.27</text>
+<text x="730" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">-1.27</text>
+<circle cx="816" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="816" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="816" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="816" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">7</text>
+<text x="816" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">7</text>
+<text x="816" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">+1.27</text>
+<text x="816" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">+1.27</text>
+<circle cx="902" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="902" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="902" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="902" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">8</text>
+<text x="902" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">8</text>
+<text x="902" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">+3.81</text>
+<text x="902" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">+3.81</text>
+<circle cx="988" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="988" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="988" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="988" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">9</text>
+<text x="988" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">9</text>
+<text x="988" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">+6.35</text>
+<text x="988" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">+6.35</text>
+<circle cx="1074" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="1074" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="1074" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="1074" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">10</text>
+<text x="1074" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">10</text>
+<text x="1074" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">+8.89</text>
+<text x="1074" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">+8.89</text>
+<circle cx="1160" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="1160" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="1160" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="1160" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">11</text>
+<text x="1160" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">11</text>
+<text x="1160" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">+11.43</text>
+<text x="1160" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">+11.43</text>
+<circle cx="1246" cy="250" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="1246" cy="336" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<circle cx="1246" cy="422" r="7" fill="#fdf7ec" stroke="#9a8878" stroke-width="1.2"/>
+<text x="1246" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">12</text>
+<text x="1246" y="499" font-size="13" text-anchor="middle" font-weight="400"  fill="#777">12</text>
+<text x="1246" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">+13.97</text>
+<text x="1246" y="521" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#8a6a42">+13.97</text>
+<text x="231" y="256" font-size="13" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">OUTER</text>
+<text x="231" y="256" font-size="13" text-anchor="end" font-weight="700"  fill="#555">OUTER</text>
+<text x="231" y="274" font-size="11" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">r = 27.45</text>
+<text x="231" y="274" font-size="11" text-anchor="end" font-weight="400"  fill="#8a6a42">r = 27.45</text>
+<text x="1315" y="256" font-size="13" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">JST</text>
+<text x="1315" y="256" font-size="13" text-anchor="start" font-weight="700"  fill="#333">JST</text>
+<text x="231" y="342" font-size="13" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">MIDDLE</text>
+<text x="231" y="342" font-size="13" text-anchor="end" font-weight="700"  fill="#555">MIDDLE</text>
+<text x="231" y="360" font-size="11" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">r = 24.91</text>
+<text x="231" y="360" font-size="11" text-anchor="end" font-weight="400"  fill="#8a6a42">r = 24.91</text>
+<text x="1315" y="342" font-size="13" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">PIGTAIL</text>
+<text x="1315" y="342" font-size="13" text-anchor="start" font-weight="700"  fill="#333">PIGTAIL</text>
+<text x="231" y="428" font-size="13" text-anchor="end" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">INNER</text>
+<text x="231" y="428" font-size="13" text-anchor="end" font-weight="700"  fill="#555">INNER</text>
+<text x="231" y="446" font-size="11" text-anchor="end" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">r = 22.37</text>
+<text x="231" y="446" font-size="11" text-anchor="end" font-weight="400"  fill="#8a6a42">r = 22.37</text>
+<text x="1315" y="428" font-size="13" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">stiffener</text>
+<text x="1315" y="428" font-size="13" text-anchor="start" font-weight="700"  fill="#333">stiffener</text>
+<rect x="536" y="216" width="474" height="68" rx="4" fill="none" stroke="#111" stroke-width="2.6"/>
+<text x="773" y="202" font-size="13" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">6-pin JST-XH — 12.70 mm on this grid vs 12.50 on the XH (0.10 mm of splay per end pin)</text>
+<text x="773" y="202" font-size="13" text-anchor="middle" font-weight="700"  fill="#111">6-pin JST-XH — 12.70 mm on this grid vs 12.50 on the XH (0.10 mm of splay per end pin)</text>
+<text x="558" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">13.8 V</text>
+<text x="558" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="#d92b2b">13.8 V</text>
+<text x="558" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">pin 1</text>
+<text x="558" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#777">pin 1</text>
+<text x="644" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">GND-P</text>
+<text x="644" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="#2f2f2f">GND-P</text>
+<text x="644" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">pin 2</text>
+<text x="644" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#777">pin 2</text>
+<text x="730" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">SDA</text>
+<text x="730" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="#1f6fd0">SDA</text>
+<text x="730" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">pin 3</text>
+<text x="730" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#777">pin 3</text>
+<text x="816" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">SCL</text>
+<text x="816" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="#128a4e">SCL</text>
+<text x="816" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">pin 4</text>
+<text x="816" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#777">pin 4</text>
+<text x="902" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">3V3</text>
+<text x="902" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="#e08a00">3V3</text>
+<text x="902" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">pin 5</text>
+<text x="902" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#777">pin 5</text>
+<text x="988" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">GND-L</text>
+<text x="988" y="542" font-size="12" text-anchor="middle" font-weight="700"  fill="#7a3fb0">GND-L</text>
+<text x="988" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">pin 6</text>
+<text x="988" y="560" font-size="10.5" text-anchor="middle" font-weight="400"  fill="#777">pin 6</text>
+<circle cx="386" cy="336" r="37.2" fill="#fff" stroke="#7a3fb0" stroke-width="2.6"/>
+<text x="386" y="342" font-size="12" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">M2</text>
+<text x="386" y="342" font-size="12" text-anchor="middle" font-weight="700"  fill="#7a3fb0">M2</text>
+<text x="386" y="210" font-size="11.5" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">Ø2.2</text>
+<text x="386" y="210" font-size="11.5" text-anchor="middle" font-weight="700"  fill="#7a3fb0">Ø2.2</text>
+<circle cx="1160" cy="336" r="37.2" fill="#fff" stroke="#7a3fb0" stroke-width="2.6"/>
+<text x="1160" y="342" font-size="12" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">M2</text>
+<text x="1160" y="342" font-size="12" text-anchor="middle" font-weight="700"  fill="#7a3fb0">M2</text>
+<text x="1160" y="210" font-size="11.5" text-anchor="middle" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">Ø2.2</text>
+<text x="1160" y="210" font-size="11.5" text-anchor="middle" font-weight="700"  fill="#7a3fb0">Ø2.2</text>
+<text x="1315" y="181" font-size="12" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">6.85 × 30.48 mm (inner edge trimmed)</text>
+<text x="1315" y="181" font-size="12" text-anchor="start" font-weight="700"  fill="#8a6a42">6.85 × 30.48 mm (inner edge trimmed)</text>
+<text x="1315" y="199" font-size="11" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">corners chamfered to the Ø64 bore</text>
+<text x="1315" y="199" font-size="11" text-anchor="start" font-weight="400"  fill="#8a6a42">corners chamfered to the Ø64 bore</text>
+<text x="40" y="575" font-size="12" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">EVERY COLUMN IS ONE NET, THREE HOLES LONG — and that is the whole design.</text>
+<text x="40" y="575" font-size="12" text-anchor="start" font-weight="700"  fill="#2d6a4f">EVERY COLUMN IS ONE NET, THREE HOLES LONG — and that is the whole design.</text>
+<text x="40" y="594" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">The strips run across the rows, not along them, so the board needs no track cuts at all: the strips are already separate from each other. The connector lands in the OUTER row, the three outgoing pigtails land in the MIDDLE row,</text>
+<text x="40" y="594" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">The strips run across the rows, not along them, so the board needs no track cuts at all: the strips are already separate from each other. The connector lands in the OUTER row, the three outgoing pigtails land in the MIDDLE row,</text>
+<text x="40" y="613" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">and each column shorts exactly those two holes together. Six columns, six nets. The board IS the junction — there is no other splice anywhere in the joint.</text>
+<text x="40" y="613" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">and each column shorts exactly those two holes together. Six columns, six nets. The board IS the junction — there is no other splice anywhere in the joint.</text>
+<text x="40" y="651" font-size="12" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">THE INNER ROW IS A STIFFENER, NOT A WIRING ROW — AND ITS OUTER EDGE IS TRIMMED BACK.</text>
+<text x="40" y="651" font-size="12" text-anchor="start" font-weight="700"  fill="#111">THE INNER ROW IS A STIFFENER, NOT A WIRING ROW — AND ITS OUTER EDGE IS TRIMMED BACK.</text>
+<text x="40" y="670" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">On a 2-row board every row sits half a pitch (1.27 mm) from a long edge, and a Ø2.2 screw hole in it leaves 0.17 mm of laminate. A third strip buys the middle row 2.54 mm on BOTH sides and costs one strip of stripboard.</text>
+<text x="40" y="670" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">On a 2-row board every row sits half a pitch (1.27 mm) from a long edge, and a Ø2.2 screw hole in it leaves 0.17 mm of laminate. A third strip buys the middle row 2.54 mm on BOTH sides and costs one strip of stripboard.</text>
+<text x="40" y="689" font-size="12" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">It lands over the cradle's INNER WALL on both halves, so NOTHING may be soldered on its underside. Top-side test point only.</text>
+<text x="40" y="689" font-size="12" text-anchor="start" font-weight="700"  fill="#b03030">It lands over the cradle's INNER WALL on both halves, so NOTHING may be soldered on its underside. Top-side test point only.</text>
+<text x="40" y="708" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">Because it carries no wiring, its 1.27 mm of edge is doing nothing — so the inner long edge is cut back to 0.5 mm from that row, making the board 6.85 mm wide, not 7.62. That buys 0.77 mm of air to the 40 mm fan (r = 20, spanning Z 1.6–11.6,</text>
+<text x="40" y="708" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">Because it carries no wiring, its 1.27 mm of edge is doing nothing — so the inner long edge is cut back to 0.5 mm from that row, making the board 6.85 mm wide, not 7.62. That buys 0.77 mm of air to the 40 mm fan (r = 20, spanning Z 1.6–11.6,</text>
+<text x="40" y="727" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">which is this board's whole thickness — there is no axial escape) and the same 0.77 mm of laminate inboard of each screw hole. One more straight cut on an edge that is being cut anyway: 1.87 mm to the fan, 1.94 mm inboard of the Ø2.2 hole.</text>
+<text x="40" y="727" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">which is this board's whole thickness — there is no axial escape) and the same 0.77 mm of laminate inboard of each screw hole. One more straight cut on an edge that is being cut anyway: 1.87 mm to the fan, 1.94 mm inboard of the Ø2.2 hole.</text>
+<text x="40" y="765" font-size="12" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">WHY THE SCREWS ARE AT ±11.43 AND NOT ±13.97, AND WHY THE WHOLE BOARD MOVED IN ON 2026-10-03.</text>
+<text x="40" y="765" font-size="12" text-anchor="start" font-weight="700"  fill="#7a3fb0">WHY THE SCREWS ARE AT ±11.43 AND NOT ±13.97, AND WHY THE WHOLE BOARD MOVED IN ON 2026-10-03.</text>
+<text x="40" y="784" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">The board is flat; the wand's bore is round. Every hole must satisfy hypot(r, t) ≤ CYL_ID/2 = 32. On the old PIN row (r = 29.05) a screw at ±13.97 was at hypot 32.23 — 0.23 mm INSIDE THE WALL. An arc-clipped cradle ear can live there;</text>
+<text x="40" y="784" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">The board is flat; the wand's bore is round. Every hole must satisfy hypot(r, t) ≤ CYL_ID/2 = 32. On the old PIN row (r = 29.05) a screw at ±13.97 was at hypot 32.23 — 0.23 mm INSIDE THE WALL. An arc-clipped cradle ear can live there;</text>
+<text x="40" y="803" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">a flat board cannot. The screws moved one row in and one column in; then the SAME arithmetic caught the connector itself — a flat 17.4 mm body with its face on r=32 has CORNERS at 33.16, so the whole joint body moved in to r 24.50–30.40,</text>
+<text x="40" y="803" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">a flat board cannot. The screws moved one row in and one column in; then the SAME arithmetic caught the connector itself — a flat 17.4 mm body with its face on r=32 has CORNERS at 33.16, so the whole joint body moved in to r 24.50–30.40,</text>
+<text x="40" y="822" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">and the board with it. Rows are now 27.45 / 24.91 / 22.37 and the screws sit at r = 24.91, t = ±11.43 — hypot 27.41, and 28.51 with the Ø2.2 hole, against a bore of 32. The cradle ear is back to the 3.0 mm per side first asked for.</text>
+<text x="40" y="822" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">and the board with it. Rows are now 27.45 / 24.91 / 22.37 and the screws sit at r = 24.91, t = ±11.43 — hypot 27.41, and 28.51 with the Ø2.2 hole, against a bore of 32. The cradle ear is back to the 3.0 mm per side first asked for.</text>
+<text x="40" y="860" font-size="12" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">THE TWO OUTER CORNERS ARE CUT OFF — a straight knife cut, both ends.</text>
+<text x="40" y="860" font-size="12" text-anchor="start" font-weight="700"  fill="#111">THE TWO OUTER CORNERS ARE CUT OFF — a straight knife cut, both ends.</text>
+<text x="40" y="879" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">At the board's outer edge (r = 28.72) the Ø64 bore is clear out to t = ±14.11, so the cut is small: from (r 28.72, t ±13.00) to (r 27.72, t ±15.24), 1.0 mm radial × 2.24 mm tangential — barely more than a corner break. A straight chord of a convex arc lies inside it, so the</text>
+<text x="40" y="879" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">At the board's outer edge (r = 28.72) the Ø64 bore is clear out to t = ±14.11, so the cut is small: from (r 28.72, t ±13.00) to (r 27.72, t ±15.24), 1.0 mm radial × 2.24 mm tangential — barely more than a corner break. A straight chord of a convex arc lies inside it, so the</text>
+<text x="40" y="898" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">cut is conservative everywhere — worst clearance on that edge is 0.38 mm. It never reaches the pin row at all. ⛔ It was a 3.0 × 6.74 mm wedge until 2026-10-03, when the body moved inboard and most of it stopped being necessary.</text>
+<text x="40" y="898" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">cut is conservative everywhere — worst clearance on that edge is 0.38 mm. It never reaches the pin row at all. ⛔ It was a 3.0 × 6.74 mm wedge until 2026-10-03, when the body moved inboard and most of it stopped being necessary.</text>
+<text x="40" y="936" font-size="12" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">TWO BOARDS, TWO POPULATIONS.</text>
+<text x="40" y="936" font-size="12" text-anchor="start" font-weight="700"  fill="#111">TWO BOARDS, TWO POPULATIONS.</text>
+<text x="40" y="955" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">WAND (female): the PINNED part — soldered into the OUTER row from ABOVE, body hanging DOWN below the board into the cradle pocket, shroud mouth toward the end plate. Its 3.4 mm posts leave 1.8 mm of tail on the board's TOP face. Pigtails into the MIDDLE row, same face. NO GLUE on this half.</text>
+<text x="40" y="955" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">WAND (female): the PINNED part — soldered into the OUTER row from ABOVE, body hanging DOWN below the board into the cradle pocket, shroud mouth toward the end plate. Its 3.4 mm posts leave 1.8 mm of tail on the board's TOP face. Pigtails into the MIDDLE row, same face. NO GLUE on this half.</text>
+<text x="40" y="974" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">EXTENSION (male): the CRIMP SHELL — six SXH crimps, no solder posts, so it is NOT soldered. It bottoms on the board, which sits UNDER a proud spigot whose walls capture its lower 2.5 mm on all four sides, and it is epoxied into that pocket. Its six tails pass DOWN through the OUTER row and solder underneath.</text>
+<text x="40" y="974" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">EXTENSION (male): the CRIMP SHELL — six SXH crimps, no solder posts, so it is NOT soldered. It bottoms on the board, which sits UNDER a proud spigot whose walls capture its lower 2.5 mm on all four sides, and it is epoxied into that pocket. Its six tails pass DOWN through the OUTER row and solder underneath.</text>
+<text x="40" y="993" font-size="12" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">⚠ On the vendor's XH2.54 listing the PINNED part is sold as FEMALE and the SHELL as MALE — which matches this table. Read the photograph, not the word. Note too: the wand's board solders on its TOP face, the extension's UNDERNEATH.</text>
+<text x="40" y="993" font-size="12" text-anchor="start" font-weight="700"  fill="#b03030">⚠ On the vendor's XH2.54 listing the PINNED part is sold as FEMALE and the SHELL as MALE — which matches this table. Read the photograph, not the word. Note too: the wand's board solders on its TOP face, the extension's UNDERNEATH.</text>
+<text x="40" y="1031" font-size="12" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">PIN 1 IS DEFINED BY THE SHELL, NOT BY THE BOARD: on BOTH halves it is the column nearest the wand's 0° meridian.</text>
+<text x="40" y="1031" font-size="12" text-anchor="start" font-weight="700"  fill="#b03030">PIN 1 IS DEFINED BY THE SHELL, NOT BY THE BOARD: on BOTH halves it is the column nearest the wand's 0° meridian.</text>
+<text x="40" y="1050" font-size="11.5" text-anchor="start" font-weight="400"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">The two boards face each other across the joint, so if you lay them side by side copper-up their pin 1 ends are at OPPOSITE ends. That is correct, and it is the one thing on this board that is easy to build backwards.</text>
+<text x="40" y="1050" font-size="11.5" text-anchor="start" font-weight="400"  fill="#444">The two boards face each other across the joint, so if you lay them side by side copper-up their pin 1 ends are at OPPOSITE ends. That is correct, and it is the one thing on this board that is easy to build backwards.</text>
+<text x="40" y="1088" font-size="12" text-anchor="start" font-weight="700"  fill="none" stroke="#fff" stroke-width="3.4" stroke-linejoin="round">ALL TWELVE COLUMNS ARE THREE HOLES LONG NOW — the chamfer no longer reaches the OUTER row. ⛔ Columns 1, 2, 11 and 12 lost their outer hole to the old 3 mm wedge until 2026-10-03.</text>
+<text x="40" y="1088" font-size="12" text-anchor="start" font-weight="700"  fill="#111">ALL TWELVE COLUMNS ARE THREE HOLES LONG NOW — the chamfer no longer reaches the OUTER row. ⛔ Columns 1, 2, 11 and 12 lost their outer hole to the old 3 mm wedge until 2026-10-03.</text>
+</svg>

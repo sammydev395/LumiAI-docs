@@ -1,0 +1,770 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PCB_Fabrication_and_Assembly_Guide</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="lumiai--pcb-fabrication--assembly-guide">LumiAI — PCB Fabrication
+&amp; Assembly Guide</h1>
+<p><strong>Product:</strong> Lumi Wand 12-Channel RGBW LED Driver
+<strong>Versions:</strong> Prototype (MOSFET) and Production (PT4115)
+<strong>Date:</strong> April 2026</p>
+<hr />
+<h2 id="1-pcb-versions-overview">1. PCB Versions Overview</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Prototype</th>
+<th>Production v2.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current limiting</td>
+<td>10Ω 5W resistors</td>
+<td>PT4115 buck CC drivers</td>
+</tr>
+<tr>
+<td>Switching</td>
+<td>IRLZ44N MOSFETs</td>
+<td>PT4115 internal switch (DIM pin)</td>
+</tr>
+<tr>
+<td>Heat waste @ full power</td>
+<td>~52W</td>
+<td>~4.2W</td>
+</tr>
+<tr>
+<td>Efficiency</td>
+<td>~40%</td>
+<td>~95%</td>
+</tr>
+<tr>
+<td>LED type</td>
+<td>Common-anode star PCB</td>
+<td><strong>Individual-anode star PCB</strong></td>
+</tr>
+<tr>
+<td>PCB size</td>
+<td>35mm x 30mm</td>
+<td>75mm x 105mm</td>
+</tr>
+<tr>
+<td>Components per channel</td>
+<td>6 (MOSFET + 3 resistors + gate/pulldown)</td>
+<td>4 (PT4115 + inductor + diode + sense R)</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Design complete</td>
+<td><strong>DRC clean, Gerbers exported, ordered</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-project-files">2. Project Files</h2>
+<h3 id="prototype-mosfet-version">Prototype (MOSFET Version)</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KiCad project</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver/Lumi_Wand_12CH_Driver.kicad_pro</code></td>
+<td>Project file</td>
+</tr>
+<tr>
+<td>Schematic</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver/Lumi_Wand_12CH_Driver.kicad_sch</code></td>
+<td>12-ch MOSFET driver schematic</td>
+</tr>
+<tr>
+<td>PCB layout</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver/Lumi_Wand_12CH_Driver.kicad_pcb</code></td>
+<td>35x30mm 2-layer PCB</td>
+</tr>
+<tr>
+<td>Trace generator</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver/gen_traces.py</code></td>
+<td>Python script for trace generation</td>
+</tr>
+<tr>
+<td>Gerbers</td>
+<td><code>kicad/gerbers/Lumi_Wand_12CH_Driver-*.gbr</code></td>
+<td>Fabrication files</td>
+</tr>
+<tr>
+<td>Gerbers ZIP</td>
+<td><code>kicad/gerbers/Lumi_Wand_12CH_Driver.gerbers.zip</code></td>
+<td>Ready for JLCPCB upload</td>
+</tr>
+<tr>
+<td>Drills</td>
+<td><code>kicad/gerbers/Lumi_Wand_12CH_Driver-PTH.drl</code>,
+<code>-NPTH.drl</code></td>
+<td>Drill files</td>
+</tr>
+</tbody>
+</table>
+<h3 id="production-pt4115-version">Production (PT4115 Version)</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KiCad project</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver_PROD/Lumi_Wand_12CH_Driver_PROD.kicad_pro</code></td>
+<td>Project file</td>
+</tr>
+<tr>
+<td>PCB layout</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver_PROD/Lumi_Wand_12CH_Driver_PROD.kicad_pcb</code></td>
+<td>75x105mm 2-layer PCB</td>
+</tr>
+<tr>
+<td>PCB generator</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver_PROD/gen_prod_pcb.py</code></td>
+<td>Python script for programmatic PCB generation</td>
+</tr>
+<tr>
+<td>Gerbers</td>
+<td><code>kicad/gerbers/Lumi_Wand_12CH_Driver_PROD-*.gtl/gbl/etc</code></td>
+<td>Fabrication files (Protel extensions)</td>
+</tr>
+<tr>
+<td>Gerbers ZIP</td>
+<td><code>kicad/gerbers/Lumi_Wand_12CH_Driver_PROD.gerbers.zip</code></td>
+<td>Ready for JLCPCB upload</td>
+</tr>
+<tr>
+<td>Drills</td>
+<td><code>kicad/gerbers/Lumi_Wand_12CH_Driver_PROD-PTH.drl</code>,
+<code>-NPTH.drl</code></td>
+<td>Drill files</td>
+</tr>
+</tbody>
+</table>
+<h3 id="related-documentation">Related Documentation</h3>
+<table>
+<thead>
+<tr>
+<th>Document</th>
+<th>Path</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Full fixture design</td>
+<td><code>docs/Lumi_Wand_LED_Fixture_Design.md</code></td>
+<td>Complete BOM, circuit diagrams, shopping lists, assembly</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-pcb-fabrication-jlcpcb">3. PCB Fabrication (JLCPCB)</h2>
+<h3 id="prototype-pcb">Prototype PCB</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>File</td>
+<td><code>kicad/gerbers/Lumi_Wand_12CH_Driver.gerbers.zip</code></td>
+</tr>
+<tr>
+<td>Size</td>
+<td>35mm x 30mm</td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Thickness</td>
+<td>1.6mm</td>
+</tr>
+<tr>
+<td>Copper</td>
+<td>1oz (35um)</td>
+</tr>
+<tr>
+<td>Surface finish</td>
+<td>HASL (lead-free)</td>
+</tr>
+<tr>
+<td>Solder mask</td>
+<td>Black</td>
+</tr>
+<tr>
+<td>Silkscreen</td>
+<td>White</td>
+</tr>
+<tr>
+<td>Qty</td>
+<td>5 boards</td>
+</tr>
+<tr>
+<td>Est. cost</td>
+<td>~$5 USD</td>
+</tr>
+</tbody>
+</table>
+<h3 id="production-pcb">Production PCB</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>File</td>
+<td><code>kicad/gerbers/Lumi_Wand_12CH_Driver_PROD.gerbers.zip</code></td>
+</tr>
+<tr>
+<td>Size</td>
+<td>75mm x 105mm</td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Thickness</td>
+<td>1.6mm</td>
+</tr>
+<tr>
+<td>Copper</td>
+<td>1oz (35um)</td>
+</tr>
+<tr>
+<td>Surface finish</td>
+<td>HASL (lead-free)</td>
+</tr>
+<tr>
+<td>Solder mask</td>
+<td>Black</td>
+</tr>
+<tr>
+<td>Silkscreen</td>
+<td>White</td>
+</tr>
+<tr>
+<td>Min trace/space</td>
+<td>0.2mm / 0.2mm</td>
+</tr>
+<tr>
+<td>Min drill</td>
+<td>0.3mm</td>
+</tr>
+<tr>
+<td>Qty</td>
+<td>5 boards</td>
+</tr>
+<tr>
+<td>Est. cost</td>
+<td>~$5-8 USD</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ordering-steps">Ordering Steps</h3>
+<ol type="1">
+<li>Go to <a href="https://jlcpcb.com">jlcpcb.com</a></li>
+<li>Click "Order Now" → upload the <code>.gerbers.zip</code> file</li>
+<li>JLCPCB auto-detects board size and layers</li>
+<li>Select options: 2-layer, 1.6mm, HASL, black mask</li>
+<li>Add to cart → checkout</li>
+<li>Lead time: 3-5 days fabrication + shipping</li>
+</ol>
+<hr />
+<h2 id="4-production-pcb--routing-with-freerouter">4. Production PCB —
+Routing with Freerouter</h2>
+<p>The production PCB is generated programmatically (no schematic).
+Traces must be routed externally.</p>
+<h3 id="routing-workflow">Routing Workflow</h3>
+<ol type="1">
+<li>Open <code>Lumi_Wand_12CH_Driver_PROD.kicad_pcb</code> in KiCad
+8</li>
+<li>File → Export → Specctra DSN</li>
+<li>Open DSN file in <strong>Freerouter v2.1</strong> (on Win11)</li>
+<li>Click "Autoroute" → wait for completion</li>
+<li>File → Export → Specctra Session (.ses)</li>
+<li>Back in KiCad: File → Import → Specctra Session</li>
+<li>Press <strong>B</strong> (Fill All Zones) to connect GND zone</li>
+<li>Run DRC → should be 0 violations, 0 unconnected</li>
+<li>File → Fabrication Outputs → Gerbers → Plot</li>
+<li>File → Fabrication Outputs → Drill Files → Generate</li>
+<li>ZIP the gerbers folder → upload to JLCPCB</li>
+</ol>
+<h3 id="drc-status">DRC Status</h3>
+<p>Production PCB is <strong>DRC clean</strong> — 0 violations, 0
+unconnected pads after Freerouter + zone fill.</p>
+<hr />
+<h2 id="5-prototype-circuit-per-channel">5. Prototype Circuit (per
+channel)</h2>
+<pre><code>PCA9685 PWM Out ─── 100Ω ──── IRLZ44N Gate
+                               │
+                         100kΩ ┤ (pull-down)
+                               │
+                              GND
+
+10V+ ──── LED+ (anode)
+           LED (chip)
+           LED- (cathode) ──── MOSFET Drain
+                               MOSFET Source ──── 10Ω 5W ──── GND</code></pre>
+<ul>
+<li>Current: I = V / R = ~7V / 10Ω = ~700mA</li>
+<li>MOSFETs run cold (Rds_on = 0.022Ω)</li>
+<li>Resistors run <strong>very hot</strong> (~4.3W each, 52W total for
+12 channels)</li>
+</ul>
+<hr />
+<h2 id="6-production-circuit-per-channel">6. Production Circuit (per
+channel)</h2>
+<pre><code>         VIN (Pin 2)
+          |
+10V+ ────+         +── Inductor (47uH) ── LED+ (anode)
+          |         |
+          PT4115 SW─+
+          |    |
+          |   SS14 diode
+          |    | (freewheeling: cathode=SW, anode=GND)
+          |   GND
+          |
+     DIM (Pin 4) &lt;── PCA9685 CH output (PWM, 3.3V logic)
+          |
+     CSN (Pin 5) ── 0.15Ω sense ── GND
+                         |
+                    LED- (cathode)
+          |
+     GND (Pin 1) ── GND</code></pre>
+<ul>
+<li>Current: I = 0.1V / 0.15Ω = 667mA ≈ 700mA</li>
+<li>Dimming: PCA9685 sends 1kHz PWM to PT4115 DIM pin</li>
+<li>No MOSFET needed — PT4115 handles switching internally</li>
+<li>~95% efficient, ~4.2W total heat waste</li>
+</ul>
+<hr />
+<h2 id="7-production-pcb-component-layout">7. Production PCB Component
+Layout</h2>
+<pre><code>+─────────────────────────────────────────────────────+
+| [MH1]     [J1 INPUT]  [U1 PCA9685]  [C1][C2]       |
+|           10V+ GND     TSSOP-28      10uF 100nF     |
+|           SDA SCL 3V3  [R_SDA][R_SCL]               |
+|                         10K    10K                   |
+| R  G  B  W    ← LED1 channels (4x PT4115 stages)   |
+| U2 U3 U4 U5  ← PT4115 ICs (SOT-89-5)              |
+| L1 L2 L3 L4  ← 47uH inductors (CD43 4x4mm)        |
+| D1 D2 D3 D4  ← SS14 diodes (SMA)                   |
+| R1 R2 R3 R4  ← 0.15Ω sense resistors (0805)        |
+|                                                     |
+| R  G  B  W    ← LED2 channels                       |
+| U6 U7 U8 U9                                        |
+| L5 L6 L7 L8                                        |
+| D5 D6 D7 D8                                        |
+| R5 R6 R7 R8                                        |
+|                                                     |
+| R  G  B  W    ← LED3 channels                       |
+| U10 U11 U12 U13                                    |
+| L9  L10 L11 L12                                    |
+| D9  D10 D11 D12                                    |
+| R9  R10 R11 R12                                    |
+|                                                     |
+| [J2 LED1_OUT] [J3 LED2_OUT] [J4 LED3_OUT]  [MH2]   |
+|  1x9 header    1x9 header    1x9 header             |
+|  R+ R- G+ G- B+ B- W+ W- GND (per connector)       |
++─────────────────────────────────────────────────────+</code></pre>
+<hr />
+<h2 id="8-assembly--soldering-order">8. Assembly — Soldering Order</h2>
+<h3 id="production-pcb-recommended-order">Production PCB (recommended
+order)</h3>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Components</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>U1 (PCA9685 TSSOP-28)</td>
+<td>Finest pitch — do first with clean board. Use flux + drag
+solder</td>
+</tr>
+<tr>
+<td>2</td>
+<td>All 0805 passives (C1-C14, R1-R12, R_SDA, R_SCL)</td>
+<td>Small SMD. Tweezers + fine tip iron</td>
+</tr>
+<tr>
+<td>3</td>
+<td>U2-U13 (PT4115 SOT-89-5)</td>
+<td>12x ICs. Use flux, align carefully</td>
+</tr>
+<tr>
+<td>4</td>
+<td>D1-D12 (SS14 SMA)</td>
+<td>12x diodes. Cathode band orientation critical</td>
+</tr>
+<tr>
+<td>5</td>
+<td>L1-L12 (47uH CD43 inductors)</td>
+<td>12x inductors. Larger pads, solder last of SMD</td>
+</tr>
+<tr>
+<td>6</td>
+<td>J1 (JST-XH 5-pin)</td>
+<td>Through-hole, solder from bottom</td>
+</tr>
+<tr>
+<td>7</td>
+<td>J2, J3, J4 (1x9 pin headers)</td>
+<td>Through-hole</td>
+</tr>
+<tr>
+<td>8</td>
+<td>MH1, MH2 (M2 mounting holes)</td>
+<td>Optional — just pass-through pads</td>
+</tr>
+</tbody>
+</table>
+<h3 id="prototype-pcb-recommended-order">Prototype PCB (recommended
+order)</h3>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Components</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>U1 (PCA9685 TSSOP-28)</td>
+<td>Same as production</td>
+</tr>
+<tr>
+<td>2</td>
+<td>All 0805 passives (100Ω, 100kΩ, caps)</td>
+<td>SMD</td>
+</tr>
+<tr>
+<td>3</td>
+<td>IRLZ44N MOSFETs (12x TO-220)</td>
+<td>Through-hole, bend leads</td>
+</tr>
+<tr>
+<td>4</td>
+<td>10Ω 5W resistors (12x)</td>
+<td>Through-hole, leave clearance for heat</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Connectors (JST-XH, pin headers)</td>
+<td>Through-hole</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="9-testing-after-assembly">9. Testing After Assembly</h2>
+<h3 id="step-1-visual-inspection">Step 1: Visual Inspection</h3>
+<ul>
+<li>Check for solder bridges (especially PCA9685 TSSOP-28 pins)</li>
+<li>Verify diode orientation (cathode band)</li>
+<li>Verify PT4115 pin 1 (GND) orientation</li>
+<li>Check all solder joints under magnification</li>
+</ul>
+<h3 id="step-2-power-test-no-leds">Step 2: Power Test (no LEDs)</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect 10V+ and GND only (no LEDs yet)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Measure current draw — should be &lt; 50mA (PCA9685 idle)</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If high current → short circuit, inspect immediately</span></span></code></pre></div>
+<h3 id="step-3-i2c-communication">Step 3: I2C Communication</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect SDA, SCL, 3V3 to Raspberry Pi 5</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">i2cdetect</span> <span class="at">-y</span> 1</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Should show PCA9685 at address 0x40</span></span></code></pre></div>
+<h3 id="step-4-channel-test-with-leds">Step 4: Channel Test (with
+LEDs)</h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Python test — light each channel at 50% PWM</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> adafruit_pca9685 <span class="im">import</span> PCA9685</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> board, busio</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>i2c <span class="op">=</span> busio.I2C(board.SCL, board.SDA)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA9685(i2c)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>pca.frequency <span class="op">=</span> <span class="dv">1000</span>  <span class="co"># 1kHz for PT4115 DIM pin</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Test channel 0 (LED1 Red)</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>pca.channels[<span class="dv">0</span>].duty_cycle <span class="op">=</span> <span class="bn">0x7FFF</span>  <span class="co"># 50% PWM</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Test all 12 channels sequentially</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ch <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">12</span>):</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    pca.channels[ch].duty_cycle <span class="op">=</span> <span class="bn">0x7FFF</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    time.sleep(<span class="fl">0.5</span>)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    pca.channels[ch].duty_cycle <span class="op">=</span> <span class="dv">0</span></span></code></pre></div>
+<h3 id="step-5-current-verification-production-only">Step 5: Current
+Verification (production only)</h3>
+<ul>
+<li>Measure voltage across any 0.15Ω sense resistor</li>
+<li>Should read ~0.1V (= 667mA through LED)</li>
+<li>If voltage is 0V → PT4115 not switching, check DIM pin</li>
+</ul>
+<hr />
+<h2 id="10-pca9685-channel-mapping">10. PCA9685 Channel Mapping</h2>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>PCA9685 Pin</th>
+<th>Signal</th>
+<th>LED</th>
+<th>Color</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CH0</td>
+<td>Pin 6</td>
+<td>PWM_L1R</td>
+<td>LED1</td>
+<td>Red</td>
+</tr>
+<tr>
+<td>CH1</td>
+<td>Pin 7</td>
+<td>PWM_L1G</td>
+<td>LED1</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>CH2</td>
+<td>Pin 8</td>
+<td>PWM_L1B</td>
+<td>LED1</td>
+<td>Blue</td>
+</tr>
+<tr>
+<td>CH3</td>
+<td>Pin 9</td>
+<td>PWM_L1W</td>
+<td>LED1</td>
+<td>White</td>
+</tr>
+<tr>
+<td>CH4</td>
+<td>Pin 10</td>
+<td>PWM_L2R</td>
+<td>LED2</td>
+<td>Red</td>
+</tr>
+<tr>
+<td>CH5</td>
+<td>Pin 11</td>
+<td>PWM_L2G</td>
+<td>LED2</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>CH6</td>
+<td>Pin 12</td>
+<td>PWM_L2B</td>
+<td>LED2</td>
+<td>Blue</td>
+</tr>
+<tr>
+<td>CH7</td>
+<td>Pin 13</td>
+<td>PWM_L2W</td>
+<td>LED2</td>
+<td>White</td>
+</tr>
+<tr>
+<td>CH8</td>
+<td>Pin 15</td>
+<td>PWM_L3R</td>
+<td>LED3</td>
+<td>Red</td>
+</tr>
+<tr>
+<td>CH9</td>
+<td>Pin 16</td>
+<td>PWM_L3G</td>
+<td>LED3</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>CH10</td>
+<td>Pin 17</td>
+<td>PWM_L3B</td>
+<td>LED3</td>
+<td>Blue</td>
+</tr>
+<tr>
+<td>CH11</td>
+<td>Pin 18</td>
+<td>PWM_L3W</td>
+<td>LED3</td>
+<td>White</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="11-connector-pinout">11. Connector Pinout</h2>
+<h3 id="j1--input-jst-xh-5-pin">J1 — Input (JST-XH 5-pin)</h3>
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Signal</th>
+<th>Wire Color (suggested)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>10V+</td>
+<td>Red</td>
+</tr>
+<tr>
+<td>2</td>
+<td>GND</td>
+<td>Black</td>
+</tr>
+<tr>
+<td>3</td>
+<td>SDA</td>
+<td>Yellow</td>
+</tr>
+<tr>
+<td>4</td>
+<td>SCL</td>
+<td>Green</td>
+</tr>
+<tr>
+<td>5</td>
+<td>3V3</td>
+<td>Orange</td>
+</tr>
+</tbody>
+</table>
+<h3 id="j2j3j4--led-output-1x9-pin-header">J2/J3/J4 — LED Output (1x9
+pin header)</h3>
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Signal</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>LEDP_R</td>
+<td>Red LED anode (+)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>CSN_R</td>
+<td>Red LED cathode (-) / sense return</td>
+</tr>
+<tr>
+<td>3</td>
+<td>LEDP_G</td>
+<td>Green LED anode (+)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>CSN_G</td>
+<td>Green LED cathode (-)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>LEDP_B</td>
+<td>Blue LED anode (+)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>CSN_B</td>
+<td>Blue LED cathode (-)</td>
+</tr>
+<tr>
+<td>7</td>
+<td>LEDP_W</td>
+<td>White LED anode (+)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>CSN_W</td>
+<td>White LED cathode (-)</td>
+</tr>
+<tr>
+<td>9</td>
+<td>GND</td>
+<td>Common ground</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="12-troubleshooting">12. Troubleshooting</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCA9685 not detected on I2C</td>
+<td>SDA/SCL swapped, pull-ups missing, 3V3 not connected</td>
+<td>Check wiring, verify 10kΩ pull-ups soldered</td>
+</tr>
+<tr>
+<td>LED doesn't light</td>
+<td>Wrong channel, diode reversed, PT4115 not getting VIN</td>
+<td>Check PWM output with scope, verify VIN at pin 2</td>
+</tr>
+<tr>
+<td>LED flickers</td>
+<td>Poor solder joint on sense resistor, loose inductor</td>
+<td>Reflow solder joints on that channel</td>
+</tr>
+<tr>
+<td>All LEDs dim</td>
+<td>VIN too low, sense resistor wrong value</td>
+<td>Measure VIN (should be 10V), verify 0.15Ω marking (0R15)</td>
+</tr>
+<tr>
+<td>PT4115 gets very hot</td>
+<td>Shorted inductor, wrong diode orientation</td>
+<td>Check SS14 cathode → SW, anode → GND</td>
+</tr>
+<tr>
+<td>Prototype resistors smoking</td>
+<td>Normal at full power (52W total)</td>
+<td>Run at ≤50% PWM, or switch to production PT4115 board</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Document: PCB Fabrication &amp; Assembly Guide</em> <em>Version:
+1.0 — April 2026 | DrDev / LumiAI</em></p></body></html>

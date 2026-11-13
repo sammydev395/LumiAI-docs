@@ -1,0 +1,1278 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LumiAI
+Robotic Arm
+System</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="rocket-lumiai-robotic-arm-system">🚀 LumiAI Robotic Arm System</h1>
+<div align="center">
+  <img src="media/LumiAI.png.png" alt="LumiAI Electronics Logo" width="150" height="150">
+  <br>
+  <strong>Advanced AI-Powered Robotic Lighting Platform</strong>
+</div>
+
+<hr />
+<blockquote>
+<p><strong>🔒 INTERNAL MASTER DOC.</strong> This is the full working
+product doc — it contains internal sourcing, production, pricing
+strategy, and go-to-market details <strong>not for public
+release</strong>. The sanitized, customer-facing copy (website / sales
+source) lives in <strong><a
+href="LumiAI%20Robotic%20Arm%20System%20%28Customer-Facing%29.html">LumiAI
+Robotic Arm System (Customer-Facing).md</a></strong>. When product facts
+change, update this doc first, then propagate the customer-safe subset
+to the customer-facing doc.</p>
+</blockquote>
+<hr />
+<h1 id="dart-brand-messaging--positioning">🎯 Brand Messaging &amp;
+Positioning</h1>
+<blockquote>
+<p>Source copy for the marketing website (currently in design via Claude
+Design) and all customer-facing materials.</p>
+</blockquote>
+<h3 id="tagline--headline-rotation">Tagline / Headline Rotation</h3>
+<ul>
+<li><strong>One robot that guards.</strong></li>
+<li><strong>One robot that sees.</strong></li>
+<li><strong>One robot that reacts.</strong></li>
+<li><strong>One robot that lights.</strong></li>
+</ul>
+<h3 id="hero-statement">Hero Statement</h3>
+<p>LumiAI started as a light that aims itself. It's grown into a
+<strong>6-axis AI robot for your ceiling</strong> — spotting hazards,
+tracking your space, and responding to gestures, with precise light now
+just one of the things it does.</p>
+<h3 id="headline-stats">Headline Stats</h3>
+<table>
+<thead>
+<tr>
+<th>Stat</th>
+<th>Descriptor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>6-axis</strong></td>
+<td>robotic arm</td>
+</tr>
+<tr>
+<td><strong>On-device</strong></td>
+<td>AI vision</td>
+</tr>
+<tr>
+<td><strong>24/7</strong></td>
+<td>safety watch</td>
+</tr>
+</tbody>
+</table>
+<h3 id="core-narrative-one-machine-many-jobs">Core Narrative (One
+Machine, Many Jobs)</h3>
+<p>Position LumiAI as a <strong>single ceiling-mounted machine that does
+the work of several devices at once</strong> — the same arm, camera, and
+sensor suite handle multiple jobs simultaneously, and the platform is
+extensible to more:</p>
+<ul>
+<li><strong>Light</strong> — aims a precise, tracked beam exactly where
+it's needed, hands-free, from spotlight to RGBW scene.</li>
+<li><strong>Guard</strong> — watches for fire, intruders, CO, and falls
+around the clock, corroborating alarms and flagging what people
+miss.</li>
+<li><strong>Sense</strong> — tracks people, tables, and occupancy in
+real time with on-device vision that understands the whole room, not
+just a point.</li>
+<li><strong>Voice &amp; Gesture</strong> — talk to it, point, or just
+walk in; the <strong>iFlytek HiWonder far-field sound array</strong>
+(mic array + speaker) takes natural spoken commands and talks back,
+alongside on-device face and gesture recognition.</li>
+</ul>
+<h3 id="how-it-works-sense--see--aim--light">How It Works (Sense → See →
+Aim → Light)</h3>
+<p>A passive sensor wakes the system, the camera understands the scene,
+the arm aims, and the wand lights — in well under a second, with zero
+buttons.</p>
+<ol type="1">
+<li><strong>Sense presence</strong> — a 4-sensor PIR ring gives ~360°
+coverage in total darkness, waking the arm the instant anyone enters (or
+on the spoken wake word, at micro-amp standby).</li>
+<li><strong>See the scene</strong> — the <strong>OAK-D S2</strong>
+stereo-depth AI camera recognizes faces, gestures, and motion on-device
+(OpenCV + PyTorch on a Raspberry Pi 5).</li>
+<li><strong>Aim precisely</strong> — six degrees of freedom let the arm
+track a moving target smoothly: a person, a performer, or your hands on
+the workbench.</li>
+<li><strong>Light it up</strong> — the Lumi Wand delivers a clean
+spotlight today, with 12-channel addressable RGBW scenes, beam shaping,
+and music sync next.</li>
+</ol>
+<h3 id="three-parts-one-brain">Three Parts, One Brain</h3>
+<p>An arm to move, a wand to light, and a sensor suite to perceive —
+engineered in-house on a Raspberry Pi 5 platform with battery
+backup.</p>
+<ul>
+<li><strong>The Arm — LumiAI Arm</strong>: a modified 6-axis chassis
+rebuilt in the US with a custom camera mount, machined base plate, and
+an integrated LiFePO4 UPS. Ceiling- or wall-mounted for full-room reach.
+<em>(Compute: RPi 5 + 1 TB NVMe · Backup: LiFePO4 UPS)</em></li>
+<li><strong>The Wand — Lumi Wand</strong>: the business end — a
+12-driver addressable RGBW light head with active thermal control,
+swappable between spotlight, floodlight, and effect attachments.
+<em>(Control: I²C · PCA9685 · Variants: Arm / Flashlight)</em></li>
+<li><strong>The Sensors — Sensor Suite</strong>: a perception ring
+around the base — passive PIR presence that fires in total darkness,
+plus power, thermal, and air-quality telemetry that corroborate your
+alarms and feed the AI. <em>(Presence: 4× PIR in the dark · Hazard: CO +
+smoke + PM · Voice: iFlytek HiWonder sound array)</em></li>
+</ul>
+<hr />
+<h1 id="rocket-product-overview">🚀 Product Overview</h1>
+<h3 id="concept">Concept</h3>
+<p>A <strong>6-DOF robotic arm platform</strong> integrating an
+<strong>AI-driven optical camera</strong> and a <strong>versatile
+gripper-mounted lighting system</strong>. Designed to be <strong>modular
+and environment-adaptive</strong>, the product enhances lighting control
+in <strong>garages, kitchens, restaurants, and entertainment
+venues</strong> by intelligently following human gestures, faces, and
+movement. The system is typically <strong>ceiling-mounted
+(inverted)</strong> or <strong>side wall-mounted</strong>, providing
+optimal coverage and tracking capabilities from elevated positions.</p>
+<h3 id="key-features">Key Features</h3>
+<ul>
+<li><strong>AI Vision System</strong>:
+<ul>
+<li>Arm-mounted <strong>OAK-D S2 stereo-depth AI camera</strong>
+(standardized across all units) for on-device face, gesture, and
+depth-aware tracking.</li>
+<li><strong>PIR sensor</strong> for initial presence detection, enabling
+smart energy usage.</li>
+</ul></li>
+<li><strong>Voice System</strong>:
+<ul>
+<li><strong>iFlytek HiWonder sound array</strong> (far-field mic array +
+speaker) for natural spoken commands, wake-word standby, and voice
+feedback.</li>
+</ul></li>
+<li><strong>Lighting System</strong>:
+<ul>
+<li>Relay-controlled spotlight (first release MVP).</li>
+<li><strong>Lumi Wand</strong>: 12-channel addressable RGBW light module
+(3× independently controllable 10 W RGBW LEDs) gripped and aimed by the
+arm.</li>
+<li><strong>Modular &amp; standalone-capable</strong>: the same Lumi
+Wand can be sold separately as a battery-powered handheld light via the
+<strong>LumiAI Battery Extension</strong> (see <em>Standalone
+Product</em> section).</li>
+<li>Future versions: RGB light effects, dynamic beam shaping, and
+synchronized music-light interactions.</li>
+<li>Flexible gripper mount allows swap-out between spotlight,
+floodlight, or decorative lighting attachments.</li>
+</ul></li>
+<li><strong>Robotic Arm</strong>:
+<ul>
+<li>Imported <strong>Hiwonder ArmPi Ultra (6-DOF)</strong> chassis from
+China.</li>
+<li>Modified in-house (US) with custom 3D-printed and CNC-machined parts
+for camera integration, UPS housing, and sensor boards.</li>
+<li><strong>Mounting Options</strong>: Typically installed as
+<strong>ceiling-mounted (inverted)</strong> or <strong>side
+wall-mounted</strong> for optimal coverage and tracking range.</li>
+</ul></li>
+<li><strong>Hardware Platform</strong>:
+<ul>
+<li><strong>Raspberry Pi 5</strong>, upgraded with <strong>1 TB NVMe +
+512 GB SD card</strong>.</li>
+<li>Integrated <strong>UPS module</strong> for uninterrupted
+operation.</li>
+<li><strong>Relay and PIR boards</strong> securely mounted on aluminum
+base plate.</li>
+</ul></li>
+<li><strong>Software Stack</strong>:
+<ul>
+<li><strong>Restic</strong> for automated local + cloud backups.</li>
+<li>AI models for gesture and face recognition (OpenCV + PyTorch/ONNX on
+RPi5).</li>
+<li>Future software roadmap: MQTT/REST API integration for home
+automation &amp; restaurant lighting systems.</li>
+</ul></li>
+</ul>
+<h3 id="differentiation">Differentiation</h3>
+<ul>
+<li>Most robotic lighting systems are <strong>fixed-mount and
+pre-programmed</strong> (DJ lights, moving head lights).</li>
+<li>This product adds <strong>true autonomy + human
+interaction</strong>, making it ideal for smart homes, garages,
+kitchens, gyms, and <strong>restaurants/bars seeking interactive
+ambiance</strong>.</li>
+<li>Scalable from <strong>utility (garage task light)</strong> to
+<strong>experience (dance floor entertainment)</strong> to <strong>AI
+coaching (gym/fitness)</strong>.</li>
+<li><strong>Modular product family</strong>: one shared wand engine
+sells two ways — embedded in the robotic arm system <em>and</em> as a
+standalone battery-powered handheld light — broadening the addressable
+market without new core tooling.</li>
+</ul>
+<h3 id="mounts--payloads-one-arm-many-configurations">Mounts &amp;
+Payloads (One Arm, Many Configurations)</h3>
+<p>One arm and <strong>one codebase</strong> cover many setups — only a
+config variant changes:</p>
+<ul>
+<li><p><strong>Mounts</strong>: ceiling (inverted), wall,
+<strong>desk-clamp</strong>, or <strong>floor / light-stand</strong> —
+the base is a parameterized <code>world→base_link</code> transform.
+Ceiling/overhead suits the tracked light and top-down shots; a
+desk-clamp or stand at eye level suits a front-facing camera.</p></li>
+<li><p><strong>Gripper payloads (swappable in the BigClaw)</strong>: the
+<strong>Lumi Wand</strong> (spotlight / flood / effect) <em>or</em> a
+<strong>camera adapter</strong> (standard 1/4"-20) that aims the user's
+own camera.</p>
+<ul>
+<li><p><strong>Phone cradle (BigClaw fleet accessory, any BigClaw arm;
+A-back — test print, hardware on hold until the printed fit is
+accepted):</strong> one adjustable cradle for <strong>40 popular
+phones</strong> — iPhone 12 Pro Max, iPhone 13 / 14 / 15 / 16 (all sizes
+but the 13 mini), Galaxy S22–S25 (all sizes) and A54 / A55 / A56, Pixel
+7–9 (all sizes) — <strong>bare or in a slim case</strong> (80 variants:
+W 70.5–83.4, L 146.0–167.2, T 7.2–11.9, ≤ 270 g). <strong>Rugged cases
+are not supported.</strong> Phone data is sourced, not calipered
+(Apple's dimensional drawings, Samsung / Google specs; the values
+without a drawing are marked ⏳ in
+<code>cad/freecad/lumi_phone_set.py</code>); every phone model carries
+dummy cameras, buttons, port and front camera, and the gates read them
+from those bodies.</p>
+<ul>
+<li><strong>Strength (operator rule):</strong> every printed part has a
+gate ≤ yield / 3 (16.7 MPa, PETG) at 50 N by hand on any grab point in
+any direction, the heaviest phone (S24 Ultra + case) at 5 g, and the 500
+N clamp / opening push of the knob; nothing load-bearing under 2 mm;
+every gate fails on wrong geometry (a BITE line). Tightest: the knob
+frame's ties 16.4, the catch tongue in the groove 16.4, the L's crossbar
+15.2 and its leg 15.0 MPa.</li>
+<li><strong>Clamp:</strong> the phone is held by its long edges. The
+<strong>fixed jaw is part of the base</strong>: its lip's 50° underside
+carries a TPU leg onto every phone's front edge. The <strong>moving
+jaw</strong> runs on <strong>two 8 mm dovetail tracks</strong>. It is
+driven from <strong>behind the base</strong>: an <strong>M4 × 40 hex
+bolt</strong> sits in the <strong>boss block</strong> (one part: the
+pressure plate in the jaw, a tongue through the base's slot, and a sled
+behind the base), and a <strong>Ø20 × 5 knurled thumb nut</strong> on it
+is held <strong>axially only</strong> in the <strong>knob frame</strong>
+screwed to the base's back face (4 × M3 × 12). The nut drives the jaw
+<strong>both ways</strong> (clamp and open). Greased stainless M4
+self-locks (lead 3.6° &lt; friction 5.3°); a TPU drag pad in the base's
+back face, on the nut's rim, adds a little turning drag. <strong>Finger
+access:</strong> the nut's knurl is open below and on both sides: a Ø16
+finger reaches <strong>155°</strong> of it, on the bench and hung on the
+claw.</li>
+<li><strong>Pads and springs:</strong> both jaws carry TPU 85A pads
+pressed onto three printed pegs. The right pad grips up to the iPhone
+16's <strong>Camera Control</strong> band and runs on to the jaw's full
+length as a tail that never touches the phone. <strong>Back
+springs:</strong> a colour-coded TPU 95A fin spring (two pieces) under
+the phone lifts every phone's front onto the lips — print the class for
+the phone: <strong>A green</strong> (clamped T 7.15–8.80), <strong>B
+yellow</strong> (8.80–10.40), <strong>C red</strong> (10.40–12.05). The
+back springs, the drag pad and the catch's groove spring are 0.1/side
+press fits: thumbed in, they stay with no phone, nut or tongue in.
+<strong>Corner ledges</strong> stop the phone's bottom edge: the fixed
+one 4.0 thick, the moving one 2.7 and backed by the portrait foot.</li>
+<li><strong>Top lock (the same knob):</strong> an <strong>inverted
+L</strong> — its <strong>leg</strong> (14 high × 15 wide; the L prints
+in PAHT-CF) runs through a tunnel in the moving jaw and is
+<strong>pinched by the pressure plate</strong>, so the knob that clamps
+the phone also locks the L. Its <strong>crossbar</strong> (16 deep)
+crosses the phone's top edge; its free end stays inside the fixed jaw's
+outer face (no shelf: the L is a cantilever off its leg). A <strong>TPU
+85A fin-spring top pad</strong> presses the top edge (0.7 squeeze).
+<strong>The top-edge mics are never covered:</strong> an obround slot
+through the pad and the crossbar sits over every Galaxy / Pixel top mic
+and vent (each opening + 0.5, from <code>lumi_phone_set.TOP_MICS</code>;
+iPhones have none). Loosen the knob, lift the L and the phone comes
+out.</li>
+<li><strong>Rear cameras:</strong> every rear lens of all 80 variants
+sees past every cradle part at its type's half-angle (ultra-wide 60°,
+main 40°, tele 15°; lenses of unknown type and unmodelled camera
+plateaus / bars gated as ultra-wides). The knob frame's far edge is the
+closest part.</li>
+<li><strong>Grip post + mounting:</strong> the BigClaw grips a
+<strong>square 38 mm post</strong> (corners R 8), its axis
+<strong>across</strong> the fingers, with the wand ear's 32 × 22 × 4 jaw
+cradles on all four faces. It screws to a <strong>foot</strong> fused to
+the base (2 × M4 × 16 self-tap). <strong>Print the base for the
+orientation you need</strong> — portrait (the foot under the phone's
+bottom edge), landscape (the foot at the fixed jaw's end), or both;
+switching means reprinting the base, or using the wrist's 90° roll. The
+post's base end carries a <strong>1/4"-20 HELIFOUNER insert</strong> (a
+camera / tripod mount with the cradle off); its tip carries the catch's
+groove (below).</li>
+<li><strong>Sizes (solid PETG):</strong> base portrait 140.9 × 72.8 ×
+51.1 mm, 154 g; landscape 151.2 × 64.0 × 51.1, 136 g; portrait +
+landscape 151.2 × 72.8 × 51.1, 177 g.</li>
+<li><strong>Printing:</strong> support-free except two minor supports —
+the L's lip over the phone's bezel (2.8 overhang) and the left TPU pad's
+sloped lip leg (3.3). Bridges up to 25 mm under the operator's exception
+(the L's slot roof, the jaw's tunnel floor 15.3, the knob frame's tie
+undersides 16.1 / 14.3), proven by the
+<code>…_bridge_coupon_L_slot</code> coupon — print it first or
+alongside.</li>
+</ul>
+<p><img src="images/hardware/phone_cradle_aback_track.png"
+alt="A-back phone cradle: the moving jaw on its two dovetail tracks, the boss block and the knob frame behind the base." /></p>
+<table>
+<thead>
+<tr>
+<th>Phone cradle BOM</th>
+<th>Qty</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Printed (PETG): base
+<code>lumi_bigclaw_phone_cradle_aback_base_portrait_C</code>,
+<code>…_base_landscape_C</code> <strong>or</strong>
+<code>…_base_portrait_landscape_C</code></td>
+<td>1</td>
+<td>the one for the orientation; back face down</td>
+</tr>
+<tr>
+<td>Printed (PETG): <code>…_jaw_frame</code> (top face down),
+<code>…_boss_block</code> (on its +x face), <code>…_knob_frame</code>
+(floor down), <code>…_grip_post</code> (groove side up, base end on the
+bed, no supports), <code>…_top_lock_L</code> (flat, one minor
+support)</td>
+<td>1 each</td>
+<td></td>
+</tr>
+<tr>
+<td>Printed (PETG): <code>…_bridge_coupon_L_slot</code></td>
+<td>1</td>
+<td>proves the 25 mm bridges</td>
+</tr>
+<tr>
+<td>Printed (PETG): <code>…_T_ledge</code> (on its back, no
+supports)</td>
+<td>1</td>
+<td>the removable back-side ledge on the L crossbar; ⚠️ rated 25 N —
+never lift, pry or lever the cradle by it</td>
+</tr>
+<tr>
+<td>Printed (TPU 85A): <code>…_pad_TPU_left</code>,
+<code>…_pad_TPU_right</code>, <code>…_top_pad_TPU</code>,
+<code>…_drag_pad_TPU</code>, <code>…_groove_spring_TPU</code></td>
+<td>1 each</td>
+<td>flat; the left pad needs its one minor support</td>
+</tr>
+<tr>
+<td>Printed (TPU 85A): <code>…_T_nose_pad_TPU</code>,
+<code>…_L_lip_pad_TPU</code></td>
+<td>1 each</td>
+<td>flat; press fit on the T ledge's nose and under the L's lip</td>
+</tr>
+<tr>
+<td>Printed (TPU 95A): <code>…_back_spring_A_TPU</code> /
+<code>_B_</code> / <code>_C_</code></td>
+<td>2 (of the phone's class)</td>
+<td>one per pocket; class by clamped thickness: A 7.15–8.80, B
+8.80–10.40, C 10.40–12.05; base down</td>
+</tr>
+<tr>
+<td><strong>M4 × 40 hex bolt</strong>, 304, fully threaded, 7 AF
+(uxcell, Amazon B07JFJGJ91)</td>
+<td>1</td>
+<td>📦 ordered 2026-11-01 (10-pack, $6.49), due 2026-11-03; needs ≥ 28
+of thread</td>
+</tr>
+<tr>
+<td><strong>Flat knurled thumb nut, M4, Ø20 × 5</strong>, 304
+(MECCANIXITY, Amazon B0FJMQF9HD)</td>
+<td>1</td>
+<td>📦 ordered 2026-11-01 (5-pack, $8.59), due 2026-11-03</td>
+</tr>
+<tr>
+<td>M4 flat washer, DIN 125</td>
+<td>1</td>
+<td>✅ stock; under the bolt head</td>
+</tr>
+<tr>
+<td>M3 × 12 self-tap (pan head)</td>
+<td>4</td>
+<td>✅ stock; the knob frame up into the base</td>
+</tr>
+<tr>
+<td>M3 self-tap (pan head)</td>
+<td>1</td>
+<td>✅ stock; the catch's leg into its backing strip (build with the
+catch only)</td>
+</tr>
+<tr>
+<td><strong>M4 × 16 pan self-tap</strong> (HanTof kit, B09CPHWX7P)</td>
+<td>2</td>
+<td>✅ stock; the post onto its foot</td>
+</tr>
+<tr>
+<td><strong>1/4"-20 HELIFOUNER steel insert, 10 mm</strong> (pilot
+Ø8.7)</td>
+<td>1</td>
+<td>✅ stock; the post's base end</td>
+</tr>
+<tr>
+<td>M2 × 4 brass heat-set insert, Ø3.2 (JROUTH kit, B0FH4SHFWY)</td>
+<td>3</td>
+<td>✅ stock; one in each T ledge's leg, 3.04 × 4.5 install hole</td>
+</tr>
+<tr>
+<td>M3 × 4 brass heat-set insert, knurl Ø5.0 (JROUTH kit,
+B0FH4SHFWY)</td>
+<td>1</td>
+<td>✅ stock; the post's tip block, for the catch latch screw, Ø4.75
+install hole (build with the catch only)</td>
+</tr>
+<tr>
+<td><strong>M2 × 8 knurled thumb screw</strong>, 304, head Ø5 × 5
+(MECCANIXITY)</td>
+<td>3</td>
+<td>📦 arriving 2026-11-11; clamps the three T ledges, finger-tight</td>
+</tr>
+<tr>
+<td>M3 × 10 pan head (set C)</td>
+<td>1</td>
+<td>✅ stock; stands in for the catch latch's thumb screw while
+testing</td>
+</tr>
+<tr>
+<td><strong>M3 × 10 knurled thumb screw, Ø11 × 6 head</strong>, 304
+(MECCANIXITY 6-pack, $7.01, Amazon B0F5GKFJVZ)</td>
+<td>1 (of 6)</td>
+<td>📦 ordered 2026-11-10, arriving 2026-11-11; the catch latch screw,
+into the post's M3 × 4 insert (build with the catch only)</td>
+</tr>
+<tr>
+<td>Silicone grease</td>
+<td>—</td>
+<td>✅ stock; on the bolt's thread</td>
+</tr>
+<tr>
+<td>Printed (optional catch, PETG):
+<code>lumi_bigclaw_catch_aback_bracket_cradle</code> (on its side),
+<code>lumi_bigclaw_catch_aback_strip</code> (flat)</td>
+<td>1 each</td>
+<td>only for a build with the catch (below)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Catch</strong> (holds the post if the claw opens or loses
+power). It is <strong>optional</strong>: a build with no catch is held
+by the claw's grip alone — ⚠️ opening the claw, or a fault that opens
+it, drops the phone; take the phone off before opening the claw or
+powering the arm down. The catch is a printed bracket: a
+<strong>leg</strong> on the BigClaw frame's back plate (its middle Ø3.4
+hole, one M3 self-tap into a printed backing strip inside the frame), an
+<strong>arm</strong> low over the frame, and a flat
+<strong>tongue</strong> rising into a dovetail <strong>groove</strong>
+across the post's tip (open at both ends: the cradle slides on and off
+along it with the claw open). A <strong>TPU groove spring</strong> in
+the groove's flat wall pushes the tongue's dovetail flank home (45 N),
+so the tongue cannot rattle. An <strong>M3 knurled thumb screw</strong>,
+tightened by hand, goes through a slot in the tongue (±2 along the
+claw's axis) into an M3 × 4 heat-set insert in the post's tip block.
+With the screw out, the dovetail still holds the post. Nothing stands
+proud of the post's tip: the catch sits <strong>3.4 mm (6.2°) below the
+OAK-D's view edge</strong>, so no build needs a software mask. Gated at
+≤ yield / 3: 50 N by hand on the tongue's top (16.4 MPa in the groove),
+the hung cradle on the catch alone at 2 g (tongue 14.3), 5 g along the
+post's axis. CAD + gates:
+<code>cad/freecad/lumi_bigclaw_phone_cradle_aback.py</code>,
+<code>cad/freecad/lumi_bigclaw_catch_bracket_aback.py</code> (it runs
+the shared <code>lumi_bigclaw_catch_bracket.py</code>).
+<code>lumi_cradle_in_assembly_coords.py</code> places the cradle and
+catch in the operator's full-assembly frame.</p>
+<p><img src="images/hardware/bigclaw_catch_aback_bracket.png"
+alt="The A-back cradle hung on the claw: the catch under the OAK-D&#39;s view edge." /></p>
+<p><img src="images/hardware/bigclaw_aback_tongue_catch.png"
+alt="The catch: the tongue in the post&#39;s tip groove with the groove spring, the lock pin through the tongue, its lobes behind it." /></p></li>
+</ul></li>
+<li><p><strong>Multi-unit</strong>: two arms cooperate (e.g. camera +
+light) with no forked software.</p></li>
+</ul>
+<hr />
+<h1 id="robot-intelligent-functions">🤖 Intelligent Functions</h1>
+<p>The LumiAI Robotic Arm System can be controlled via <strong>gestures,
+voice commands, and autonomous operation</strong> to perform a wide
+range of intelligent functions across different industries and
+environments.</p>
+<h2 id="hotel-hospitality-industry">🏨 Hospitality Industry</h2>
+<h3 id="table-management">Table Management</h3>
+<ul>
+<li><strong>Table Scan &amp; Tracking</strong>: Automatically scan and
+track available tables in real-time, updating occupancy status for staff
+and reservation systems.</li>
+<li><strong>Unbused Table Detection</strong>: Identify tables that
+should have been cleaned after customers left, alerting staff to
+prioritize cleanup tasks.</li>
+</ul>
+<h3 id="security--safety">Security &amp; Safety</h3>
+<ul>
+<li><strong>Theft Detection</strong>:
+<ul>
+<li>Monitor kitchen areas for unauthorized food removal.</li>
+<li>Detect suspicious activity at cash registers and point-of-sale
+systems.</li>
+</ul></li>
+<li><strong>Pest Detection</strong>: Identify rodents and other pests
+using AI vision, alerting management for immediate action.</li>
+<li><strong>Fire Detection</strong>:
+<ul>
+<li>Monitor front-of-house and back-of-house (kitchen) areas for fire
+hazards.</li>
+<li>Automatic alert system with visual and audio notifications.</li>
+</ul></li>
+<li><strong>Intruder Detection</strong>: Security monitoring during
+off-hours with motion detection and alert capabilities.</li>
+<li><strong>Employee Safety</strong>: Detect safety issues such as
+slips, falls, or unsafe working conditions in real-time.</li>
+<li><strong>Employee Tardiness Detection</strong>: Monitor employee
+arrival times and attendance automatically.</li>
+</ul>
+<h3 id="environmental-monitoring">Environmental Monitoring</h3>
+<ul>
+<li><strong>Kitchen Carbon Monoxide Levels</strong>: Continuous
+monitoring of CO levels in kitchen areas with automatic alerts when
+thresholds are exceeded.</li>
+</ul>
+<h3 id="entertainment--ambiance">Entertainment &amp; Ambiance</h3>
+<ul>
+<li><strong>Dance Floor Spotlight Management</strong>:
+<ul>
+<li>Automatic spotlight lighting with multi-color LED systems.</li>
+<li>Auto-tracking for couple dances and group dances.</li>
+<li>Theme-based lighting synchronized with music and dance
+patterns.</li>
+</ul></li>
+</ul>
+<h2 id="factory-factory-floor">🏭 Factory Floor</h2>
+<h3 id="safety--security">Safety &amp; Security</h3>
+<ul>
+<li><strong>Fire Detection</strong>: Continuous monitoring of factory
+floor for fire hazards with immediate alert capabilities.</li>
+<li><strong>Intruder Detection</strong>: Security monitoring during
+off-hours to protect equipment and facilities.</li>
+<li><strong>Employee Safety Issues</strong>: Real-time detection of
+safety hazards, unsafe behaviors, or emergency situations.</li>
+<li><strong>Employee Tardiness Detection</strong>: Automated attendance
+tracking and monitoring.</li>
+</ul>
+<h3 id="environmental-monitoring-1">Environmental Monitoring</h3>
+<ul>
+<li><strong>Carbon Monoxide Levels</strong>: Continuous air quality
+monitoring with automatic alerts for dangerous CO concentrations.</li>
+</ul>
+<h3 id="operational-support">Operational Support</h3>
+<ul>
+<li><strong>Spotlight Function</strong>:
+<ul>
+<li>Automatic spotlight activation for areas requiring attention.</li>
+<li>Auto-tracking of workers or equipment in need of focused
+lighting.</li>
+<li>Enhanced visibility for critical work zones.</li>
+</ul></li>
+</ul>
+<h2 id="house-garagehome">🏠 Garage/Home</h2>
+<h3 id="safety--security-1">Safety &amp; Security</h3>
+<ul>
+<li><strong>Fire Detection</strong>: Continuous monitoring for fire
+hazards throughout the home/garage area.</li>
+<li><strong>Intruder Detection</strong>: Security monitoring during
+off-hours with motion detection and alert systems.</li>
+<li><strong>Pest Detection</strong>: Identify rodents and other pests
+using AI vision, alerting homeowners.</li>
+</ul>
+<h3 id="environmental-monitoring-2">Environmental Monitoring</h3>
+<ul>
+<li><strong>Carbon Monoxide Levels</strong>: Continuous monitoring of CO
+levels with automatic alerts when dangerous concentrations are
+detected.</li>
+</ul>
+<h3 id="family--pet-care">Family &amp; Pet Care</h3>
+<ul>
+<li><strong>Young Child Safety &amp; Monitoring</strong>:
+<ul>
+<li>Monitor children in designated areas.</li>
+<li>Alert parents to potential safety concerns or unusual activity.</li>
+</ul></li>
+<li><strong>Pet Monitoring</strong>: Track and monitor pets, ensuring
+their safety and well-being.</li>
+</ul>
+<h3 id="utility-functions">Utility Functions</h3>
+<ul>
+<li><strong>Spotlight with Auto-Tracking</strong>:
+<ul>
+<li>Hands-free lighting that follows movement.</li>
+<li>Automatic activation when presence is detected.</li>
+<li>Ideal for garage work, home projects, and general illumination.</li>
+</ul></li>
+</ul>
+<h2 id="weight_lifting-gym--fitness">🏋️ Gym &amp; Fitness</h2>
+<p>When ceiling- or wall-mounted in a home gym, studio, or commercial
+fitness floor, the LumiAI arm becomes an <strong>AI personal-training
+companion</strong> — pairing its camera-based pose tracking with a
+companion <strong>mobile app</strong> that coaches the user in real
+time.</p>
+<h3 id="workout-monitoring">Workout Monitoring</h3>
+<ul>
+<li><strong>AI Pose &amp; Form Analysis</strong>: Track body position,
+joint angles, and movement paths during exercises using the arm-mounted
+AI vision camera.</li>
+<li><strong>Automatic Rep &amp; Set Counting</strong>: Detect and log
+repetitions and sets per exercise without wearables or manual
+tracking.</li>
+<li><strong>Exercise Recognition</strong>: Identify the exercise being
+performed (squat, deadlift, press, curl, etc.) and adapt analysis
+accordingly.</li>
+<li><strong>Tempo &amp; Range-of-Motion Tracking</strong>: Measure
+cadence, time-under-tension, and full vs. partial range of motion.</li>
+</ul>
+<h3 id="coaching--improvement-suggestions">Coaching &amp; Improvement
+Suggestions</h3>
+<ul>
+<li><strong>Real-Time Form Feedback</strong>: Flag unsafe or inefficient
+form (e.g., rounded back, knee cave, uneven bar path) and surface
+corrective cues.</li>
+<li><strong>Personalized Workout Suggestions</strong>: Recommend
+adjustments to weight, reps, rest intervals, and progression based on
+observed performance trends.</li>
+<li><strong>Spotlight &amp; Focus Tracking</strong>: Auto-track and
+illuminate the user during a set for better visibility and
+recording.</li>
+</ul>
+<h3 id="mobile-app-integration">Mobile App Integration</h3>
+<ul>
+<li><strong>Live Companion App</strong>: The arm streams form feedback,
+rep counts, and coaching cues to a paired iOS/Android app over the local
+network/Wi-Fi.</li>
+<li><strong>Progress History &amp; Trends</strong>: Log workouts, track
+personal records, and visualize improvement over time in-app.</li>
+<li><strong>Session Recording &amp; Playback</strong>: Capture annotated
+video of sets for self-review or remote coach review.</li>
+<li><strong>Routine Library &amp; Reminders</strong>: Push guided
+routines, reminders, and goal tracking directly to the user's
+phone.</li>
+<li><strong>Multi-User Profiles</strong>: Recognize and maintain
+separate profiles for household members or gym members.</li>
+</ul>
+<h2 id="clapper-content-creation--creator-studio">🎬 Content Creation /
+Creator Studio</h2>
+<p>The same arm, camera, and voice become a <strong>hands-free robotic
+camera operator</strong> for solo creators — YouTubers, streamers,
+podcasters, crafters, cooks, and tutorial/demo makers. The creator
+directs the shot <strong>by voice while they create</strong> — no second
+person, no touching the rig, never stepping out of frame. This market is
+served by <strong>LumiAI Creator</strong> — the desk-mounted
+content-creator product (the ceiling product is <strong>LumiAI
+Halo</strong>; see <em>The two products</em> below) — and its headline
+feature is the coordinated <strong>Phone-Camera Mode</strong> below.
+<em>(A following key light is a <strong>Halo</strong> capability — the
+Creator has no Lumi Wand. Depth-aware dolly and tracking inside any
+third-party app require the <strong>optional OAK-D S2 add-on</strong>
+below, and must be labelled that way.)</em></p>
+<h3 id="two-creator-tiers--what-you-can-claim">Two Creator tiers — what
+you can claim</h3>
+<ul>
+<li><strong>Base Creator (phone as the eyes).</strong> Tracking runs on
+the <strong>phone's own camera</strong>, so auto-tracking works
+<strong>only while you record inside the LumiAI app</strong>. Claim:
+<em>"auto-tracking when you record in the LumiAI app."</em> No "tracks
+you in TikTok / IG", no depth dolly.</li>
+<li><strong>Creator + OAK-D S2 (optional add-on).</strong> The
+<strong>Pi</strong> does the tracking off the OAK-D, so the creator can
+record in <strong>any app</strong> — TikTok, Instagram, their native
+camera — and the arm still follows. Only this tier may claim
+<strong>"tracks you while you record in TikTok / IG / your camera
+app"</strong> and the <strong>depth-based dolly zoom</strong>, and both
+must be <strong>labelled as needing the OAK-D S2 option</strong>.</li>
+</ul>
+<h3 id="hands-free-camera-operator">Hands-Free Camera Operator</h3>
+<ul>
+<li><strong>Voice-Directed Framing</strong>: spoken commands — "follow
+me", "frame my hands", "frame the product", "wider", "closer" — move the
+arm; the subject is found by the <strong>phone's camera</strong> (base)
+or the <strong>OAK-D S2</strong> (add-on) and the frame is held.</li>
+<li><strong>Auto-Follow Framing</strong>: the arm makes <strong>small
+pan / tilt / roll moves</strong> to keep you in frame as you work at the
+desk. With today's servos these are modest reframing moves, not
+room-scale tracking; stronger shoulder/elbow servos (for wider, faster
+motion) are under consideration, not decided. ⏳ <em>Don't over-claim
+range yet.</em></li>
+<li><strong>Bring Your Own Camera</strong>: a swappable <strong>camera
+adapter</strong> (second gripper payload, standard
+<strong>1/4"-20</strong>) holds the creator's own phone, action-cam,
+webcam, or mirrorless — their glass and color science.</li>
+</ul>
+<h3
+id="iphone-phone-camera-mode--your-phone-as-the-robots-camera-star-flagship-in-development">📱
+Phone-Camera Mode — your phone as the robot's camera ⭐ <em>(flagship;
+in development)</em></h3>
+<p>Clip your phone into the <strong>BigClaw phone cradle</strong> (see
+<strong>Mounts &amp; Payloads</strong> above) and the arm + the LumiAI
+app work it as a <strong>robot camera operator</strong>. One app — the
+companion app, not a second one — coordinates the <em>move</em> and the
+<em>capture</em> together, which a stock third-party camera app
+can't:</p>
+<ul>
+<li><strong>Shoot-on-settle</strong> — the arm moves, settles, then the
+app fires. No start-of-clip blur or wobble.</li>
+<li><strong>Recording tied to the move</strong> — recording starts/stops
+with the framing move, so clips need no trimming.</li>
+<li><strong>Frames from the phone's own feed</strong> (not the tracker's
+offset view), with <strong>exposure + focus locked through the
+move</strong>.</li>
+<li><strong>Portrait ↔︎ landscape via the arm's wrist</strong> (a 90°
+roll mid-shot) — or bring your own mount on the cradle post's
+<strong>1/4"-20</strong> tip.</li>
+<li><strong>Hands-free direction</strong> — voice via the
+<strong>phone's own mic (through our app)</strong>, or the
+<strong>iFLYTEK far-field array where fitted</strong> ("take a picture",
+"start recording", "follow me"); or a <strong>gesture</strong> (from the
+phone's camera, or the OAK-D S2 where fitted — incl. a "photo" gesture
+with a countdown).</li>
+<li><strong>Arm pose stamped per frame</strong> for post stabilization /
+stitching.</li>
+<li><strong>Where it records</strong> — <strong>base Creator</strong>
+records <strong>inside the LumiAI app</strong> (that's what lets the
+phone-camera tracking work), then shares out through the normal
+<strong>share sheet</strong>; auto-tracking in third-party apps is
+<strong>not</strong> a base claim. With the <strong>optional OAK-D
+S2</strong> the Pi tracks independently, so the creator can record in
+<strong>any app</strong> (TikTok / IG / native camera) and still be
+followed — claim this <strong>only</strong> for the OAK option, labelled
+as such. Live streaming isn't claimed either way (direct RTMP out is a
+possible later add).</li>
+<li><strong>Powers your phone while it shoots</strong> — <strong>USB-C
+fast charging (PD / PPS — Super Fast Charging on Galaxy)</strong> from
+the arm keeps the phone topped up through long sessions. Modern phones
+are all USB-C.</li>
+</ul>
+<p><em>Pitch:</em> <strong>"Your phone becomes the robot's
+camera."</strong> Control is <strong>hands-free — no shutter button, no
+touching the phone</strong> — built into the <strong>one planned
+companion app</strong> (not a separate one). <em>(On the entry Creator
+edition the phone is also the <strong>eyes and the mic</strong> — see
+Editions below.)</em></p>
+<blockquote>
+<p>⚠️ <strong>In development — not shipping.</strong> The phone cradle
+is in its first test print (fit unproven); the app is a planned flagship
+direction, not a released feature. No capture-spec claims. Designed for
+a bare <strong>Samsung S22</strong> and <strong>iPhone 12 Pro
+Max</strong> (others TBD). Held from behind, the arm can appear in the
+rear ultrawide's view.</p>
+</blockquote>
+<h3 id="the-two-products">The two products</h3>
+<ul>
+<li><strong>LumiAI Halo</strong> — the <strong>ceiling-mounted</strong>
+arm with the <strong>Lumi Wand spotlight</strong>, <strong>OAK-D
+S2</strong> camera and <strong>iFLYTEK</strong> far-field sound.
+On-robot depth + independent vision (no phone needed), spotlight
+tracking, presence/guard — for general and other applications (garages,
+restaurants, factories, gym, home).</li>
+<li><strong>LumiAI Creator</strong> — the <strong>desktop</strong> arm
+for content creators. By default the <strong>phone is the eyes and
+ears</strong> (camera + mic) via the <strong>LumiAI app</strong> working
+with our RPi5 software stack — <strong>no iFLYTEK</strong>, and the
+<strong>OAK-D S2 is an optional add-on</strong> (base Creator ships
+without it). The <strong>BigClaw phone cradle</strong> (bare Samsung S22
+/ iPhone 12 Pro Max; 1/4"-20 accessory thread) is the core accessory,
+and the phone <strong>charges through the arm (USB-C fast charging — PD
+/ PPS)</strong>.
+<ul>
+<li><strong>Two tiers:</strong> <em>base</em> = phone-camera tracking,
+record in the LumiAI app; <em>+ OAK-D S2</em> = Pi-side tracking, record
+in any app + depth dolly (see <em>Two Creator tiers</em> above).</li>
+<li><strong>Mount: desk clamp.</strong> ⏳ <strong>Still open — don't
+claim yet:</strong> usable <strong>reach / range of motion /
+payload</strong> with a phone (the current ArmPi Ultra servos fall short
+of target; stronger shoulder/elbow servos are under consideration, not
+decided); and <strong>phone retention / drop safety</strong> (a passive
+catch, Creator-mode motion limits, and a gripper board-reset fix are in
+progress — not drop-proof until tested).</li>
+</ul></li>
+<li><strong>App:</strong> <strong>one LumiAI app on iOS and
+Android</strong> (shared core, native shells). <strong>Set up Wi-Fi from
+the LumiAI app over Bluetooth (BLE).</strong></li>
+<li><em>Creator-edition trade-offs (honest):</em> Wi-Fi latency (fine at
+people-following speed); <strong>no depth on most phones</strong> on the
+base tier (iPhone Pro LiDAR aside; the OAK-D add-on restores depth), so
+base hold-distance / depth features soften; iOS needs the app in the
+foreground; a slight phone heat rise over very long sessions (charging
+is handled — see above); the arm must <strong>stop safely if the app
+drops</strong>; a supported-phone list. Servo whine reaches both
+recognition <em>and</em> the recording — quiet, smooth moves matter
+(many creators use their own wireless lav); the app can auto-trim spoken
+commands, or use gestures for start/stop.</li>
+</ul>
+<h3 id="following-key-light--halo-only">Following Key Light — <em>Halo
+only</em></h3>
+<p><em>(A <strong>Halo</strong> capability; the desktop Creator product
+has no Lumi Wand and no following light.)</em></p>
+<ul>
+<li><strong>Tracked Key Light</strong>: on Halo, the Lumi Wand follows
+the subject's face as a key / fill light — consistent, flattering
+lighting with no lighting assistant.</li>
+<li><strong>Tunable RGBW</strong>: 12-channel color / CCT control for
+scene and mood. <em>(On-camera skin-tone quality is gated on the emitter
+/ optic / flicker bench tests — see the <a
+href="Wand_Bench_Test_Phases.html">Wand bench plan</a>.)</em></li>
+</ul>
+<h3 id="one-arm-many-rigs">One Arm, Many Rigs</h3>
+<ul>
+<li><strong>Desk-clamp</strong> at eye level for a front-facing Creator
+camera; <strong>ceiling / overhead</strong> (Halo) for the key light or
+top-down work shots (cooking, crafts, soldering). Same arm, same
+software — the mount is a config variant.</li>
+<li><strong>Two-unit combo (Halo)</strong>: one arm operates the camera
+while a second arm carries the following light — identical code,
+different mounts and payloads.</li>
+</ul>
+<hr />
+<h1 id="flashlight-lumi-wand-anywhere--standalone-battery-powered">🔦
+Lumi Wand Anywhere — Standalone (Battery-Powered)</h1>
+<p>The <strong>Lumi Wand</strong> is a <strong>standalone product in its
+own right — not only an arm accessory</strong> — a battery-powered, app-
+and touch-controlled RGBW light that goes anywhere: no arm, no tether,
+no mains, no install. The <strong>LumiAI Battery Extension</strong> (a
+modular bottom section) screws onto the exact same wand upper assembly
+used in the arm system. Sold standalone as the <strong>Lumi Wand
+Anywhere</strong>. <em><strong>Studio-grade color, anywhere. The light
+that goes where you do.</strong></em></p>
+<h3 id="how-it-works--one-wand-two-products">How It Works — One Wand,
+Two Products</h3>
+<p>The wand body is <strong>variant-agnostic</strong>: it terminates in
+a standard threaded joint and <strong>one 6-pin connector in its end
+plate</strong>, and does not care what is on the other side of it — the
+arm tether and the battery extension present the same six nets on the
+same connector.</p>
+<ul>
+<li><strong>Arm-Tethered SKU</strong> → wand body + <strong>end plate
+and retaining ring</strong>, powered/controlled through the robotic
+arm's power bay via the end-plate connector.</li>
+<li><strong>Standalone SKU</strong> → wand body + <strong>Battery
+Extension</strong>, fully self-contained and portable.</li>
+</ul>
+<p>This means <strong>one factory line and one shared inventory</strong>
+of wand upper assemblies feeds both products. The standalone version is
+a purely additive bottom module — it adds a revenue stream with
+<strong>no redesign of the core wand</strong>.</p>
+<h3 id="whats-in-the-battery-extension">What's in the Battery
+Extension</h3>
+<ul>
+<li><strong>12-Channel Addressable RGBW Light</strong>: 3× independently
+controllable 10 W RGBW LEDs — the same premium light engine as the
+arm-mounted wand.</li>
+<li><strong>Touchscreen Control</strong>: Integrated 1.9" color
+<strong>touch LCD</strong> (LilyGO T-Display-S3 / ESP32-S3) for
+on-device color, brightness, and effect selection — no phone or app
+required to operate.</li>
+<li><strong>Wireless Connectivity</strong>: Built-in <strong>Wi-Fi +
+Bluetooth 5.0</strong> for app control, firmware updates, and future
+smart-lighting integrations.</li>
+<li><strong>LiFePO4 Battery + USB-C PD</strong>: 4× 26700
+<strong>LiFePO4</strong> cells (~51 Wh), recharged from any standard
+USB-C PD charger — no proprietary dock. <em>(⚠️ Runtime, light output,
+and IP rating are <strong>TBD</strong> — bench measurement pending; do
+not quote until measured.)</em></li>
+<li><strong>Mounts Anywhere</strong>: a <strong>1/4"-20 threaded
+insert</strong> on the body (−Y face, opposite the LCD) screws onto any
+<strong>camera tripod, light stand, or bracket</strong> with the LCD
+facing up — or just hold it. ~1 kg, balanced for any ball/pan head.
+<em>(See <a href="Lumi_Wand_Flashlight_Variant.html">Flashlight Variant
+§1.1</a>.)</em></li>
+<li><strong>Rugged, One-Handed Form Factor</strong>: illuminated rocker
+switch and a stepped, grippable silhouette built for field use.</li>
+</ul>
+<h3 id="standalone-use-cases">Standalone Use Cases</h3>
+<ul>
+<li><strong>Patio / deck / garden lighting</strong>: on a stand, color
+scenes + brightness set from the phone.</li>
+<li><strong>Workbench task light / hand-held inspection
+lamp.</strong></li>
+<li><strong>Outside work light</strong>: garage, driveway, car repair —
+handheld or clamped to a stand.</li>
+<li><strong>Camping / tailgating / backyard events</strong>: battery
+color mood light, no outlet.</li>
+<li><strong>Photo / video fill + RGB accent</strong> (creators, product
+shots, streaming) — on a tripod or light stand.</li>
+<li><strong>Emergency / power-outage light.</strong></li>
+<li><strong>Trade-show &amp; retail display lighting</strong> —
+plug-free.</li>
+<li><strong>Hobby</strong>: aquarium/terrarium viewing, model/miniature
+painting, plant photography.</li>
+<li><strong>Demo &amp; on-ramp</strong>: a self-contained, plug-free way
+to demo the light engine — upsells into the full Halo arm system.</li>
+</ul>
+<h3 id="positioning--naming-standalone">Positioning &amp; Naming
+(standalone)</h3>
+<p><strong>Who it's for:</strong> makers/DIYers, photo/video creators,
+outdoor &amp; home users, hobbyists, and event/retail — anyone wanting a
+portable, app- or touch-controllable RGBW light with no install.</p>
+<p><strong>Key messages:</strong></p>
+<ol type="1">
+<li>A true <strong>standalone</strong> light — control from the
+<strong>touch LCD or your phone</strong> (Wi-Fi/BLE), no arm, no wires,
+no app-only lock-in.</li>
+<li><strong>Goes anywhere, mounts anywhere</strong> — handheld, or on
+any camera tripod / light stand (1/4"-20, LCD up).</li>
+<li><strong>Same premium light engine as the Halo arm</strong> — 12
+addressable RGBW channels — so color/quality carry across the whole
+line.</li>
+<li><strong>One wand, two products</strong> — the identical upper
+assembly ships on the arm <em>and</em> on the battery extension: one
+inventory, additive revenue, no core redesign.</li>
+<li>The <strong>accessible on-ramp</strong> into LumiAI — buy the light,
+grow into the Halo arm.</li>
+</ol>
+<p><strong>Relation to Halo:</strong> same Ø70 wand head / light engine;
+the battery extension simply replaces the arm tether. It's the entry SKU
+and the plug-free demo unit for the whole brand.</p>
+<p><strong>Name (LOCKED, operator 2026-10-21):</strong> the standalone
+SKU is the <strong>Lumi Wand Anywhere</strong>.
+<strong>Tagline:</strong> <em>"Studio-grade color, anywhere. The light
+that goes where you do."</em></p>
+<p>⚠️ <strong>Specs TBD — do not quote runtime, lumens, or IP
+rating</strong> until measured on the bench (the OPPLE Light Master IV +
+the E1/E2 plan in <a
+href="Wand_Bench_Test_Phases.html"><code>Wand_Bench_Test_Phases.md</code></a>
+are the instrument/plan).</p>
+<hr />
+<h1 id="high_brightness-third-sku--lumiai-wand-pro-60-w-spotlight">🔆
+Third SKU — LumiAI Wand Pro (60 W Spotlight)</h1>
+<blockquote>
+<p>⚠️ <strong>In design, not shipping.</strong> Direction set
+2026-09-06. Engineering detail, photometric numbers and open gates live
+in <a
+href="Lumi_Wand_Integration.html#54-60-w-variant--concept-direction-2026-09-06"><code>Lumi_Wand_Integration.md</code>
+§5.4</a>. <strong>Nothing in this section should be quoted to a customer
+until the two gates below are closed.</strong></p>
+</blockquote>
+<p>A higher-output wand aimed at commercial installations where the
+standard 33 W unit runs out of reach: larger diameter, roughly double
+the light engine, <strong>no battery extension on this SKU</strong> (it
+is a powered fixture, not a portable one).</p>
+<h3 id="why-a-third-sku">Why a Third SKU</h3>
+<p>The 33 W wand is a capable demo and a genuinely good accent light at
+short range. <strong>It runs out at distance.</strong> Commercial
+ceilings, retail feature displays and larger rooms put the subject 3-5 m
+away, and illuminance falls with the square of distance — so the same
+fixture that delivers a strong 1,364 lux at 2 m gives only 218 lux at 5
+m, below office ambient. The Pro exists to hold a usable level out to
+where commercial installations actually mount.</p>
+<h3 id="what-changes">What Changes</h3>
+<ul>
+<li><strong>Double the light engine — 6 stars / 24 channels</strong>, at
+the <em>same</em> proven 700 mA per die as every other SKU. <strong>One
+emitter part number and one driver part number across the whole product
+line</strong>, which is the point: the Pro is additive to the existing
+build, not a parallel one. <em>(Decided 2026-09-06 on inventory and
+production grounds; a 3-star higher-current alternative was evaluated
+and rejected because it added a second emitter and driver SKU used by
+one product only.)</em></li>
+<li><strong>Emitter: to be decided by measurement.</strong> The
+incumbent generic star stays for now; a branded alternative (Cree XM-L
+Color RGBW) will be tested against it side by side on the USA bench
+before either is committed. Whichever wins is used at the same current
+in <strong>all</strong> SKUs.</li>
+<li><strong>Bigger fan and heatsink</strong> — the real constraint at 60
+W is heat, not current, and it now concentrates into three packages
+rather than spreading over six.</li>
+<li><strong>Larger diameter</strong> — freed up by the v9.6 gripper-jaw
+ear, which grips a 16 mm feature rather than the barrel, so the body is
+no longer sized by the gripper.</li>
+<li><strong>No battery extension</strong> — mains/bay powered only.</li>
+</ul>
+<h3 id="positioning">Positioning</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Wand (33 W)</th>
+<th>Wand Pro (60 W)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Light engine</td>
+<td>3 stars / 12 channels</td>
+<td><strong>6 stars / 24 channels</strong></td>
+</tr>
+<tr>
+<td>Estimated output, all channels</td>
+<td>~1,375 lm</td>
+<td>~2,750 lm</td>
+</tr>
+<tr>
+<td>Illuminance @ 3 m, 30° optic</td>
+<td>~606 lux</td>
+<td>~1,212 lux</td>
+</tr>
+<tr>
+<td>Battery extension</td>
+<td>✅ Standalone SKU</td>
+<td>❌ Powered only</td>
+</tr>
+<tr>
+<td>Best fit</td>
+<td>Table, bar, bench, close accent</td>
+<td>Retail feature, larger rooms, ceiling-height mounts</td>
+</tr>
+</tbody>
+</table>
+<h3 id="no_entry-two-gates-before-this-is-sellable">⛔ Two Gates Before
+This Is Sellable</h3>
+<ol type="1">
+<li><strong>Colour rendering.</strong> The current generic RGBW emitter
+has no datasheet on file and its white die is <em>estimated</em> at
+<strong>CRI 70-80</strong> — <strong>it has never been
+measured</strong>, because there is no spectrometer on the bench. Retail
+and hospitality specifications routinely require <strong>90+</strong>.
+This is not solved by more watts. 🟡 <em>A side-by-side test against a
+branded emitter is planned for the USA bench; the part-to-part
+consistency of the generic bin is expected to matter more than its
+average.</em> <strong>Probably the single biggest commercial blocker,
+ahead of brightness.</strong></li>
+<li><strong>Flicker under camera.</strong> Dimming is 1 kHz PWM, which
+is invisible to the eye but can band against a rolling shutter at short
+exposures. Any customer filming under these lights — and "photography
+&amp; video fill" is already a listed use case — will see it.</li>
+</ol>
+<h3 id="pushpin-try-the-optic-first">📌 Try the Optic First</h3>
+<p>Illuminance scales with centre-beam candela, and candela scales
+inversely with beam solid angle. <strong>Swapping the 30° lens cup for a
+15° roughly quadruples centre-beam intensity — worth 2× the usable
+distance, against 1.41× for doubling the power.</strong> A 15° optic on
+the <em>existing</em> 33 W wand reaches further than a 60 W wand at 30°,
+for the price of a lens.</p>
+<p>They multiply rather than compete — 60 W with a 15° optic is the
+strongest configuration — but the lens swap is a same-day test against a
+months-long build, and it should be run before the Pro's specification
+is frozen.</p>
+<hr />
+<h1 id="gear-production-plan">⚙️ Production Plan</h1>
+<h3 id="phase-1--mvp-now--year-end">Phase 1 – MVP (Now → Year-End)</h3>
+<ul>
+<li><strong>Import Base Hardware</strong>:
+<ul>
+<li>Source Hiwonder ArmPi Ultra units from China.</li>
+</ul></li>
+<li><strong>Custom Modifications in US</strong>:
+<ul>
+<li>Replace camera mount with the standardized <strong>OAK-D S2</strong>
+AI camera module.</li>
+<li>CNC/machine base plate to accommodate UPS + relay/PIR.</li>
+<li>Add 3D-printed shrouds for cable management &amp; aesthetics.</li>
+</ul></li>
+<li><strong>Integration</strong>:
+<ul>
+<li>Assemble in-house workshop (US).</li>
+<li>Validate software stack: presence detection → face recognition →
+spotlight tracking.</li>
+</ul></li>
+<li><strong>Pilot Testing</strong>:
+<ul>
+<li>Garage/kitchen use cases.</li>
+<li>Lighting control reliability tests (relay stress tests).</li>
+</ul></li>
+</ul>
+<h3 id="phase-2--pre-production-q1q2-next-year">Phase 2 – Pre-Production
+(Q1–Q2 Next Year)</h3>
+<ul>
+<li><strong>Vendor Consolidation</strong>:
+<ul>
+<li>Secure reliable Chinese suppliers for arm components.</li>
+<li>Negotiate batch discounts (50–100 units per order).</li>
+</ul></li>
+<li><strong>US Assembly Line Setup</strong>:
+<ul>
+<li>Small batch assembly at a contract manufacturer or maker-space
+facility.</li>
+<li>Integrate UPS + PIR/relay mods.</li>
+<li>Quality control at final stage.</li>
+</ul></li>
+</ul>
+<h3 id="phase-3--production-scaling-q3-next-year-onward">Phase 3 –
+Production Scaling (Q3 Next Year Onward)</h3>
+<ul>
+<li><strong>Volume Manufacturing</strong>:
+<ul>
+<li>Keep arm imports from China.</li>
+<li>Transition CNC/3D-print parts to <strong>injection molding &amp;
+laser-cut aluminum</strong> for cost reduction.</li>
+</ul></li>
+<li><strong>Supply Chain Strategy</strong>:
+<ul>
+<li>US assembly of sensitive electronics (UPS + Pi5 boards).</li>
+<li>Outsource light modules (RGB, spotlight heads) from established
+lighting suppliers.</li>
+</ul></li>
+</ul>
+<hr />
+<h1 id="chart_with_upwards_trend-marketing-plan">📈 Marketing Plan</h1>
+<h3 id="target-segments">Target Segments</h3>
+<ol type="1">
+<li><strong>Garage/Workshop Users</strong>
+<ul>
+<li>DIYers who want <strong>auto-tracking work lights</strong>.</li>
+<li>Key value: Convenience + hands-free smart lighting.</li>
+</ul></li>
+<li><strong>Smart Home Enthusiasts</strong>
+<ul>
+<li>Tech adopters who want <strong>gesture/face recognition integrated
+with lighting</strong>.</li>
+<li>Potential integration: Alexa, Google Home, Home Assistant.</li>
+</ul></li>
+<li><strong>Hospitality / Restaurants / Bars</strong>
+<ul>
+<li>Managers seeking <strong>interactive lighting for ambience &amp;
+entertainment</strong>.</li>
+<li>Value: Spotlight a customer, track performers, or create dynamic
+dance floor effects.</li>
+</ul></li>
+<li><strong>Gyms &amp; Fitness Studios (Home + Commercial)</strong>
+<ul>
+<li>Home-gym owners and boutique studios wanting an <strong>AI
+personal-training assistant</strong>.</li>
+<li>Value: Automatic rep counting, real-time form feedback, and
+personalized coaching delivered through the companion <strong>mobile
+app</strong>.</li>
+<li>Potential B2B: gym chains offering AI-coached stations as a
+membership upsell.</li>
+</ul></li>
+<li><strong>Lumi Wand Anywhere Buyers</strong> (standalone)
+<ul>
+<li>Makers, photographers/videographers, and field/event users wanting a
+<strong>portable, app- and touchscreen-controllable RGBW
+light</strong>.</li>
+<li>Value: 12-channel color light, long LiFePO4 runtime, USB-C charging
+— no arm, mount, or tether required.</li>
+<li>Acts as a <strong>low-cost entry point</strong> into the LumiAI
+ecosystem that upsells into the full arm system.</li>
+</ul></li>
+<li><strong>Content Creators / Streamers</strong>
+<ul>
+<li>Solo YouTubers, streamers, podcasters, crafters, cooks, and tutorial
+makers needing a <strong>hands-free camera operator</strong> (LumiAI
+Creator).</li>
+<li>Value: voice-directed framing with small pan / tilt / roll reframing
+on <em>their own</em> camera or phone (1/4"-20 adapter / phone cradle) —
+a one-person studio crew. <em>(A following key light is
+<strong>Halo</strong> only; any-app tracking + depth dolly need the
+optional OAK-D S2 add-on.)</em></li>
+<li>Potential B2B: creator studios, maker-spaces, and training/education
+content teams.</li>
+</ul></li>
+</ol>
+<h3 id="positioning-1">Positioning</h3>
+<ul>
+<li><strong>Utility + Experience + Coaching Hybrid</strong>: A robotic
+spotlight that’s <strong>functional in the home</strong>,
+<strong>engaging in commercial spaces</strong>, and <strong>instructive
+in the gym</strong>.</li>
+<li>Marketed as a <strong>practical productivity tool</strong>
+(garage/kitchen), a <strong>wow-factor entertainment device</strong>
+(restaurants, bars), and an <strong>AI fitness coach</strong>
+(gyms).</li>
+<li><strong>Lumi Wand Anywhere</strong> positioned as a premium, smart,
+battery-powered handheld light — and as the accessible first purchase in
+a modular product family.</li>
+<li><strong>Content-creator studio</strong>: a <strong>voice-directed,
+hands-free camera operator</strong> (LumiAI Creator) — a solo creator's
+camera crew that aims the creator's <em>own</em> phone or camera via the
+phone cradle / swappable adapter. <em>(Following key light is a Halo
+capability, not Creator.)</em></li>
+</ul>
+<h3 id="go-to-market-strategy">Go-to-Market Strategy</h3>
+<ul>
+<li><strong>MVP Launch (Garage/Kitchen Focus)</strong>
+<ul>
+<li>Kickstarter or Indiegogo campaign to generate buzz.</li>
+<li>Position as a <strong>“Smart Robotic Spotlight for Hands-Free
+Workspaces”</strong>.</li>
+</ul></li>
+<li><strong>Restaurant/Bar Expansion</strong>
+<ul>
+<li>Partner with small chains or local venues for <strong>demo
+installations</strong>.</li>
+<li>Create showcase videos (e.g., spotlight tracking a performer or
+changing colors with music).</li>
+</ul></li>
+<li><strong>Gym/Fitness Expansion</strong>
+<ul>
+<li>Pilot installs in home gyms and boutique studios; showcase the
+<strong>mobile app</strong> rep-counting and form-feedback
+experience.</li>
+<li>Lead with content (before/after form-correction clips, in-app
+progress dashboards) on fitness social channels.</li>
+<li>B2B pilots with local gyms offering an AI-coached station as a
+membership add-on.</li>
+</ul></li>
+<li><strong>Lumi Wand Anywhere Launch</strong> (standalone)
+<ul>
+<li>Sell the battery-powered wand as a <strong>standalone SKU</strong>
+via website + Amazon as the accessible entry point to the brand.</li>
+<li>Demo the touchscreen + app control and long LiFePO4 runtime;
+bundle/upsell path into the full arm system.</li>
+<li>Use standalone units as <strong>trade-show and showroom
+demos</strong> (no tether or arm needed to show the light engine).</li>
+</ul></li>
+<li><strong>Creator / Studio Expansion</strong>
+<ul>
+<li>Lead with demo reels of the arm operating a creator's own phone /
+camera by voice (follow, reframe, small pan / tilt / roll moves). <em>(A
+tracked key light is Halo reel material; depth dolly + any-app tracking
+need the optional OAK-D S2 add-on — label it.)</em></li>
+<li>Seed to maker/creator channels; sell a <strong>camera-adapter +
+desk-clamp Creator Kit</strong> accessory, upsell into the full
+arm.</li>
+</ul></li>
+<li><strong>Channels</strong>:
+<ul>
+<li>D2C via website + Amazon.</li>
+<li>B2B via distributors in lighting, hospitality, and fitness
+equipment.</li>
+</ul></li>
+<li><strong>Pricing Strategy</strong>:
+<ul>
+<li>MVP kit: ~$499–699 retail (arm + Pi5 + UPS + spotlight module).</li>
+<li>Standard arm system: <strong>~$999</strong> — standardized
+<strong>OAK-D S2</strong> camera, <strong>iFlytek HiWonder sound
+array</strong>, and Lumi Wand on every unit.</li>
+<li>Restaurant edition with RGB &amp; effects: ~$999+.</li>
+<li><strong>Lumi Wand Anywhere (Battery Extension)</strong>: ~$199–299
+retail — entry SKU and upsell on-ramp.</li>
+<li><strong>Creator Kit (camera adapter + desk-clamp mount)</strong>:
+~$49–99 accessory — turns any arm unit into a hands-free camera operator
+for the user's own camera.</li>
+</ul></li>
+<li><strong>Branding</strong>:
+<ul>
+<li>Brand name is <strong>LumiAI</strong> (locked). Emphasize
+<strong>human-centric AI</strong> and <strong>versatility</strong>.</li>
+</ul></li>
+</ul>
+<hr />
+<h1 id="pencil-next-steps">📝 Next Steps</h1>
+<ol type="1">
+<li><strong>Lock MVP feature set</strong> (relay spotlight +
+tracking).</li>
+<li><strong>Define assembly workflow</strong> in the US (import → modify
+→ test → package).</li>
+<li><strong>Create prototype demo video</strong> for Kickstarter (garage
+→ restaurant → gym use cases).</li>
+<li><strong>Engage early adopters</strong> (maker communities, smart
+home forums, local restaurants, home-gym &amp; fitness
+communities).</li>
+<li><strong>Productize Lumi Wand Anywhere</strong> — finalize the
+Battery Extension SKU, packaging, pricing, and Amazon/D2C listing as the
+entry-point product.</li>
+<li><strong>Build the gym companion app MVP</strong> — rep counting,
+form feedback, and progress tracking with arm → mobile streaming over
+Wi-Fi.</li>
+<li><strong>Prototype the creator mode</strong> — the camera-adapter
+payload / phone cradle (owned by the CAD agent), a voice camera-operator
+command grammar, and a desk-clamp mount variant; cut a demo reel of
+voice-directed framing with small pan / tilt / roll moves. <em>(Key
+light is Halo only; depth dolly + any-app tracking need the optional
+OAK-D S2 add-on.)</em></li>
+</ol></body></html>

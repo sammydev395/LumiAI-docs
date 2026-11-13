@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="1050" viewBox="0 0 1760 1050" font-family="DejaVu Sans, Verdana, Helvetica, sans-serif">
+<rect width="1760" height="1050" fill="#fff"/>
+<defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 z" fill="#9a8f66"/></marker><marker id="arrg" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 z" fill="#128a4e"/></marker></defs>
+<text x="36.0" y="42.0" font-size="21" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">ELEC-BAY FPC BREAKOUT — inverted mount + the rotation that sets pin 1 (Assembly Guide §4 step 1)</text>
+<text x="36.0" y="42.0" font-size="21" text-anchor="start" font-weight="700" fill="#111">ELEC-BAY FPC BREAKOUT — inverted mount + the rotation that sets pin 1 (Assembly Guide §4 step 1)</text>
+<text x="36.0" y="66.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">The rule needs NO silk (the female variant's silk is inconsistent between faces): the FPC connector end is the one feature identifiable by eye or touch, and pointing it at the STM32 is the whole alignment.</text>
+<text x="36.0" y="66.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#555">The rule needs NO silk (the female variant's silk is inconsistent between faces): the FPC connector end is the one feature identifiable by eye or touch, and pointing it at the STM32 is the whole alignment.</text>
+<text x="410.0" y="124.0" font-size="15" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">SIDE VIEW — what “INVERTED” means</text>
+<text x="410.0" y="124.0" font-size="15" text-anchor="middle" font-weight="700" fill="#14523a">SIDE VIEW — what “INVERTED” means</text>
+<rect x="70" y="580" width="760" height="14" fill="#c9c9c9"/>
+<text x="450.0" y="620.0" font-size="10.5" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">electronics-bay floor</text>
+<text x="450.0" y="620.0" font-size="10.5" text-anchor="middle" font-weight="400" fill="#777">electronics-bay floor</text>
+<rect x="150" y="550" width="22" height="30" fill="#8d8d8d"/>
+<rect x="670" y="550" width="22" height="30" fill="#8d8d8d"/>
+<text x="770.0" y="570.0" font-size="10.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">5 mm standoffs (LOCKED)</text>
+<text x="770.0" y="570.0" font-size="10.5" text-anchor="start" font-weight="400" fill="#666">5 mm standoffs (LOCKED)</text>
+<rect x="110" y="522" width="640" height="28" rx="4" fill="#1f7a4f" stroke="#14523a" stroke-width="2"/>
+<text x="430.0" y="541.0" font-size="13" text-anchor="middle" font-weight="700" fill="none" stroke="#14523a" stroke-width="3.0" stroke-linejoin="round">Pi5</text>
+<text x="430.0" y="541.0" font-size="13" text-anchor="middle" font-weight="700" fill="#fff">Pi5</text>
+<text x="96.0" y="541.0" font-size="10.5" text-anchor="end" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">SD-card end</text>
+<text x="96.0" y="541.0" font-size="10.5" text-anchor="end" font-weight="700" fill="#14523a">SD-card end</text>
+<rect x="170" y="492" width="380" height="30" fill="#181818"/>
+<text x="360.0" y="512.0" font-size="10.5" text-anchor="middle" font-weight="400" fill="none" stroke="#181818" stroke-width="2.6" stroke-linejoin="round">Pi5 GPIO 2×20  ·  pin 1 = square pad, SD-card end</text>
+<text x="360.0" y="512.0" font-size="10.5" text-anchor="middle" font-weight="400" fill="#fff">Pi5 GPIO 2×20  ·  pin 1 = square pad, SD-card end</text>
+<rect x="170" y="456" width="380" height="36" fill="#2b2b2b"/>
+<text x="360.0" y="480.0" font-size="10.5" text-anchor="middle" font-weight="400" fill="none" stroke="#2b2b2b" stroke-width="2.6" stroke-linejoin="round">extra-tall 2×20 stacking header</text>
+<text x="360.0" y="480.0" font-size="10.5" text-anchor="middle" font-weight="400" fill="#fff">extra-tall 2×20 stacking header</text>
+<rect x="188" y="386" width="5" height="70" fill="#d8c46a"/>
+<rect x="222" y="386" width="5" height="70" fill="#d8c46a"/>
+<rect x="256" y="386" width="5" height="70" fill="#d8c46a"/>
+<rect x="290" y="386" width="5" height="70" fill="#d8c46a"/>
+<rect x="324" y="386" width="5" height="70" fill="#d8c46a"/>
+<rect x="358" y="386" width="5" height="70" fill="#d8c46a"/>
+<rect x="392" y="386" width="5" height="70" fill="#d8c46a"/>
+<rect x="426" y="386" width="5" height="70" fill="#d8c46a"/>
+<rect x="460" y="386" width="5" height="70" fill="#d8c46a"/>
+<rect x="494" y="386" width="5" height="70" fill="#d8c46a"/>
+<rect x="528" y="386" width="5" height="70" fill="#d8c46a"/>
+<text x="580.0" y="426.0" font-size="10.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">12 mm upper pins</text>
+<text x="580.0" y="426.0" font-size="10.5" text-anchor="start" font-weight="400" fill="#8a7a30">12 mm upper pins</text>
+<rect x="140" y="346" width="440" height="18" rx="3" fill="#1f7a4f" stroke="#14523a" stroke-width="2"/>
+<rect x="170" y="364" width="380" height="22" fill="#181818"/>
+<text x="360.0" y="380.0" font-size="9.5" text-anchor="middle" font-weight="400" fill="none" stroke="#181818" stroke-width="2.4" stroke-linejoin="round">female socket — face DOWN (blind SMT, no pins protrude above)</text>
+<text x="360.0" y="380.0" font-size="9.5" text-anchor="middle" font-weight="400" fill="#fff">female socket — face DOWN (blind SMT, no pins protrude above)</text>
+<text x="134.0" y="336.0" font-size="12" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">BREAKOUT — INVERTED</text>
+<text x="134.0" y="336.0" font-size="12" text-anchor="start" font-weight="700" fill="#14523a">BREAKOUT — INVERTED</text>
+<rect x="510" y="326" width="70" height="20" rx="3" fill="#e9e2c8" stroke="#9a8f66" stroke-width="2"/>
+<text x="545.0" y="318.0" font-size="10" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">FPC connector — now on TOP</text>
+<text x="545.0" y="318.0" font-size="10" text-anchor="middle" font-weight="400" fill="#6b6142">FPC connector — now on TOP</text>
+<path d="M 580 336 C 670 336, 670 290, 580 290 L 230 290" fill="none" stroke="#4a90d9" stroke-width="8" opacity="0.85" marker-end="url(#arr)"/>
+<text x="400.0" y="276.0" font-size="10.5" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">FFC folds 180° back over the board → back-cover exit hole</text>
+<text x="400.0" y="276.0" font-size="10.5" text-anchor="middle" font-weight="700" fill="#2d5c8f">FFC folds 180° back over the board → back-cover exit hole</text>
+<text x="400.0" y="258.0" font-size="10" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">blue stripe UP at BOTH ends — no flip anywhere</text>
+<text x="400.0" y="258.0" font-size="10" text-anchor="middle" font-weight="400" fill="#2d5c8f">blue stripe UP at BOTH ends — no flip anywhere</text>
+<text x="1280.0" y="124.0" font-size="15" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">PLAN VIEW — the rotation that sets pin 1</text>
+<text x="1280.0" y="124.0" font-size="15" text-anchor="middle" font-weight="700" fill="#14523a">PLAN VIEW — the rotation that sets pin 1</text>
+<rect x="950" y="270" width="520" height="330" rx="10" fill="#eaf3ec" stroke="#14523a" stroke-width="2.5"/>
+<text x="1210.0" y="590.0" font-size="11" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Pi5 (below the stack)</text>
+<text x="1210.0" y="590.0" font-size="11" text-anchor="middle" font-weight="400" fill="#14523a">Pi5 (below the stack)</text>
+<text x="938.0" y="440.0" font-size="10.5" text-anchor="end" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">SD-card /</text>
+<text x="938.0" y="440.0" font-size="10.5" text-anchor="end" font-weight="400" fill="#555">SD-card /</text>
+<text x="938.0" y="456.0" font-size="10.5" text-anchor="end" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">USB-C-power</text>
+<text x="938.0" y="456.0" font-size="10.5" text-anchor="end" font-weight="400" fill="#555">USB-C-power</text>
+<text x="938.0" y="472.0" font-size="10.5" text-anchor="end" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">edge</text>
+<text x="938.0" y="472.0" font-size="10.5" text-anchor="end" font-weight="400" fill="#555">edge</text>
+<rect x="980" y="326" width="460" height="26" fill="#181818"/>
+<rect x="984" y="330" width="12" height="12" fill="#fff"/>
+<text x="980.0" y="372.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Pi5 pin 1 (square pad, SD-card end)</text>
+<text x="980.0" y="372.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#c0392b">Pi5 pin 1 (square pad, SD-card end)</text>
+<rect x="970" y="220" width="480" height="96" rx="6" fill="#1f7a4f" opacity="0.9" stroke="#14523a" stroke-width="2.5"/>
+<text x="1190.0" y="274.0" font-size="11.5" text-anchor="middle" font-weight="700" fill="none" stroke="#14523a" stroke-width="3.0" stroke-linejoin="round">BREAKOUT (inverted, on the tall header)</text>
+<text x="1190.0" y="274.0" font-size="11.5" text-anchor="middle" font-weight="700" fill="#fff">BREAKOUT (inverted, on the tall header)</text>
+<rect x="1420" y="232" width="26" height="72" rx="3" fill="#e9e2c8" stroke="#9a8f66" stroke-width="2"/>
+<line x1="1455" y1="268" x2="1540" y2="268" stroke="#128a4e" stroke-width="6" marker-end="url(#arrg)"/>
+<rect x="1550" y="212" width="130" height="130" rx="8" fill="#dfe8f2" stroke="#2d4b73" stroke-width="2.5"/>
+<text x="1615.0" y="271.0" font-size="13" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">STM32</text>
+<text x="1615.0" y="271.0" font-size="13" text-anchor="middle" font-weight="700" fill="#2d4b73">STM32</text>
+<text x="1615.0" y="289.0" font-size="11" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">carrier</text>
+<text x="1615.0" y="289.0" font-size="11" text-anchor="middle" font-weight="400" fill="#2d4b73">carrier</text>
+<text x="1498.0" y="253.0" font-size="11" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">FPC end</text>
+<text x="1498.0" y="253.0" font-size="11" text-anchor="middle" font-weight="700" fill="#128a4e">FPC end</text>
+<text x="1498.0" y="305.0" font-size="11" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">points AT it</text>
+<text x="1498.0" y="305.0" font-size="11" text-anchor="middle" font-weight="700" fill="#128a4e">points AT it</text>
+<rect x="974" y="226" width="56" height="134" rx="8" fill="none" stroke="#c0392b" stroke-width="3.5"/>
+<text x="1080.0" y="210.0" font-size="11" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">breakout pin 1 lands over Pi5 pin 1</text>
+<text x="1080.0" y="210.0" font-size="11" text-anchor="middle" font-weight="700" fill="#c0392b">breakout pin 1 lands over Pi5 pin 1</text>
+<text x="1280.0" y="650.0" font-size="12" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">“FPC end toward the STM32” is the ENTIRE rule — locked bench dry-fit 2026-08-02.</text>
+<text x="1280.0" y="650.0" font-size="12" text-anchor="middle" font-weight="700" fill="#0d5c33">“FPC end toward the STM32” is the ENTIRE rule — locked bench dry-fit 2026-08-02.</text>
+<text x="1280.0" y="672.0" font-size="11" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">It is identifiable by eye or touch (the black + white flip-lock clamp), no silk reading needed.</text>
+<text x="1280.0" y="672.0" font-size="11" text-anchor="middle" font-weight="400" fill="#0d5c33">It is identifiable by eye or touch (the black + white flip-lock clamp), no silk reading needed.</text>
+<rect x="110" y="760" width="900" height="150" rx="10" fill="#eaf3ec" stroke="#128a4e" stroke-width="2.5"/>
+<text x="128.0" y="790.0" font-size="12.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">ASSEMBLY ORDER + SEAT CHECK (step 1):</text>
+<text x="128.0" y="790.0" font-size="12.5" text-anchor="start" font-weight="700" fill="#0d5c33">ASSEMBLY ORDER + SEAT CHECK (step 1):</text>
+<text x="128.0" y="818.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">1.  Tall header onto the Pi5 GPIO first — fully seated, no gap.  Pin 1 = the square-pad corner pin at the SD-card end.</text>
+<text x="128.0" y="818.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#0d5c33">1.  Tall header onto the Pi5 GPIO first — fully seated, no gap.  Pin 1 = the square-pad corner pin at the SD-card end.</text>
+<text x="128.0" y="841.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">2.  Invert the breakout (socket face DOWN), rotate until the FPC connector end points at the STM32, press flush.</text>
+<text x="128.0" y="841.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#0d5c33">2.  Invert the breakout (socket face DOWN), rotate until the FPC connector end points at the STM32, press flush.</text>
+<text x="128.0" y="864.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">3.  FFC: blue stripe UP at both ends, fold 180° back over the board, out the back-cover hole, down the base-servo hole.</text>
+<text x="128.0" y="864.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#0d5c33">3.  FFC: blue stripe UP at both ends, fold 180° back over the board, out the back-cover hole, down the base-servo hole.</text>
+<text x="128.0" y="887.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">4.  Power-on check is §4 step 5 — G469 3V3 terminal must read 3.3 V.</text>
+<text x="128.0" y="887.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#0d5c33">4.  Power-on check is §4 step 5 — G469 3V3 terminal must read 3.3 V.</text>
+<rect x="1050" y="760" width="674" height="150" rx="10" fill="#fbe3e0" stroke="#c0392b" stroke-width="2.5"/>
+<text x="1068.0" y="790.0" font-size="12.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Rotated 180° (FPC end AWAY from the STM32) = pin 1 ↔ pin 40, end-to-end:</text>
+<text x="1068.0" y="790.0" font-size="12.5" text-anchor="start" font-weight="700" fill="#7f1d0e">Rotated 180° (FPC end AWAY from the STM32) = pin 1 ↔ pin 40, end-to-end:</text>
+<text x="1068.0" y="818.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">• the WHOLE chain shifts — every G469 terminal carries pin 41−n</text>
+<text x="1068.0" y="818.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#7f1d0e">• the WHOLE chain shifts — every G469 terminal carries pin 41−n</text>
+<text x="1068.0" y="841.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">• step-5 symptom: G469 “3V3” terminal reads a floating GPIO level, NOT 3.3 V</text>
+<text x="1068.0" y="841.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#7f1d0e">• step-5 symptom: G469 “3V3” terminal reads a floating GPIO level, NOT 3.3 V</text>
+<text x="1068.0" y="864.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">• fix: power OFF, lift the breakout, rotate 180°, re-seat, re-test</text>
+<text x="1068.0" y="864.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#7f1d0e">• fix: power OFF, lift the breakout, rotate 180°, re-seat, re-test</text>
+<text x="1068.0" y="887.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">• do NOT re-wire anything to match — the rotation is the fault</text>
+<text x="1068.0" y="887.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#7f1d0e">• do NOT re-wire anything to match — the rotation is the fault</text>
+<text x="36.0" y="985.0" font-size="11" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Silk warning (step 1): the FEMALE variant's two faces carry INCONSISTENT pin-number silk — after inversion, trust only the silk on the visible-from-above face.</text>
+<text x="36.0" y="985.0" font-size="11" text-anchor="start" font-weight="400" fill="#555">Silk warning (step 1): the FEMALE variant's two faces carry INCONSISTENT pin-number silk — after inversion, trust only the silk on the visible-from-above face.</text>
+<text x="36.0" y="1005.0" font-size="11" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">This figure is the elec-bay half of the chain; the power-bay half (G469 mating) is g469_mount_orientation.png. Between them: A-type FFC, straight-through, bench-verified 2026-08-02.</text>
+<text x="36.0" y="1005.0" font-size="11" text-anchor="start" font-weight="400" fill="#555">This figure is the elec-bay half of the chain; the power-bay half (G469 mating) is g469_mount_orientation.png. Between them: A-type FFC, straight-through, bench-verified 2026-08-02.</text>
+</svg>

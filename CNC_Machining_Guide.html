@@ -1,0 +1,2339 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CNC_Machining_Guide</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="lumiai--cnc-machining-guide-all-parts">LumiAI — CNC Machining Guide
+(All Parts)</h1>
+<p><strong>Machine:</strong> Stepcraft 840D / UCCNC
+<strong>Spindle:</strong> 18,000 RPM max <strong>Date:</strong>
+2026-05-18 (base-plate v2 rewrite — see §6; v7 heatsink unchanged)</p>
+<hr />
+<h2 id="0-conventions--read-first">0. Conventions — read first</h2>
+<ul>
+<li><strong>Tool changes are manual on the StepCraft 840D
+UCCNC.</strong> Every <code>M6</code> is preceded by a <code>G0</code>
+that parks the spindle at an operator-accessible position (off the
+workpiece, with clearance) and an <code>M0</code> pause so the operator
+can change the bit before pressing Cycle Start.
+<ul>
+<li>Heatsink programs park at <strong><code>X=0, Y=−60</code></strong>
+(30 mm in front of the 60 mm plate).</li>
+<li>Base-plate programs (300×200 or 200×200 sheet) park at
+<strong><code>X=0, Y=−170</code></strong> or
+<strong><code>X=130, Y=0</code></strong> — 20+ mm clear of the longest
+edge so the operator has room for the tool.</li>
+</ul></li>
+<li><strong>Peck-drill vs. direct drill.</strong> We peck-drill (and
+spot-mark with an end mill first) only when the drill could wander on
+entry. Rule of thumb:
+<ul>
+<li>Thick stock, small-diameter drill, precision hole →
+<strong>spot-mark with 1/8" endmill at 0.5 mm</strong> first
+<em>(rule-of-thumb; not currently applied on any part in this guide
+because §3 heatsink and §5/§6 base plates all use the 135° split-point
+Milwaukee cobalt drill which self-centres — no spot-mark
+needed).</em></li>
+<li>Thin sheet (≤3 mm), larger drill, non-critical alignment →
+<strong>direct drill, no spot-mark</strong> (base plates: 2 mm aluminum,
+Ø4.0 drills, ±0.2 mm tolerance is plenty). On thin sheet the drill
+doesn't have enough depth to wander meaningfully.</li>
+</ul></li>
+<li><strong>M0 pauses also mark workholding transitions</strong> — e.g.
+the v7 heatsink program pauses after OP2 so the operator can screw the
+piece down through the just-drilled 4× M2 clearance holes before OP3 (Ø6
+wire drill) and OP4 (cut-off, if from bar stock).</li>
+<li><strong>The LumiAI base plate runs as a SINGLE-setup job
+(v5).</strong> Blank is mounted MOUNT-FACE-UP. T1 (Milwaukee cobalt
+drill) drills all 22 through-holes (PSU + STRAP + CARRIAGE + POST) at
+Ø3.175. One M0 pause: bolt the plate down through some drilled holes +
+swap T1 → T2 (SHARPRO 1/8" O-flute, 1/4" shank — <strong>collet change
+1/8"→1/4" OZ8</strong>) + re-touch Z. Then T2 engraves "LumiAI" and cuts
+the fence-outline profile completely through. <strong>No CNC-time
+flip.</strong> All coordinates are X-mirrored (<code>toolB</code>) so
+the operator's off-machine install-flip (180° about the long Y axis,
+engraving-face-down) puts every hole and the engraving at their designed
+positions. See §6.</li>
+<li><strong>MM-1000 spindle uses OZ8 collets, not ER11.</strong> This
+guide's collet references are all OZ8 (DIN 6388A / EOC8 / Kress 1050
+family, M17×1 nut). Standard OZ8 sizes are sparse — no Ø3.5, Ø4.5, etc.
+— so <strong>drilled parts (servo plate §5, LumiAI base plate §6) use a
+pilot-drill + hand-drill workflow</strong>: a 1/8" cobalt twist drill
+(Milwaukee or YG-1, both 1/8" shank, 1/8" OZ8) peck-drills
+through-pilots at every drill position on the CNC, then the operator
+hand-drills each pilot to spec Ø off-machine with a normal HSS-Co drill
+set. The pilot guarantees centre (the drill can't wander). On-machine
+tooling for the whole guide: only <strong>1/8" + 1/4" OZ8
+collets</strong> — both already on hand. No OZ8 drill collets in odd
+sizes needed.</li>
+<li><strong>Use a real twist drill for through-drilling, NOT a small
+endmill.</strong> Endmills aren't designed for axial plunging — the
+centre is a near-zero-velocity zone where chips smear and aluminum welds
+to the flute, snapping the tool. The 2 mm SainSmart Nano Blue Coat was
+used for pilots through 2026-06-22 and <strong>broke on hole #1 of the
+servo plate run on 2026-06-23</strong> at F100 plunge. Replaced with a
+<strong>1/8" Milwaukee cobalt twist drill</strong> (Home Depot, in hand)
+which now <strong>drills all the way THROUGH</strong> the stock
+on-machine (Z−3.0 for 2 mm servo plate, Z−4.0 for 3 mm LumiAI base
+plate). Off-machine hand-drilling now just enlarges to spec Ø. The
+SainSmart small endmills stay in the kit for lateral-cut features — the
+servo hex pocket (§5 OP2) uses the <strong>2.1 mm</strong> from the
+10-pack (the 2.0 mm broken in the v1 run; 2.1 mm is the user-confirmed
+in-hand backup).</li>
+</ul>
+<hr />
+<h2 id="1-tool-inventory">1. Tool Inventory</h2>
+<h3
+id="end-mills-large-18--14-shank--for-channels-base-plate-cut-offs">End
+Mills (large, 1/8" / 1/4" shank — for channels, base plate,
+cut-offs)</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Tool</th>
+<th>Cutting Dia</th>
+<th>Shank</th>
+<th>Flutes</th>
+<th>LOC</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td>SHARPRO O-Flute upcut</td>
+<td>1/8" (3.175mm)</td>
+<td>1/4"</td>
+<td>1</td>
+<td>standard</td>
+<td>Channel slots, spot-marking</td>
+</tr>
+<tr>
+<td>T2</td>
+<td>SpeTool 1/4" O-flute</td>
+<td>1/4" (6.35mm)</td>
+<td>1/4"</td>
+<td>1</td>
+<td>standard</td>
+<td>Channel recess/access holes</td>
+</tr>
+<tr>
+<td><del>T3</del></td>
+<td><del>Kodiak 1/8" 2-flute</del> <em>(broken; not in current kit — do
+not spec)</em></td>
+<td>1/8" (3.175mm)</td>
+<td>1/8"</td>
+<td>2</td>
+<td>1/2" (12.7mm)</td>
+<td>Was OP2 endmill on heatsink v9.7; replaced by T1 SHARPRO for that
+duty in v9.8.</td>
+</tr>
+<tr>
+<td>T4</td>
+<td>SpeTool extra-long</td>
+<td>1/4" (6.35mm)</td>
+<td>1/4"</td>
+<td>2</td>
+<td>3" (76mm)</td>
+<td>Deep reach if needed</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="on-machine-pilot-drill--milwaukee-18-cobalt-twist-drill-18-shank">On-Machine
+Pilot Drill — Milwaukee 1/8" cobalt twist drill (1/8" shank)</h3>
+<blockquote>
+<p><strong>CANONICAL DRILL-THROUGH TOOL</strong> for all CNC
+peck-drilling ops (servo plate §5 OP1, LumiAI base plate §6 OP1).
+Replaces the SainSmart 2 mm endmill that was used through 2026-06-22 and
+broke under axial plunge load — endmills aren't drills, and we'd been
+treating one like one. As of 2026-06-26 the CNC drills these holes all
+the way through (no pilot-mark + hand-drill cycle for the through
+dimension). See §0 conventions for the full rationale.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Spec</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brand / model</td>
+<td><strong>Milwaukee Cobalt Red Helix 1/8"</strong> (Home Depot SKU;
+equivalent: any HSS-Co M35/M42 1/8" jobber drill — Drill Hog, Norseman
+Magnum)</td>
+</tr>
+<tr>
+<td>Cutting diameter</td>
+<td>1/8" = 3.175 mm</td>
+</tr>
+<tr>
+<td>Shank</td>
+<td>1/8" (1/8" OZ8 collet — same as the SainSmart endmills)</td>
+</tr>
+<tr>
+<td>Overall length</td>
+<td>2.76" (~70 mm); flute length 1.61" (~41 mm)</td>
+</tr>
+<tr>
+<td>Material</td>
+<td>HSS-Co (M35 or M42 cobalt) — rated for aluminum, doesn't shatter
+like solid carbide</td>
+</tr>
+<tr>
+<td>Point</td>
+<td>Split-point (135°), no walking on aluminum</td>
+</tr>
+<tr>
+<td>Plunge feed (CNC, S12000)</td>
+<td><strong>F60 in the current NC</strong>, with <strong>Q=1.0
+peck</strong> (proper full-Ø drill chip-break; v2 had Q=0.3 micro-peck
+for the broken endmill, which a real drill doesn't need). Cobalt drills
+could push F200-300 — F60 is the conservative insurance margin after the
+v1 endmill failure.</td>
+</tr>
+<tr>
+<td><strong>Stick-out</strong></td>
+<td><strong>12-15 mm past the collet face.</strong> See §5 PRE-3 and §6
+PRE-3 for the full setup procedure and the why.</td>
+</tr>
+<tr>
+<td><strong>Z depth — drill THROUGH</strong></td>
+<td>Servo plate (2 mm stock): <strong>Z−3.0</strong> (cone 0.66 + margin
+0.34 → 1.0 mm into spoilboard). LumiAI base plate (3 mm stock):
+<strong>Z−4.0</strong> (cone + margin → 1.0 mm into spoilboard). The
+135° split point has a tip-to-shoulder height of d/(2·tan 67.5°) ≈ 0.66
+mm for Ø3.175; Z must clear it for the full-Ø cylindrical hole to reach
+the stock bottom.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Backup / replacement pilot drill:</strong> YG-1 0081L 1/8" NC
+spotting drill (90° point, $17 on Amazon). Spotting drill = shallow
+centre-mark only (~1.6 mm max cutting depth before the conical point
+ends), so it can ONLY pilot-mark — the operator then has to hand-drill
+THROUGH off-machine. <strong>Not compatible with the current Z−3.0/Z−4.0
+drill-through NC</strong> — it's mechanically incapable of going that
+deep. To use the spotting drill, reduce the pilot NC depth to ~Z−1.0 and
+bring back the v2-era hand-drill cycle for the through-cut.</p>
+<h3
+id="small-end-mills--sainsmart-genmitsu-10-pack-nano-blue-coat-18-shank">Small
+End Mills — SainSmart Genmitsu 10-pack nano blue coat (1/8" shank)</h3>
+<p>Set: <strong>SainSmart Genmitsu 10Pcs Nano Blue Coat End Mill CNC
+Router Bits, 0.8–3 mm, 1/8" shank.</strong> Cutting-edge diameters: 0.8
+/ 1.0 / 1.2 / 1.4 / 1.6 / 1.8 / 2.0 / 2.2 / 2.4 / 3.0 mm. <strong>No
+longer the pilot tool</strong> (broke under axial plunge — see §0); now
+used ONLY for lateral-cut features. Plenty of backup 2 mm bits in the
+10-pack if you snap another one on a pocket op.</p>
+<table>
+<thead>
+<tr>
+<th>Cutting Dia</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.1 mm</td>
+<td>Base servo plate (§5 OP2) — <strong>servo hex pocket only</strong>
+(inside-profile, 5 passes × 0.5 mm DOC, pre-comp inward 1.0 mm; pocket
+comes out +0.1 mm oversize total against the 2.0 mm pre-comp, fine).
+Replaces the 2.0 mm in the 10-pack that broke in the v1 pilot run; user
+has confirmed 2.1 mm is in-hand. NOT the through-drill tool — that's the
+Milwaukee cobalt drill above.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="drill-bits--accusize-m35-hss-co-set-110-mm-by-05-mm">Drill Bits
+— Accusize M35 HSS-Co set (1–10 mm by 0.5 mm)</h3>
+<p>The Accusize HSS-Co bits are straight-shank (shank diameter = cutting
+diameter), so collet size matches drill diameter in every row.
+<strong>The Stepcraft 840D3's MM-1000 spindle uses the OZ8 / EOC8 collet
+system (DIN 6388A, M17×1 nut)</strong> — <strong>not</strong> ER11. ER11
+collets do NOT fit the MM-1000 (they're for the HF-500 spindle option or
+SK15 ATC tool holders). Standard OZ8 sizes are sparse — typically only
+Ø2, 2.4, 3, 3.175 (1/8"), 4, 5, 6, 6.35 (1/4"), 8 mm; the half-mm sizes
+(3.5, 4.5, etc.) are not in any standard OZ8 vendor lineup.</p>
+<blockquote>
+<p><strong>MM-1000 collets currently on hand:</strong> <strong>1/8"
+(3.175 mm) + 1/4" (6.35 mm) OZ8</strong> — both for endmill / drill
+shanks. <strong>That's all every part in this guide requires</strong>
+under the drill-through + hand-finish workflow (§5 servo plate, §6
+LumiAI base plate). Every hole is CNC <strong>drilled through</strong>
+at Ø3.175 with the <strong>Milwaukee 1/8" cobalt drill</strong> (uses
+the 1/8" OZ8) and hand-enlarged to spec Ø off-machine afterward with a
+normal HSS-Co bit set. <strong>No OZ8 drill collets in odd sizes are
+needed</strong> — the table below documents what each drill size
+achieves <em>after</em> hand-enlargement.</p>
+<p><strong>The previously-purchased 15-piece ER11 collet set does NOT
+fit the MM-1000 directly</strong> — different collet system. To use it,
+an OZ8-shank ER11 chuck adapter (C8-ER11A or similar) would be needed;
+the drill-through + hand-finish workflow makes this optional rather than
+required.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Drill</th>
+<th>Collet (OZ8)</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.5 mm</td>
+<td>2.5 mm OZ8</td>
+<td><em>(No current use — was v7 heatsink M3 corner-tap pilot + M2
+handle-mount clearance; the round v9+ puck has none of those features.
+Keep the bit for future work.)</em></td>
+</tr>
+<tr>
+<td>3.5 mm</td>
+<td>3.5 mm OZ8</td>
+<td>Servo mounting holes (base servo plate); <strong>LumiAI base plate:
+8× MGN15H carriage holes</strong> (model spec Ø3.4, drilled Ø3.5 = +0.1,
+still within M3 clearance) — heatsink LED clearance holes are NOT
+drilled in v7 (LED stars use thermal-adhesive bonding with a printed
+alignment fixture)</td>
+</tr>
+<tr>
+<td>4.0 mm</td>
+<td>4.0 mm OZ8</td>
+<td>Base servo plate mounting holes; <strong>LumiAI base plate: 2× PSU
+holes</strong></td>
+</tr>
+<tr>
+<td>4.5 mm</td>
+<td>4.5 mm OZ8</td>
+<td><strong>LumiAI base plate: 4× battery-strap holes</strong> (M4
+strap-foot clearance; matches <code>lumi_battery_strap.py</code>)</td>
+</tr>
+<tr>
+<td>6.0 mm</td>
+<td>6.0 mm OZ8</td>
+<td>Heatsink wire pass-through holes (2×, central, 10 mm through) —
+sized for 24-conductor LED bundle from clamshell handle modules</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Endmill OZ8 collets used elsewhere on this project:</strong>
+3.175 mm (1/8") for all SainSmart Genmitsu small end mills and any
+1/8"-shank tooling; 6.35 mm (1/4") for the SHARPRO / SpeTool large end
+mills (all 1/4" shank). Both currently on hand. <em>(Kodiak 1/8" 2-flute
+in a 1/8" shank was in the kit prior to 2026-07 but broke and hasn't
+been replaced.)</em></p>
+<h3 id="taps-hss-set">Taps (HSS set)</h3>
+<table>
+<thead>
+<tr>
+<th>Tap</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M3 x 0.5</td>
+<td>Heatsink corner holes (blind, 8mm deep)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-parts-summary">2. Parts Summary</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Part</th>
+<th>Material</th>
+<th>Stock</th>
+<th>Qty</th>
+<th>NC File</th>
+<th>Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Heatsink puck (<strong>Ø54</strong> × 10 mm round)</td>
+<td>Aluminum (black anodized, likely 6063)</td>
+<td><strong>300 × 60 × 10 mm FINNED EXTRUSION</strong> (fins on one
+face; 10 mm = base + fins). <strong>Machine 2 pucks IN PLACE from the
+bar, no sawing.</strong> Clear bar: ~200 mm past the old Ø54 cutout; 2
+pucks fit at centre-to-centre 65 mm (operator 2026-10-21).</td>
+<td>1</td>
+<td><code>lumi_wand_heatsink.nc</code></td>
+<td>v9.8.2 <strong>drill-through + integrated keyway + contour</strong>
+flow: 2 tools (T1 Milwaukee 1/8" cobalt drill in 1/8" OZ8 + T2 SHARPRO
+1/8" O-flute endmill, 1/4" shank in 1/4" OZ8), 2 CNC ops + 2 M0 pauses.
+OP1 pre-drills <strong>3× Ø3.175 puck-body clearance holes</strong> at
+r=8 mm (30°/150°/270°) with T1 (tape-held). M0 #1: install 3× M3 SHCS
+through those puck-body holes directly into the fixture plate + swap
+T1→T2 (<strong>COLLET CHANGE 1/8"→1/4" OZ8</strong>) + re-touch Z=0.
+OP2: <strong>Ø54</strong> contour + 4.4 × 2.2 × 10 mm rim keyway slot
+(OP3) (10 passes at 1 mm DOC, breakthrough at Z=−10.05). Puck is bolted
+to fixture through the entire OP2 including breakthrough — the outer hex
+waste frame is what comes free, not the puck. ZERO off-machine drilling
+— only de-burr at the end. See §3.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Camera mount (OAK-D)</td>
+<td>Aluminum</td>
+<td>per STEP file</td>
+<td>1</td>
+<td><code>CameraMount_Oak-D.nc</code></td>
+<td>CNC (existing program)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Base servo plate</td>
+<td>Aluminum sheet</td>
+<td>200x200x2mm</td>
+<td>1</td>
+<td><code>ArmPiUltra_Servo_BasePlate.nc</code></td>
+<td>CNC (existing program) — <strong>one-time only</strong> for FPC →
+Ultra upgrade; not needed for new Ultra builds</td>
+</tr>
+<tr>
+<td>4</td>
+<td>LumiAI main base plate</td>
+<td>Aluminum sheet</td>
+<td><strong>300 × 200 × 3.00 mm</strong> (6061, uxcell — Nova + future,
+to buy) OR <strong>200 × 300 × 3.00 mm</strong> (1060, AliExpress — Halo
+as-built, soft/gummy) OR <strong>~305 × 305 × 3.175 mm</strong>
+(6061-T651 1/8", Amazon)</td>
+<td>1</td>
+<td><code>LumiAI_Base_Plate.nc</code> (3.00 mm) /
+<code>LumiAI_Base_Plate_3_175mm.nc</code> (3.175 mm) — <strong>pick the
+NC that matches the stock</strong></td>
+<td>CNC <strong>single-setup job</strong> (v5, 2026-07-07): drill 22
+holes THROUGH (Ø3.175 pilots — PSU/STRAP/CARRIAGE/POST all pre-drilled
+with the Milwaukee cobalt drill), tool-change to SHARPRO, engrave
+"LumiAI" on the mount face, cut the R5 fence-outline profile completely
+through. All ops on ONE face using X-mirrored (<code>toolB</code>)
+coordinates so the operator's post-install flip lands every hole at its
+designed position. No CNC-time flip. Off-machine: hand-enlarge the 8
+POST pilots to Ø4.5 (was on-machine helical-interp in v3). Two NCs are
+regenerated from one source — only Z depths differ (drill Z=−4.00 vs
+−4.17; contour Z=−3.20 vs −3.375).</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Ceiling mount:</strong> uses off-the-shelf MGN15H linear
+rails — see <a
+href="Ceiling_Rail_Mount_Guide.html">Ceiling_Rail_Mount_Guide.md</a>. No
+CNC required.</p>
+</blockquote>
+<hr />
+<h2 id="3-part-1-heatsink-puck-ø54--10-mm-round--v910-dia54-re-cut">3.
+Part 1: Heatsink Puck (Ø54 × 10 mm round) — v9.10 (Dia54 re-cut)</h2>
+<blockquote>
+<h3
+id="white_check_mark-updated-2026-09-18--lumi_wand_heatsinknc-is-now-the-ø54-program-v910">✅
+UPDATED 2026-09-18 — <code>lumi_wand_heatsink.nc</code> is now the Ø54
+program (v9.10).</h3>
+<p><code>HEATSINK_OD</code> went <strong>48 → 54</strong> with the wand
+<code>CYL_OD</code> 64 → 70 bump, chosen so the 24-wire LED-bundle
+annulus stays exactly 5 mm and <code>L_TAB_HORIZ_REACH</code> keeps its
+6.5 mm (the tab still bites 1.5 mm inboard of the rim). Ø54 is inside
+the Ø60 stock limit. Bonus: the LED stars (outer r=25) now sit 2 mm
+<strong>inside</strong> the rim instead of overhanging it by 1 mm.</p>
+</blockquote>
+<p><strong>Toolpath only — same 2 tools, same 3 ops, same M0 pauses,
+same feeds/speeds/DOC.</strong> 61 G-code lines changed; Y words, Z
+words and feeds untouched.</p>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Ø48 (was)</th>
+<th><strong>Ø54 (v9.10)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Contour radius</td>
+<td>24.0</td>
+<td><strong>27.0</strong></td>
+</tr>
+<tr>
+<td>OP2 contour orbit</td>
+<td><code>X25.588</code></td>
+<td><strong><code>X28.588</code></strong> (R27.0 + 1.5875 cutter)</td>
+</tr>
+<tr>
+<td>OP3 slot approach</td>
+<td><code>X25.588</code></td>
+<td><strong><code>X28.588</code></strong> (air, outside the rim)</td>
+</tr>
+<tr>
+<td>OP3 slot in-cut</td>
+<td><code>X23.390</code></td>
+<td><strong><code>X26.388</code></strong> (floor r24.8 + cutter)</td>
+</tr>
+<tr>
+<td>Waste frame</td>
+<td>6.0 mm/side</td>
+<td><strong>3.0 mm/side</strong></td>
+</tr>
+<tr>
+<td>Cutter outer sweep</td>
+<td>27.175 (&lt; 30 stock half-width)</td>
+<td><strong>30.175 — exceeds it</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The keyway is unchanged in size</strong> — 4.4 wide × 2.2
+deep × 10 through. It mates <code>L_TAB_KEY_TANG = 4.0</code> /
+<code>L_TAB_KEY_RADIAL = 2.0</code>, neither of which moved. Only its
+radial <em>position</em> moved out 3.0 mm with the rim.</p>
+<p>⚠️ <strong>READ BEFORE OP2 — the waste frame behaves differently
+now.</strong> The cutter's outer sweep (30.175 mm) exceeds the 30.0 mm
+stock half-width, so the orbit breaks out of the 60 × 60 blank at the
+four mid-side points. On the Ø48 program the sweep was 27.175 and the
+frame stayed one continuous ring; <strong>now it is severed into four
+separate corner offcuts</strong>, freed at breakthrough. The puck does
+<strong>not</strong> move — it stays bolted to the fixture through its
+own 3× r=8 body holes, which are unaffected at Ø54. But expect four
+loose corners on the last pass: keep them taped, vacuum on, and clear
+them at the M0 #2 pause exactly as before.</p>
+<p>✅ <strong>Only one puck had been machined</strong> at Ø48, so
+nothing else is scrapped.</p>
+<p><strong>Validated:</strong> 20 G2 arcs all true half-circles about
+the origin at r=28.5875 (→ finished Ø54.000); 20 OP3 in-cut moves all to
+X26.388 giving a 2.1995 mm slot depth against the 2.2 spec; 10 Z passes
+−1.0 to −10.5 unchanged; 3 fixture holes at r=8, inside the rim.</p>
+</blockquote>
+<h3 id="stock">Stock</h3>
+<p><strong>300 × 60 × 10 mm FINNED aluminium heatsink EXTRUSION</strong>
+(in-hand, black-anodised, likely 6063). Longitudinal fins on one face;
+<strong>10 mm = base + fin height</strong> (operator-confirmed
+2026-10-21).</p>
+<p><strong>Workflow:</strong> machine pucks <strong>IN PLACE from the
+bar — no sawing</strong>. Mount the whole bar flat on the fixture plate,
+<strong>base-face DOWN</strong> (fins UP). 2 pucks fit along the bar at
+centre-to-centre <strong>65 mm</strong> (54 mm puck + 11 mm web). The
+orbit's R=30.175 vs. bar half-width 30 clips the bar's ±Y edges at ±3.24
+mm from each puck X — <strong>no 4 loose corner offcuts</strong> (that
+was a 60 × 60 blank artifact; the bar stays structurally continuous
+between pucks and to the clamps). Finished puck has fins on one face —
+acceptable for the sealed wand shell (puck is a pure thermal mass;
+airflow irrelevant).</p>
+<p>The per-op tables below still describe a 60 × 60 blank (origin,
+workholding, "4 corner offcuts"); the bench-prep doc below carries the
+current bar-end workflow (origin at puck centre, VHB + end clamps, no
+loose corner offcuts).</p>
+<p><strong>Bar inventory:</strong> ~100 mm of a 300 mm length is already
+consumed (one puck exists at the used end); ~200 mm remains, enough for
+3 more pucks. After cutting 2 pucks today, ~78 mm will be left — enough
+for one more puck.</p>
+<p><strong>Bench-prep reference:</strong> <a
+href="CNC_HeatsinkPuck_V910.html"><code>docs/CNC_HeatsinkPuck_V910.md</code></a>
+carries the dated bar-end sequence (origin, Z zeroing on fin peak,
+fin-chatter + chip-packing hazards).</p>
+<h3 id="nc-file">NC File</h3>
+<p><a
+href="../cad/exports/cnc/lumi_wand_heatsink.nc"><code>cad/exports/cnc/lumi_wand_heatsink.nc</code></a>
+— <strong>v9.10, Ø54</strong>. <strong>2 CNC ops + 2 M0 pauses</strong>,
+2 tools (T1 in 1/8" OZ8, T2 in 1/4" OZ8 — M0 #1 is a <strong>COLLET
+CHANGE</strong>, not just a bit swap):</p>
+<ul>
+<li><strong>M0 #0 (start):</strong> setup confirmation. Surfaces in the
+NC viewer's banner as "STOCK / TOOL / T2-STAGED / ZEROES / SPOILBOARD"
+checklist. Press Cycle Start to begin.</li>
+<li><strong>OP1 — Pre-drill (T1 = Milwaukee 1/8" cobalt twist
+drill):</strong> <strong>3× Ø3.175 through-holes IN the puck
+body</strong> at r=8 mm (angles 30°/150°/270° — positions (+6.928, +4),
+(−6.928, +4), (0, −8)) via G83 peck cycles (Z=−10.5, R=+2, Q=1.0, F60
+plunge, S12000). Holes sit between the 3 LED-star positions at r=15
+(90°/210°/330°) — well clear of the Ø20 star footprints, no thermal-bond
+interference. Stock held by tape only at this point — the 3 low-force
+pecks don't need bolts. Real drill geometry (135° split point +
+full-width flutes) matches the §0 rule about using a proper drill for
+axial plunges, not an endmill.</li>
+<li><strong>M0 #1:</strong> manual pause with three actions — (a) drive
+<strong>3× M3 × ~25 mm SHCS through those freshly-drilled puck-body
+holes</strong> into the pre-tapped fixture plate (bolts pass through the
+FINISHED PUCK, not the offcuts — so hold-down carries through OP2
+breakthrough), tape stays; (b) swap T1 (Milwaukee drill, 1/8" OZ8) → T2
+(SHARPRO 1/8" O-flute endmill, 1/4" shank), <strong>COLLET CHANGE 1/8"
+OZ8 → 1/4" OZ8</strong> — the Kodiak 1/8"-shank endmill broke a while
+back so the SHARPRO 1/4"-shank tool is the only 1/8" endmill on hand;
+(c) re-touch Z=0 on T2 (endmill cutting tip vs drill split point sit at
+different axial positions). Cycle Start.</li>
+<li><strong>OP2 — Contour (T2 = SHARPRO 1/8" O-flute endmill, 1/4"
+shank):</strong> cutter orbits an outside-contour circle at
+cutter-centre <strong>R=28.5875 mm</strong> (v9.10, was 25.5875),
+milling the <strong>Ø54</strong> profile out of the 60 × 60 stock. The
+keyway is <strong>OP3</strong>, cut separately on the isolated puck
+after the M0 #2 waste-clear — the integrated per-pass slot detour was
+retired in v9.9 after it stalled the spindle and broke a bit on
+2026-07-17. OP3 approaches in air at X28.588 and cuts in to
+<strong>X26.388</strong>, giving the 4.4 mm × 2.2 mm × 10 mm rim slot
+across its own 10 passes. 1 mm DOC + breakaway at Z=−10.05. S18000 F300
+(matches the base-plate NC's proven regime for the same SHARPRO tool,
+chip load &lt; 0.001″/flute).</li>
+</ul>
+<p><strong>ZERO drilling operations off-machine.</strong> The v9.6
+anti-rotation keyway REPLACES the v9 M4 side screw entirely — no rim
+tap, no hand-drilling, no hand-tapping in the workflow.</p>
+<h3 id="v96-changes-from-v93--v91--v9--v8--v7">v9.6 changes from v9.3 /
+v9.1 / v9 / v8 / v7</h3>
+<ul>
+<li><strong>Anti-rotation keyway (v9.6, 2026-06-30).</strong> One inward
+key nub added to the 30° L-tab's vertical leg in <a
+href="../cad/freecad/lumi_wand_cyl_v1.py"><code>cad/freecad/lumi_wand_cyl_v1.py</code></a>
+(<code>L_TAB_KEY_ANGLE=30.0, L_TAB_KEY_TANG=4.0, L_TAB_KEY_RADIAL=2.0</code>)
+— 4 mm tangential × 2 mm radial × 10 mm axial, protrudes past the
+heatsink rim from r=24 → r=22. The heatsink NC now cuts a matching slot
+in the puck rim (4.4 × 2.2 × 10 mm, 0.2 mm/side clearance). Operator
+rotates the puck during install to drop the slot onto the nub; puck now
+seats in a single rotational orientation so the 3 LED stars stay under
+the 3 head-cap lens apertures. Before v9.6 the puck could rotate freely
+between L-tabs, fatiguing the 24-wire LED bundle.</li>
+<li><strong>M4 rim tap DELETED (v9.6).</strong> Was the v9 head-cap
+retention screw at ANY of the 3 L-tabs. Now the keyway forces angular
+alignment and head-end retention comes from the <strong>M70×3 top
+thread</strong> (head ring) and the <strong>M72×3 bottom thread</strong>
+(end cap). Off-machine hand-drilling / hand-tapping is out of the
+workflow entirely.</li>
+<li><strong>Pre-drill integrated into the same NC (v9.6 →
+v9.8.2).</strong> v9.6 introduced integrated pre-drilling with 4
+sacrificial corner clearance holes at (±22, ±22) sitting in the offcuts.
+<strong>v9.8.2 dropped the corner holes for 3 M3 holes IN the puck
+body</strong> at r=8 mm (30°/150°/270°) — the through-bolts now anchor
+the FINISHED PUCK directly to the fixture, so hold-down survives OP2
+breakthrough (the corner-bolt design lost its anchors the moment the
+offcuts fell). Puck-body holes serve dual purpose: (1) CNC workholding
+through OP2, (2) optional wand-assembly retention screws into the
+L-tabs. Total operator handling: tape → Cycle Start → install 3 bolts at
+M0 #1 (+ collet swap) → Cycle Start → done.</li>
+<li><strong>Contour breakthrough dropped Z=−10.2 → −10.05
+(v9.6).</strong> Spring pass removed. Both changes minimize the moment
+the puck sits loose on tape while the spindle is still cutting.</li>
+<li><strong>Heatsink Ø54 (v9.10).</strong> The puck sits inside the Ø70
+cyl at a 3 mm wall (<code>CYL_ID</code> = 64), giving a 5 mm per-side
+annulus for the 24-wire LED bundle. <code>L_TAB_HORIZ_REACH</code> = 6.5
+holds the shelf 1.5 mm inboard of the rim. Ø20 LED stars on Ø30 BCD sit
+2 mm INSIDE the Ø54 rim; central thermal pad well inboard, contact
+preserved.</li>
+<li><strong>Heatsink is ROUND</strong> (instead of v7's square 60 × 60).
+Required by the cylindrical wand — the heatsink seats inside the
+<strong>Ø70</strong> cyl OD / Ø64 ID on 3× printed L-tab shelves.</li>
+<li><strong>Heatsink is 10 mm thick</strong> (standard stock thickness —
+no facing needed). The 14 mm cylinder-top region budget = 2 mm L-tab
+shelf + 10 mm heatsink + 2 mm LED MCPCB stack.</li>
+<li><strong>ALL v7/v8 top-face holes are GONE.</strong> No M3 corner
+taps, no M2 mount holes, no Ø6 wire pass-throughs. The 24-wire LED
+bundle routes in the <strong>3 mm</strong> heatsink-to-cyl-wall annulus
+in v9.1. LED PCBs bond with thermal adhesive (same as v7).</li>
+</ul>
+<h3 id="tools">Tools</h3>
+<p>Two tools <strong>in different collets</strong> — M0 #1 is a real
+collet change (1/8" OZ8 → 1/4" OZ8) because the SHARPRO 1/8"-cutter has
+a 1/4" shank. (v9.7 documented "same collet, just a bit swap" — that was
+true when T2 was the Kodiak 1/8"-shank endmill; the Kodiak broke a while
+back and SHARPRO is the only 1/8" endmill on hand.)</p>
+<table>
+<thead>
+<tr>
+<th>Tool #</th>
+<th>Description</th>
+<th>Collet (OZ8)</th>
+<th>RPM</th>
+<th>Feed</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T1</strong></td>
+<td><strong>Milwaukee 1/8" (3.175 mm) cobalt twist drill, 135° split
+point</strong> (HSS-Co M35/M42, 1/8" shank). Canonical pilot tool from
+<a href="#1-tool-inventory">§1</a> — real drill geometry (split point
+self-centres, full-width flutes evacuate chips). <strong>Stick-out 15-18
+mm</strong> past the collet face — reach Z=−10.5 through the 10 mm stock
+into the fixture plate. Grip on smooth shank, NOT flutes.</td>
+<td>3.175 mm (1/8")</td>
+<td><strong>12000</strong></td>
+<td>60 mm/min plunge (Q=1.0 pecks), rapid XY between holes</td>
+<td><strong>OP1 pre-drill:</strong> 3× G83 peck cycles in the puck body
+at r=8 mm — (+6.928, +4), (−6.928, +4), (0, −8) — Z=−10.5. Follows the
+§0 rule: use a real drill for axial plunges, not an endmill.</td>
+</tr>
+<tr>
+<td><strong>T2</strong></td>
+<td><strong>SHARPRO 1/8" (3.175 mm) O-Flute upcut endmill, 1/4"
+shank</strong> (from <a href="#1-tool-inventory">§1</a>). Single-flute
+O-flute geometry is designed for aluminum — chip load &lt; 0.001″/flute
+at S18000 F300 is well inside the tool's envelope (same regime the
+base-plate NC uses on the same tool). Replaces the Kodiak 1/8" 2-flute
+carbide that was speced in v9.7 — Kodiak broke a while back and this is
+what's on hand.</td>
+<td>6.35 mm (1/4")</td>
+<td><strong>18000</strong></td>
+<td>300 mm/min XY (contour + slot lateral), 100 mm/min plunge on
+contour</td>
+<td><strong>OP2 contour + slot:</strong> 10 integrated passes at 1 mm
+DOC, breakthrough at Z=−10.05.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why two tools instead of one:</strong> the v9.6 iteration
+used T1=Kodiak endmill for both ops — endmill peck-drilling into 10 mm
+Al works at F60/Q=1.0 but violates the §0 convention (real drill for
+axial plunges — endmills' near-zero-velocity centres smear chips and can
+snap under axial load, exactly what broke the 2 mm SainSmart on the v1
+servo plate run). v9.7 split the ops onto the tools they're each
+designed for. v9.8 keeps the split but swaps the OP2 endmill to SHARPRO
+(Kodiak's gone), which is why M0 #1 now includes a collet change.</p>
+<h3 id="operations">Operations</h3>
+<p>Origin: centre of the 60 × 60 stock (= centre of the finished puck),
+top surface = Z0.</p>
+<table>
+<thead>
+<tr>
+<th>Op</th>
+<th>Operation</th>
+<th>Tool</th>
+<th>Method</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>M0 #0 (start)</strong></td>
+<td>Setup confirmation</td>
+<td>—</td>
+<td>Manual, ~1 min</td>
+<td>Read the checklist that surfaces in the NC viewer's M0 banner: (1)
+stock taped down and centred over fixture-plate taps, (2) T1 (Milwaukee
+1/8" cobalt drill) installed in the 1/8" OZ8 collet with 15-18 mm
+stick-out, (3) T2 (<strong>SHARPRO 1/8" O-flute endmill, 1/4"
+shank</strong>) staged AND a <strong>1/4" OZ8 collet</strong> staged for
+the M0 #1 collet+bit swap, (4) X/Y/Z zeros set (Z on T1's drill point),
+(5) fixture plate bolted to spoilboard. Cycle Start.</td>
+</tr>
+<tr>
+<td><strong>OP1 — Pre-drill</strong></td>
+<td><strong>3× Ø3.175 through-holes IN puck body</strong> at r=8 mm
+(30°/150°/270°)</td>
+<td><strong>T1 = Milwaukee 1/8" cobalt drill</strong></td>
+<td>CNC G83 peck cycles, <strong>Z=−10.5, R=+2, Q=1.0, F60 plunge,
+S12000</strong></td>
+<td>Ø3.175 = M3 close-fit clearance (M3 body Ø 3.0 mm + 0.175 mm slop).
+Same fit as the servo plate corner holes (<a
+href="#5-part-3-base-servo-plate-armpiultra--one-time-fpc--ultra-upgrade">§5</a>).
+Real drill geometry — F60 is very conservative here (cobalt could push
+F200+ in 10 mm Al), but matches the servo plate insurance-margin
+envelope. 3 holes × ~10 pecks each = ~20 sec of cutting. Low force —
+tape is plenty. Holes stay IN the finished puck (not offcuts) so the M0
+#1 through-bolts anchor the puck itself through the breakthrough.</td>
+</tr>
+<tr>
+<td><strong>M0 #1</strong></td>
+<td>(a) Install 3× M3 SHCS; (b) swap T1→T2 (+ collet change); (c)
+re-touch Z=0</td>
+<td>3× M3 × ~25 mm SHCS + hex key + T2 (SHARPRO endmill) + 1/4" OZ8
+collet</td>
+<td>Manual, ~3 min</td>
+<td><strong>Three actions:</strong> (a) Drive 3 bolts through the
+freshly-drilled puck-body holes at r=8 mm into the fixture plate's
+pre-tapped M3 holes, finger-snug. Because these holes are in the PUCK
+BODY (not the corner offcuts), the through-bolt hold-down survives OP2
+breakthrough. (b) Swap T1 (Milwaukee drill, 1/8" OZ8) → T2 (SHARPRO 1/8"
+O-flute endmill, 1/4" shank) — <strong>COLLET CHANGE 1/8" OZ8 → 1/4"
+OZ8</strong>. (The v9.7 doc said "same collet, just a bit swap" — that
+was true when T2 was the Kodiak 1/8"-shank endmill; Kodiak's gone,
+SHARPRO is what we have.) (c) Re-touch Z=0 on T2 — the endmill cutting
+tip sits at a different axial position than the drill's split point, so
+OP2's Z=−10.05 breakthrough needs a fresh Z-zero. <strong>Tape
+stays</strong> as backup hold under the 4 corner OFFCUT zones during OP2
+breakthrough (offcut retention only — the puck itself is bolted). Cycle
+Start.</td>
+</tr>
+<tr>
+<td><strong>OP2 — Contour</strong></td>
+<td><strong>Ø54</strong> outside contour, <strong>no slot</strong></td>
+<td><strong>T2 = 1/8" SHARPRO O-flute endmill (1/4" shank)</strong></td>
+<td>CNC, 10 passes × 2 G2 arcs, 1 mm DOC steps to Z=−10.05 breakthrough,
+S18000</td>
+<td>Pure circular orbit. Cutter-centre R = (Ø54 / 2) + (1/8" / 2) =
+<strong>28.5875 mm</strong> — each pass plunges G1 to the new Z at
+(28.588, 0), then G2 to (−28.588, 0) via Y&lt;0 and G2 back via Y&gt;0.
+Final Z=−10.05 = 0.05 mm into spoilboard (was −10.2 in v9.1; dropped in
+v9.6). No spring pass. ⚠️ <strong>The cutter's outer sweep is 28.588 +
+1.5875 = 30.175 mm against a 30.0 mm stock half-width</strong> — it
+breaks out of the blank at the four mid-side points, so the waste frame
+comes off in four loose corners, not a ring.</td>
+</tr>
+<tr>
+<td><strong>M0 #2</strong></td>
+<td>Remove the four waste corners</td>
+<td>—</td>
+<td>Manual, ~1 min</td>
+<td>The offcuts are loose after OP2 breakthrough. Clear them before OP3
+so the slot pass runs in air outside the rim without hitting a floating
+piece. The puck itself is still bolted through its own 3× r=8 body
+holes. Cycle Start.</td>
+</tr>
+<tr>
+<td><strong>OP3 — Keyway slot</strong></td>
+<td>4.4 × 2.2 × 10 mm rim slot</td>
+<td><strong>T2</strong> (same tool, no change)</td>
+<td>CNC, 3 radial plunge cuts at full depth, S18000</td>
+<td>Cut <strong>after</strong> the contour, not during it: at Z=−10.050
+the cutter enters from <strong>X=28.588</strong> (air, outside the rim)
+and feeds in to <strong>X=26.388</strong> at each of <strong>Y = 0,
++0.6125, −0.6125</strong>, retracting to Z3.0 between. That is the 2.2
+mm radial depth and the 4.4 mm tangential width, cut through the full 10
+mm rim.</td>
+</tr>
+<tr>
+<td><strong>OFF-MACHINE</strong></td>
+<td>De-burr the Ø54 rim + keyway slot edges</td>
+<td>Fine file or 400-grit paper</td>
+<td>Manual, ~2 min</td>
+<td>Light file over the Ø54 contour edge (both top and bottom, where the
+breakthrough left small burrs) and inside the keyway slot walls.
+<strong>This is the ONLY off-machine step</strong> — no drilling, no
+tapping.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="workholding">Workholding</h3>
+<p><strong>One-time fixture plate setup</strong> (~10 min, reusable
+across every puck run):</p>
+<ol type="1">
+<li>Cut a ~100 × 100 × 10 mm fixture plate from scrap (MDF, plywood, or
+scrap aluminium).</li>
+<li>Drill + tap <strong>3× M3 holes at r=8 mm on angles
+30°/150°/270°</strong> from the fixture plate centre — positions
+<strong>(+6.928, +4)</strong>, <strong>(−6.928, +4)</strong>,
+<strong>(0, −8)</strong> mm (matches the puck-body hole pattern that OP1
+drills):
+<ul>
+<li><strong>Aluminium fixture plate:</strong> drill Ø2.5 mm, tap M3 ×
+0.5 mm.</li>
+<li><strong>MDF/plywood fixture plate:</strong> drill Ø6 mm through,
+press in M3 threaded inserts (McMaster 90192A or similar knife-thread
+inserts).</li>
+</ul></li>
+<li>Drill perimeter mounting holes and bolt the fixture plate to the
+spoilboard / T-slot bed so it can't shift.</li>
+</ol>
+<p><strong>Per-part hold-down</strong> (~1 min per puck):</p>
+<ul>
+<li><strong>Primary — 3× M3 bolts through the puck body.</strong> The 3
+M3 SHCS driven at M0 #1 pass through the FINISHED PUCK BODY at r=8 mm
+(between the 3 LED-star positions at r=15). Because the bolts anchor the
+puck itself (not offcuts), the hold-down survives the entire OP2
+including the Z=−10.05 breakthrough — the outer hex waste frame is what
+comes free, not the puck.</li>
+<li><strong>Backup — 3M VHB or high-strength foam double-sided
+tape.</strong> Fresh strip across the 60×60 stock (IPA-wipe both
+surfaces first). Tape's job now is 4-corner OFFCUT retention through
+breakthrough (so the corner scraps don't rattle loose into the spindle).
+Lateral cutting forces on a 1/8" endmill at F300 in aluminium are ~10s
+of N, well under VHB's 200+ psi shear rating.</li>
+<li><strong>DO NOT peel the tape at M0 #1.</strong> It's the safety net
+for the 4 corner offcut zones; peeling it would leave them free to lift
+during OP2 breakthrough.</li>
+</ul>
+<p><strong>After the program ends:</strong></p>
+<p>The outer hex waste frame + 4 corner offcuts drop away. The finished
+puck stays bolted to the fixture plate via the 3 M3 SHCS through the
+puck body. Unscrew the 3 bolts from the fixture plate and lift the
+finished puck off — the 3 M3 clearance holes stay in the puck
+(dual-purposed as optional wand-assembly retention screws into the
+L-tabs). No tape residue on the finished part.</p>
+<h3 id="led-star-bonding-off-machine-after-cnc">LED-star bonding
+(off-machine, after CNC)</h3>
+<p>3× Ø20 stars — <strong>2× RGBW cool + 1× RGBWW warm</strong> — bond
+to the TOP face of the Ø54 puck on a Ø30 BCD (120° spacing) with
+<strong>MG Chemicals 8329TCM</strong> thermal-conductive epoxy (1.36
+W/m·K, electrically insulating, 45 min pot life, 7 hr handle / 24 hr
+full cure; ordered from vetco.net). Star placement is gauged through the
+<strong>v9.9 lens plate's</strong> three Ø21.4 apertures (same Ø30 BCD,
+clocked through the L-tab pegs to this puck's own rim keyway), and the
+cure is held by <strong>M3 screws + Ø12 washers in the 3 holes at r = 8
+that this program drills</strong>.</p>
+<p>See <a
+href="Lumi_Wand_Integration.html#step-3-led-cluster-thermal-adhesive-bond-gauged-through-the-lens-plate">Lumi_Wand_Integration.md
+§13 Step 3</a> for the full adhesive procedure.</p>
+<h3 id="wand-assembly-note-keyway-alignment">Wand assembly note (keyway
+alignment)</h3>
+<p>The puck's keyway slot has no fixed angular reference on the round
+Ø54 disc — the operator picks the orientation during assembly. On the
+wand shell (<a
+href="../cad/freecad/lumi_wand_cyl_v1.py"><code>cad/freecad/lumi_wand_cyl_v1.py</code></a>),
+only the <strong>30° L-tab</strong> carries the anti-rotation key nub;
+150° and 270° L-tabs are unchanged. Rotate the puck so the slot drops
+over the 30° nub, then lower it onto the L-tab shelves. The 3 LED stars
+auto-align under the 3 head-cap lens apertures.</p>
+<h3 id="dry-run-reminder">Dry-run reminder</h3>
+<p>Load <a
+href="../cad/exports/cnc/nc_viewer.html"><code>cad/exports/cnc/nc_viewer.html</code></a>,
+open <code>lumi_wand_heatsink.nc</code>, and Play the whole program
+before committing to stock. Verify:</p>
+<ul>
+<li><strong>M0 #0 banner</strong> at the start shows the 5-item setup
+checklist (STOCK / T1 / T2-STAGED-with-1/4"-OZ8-collet / ZEROES /
+SPOILBOARD).</li>
+<li><strong>OP1</strong> peck-drills <strong>3 holes in the puck
+body</strong> at (+6.928, +4), (−6.928, +4), (0, −8) — each ~30 sec real
+time (F60 plunge × 10 pecks). Fx/Fy stay near 0, Fz stays at 60 mm/min
+(straight-Z plunges).</li>
+<li><strong>M0 #1 banner</strong> shows the three actions: install 3× M3
+SHCS through the puck-body holes into the fixture, swap T1→T2 with the
+<strong>collet change 1/8"→1/4" OZ8</strong>, re-touch Z=0.</li>
+<li><strong>OP2</strong> does 10 integrated passes. On each pass the
+cursor should: plunge → sweep to X=23.39 → sweep to Y=+0.6125 → sweep to
+Y=−0.6125 → return to Y=0 → sweep back to X=25.588 → G2 arc bottom → G2
+arc top. Slot detour visible as a small radial dip toward puck centre at
+the start of each pass.</li>
+<li><strong>Breakthrough</strong> at Z=−10.05 on pass 10 (not −10.2 —
+the reduced-breakthrough is a v9.6 change).</li>
+<li><strong>Total real CNC time:</strong> ~5:30 (20 sec pre-drill + ~5
+min contour+slot). The viewer's elapsed/total clock will confirm.</li>
+</ul>
+<hr />
+<h2 id="4-part-2-camera-mount-oak-d">4. Part 2: Camera Mount
+(OAK-D)</h2>
+<h3 id="stock-1">Stock</h3>
+<p>Finished plate: <strong>91.3 × 51 × 2.04 mm</strong> (per STEP file;
+the camera end is lifted +6 mm in Y, so the plate is asymmetric about
+the NC zero, physical centre 3 mm north of X0 Y0); cutter envelope 94.44
+× 54.11 (Y −24.06 to +30.05) after ±1.588 mm cutter offset. Three
+sourced variants are in use, each with its own NC — see
+<code>cad/exports/cnc/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Stock</th>
+<th>Alloy / temper</th>
+<th>NC file</th>
+<th>Z breakthrough</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Current (Halo + Nova)</strong></td>
+<td>300 × 150 × <strong>2.00</strong> mm sheet (uxcell)</td>
+<td><strong>6061 Al</strong></td>
+<td><code>CameraMount_Oak-D.nc</code></td>
+<td>Z = −3.0</td>
+<td>Clean-cutting. 3 plates nest on this sheet (operator 2026-10-21):
+NC-zero scribe centres at Y = 29.5 / 89.5 / 149.5 from the clear-end
+edge (5.89 mm webs; see <a
+href="CNC_CameraPlate_BatchOf3.html"><code>CNC_CameraPlate_BatchOf3.md</code></a>);
+re-zero XY per plate on the same NC. Full-back VHB + edge clamps.</td>
+</tr>
+<tr>
+<td><strong>Fallback</strong></td>
+<td>200 × 200 × <strong>2.00</strong> mm sheet (unknown vendor)</td>
+<td><strong>5052 Al</strong></td>
+<td><code>CameraMount_Oak-D.nc</code></td>
+<td>Z = −3.0</td>
+<td>Blue sandblasted / anodized spare. Softer than 6061 but machines
+cleanly on the same NC.</td>
+</tr>
+<tr>
+<td><strong>Future (deferred)</strong></td>
+<td>200 × 300 × <strong>3.00</strong> mm sheet (AliExpress)</td>
+<td><strong>1060 Al</strong></td>
+<td><code>CameraMount_Oak-D_3mm.nc</code></td>
+<td>Z = −3.3 (+ added Z = −2.5 pass)</td>
+<td>Soft/gummy — WD-40 mist, F-override at operator discretion.
+<strong>Not scheduled</strong>; this NC is pre-staged for when the 1060
+sheet is next machined. Variant emitted by
+<code>gen_cameramount_nc.py</code>, same parameterisation pattern as the
+base plate's dual NC.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="nc-file-1">NC File</h3>
+<ul>
+<li><a
+href="../cad/exports/cnc/CameraMount_Oak-D.nc"><code>cad/exports/cnc/CameraMount_Oak-D.nc</code></a>
+(2 mm sheet, FreeCAD CAM authored, Z = −3.0 breakthrough)</li>
+<li><a
+href="../cad/exports/cnc/CameraMount_Oak-D_3mm.nc"><code>cad/exports/cnc/CameraMount_Oak-D_3mm.nc</code></a>
+(3 mm sheet, emitted by <a
+href="../cad/freecad/gen_cameramount_nc.py"><code>cad/freecad/gen_cameramount_nc.py</code></a>;
+adds Z = −2.5 intermediate pass before the Z = −3.3 breakthrough for
+single-SHARPRO safety)</li>
+</ul>
+<h3 id="tool">Tool</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T2</td>
+<td>3.175mm (1/8") 1-flute end mill</td>
+</tr>
+</tbody>
+</table>
+<h3 id="parameters-from-nc-file">Parameters (from NC file)</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spindle</td>
+<td>18000 RPM</td>
+</tr>
+<tr>
+<td>Plunge feed</td>
+<td>100.2 mm/min</td>
+</tr>
+<tr>
+<td>Cut feed</td>
+<td>600 mm/min</td>
+</tr>
+<tr>
+<td>DOC</td>
+<td>0.5mm per pass</td>
+</tr>
+<tr>
+<td>Operations</td>
+<td>Camera holes, slot, mounting holes</td>
+</tr>
+<tr>
+<td>Coordinate system</td>
+<td>G54</td>
+</tr>
+</tbody>
+</table>
+<h3 id="notes">Notes</h3>
+<ul>
+<li>Existing NC program is ready to run</li>
+<li>Uses the SHARPRO 1/8" O-flute (same as T1)</li>
+<li>Multiple depth passes at 0.5mm increments</li>
+<li>Features: 2x screw holes (circular bore), 1x camera slot (oblong),
+2x mounting holes</li>
+</ul>
+<hr />
+<h2
+id="5-part-3-base-servo-plate-armpiultra--one-time-fpc--ultra-upgrade">5.
+Part 3: Base Servo Plate (ArmPiUltra) — one-time FPC → Ultra
+upgrade</h2>
+<blockquote>
+<p><strong>Scope note:</strong> This part is only needed when upgrading
+an existing Hiwonder ArmPi <strong>FPC</strong> robot to the ArmPi
+<strong>Ultra</strong> chassis (e.g. retrofitting an existing FPC unit
+alongside a fresh Ultra). New Ultra builds purchased complete from
+Hiwonder do NOT need this part — the stock chassis already has the
+correct base servo mount. Skip this section unless you're doing the FPC
+→ Ultra retrofit.</p>
+</blockquote>
+<p>The servo-mount plate that sits under the ArmPi Ultra arm base.
+Hexagonal outline, 4 corner mounting holes for the arm chassis, 4 servo
+mounting holes for the base-rotation servo, and a large hex cutout in
+the center for the servo body to sit flush.</p>
+<h3 id="stock-2">Stock</h3>
+<p>200 × 200 × 2 mm aluminum sheet. Origin: center of stock, top surface
+= Z0.</p>
+<h3 id="nc-file-2">NC File</h3>
+<p><a
+href="../cad/exports/cnc/ArmPiUltra_Servo_BasePlate.nc"><code>cad/exports/cnc/ArmPiUltra_Servo_BasePlate.nc</code></a>
+— hand-written, pre-compensated (no G41/G42).</p>
+<h3 id="source-of-truth">Source of Truth</h3>
+<p><a
+href="../cad/reference/step/ArmPiUltra%20base%20servo%20plate.step"><code>cad/reference/step/ArmPiUltra base servo plate.step</code></a>
+— hole positions + hex outline geometry.</p>
+<h3
+id="tools--drill-through--m3-close-fit-workflow-v22-2026-06-28-v21-swapped-t1-to-a-real-drill-2026-06-23-after-the-2-mm-endmill-broke-under-axial-plunge-v22-dropped-the-corner-hand-drill-step-since-ø3175--m3-close-fit-clearance">Tools
+— drill-through + M3 close-fit workflow (v2.2 2026-06-28; v2.1 swapped
+T1 to a real drill 2026-06-23 after the 2 mm endmill broke under axial
+plunge; v2.2 dropped the corner hand-drill step since Ø3.175 = M3
+close-fit clearance)</h3>
+<blockquote>
+<p>The MM-1000 spindle uses the <strong>OZ8 (EOC8) collet system, DIN
+6388A, M17×1 nut</strong> — NOT ER11. Standard OZ8 sizes are sparse (no
+3.5/4.5/etc.) and individual collets are expensive special-orders. To
+avoid depending on them, <strong>drilling on the CNC = peck-DRILL with a
+real cobalt twist drill at Ø3.175 (1/8")</strong>, which is exactly M3
+close-fit clearance — no off-machine enlargement step in the default
+workflow. The Milwaukee 1/8" cobalt twist drill plunges through 2 mm
+aluminum reliably; the 2 mm SainSmart endmill it replaces was never
+designed for axial plunging (centre dead-zone smears chips and snaps the
+flute — happened on hole #1 of the v1 servo plate run). Only the 1/8" +
+1/4" OZ8 collets are needed for the whole job — both already in
+hand.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Tool #</th>
+<th>Description</th>
+<th>Collet (OZ8)</th>
+<th>RPM</th>
+<th>Feed</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td><strong>1/8" (3.175 mm) Milwaukee Cobalt twist drill</strong> (135°
+split point, HSS-Co M35/M42, 1/8" shank)</td>
+<td>3.175 mm (1/8")</td>
+<td>12000</td>
+<td><strong>60 mm/min plunge (Q=1.0 pecks)</strong> — proper full-Ø
+chip-break peck for a real drill (was Q=0.3 micro-peck on the v2 endmill
+which couldn't evacuate chips; a drill flutes them out at full Ø). F60
+is still conservative (cobalt could push F200+); leaves insurance
+margin.</td>
+<td><strong>Drills 8 holes THROUGH stock</strong> (4 corners + 4 servo)
+at Ø3.175, <strong>Z−3.0</strong> (2 mm stock + 0.66 mm split-point cone
++ 0.34 mm margin = 3.0 → 1.0 mm into spoilboard). The on-machine result
+is a clean Ø3.175 cylindrical hole all the way through — no pilot-mark +
+hand-drill cycle for the through dimension.</td>
+</tr>
+<tr>
+<td>T2</td>
+<td><strong>2.1 mm</strong> end mill — SainSmart Genmitsu Nano Blue Coat
+(1/8" shank, user-confirmed in-hand from the 10-pack). <em>The original
+spec was the 2.0 mm out of the same kit; that one broke on the failed v1
+pilot run.</em></td>
+<td>3.175 mm (1/8")</td>
+<td>12000</td>
+<td>400 mm/min XY, <strong>60 mm/min plunge</strong> (lateral cuts only,
+no deep through-plunge)</td>
+<td><strong>Servo hex pocket only</strong> — lateral inside-profile, 5
+passes × 0.5 mm DOC. Plunge feed dropped from F100→F60 on 2026-06-23
+after dry-fit review: the first plunge of pass 1 enters virgin aluminum
+at the start point, and "we just broke a tool" is reason enough to be
+conservative; F60 keeps each 0.5 mm plunge under 0.5 sec at very light
+chip load. <strong>NC pre-comp is 1.0 mm inward (built for the 2.0 mm
+tool); with a 2.1 mm tool the cutter sits 0.05 mm too far out per side,
+so the pocket comes out ~0.1 mm OVERSIZED total.</strong> Well within
+tolerance — the servo is held by 4 M3 screws and just needs to locate,
+not press-fit.</td>
+</tr>
+<tr>
+<td>T3</td>
+<td>1/8" (3.175 mm) O-flute end mill — SHARPRO O-Flute upcut (1/4"
+shank)</td>
+<td>6.35 mm (1/4")</td>
+<td>12000</td>
+<td>400 mm/min XY, 60 mm/min plunge</td>
+<td>Hex outside contour (last cut, part separates)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="operations-1">Operations</h3>
+<table>
+<thead>
+<tr>
+<th>Op</th>
+<th>Operation</th>
+<th>Tool</th>
+<th>Method</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PRE-1</strong></td>
+<td><strong>Power on + home all axes</strong></td>
+<td>—</td>
+<td>Manual / G28</td>
+<td>Home X, Y, Z to machine zero so the controller has a known absolute
+reference. UCCNC: press "Ref All Home" or run <code>G28</code> from
+MDI.</td>
+</tr>
+<tr>
+<td><strong>PRE-2</strong></td>
+<td><strong>Mount stock on spoilboard</strong></td>
+<td>—</td>
+<td>Manual</td>
+<td>Place the 200 × 200 × 2 mm sheet on the <strong>sacrificial
+spoilboard</strong>. <strong>Edge clamps only</strong> (no double-sided
+tape this run). Clamps hold for OP1 (low-force drill-through) and OP2
+(servo pocket). <strong>At M0 #1 we screw 4× M3 SHCS through the
+as-drilled Ø3.175 corner holes into the spoilboard</strong> — that
+hold-down is what carries OP3 (the part-separating hex contour cut).
+Keep clamps clear of the hex contour — it goes out to ~±58.5 mm at the
+flats and ~±67.5 mm at the vertices, so a "no clamps inside a 70 mm
+circle around stock-centre" rule is the safe keep-out. <strong>OP1 drill
+goes to Z−3.0 (1.0 mm into spoilboard), OP3 contour goes to
+Z−0.20</strong> — sacrificial board mandatory.</td>
+</tr>
+<tr>
+<td><strong>PRE-3</strong></td>
+<td><strong>Install T1 (Milwaukee 1/8" cobalt drill) in 1/8" (3.175 mm)
+OZ8 collet</strong></td>
+<td>T1</td>
+<td>Manual</td>
+<td><strong>Stick-out = 12-15 mm from the collet face</strong> (about
+1/2"). Why: (1) deep enough to reach Z−3.0 (1.0 mm into spoilboard) with
+the collet still well clear of the workpiece; (2) short enough to keep
+the bit rigid — rule of thumb for a 1/8" drill is don't exceed 3–4×
+cutting Ø ≈ 13 mm before flex/breakage risk goes up sharply. <strong>The
+collet grips the smooth shank above the flutes, NOT the spiral
+flutes</strong> — if the fluted portion is what sits inside the collet
+face, push the bit further in so only smooth shank is gripped. The
+Milwaukee is 2.76" overall / 1.61" flute / ~29 mm of smooth shank above
+the flutes — plenty for the OZ8 collet to grip. Tighten the OZ8 nut,
+then re-zero Z=0 on the new bit (paper or touch plate).</td>
+</tr>
+<tr>
+<td><strong>PRE-4</strong></td>
+<td><strong>Set X-Y work zero</strong></td>
+<td>T1</td>
+<td>Touch-off / edge-finder</td>
+<td>Origin = stock centre. On the 200 × 200 sheet, jog to geometric
+centre and <code>G92 X0 Y0</code> (or set G54 X / Y).</td>
+</tr>
+<tr>
+<td><strong>PRE-5</strong></td>
+<td><strong>Set Z work zero on stock top</strong></td>
+<td>T1</td>
+<td>Touch-plate / paper-test</td>
+<td>Z0 = top of stock. UCCNC: probe with touch-plate at work-zero, or
+0.05 mm paper test.</td>
+</tr>
+<tr>
+<td><strong>PRE-6</strong></td>
+<td><strong>Load NC + dry-run</strong></td>
+<td>—</td>
+<td>UCCNC</td>
+<td>Load <code>ArmPiUltra_Servo_BasePlate.nc</code>. First time: raise
+Z+15 mm and air-cut the WHOLE program — verify the single M0 lands
+parked at <code>X=130, Y=0</code> for tool access.</td>
+</tr>
+<tr>
+<td><strong>PRE-7</strong></td>
+<td><strong>Spindle warm-up (optional)</strong></td>
+<td>T1</td>
+<td>Manual</td>
+<td>12000 RPM for 60-90 s on a cold machine.</td>
+</tr>
+<tr>
+<td><strong>OP1</strong></td>
+<td><strong>DRILL 8 holes THROUGH stock</strong></td>
+<td>T1 = Milwaukee 1/8" cobalt drill</td>
+<td>CNC G83, <strong>Z−3.0, R=2.0, Q=1.0, F60</strong> plunge</td>
+<td>4 corners (±35, ±35) + 4 servo (±5, +14.70 / ±5, −34.80). All 8
+holes come out clean Ø3.175 cylindrical, all the way through
+(split-point cone is past the stock bottom at Z−3.0). Ø3.175 is
+<strong>M3 close-fit clearance</strong> — M3 SHCS pass through directly
+with no enlargement step. F60 plunge is conservative for cobalt in 2 mm
+Al — Milwaukee spec could push F300+; we leave headroom after the v1
+endmill failure.</td>
+</tr>
+<tr>
+<td><strong>M0 #1 pause</strong></td>
+<td><strong>Park <code>X=130, Y=0, Z=15</code>; screw plate down +
+change T1 → T2</strong></td>
+<td>4× M3 × ~15 mm SHCS + hex key</td>
+<td>Manual, ~2 min</td>
+<td><strong>Three manual actions</strong> (in this order, then press
+Cycle Start): <strong>(a)</strong> drive 4× <strong>M3 × ~15 mm
+SHCS</strong> directly through the as-drilled Ø3.175 corner holes into
+the sacrificial spoilboard for <strong>positive hold-down</strong>
+during OP2 + OP3. No corner-hole enlargement step — Ø3.175 is M3
+close-fit. <strong>(b)</strong> swap T1 (Milwaukee 1/8" drill, 1/8" OZ8)
+→ T2 (SainSmart 2.1 mm endmill, 1/8" OZ8) — <strong>same collet, just
+bit swap</strong> (no collet change). <strong>(c)</strong> re-touch Z=0
+on the new bit (the endmill's tip is at a different axial position than
+the drill's).</td>
+</tr>
+<tr>
+<td><strong>OP2</strong></td>
+<td>Servo hex pocket</td>
+<td>T2 = SainSmart 2.1 mm endmill</td>
+<td>CW inside profile, 5 passes (Z 1.5 → −0.20), <strong>F60
+plunge</strong>, F400 lateral</td>
+<td>Creates the hex pocket the servo body drops into. With a 2.1 mm tool
+against the 2.0 mm-spec NC pre-comp, pocket comes out ~0.1 mm oversize
+total — well within tolerance, see T2 row in Tools.</td>
+</tr>
+<tr>
+<td><strong>M0 #2 pause</strong></td>
+<td><strong>Park <code>X=130, Y=0, Z=15</code>; change T2 →
+T3</strong></td>
+<td>—</td>
+<td>Manual</td>
+<td>Tool change only (the M3 hold-down stays in from M0 #1).
+<strong>Swap T2 (SainSmart 2.1 mm endmill, 1/8" OZ8) → T3 (SHARPRO 1/8"
+O-flute, 1/4" shank) — collet 1/8" OZ8 → 1/4" OZ8</strong> (this swap
+DOES change the collet). Re-touch Z=0 on the new bit.</td>
+</tr>
+<tr>
+<td><strong>OP3</strong></td>
+<td>Hex outside contour (profile)</td>
+<td>T3 = SHARPRO 1/8" O-flute</td>
+<td>CCW outside profile, pre-compensated outward 1.5875 mm, 5
+passes</td>
+<td><strong>LAST CUT — waste frame separates from finished
+part.</strong> The part stays bolted via the 4 corner M3 screws; the
+outer waste hex frame is the only piece that comes free. Keep
+hands/tools clear on the last pass; remove the waste frame, then unbolt
+and lift the finished plate.</td>
+</tr>
+<tr>
+<td><strong>OFF-MACHINE</strong> (optional)</td>
+<td><strong>Enlarge 4 servo holes Ø3.175 → Ø3.5</strong> <em>only if
+needed</em></td>
+<td>HSS-Co drill set (Ø3.5 bit)</td>
+<td>Power drill or drill press</td>
+<td>Default: skip — Ø3.175 is M3 close-fit clearance, servo screws
+thread through directly. Only enlarge if you discover the M3 servo
+screws don't drop in cleanly (servo body M3 tap alignment plus stack-up
+tolerances). The CNC already drilled clean Ø3.175 through-holes, so the
+Ø3.5 bit follows them precisely — no wander.</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="hole-positions-from-plate-center-origin--center-of-200200-sheet">Hole
+Positions (from plate center, origin = center of 200×200 sheet)</h3>
+<p>All 8 holes drilled at <strong>Ø3.175 (1/8")</strong> by T1 in one
+OP1 — M3 close-fit clearance, no off-machine enlargement needed (the
+servo holes can be enlarged to Ø3.5 only if the screws don't drop in
+cleanly — see OFF-MACHINE row above).</p>
+<table>
+<thead>
+<tr>
+<th>Hole</th>
+<th>X (mm)</th>
+<th>Y (mm)</th>
+<th>Type</th>
+<th>Drilled Ø</th>
+<th>Depth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Corner 1</td>
+<td>+35.00</td>
+<td>−35.00</td>
+<td>M3 chassis mount</td>
+<td>Ø3.175</td>
+<td>Through</td>
+</tr>
+<tr>
+<td>Corner 2</td>
+<td>+35.00</td>
+<td>+35.00</td>
+<td>M3 chassis mount</td>
+<td>Ø3.175</td>
+<td>Through</td>
+</tr>
+<tr>
+<td>Corner 3</td>
+<td>−35.00</td>
+<td>−35.00</td>
+<td>M3 chassis mount</td>
+<td>Ø3.175</td>
+<td>Through</td>
+</tr>
+<tr>
+<td>Corner 4</td>
+<td>−35.00</td>
+<td>+35.00</td>
+<td>M3 chassis mount</td>
+<td>Ø3.175</td>
+<td>Through</td>
+</tr>
+<tr>
+<td>Servo 1</td>
+<td>+5.00</td>
+<td>−34.80</td>
+<td>M3 servo mount</td>
+<td>Ø3.175</td>
+<td>Through</td>
+</tr>
+<tr>
+<td>Servo 2</td>
+<td>−5.00</td>
+<td>−34.80</td>
+<td>M3 servo mount</td>
+<td>Ø3.175</td>
+<td>Through</td>
+</tr>
+<tr>
+<td>Servo 3</td>
+<td>+5.00</td>
+<td>+14.70</td>
+<td>M3 servo mount</td>
+<td>Ø3.175</td>
+<td>Through</td>
+</tr>
+<tr>
+<td>Servo 4</td>
+<td>−5.00</td>
+<td>+14.70</td>
+<td>M3 servo mount</td>
+<td>Ø3.175</td>
+<td>Through</td>
+</tr>
+</tbody>
+</table>
+<p>Servo cutout: hexagonal pocket centered near
+<code>(−18.09, −8.80)</code> region, inside profile, 2 mm through. Hex
+outline: 6-sided ~117 mm flat-to-flat cut, 2.2 mm through (2 mm material
++ 0.2 mm clearance).</p>
+<h3 id="workholding--workflow">Workholding &amp; Workflow</h3>
+<p>Hold-down evolves across the job — edge clamps for the OP1
+drill-through (low-force op), then 4× M3 through-bolts into the
+spoilboard (driven directly through the as-drilled Ø3.175 corner holes
+during M0 #1) for the pocket (OP2) and the part-separating contour
+(OP3). <strong>No on-machine hand-drilling step</strong> as of v2.2 —
+Ø3.175 is M3 close-fit so the screws thread directly through.</p>
+<ol type="1">
+<li><strong>Fixturing (no tape):</strong> edge-clamp the 200 × 200 × 2
+mm sheet to a <strong>sacrificial spoilboard</strong>. Keep clamps
+outside ~70 mm radius of stock-centre (clears the hex contour vertices).
+Stock-centre = X0 Y0. T1 (Milwaukee 1/8" cobalt drill, 1/8" OZ8 collet,
+<strong>12–15 mm stick-out</strong>) installed and zeroed. Single setup
+— no flip on this part either.</li>
+<li><strong>OP1:</strong> T1 <strong>drills 8 holes THROUGH
+stock</strong> (4 corners + 4 servo, <strong>Z−3.0, Q=1.0, F60</strong>
+plunge). All 8 come out clean Ø3.175 cylindrical, through-cuts (drill
+point ends 1.0 mm into spoilboard, full Ø reaches stock bottom). All 8
+are <strong>M3 close-fit clearance</strong> — no enlargement step.</li>
+<li><strong>🔧 M0 #1 — three manual actions, in order:</strong>
+<ol type="1">
+<li>Spindle parks at <code>X=130, Y=0, Z=15</code>. Power down the
+spindle for safe hands-on work.</li>
+<li><strong>Drive 4× M3 × ~15 mm SHCS</strong> through the as-drilled
+Ø3.175 corner holes into the sacrificial spoilboard. This positive
+hold-down carries OP2 AND OP3. (No hand-drill step — Ø3.175 is the right
+fit for M3.)</li>
+<li><strong>Tool change:</strong> swap T1 (Milwaukee 1/8" drill, 1/8"
+OZ8) → T2 (SainSmart 2.1 mm endmill, 1/8" OZ8). <strong>Same collet,
+just bit swap</strong> — no collet change. Re-touch Z=0 on the new bit
+(the endmill's tip is at a different axial position than the drill
+point). Press Cycle Start.</li>
+</ol></li>
+<li><strong>OP2:</strong> T2 cuts the servo hex pocket (5 passes, inside
+profile, F60 plunge, F400 lateral). With the 2.1 mm tool against the 2.0
+mm-spec pre-comp, the pocket comes out ~0.1 mm oversize total — fine for
+the servo + 4 M3 mounting screws.</li>
+<li><strong>🔧 M0 #2 — tool change only (M3 hold-down stays
+in):</strong>
+<ul>
+<li>Spindle parks at <code>X=130, Y=0, Z=15</code>.</li>
+<li>Swap T2 (SainSmart 2.1 mm endmill, 1/8" OZ8) → T3 (SHARPRO 1/8"
+O-flute, <strong>1/4" shank</strong>) — collet 1/8" OZ8 → 1/4" OZ8
+<strong>(this swap does change the collet)</strong>. Re-touch Z=0. Cycle
+Start.</li>
+</ul></li>
+<li><strong>OP3:</strong> hex outside contour — <strong>part separates
+from stock</strong>, so this is the last on-machine cut. The part stays
+bolted via the 4 M3 corner screws; the outer waste hex frame is the only
+piece that comes free. Remove the frame, then unbolt and lift the
+finished plate.</li>
+<li><strong>OFF-MACHINE (optional, skip by default):</strong> if the M3
+servo screws don't drop in cleanly through the as-drilled Ø3.175 servo
+holes, enlarge those 4 to <strong>Ø3.5</strong> with a power drill /
+drill press and HSS-Co bit. The Ø3.175 through-hole guides the Ø3.5 bit
+— no wander. Corners stay at Ø3.175 (the M3 SHCS that held the plate
+down are already a close fit).</li>
+</ol>
+<p>Total: 3 on-machine tools, 2 tool changes, <strong>~10 min
+total</strong> (~30 min CNC time + ~2 min at M0 #1 + ~1 min at M0 #2; no
+off-machine drilling in the default workflow). From the broken-tool v1
+attempt at 2 tools / 1 tool change — we paid one extra tool change for a
+real drill on the through op, which is the trade we want.</p>
+<h3 id="dry-run-reminder-1">Dry-run reminder</h3>
+<p>Preview in <a
+href="../cad/exports/cnc/nc_viewer.html"><code>cad/exports/cnc/nc_viewer.html</code></a>
+and air-cut the first time on the 840D UCCNC to verify the two M0 pauses
+both park at <code>X=130, Y=0</code> for tool access, and that OP3 (hex
+contour, part-separating cut) is the LAST cut.</p>
+<p><strong>Viewer features worth using on this job</strong> (v2.2 /
+2026-06-28):</p>
+<ul>
+<li><strong>Real-time playback mode</strong> (default). Each move's
+animation duration = <code>length / feed × 60 s / multiplier</code>, so
+a slow F60 plunge ACTUALLY takes a second on screen while an F3000 rapid
+blinks past in 20 ms. Catches "I accidentally set the plunge feed to the
+rapid feed" bugs before metal is cut.</li>
+<li><strong>Elapsed / total CNC-time clock</strong> in the header
+(golden, MM:SS.s). This servo plate program is <strong>8:49.5</strong>
+of real machining time on the 840D.</li>
+<li><strong>Live X / Y / Z cursor readout</strong> in the header (cyan).
+Tracks the interpolated cursor smoothly along each move.</li>
+<li><strong>Step button</strong> (⟳ Step): single-step ONE G-code source
+line, grouping all internal moves that share the same line — so each G83
+peck cycle (~15 internal moves) completes in one click. Use it to walk
+OP1 hole-by-hole, or to inspect each pocket pass.</li>
+<li><strong>Per-move HUD</strong> (left panel): Type / F / Length /
+Duration / F_x, F_y, F_z components. F_z turns red when a feed move's
+Z-component exceeds 200 mm/min — the failure mode that broke the v1
+endmill.</li>
+<li><strong>Stop@M0</strong> toggle (default ON): auto-pauses AT every
+M0 pause and surfaces the operator instructions in a banner. Press Play
+(or Step) to resume past it, like Cycle Start on the real machine.</li>
+</ul>
+<hr />
+<h2 id="6-part-4-lumiai-main-base-plate-mounting-plate">6. Part 4:
+LumiAI Main Base Plate (Mounting Plate)</h2>
+<p>The aluminum sheet that forms the LumiAI base plate (sits above the
+LiFePO4 battery + PSU + DROK stack). The finished part's <strong>outer
+profile is the 38-edge R5-filleted fence outline</strong> (155.15 ×
+276.60 mm) — it is cut completely out of a larger rectangular blank.
+Carries the 8 fence-post / 2 PSU / 4 battery-strap / 8 MGN15H-carriage
+holes. The "LumiAI" engraving is on the <strong>mount (bottom)
+face</strong> so it faces down and hides against the frame after
+install; the operator physically flips the finished plate 180° about its
+long (Y) axis when mounting it. <strong>v5 (2026-07-07): the job now
+runs on a SINGLE machine setup — no CNC-time flip.</strong> Every hole,
+the engraving, and the profile cut are all emitted in X-mirrored
+(<code>toolB</code>) machine coordinates so the post-install flip lands
+each hole at its designed position. (The v3 doc described a 2-setup
+Setup A / Setup B flip; that's obsolete — the plate never leaves the
+machine mid-program now.)</p>
+<h3 id="stock-3">Stock</h3>
+<p><strong>200.6 × 302 × 3 mm (nominal) aluminum sheet.</strong> Two
+sourced variants are in use, each with its own regenerated NC — see
+<code>cad/exports/cnc/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Stock</th>
+<th>Alloy / temper</th>
+<th>NC file</th>
+<th>OP1 drill Z</th>
+<th>OP3 contour Z</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Nova + future (operator 2026-10-21, to buy)</strong></td>
+<td>300 × 200 × <strong>3.00</strong> mm (uxcell)</td>
+<td><strong>6061 Al</strong></td>
+<td><code>LumiAI_Base_Plate.nc</code></td>
+<td>Z = −4.00</td>
+<td>Z = −3.20</td>
+<td>Clean-cutting alloy — air blast, light de-burr. Stock is centred and
+the finished 155 × 277 fence outline fits inside the 300 × 200 blank.
+<strong>This is the current base-plate alloy going
+forward.</strong></td>
+</tr>
+<tr>
+<td><strong>Halo as-built (on-hand stock)</strong></td>
+<td>200 × 300 × <strong>3.00</strong> mm (AliExpress)</td>
+<td><strong>1060 Al</strong></td>
+<td><code>LumiAI_Base_Plate.nc</code></td>
+<td>Z = −4.00</td>
+<td>Z = −3.20</td>
+<td>Soft/gummy — use WD-40 mist / cutting fluid, de-burr edges. Only on
+hand because the 6061 wasn't available at the Halo build.</td>
+</tr>
+<tr>
+<td><strong>12″ square option</strong></td>
+<td>12″ × 12″ × 1/8″ = 304.8 × 304.8 × <strong>3.175</strong> mm
+(Amazon)</td>
+<td><strong>6061-T651</strong></td>
+<td><code>LumiAI_Base_Plate_3_175mm.nc</code></td>
+<td>Z = −4.17</td>
+<td>Z = −3.375</td>
+<td>1 plate per sheet (304.8 square vs 200 × 300 blank need); harder,
+machines cleanly.</td>
+</tr>
+</tbody>
+</table>
+<p>Origin: <strong>center of stock</strong>. Z0 = the MOUNT face (which
+is what's UP during CNC — the face that will be engraved and will face
+DOWN after the operator's install-flip).</p>
+<p><strong>Pick the NC that matches the stock in the fixture.</strong>
+Loading the 3.00 mm NC on 3.175 mm stock drops the OP3 contour at only
+0.025 mm past the far face — effectively no breakthrough, and the plate
+will stay attached to the surrounding stock after what should be the
+last pass. The generator derives both files from the same geometry and
+the X/Y coordinates are byte-identical; only Z depths differ.</p>
+<h3 id="nc-file-3">NC File</h3>
+<p><strong>No-rail plates</strong> (the Ultra/mecanum one-off, 2026-11):
+<a
+href="../cad/exports/cnc/LumiAI_Base_Plate_no_carriage.nc"><code>LumiAI_Base_Plate_no_carriage.nc</code></a>
+is the same part with the 8 MGN15H carriage holes left out (14 holes);
+the default NCs keep all 22 because the ceiling version always mounts on
+the rail. Bench plan: <a
+href="CNC_BasePlate_x2.html"><code>CNC_BasePlate_x2.md</code></a>.</p>
+<p><a
+href="../cad/exports/cnc/LumiAI_Base_Plate.nc"><code>cad/exports/cnc/LumiAI_Base_Plate.nc</code></a>
+— generated by <a
+href="../cad/freecad/gen_baseplate_nc.py"><code>cad/freecad/gen_baseplate_nc.py</code></a>,
+which is now a <strong>FreeCAD macro</strong> (not plain python3) so it
+consumes the part geometry directly.</p>
+<h3 id="source-of-truth-1">Source of Truth</h3>
+<p><a
+href="../cad/freecad/lumi_base_plate.py"><code>cad/freecad/lumi_base_plate.py</code></a>
+— the FreeCAD part model is the single source of truth. The generator
+imports it as a module and consumes its OWN geometry: the 22 resolved
+hole positions, the 38-edge fence <code>OUTLINE</code> (tool-radius
+offset via <code>makeOffset2D</code>), and the <code>TEXT_EDGES</code>.
+Hole/outline geometry traces back to
+<code>cad/reference/step/Base_plate_mounting_holes.step</code> +
+<code>output/lumi_baseplate_fence.step</code>. <strong>Do not hand-edit
+hole/outline coordinates in the NC — change the model and
+regenerate.</strong></p>
+<p>Plate center (machine origin)
+<code>Cx = PLATE_X0 + PLATE_LEN_X/2 = 230.4394</code>,
+<code>Cy = PLATE_Y0 + PLATE_LEN_Y/2 = 1.5434</code> (FILE frame). v5
+uses <strong><code>toolB</code> throughout</strong> — every emitted
+coordinate is <code>machine = (Cx − FILE_x, FILE_y − Cy)</code>, an
+X-mirror about the plate's long (Y) axis. The engraving is separately
+pre-mirrored in the model (<code>ENGRAVE_MIRROR_X</code>) so
+<code>toolB</code> cancels it back to normal reading in the machine
+frame (the generator asserts the engraving's <code>toolB</code> coords
+equal the legacy un-mirrored <code>(x−0.018, y−7.217)</code> placement).
+Net effect at the machine: engraving reads right-side-up in the NC
+viewer, all 22 hole positions look "mirrored" versus the FreeCAD design.
+That IS correct — the operator's post-install flip about the long Y axis
+is what maps every <code>toolB</code> machine point back to its designed
+world position. Sanity check any drilled hole:
+<code>world.X_after_flip = −machine.X</code>; it MUST equal the design's
+centered X (<code>FILE.x − Cx</code>).</p>
+<h3
+id="tools--drill-through--hand-finish-workflow-v5-2026-07-07-post-moved-into-op1-pilot-group-flip-removed-single-setup-on-the-mount-face-using-toolb">Tools
+— drill-through + hand-finish workflow (v5, 2026-07-07: POST moved into
+OP1 pilot group; FLIP removed; single setup on the mount face using
+<code>toolB</code>)</h3>
+<blockquote>
+<p>Same MM-1000 / OZ8 collet sparsity issue as the servo plate (§5).
+<strong>All 22 "drilled" hole positions (PSU + STRAP + CARRIAGE +
+POST)</strong> are CNC <strong>drilled through</strong> at Ø3.175 with
+the Milwaukee 1/8" cobalt twist drill (see §1 for full spec), and
+hand-enlarged off-machine to spec Ø afterward. <strong>POST was
+helical-interp-milled to Ø4.3 in v3/v4</strong> — v5 dropped that so the
+whole drilling phase runs on one tool at one setup; POST enlarges
+off-machine to Ø4.5 (or Ø4.2 for tighter M4 fit) with the same drill
+press pass as PSU/STRAP/CARRIAGE. <strong>Only two on-machine tools,
+only the 1/8" + 1/4" OZ8 collets</strong> (both in hand) needed for the
+whole job. The Ø3.175 drilled hole guides the hand-drill enlargements
+tightly (PSU +0.4 mm on radius, STRAP +0.66, CARRIAGE +0.16, POST +0.66)
+— the bit cannot wander.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Tool #</th>
+<th>Description</th>
+<th>Collet (OZ8)</th>
+<th>RPM</th>
+<th>Feed</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1</td>
+<td><strong>Milwaukee 1/8" (Ø3.175 mm) cobalt twist drill, 135° split
+point</strong> (Home Depot SKU, in hand) — replaces the 2 mm SainSmart
+endmill 2026-06-23 after it broke on hole #1 of the v1 servo plate run.
+Real drill geometry (split point self-centres, full-width flutes
+evacuate chips), HSS-Co M35/M42 takes axial load that snapped the
+carbide endmill. See §1 for stick-out spec.</td>
+<td>3.175 mm (1/8")</td>
+<td>12000</td>
+<td><strong>60 mm/min plunge (Q=1.0 pecks)</strong> — proper drill peck
+for full-Ø chip-break (3 pecks per hole). 400 mm/min rapid XY between
+holes.</td>
+<td><strong>Drills ALL 22 holes THROUGH stock</strong> (2 PSU + 4 STRAP
++ 8 CARRIAGE + 8 POST) at Ø3.175, <strong>Z−4.00</strong> (3 mm stock +
+0.66 mm split-point cone + 0.34 mm margin → 1.0 mm into spoilboard). The
+Ø3.175 cylindrical hole reaches all the way through the part —
+hand-drilling off-machine only enlarges to the spec Ø, no through
+dimension to add. F60 is conservative for cobalt in Al (could push
+F300+); we leave headroom after the v1 endmill failure.</td>
+</tr>
+<tr>
+<td>T2</td>
+<td>1/8" (3.175 mm) O-flute end mill — SHARPRO O-Flute upcut (1/4"
+shank)</td>
+<td>6.35 mm (1/4")</td>
+<td>18000</td>
+<td>400 engrave XY / 400 contour XY / 100 plunge</td>
+<td>"LumiAI" engraving (mount-face pocket) + outside fence contour cut
+completely through. T2 is the LAST tool in the spindle — no further tool
+changes, no FLIP.</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="operations--single-setup-mount-face-up-z0--mount-face-all-ops-in-toolb-x-mirrored-coordinates">Operations
+— SINGLE SETUP (mount face UP, Z0 = mount face), all ops in
+<code>toolB</code> (X-mirrored) coordinates</h3>
+<table>
+<thead>
+<tr>
+<th>Op</th>
+<th>Operation</th>
+<th>Tool</th>
+<th>Method</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PRE-1</strong></td>
+<td><strong>Power on + home all axes</strong></td>
+<td>—</td>
+<td>Manual / G28</td>
+<td>Home X, Y, Z to machine zero. UCCNC: "Ref All Home" or
+<code>G28</code> from MDI.</td>
+</tr>
+<tr>
+<td><strong>PRE-2</strong></td>
+<td><strong>Mount the blank on a sacrificial spoilboard, MOUNT FACE
+UP</strong></td>
+<td>—</td>
+<td>Manual</td>
+<td>Place the 200.6 × 302 × 3 mm sheet on the spoilboard with the face
+you want ENGRAVED facing UP. That face becomes the plate's bottom after
+the install-flip — hides the engraving against the frame. Edge toe
+clamps hold the blank for OP1. At M0 #1 you'll drive through-bolts
+through several of the just-drilled holes for positive hold-down through
+the engraving + contour cut. <strong>OP1 (drill) goes to Z−4.00 (1.0 mm
+INTO the spoilboard)</strong> for clean full-Ø breakthrough past the
+135° split-point cone; <strong>OP3 (contour) cuts to Z−3.20 (0.2 mm INTO
+the spoilboard)</strong>. A sacrificial spoilboard under the whole 155 ×
+277 fence outline is mandatory. Keep the clamps clear of the
+fence-outline path (X ≈ ±79, Y ≈ ±140 at the tool centre).</td>
+</tr>
+<tr>
+<td><strong>PRE-3</strong></td>
+<td><strong>Install T1 (Milwaukee 1/8" cobalt twist drill) in 1/8"
+(3.175 mm) OZ8 collet</strong></td>
+<td>T1</td>
+<td>Manual</td>
+<td><strong>Stick-out 12-15 mm past the collet face.</strong> Why:
+rigidity rule = stick-out ≤ 3-4× cutting Ø; for a Ø3.175 drill that's
+9.5-12.7 mm, and we want 2-3 mm slack past the bottom of the stock for
+breakthrough (3 mm stock + R=2 retract = 5 mm tip-to-collet during the
+work, plus a small margin). How: grip the drill on the <strong>smooth
+shank, NOT the flutes</strong> (collet jaws on flutes mark the tool and
+can crush the cutting geometry).</td>
+</tr>
+<tr>
+<td><strong>PRE-4</strong></td>
+<td><strong>Set X-Y work zero = stock CENTER</strong></td>
+<td>T1</td>
+<td>Touch-off / edge-finder</td>
+<td>Machine origin = geometric centre of the 200.6 × 302 sheet. Jog to
+centre and <code>G92 X0 Y0</code>, or set the G54 X/Y work offset.</td>
+</tr>
+<tr>
+<td><strong>PRE-5</strong></td>
+<td><strong>Set Z work zero on the stock TOP face</strong> (= the mount
+face, since we mounted engraving-side up)</td>
+<td>T1</td>
+<td>Touch-plate / paper-test</td>
+<td>Z0 = top of stock.</td>
+</tr>
+<tr>
+<td><strong>PRE-6</strong></td>
+<td><strong>Stage T2 + 1/4" OZ8 collet for the M0 tool
+change</strong></td>
+<td>—</td>
+<td>Manual</td>
+<td>Have T2 (SHARPRO 1/8" O-flute, 1/4" shank) AND a <strong>1/4" OZ8
+collet</strong> at the machine, ready for the one M0 after OP1.</td>
+</tr>
+<tr>
+<td><strong>PRE-7</strong></td>
+<td><strong>Load NC program + dry-run</strong></td>
+<td>—</td>
+<td>UCCNC</td>
+<td>Load <code>LumiAI_Base_Plate.nc</code>. First time: raise Z +15 mm
+and air-cut the WHOLE program — verify (a) the single tool-change M0
+parks at <code>X=0, Y=−170</code>; (b) OP2 engrave runs
+<strong>before</strong> OP3; (c) OP3 (full-depth contour) is the LAST
+cut.</td>
+</tr>
+<tr>
+<td><strong>PRE-8</strong></td>
+<td><strong>Spindle warm-up (optional)</strong></td>
+<td>T1</td>
+<td>Manual</td>
+<td>12000 RPM for 60-90 s on a cold machine.</td>
+</tr>
+<tr>
+<td><strong>OP1</strong></td>
+<td><strong>DRILL ALL 22 holes THROUGH stock</strong></td>
+<td>T1 = Milwaukee 1/8" cobalt drill</td>
+<td>CNC G83, <strong>Z−4.00, R=2.0, Q=1.0, F60 plunge</strong></td>
+<td>All 22 drill positions in one op (2 PSU + 4 STRAP + 8 CARRIAGE + 8
+POST). On-machine result: clean Ø3.175 cylindrical holes all the way
+through (drill point intrudes 1.0 mm into spoilboard at Z−4.00). Every
+position is emitted in <code>toolB</code> coords — X-mirrored about the
+plate's long Y axis so the operator's post-install flip lands each hole
+at its designed position. Hand-drill enlarges to spec Ø off-machine
+after the whole job is done.</td>
+</tr>
+<tr>
+<td><strong>M0 (only)</strong></td>
+<td><strong>Park <code>X=0, Y=−170, Z=15</code>; change T1 → T2 + bolt
+plate down</strong></td>
+<td>3–4× M3 × ~15 mm SHCS + hex key</td>
+<td>Manual, ~3 min</td>
+<td><strong>Three actions:</strong> (a) Drive M3 SHCS through several of
+the just-drilled Ø3.175 through-holes (the four end POST pilots
+POST.5–POST.8, listed with their coordinates in the NC's tool-change
+banner) into the sacrificial fixture for <strong>positive
+hold-down</strong> during OP2 (engrave) + OP3 (part-separating contour).
+(b) Swap T1 (Milwaukee 1/8" drill, 1/8" OZ8) → T2 (SHARPRO 1/8" O-flute,
+<strong>1/4" shank</strong>) — <strong>COLLET CHANGE 1/8" OZ8 → 1/4"
+OZ8</strong>. (c) Re-touch Z=0 on the new bit. T2 STAYS for the rest of
+the job. No flip.</td>
+</tr>
+<tr>
+<td><strong>OP2</strong></td>
+<td>Engrave "LumiAI" text pocket</td>
+<td>T2 = 1/8" SHARPRO O-flute</td>
+<td>0.75 mm deep zigzag-fill (passes −0.375, −0.75 mm)</td>
+<td>On the mount face (currently UP). Text was pre-mirrored in the CAD
+model and <code>toolB</code> mirrors it again — nets to reading normal
+in the NC viewer. After the install flip, the engraving is on the
+plate's underside and reads correctly from outside.</td>
+</tr>
+<tr>
+<td><strong>OP3</strong></td>
+<td>Outside contour — fence outline cut <strong>completely
+through</strong></td>
+<td>T2 = 1/8" SHARPRO O-flute</td>
+<td>6 depth passes to Z−3.20, tool-radius pre-compensated
+<strong>outward</strong>, <strong>NO tabs</strong></td>
+<td><strong>LAST CUT.</strong> The part is held by the through-bolts;
+the outer <strong>waste frame is severed and comes free</strong> — keep
+hands/tools clear on the final pass and remove the frame afterward.
+R5-filleted 38-edge profile (G2/G3 arcs).</td>
+</tr>
+<tr>
+<td><strong>OFF-MACHINE</strong></td>
+<td><strong>Hand-drill the 22 through-holes to spec Ø</strong></td>
+<td>HSS-Co drill set</td>
+<td>Power drill / drill press</td>
+<td>2 PSU → <strong>Ø4.0</strong> ; 4 STRAP → <strong>Ø4.5</strong> ; 8
+CARRIAGE → <strong>Ø3.5</strong> (model spec Ø3.4; +0.1 is well within
+M3 clearance) ; 8 POST → <strong>Ø4.5</strong> (or Ø4.2 for tighter M4
+fit). The CNC already drilled clean Ø3.175 through-holes (OP1 at
+Z−4.00), so the hand drill bit can't wander — it follows the existing
+hole. Enlargements are small: PSU +0.4 mm on radius, STRAP +0.66,
+CARRIAGE +0.16, POST +0.66.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="hole-positions">Hole Positions</h3>
+<p>22 holes total. Coordinates below are the model's <strong>FILE
+frame</strong> plus the <strong>machine (<code>toolB</code>)
+coords</strong> the NC actually emits
+(<code>= (Cx − FILE.x, FILE.y − Cy)</code> with
+<code>Cx = 230.4394</code>, <code>Cy = 1.5434</code>). These are
+auto-generated — the table is a cross-check, not the source. To confirm
+any drilled hole in the NC viewer: locate a hole, apply
+<code>world.X_after_flip = −machine.X</code>, and it should match
+<code>FILE.x − Cx</code>.</p>
+<p><strong>8× POST — Ø4.5 final (CNC drilled-through Ø3.175 by T1 at
+Z−4.00, hand-enlarged to Ø4.5 off-machine — was T2-interp'd to Ø4.3 in
+v3/v4):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Label</th>
+<th>FILE x</th>
+<th>FILE y</th>
+<th>Machine x (<code>toolB</code>)</th>
+<th>Machine y</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST.1</td>
+<td>161.9137</td>
+<td>−53.6087</td>
+<td>+68.526</td>
+<td>−55.152</td>
+</tr>
+<tr>
+<td>POST.2</td>
+<td>162.0937</td>
+<td>−89.7687</td>
+<td>+68.346</td>
+<td>−91.312</td>
+</tr>
+<tr>
+<td>POST.3</td>
+<td>299.1637</td>
+<td>−89.8587</td>
+<td>−68.724</td>
+<td>−91.402</td>
+</tr>
+<tr>
+<td>POST.4</td>
+<td>298.8937</td>
+<td>−53.8987</td>
+<td>−68.454</td>
+<td>−55.442</td>
+</tr>
+<tr>
+<td>POST.5</td>
+<td>161.5537</td>
+<td>105.5613</td>
+<td>+68.886</td>
+<td>+104.018</td>
+</tr>
+<tr>
+<td>POST.6</td>
+<td>299.6937</td>
+<td>105.3913</td>
+<td>−69.254</td>
+<td>+103.848</td>
+</tr>
+<tr>
+<td>POST.7</td>
+<td>187.2337</td>
+<td>−119.7187</td>
+<td>+43.206</td>
+<td>−121.262</td>
+</tr>
+<tr>
+<td>POST.8</td>
+<td>273.9437</td>
+<td>−119.4487</td>
+<td>−43.504</td>
+<td>−120.992</td>
+</tr>
+</tbody>
+</table>
+<p><strong>2× PSU — Ø4.0 final (CNC drilled-through Ø3.175 by T1 at
+Z−4.00, hand-enlarged to Ø4.0 off-machine):</strong> Circle.PSU.001 FILE
+(272.6065, 26.5864); Circle.PSU.002 FILE (190.3565, −97.4136).</p>
+<p><strong>4× STRAP — Ø4.5 final (drilled-through Ø3.175, hand-enlarge
+to Ø4.5):</strong> L.lo (174.2444, 23.6378); L.hi (172.0000, 110.5000);
+R.lo (285.2444, 24.1378); R.hi (284.7444, 110.1378). Right pair includes
+the −2.0 mm X fence-wall nudge (kept in sync with
+<code>lumi_battery_strap.py</code>).</p>
+<p><strong>8× CARRIAGE — Ø3.4 spec, hand-enlarged to Ø3.5
+(drilled-through Ø3.175 by T1):</strong> from the two
+<code>Mounting Carriage</code> solids — R: (274.513,59), (274.513,84),
+(299.513,59), (299.513,84); L: (171.368,−82), (171.368,−57),
+(196.368,−82), (196.368,−57). Rail centre-to-centre 103.145 mm (diagonal
+layout). The CNC already drilled a clean Ø3.175 through-hole, so
+hand-drilling to 3.5 mm follows it precisely — no wander; enlargement is
+only +0.16 mm on radius.</p>
+<p>All 22 centers lie inside the fence outline (verified by the model —
+they survive the OP3 contour cut and stay as through-holes on the
+finished part).</p>
+<p><strong>How to cross-check a hole in the NC viewer:</strong> the NC
+emits every position as
+<code>machine = (Cx − FILE.x, FILE.y − Cy)</code>. So for STRAP.L.hi at
+FILE (172.000, 110.500): expected machine = (230.44 − 172.00, 110.50 −
+1.54) = <strong>(+58.44, +108.96)</strong>. That's a hole on the RIGHT
+of the machine origin in the viewer — it's designed to end up on the
+plate's LEFT after the operator's install-flip about the long Y axis
+(<code>world.X_after_flip = −machine.X = −58.44</code>, matching the
+design's <code>FILE.x − Cx = −58.44</code>). If the viewer shows what
+LOOKS like an X-mirror of the FreeCAD design view, the toolB math is
+correct.</p>
+<h3 id="workholding--workflow-1">Workholding &amp; Workflow</h3>
+<p><strong>Single setup, one tool change, no flip.</strong> Hold-down:
+edge toe clamps for OP1 (no tape), then through-bolts (POST.5–POST.8,
+listed in the NC's tool-change banner) for OP2 engrave + OP3
+profile.</p>
+<ol type="1">
+<li><strong>Fixturing:</strong> clamp the 200.6 × 302 × 3 mm blank to a
+<strong>sacrificial spoilboard</strong> MOUNT FACE UP (the face that
+will be engraved — becomes the plate's underside after install). OP1
+cuts 1.0 mm into the spoilboard at Z−4.00; OP3 cuts 0.2 mm into it at
+Z−3.20. Keep clamps clear of the fence-outline path. Home all axes; set
+X/Y zero at the stock centre and Z zero on the top face with T1
+(Milwaukee 1/8" cobalt twist drill, 1/8" OZ8 collet, stick-out 12-15 mm
+— see §1 / PRE-3).</li>
+<li><strong>OP1:</strong> T1 <strong>drills all 22 holes THROUGH
+stock</strong> (2 PSU + 4 STRAP + 8 CARRIAGE + 8 POST; G83,
+<strong>Z−4.00, R=2.0, Q=1.0, F60 plunge</strong>). All come out clean
+Ø3.175 cylindrical through-holes (drill point intrudes 1.0 mm into
+spoilboard, full Ø reaches stock bottom). Coordinates are
+<code>toolB</code> (X-mirrored) — see the "How to cross-check" note
+under Hole Positions. Hand-enlarge to spec Ø off-machine after the CNC
+job ends.</li>
+<li><strong>🔧 M0 (only one):</strong> spindle parks
+<code>X=0, Y=−170, Z=15</code>. Three actions: <strong>(a)</strong>
+drive M3 SHCS through some of the just-drilled Ø3.175 holes (the four
+end POST pilots POST.5–POST.8 — 4 bolts, spread over the plate length)
+into the spoilboard for positive hold-down through OP2 + OP3;
+<strong>(b) swap T1 → T2</strong> (SHARPRO 1/8" O-flute, 1/4" shank),
+<strong>collet 1/8" OZ8 → 1/4" OZ8</strong>; <strong>(c)</strong>
+re-touch Z=0 on the new bit. Cycle Start. T2 STAYS for the rest of the
+job. No plate flip.</li>
+<li><strong>OP2:</strong> engrave "LumiAI" into the mount face (0.75 mm
+zigzag pocket). Model pre-mirror + <code>toolB</code> cancel so the text
+reads normal in the viewer; the install-flip is what puts it on the
+plate's underside reading correctly from outside.</li>
+<li><strong>OP3 (last cut):</strong> the fence outline is profiled
+<strong>completely through</strong> (Z−3.20), tool radius
+pre-compensated outward, <strong>no tabs</strong>. The part stays held
+by the through-bolts; the <strong>outer waste frame is severed and comes
+free</strong> — keep clear on the final pass, then remove the frame and
+unbolt the finished part.</li>
+<li><strong>OFF-MACHINE — hand-enlarge the 22 drilled-through holes to
+spec Ø.</strong> Power drill or drill press, HSS-Co bits: 2 PSU → Ø4.0;
+4 STRAP → Ø4.5; 8 CARRIAGE → Ø3.5 (close enough to the Ø3.4 model spec);
+8 POST → Ø4.5 (or Ø4.2 for tighter M4 fit). The holes are already
+through at Ø3.175, so bits follow them — no wander.</li>
+<li><strong>Install (off-machine, once):</strong> physically flip the
+finished plate 180° about its long (Y) axis so the engraved face goes
+DOWN. Every hole lands at its designed position because
+<code>toolB</code> pre-compensated for the flip.</li>
+</ol>
+<p>Total: 2 on-machine tools, 1 tool change, no FLIP, ~40-50 min CNC
+time + ~10 min hand-enlarge. From v3's "4 tools + 3 tool changes + 1
+FLIP" and v4's "3 tools + 2 tool changes + 1 FLIP".</p>
+<h3 id="regenerating-the-nc">Regenerating the NC</h3>
+<p>The generator is a <strong>FreeCAD macro</strong> (consumes
+<code>lumi_base_plate.py</code>'s geometry, needs
+<code>Part</code>/<code>FreeCAD</code>). It writes directly to
+<code>cad/exports/cnc/LumiAI_Base_Plate.nc</code> and a self-check
+report, <code>gen_baseplate_nc_report.txt</code>, to the OS temp dir
+(<code>tempfile.gettempdir()</code>: <code>/tmp</code> on Linux; the
+report cross-checks the 22 holes / outline length against
+<code>lumi_base_plate_report.txt</code> in the same dir). Paths come
+from <a
+href="../cad/freecad/lumi_paths.py"><code>cad/freecad/lumi_paths.py</code></a>.
+Run headless from the repo root:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">FreeCAD</span> <span class="at">-c</span> <span class="dt">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;exec(open(&#39;cad/freecad/gen_baseplate_nc.py&#39;).read()); import sys; sys.exit(0)&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">python3</span> <span class="at">-c</span> <span class="st">&#39;import tempfile; print(tempfile.gettempdir())&#39;</span><span class="va">)</span><span class="st">/gen_baseplate_nc_report.txt&quot;</span></span></code></pre></div>
+<p>If the part changes, edit <code>lumi_base_plate.py</code>, re-run
+<em>its</em> build (refreshes <code>lumi_base_plate_report.txt</code> +
+the STEP), then re-run this generator. Never hand-edit hole/outline
+coordinates in the <code>.nc</code>.</p>
+<h3 id="dry-run-reminder-2">Dry-run reminder</h3>
+<p>Preview <code>LumiAI_Base_Plate.nc</code> in <a
+href="../cad/exports/cnc/nc_viewer.html"><code>cad/exports/cnc/nc_viewer.html</code></a>
+and do at least one full air-cut on the StepCraft 840D UCCNC (spindle
+off) before committing to stock. Specifically verify: (1) exactly
+<strong>2 M0 pauses</strong> — M0 #0 setup banner at the very start, and
+M0 #1 tool-change (T1→T2 with collet 1/8"→1/4" OZ8) after OP1, both
+parking the spindle clear at <code>X=0, Y=−170</code>; (2) <strong>no
+FLIP</strong> — the plate stays MOUNT-FACE-UP for the whole program (if
+you see a "FLIP" instruction anywhere, you're on an old NC —
+regenerate); (3) OP2 engrave runs <strong>before</strong> OP3, and OP3
+(full-depth contour) is the <strong>last</strong> operation — nothing
+cuts the part free before the engraving is done; (4) the drilled hole
+positions look like an <strong>X-mirror</strong> of the FreeCAD design
+(that's <code>toolB</code> working correctly); (5) the operator and
+offcut are clear of the freed waste frame on the final OP3 pass.</p>
+<hr />
+<h2 id="7-machining-order-recommended">7. Machining Order
+(Recommended)</h2>
+<p>Do easiest/fastest parts first.</p>
+<table>
+<thead>
+<tr>
+<th>Order</th>
+<th>Part</th>
+<th>Est. Time</th>
+<th>Difficulty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Heatsink puck (CNC) — v9.8.2 all-in-one: 3× puck-body pre-drill +
+Ø54 contour with integrated keyway slot; T1 Milwaukee cobalt drill (1/8"
+OZ8) → M0 #1 (install 3 M3 SHCS + <strong>collet change 1/8"→1/4"
+OZ8</strong> + swap to T2 SHARPRO 1/8" O-flute) → OP2 contour+slot</td>
+<td>~8 min</td>
+<td>Easy (single M0 pause, ZERO off-machine drilling — puck leaves the
+machine ready to install)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Camera mount (CNC)</td>
+<td>20 min</td>
+<td>Medium (existing program)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Base servo plate (CNC) — <em>one-time only, FPC → Ultra upgrade;
+skip for new Ultra builds</em></td>
+<td>30 min</td>
+<td>Medium (existing program)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>LumiAI main base plate (CNC) — <strong>single-setup job
+(v5)</strong>: drill 22 through-holes → single tool-change M0 (T1→T2,
+collet 1/8"→1/4" OZ8) + bolt plate down → engrave "LumiAI" → full-depth
+fence-outline contour</td>
+<td>~40-50 min</td>
+<td>Medium (profile cut frees the waste frame — clear on last pass)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total estimated time: ~1.5 hours CNC</strong> (plus
+setup/tool changes). Base plate v5 is single-setup — no flip
+mid-program.</p>
+<hr />
+<h2 id="8-feed--speed-reference-aluminum-18000-rpm">8. Feed &amp; Speed
+Reference (Aluminum, 18000 RPM)</h2>
+<table>
+<thead>
+<tr>
+<th>End Mill</th>
+<th>Diameter</th>
+<th>RPM</th>
+<th>Feed (mm/min)</th>
+<th>DOC (mm)</th>
+<th>Chip Load</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1/8" O-flute (1 flute) — SHARPRO</td>
+<td>3.175mm</td>
+<td>18000</td>
+<td>400</td>
+<td>1.0</td>
+<td>0.022mm</td>
+</tr>
+<tr>
+<td>1/4" O-flute (1 flute)</td>
+<td>6.35mm</td>
+<td>18000</td>
+<td>600</td>
+<td>1.0</td>
+<td>0.033mm</td>
+</tr>
+<tr>
+<td>1/8" 2-flute Kodiak <em>(no longer in kit — broken)</em></td>
+<td>3.175mm</td>
+<td>18000</td>
+<td>600</td>
+<td>0.5</td>
+<td>0.017mm</td>
+</tr>
+</tbody>
+</table>
+<p>These are conservative for aluminum on the Stepcraft 840D. Increase
+feed by 20-30% once you're comfortable.</p>
+<h3 id="drilling-hss-co-in-drill-press">Drilling (HSS-Co in drill
+press)</h3>
+<table>
+<thead>
+<tr>
+<th>Drill</th>
+<th>RPM</th>
+<th>Feed</th>
+<th>Peck</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.5mm</td>
+<td>3000</td>
+<td>Hand feed, gentle</td>
+<td>1mm pecks</td>
+</tr>
+<tr>
+<td>2.0mm</td>
+<td>2500</td>
+<td>Hand feed</td>
+<td>1mm pecks</td>
+</tr>
+<tr>
+<td>5.0mm</td>
+<td>1500</td>
+<td>Hand feed</td>
+<td>2mm pecks</td>
+</tr>
+<tr>
+<td>6.5mm</td>
+<td>1200</td>
+<td>Hand feed</td>
+<td>2mm pecks</td>
+</tr>
+</tbody>
+</table>
+<p>Use cutting oil for all aluminum drilling and tapping.</p>
+<hr />
+<h2 id="9-design-files">9. Design Files</h2>
+<p>Every <code>.nc</code> lives under <code>cad/exports/cnc/</code>.
+Generated artifacts belong under <code>cad/exports/</code> (STL →
+<code>stl/</code>, STEP → <code>step/</code>, NC → <code>cnc/</code>).
+<code>nc_viewer.html</code> sits alongside them.</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>FreeCAD Script</th>
+<th>STEP File</th>
+<th>NC File</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Heatsink plate</td>
+<td><code>cad/freecad/lumi_wand_heatsink_cnc.py</code></td>
+<td>Export from FreeCAD</td>
+<td><code>cad/exports/cnc/lumi_wand_heatsink.nc</code></td>
+</tr>
+<tr>
+<td>Camera mount</td>
+<td>N/A</td>
+<td><code>cad/plasticity/CameraMount_Oak-D.step</code></td>
+<td><code>cad/exports/cnc/CameraMount_Oak-D.nc</code></td>
+</tr>
+<tr>
+<td>Base servo plate</td>
+<td>N/A</td>
+<td><code>cad/reference/step/ArmPiUltra base servo plate.step</code></td>
+<td><code>cad/exports/cnc/ArmPiUltra_Servo_BasePlate.nc</code></td>
+</tr>
+<tr>
+<td>LumiAI main base plate</td>
+<td><code>cad/freecad/lumi_base_plate.py</code> (model, source of truth)
++ <code>cad/freecad/gen_baseplate_nc.py</code> (FreeCAD-macro NC
+generator)</td>
+<td><code>cad/freecad/output/lumi_base_plate.step</code> /
+<code>_trimmed.step</code> (generated by the model)</td>
+<td><code>cad/exports/cnc/LumiAI_Base_Plate.nc</code></td>
+</tr>
+</tbody>
+</table>
+<p>For the U-bracket alignment jig (3D printed, used for ceiling rail
+installation), see <a href="3D_Printing_Guide.html">3D_Printing_Guide.md
+§4</a> and <a
+href="Ceiling_Rail_Mount_Guide.html">Ceiling_Rail_Mount_Guide.md</a>.</p>
+<hr />
+<h2 id="10-materials-to-purchase">10. Materials to Purchase</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200x200x2mm aluminum sheet</td>
+<td>1</td>
+<td>Base servo plate (one-time only — FPC → Ultra upgrade)</td>
+</tr>
+<tr>
+<td>200.6×302×3mm aluminum sheet (3 mm — NOT 2 mm)</td>
+<td>1</td>
+<td>LumiAI main base plate (rectangular blank; finished part is the
+155×277 fence-outline profile cut out of it)</td>
+</tr>
+<tr>
+<td>M3 × ~15 mm SHCS + sacrificial fixture plate for OP2/OP3
+hold-down</td>
+<td>1 set (4-6 bolts)</td>
+<td>At M0 #1, bolt the base plate down through the four end POST pilots
+(POST.5–POST.8) for positive hold-down during OP2 engrave and OP3
+full-depth fence-outline contour. No flip.</td>
+</tr>
+<tr>
+<td>Aluminum plate for camera mount</td>
+<td>1</td>
+<td>Per STEP file dimensions</td>
+</tr>
+<tr>
+<td>60x10x300mm finned aluminum heatsink extrusion</td>
+<td>1</td>
+<td>Heatsink pucks — machined IN-PLACE from the bar; 2 pucks fit along
+the clear region at 65 mm centre-to-centre</td>
+</tr>
+<tr>
+<td>Cutting oil / WD-40</td>
+<td>1 can</td>
+<td>For all aluminum cutting and tapping</td>
+</tr>
+</tbody>
+</table>
+<p>For ceiling rail install hardware (rails, lag bolts, detent pins),
+see <a
+href="Ceiling_Rail_Mount_Guide.html">Ceiling_Rail_Mount_Guide.md</a>.</p>
+<hr />
+<h2 id="11-heatsink-nc-file--historical-notes">11. Heatsink NC File —
+historical notes</h2>
+<p>Removed 2026-07-13. This section previously documented the <strong>v7
+SQUARE 60×60 heatsink</strong> (4× M3 corner taps + 4× M2 handle-mount
+holes at (±27,±8) + 2× Ø6 wire pass-throughs). None of those features
+exist in the current v9+ ROUND Ø48 puck (see §3 for the up-to-date NC —
+3× M3 puck-body holes at r=8 mm serve BOTH workholding and optional
+wand-assembly retention; no M2 handle mounts; wire routing moved to the
+3 mm heatsink-to-cyl-wall annulus in v9.1). If you need the historical
+v7 notes for reference on an existing v7 handle assembly, pull them from
+git history:
+<code>git show HEAD~10:docs/CNC_Machining_Guide.md | sed -n '/^## 11/,/^---/p'</code>
+(adjust <code>HEAD~10</code> as needed).</p>
+<hr />
+<p><em>Document: CNC Machining Guide — All LumiAI Parts</em></p>
+<p><em>Version: 2.5 — 2026-07-13 | DrDev / LumiAI. Simultaneous sweep of
+§3 heatsink and §6 LumiAI base plate to catch up to the actual NC
+files.</em></p>
+<ul>
+<li><strong>§3 heatsink v9.7 → v9.8.2.</strong> (a) T2 was Kodiak 1/8"
+2-flute carbide (1/8" shank, 1/8" OZ8) — Kodiak broke a while back and
+hasn't been replaced. T2 is now the <strong>SHARPRO 1/8" O-Flute endmill
+(1/4" shank)</strong>, so M0 #1 is a real <strong>COLLET CHANGE 1/8" OZ8
+→ 1/4" OZ8</strong>, not "same collet, just a bit swap" as v9.7
+documented. Every T2 mention updated (parts summary, header, tool table,
+M0 #1 action list, OP2 row, dry-run reminder, feed table). (b) OP1
+pre-drill pattern <strong>4× corner clearance holes at (±22, ±22) → 3×
+M3 through-holes IN the puck body</strong> at r=8 mm (angles
+30°/150°/270°, positions (+6.928, +4), (−6.928, +4), (0, −8)). These
+holes stay in the finished puck (dual-purpose: CNC workholding +
+optional wand-assembly retention), so the through-bolts anchor the PUCK
+ITSELF through the OP2 breakthrough — the outer hex waste frame is what
+comes free, not the puck. Every "corner offcuts fall away" reference
+reworded.</li>
+<li><strong>§6 LumiAI base plate v3/v4 → v5 (2026-07-07).</strong> FLIP
+removed entirely. Whole program now runs on <strong>a single machine
+setup</strong> (mount face UP). Every emitted coordinate is
+<code>toolB</code> (X-mirrored about the long Y axis) so the operator's
+off-machine install-flip lands each hole and the engraving at their
+designed positions. T1 (Milwaukee cobalt drill) drills ALL 22
+through-holes including POST — POST used to be T2 helical-interp'd to
+Ø4.3 in v3/v4; now it's a Ø3.175 pilot like the others, hand-enlarged to
+Ø4.5 off-machine. Ops table collapsed from "Setup A + FLIP table + Setup
+B" to a <strong>single Operations table</strong> with one M0 (tool
+change + bolt down). "Setup A / Setup B / FLIP" language stripped from
+§0 conventions, §6 intro, tools table, hole-positions header, workflow
+list, materials list, dry-run reminder, and machining-order table.
+Cross-check math for <code>toolB</code> documented so the operator can
+verify any hole in the NC viewer.</li>
+<li><strong>§0 unchanged in spirit; §1 tool inventory:</strong> T3
+Kodiak marked broken/not-in-kit (no longer speced anywhere in the
+guide); "SHARPRO / SpeTool / Kodiak" collet-usage note dropped
+Kodiak.</li>
+<li><strong>§11 (v7 SQUARE heatsink notes) DELETED.</strong> That
+section documented an obsolete part shape (60×60 square with 4 M3 corner
+taps + 4 M2 handle mounts + 2 wire pass-throughs) — none of those
+features exist in the current round v9+ puck. Leaving stale ops
+instructions in the guide is worse than a git-history pointer.</li>
+<li><strong>UCCNC-parser fix (companion commit 5928ab5,
+2026-07-13):</strong> <code>(</code> inside <code>;</code> line-comments
+crashed UCCNC's lexer when the <code>)</code> was on a wrapped line.
+Both NC files sanitised (<code>()</code> → <code>[]</code> in
+<code>;</code> comments); base-plate generator's <code>E()</code> now
+applies the same swap automatically.</li>
+<li>Footer bumped 2.4 → 2.5.</li>
+</ul></body></html>

@@ -1,0 +1,261 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CNC_CameraPlate_BatchOf3</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="oak-d-camera-plate--batch-of-3-bench-prep-halo--nova--spare">OAK-D
+camera plate — batch of 3 bench prep (Halo + Nova + spare)</h1>
+<p><strong>Program:</strong> <a
+href="../cad/exports/cnc/CameraMount_Oak-D.nc"><code>cad/exports/cnc/CameraMount_Oak-D.nc</code></a>
+— UNCHANGED, run three times <strong>Per-plate reference:</strong> <a
+href="CNC_CameraPlate_Single.html"><code>docs/CNC_CameraPlate_Single.md</code></a>
+— all per-plate mechanics (M0 sequence, hazards, verifier) <strong>Rules
+of engagement:</strong> <a
+href="rules/cnc.html"><code>docs/rules/cnc.md</code></a></p>
+<p>Operator (2026-10-20): <em>"cnc machining is a pain and once we have
+a plate in a fixture best to machine more since it creates a chip mess
+and clean up"</em> — cut the three plates in <strong>one fixture
+session</strong>: Halo (new), Nova (next build), spare. One tool
+install, one Z zero, one chip cleanup; XY zero per plate.</p>
+<h2 id="why-this-doc-exists">Why this doc exists</h2>
+<p>The NC is written to cut ONE plate centred at the active work zero.
+Three plates = three runs of the same NC. The win is
+<strong>not</strong> modifying the NC — it is leaving the Stepcraft set
+up (tool, collet, Z zero, spoilboard, vacuum, dust shoe) across all
+three cuts and only moving the stock in through the workflow once.</p>
+<p><strong>Do not generate a modified-coordinates NC.</strong> Prior
+sessions have hit the usual UCCNC syntax traps (lone-LF, nested parens,
+M6 handling) every time an NC gets rewritten. The original passes the
+full 8/8 audit; keep it.</p>
+<h2 id="shopping-list">Shopping list</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Spec</th>
+<th>Qty</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Aluminum plate stock</td>
+<td><strong>uxcell 6061, 300 × 150 × 2.0 mm sheet</strong>. ~115 mm used
+end (T-cutout + slot + 2 small holes); ~185 × 150 clear area.</td>
+<td>1 (shared, 3 plates nest on it)</td>
+</tr>
+<tr>
+<td>T2 SHARPRO 1/8" O-flute</td>
+<td>Ø3.175 cutter, 1/4" shank, in 1/4" OZ8 collet</td>
+<td>1 (<strong>only one on hand — no spare</strong>)</td>
+</tr>
+<tr>
+<td>Fixture clamps</td>
+<td>4 edge clamps on the sheet's long edges (clear of the plate row +
+used end)</td>
+<td>or toe / cam clamps</td>
+</tr>
+<tr>
+<td>3M VHB or foam double-sided tape</td>
+<td>Full-back under the sheet</td>
+<td>1 strip (300 × 150)</td>
+</tr>
+<tr>
+<td>Bolt-down screws</td>
+<td>M3 × ~15 mm SHCS</td>
+<td><strong>12</strong> (4 per plate for the mid-program M0
+bolt-down)</td>
+</tr>
+<tr>
+<td>Spoilboard</td>
+<td>Sacrificial 2 mm+ MDF/HDPE/ply, large enough for the sheet +
+clamps</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Compressed-air blast</td>
+<td>For chip evacuation on 6061</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Spare on hand (fallback):</strong> 5052 Al, 200 × 200 × 2 mm,
+blue sandblasted / anodized. Available if the 6061 nesting goes bad;
+usable without changing feeds or NC.</p>
+<p>6061 is the preferred alloy — cuts cleanly, better than 1060 (which
+is on the base-plate stock) or 5052 (softer, still OK).</p>
+<h2
+id="fixture-layout--three-plates-nested-on-the-300--150-sheet">Fixture
+layout — three plates nested on the 300 × 150 sheet</h2>
+<p>The plate was lifted +6 mm Y on the camera end 2026-10-29
+(BigClaw-ear clearance): tail-tab pair unchanged, so each plate's cutter
+envelope is <strong>asymmetric about the NC zero</strong> — Y −24.06 to
++30.05 (54.11 total). The scribe = NC zero, which is 3 mm
+<strong>south</strong> of the plate's physical centre.</p>
+<pre><code>sheet 300 x 150 x 2 mm 6061 (uxcell)
+                              Y = 185 ---------- Y = 300  (used end, T-cutout + slot)
++----------+---------+-----+-----+-----+---------+-------+
+|   edge   | 5.4 mm  |     |     |     | 5.4 mm  |       |
+|  clamp   | margin  | p#1 | p#2 | p#3 | margin  | USED  |
+|  track   | (tail)  |     |     |     | (camera)|       |
+|          |         |     |     |     |         |       |
++----------+---------+-----+-----+-----+---------+-------+
+Y = 0    ^Y=5.4   Y=29.5 Y=89.5 Y=149.5 Y=179.6 Y=185 Y=300
+                  ctr    ctr    ctr
+                  ^ scribe = NC zero (3 mm south of plate&#39;s physical centre)
+
+X-axis: sheet centred around X = sheet-centre.
+Each plate&#39;s cutter envelope: X +/- 47.22 (long dim 94.44 along X),
+Y -24.06 to +30.05 around its NC zero (54.11 total along Y; plate 51 mm).
+Scribe orientation: tail/clear-end side faces Y=0, camera side faces Y=300.
+
+NC-zero scribe centres (Y_sheet from the clear-end edge of the sheet):
+  Plate 1 at Y_sheet = 29.5  (tail-side margin 5.44 to clear-end edge)
+  Plate 2 at Y_sheet = 89.5  (5.89 mm web to plate 1)
+  Plate 3 at Y_sheet = 149.5 (5.89 mm web to plate 2;
+                              camera-side margin 5.45 to used end Y=185)</code></pre>
+<ul>
+<li>Full-back <strong>VHB or foam double-sided tape</strong> keeps the
+sheet rigid as plates sever.</li>
+<li>Edge clamps on the long edges, clear of the plate row.</li>
+<li><strong>Webs are 5.89 mm</strong> (tighter than the old 10 mm layout
+because the plate is 6 mm taller). VHB + edge clamps carry the sheet;
+the webs stay stiff enough through OP3 severs. Add web toe clamps if
+operator judges them needed.</li>
+<li>End margins <strong>5.44 / 5.45 mm</strong> (clear-end tail side /
+used-end camera side).</li>
+<li>Pre-scribe each plate's NC-zero point on the sheet with a scribe +
+rule BEFORE applying VHB. Each scribe is 3 mm south of its plate's
+physical centre; the operator aligns on the scribe, the plate falls
+where the NC puts it.</li>
+</ul>
+<p><strong>Fallback (5052 sheet, 200 × 200 × 2):</strong> 3 plates fit
+along Y with NC-zero scribes at Y = 50 / 110 / 170 (54.11 envelope × 3 =
+162.33 fits in 200 with ~12 mm end margins and ~6 mm webs). Same NC,
+same workflow.</p>
+<h2 id="per-session-sequence">Per-session sequence</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What happens</th>
+<th>Operator action</th>
+<th>Est. time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PRE</strong></td>
+<td>Scribe 3 NC-zero marks on the sheet (Y_sheet = 29.5, 89.5, 149.5
+from clear-end edge, X = sheet centre). Apply VHB to the sheet back.
+Press the sheet onto the spoilboard, VHB side down. Edge-clamp the
+sheet's long edges. T2 SHARPRO in 1/4" OZ8 collet. Air blast on.</td>
+<td>Set up once. ~8 min.</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Z zero</strong></td>
+<td>Paper feeler or touch plate on top of the sheet at plate #1's
+scribe. One Z zero carries all three (same sheet, same thickness).</td>
+<td>1 min</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>PLATE #1 (Halo)</strong></td>
+<td>Jog spindle to plate #1 scribe (Y_sheet=29.5). <strong>Zero X/Y at
+the scribe.</strong> Load <code>CameraMount_Oak-D.nc</code>. Cycle
+Start. See the single-plate doc for OP1/OP2/M0/OP3 details.</td>
+<td>~15 min (4 cutting + 10 operator + 1 M0 bolt-down)</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>PLATE #2 (Nova)</strong></td>
+<td>Jog to plate #2 scribe (Y_sheet=89.5, +60 mm from plate #1).
+<strong>Re-zero X/Y at the scribe.</strong> Same NC. Cycle Start.</td>
+<td>~15 min</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>PLATE #3 (spare)</strong></td>
+<td>Jog to plate #3 scribe (Y_sheet=149.5, +60 mm from plate #2).
+<strong>Re-zero X/Y at the scribe.</strong> Same NC. Cycle Start.</td>
+<td>~15 min</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td>Unbolt the 12 M3 SHCS. Lift 3 finished plates off the spoilboard
+(plates are held to spoilboard via their bolts, not to each other). Lift
+the sheet skeleton (held by VHB + edge clamps). De-burr edges + slot
+flash on each plate. Vacuum chips.</td>
+<td>~10 min</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Est. total:</strong> ~55-65 min for the three plates. The
+nesting win is in the amortised setup + the single chip cleanup, not in
+cutting time.</p>
+<h2 id="z-zero-across-all-three-plates-one-sheet">Z zero across all
+three plates (one sheet)</h2>
+<p>One Z zero carries all three — same sheet, same thickness. The OP1
+holes cut to Z=−3.0 which is 1 mm into spoilboard, well inside the
+margin for the 2 mm sheet with ±0.3 mm nominal tolerance.</p>
+<p>If the sheet shows visible curl / local lift anywhere (VHB didn't
+bite everywhere), re-zero Z at that plate's centre specifically before
+Cycle Start.</p>
+<h2 id="xy-zero-across-all-three-plates">XY zero across all three
+plates</h2>
+<p><strong>Must re-zero XY between plates</strong> — the NC is written
+around a 0,0 NC-zero and we are physically moving to different NC-zero
+points on the same sheet. There is no way around this short of modifying
+the NC with G-code work-offset switches (G54/G55/G56), which we are
+explicitly not doing.</p>
+<p>Scribe each plate's <strong>NC-zero point</strong> on the sheet
+BEFORE applying VHB. Each scribe is 3 mm <strong>south</strong> (toward
+the clear-end edge, i.e. the tail-tab side) of its plate's physical
+centre, because the +6 mm camera lift grew the plate from the camera end
+only. Touch-off the spindle at each scribe with the spindle lamp.</p>
+<h2 id="mid-program-m0-bolt-down-per-plate">Mid-program M0 bolt-down per
+plate</h2>
+<p>The NC pauses after OP1+OP2 (holes + slot cut) so you can bolt the
+plate down through the 4 OAK-D M4 holes before the part-separating OP3.
+Per plate: 4× M3 × ~15 mm SHCS, finger-snug into the spoilboard.
+<strong>These bolts go into fresh spoilboard every time</strong> — do
+not reuse an existing hole set for a plate at a different XY zero.</p>
+<p><strong>12 bolts total for the batch</strong> (4 per plate × 3
+plates). After each OP3 completes, those 4 bolts stay in the spoilboard
+with the stock they are holding; demount at the end of the batch.</p>
+<h2 id="hazards">Hazards</h2>
+<ul>
+<li><strong>Thin-stock flex after plate 1 severs:</strong> the sheet has
+an increasingly large hole in it after each plate cut, and the 5.89 mm
+webs are tighter than the pre-lift 10 mm layout. VHB full-back + edge
+clamps keep it rigid; without VHB the sheet will flex and plate 2 /
+plate 3 XY zeros drift. VHB is not optional. Web toe clamps are optional
+per operator judgment.</li>
+<li><strong>Single SHARPRO, no spare:</strong> 6061 is clean-cutting but
+still weldable to the flute if the bit dulls. Inspect the flute between
+plates. STOP at the first stringer or stuck Al.</li>
+<li><strong>M0 bolt-down must hold through OP3 breakthrough:</strong> 4×
+M3 × ~15 mm SHCS per plate, self-tap into virgin spoilboard. The
+surrounding sheet is held by VHB + clamps, not by the plate's
+bolts.</li>
+<li><strong>OP3 breakthrough severs the plate from the surrounding
+sheet:</strong> vacuum running, keep hands clear. The plate stays on 4
+bolts; the sheet skeleton stays on VHB + clamps.</li>
+</ul>
+<h2 id="verifier">Verifier</h2>
+<p>Same <code>python3</code> audit from <a
+href="CNC_CameraPlate_Single.html"><code>docs/CNC_CameraPlate_Single.md</code></a>
+— all 8 counts must be zero before loading the NC into UCCNC.
+<strong>One check for the whole batch</strong> (same NC file loaded
+three times).</p>
+<p><strong>Last-known-good verifier pass:</strong> 2026-10-29 (post +6
+mm camera lift; 8/8 clean).</p>
+<h2
+id="operator-standing-rule-captured-here-for-future-cnc-work">Operator
+standing rule captured here for future CNC work</h2>
+<p><em>(From the operator, 2026-10-20):</em> <strong>"once we have a
+plate in a fixture best to machine more since it creates a chip mess and
+clean up"</strong> — any CNC run where a part fits the stock multiple
+times should batch, not single-serve. Applies to: future OAK-D plates,
+future heatsink pucks (3 fit on a 60 × 180 blank or 180 × 60), future
+base plates (one-at-a-time, blank is already single-part sized).</p>
+<p>Worth landing as a bullet in <code>docs/rules/cnc.md</code> next time
+that file is edited; not worth a dedicated commit.</p></body></html>

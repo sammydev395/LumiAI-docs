@@ -1,0 +1,76 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>cad</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="cad--regeneration-rules">CAD + regeneration rules</h1>
+<!-- Domain rules split out of CLAUDE.md on 2026-10-03: the file had
+reached 279 lines, past the two-screen limit it sets for itself. Content
+is unchanged from CLAUDE.md as of 1c30ee2. Same bar applies here: only an
+operator instruction, or a defect that already cost time. -->
+
+<p>Back to <a href="../../CLAUDE.html"><code>../../CLAUDE.md</code></a> ·
+procedure: <a
+href="../../cad/freecad/REGENERATE.html"><code>../../cad/freecad/REGENERATE.md</code></a></p>
+<h2 id="the-occ-shim-is-not-freecad">The OCC shim is not FreeCAD</h2>
+<ul>
+<li><code>cad/exports/BUILD_STAMP.json</code> must read
+<code>"builder": "freecad"</code> before anything is printed.
+<code>occ_shim</code> means <strong>faceted thread flanks</strong> —
+viewing and checking only.</li>
+<li>Never commit shim exports as production geometry without the
+<code>--builder=occ_shim</code> stamp that marks them as such.</li>
+<li>⛔ <strong>A shim run must never overwrite a real FreeCAD
+<code>output/</code>.</strong> Both builders write that directory and
+the shim's geometry is strictly worse. Check whether anyone has
+regenerated since your run started, before committing.</li>
+<li><strong>Exit 0 means nothing.</strong> <code>FreeCAD -c</code> exits
+0 even when a macro logs
+<code>=== RESULT: FAIL — N thread cut(s) did not apply ===</code>. Grep
+every macro's <code>=== RESULT:</code> line, and the gate
+<code>fit_checks_wand_flashlight.py</code> must end
+<code>=== FIT RESULT: PASS ===</code>. A gate that cannot fail is not a
+gate. <code>check_exports_fresh.py --update</code> now refuses to stamp
+when a <code>lumi_wand_*_diag.txt</code> (in the OS temp dir,
+<code>tempfile.gettempdir()</code>) says <code>OVERALL_OK=False</code>.
+⛔ <em>Read "/tmp/lumi_wand_</em>_diag.txt" until 2026-10-10.* Full
+procedure: <a
+href="../../cad/freecad/REGENERATE.html"><code>cad/freecad/REGENERATE.md</code></a>.</li>
+<li>🚨 <strong>A head ring printed from a 2026-09-23 → 09-30 export has
+NO THREAD.</strong> Reprint it. The freshness check passed on it: the
+exports were byte-identical to HEAD and threadless in both. "Current" is
+not the same as "correct".</li>
+<li>Measuring threaded parts: <strong><code>common()</code> volumes
+lie</strong> — a solid lip can report 0.0, and overlaps can come out
+negative. Verify ring fit by point-sampling with <code>isInside</code>,
+kept light (~24 angles × 0.25 mm in Z); dense runs blow the 30-minute
+background limit.</li>
+<li>Under <code>FreeCAD -c</code>, stdout is lost unless you call
+<code>sys.stdout.reconfigure(line_buffering=True)</code>, and scripts
+that use <code>__file__</code> (the cartridge macro, the gates) need
+<code>__file__</code> injected before <code>exec()</code>.</li>
+<li>Layer-2 fit checks read the <strong>exported STEPs</strong>, which
+are LFS pointers on a fresh clone. Fetch them with <strong>one
+<code>-I</code> per <code>git lfs pull</code></strong> — a
+multi-<code>-I</code> invocation silently fetches nothing and the gate
+dies on a parse error.</li>
+<li><code>check_exports_fresh.py</code> <strong>cannot run on the
+Windows box</strong> — it imports the shim, which needs
+<code>OCP</code>. Verify export freshness on the GMKtec, or trust
+<code>BUILD_STAMP.json</code> plus the LFS integrity check.</li>
+</ul>
+<h2 id="wand-geometry-that-gets-misremembered">Wand geometry that gets
+misremembered</h2>
+<ul>
+<li>Threads are <strong>M72×3 top AND bottom</strong> since 2026-10-15
+(v9.13: the head moved to M72 on a raised collar so its seat rim is a
+2.05 mm wall like the end's). Head ring + end ring + retaining ring all
+share the M72 form. ⛔ <em>Read "M70×3 top (head ring), M72×3 bottom"
+until 2026-10-15; anything saying M64/M66 is pre-v9.8.</em></li>
+<li>🔴 The retaining ring and the end ring interfere, so never both
+<strong>on the wand's bottom thread</strong>. A full flashlight does use
+both: the retaining ring at the wand/extension joint, and an end plate +
+end ring as the tail cap on the <em>extension's</em> own Ø72 peg.</li>
+<li>The extension macro <strong>exports BOTH LCD variants in one
+run</strong> (<code>for lcd_type in ("lilygo", "waveshare")</code>). You
+do not flip <code>LCD_TYPE</code> and re-run — the comment at the top of
+the macro saying so is stale. The facets still are <strong>not
+interchangeable</strong>: print the halves whose filename suffix matches
+your display.</li>
+</ul></body></html>

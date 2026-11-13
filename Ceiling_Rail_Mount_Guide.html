@@ -1,0 +1,620 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ceiling_Rail_Mount_Guide</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="lumiai--ceiling-rail-mount-guide">LumiAI — Ceiling Rail Mount
+Guide</h1>
+<p><strong>Purpose:</strong> Mount the LumiAI base plate to the ceiling
+on linear rails so the robot can be slid down for service and locked in
+place during operation. <strong>Date:</strong> 2026-05-06 (compact M4
+stop revision — MGW15-inspired)</p>
+<hr />
+<h2 id="1-why-rails">1. Why rails</h2>
+<p>The robot base needs to be:</p>
+<ul>
+<li>Securely fixed to the ceiling during operation (resists 6-DOF arm
+dynamics).</li>
+<li>Removable for service / cleaning / repair without unbolting from
+above the ceiling — a ladder + 4 lag bolts is a 30-minute job; a rail
+slide-out is a 30-second job.</li>
+<li>Cleanly aligned (parallel rails, no rocking).</li>
+</ul>
+<p>The original CNC-machined channel design (custom slots in 20×20 mm
+aluminum bar) approximated a dovetail with M6 locking screws and
+required ~2.5 hours of CNC + drilling + tapping per pair of channels.
+Off-the-shelf MGN15H linear rails do the same job for ~$60 in parts, no
+machining.</p>
+<hr />
+<h2 id="2-hardware-list">2. Hardware list</h2>
+<h3 id="21-mgn15h-rail-sources-pick-one">2.1 MGN15H rail sources (pick
+one)</h3>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Listing</th>
+<th>Includes</th>
+<th>Price</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Amazon — best value (recommended)</strong></td>
+<td>TEN-HIGH (<a
+href="https://amazon.com/dp/B06Y4J971G">B06Y4J971G</a>)</td>
+<td>2× 200 mm rails + 2× MGN15H carriages</td>
+<td>$51</td>
+<td>Prime 2-day, free returns. ⭐ 3.8/5. Single listing covers the whole
+subsystem.</td>
+</tr>
+<tr>
+<td>Amazon — budget single</td>
+<td>ReliaBot (<a
+href="https://amazon.com/dp/B0FS1PSSV7">B0FS1PSSV7</a>)</td>
+<td>1× rail (verify MGN15H option in style picker)</td>
+<td>$28.99</td>
+<td>⭐ 4.8/5 newer seller. Need 2 listings for full setup = ~$58.</td>
+</tr>
+<tr>
+<td><strong>AliExpress — cheapest 2-pack ✅ alternative</strong></td>
+<td>Generic (<a
+href="https://www.aliexpress.us/item/3256809609462547.html">3256809609462547</a>)</td>
+<td><strong>2× 200 mm rails + 2× MGN15H carriages</strong> in one
+listing</td>
+<td><strong>$26.29</strong></td>
+<td>⭐ user-found 2026-05-06. Best <span
+class="math inline">/<em>u</em><em>n</em><em>i</em><em>t</em><em>b</em><em>y</em><em>f</em><em>a</em><em>r</em>(</span>13/rail
+with carriage). Mounting holes appear to ship at Ø6 mm (M6-compatible)
+per the listing photos — confirm on receipt. ~3 wk delivery from
+China.</td>
+</tr>
+<tr>
+<td>AliExpress — RDBB generic</td>
+<td><a
+href="https://aliexpress.us/item/3256808135010660">3256808135010660</a></td>
+<td>1× 200 mm rail + 2× MGN15H carriages</td>
+<td>$27.04</td>
+<td>⭐ 4.8 / 477 sold. Need 2 listings = ~$54. ~3 wk delivery.</td>
+</tr>
+<tr>
+<td>AliExpress — HIWIN genuine</td>
+<td><a
+href="https://aliexpress.us/item/3256804234407509">3256804234407509</a></td>
+<td>1× rail + 1× MGN15H carriage block</td>
+<td>$66.18</td>
+<td>⭐ 5.0. Industrial-grade real HIWIN brand. 2× = ~$132. Overkill for
+4 kg arm.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pick the AliExpress 2-pack</strong> for cheapest
+commercial-grade option ($26 covers both rails + both carriages, vs
+<span
+class="math inline">51<em>f</em><em>o</em><em>r</em><em>T</em><em>E</em><em>N</em> − <em>H</em><em>I</em><em>G</em><em>H</em><em>o</em><em>n</em><em>A</em><em>m</em><em>a</em><em>z</em><em>o</em><em>n</em>—<em>s</em><em>a</em><em>v</em><em>e</em><em>s</em> </span>25).
+The TEN-HIGH Amazon kit remains a good Prime-delivery alternative if you
+want it in 2 days. AliExpress 3-week wait is the only downside of the
+cheaper option.</p>
+<h3 id="22-other-hardware-to-order">2.2 Other hardware to order</h3>
+<p>(Nothing to order — the carriage-locking hardware is now 4 printed
+stops + brass inserts, all in inventory. See §5.5 for the stop-lock
+approach that replaced the original detent-pin design.)</p>
+<h3 id="23-in-hand-no-order-needed">2.3 In hand (no order needed)</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>M5 × 50 mm lag bolts (or longer if joist + drywall thicker)</td>
+<td>8 (4 per rail)</td>
+<td>From general M-hardware inventory</td>
+</tr>
+<tr>
+<td>M5 fender washers</td>
+<td>8</td>
+<td>From general M-hardware inventory</td>
+</tr>
+<tr>
+<td>5 mm step drill bit</td>
+<td>1 (tool)</td>
+<td>From shop drill inventory</td>
+</tr>
+<tr>
+<td>Loctite 243 (medium-strength threadlocker)</td>
+<td>1 small bottle</td>
+<td>From shop supplies</td>
+</tr>
+<tr>
+<td><strong>3D-printed PA-CF rail stop</strong> (<a
+href="../cad/freecad/lumi_wand_rail_stop.py"><code>cad/freecad/lumi_wand_rail_stop.py</code></a>)</td>
+<td>4 (2 per rail)</td>
+<td>~4 g per stop, ~16 g total in PA-CF (or PETG-CF). ~30-45 min print
+on the X1C with hardened nozzle. <strong>Cross-section matches the
+MGN15H carriage profile (32 × 16 mm per Hiwin spec)</strong> so the stop
+visually mirrors the carriage; 10 mm long. See §5.5 + <a
+href="3D_Printing_Guide.html">3D_Printing_Guide.md §5c</a>.</td>
+</tr>
+<tr>
+<td>M4 brass heat-set insert</td>
+<td>4 (1 per stop)</td>
+<td>Standard M4 heat-set, ~Ø5.6 mm OD × 6 mm long. From M-hardware
+inventory.</td>
+</tr>
+<tr>
+<td>M4 × 10 mm cup-point set screw</td>
+<td>4 (1 per stop)</td>
+<td>From M-hardware inventory. Cup-point or knurled tip — clamps the
+stop to the rail by friction. Set screw tip emerges through a stepped
+through-hole in the side wall and presses against the rail body.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total to order:</strong> ~$26 (cheapest AliExpress 2-pack
+rails, see §2.1) or <span
+class="math inline">51(<em>A</em><em>m</em><em>a</em><em>z</em><em>o</em><em>n</em><em>T</em><em>E</em><em>N</em> − <em>H</em><em>I</em><em>G</em><em>H</em><em>k</em><em>i</em><em>t</em><em>i</em><em>f</em><em>y</em><em>o</em><em>u</em><em>n</em><em>e</em><em>e</em><em>d</em><em>f</em><em>a</em><em>s</em><em>t</em><em>d</em><em>e</em><em>l</em><em>i</em><em>v</em><em>e</em><em>r</em><em>y</em>).<em>A</em><em>l</em><em>l</em><em>l</em><em>o</em><em>c</em><em>k</em><em>i</em><em>n</em><em>g</em><em>h</em><em>a</em><em>r</em><em>d</em><em>w</em><em>a</em><em>r</em><em>e</em><em>i</em><em>s</em><em>i</em><em>n</em> − <em>h</em><em>a</em><em>n</em><em>d</em><em>o</em><em>r</em>3<em>D</em> − <em>p</em><em>r</em><em>i</em><em>n</em><em>t</em><em>a</em><em>b</em><em>l</em><em>e</em>.<em>V</em><em>e</em><em>r</em><em>s</em><em>u</em><em>s</em> </span>34
+in 20×20 mm bar stock + 2.5 hrs CNC for the original channel design —
+and the rails are precision-ground, not slot-milled.</p>
+<hr />
+<h2 id="3-sizing-rationale">3. Sizing rationale</h2>
+<h3 id="why-mgn15h-not-mgn12">Why MGN15H (not MGN12)</h3>
+<p>For a ceiling-inverted 6-DOF arm, the binding load isn't pure static
+(4 kg arm vs 312 kg static rating = 78× margin) — it's <strong>moment
+load</strong> from the arm swinging.</p>
+<table>
+<thead>
+<tr>
+<th>Rail</th>
+<th>Moment load (My / Mz)</th>
+<th>Margin at full arm extension</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MGN12H</td>
+<td>~7-9 N·m</td>
+<td>~30×</td>
+</tr>
+<tr>
+<td>MGN15H</td>
+<td>~11.7 N·m</td>
+<td>~50×</td>
+</tr>
+</tbody>
+</table>
+<p>MGN15H is only marginally more expensive and the extra moment
+headroom matters when the arm is throwing the LumiAI Wand around at
+speed.</p>
+<h3 id="mgn15c-vs-mgn15h--full-spec-chart">MGN15C vs MGN15H — full spec
+chart</h3>
+<p>Within the MGN15 family there are two carriage block lengths:
+<strong>C (short)</strong> and <strong>H (long)</strong>. Pick H — it
+has materially higher load and moment ratings for a small price
+difference.</p>
+<table>
+<thead>
+<tr>
+<th>Spec</th>
+<th>MGN15C (short)</th>
+<th>MGN15H (long)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block length</td>
+<td>45.5 mm</td>
+<td>58.8 mm</td>
+</tr>
+<tr>
+<td>Block width</td>
+<td>32 mm</td>
+<td>32 mm</td>
+</tr>
+<tr>
+<td>Block height</td>
+<td>12 mm</td>
+<td>12 mm</td>
+</tr>
+<tr>
+<td>Dynamic load rating (C)</td>
+<td>1,170 N</td>
+<td>1,610 N (~362 lbf)</td>
+</tr>
+<tr>
+<td>Static load rating (C₀)</td>
+<td>2,140 N</td>
+<td>3,060 N (~688 lbf)</td>
+</tr>
+<tr>
+<td>Moment load My</td>
+<td>6.95 N·m</td>
+<td>11.7 N·m</td>
+</tr>
+<tr>
+<td>Moment load Mz</td>
+<td>6.95 N·m</td>
+<td>11.7 N·m</td>
+</tr>
+<tr>
+<td>Weight (block only)</td>
+<td>~18 g</td>
+<td>~28 g</td>
+</tr>
+</tbody>
+</table>
+<p>Figures are from HIWIN's published MGN-series datasheet. Generic
+Chinese rail blocks list comparable specs on paper — actual precision
+and load capacity can vary; only HIWIN-genuine units hold tight
+tolerances. For a 4 kg arm at workshop tolerances this isn't a
+concern.</p>
+<p><strong>Why H over C for this application:</strong></p>
+<ul>
+<li>~29% higher dynamic rating (1,610 N vs 1,170 N)</li>
+<li>~43% higher static rating (3,060 N vs 2,140 N)</li>
+<li>~68% higher moment capacity (11.7 N·m vs 6.95 N·m) — the binding
+constraint for a 6-DOF arm</li>
+<li>Same width/height — drop-in physical replacement, no design
+changes</li>
+</ul>
+<p>The long block adds 13 mm of length per carriage but is the right
+call for load-bearing axes.</p>
+<h3 id="why-two-rails-not-one">Why two rails (not one)</h3>
+<p>A single rail lets the base plate pivot around the rail axis under
+arm yaw. Two parallel rails kill that rotation completely. The cost
+difference is one extra rail (~$25); the structural difference is
+significant.</p>
+<h3 id="why-200-mm-length">Why 200 mm length</h3>
+<p>Base plate footprint: ~150 × 275 mm. 200 mm rail gives ~25 mm slide
+travel — enough to disengage the carriages cleanly during service, not
+so long that mounting becomes ungainly. 300 mm is overkill and harder to
+mount.</p>
+<hr />
+<h2 id="4-mounting-hole-modification-only-if-needed">4. Mounting hole
+modification (only if needed)</h2>
+<p><strong>Inspect the rail's mounting holes on receipt before drilling
+anything.</strong> MGN15H rails have varying hole sizes by
+manufacturer:</p>
+<ul>
+<li><strong>Hiwin / TEN-HIGH genuine spec:</strong> Ø3.5 mm through-hole
++ Ø6 mm × 4.5 mm counterbore (designed for M3 SHCS into a tapped base).
+M3 lag bolts into ceiling joists are undersized for this — drill out to
+Ø5 with a step drill so M5 lag bolts fit.</li>
+<li><strong>Generic Chinese (AliExpress 2-pack option, $26):</strong>
+appears to ship with <strong>Ø6 mm clearance through-holes</strong>
+already — M5 lag bolts drop straight in with 1 mm clearance, no drilling
+needed. M6 lag bolts also fit. <strong>Confirm with calipers on
+receipt.</strong></li>
+</ul>
+<p><strong>If drill-out is required (Hiwin spec):</strong></p>
+<ul>
+<li>Aluminum extrusion drills like butter; ~2 minutes per rail.</li>
+<li>Only the 4 holes per rail you'll actually use as anchors need
+enlarging (every ~50 mm of rail). The rest can stay at original
+size.</li>
+<li>Use a step drill to take it from M3 (Ø3.5) → M5 (Ø5) in one shot.
+Don't try to drill straight to 5 mm with a twist drill — it will
+walk.</li>
+</ul>
+<p><strong>If drill-out is NOT required (cheaper Chinese rails with Ø6
+holes):</strong> skip this section entirely. Proceed to §5.</p>
+<hr />
+<h2 id="5-installation-procedure">5. Installation procedure</h2>
+<h3 id="51-mark-and-pre-drill-ceiling">5.1 Mark and pre-drill
+ceiling</h3>
+<p>Use the 3D-printed parallelism jig
+(<code>cad/freecad/lumi_mount_ubracket.py</code>, resized for MGN15H —
+see §7 below) to mark the rail positions on the ceiling at the correct
+spacing.</p>
+<ul>
+<li><p><strong>Rail spacing (centerline-to-centerline) =
+<code>103.145 mm</code>.</strong> This is the <em>as-built</em> value —
+the two carriages are placed by the user in Plasticity as the solids
+<code>Mounting Carriage Left</code> /
+<code>Mounting Carriage Right</code> in
+<code>cad/reference/step/Base_plate_mounting_holes.step</code>, and <a
+href="../cad/freecad/lumi_base_plate.py"><code>cad/freecad/lumi_base_plate.py</code></a>
+drills the plate's Ø3.4 clearance holes coaxial with each carriage's own
+4 M3 holes. <strong>Those carriage solids are the single source of
+truth</strong> — no hand spacing, no fence-outline formula. The macro
+still boolean-checks every carriage hole's M3-head footprint against the
+fence solid and fails loudly if one would clip the fence wall.</p>
+<p><strong>Diagonal layout (2026-05-17, "more stable"
+revision):</strong> the carriages are NOT side-by-side at one Y. They
+are offset diagonally to widen the support base and improve pitch/roll
+moment resistance:</p>
+<table>
+<thead>
+<tr>
+<th>Carriage</th>
+<th>Centre (FILE X, Y)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LEFT</td>
+<td>(183.87, <strong>−69.5</strong>) — front half</td>
+</tr>
+<tr>
+<td>RIGHT</td>
+<td>(287.01, <strong>+71.5</strong>) — back half</td>
+</tr>
+</tbody>
+</table>
+<p>Rail c/c (the X gap between the two rails) = 287.01 − 183.87 =
+<strong>103.145 mm</strong>. Each carriage still travels along its own
+rail in Y; the plate slides as a unit. The diagonal placement also
+sidesteps the plate's hourglass waist (it pinches to ~111.5 mm only at
+Y≈0 — neither carriage sits there).</p></li>
+<li><p>Locate the ceiling joists with a stud finder. Position rails so
+the M5 lag bolts land in joist material — drywall alone will not hold a
+4 kg moving load.</p></li>
+</ul>
+<h3 id="52-bolt-rails-to-ceiling">5.2 Bolt rails to ceiling</h3>
+<ul>
+<li>M5 × 50 mm lag bolts with fender washers, 4 per rail, into
+joists.</li>
+<li>Tighten progressively — don't fully torque one bolt before starting
+the next. Pulling one corner tight first will pull the rail out of
+straight.</li>
+<li>Verify rails are parallel by sliding the carriages along their full
+length. They should move freely with no binding. If a carriage binds at
+any point, loosen the rail mounts on that side and retorque
+progressively.</li>
+</ul>
+<h3 id="53-mount-carriages-to-lumiai-base-plate">5.3 Mount carriages to
+LumiAI base plate</h3>
+<p>The base plate carries a <strong>dedicated, parametric 8-hole
+carriage pattern</strong> (4 per carriage), generated by <a
+href="../cad/freecad/lumi_base_plate.py"><code>cad/freecad/lumi_base_plate.py</code></a>
+— it is the single source of truth, no "verify/re-drill the OP1 holes"
+guesswork.</p>
+<ul>
+<li><p><strong>Hole spec:</strong> <code>Ø3.4 mm</code> M3
+<strong>clearance</strong> through-holes (full through the <strong>3
+mm</strong> aluminium plate). The MGN15H block ships with its own 4×
+<strong>M3 tapped</strong> holes in the steel; you never tap a thin
+plate when the mate is tapped steel. M3 socket-head cap screws pass from
+the <strong>component side</strong>, through the plate, into the
+carriage's M3 taps.</p></li>
+<li><p><strong>Per-carriage pattern (Hiwin MGN15H datasheet):</strong>
+4× M3 on a <strong>25 mm × 25 mm</strong> rectangle — 25 mm transverse
+(B, across the 32 mm carriage width = the rail-to-rail X direction) × 25
+mm longitudinal (C, along the rail = plate Y, the H-length
+block).</p></li>
+<li><p><strong>As-built positions (FILE frame, mm) — diagonal layout,
+from the <code>Mounting Carriage</code> solids:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Carriage</th>
+<th>Centre (X, Y)</th>
+<th>4 holes (X × Y)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LEFT</td>
+<td>(183.87, −69.5)</td>
+<td>{171.37, 196.37} × {−82, −57}</td>
+</tr>
+<tr>
+<td>RIGHT</td>
+<td>(287.01, +71.5)</td>
+<td>{274.51, 299.51} × {59, 84}</td>
+</tr>
+</tbody>
+</table>
+<p>Carriages are diagonally offset (LEFT front, RIGHT back — see §5.1)
+for a wider, more stable support base; rail c/c = 103.145 mm. The
+plate's Ø3.4 holes are drilled coaxial with the carriage solids' own M3
+holes (verified 0.0000 mm).</p></li>
+<li><p>The 4 M3 screw heads land on the component side. If a head falls
+under the PSU, the PSU simply seats ~screw-head-height higher —
+accepted, no interference issue.</p></li>
+<li><p><strong>M3 socket-head bolts</strong> (NOT M5 — MGN15H is an
+M3-mount carriage), Loctite 243 on the threads — vibration from arm
+dynamics will eventually walk an unsecured bolt out, and once a single
+carriage bolt loosens the load redistributes badly.</p></li>
+</ul>
+<h3 id="54-slide-robot-up-to-operating-position">5.4 Slide robot up to
+operating position</h3>
+<p>Two-person job (robot + arm + battery + electronics ≈ 4 kg). One
+person supports the robot; the other slides carriages onto the rails
+from the open end and pushes the robot to the operating position.</p>
+<h3
+id="55-install-rail-stops-3d-printed-pa-cf-replaces-detent-pin-lock">5.5
+Install rail stops (3D-printed PA-CF, replaces detent-pin lock)</h3>
+<p>The carriages are locked in place by <strong>4 printed PA-CF
+slides</strong> (2 per rail) that grip the rail body via a brass-insert
++ M5 set-screw friction lock. <strong>No drilling of the carriage or the
+rail.</strong> The slides bracket each carriage above and below,
+constraining its Z position to the parked window.</p>
+<h4 id="why-this-approach-vs-the-original-detent-pin-lock">Why this
+approach (vs. the original detent-pin lock)</h4>
+<p>The original §5.5 design called for drilling Ø5 mm holes through the
+carriage mounting flange and rail flange to accept a quick-release
+detent pin. That worked but had three drawbacks:</p>
+<ul>
+<li>The carriage flange is small — drilling near the steel bearing body
+risks breaching the ball channel and scrapping the carriage.</li>
+<li>The pin location is FIXED at the parked Z position only. If the
+parked Z changes during install (e.g., joist position different than
+expected), you'd have to drill again.</li>
+<li>With pre-mounted carriages on the LumiAI base plate, the carriage
+mounting flange is permanently sandwiched against the base plate — no
+top-side access for a vertical pin once the assembly is up.</li>
+</ul>
+<p>The stop-lock approach solves all three:</p>
+<ul>
+<li>Stops clamp the rail at any Z position the user picks during install
+— set-screw friction lock.</li>
+<li>No carriage drilling — stops ride on the rail BODY, not the
+carriage.</li>
+<li>M4 set screw is on the SIDE of the stop (perpendicular to the rail)
+— accessible from a ladder with a single Allen key, regardless of base
+plate orientation.</li>
+</ul>
+<h4 id="hardware-per-stop">Hardware per stop</h4>
+<ul>
+<li>1× printed PA-CF stop (<a
+href="../cad/freecad/lumi_wand_rail_stop.py"><code>cad/freecad/lumi_wand_rail_stop.py</code></a>)
+— <strong>32 × 16 × 10 mm</strong> (cross-section matches the MGN15H
+carriage profile per Hiwin spec: W=32, H=16), channel slip-fit on the
+MGN15H rail body (Wr=15, Hr=10). Design inspired by Hiwin's commercial
+MGW15 steel stopper (M4 thread approach) but with the M4 hole on the
+SIDE wall as a STEPPED THROUGH HOLE (Ø5.4 × 6 mm insert seat + Ø4.5 ×
+2.25 mm clearance to channel) so the set screw tip can actually emerge
+and clamp the rail.</li>
+<li>1× M4 brass heat-set insert (Ø5.6 mm OD × 6 mm long, in side wall —
+drops into the Ø5.4 mm seat and stops at the step)</li>
+<li>1× M4 × 10 mm cup-point (or knurled-tip) set screw</li>
+</ul>
+<p>4 stops + 4 inserts + 4 set screws total per LumiAI install (2 per
+rail × 2 rails).</p>
+<h4 id="heat-set-the-brass-inserts-one-time-on-the-bench">Heat-set the
+brass inserts (one-time, on the bench)</h4>
+<ol type="1">
+<li>Print the 4 stops per <a
+href="3D_Printing_Guide.html">3D_Printing_Guide.md §5c</a>.</li>
+<li>Use a soldering iron at ~230°C with a flat tip. Place a brass insert
+tip-down in the Ø5.4 mm hole on the stop's +X side wall. Press gently
+with the iron tip until the insert sinks flush with the surface (PA-CF
+flows around the knurls, ~3-5 sec). Remove iron, let cool 30 sec before
+handling.</li>
+<li>Repeat for all 4 stops.</li>
+<li>Test thread an M4 set screw into each insert — should turn smoothly
+with finger pressure for the first few turns.</li>
+</ol>
+<h4 id="install-on-the-rails">Install on the rails</h4>
+<ol type="1">
+<li>Confirm the carriages are mounted to the base plate as described in
+§5.3.</li>
+<li>Slide each carriage onto its rail from the open end (per §5.4) —
+push to the parked position.</li>
+<li><strong>TOP stop (per rail):</strong> slip the printed stop onto the
+rail above the carriage (open end) — push it down the rail until it's
+directly above the carriage, then snug the carriage upward against it.
+Tighten the M4 set screw via a 2 mm Allen key — the cup-point clamps
+against the rail's side face by friction. Stop is now locked at this
+Z.</li>
+<li><strong>BOTTOM stop (per rail):</strong> slip the printed stop onto
+the rail below the carriage (open end) — push it up until snug against
+the carriage's bottom face. Tighten the M4 set screw.</li>
+<li>Repeat steps 3-4 for the second rail.</li>
+<li>The carriages are now positively constrained between the top and
+bottom stops on each rail. With both stops snugged tight against the
+carriage faces, the carriage <strong>does not move at all</strong>
+during arm operation.</li>
+</ol>
+<p><strong>Tip:</strong> orient each stop so the M4 set screw faces
+OUTWARD (away from the other rail) — this gives the cleanest ladder
+access for tightening / loosening.</p>
+<hr />
+<h2 id="6-service-slide-out">6. Service slide-out</h2>
+<ol type="1">
+<li>From the ladder, <strong>loosen the BOTTOM stop's M4 set screw on
+each rail</strong> (single 2 mm Allen key — same tool for both stops). 2
+set screws total to free the carriages.</li>
+<li>Slide each BOTTOM stop downward off the rail end (no longer captured
+by friction once loosened).</li>
+<li>One person supports the robot.</li>
+<li>Slide the robot's carriages downward off the rail ends — the TOP
+stops stay in place on the rails (no need to remove them for
+service).</li>
+<li>Lower the robot to a bench or table.</li>
+<li><strong>To reinstall:</strong> reverse — slide carriages back up
+onto the rails, push up to the parked position (against the
+still-installed TOP stops), slide BOTTOM stops back on, snug them
+against the carriage bottoms, retighten the M4 set screws.</li>
+</ol>
+<p>End-to-end: ~45 seconds with two people. Single 2 mm Allen key for
+everything; no other tools.</p>
+<p><strong>Why the TOP stops stay on the rails during service:</strong>
+the carriage exits the rail downward (gravity-assisted). The TOP stops
+only block UP-direction travel — they don't impede the service
+slide-out. Leaving them in place means the parked Z position is
+preserved across service cycles, no re-positioning needed on
+reinstall.</p>
+<hr />
+<h2 id="7-alignment-jig-3d-printed-u-bracket">7. Alignment jig
+(3D-printed U-bracket)</h2>
+<p><a
+href="../cad/freecad/lumi_mount_ubracket.py"><code>cad/freecad/lumi_mount_ubracket.py</code></a>
+has been <strong>reworked for MGN15H</strong> (2026-05-17 — it was the
+legacy 20×20 mm channel jig). It registers the bare <strong>MGN15
+rail</strong> (15 × 10 mm body), NOT the 32 × 16 carriage: the jig is
+used in §5.1 to mark the rails BEFORE the carriages exist.</p>
+<table>
+<thead>
+<tr>
+<th>Spec</th>
+<th>As-built (from the macro)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rail pockets</td>
+<td>2× <strong>15.4 mm</strong> wide (rail 15 + 0.4 mm slip) × 8 mm
+tall, full 200 mm length</td>
+</tr>
+<tr>
+<td>Pocket centreline-to-centreline</td>
+<td><strong>103.145 mm</strong> — <em>read at build time from the
+as-built carriage holes in <code>lumi_base_plate.step</code></em> (each
+carriage rides one rail), so the jig can never drift from the plate</td>
+</tr>
+<tr>
+<td>Rail-bolt clearance</td>
+<td>full-length Ø8 slot under each pocket (15 mm end bridges keep it 1
+solid) so rails bolt to the ceiling through the jig</td>
+</tr>
+<tr>
+<td>Jig-to-ceiling</td>
+<td>2× M6 clearance holes on the centre web</td>
+</tr>
+<tr>
+<td>Overall</td>
+<td><strong>128.5 × 200 × 13 mm</strong> (200 mm = X1C bed-limited
+dimension)</td>
+</tr>
+</tbody>
+</table>
+<p>Re-run the macro (it self-derives the c/c) → it writes
+<code>output/lumi_mount_ubracket.{FCStd,stl,step}</code>. Print on the
+X1C (PETG / PETG-CF, 15 % gyroid, open side up, ~2 hrs).</p>
+<p>The jig is reusable — print one, keep it for all future installs.</p>
+<p>See <a href="3D_Printing_Guide.html">3D_Printing_Guide.md §4</a> for
+print settings.</p>
+<hr />
+<h2 id="8-risks-and-follow-ups">8. Risks and follow-ups</h2>
+<ul>
+<li><strong>Stop creep / set-screw loosening over time:</strong> if the
+M4 set screw works loose under arm vibration, the stop could drift along
+the rail. <strong>Mitigation:</strong> apply blue Loctite 243
+(medium-strength threadlocker) to the set screw threads at install.
+Re-tighten every ~6 months as preventive maintenance, or whenever the
+assembly is opened for service. The cup-point biting into the rail's
+anodizing also helps anti-rotation once seated.</li>
+<li><strong>Stop channel wear:</strong> PA-CF on aluminum has very low
+wear under static load (the stop is locked, not sliding repeatedly).
+PETG-CF has somewhat higher wear; if using PETG-CF, plan to replace
+stops every 5+ years of frequent service cycles. PA-CF expected to last
+the life of the LumiAI install.</li>
+<li><strong>Drywall-only mounts:</strong> absolutely will fail. If your
+ceiling is finished drywall over open joists, the lag bolts MUST hit
+joist material. If joists don't align with rail positions, add a sister
+joist or a 3 mm aluminum backer strap that spans 2+ joists.</li>
+<li><strong>Alternative locks if stop friction proves marginal:</strong>
+drill a Ø3 mm cross-pin hole through the stop AND a matching shallow
+dimple in the rail's side face at the parked position — the M4 set screw
+with knurled tip + cross-pin gives positive engagement. Only needed if
+friction-only proves unreliable in soak testing; install with Loctite
+243 first.</li>
+<li><strong>Aesthetics:</strong> if commercial install requires hidden
+hardware, design a 3D-printed fascia cover that snap-fits over the rail
+face leaving only the carriage exposed.</li>
+</ul>
+<hr />
+<p><em>Document: Ceiling Rail Mount Guide</em> <em>Version: 1.0 —
+2026-05-02 | DrDev / LumiAI</em></p></body></html>

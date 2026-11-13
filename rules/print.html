@@ -1,0 +1,448 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>print</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="3d-printing-rules">3D-printing rules</h1>
+<!-- Bar for this file: only an operator instruction, or a defect that already
+cost time. Current truth only; git is the history. -->
+
+<p>Back to <a href="../../CLAUDE.html"><code>../../CLAUDE.md</code></a> ·
+full procedure: <a
+href="../3D_Printing_Guide.html"><code>../3D_Printing_Guide.md</code></a>
+· order of work: <a
+href="../Wand_and_Wand_Extension_Build_Plan.html"><code>../Wand_and_Wand_Extension_Build_Plan.md</code></a></p>
+<h2 id="the-bambu-project-is-generated-not-hand-edited">The Bambu
+project is generated, not hand-edited</h2>
+<p><code>cad/print/lumiAi_Complete.3mf</code> is built by <a
+href="../../cad/print/build_lumiai_complete_3mf.py"><code>cad/print/build_lumiai_complete_3mf.py</code></a>
+and checked by <a
+href="../../cad/print/verify_3mf.py"><code>cad/print/verify_3mf.py</code></a>.</p>
+<ul>
+<li><strong>Per-object print settings are regenerated from the
+script.</strong> Anything you set per-object in Bambu Studio is
+<strong>lost on the next rebuild</strong> — put it in
+<code>PART_SETTINGS</code> instead.</li>
+<li><strong>Filament slots and the print profile ARE preserved</strong>:
+the script reads them from the live file, so operator edits in Bambu
+Studio survive. Only the carried-over meshes come from the donor.</li>
+<li>Plate membership is decided by <strong>position</strong>, and Bambu
+lays plates out <code>ceil(sqrt(n))</code> columns wide — so adding or
+removing a plate reshapes the grid and moves every object. Re-run the
+script; never drag parts between plates.</li>
+<li>Plate names become gcode filenames: <code>&lt;&gt;:/\|?*"</code> are
+rejected and the error does not say which plate.</li>
+</ul>
+<h2 id="orientation-and-filament">Orientation and filament</h2>
+<ul>
+<li><strong>The extension halves stand on OPPOSITE ends.</strong> +Y
+prints flange-end down (776.6 mm² of bed contact); <strong>−Y prints
+PEG-end down</strong> (297.9 mm²). Flange-end down on −Y gives
+<strong>3.0 mm²</strong>, because the 2.5 mm v9.8 clocking tab stands
+proud of the flange face and the part balances on it.</li>
+<li>The lens plate must <strong>never</strong> be printed in translucent
+filament; clear material pipes light between the towers and the beam
+check becomes useless.</li>
+</ul>
+<h2 id="tree-supports--forked-by-material">Tree supports — forked by
+material</h2>
+<p><strong>The thinned set below is the PLA set.</strong> Thin branches
+snap instead of tearing, which is what you want in PLA and a failure in
+PETG: thin PETG branches snap at the trunk junctions during the
+print.</p>
+<p>The builder owns the fork: <code>--material pla</code> (default, the
+X1C book <code>lumiAi_Complete.3mf</code>) sets the thinned set below as
+the global profile; <code>--material petg</code> (the H2S book
+<code>lumiAi_Complete_PROD_H2S.3mf</code>) sets
+<strong><code>tree_strong</code>, Ø5 branches, 2 walls, angle 35,
+<code>support_speed</code> 50, <code>support_top_z_distance</code>
+0.4</strong> instead. PART_SETTINGS entries that enable supports carry
+their own per-object set, so a PETG object in the X1C book can be
+<code>tree_strong</code> too. Do not hand-mix the two sets on one
+object.</p>
+<h2 id="tree-supports--thinned-so-they-come-off-the-pla-set">Tree
+supports — thinned so they come OFF (the PLA set)</h2>
+<p>Objects set <code>enable_support=1</code> in PART_SETTINGS; these
+values tune every thin-tree part from one place. The problem being
+solved is <strong>removal</strong>, not support failure — dense trees
+around the internal driver pads, L-tabs and PCA wedges tangle and mangle
+on the way out.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>support_style</code></td>
+<td><code>tree_slim</code></td>
+<td>field-confirmed</td>
+</tr>
+<tr>
+<td><code>support_threshold_angle</code></td>
+<td><strong>48</strong></td>
+<td>field-confirmed</td>
+</tr>
+<tr>
+<td><code>support_critical_regions_only</code></td>
+<td><code>1</code></td>
+<td>field-confirmed — "biggest single win"</td>
+</tr>
+<tr>
+<td><code>tree_support_branch_distance</code></td>
+<td><strong>10</strong></td>
+<td>field-confirmed</td>
+</tr>
+<tr>
+<td><code>support_on_build_plate_only</code></td>
+<td><code>1</code></td>
+<td>field-confirmed</td>
+</tr>
+<tr>
+<td><code>support_top_z_distance</code></td>
+<td><code>0.2</code></td>
+<td>field-confirmed</td>
+</tr>
+<tr>
+<td><code>tree_support_branch_diameter</code></td>
+<td><strong>3</strong></td>
+<td>judgement</td>
+</tr>
+<tr>
+<td><code>tree_support_branch_angle</code></td>
+<td><strong>40</strong></td>
+<td>judgement</td>
+</tr>
+<tr>
+<td><code>tree_support_branch_diameter_angle</code></td>
+<td><strong>3</strong></td>
+<td>judgement</td>
+</tr>
+</tbody>
+</table>
+<p>The first six rows are the guide's "If you print flat instead" table,
+which took a shell half from ~9 h to ~5 h. The last three are thinner
+branch geometry so branches <strong>snap</strong> rather than tear — not
+proven, tune on the first print.</p>
+<p>⚠️ <strong><code>support_object_xy_distance</code> stays at 0.5
+deliberately.</strong> The guide lists 0.40, but that is an
+<em>increase</em> from Bambu's 0.35 default; this project already sits
+at 0.5. Reducing it would press branches harder onto the part.
+<strong>Bigger gap = easier release</strong> — do not "correct" it down
+to match the guide.</p>
+<p>Still stubborn after a print? The next lever is
+<code>tree_support_wall_count: 1</code> (hollow single-wall branches).
+Left at <code>-1</code>/auto for now.</p>
+<p><strong>Slot map.</strong> Each book's slots come from
+<code>cad/print/set_filament_slots.py</code> (the book's
+<code>project_settings.config</code> <code>filament_settings_id</code> /
+<code>filament_colour</code> read the same). Slots are named by material
+and colour, not by assembly. Every plate name states its printer, slot
+and material; <code>gate_slots.py</code> checks each slot against the
+printer's live AMS. <code>gate_slots.py --list</code> prints the values
+each material must carry.</p>
+<p>H2S book (<code>lumiAi_Complete_PROD_H2S.3mf</code>, 33 plates, 55
+objects), current trays:</p>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Preset</th>
+<th>Colour</th>
+<th>Feed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>PolyLite PLA @BBL H2S (Inland PLA+ values)</td>
+<td>blue</td>
+<td>AMS</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Generic ASA @BBL H2S 0.4 nozzle</td>
+<td>black</td>
+<td>AMS</td>
+</tr>
+<tr>
+<td>3</td>
+<td>PolyLite PETG @BBL H2S (Inland PETG+ values)</td>
+<td>black (#161616)</td>
+<td>AMS</td>
+</tr>
+<tr>
+<td>4</td>
+<td>PolyLite PETG @BBL H2S (Inland PETG+ values)</td>
+<td>yellow</td>
+<td>AMS</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Generic PA-CF @BBL H2S 0.4 nozzle (NylonX values)</td>
+<td>black</td>
+<td>external</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Generic TPU @BBL H2S</td>
+<td>red</td>
+<td>external</td>
+</tr>
+</tbody>
+</table>
+<p>Plan: slot 3 is grey PETG+ on both printers. The H2S swap from black
+to grey has not happened; until it does, slot 3 on the H2S is black.</p>
+<p>X1C book (<code>lumiAi_Complete.3mf</code>, 28 plates, 49 objects),
+current trays (slot 3 is already the planned grey, #898989):</p>
+<table>
+<thead>
+<tr>
+<th>Slot</th>
+<th>Preset</th>
+<th>Colour</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Overture PLA @BBL X1C</td>
+<td>white</td>
+</tr>
+<tr>
+<td>2</td>
+<td>PolyLite PETG @BBL X1C (Inland PETG+ values)</td>
+<td>red</td>
+</tr>
+<tr>
+<td>3</td>
+<td>PolyLite PETG @BBL X1C (Inland PETG+ values)</td>
+<td>grey</td>
+</tr>
+<tr>
+<td>4</td>
+<td>PolyLite PETG @BBL X1C (Inland PETG+ values)</td>
+<td>clear (the printer's tray shows it as white)</td>
+</tr>
+</tbody>
+</table>
+<p>The lens plate must never go in a translucent or clear slot (see
+Orientation and filament).</p>
+<p>🚨 <strong>Every plate of both books is Textured PEI, with glue, on
+both printers.</strong> The plate-level <code>bed_type</code> is what
+Studio sends to the printer. A plate sliced for a bed other than the one
+installed stops the printer (plate mismatch), so check the installed
+plate before sending. <code>ENG_PLATE_SLOTS</code> in the builder is
+empty; a slot put in that set sends its plates to the Engineering Plate
+and tags their names <code> E+G</code>.</p>
+<p>🚨 <strong>Support settings only bite as PER-OBJECT
+overrides.</strong> Put them in <code>model_settings.config</code> as
+<code>&lt;metadata&gt;</code> on the object — the same channel the rest
+of <code>PART_SETTINGS</code> uses. Setting them in
+<code>project_settings.config</code> or in a process preset does
+<strong>not</strong> work, and fails silently. Confirmed by setting them
+by hand in Bambu: it wrote them onto the object, nowhere else. The
+builder applies <code>SUPPORT_TUNING</code> to every thin-tree part with
+<code>enable_support=1</code>, so there is one place to edit. Bambu
+writes only the delta from the resolved preset; the builder writes all
+of them, so the result cannot drift when a preset or its parent
+changes.</p>
+<p>🚨 <strong>A key the live process preset does not CARRY is a key you
+have not set.</strong> <code>process_settings_*.config</code> declare
+<code>inherits: 0.12mm Fine @BBL X1C</code>. Any key the preset omits
+resolves from that <strong>system parent</strong> —
+<code>project_settings.config</code> is never consulted for it. Writing
+a value into <code>project_settings</code> alone does nothing. The
+builder writes every support key into every process preset, present or
+not, and <code>verify_3mf.py</code> warns when a watched key is
+<strong>absent</strong> from a preset, not merely different.</p>
+<p>🚨 <strong><code>support_style</code> must be SET, never
+assumed.</strong> Under <code>tree_organic</code> Bambu <strong>ignores
+the Tree-Slim branch fields entirely</strong>, so branch distance and
+branch-diameter-angle silently refuse to take and the UI shows the
+preset's numbers instead of the project's.</p>
+<p>🚨 <strong>A saved process preset can silently overrule the project
+settings.</strong> <code>Metadata/process_settings_*.config</code> are
+presets saved inside the 3MF. The builder patches every preset, and
+<code>verify_3mf.py</code> fails the build if any preset disagrees with
+the active config on a watched key.</p>
+<h2 id="petg-and-supports">PETG and supports</h2>
+<p>⛔ <strong>Never print PETG with large support areas. It does not
+work.</strong> PETG welds to its supports where PLA releases, so a big
+supported face does not come off clean — it tears. Opening the gap to
+0.3 mm helps and does not save you.</p>
+<p><strong>If a PETG part needs more than a token amount of support,
+reorient it or change the part — do not turn supports up.</strong></p>
+<p>⚠️ The vertical shell halves' MINIMAL-class supports (internal
+features + the gripper ear) DO print in PETG+, with the reinforced tree
+set and <code>support_top_z_distance</code> 0.4 (2 layers) — see the
+material fork above. <code>verify_3mf.py</code> enforces the line: PETG
++ supports is a hard FAIL unless the object carries
+<code>tree_strong</code> AND top-z ≥ 2 layer heights, in which case it
+is a warning to inspect after removal. A big supported FACE in PETG
+still tears; reorient those.</p>
+<p>⛔ <strong>Never put a recess's FLOOR on the downward side.</strong>
+A pocket floor that faces down is a bridge, and in PETG it sags into
+webs. No support setting fixes that; only orientation or a design change
+does. The cartridge caps are flat discs printed outboard face down, with
+the Keystone pockets facing UP and the M8 boss as a separate hex
+nut.</p>
+<p><strong>Rule: a functional seating surface must be a TOP surface or
+the bed face — never a bridge.</strong> Before choosing an orientation,
+check which face each recess's floor ends up on, not just bed contact
+and support area.</p>
+<p><strong>Check before adding supports to a PETG part:</strong> measure
+bed contact and overhang in both orientations first. The flip is usually
+free and the supports never are.</p>
+<h2 id="clearing-a-jam-mid-print--do-not-touch-the-toolhead">Clearing a
+jam mid-print — do not touch the toolhead</h2>
+<p>⛔ <strong>When the printer pauses for a filament jam, clear the
+SPOOL, not the head.</strong> The X1C does not re-home on resume — it
+returns to where it believes it is. Any nudge to the toolhead or gantry
+while it sits parked becomes a permanent XY offset for every layer
+above.</p>
+<p>A touched toolhead shows up as a layer shift partway up (6–7 mm on
+the cartridge caps), in the same direction at the same Z on every part
+of the plate: the whole coordinate frame moved, not the parts.</p>
+<p><strong>So:</strong> change one thing per print when you can. And if
+a print was paused and touched, check the part for a step before
+trusting it.</p>
+<h2
+id="after-a-plate-type-change-run-the-printers-full-calibration">After a
+plate-type change, RUN THE PRINTER'S FULL CALIBRATION</h2>
+<p>After switching plate type (Engineering to Textured PEI), run the
+X1C's own full calibration before printing. Without it, PETG parts fail
+at the <strong>near side and edges</strong> while the middle prints
+clean. Per-print auto-levelling is <strong>not</strong> sufficient: it
+runs every time and the edges still fail. A centred test disc does not
+clear this either; it only covers the middle of the bed.</p>
+<p><strong>When a printer starts failing after a hardware change, run
+its built-in calibration before constructing a single theory.</strong> Z
+offset lives on the printer, not in Bambu Studio, on the X1C.</p>
+<h2 id="gates-before-a-book-is-installed-or-a-plate-is-printed">Gates
+before a book is installed or a plate is printed</h2>
+<p>Every gate exits 1 on FAIL. Slice first with
+<code>python cad/print/gate_slice.py &lt;book.3mf&gt; --plate N --keep &lt;dir&gt;</code>
+(Studio's own CLI slice; it FAILS on any warning, error or non-zero
+return code, and keeps <code>plate_N.gcode</code> for the G-code gates
+below). A check that only prints notes or warnings is not a gate: the
+table says which is which.</p>
+<table>
+<thead>
+<tr>
+<th>Gate</th>
+<th>Run</th>
+<th>Checks</th>
+<th>FAILS when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>verify_3mf.py</code></td>
+<td><code>python cad/print/verify_3mf.py &lt;book.3mf&gt;</code></td>
+<td>package, on-bed containment, minimum z, collisions, plate
+bookkeeping, mesh integrity, preset agreement, PETG supports, brim, slot
+indices, plate and object counts, the 30 mm back-edge keep-out on X1C
+plates</td>
+<td>a stated rule breaks; judgement items (for example PETG+ strong
+trees, preset overrides) only warn</td>
+</tr>
+<tr>
+<td><code>gate_slots.py</code></td>
+<td><code>python cad/print/gate_slots.py &lt;book.3mf&gt; --printer h2s|x1c</code></td>
+<td><strong>A</strong> each slot against the printer's live AMS
+(filament id, type, colour); <strong>B</strong> each slot's filament
+values against <code>STANDARD</code> for its material;
+<strong>C</strong> each printed object's process against
+<code>STANDARD</code> for its slot's material</td>
+<td>any A, B or C mismatch. Warnings only: an empty AMS tray, clear
+filament reported as white, a value on a non-Standard nozzle variant, a
+material missing from <code>STANDARD</code>, a PAHT-CF plate with no
+brim</td>
+</tr>
+<tr>
+<td><code>gate_floating.py</code></td>
+<td><code>python cad/print/gate_floating.py &lt;book.3mf&gt; --plate N [--gcode plate_N.gcode]</code></td>
+<td>rasters every object of the plate at its own layer height; a region
+with nothing under it on the layer below, and not on the bed, is
+floating. Regions of 0.1 mm² and up count (one 0.5 mm raster cell)</td>
+<td>any floating region. With <code>--gcode</code> each region is
+checked against the slice: nothing printed there = raster dust,
+extrusion on the layer below = covered; both are listed and dropped, and
+only a region that prints with nothing under it fails</td>
+</tr>
+<tr>
+<td><code>gate_gcode_floating.py</code></td>
+<td><code>python cad/print/gate_gcode_floating.py plate_N.gcode [--reach 0.6] [--min-mm 3] [--cantilever 2]</code></td>
+<td>reads the slice, not the mesh: every part line (walls, bridges, top
+and bottom surface, solid infill, gap fill) must stand on extrusion
+within 0.6 mm below, on support within 1.2 mm, or bond sideways (up to 2
+mm) to a line that does</td>
+<td>an island of floating lines totals 3 mm or more. Islands under 3 mm
+print as notes (an ooze dot) and do not fail</td>
+</tr>
+<tr>
+<td><code>gate_breakaway.py</code></td>
+<td><code>python cad/print/gate_breakaway.py &lt;book.3mf&gt; --plate N --gcode plate_N.gcode [--name part] [--want 1]</code></td>
+<td>every break-away block (a separate shell under a pocket roof) has
+exactly <code>--want</code> empty layers (default 1) between its last
+layer and the roof's first, read from the slice</td>
+<td>a block has any other number of empty layers (0 welds it to the
+roof, 2 lets the roof string), a block has no roof extrusion above it,
+or the plate has no block</td>
+</tr>
+</tbody>
+</table>
+<p><code>--want</code> takes a list for a plate whose blocks differ
+(<code>--want 1,1,2</code>, one per block in order).</p>
+<p><strong>Break-away void.</strong> The CAD gap is not what prints:
+Studio includes a layer only when its mid-plane is strictly above a
+face, so the roof must sit at least 0.03 off every layer mid-plane
+(<code>BRK_MID_CLR</code>) for the slicer to leave one void layer. The
+gate's bed placement is calibrated per block on the block's printed top
+surface (Bambu <code>; FEATURE: Top surface</code>, matched to the mesh
+box within 3 mm, otherwise offset 0); the output prints the offset for
+each block.</p>
+<p><strong><code>gate_slots.py</code> STANDARD</strong> (the same on
+both printers; <code>--list</code> prints the live table;
+<code>--no-ams</code> skips A and runs B and C only;
+<code>--ams &lt;json&gt;</code> reads a saved AMS read instead of a live
+one):</p>
+<ul>
+<li>PETG (Inland PETG+, any colour): nozzle 240 (235 allowed above the
+first layer on the H2S), <strong>first layer 240</strong>, flow 0.94,
+max volumetric speed 10 (15 allowed on the H2S), <strong>retraction 1 mm
+/ 40 / 70 % on both printers</strong>, textured plate 85. Process: outer
+wall at most 70 mm/s; avoid-crossing-walls on (a warning, unless the
+outer wall is over the limit); supports only as <code>tree_strong</code>
+with branch Ø5, 2 walls, support speed 50 (the wand flange coupons are
+sanctioned slim); a brim, when on, of 10 mm or more.</li>
+<li>ASA (black): nozzle and first layer 260; a brim of 10 mm or more is
+required.</li>
+<li>PLA: 220. PA-CF (NylonX): 260, textured plate 65, brim required.
+PAHT-CF: 290, flow 0.96, max volumetric speed 8, textured plate 100,
+chamber 60. TPU (Generic): 230. TPU 85A: 225.</li>
+<li>Slots fed from outside the AMS (H2S 5 and 6, and a one-slot book for
+an external spool) have no tray, so A skips them.</li>
+</ul>
+<p>A project that moves to another material gets its PROCESS re-checked,
+not only its slots (C does this).</p>
+<p><strong>Where the gates run.</strong> <code>gate_slots</code> (live
+AMS) before any book or project is installed or sent. After a CAD change
+that touches a printed export: <code>gate_floating --gcode</code> and
+<code>gate_gcode_floating</code> on every changed plate, and
+<code>gate_breakaway</code> on every plate with break-away blocks. A
+plate that fails one of them waits for CAD to fix the model.</p>
+<h2 id="review-flow">Review flow</h2>
+<ul>
+<li>Every CAD push is reviewed by <strong>3dPrint for
+printability</strong> and by the <strong>CTO for the rows</strong> (the
+plate and BOM rows) <strong>before any rebuild of a book</strong>.</li>
+<li>Cradle work, the catch latch included, is routed to 3dPrint / CAD by
+the operator's standing order. The CAD session leaves the cradle and
+catch macros alone.</li>
+</ul>
+<h2 id="bambu-studio-re-save-drops-the-repos-settings">Bambu Studio
+re-save drops the repo's settings</h2>
+<p>Open the repo book and send with <strong>Send without Save</strong>.
+A Studio re-save rewrites the book and drops the repo's
+settings.</p></body></html>

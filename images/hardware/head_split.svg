@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="890" viewBox="0 0 1500 890"><rect width="1500" height="890" fill="#fff"/>
+<defs><pattern id="thr" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#f7e2cd"/><line x1="0" y1="0" x2="0" y2="7" stroke="#b4530f" stroke-width="2.2"/></pattern><pattern id="ghost" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#fff"/><line x1="0" y1="0" x2="0" y2="6" stroke="#4f7a22" stroke-width="1.6"/></pattern><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#b4530f"/></marker></defs>
+<line x1="268.0" y1="627.4" x2="268.0" y2="317.2" stroke="#bbb" stroke-width="1.2" stroke-dasharray="10 4 2 4"/>
+<text x="268.0" y="309.2" font-family="DejaVu Sans, Arial" font-size="11" text-anchor="middle" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">axis</text>
+<text x="268.0" y="309.2" font-family="DejaVu Sans, Arial" font-size="11" text-anchor="middle" font-weight="400" fill="#bbb">axis</text>
+<rect x="568.80" y="486.40" width="28.20" height="131.60" fill="#e8e8e8" stroke="#4a4a4a" stroke-width="1.8"/>
+<line x1="568.8" y1="571.0" x2="597.0" y2="579.5" stroke="#4a4a4a" stroke-width="1"/>
+<line x1="568.8" y1="561.6" x2="597.0" y2="570.1" stroke="#4a4a4a" stroke-width="1"/>
+<line x1="568.8" y1="552.2" x2="597.0" y2="560.7" stroke="#4a4a4a" stroke-width="1"/>
+<line x1="568.8" y1="542.8" x2="597.0" y2="551.3" stroke="#4a4a4a" stroke-width="1"/>
+<line x1="568.8" y1="533.4" x2="597.0" y2="541.9" stroke="#4a4a4a" stroke-width="1"/>
+<line x1="568.8" y1="524.0" x2="597.0" y2="532.5" stroke="#4a4a4a" stroke-width="1"/>
+<line x1="568.8" y1="514.6" x2="597.0" y2="523.1" stroke="#4a4a4a" stroke-width="1"/>
+<line x1="568.8" y1="505.2" x2="597.0" y2="513.7" stroke="#4a4a4a" stroke-width="1"/>
+<line x1="568.8" y1="495.8" x2="597.0" y2="504.3" stroke="#4a4a4a" stroke-width="1"/>
+<line x1="568.8" y1="486.4" x2="597.0" y2="494.9" stroke="#4a4a4a" stroke-width="1"/>
+<text x="582.9" y="644.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="middle" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">wand wall, M70×3 outside</text>
+<text x="582.9" y="644.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="middle" font-weight="400" fill="#777">wand wall, M70×3 outside</text>
+<rect x="521.80" y="486.40" width="47.00" height="112.80" fill="url(#ghost)" stroke="#4f7a22" stroke-width="1.6" stroke-dasharray="5 4"/>
+<rect x="568.80" y="468.54" width="9.87" height="17.86" fill="#e8e8e8" stroke="#4a4a4a" stroke-width="1.8"/>
+<rect x="540.60" y="464.78" width="36.19" height="21.62" fill="#4f7a22" stroke="#2f4a12" stroke-width="1.8"/>
+<rect x="268.00" y="505.20" width="253.80" height="94.00" fill="#d5d5d5" stroke="#8a8a8a" stroke-width="1.8"/>
+<text x="362.0" y="552.2" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">heatsink</text>
+<text x="362.0" y="552.2" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">heatsink</text>
+<rect x="315.00" y="495.80" width="188.00" height="9.40" fill="#f2cccc" stroke="#c02a2a" stroke-width="1.8"/>
+<polygon points="310.3,495.8 507.7,495.8 451.3,375.3 366.7,375.3" fill="#3aa0c8" fill-opacity="0.10" stroke="#3aa0c8" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="409.0" y="439.4" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="middle" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">lens cup</text>
+<text x="409.0" y="439.4" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="middle" font-weight="400" fill="#2b7f9e">lens cup</text>
+<rect x="268.00" y="467.60" width="40.42" height="18.80" fill="#cfe2ef" stroke="#1f5f8b" stroke-width="2.0"/>
+<rect x="509.58" y="467.60" width="54.52" height="18.80" fill="#cfe2ef" stroke="#1f5f8b" stroke-width="2.0"/>
+<rect x="296.20" y="360.25" width="12.69" height="107.35" fill="#cfe2ef" stroke="#1f5f8b" stroke-width="2.0"/>
+<rect x="296.20" y="360.25" width="23.97" height="14.10" fill="#1f5f8b" stroke="#1f5f8b" stroke-width="1.2"/>
+<rect x="509.11" y="360.25" width="12.69" height="107.35" fill="#cfe2ef" stroke="#1f5f8b" stroke-width="2.0"/>
+<rect x="497.83" y="360.25" width="23.97" height="14.10" fill="#1f5f8b" stroke="#1f5f8b" stroke-width="1.2"/>
+<text x="409.0" y="348.3" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">3 lens towers</text>
+<text x="409.0" y="348.3" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="middle" font-weight="700" fill="#1f5f8b">3 lens towers</text>
+<rect x="605.93" y="561.60" width="19.27" height="18.80" fill="#faeade" stroke="#b4530f" stroke-width="2.0"/>
+<rect x="583.84" y="495.80" width="41.36" height="65.80" fill="url(#thr)" stroke="#b4530f" stroke-width="2.0"/>
+<rect x="605.93" y="464.78" width="19.27" height="31.02" fill="#faeade" stroke="#b4530f" stroke-width="2.0"/>
+<rect x="550.00" y="441.28" width="75.20" height="23.50" fill="#b4530f" stroke="#7d3908" stroke-width="2.0"/>
+<rect x="60" y="774" width="16" height="14" fill="#b4530f" stroke="#b4530f" stroke-width="1.4"/>
+<text x="86.0" y="785.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">HEAD RING — TURNS</text>
+<text x="86.0" y="785.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" fill="#b4530f">HEAD RING — TURNS</text>
+<text x="86.0" y="801.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">the only piece that does. Ø76 × 14.8, NylonX</text>
+<text x="86.0" y="801.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="400" fill="#666">the only piece that does. Ø76 × 14.8, NylonX</text>
+<rect x="60" y="806" width="16" height="14" fill="#1f5f8b" stroke="#1f5f8b" stroke-width="1.4"/>
+<text x="86.0" y="817.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">LENS PLATE — DOES NOT TURN</text>
+<text x="86.0" y="817.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" fill="#1f5f8b">LENS PLATE — DOES NOT TURN</text>
+<text x="86.0" y="833.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">Ø63, keyed into the skirt, clamped by its tabs onto the L-tab legs</text>
+<text x="86.0" y="833.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="400" fill="#666">Ø63, keyed into the skirt, clamped by its tabs onto the L-tab legs</text>
+<rect x="60" y="838" width="16" height="14" fill="#4f7a22" stroke="#4f7a22" stroke-width="1.4"/>
+<text x="86.0" y="849.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">KEY TAB × 3, on the PLATE</text>
+<text x="86.0" y="849.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" fill="#4f7a22">KEY TAB × 3, on the PLATE</text>
+<text x="86.0" y="865.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">30/150/270°, in skirt notches over the L-tab legs; the lip clamps them</text>
+<text x="86.0" y="865.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="400" fill="#666">30/150/270°, in skirt notches over the L-tab legs; the lip clamps them</text>
+<line x1="615.8" y1="453.5" x2="626.0" y2="148.0" stroke="#888" stroke-width="1.4"/>
+<circle cx="615.8" cy="453.5" r="3.2" fill="#888"/>
+<text x="640.0" y="152.0" font-family="DejaVu Sans, Arial" font-size="15" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">Ø60 lip — clamps the plate's 3 TABS</text>
+<text x="640.0" y="152.0" font-family="DejaVu Sans, Arial" font-size="15" text-anchor="start" font-weight="700" fill="#b4530f">Ø60 lip — clamps the plate's 3 TABS</text>
+<text x="640.0" y="173.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">Lands on the key tabs (0.4 proud of the skirt) and clamps</text>
+<text x="640.0" y="173.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">Lands on the key tabs (0.4 proud of the skirt) and clamps</text>
+<text x="640.0" y="190.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">the plate hard onto the L-tab legs right below them; it</text>
+<text x="640.0" y="190.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">the plate hard onto the L-tab legs right below them; it</text>
+<text x="640.0" y="207.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">clears the plate's disc by 0.3. Nothing drives it round.</text>
+<text x="640.0" y="207.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">clears the plate's disc by 0.3. Nothing drives it round.</text>
+<line x1="615.8" y1="528.7" x2="626.0" y2="236.0" stroke="#888" stroke-width="1.4"/>
+<circle cx="615.8" cy="528.7" r="3.2" fill="#888"/>
+<text x="640.0" y="240.0" font-family="DejaVu Sans, Arial" font-size="15" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">M70×3 — 7 mm of thread, not 10</text>
+<text x="640.0" y="240.0" font-family="DejaVu Sans, Arial" font-size="15" text-anchor="start" font-weight="700" fill="#b4530f">M70×3 — 7 mm of thread, not 10</text>
+<text x="640.0" y="261.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">Deliberately shorter than the wand's, so the lip reaches</text>
+<text x="640.0" y="261.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">Deliberately shorter than the wand's, so the lip reaches</text>
+<text x="640.0" y="278.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">the skirt rim while the thread is still mid-run: parts can</text>
+<text x="640.0" y="278.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">the skirt rim while the thread is still mid-run: parts can</text>
+<text x="640.0" y="295.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">print ±2 mm off and the ring still seats instead of</text>
+<text x="640.0" y="295.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">print ±2 mm off and the ring still seats instead of</text>
+<text x="640.0" y="312.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">running out of thread. Same rule the flashlight retaining</text>
+<text x="640.0" y="312.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">running out of thread. Same rule the flashlight retaining</text>
+<text x="640.0" y="329.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">ring learned the hard way in v9.7/v9.8.</text>
+<text x="640.0" y="329.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">ring learned the hard way in v9.7/v9.8.</text>
+<line x1="615.8" y1="571.0" x2="626.0" y2="358.0" stroke="#888" stroke-width="1.4"/>
+<circle cx="615.8" cy="571.0" r="3.2" fill="#888"/>
+<text x="640.0" y="362.0" font-family="DejaVu Sans, Arial" font-size="15" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">Ø71.9 pilot</text>
+<text x="640.0" y="362.0" font-family="DejaVu Sans, Arial" font-size="15" text-anchor="start" font-weight="700" fill="#b4530f">Ø71.9 pilot</text>
+<text x="640.0" y="383.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">Squares the ring up on the Ø70 crest. 0.95 mm radial —</text>
+<text x="640.0" y="383.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">Squares the ring up on the Ø70 crest. 0.95 mm radial —</text>
+<text x="640.0" y="400.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">opened 2026-10-11 (was 0.5; 0.3 jammed the lens plate).</text>
+<text x="640.0" y="400.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">opened 2026-10-11 (was 0.5; 0.3 jammed the lens plate).</text>
+<line x1="554.7" y1="477.5" x2="626.0" y2="428.0" stroke="#888" stroke-width="1.4"/>
+<circle cx="554.7" cy="477.5" r="3.2" fill="#888"/>
+<text x="640.0" y="432.0" font-family="DejaVu Sans, Arial" font-size="15" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">keyed plate (v9.12d, 2026-10-10)</text>
+<text x="640.0" y="432.0" font-family="DejaVu Sans, Arial" font-size="15" text-anchor="start" font-weight="700" fill="#4f7a22">keyed plate (v9.12d, 2026-10-10)</text>
+<text x="640.0" y="453.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">The Ø63 plate sits INSIDE the bore on the three L-tab</text>
+<text x="640.0" y="453.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">The Ø63 plate sits INSIDE the bore on the three L-tab</text>
+<text x="640.0" y="470.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">legs. Three 6 mm tabs on it drop into three notches</text>
+<text x="640.0" y="470.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">legs. Three 6 mm tabs on it drop into three notches</text>
+<text x="640.0" y="487.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">through the Ø66.1 head skirt, right over those legs, and</text>
+<text x="640.0" y="487.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">through the Ø66.1 head skirt, right over those legs, and</text>
+<text x="640.0" y="504.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">stand 0.4 mm proud of the skirt rim — the ring's lip lands</text>
+<text x="640.0" y="504.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">stand 0.4 mm proud of the skirt rim — the ring's lip lands</text>
+<text x="640.0" y="521.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">on them: hard tight, zero play, pure compression.</text>
+<text x="640.0" y="521.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">on them: hard tight, zero play, pure compression.</text>
+<text x="640.0" y="538.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none"></text>
+<text x="640.0" y="538.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555"></text>
+<text x="640.0" y="555.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">Until v9.11 the lip clamped an Ø70 plate on pegs and the</text>
+<text x="640.0" y="555.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">Until v9.11 the lip clamped an Ø70 plate on pegs and the</text>
+<text x="640.0" y="572.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">turning ring drove it off them; v9.12 captured it with</text>
+<text x="640.0" y="572.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">turning ring drove it off them; v9.12 captured it with</text>
+<text x="640.0" y="589.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">0.3 of float on fragile skirt ribs. Same pattern as the</text>
+<text x="640.0" y="589.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">0.3 of float on fragile skirt ribs. Same pattern as the</text>
+<text x="640.0" y="606.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">end plate now. Underside still dead flat: disc-on-bed.</text>
+<text x="640.0" y="606.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">end plate now. Underside still dead flat: disc-on-bed.</text>
+<line x1="409.0" y1="500.5" x2="626.0" y2="662.0" stroke="#888" stroke-width="1.4"/>
+<circle cx="409.0" cy="500.5" r="3.2" fill="#888"/>
+<text x="640.0" y="666.0" font-family="DejaVu Sans, Arial" font-size="15" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">⚠ and this is what the one-piece cap did here</text>
+<text x="640.0" y="666.0" font-family="DejaVu Sans, Arial" font-size="15" text-anchor="start" font-weight="700" fill="#b3261e">⚠ and this is what the one-piece cap did here</text>
+<text x="640.0" y="687.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">The towers used to be on the part that TURNED. The last</text>
+<text x="640.0" y="687.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">The towers used to be on the part that TURNED. The last</text>
+<text x="640.0" y="704.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">half-turn dragged three lens cups, tips down, in an arc</text>
+<text x="640.0" y="704.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">half-turn dragged three lens cups, tips down, in an arc</text>
+<text x="640.0" y="721.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">across three LED emitters — every single assembly — and</text>
+<text x="640.0" y="721.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">across three LED emitters — every single assembly — and</text>
+<text x="640.0" y="738.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">the towers finished at whatever angle the thread stopped.</text>
+<text x="640.0" y="738.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#555">the towers finished at whatever angle the thread stopped.</text>
+<text x="40.0" y="46.0" font-family="DejaVu Sans, Arial" font-size="21" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">Wand head — two parts; plate keyed from v9.12d (2026-10-10)</text>
+<text x="40.0" y="46.0" font-family="DejaVu Sans, Arial" font-size="21" text-anchor="start" font-weight="700" fill="#111">Wand head — two parts; plate keyed from v9.12d (2026-10-10)</text>
+<text x="40.0" y="70.0" font-family="DejaVu Sans, Arial" font-size="13" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">half section · true scale · cut through a lens tower; the L-tab and the plate's key tab are on the 30° meridian, ghosted in</text>
+<text x="40.0" y="70.0" font-family="DejaVu Sans, Arial" font-size="13" text-anchor="start" font-weight="400" fill="#666">half section · true scale · cut through a lens tower; the L-tab and the plate's key tab are on the 30° meridian, ghosted in</text>
+<line x1="249.2" y1="486.4" x2="268.0" y2="486.4" stroke="#bbb" stroke-width="1.2"/>
+<text x="239.8" y="490.4" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">Z=106  wand top face</text>
+<text x="239.8" y="490.4" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#aaa">Z=106  wand top face</text>
+<line x1="249.2" y1="467.6" x2="268.0" y2="467.6" stroke="#bbb" stroke-width="1.2"/>
+<text x="239.8" y="471.6" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">Z=108  tower base</text>
+<text x="239.8" y="471.6" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#aaa">Z=108  tower base</text>
+<line x1="249.2" y1="495.8" x2="268.0" y2="495.8" stroke="#bbb" stroke-width="1.2"/>
+<text x="239.8" y="499.8" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.4" stroke-linejoin="round" fill="none">Z=105  LED seat</text>
+<text x="239.8" y="499.8" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#aaa">Z=105  LED seat</text>
+</svg>

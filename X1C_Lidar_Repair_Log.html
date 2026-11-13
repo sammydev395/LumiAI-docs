@@ -1,0 +1,334 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>X1C_Lidar_Repair_Log</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="bambu-x1c--micro-lidar-failure--repair-log">Bambu X1C — Micro Lidar
+failure &amp; repair log</h1>
+<p>Printer: Bambu Lab X1-Carbon Combo, <strong>purchased
+2024-01-30</strong> (MatterHackers, order
+<code>101-0000300-7857002</code>). <strong>Warranty expired
+2025-01</strong> — all parts paid.</p>
+<hr />
+<h2 id="problem-first-seen-2026-07-logged-2026-10-05">Problem (first
+seen ~2026-07, logged 2026-10-05)</h2>
+<p>The build-plate marker read fails. <strong>Every print start takes
+3–5 restarts before the marker reads successfully.</strong> Three months
+of this.</p>
+<p>The reader is the <strong>Micro Lidar</strong> on the bottom of the
+toolhead. It reads the ArUco tag printed on the build plate, and it is
+also what drives flow-dynamics calibration and first-layer inspection.
+Bed levelling does <strong>not</strong> use it — that is the nozzle
+force sensor — which is why levelling has been unaffected
+throughout.</p>
+<h2 id="ruled-out-before-ordering">Ruled out before ordering</h2>
+<p>Recorded so nobody repeats three months of it:</p>
+<table>
+<thead>
+<tr>
+<th>Tried</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plate marker cleaned with IPA 91, many times</td>
+<td>no change</td>
+</tr>
+<tr>
+<td>Lidar lens cleaned, many times</td>
+<td>no change</td>
+</tr>
+<tr>
+<td>Ambient light removed (room already dark) / added, many times</td>
+<td>no change</td>
+</tr>
+<tr>
+<td>Reading on <strong>both halves</strong> of the plate</td>
+<td>fails on both — so not localised marker damage</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>The diagnosis is this line:</strong> a camera light aimed
+at the marker is what works <em>best</em>. If the read only succeeds
+with external illumination, the module's own emitter output has fallen
+off. That is a degrading lidar, not a dirty one — and it is why cleaning
+never helped and never would.</p>
+<h2 id="why-two-parts-and-not-one">Why two parts and not one</h2>
+<p>The machine is the <strong>old "Single Red Laser" build</strong> — ✅
+<strong>confirmed by direct observation 2026-10-05: a blue laser is
+visible during the first-layer scan.</strong> Despite the name, that
+variant is a blue + IR pair (the dual-red build shows two red dots and
+no blue), and it carries a small extra PCB on the toolhead. Its lidar SN
+reads <code>00Exx</code><strong><code>A</code></strong>.</p>
+<p>The single-red lidar and its TH board are
+<strong>discontinued</strong>. The sanctioned replacement is the
+dual-red pair — lidar <strong>and</strong> TH board, installed together.
+<strong>A dual-red lidar will not work on the old single-red
+board.</strong> This pairing is exactly what Bambu ships as the warranty
+replacement when a single-red machine fails, so it is the official
+upgrade path, not a workaround.</p>
+<p>✅ <strong>SN read off the old lidar on removal, 2026-10-09:
+<code>00E09B3C</code>.</strong></p>
+<p>⚠️ <strong>It contradicts the <code>00Exx</code>A rule above, and the
+rule is what loses.</strong> The build is confirmed single-red by direct
+observation — the blue laser during the first-layer scan — and an
+eyewitness beats a parse of a serial whose field layout we never
+established (it is 8 characters; <code>00ExxA</code>/<code>00ExxB</code>
+is 6, so which character is the variant marker was an assumption, not a
+fact).</p>
+<p><strong>Do not use the <code>00ExxA</code> / <code>00ExxB</code> rule
+to buy or reject a part again.</strong> It came from a third-party
+article, it was never confirmed against Bambu documentation, and the one
+time it could be tested against a known machine it gave the wrong
+answer. <strong>Identify the variant by laser colour during a
+scan:</strong> blue visible = the old single-red (blue + IR) build; two
+red dots and no blue = the dual-red build.</p>
+<p><em>Nothing about this session's repair changes — the dual-red pair
+was the sanctioned replacement for this build, it was fitted as a set,
+and the build-plate marker read has worked on every attempt
+since.</em></p>
+<h2 id="orders-placed-2026-10-05">Orders placed 2026-10-05</h2>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>SKU</th>
+<th>Vendor</th>
+<th>Order #</th>
+<th>Total paid</th>
+<th>Shipping</th>
+<th>Arrives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bambu Micro Lidar (Dual Red Laser) — X1 Series</td>
+<td><strong>LID002</strong></td>
+<td>Bambu Lab US store</td>
+<td><code>us783634741743058945</code></td>
+<td>$65.24 incl. tax</td>
+<td>Free</td>
+<td>⬜ TBD</td>
+</tr>
+<tr>
+<td>TH Board Set V9 (Dual Red Laser) — X1 / X1C</td>
+<td><strong>DLB014</strong></td>
+<td>PartsBuilt 3D (Ohio)</td>
+<td><code>71435</code></td>
+<td><strong>$69.84</strong> (shipping included)</td>
+<td>UPS 2 Business Day, $15.05 of the above</td>
+<td>⬜ TBD</td>
+</tr>
+</tbody>
+</table>
+<p>**<span
+class="math inline">135.08<em>a</em><em>l</em><em>l</em> − <em>i</em><em>n</em> * *(</span>65.24
++ $69.84, both totals shipping-inclusive).</p>
+<ul>
+<li>TH board was sold out at Bambu (ETA 2026-10-06, no preorder),
+GigaParts (backorder) and 3D Universe. <strong>PartsBuilt had
+stock</strong> — that is why the order is split across two vendors.</li>
+<li>TH Board Set V9 ships as a set: TH Board V9, <strong>TH Board FPC
+Cable V9</strong>, Extruder TH Board V9, 4× M1.6-4 screws, glue. The FPC
+cable is the part that changes across the generation, and it is in the
+box — <strong>nothing else to buy.</strong></li>
+<li>The board set is <strong>X1 / X1C only — not X1E.</strong></li>
+</ul>
+<h2 id="until-the-parts-arrive--printing-continues-detection-on">Until
+the parts arrive — printing continues, detection ON</h2>
+<p><strong>The operator is running with build-plate detection left
+ON</strong> and simply restarting the job until the marker reads.
+<strong>Once it gets past the plate read, the print runs
+normally.</strong> Nothing has been disabled.</p>
+<p>That is the better trade while it still reads at all, because
+everything stays armed:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>State</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Build-plate detection</td>
+<td><strong>ON</strong></td>
+<td>costs 3–5 restarts per print start</td>
+</tr>
+<tr>
+<td>Flow dynamics calibration</td>
+<td><strong>ON</strong></td>
+<td>lidar-driven, still working</td>
+</tr>
+<tr>
+<td>First-layer inspection</td>
+<td><strong>ON</strong></td>
+<td>lidar-driven, still working</td>
+</tr>
+<tr>
+<td>Bed levelling</td>
+<td><strong>ON</strong></td>
+<td>nozzle force sensor, never affected</td>
+</tr>
+<tr>
+<td>Spaghetti detection</td>
+<td><strong>ON</strong></td>
+<td>chamber camera, never affected</td>
+</tr>
+</tbody>
+</table>
+<p>📌 <strong>Diagnostically this matters.</strong> The lidar still does
+flow calibration and first-layer inspection fine — it is specifically
+the <em>marker read</em> that fails. The ArUco tag is the
+lowest-contrast target the module is asked to resolve, so a weakened
+emitter loses that one first while the brighter tasks still pass. It is
+degradation, not a dead module, and it is consistent with the
+camera-light tell.</p>
+<p><strong>The off switch is the fallback, not the current
+practice.</strong> Disabling build-plate detection removes the restarts,
+but it also takes flow calibration and first-layer inspection with it,
+and then <em>nothing verifies the installed plate against the slice</em>
+— plates 1–2 of <code>lumiAi_Complete.3mf</code> need
+<strong>Engineering</strong>, the rest <strong>Cool</strong>. Only reach
+for it if the read stops succeeding altogether before the parts
+land.</p>
+<h2 id="install-when-both-arrive">Install (when both arrive)</h2>
+<p>Install the lidar and the TH board set <strong>together</strong> —
+neither works alone.</p>
+<ul>
+<li>Tools: PH0 driver, tweezers, anti-static strap.</li>
+<li>Lidar is 2 screws: <a
+href="https://wiki.bambulab.com/en/x1/maintenance/replace-micro-lidar">Micro
+Lidar Replacement</a></li>
+<li>Board set: <a
+href="https://wiki.bambulab.com/en/x1/maintenance/replace-the-th-board-assembly">TH
+Board Assembly Replacement</a></li>
+<li><strong>Run a full calibration afterwards.</strong> You are
+replacing the sensor the calibration depends on; do not skip it.</li>
+<li>Nothing was disabled, so there is nothing to re-enable — go straight
+to the measurement below.</li>
+</ul>
+<h2 id="did-it-work">Did it work?</h2>
+<p><strong>A gate that cannot fail is not a gate</strong> — so record
+the number, not an impression.</p>
+<ul>
+<li><strong>Baseline before the swap: 3–5 restarts</strong> per print
+start for a successful marker read.</li>
+<li>After install, re-enable detection and <strong>record first-read
+success over the next 5 print starts.</strong></li>
+<li>Still failing → the lidar was not the fault. Suspect the toolhead
+harness or the plate's ArUco marker itself, and note it here before
+buying anything else.</li>
+</ul>
+<p>📌 <strong>2026-10-08 — THE CLEAREST STATEMENT OF THE FAULT: IT HAS
+NO MARGIN LEFT.</strong> After three failed reads in a row on the new
+plate, the operator wiped the lidar lens with IPA and the next read went
+straight through. His words: <em>"it seems to be on the edge here and
+even a little lens clouding degrades it enough to not be able to read
+the marker."</em></p>
+<p>That is the whole three months in one sentence. <strong>A healthy
+lidar reads an ArUco tag through a slightly clouded lens without
+noticing.</strong> This one needs the lens perfect to clear the
+threshold at all — so every clean restored it to <em>just barely
+working</em>, it drifted back under within a few prints, and the
+cleaning appeared to "work" while fixing nothing. It also explains why a
+camera light helped: both are the same thing, propping a weak signal
+over the line.</p>
+<p><strong>Cleaning buys prints, not a repair.</strong> Wipe the lens
+before a long job as a stopgap until the swap.</p>
+<p><strong>OVERTURNED, same day.</strong> The marker-read failures came
+back on the NEW plate. One clean first read was luck, not a pattern —
+which is exactly why it was logged provisionally with "record the next
+five print starts" rather than as a verdict. The next ones failed.</p>
+<p>✅ <strong>So the fault IS the lidar.</strong> Same symptom on a
+brand-new plate with an unworn ArUco marker rules the marker out as the
+cause. <strong>The Micro Lidar + TH Board Set in transit are the REPAIR,
+not spares</strong> — do not return them.</p>
+<p><em>The superseded entry is kept below, because the experiment was
+the right one to run and the reasoning was sound; it just came back the
+other way.</em></p>
+<p>🔶 <del><strong>2026-10-08 — FIRST EVIDENCE, AND IT POINTS AWAY FROM
+THE LIDAR.</strong></del> A brand-new Bambu Textured PEI plate went on
+(bought for an unrelated reason — PETG kept coming off the Engineering
+plate) and <strong>the plate-marker scan read first time, no
+restarts.</strong> Against a 3–5 restart baseline on the old plate.</p>
+<p>That is the diagnostic that was never run: <strong>the same lidar, a
+different marker.</strong> If it holds, the fault is a <strong>worn
+ArUco marker on the old plate</strong>, not the lidar module — and three
+months were spent cleaning and then replacing a sensor that was reading
+a degraded target.</p>
+<p>⚠️ <strong>One read is not a pattern.</strong> Record the next five
+print starts on the new plate before concluding. If they all read first
+time, the lidar is fine.</p>
+<p>⬜ <del>If confirmed: the Micro Lidar + TH Board Set become
+<strong>spares</strong></del> — not confirmed; they are the repair.
+Worth keeping rather than returning given this machine has eaten two
+print heads and a lidar-class fault in ~33 months — but the $135 bought
+insurance, not a fix.</p>
+<p>📌 <em>Second time in two days a cheap consumable turned out to be
+the real cost: a $40 plate here, and before it the two years of adhesion
+trouble the same plate would have prevented. Both were invisible because
+they presented as "printing is just like this."</em></p>
+<hr />
+<p>📌 <strong>2026-10-11 — THE NEW SET FAILS THE SAME WAY, AND THE
+EVIDENCE MOVES UPSTREAM.</strong> "Failed to read the build plate
+marker" is back on the PEI plate — on the brand-new Micro Lidar + V9 TH
+board, after roughly 15 good prints. Firmware current (01.12.00.00).
+Plate edge cleaned with soap and water, then IPA; door closed, lights
+out — no change. Two observations carry the diagnosis:</p>
+<ol type="1">
+<li><strong>A phone light on the marker makes it read more
+often</strong> — the same prop that worked on the old lidar.</li>
+<li><strong>The lidar's own white capture LED is BRIGHT but now flashes
+only for an extremely short moment over the marker</strong> — and "now"
+is the word that matters: it used to stay on longer. Something is
+degrading, and firmware does not degrade.</li>
+</ol>
+<p>An external research session (2026-10-11, transcript held by the
+operator) frames it in a way that fits every data point this log
+holds:</p>
+<ul>
+<li>The marker read is CAMERA + WHITE LED; <strong>calibration uses the
+red laser lines, not the LED</strong> — which is why the 6-step
+calibration passes while the marker read fails (Bambu HMS
+<code>0C00-0100-0001-000A</code> is exactly this class).</li>
+<li>TWO lidars and TWO TH boards have now "failed" the same way, each
+after ~15 prints. A fault that follows the symptom through a complete
+parts swap is not in the parts. <strong>Prime suspect: the USB-C
+toolhead cable</strong> — it carries toolhead power, it flexes on every
+move, and a worn one can pass data while sagging under the LED's load,
+cutting the flash short exactly as observed. Replacement is in the
+Partsbuilt cart, $12.99.</li>
+<li>⚠️ This REFRAMES two closed entries rather than merely adding one:
+the 10-08 "the fault IS the lidar" verdict and the 10-10 "lens cleaning
+is the known failure mode" stood on the same misread — the missing
+margin was <strong>LIGHT</strong>, not lens clarity or module health.
+Lens wipes, the phone light and a fresh high-contrast marker are all one
+move: propping a starved exposure over the threshold.</li>
+</ul>
+<p><strong>The gate, so this stays a measurement and not an
+impression:</strong></p>
+<ol type="1">
+<li>Slow-motion phone video of the white flash during the plate check
+BEFORE the cable swap, plus a printer log export.</li>
+<li>Swap the USB-C toolhead cable. Same video after.</li>
+<li>Re-enable detection and record first-read success over the next 5
+print starts.</li>
+<li>Flash still short on the new cable → it is the AP-board side: Bambu
+ticket with both videos + the log (micro lidar + AI selected). Two
+replaced lidars, two TH boards and a new cable is the strongest case
+this machine can make.</li>
+</ol>
+<p><strong>Meanwhile (operator, 2026-10-11): BUILD PLATE DETECTION IS
+OFF and printing is fine.</strong> Detection off costs nothing in print
+quality — levelling is the force sensor, and flow-dynamics / first-layer
+inspection still run. The one lost guard is the wrong-plate check: plate
+type drives bed temp, so keep each job's plate set to Textured PEI (the
+X1C is all-PLA at 55).</p>
+<p><strong>Marker stock:</strong> the operator printed Bambu's marker
+sheet (<code>Plate_QR_US letter.pdf</code> — 4× each of Textured / High
+Temp / Engineering / Cool, dashed cut lines). Before applying one:
+<strong>caliper the printed square against the original on the
+plate</strong> (~5 mm; a scaled print is the usual homemade-marker
+failure), cut on the dashed line keeping the white quiet-zone, and seal
+inkjet with a MATTE clear coat — gloss glare is exactly what a short
+flash cannot punch through. A fresh marker buys margin; <strong>the
+cable test above is the repair path.</strong></p></body></html>

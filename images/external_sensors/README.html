@@ -1,0 +1,132 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>README</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="external-sensor-reference-images--drop-in-manifest">External-sensor
+reference images — drop-in manifest</h1>
+<p><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code> cross-references
+these vendor datasheet/pinout images. <strong>Place the files here with
+exactly these names</strong>, then the markdown embeds in the plan
+render. (Claude cannot extract chat-pasted images to disk — the binaries
+must be added by the operator, or point Claude at on-disk paths to copy
+from.)</p>
+<table>
+<thead>
+<tr>
+<th>Filename (save as)</th>
+<th>What it is</th>
+<th>Embedded near (plan §)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>g469_terminal_block_pinout.png</code></td>
+<td>Geekworm G469 — pinout / screw-terminal label map (replaced D-1352
+2026-08-14; identical Pi GPIO pinout)</td>
+<td>§2 "terminal map" + Assembly Guide §4</td>
+</tr>
+<tr>
+<td><code>g469_terminal_block_dimensions.png</code></td>
+<td>Geekworm G469 — dimensioned drawing (64.5×22×19 mm; +4.5 mm wider
+than D-1352)</td>
+<td>§2 FFC-chain table, board #4 + Assembly Guide §4</td>
+</tr>
+<tr>
+<td><code>g469_terminal_block_photo.png</code></td>
+<td>Geekworm G469 — product photo (top + underside; labeled terminals +
+pass-through 2×20)</td>
+<td>§2 "terminal map" + Assembly Guide §4</td>
+</tr>
+<tr>
+<td><code>meccanixity_ffc_board_elec_bay_female.png</code></td>
+<td>MECCANIXITY FFC/FPC 40-pin board — <strong>female 2×20</strong>
+variant (#1, elec-bay; 54×26 mm, 11.5 mm)</td>
+<td>§2 FFC-chain table, board #1</td>
+</tr>
+<tr>
+<td><code>meccanixity_ffc_board_power_bay_male.png</code></td>
+<td>MECCANIXITY FFC/FPC 40-pin board — <strong>male 2×20</strong>
+variant (#3, power-bay)</td>
+<td>§2 FFC-chain table, board #3</td>
+</tr>
+<tr>
+<td><code>sparkfun_tmp102_qwiic_photo.png</code></td>
+<td>SparkFun Qwiic Temperature TMP102 — product photo (2× side Qwiic
+JST-SH 1.0 mm 4-pin connectors; bottom 0.1" through-hole row:
+GND/3V3/SDA/SCL/ALERT)</td>
+<td>§2 I²C table + §13 BOM line 6</td>
+</tr>
+<tr>
+<td><code>sparkfun_tmp102_qwiic_drawing.png</code></td>
+<td>SparkFun Qwiic Temperature TMP102 — dimensioned drawing (1.00" ×
+1.00" / ~25.4 × 25.4 mm; 4× corner mounting holes inset 0.10")</td>
+<td>§2 I²C table + §13 BOM line 6</td>
+</tr>
+<tr>
+<td><code>sparkfun_tmp102_qwiic_add0_mod_annotated.png</code></td>
+<td>Wand TMP102 ADD0 mod 0x48→0x49 — FRONT annotated board map
+(generated 2026-08-22): ① 4-pin JST-XH header row, ② 4.7 kΩ pull-ups
+KEEP, ③ ADD0 jumper zone (jumper on BACK) + cut/bridge/verify
+legend</td>
+<td><code>Lumi_Wand_Integration.md</code> §4.4 thermal sensing +
+<code>Electronics_Soldering_Guide.md</code> §7.1</td>
+</tr>
+<tr>
+<td><code>sparkfun_tmp102_qwiic_back_photo.png</code></td>
+<td>SparkFun Qwiic TMP102 — BACK side raw photo (user-supplied
+2026-08-26): ADDR jumper cluster (0x49/0x48 lower row, 0x4A/0x4B upper
+row), I²C pull-up + LED jumpers, mirrored header silk</td>
+<td>source for the annotated version below</td>
+</tr>
+<tr>
+<td><code>sparkfun_tmp102_qwiic_back_addr_annotated.png</code></td>
+<td>Wand TMP102 ADD0 mod — BACK annotated (generated 2026-08-26): ① CUT
+factory 0x48 bridge, ② BRIDGE 0x49 pair, ③ 0x4A/0x4B leave open, ④ I²C
+jumper KEEP, ⑤ mirrored header-order warning</td>
+<td><code>Lumi_Wand_Integration.md</code> §4.4 +
+<code>Electronics_Soldering_Guide.md</code> §7.1</td>
+</tr>
+<tr>
+<td><code>ina226_board_pinout.png</code></td>
+<td>GODIYMODULES INA226 — annotated front view (screw-terminal pinout:
+V+/ISENSE+/ISENSE−/GND; 4-pin logic header: GND/SCL/SDA/VCC; "Set IIC
+Address" pads)</td>
+<td>§2 "INA226 board reference" subsection</td>
+</tr>
+<tr>
+<td><code>ina226_board_back.png</code></td>
+<td>GODIYMODULES INA226 — back/silkscreen view (header silk + ALERT +
+V−/V+ pad markings)</td>
+<td>§2 "INA226 board reference" subsection</td>
+</tr>
+<tr>
+<td><code>ina226_schematic.png</code></td>
+<td>GODIYMODULES INA226 — vendor schematic (R4/R5 = 10 kΩ SDA/SCL
+pull-ups; R1/R3 = 4.7 Ω IN+/IN− series; R2 = 2 mΩ shunt; C1 = 0.1 µF
+differential cap; J1–J8 address-bridge pads; J11 ALERT; J12 4-pin
+header; KF1 4-pos screw terminal)</td>
+<td>§2 "INA226 board reference" subsection</td>
+</tr>
+<tr>
+<td><code>ina226_address_table.png</code></td>
+<td>TI INA226 A1/A0 → 7-bit slave-address table (canonical — use this
+when bridging the A0/A1 pads; 0x44 = A1=VS, A0=GND)</td>
+<td>§2 "INA226 board reference" subsection</td>
+</tr>
+<tr>
+<td><code>ina226_solder_pads_closeup.png</code></td>
+<td>GODIYMODULES INA226 — <strong>cleaner top-down view</strong> showing
+the actual silk on the address-bridge pad rows (A1 top, A0 bottom; each
+row = 4 pads labeled G/V/L/A = GND/VCC/SCL/SDA) <strong>and</strong> the
+two right-edge SMD pull-ups (clearly marked "10K" = R4/R5)</td>
+<td>§2 "Pad-modification recipe" subsection</td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ul>
+<li>The plan's textual spec (terminal map, dims, connector genders, the
+CE0/MISO 2nd-UART gotcha) is <strong>complete and authoritative without
+these images</strong> — they are supplementary visual reference
+only.</li>
+<li>Prefer reasonably compressed PNG/JPG (these are reference
+screenshots, not artwork); keep the repo lean. Vendor images: internal
+engineering reference use.</li>
+</ul></body></html>

@@ -1,0 +1,1706 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Electronics_BringUp_Plan</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="lumiai-electronics--phased-bring-up-plan">LumiAI Electronics —
+Phased Bring-Up Plan</h1>
+<p><strong>Purpose.</strong> Sequenced electrical + software bring-up of
+the LumiAI Ultra bay + wand + arm build <strong>after every physical
+component is already mounted</strong> (bay STM32 + Pi5 stack, G469 +
+MECCANIXITY FFC chain, PSU, D-1459 13.8 V distribution block,
+INA226-MAIN, TMP102-bay, TMP102-wand, PCA9685, 12× LED drivers, LED
+MCPCB stack, wand fan, 2× bay fans, 4× HC-SR501 PIR array on the fence
+slants, SPS30 + ZE15-CO on the base plate, arm servos, BigClaw gripper,
+DROK converter, AC inlet + 2× rockers, all harnessing).</p>
+<blockquote>
+<p><strong>Carrier era (2026-10-23):</strong> Nova, and Halo/Ultra once
+carriered, mount the power bay on the printed power-bay carrier
+(Power_Bay §11.3.9), not the PSU cover. Wiring + build order: Power_Bay
+§16c; schematic <code>images/power_bay/carrier_wiring.png</code>. Bay
+I²C devices daisy-chain (0x44 / 0x45 / 0x48 on one chain). Phases below
+note where a carrier build differs; steps without a carrier note are the
+Halo v1 as-built (PSU-cover) path.</p>
+</blockquote>
+<p><strong>Read this doc top-to-bottom in order.</strong> Each phase
+gates the next — do not skip. Every phase points to the authoritative
+wiring / mod / node documentation elsewhere; this doc is the sequencing
+and go/no-go layer, not a re-derivation of wiring.</p>
+<p><strong>Applies to:</strong> LumiAI Ultra production build,
+2026-08-05 onward, and <strong>LumiAI Halo</strong> (host
+<code>raspberrypidev</code>, the Ultra-gen2 build; arm only, no wheels).
+Where a step names Ultra's host <code>raspberrypistage</code>, Halo uses
+<code>raspberrypidev</code> (<code>192.168.1.158</code>). Per-unit
+progress is tracked in <a
+href="#build-status--halo-raspberrypidev">Build status — Halo</a>.
+<strong>Owning workstream:</strong> LumiAI-Ultra electronics build.</p>
+<hr />
+<h2 id="phase-order-at-a-glance">Phase order at a glance</h2>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Scope</th>
+<th>Gate to next phase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td>Power-only. 110 V AC → PSU 13.8 V → INA226 (in-series, no readout) →
+distribution-block bus → DROK 7.5 V → STM32 → Pi5 boot. Fans spin at 100
+%. Wand tether energized. <strong>No GPIO / I²C / UART signal wiring
+yet.</strong></td>
+<td>AC + DC rails at nominal voltages; STM32 + Pi5 boot; both bay fans
+spin; wand tether shows 13.8 V.</td>
+</tr>
+<tr>
+<td><strong>1 (CONDITIONAL — skip by default)</strong></td>
+<td>Arm servo bus wake-up + per-joint verification. <strong>Only run
+this phase if a servo has been replaced or if the arm is a fresh
+build.</strong> In routine bring-ups on a known-good arm, skip straight
+to Phase 2. See Phase 1 detail for when-to-run criteria.</td>
+<td>Individual joint jogs from <code>ros2 topic pub</code> succeed; arm
+sits at safe pose; no servo brownout.</td>
+</tr>
+<tr>
+<td><strong>2</strong></td>
+<td>BigClaw + HTS-25L gripper on the servo bus. Open/close cycled from a
+ROS2 topic.</td>
+<td>Gripper open/close pulses succeed; no bus contention with the arm
+servos.</td>
+</tr>
+<tr>
+<td><strong>3</strong></td>
+<td>Bay fan PWM control (G469 GPIO12/13) + fan tach readback (G469
+GPIO5/6 with 10 kΩ external pull-ups) + <strong>INA226-MAIN</strong> I²C
+at 0x44. First I²C traffic on the shared bus.</td>
+<td>Both fans respond to duty sweep 100→40 %; tach reads sane RPM;
+<code>i2cdetect</code> shows 0x44; INA226 reports 13.8 V + measured bay
+current.</td>
+</tr>
+<tr>
+<td><strong>4</strong></td>
+<td>TMP102 thermal telemetry: <strong>TMP102-bay</strong> at 0x48 +
+<strong>TMP102-wand</strong> at 0x49 (wand tether SDA/SCL now landed at
+G469).</td>
+<td><code>i2cdetect</code> shows 0x44 + 0x48 + 0x49; both TMP102 within
+±2 °C of a bench reference thermometer.</td>
+</tr>
+<tr>
+<td><strong>5</strong></td>
+<td>PCA9685 (wand) at 0x41 (A0 bridged so the HAT INA219 keeps factory
+0x40) + wand LED bring-up. All 12 LED drivers respond to PWM sweeps.
+Wand fan runs on PCA9685 ch13 PWM, powered from the fan rail's
+<code>FAN</code> berg (col 14).</td>
+<td><code>i2cdetect</code> shows 0x41; all 12 LED channels dim/brighten
+smoothly at bench; wand-side TMP102 rises when LEDs on.</td>
+</tr>
+<tr>
+<td><strong>6</strong></td>
+<td>PIR presence array (4× HC-SR501) on G469 GPIO 16/17/20/21. Combiner
+harness + per-PIR bench config.</td>
+<td>Each of 4 PIRs triggers <code>/presence/pir</code> independently; no
+cross-talk; no false-triggers after 5 min quiet.</td>
+</tr>
+<tr>
+<td><strong>7</strong></td>
+<td>Hazard sensor bring-up. <strong>SPS30</strong> (particulate matter,
+uart0 on GPIO14/15) + <strong>ZE15-CO</strong> (CO gas, 2nd PL011 on
+GPIO8/9 via <code>dtoverlay</code>).</td>
+<td>Both hazard sensors publish <code>/hazard/pm</code> +
+<code>/hazard/co</code> at their advertised rates with expected indoor
+baselines.</td>
+</tr>
+<tr>
+<td><strong>7.5</strong> <em>(Halo only)</em></td>
+<td>iFLYTEK mic array POC: Windows smoke test → EB-cover mount on the
+mic carrier → Pi5 two USB links (UAC blue #2, CH340 serial black #2) →
+<code>/dev/iflytek_halo</code> udev pin +
+<code>usb_max_current_enable=1</code> → ALSA/whisper sanity →
+<code>/voice/angle_deg</code> node.</td>
+<td>Wake + angle JSON on the pinned port; clean 16 kHz capture;
+4-quadrant DOA ±5° <strong>calibrated hanging/inverted</strong> (bench =
+function only).</td>
+</tr>
+<tr>
+<td><strong>8</strong></td>
+<td>Full arm motion + <code>home</code> sign-off. State-machine +
+gamepad integration per <a
+href="ULTRA_GAMEPAD_INTEGRATION_PLAN.html"><code>docs/ULTRA_GAMEPAD_INTEGRATION_PLAN.md</code></a>.
+<strong>Only after phases 0-7 signed off.</strong></td>
+<td>Not in scope for this bring-up plan — see the <a
+href="ULTRA_GAMEPAD_INTEGRATION_PLAN.html">gamepad integration plan</a>
+for its own phase gates.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="build-status--halo-raspberrypidev">Build status — Halo
+(raspberrypidev)</h2>
+<p>Status as of <strong>2026-09-28</strong>. Halo is a <strong>fresh
+build</strong> (FPC → Ultra conversion with a user-machined base plate,
+new base servo, add-back elbow, new BigClaw gripper), so the conditional
+Phase 1 was <strong>required</strong>. Evidence for each line lives in
+the phase section it links to.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Status</th>
+<th>Date</th>
+<th>Evidence / notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong> Power-only</td>
+<td>✅ Done</td>
+<td>2026-09-22</td>
+<td>Replacement STM32 controller <strong>shipped blank</strong> and was
+flashed over UART (<a
+href="LumiAI_Hardware_Integration.html#hiwonder-stm32-controller--firmware-flashing-replacement-boards-ship-blank">firmware
+flashing procedure</a>). Board answers with battery ≈ 9.0–9.3 V.</td>
+</tr>
+<tr>
+<td><strong>1</strong> Arm servo bus (conditional)</td>
+<td>✅ Done</td>
+<td>2026-09-27</td>
+<td>All six IDs unique, every joint indexed, pose parity with Ultra, ROS
+stack live under <code>/halo</code>. See <a
+href="#phase-1-as-run-on-halo-2026-09-27--procedure-and-lessons">Phase 1
+as run on Halo</a>.</td>
+</tr>
+<tr>
+<td><strong>2</strong> BigClaw gripper</td>
+<td>✅ Done</td>
+<td>2026-09-28</td>
+<td>Full open (200) / close (500); the wand held through full arm
+motion; a <strong>3 cm block held firmly</strong> with the servo not
+warm. Grip needs <strong>one-sided adhesive rubber pads on both the jaws
+and the wand ear's jaw cradles</strong>. See <a
+href="#phase-2-status-on-halo">Phase 2 status on Halo</a>.</td>
+</tr>
+<tr>
+<td><strong>3</strong> Fans + INA226</td>
+<td>🟡 INA226 only</td>
+<td>2026-09-23</td>
+<td>INA226-MAIN answers at <strong>0x44</strong>, reads <strong>13.71
+V</strong> through the full G469 + FFC chain. Fan PWM + tach not
+started.</td>
+</tr>
+<tr>
+<td><strong>4</strong> TMP102</td>
+<td>⬜ Not started</td>
+<td>—</td>
+<td>Next sensor phase (TMP102-bay 0x48).</td>
+</tr>
+<tr>
+<td><strong>5</strong> PCA9685 + wand LEDs</td>
+<td>⬜ Not started</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>6</strong> PIR array</td>
+<td>🔵 In progress (next)</td>
+<td>2026-09-28</td>
+<td>Next phase being worked.</td>
+</tr>
+<tr>
+<td><strong>7</strong> Hazard sensors</td>
+<td>⬜ Not started</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>8</strong> Gamepad + HOME</td>
+<td>✅ Done (operator sign-off)</td>
+<td>2026-09-28</td>
+<td>Brought up before phases 3–7 by operator decision. Full range on
+every axis at full speed, and <strong>HOME verified on both Halo and
+Ultra</strong> (hold B, then long-press START). See <a
+href="#phase-8-status-on-halo">Phase 8 status on Halo</a>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="phase-0--power-only-bring-up">Phase 0 — Power-only bring-up</h2>
+<p><strong>Goal:</strong> everything electrically UP, nothing
+intelligent yet.</p>
+<p><strong>Authoritative reference:</strong> <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §11.3
+"Phase 0 bring-up (wiring-only, no GPIO signals)" — the 15-row wiring
+segment map (A1-A5 AC, D1-D15 DC/fans/wand) plus the 8-step verify
+checklist.</p>
+<p><strong>Steady state after Phase 0:</strong></p>
+<ul>
+<li>PSU CH1 = 13.8 V ± 0.1</li>
+<li>Distribution-block A bus = 13.8 V; B bus = GND</li>
+</ul>
+<blockquote>
+<p>🎯 <strong>Distribution block — design of record 2026-09-29:</strong>
+<strong>CZH-Labs D-1459</strong> or <strong>YRYAR
+HL-PBB-2-6-MINI</strong> dual-bus distribution module, ferrule-based,
+zero modification — <strong>from the NOVA build on</strong> (next build,
+Ultra-compatible kit in stock). <strong>Halo v1 keeps its as-built
+modified APIELE, and the pending Ultra bay retrofit uses the 4 in-stock
+APIELE spares</strong> (spec + port map: <a
+href="Power_Bay_Design.html#1137-apiele-barrier-strip--physical-spec"><code>Power_Bay_Design.md</code>
+§11.3.7</a>). Wiring + port map: <a
+href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+§11.3</a>; part spec: <a
+href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
+§1.4</a>.</p>
+</blockquote>
+<ul>
+<li>Wand tether V+ = 13.6-13.9 V at the <strong>6-pin end-plate inlet,
+pin 1</strong> — measured against <strong>pin 2
+(<code>GND-power</code>)</strong>, not pin 6 (<code>GND-logic</code>)
+(<a
+href="Lumi_Wand_Integration.html#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand">§10.5.2</a>)</li>
+<li>Fan-power JST-XH open-circuit = 13.8 V (both fans run 13.8 V direct
+from the distribution block)</li>
+<li>DROK output = 7.5 V ± 0.1 (never above 8.4 V: it is also the
+servo-bus voltage)</li>
+<li>STM32 blue terminal input = 7.5 V</li>
+<li>STM32 booted (indicator LEDs on)</li>
+<li>Pi5 booted (green + red LEDs; <code>raspberrypistage</code>
+reachable via SSH)</li>
+<li>Both bay fans spinning <strong>at full RPM</strong> (~5000 RPM, loud
+— PWM input floating = 100 % duty)</li>
+<li><strong>No I²C / UART / GPIO signal traffic yet</strong> — all
+sensor + control wiring lives in Phases 3-7</li>
+</ul>
+<p><strong>Hazards:</strong></p>
+<ul>
+<li>The fan V+ leg runs straight from the distribution block to the fan
+lead — no inline diodes (<a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §11.3.3
+bay-fan branch). Bench-verify with the fan-power JST-XH open-circuit
+measurement — 13.8 V vs 0 V discriminates a good branch from an open or
+mis-landed one.</li>
+<li>Fans at full RPM are LOUD. Expected — do not chase.</li>
+<li><strong>DC rocker cuts DROK only</strong> (per <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §11.3
+topology): fans + wand rail stay live when DC is OFF. Do NOT assume DC
+OFF = bay dead.</li>
+</ul>
+<p><strong>Related memory / decisions:</strong></p>
+<ul>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_bay_rail_split_stm32_vs_wand.html"><code>memory/project_bay_rail_split_stm32_vs_wand.md</code></a>
+— split-rails topology (wand direct 13.8 V, STM32 via DROK 7.5 V, fans
+13.8 V direct, no diode chain).</li>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_lumi_bay_ffc_assembly_rules.html"><code>memory/project_lumi_bay_ffc_assembly_rules.md</code></a>
+— MECCANIXITY breakout + FFC assembly rules (physical mount is complete
+before Phase 0; these rules govern that mount).</li>
+</ul>
+<p><strong>MUST DO before declaring Phase 0 complete → <a
+href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+§11.3 "Phase 0 verify checklist"</a>.</strong> Walk the full 8-step
+verify checklist end-to-end — AC rocker continuity, PSU CH1 output,
+distribution-block bus at 13.8 V, fan-side 13.8 V direct (no diode
+chain), wand bulkhead at 13.6-13.9 V, DROK output at 7.5 V, STM32
+blue-terminal at 7.5 V, and the <strong>G469 polarity + pin-1 alignment
+check</strong> (<a
+href="Power_Bay_Design.html#4-power-bay-g469-terminal-block--ffc-chain-mount">§4
+step 5</a> — probe G469 pin 1 <code>3V3</code> and pin 4 <code>5V</code>
+vs GND, expect ~3.3 V and ~5 V; any other reading fails Phase 0 and
+gates every downstream phase). Also verify <strong>both illuminated
+rockers light up when ON</strong> — dark lamp = LAMP tap wrong;
+always-lit = LINE/LOAD swapped (<a
+href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29">§11.3
+diagnostic tree</a>).</p>
+<hr />
+<h2
+id="phase-1--arm-servo-bus-wake-up--per-joint-verification-conditional--skip-by-default">Phase
+1 — Arm servo bus wake-up + per-joint verification (CONDITIONAL — skip
+by default)</h2>
+<p><strong>When to run this phase:</strong></p>
+<ul>
+<li>A servo was <strong>replaced</strong> on this arm (e.g., the
+2026-04-28 elbow-servo cannibalization — see <a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_2026_04_28_arm_slam_incident.html"><code>memory/project_2026_04_28_arm_slam_incident.md</code></a>;
+the burnt elbow servo was replaced by cannibalizing one from the parts
+bin), or</li>
+<li>The arm is a <strong>fresh build</strong> with never-verified servos
+(e.g. <strong>Halo, 2026-09-27</strong> — see <a
+href="#phase-1-as-run-on-halo-2026-09-27--procedure-and-lessons">Phase 1
+as run on Halo</a>), or</li>
+<li>The servo daisy-chain cable was re-terminated / re-routed and needs
+continuity re-confirmed, or</li>
+<li>The STM32 firmware was flashed / updated and the arm-protocol side
+wants a smoke test before general use.</li>
+</ul>
+<p><strong>When to SKIP this phase (the default):</strong></p>
+<ul>
+<li>Routine bring-ups on a known-good arm. This Ultra was upgraded from
+an older <strong>ArmPi FPC</strong> (added a custom base-servo plate +
+bigger base servo to convert to Ultra); all the arm-cavity servos are
+the original ArmPi-FPC Hiwonder units that have been running on this
+frame for months and are known-good. No routine reason to re-verify them
+each build. <strong>Go straight to Phase 2 (BigClaw
+gripper).</strong></li>
+</ul>
+<p><strong>Goal (if the phase runs):</strong> arm servo daisy-chain live
+on the STM32 protocol; each joint jogs individually under
+<code>motor_controller_node</code>. <strong>No HOME command
+yet.</strong></p>
+<p><strong>Preconditions:</strong> Phase 0 complete. Servo daisy-chain
+cable landed at STM32.</p>
+<p><strong>Authoritative refs:</strong></p>
+<ul>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_2026_04_28_arm_slam_incident.html"><code>memory/project_2026_04_28_arm_slam_incident.md</code></a>
+— <strong>do NOT issue any HOME / single-shot pose command</strong>
+until Phase 8 gamepad integration sign-off. Prior incident destroyed the
+elbow servo via a HOME teleport from an unknown starting pose.</li>
+<li><a
+href="ULTRA_GAMEPAD_INTEGRATION_PLAN.html"><code>docs/ULTRA_GAMEPAD_INTEGRATION_PLAN.md</code></a>
+— the sanctioned per-phase motion plan (this doc's Phase 8 defers to
+it).</li>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_yahboom_stm32_arm_protocol_quirks.html"><code>memory/project_yahboom_stm32_arm_protocol_quirks.md</code></a>
+— STM32 arm protocol quirks (packet format, servo ID conventions).</li>
+<li>Arm HOME positions (do NOT command these yet — this is the
+<em>expected read-back</em>): Rosmaster
+<code>[90,145,0,45,90,30]°</code>, Ultra
+<code>[210,500,110,825,600,500]</code> pulse — captured in <a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/MEMORY.html"><code>MEMORY.md</code></a>.</li>
+</ul>
+<p><strong>Bring-up steps (bench-only, arm supported by
+hand):</strong></p>
+<ol type="1">
+<li>Boot STM32 + Pi5. Verify the STM32 arm-protocol serial port is
+present under its <strong>udev-pinned name</strong>:
+<code>/dev/stm32_ultra</code> on Ultra, <code>/dev/stm32_halo</code> on
+Halo. Both are pinned by physical USB port, because a second CH340 can
+swap <code>ttyUSB0</code>/<code>ttyUSB1</code> at boot — and that second
+CH340 is <strong>permanent on Halo</strong>: the iFLYTEK R818's serial
+cable lives on Pi5 black USB2 #2 at Phase 7.5 and on a HAT port from
+Phase 7.6, pinned as <strong><code>/dev/iflytek_halo</code></strong>
+alongside <code>/dev/stm32_halo</code>. Never configure a raw
+<code>/dev/ttyUSBn</code> — a wrong-port open resets the STM32 and snaps
+the arm to startup pose. <strong>Opening this port resets the
+STM32</strong> — read the reset hazard in <a
+href="#cross-phase-safety-references">Cross-phase safety references</a>
+before running anything that opens it.</li>
+<li>Launch <code>motor_controller_node</code> in <strong>read-only
+mode</strong> (no command topic bindings). Verify current servo
+positions publish on <code>/joint_states</code> — each joint reports a
+sane pulse/angle within its declared range.</li>
+<li><strong>Support the arm by hand.</strong> Send a <strong>single 5°
+jog</strong> to the base joint only. Verify motion is smooth and stops
+at the commanded position.</li>
+<li>Repeat for shoulder, elbow (the replaced servo — extra attention),
+wrist, wrist-rot. <strong>Each joint individually, arm supported by hand
+between commands.</strong></li>
+<li>Verify no bus timeouts, no servo brownouts, no thermal cutouts on
+any servo (STM32 will report packet failures if a servo drops off).</li>
+</ol>
+<p><strong>Verify checklist:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />STM32 serial link up
+(<code>/dev/ttyUSB0</code> responds).</label></li>
+<li><label><input type="checkbox" /><code>/joint_states</code>
+publishing at ≥10 Hz with all 6 joints (arm 5 + gripper)
+reporting.</label></li>
+<li><label><input type="checkbox" />Individual 5° jog succeeds on every
+joint.</label></li>
+<li><label><input type="checkbox" />Any replaced servo (e.g. the elbow,
+an LX-15D, ID 4) behaves indistinguishably from the other joints — same
+jog latency, same holding torque.</label></li>
+<li><label><input type="checkbox" />No packet-loss warnings from
+<code>motor_controller_node</code>.</label></li>
+</ul>
+<h3 id="phase-1-as-run-on-halo-2026-09-27--procedure-and-lessons">Phase
+1 as run on Halo (2026-09-27) — procedure and lessons</h3>
+<p>This is the procedure that actually brought Halo's arm up, in order,
+including the traps hit on the way. It uses the <a
+href="LumiAI_Hardware_Integration.html#hiwonder-bus-servo-replacement--general-procedure-with-servo-id-reprogramming">general
+servo replacement procedure</a> for the per-servo steps.</p>
+<p><strong>Target servo map (same on Ultra and Halo):</strong>
+<code>1 = gripper (HTS-25L)</code>, <code>2 = wrist_rot</code>,
+<code>3 = wrist</code>, <code>4 = elbow (LX-15D)</code>,
+<code>5 = shoulder</code>, <code>6 = base (HTS-25L)</code>. The bus is a
+daisy chain wired 6 → 5 → 4 → 3 → 2 → 1, so unplugging one servo drops
+everything downstream of it.</p>
+<p><strong>Step 1 — Set each servo's ID on the bench pigtail, one servo
+alone on the STM32 bus port.</strong> Read the ID first; <strong>never
+trust the ID a "new" servo ships with</strong>. On Halo the elbow
+arrived pre-programmed as ID 6 and the base as ID 1. Follow <a
+href="LumiAI_Hardware_Integration.html#procedure--reprogramming-a-servos-id-bench-before-install">reprogramming
+a servo's ID</a>. Broadcast ID writes (<code>0xFE</code>) are only safe
+with exactly one servo connected.</p>
+<p><strong>Step 2 — Index each horn at pulse 500 before coupling it to
+its linkage.</strong> Command the bare shaft to 500, then couple, then
+tighten the horn's center screw fully. Follow <a
+href="LumiAI_Hardware_Integration.html#procedure--horn-indexing-before-coupling-to-mechanical-linkage">horn
+indexing</a>. The Halo base was found with its <strong>horn center screw
+missing and the linkage clocked 90° off</strong>: it drove under motor
+torque but slipped and bound under load, and presented as a servo that
+"won't move". Decoupled, the same servo swept full range. Re-coupled
+correctly it passed full range (0 ↔︎ 1000) under the full arm load.</p>
+<p><strong>Step 3 — Audit IDs on the full chain before any
+motion.</strong> Ping IDs 1–6 (and a wider range). A servo that is
+powered (LED on) but silent means <strong>two servos share an
+ID</strong> — their replies collide. On Halo the wrist also carried ID
+4, colliding with the elbow. Fix without a broadcast write and without
+cutting the chain: with the chain ending at the elbow, move the elbow to
+a temporary ID (4 → 14), plug the wrist back in and move it 4 → 3, then
+move the elbow 14 → 4.</p>
+<p><strong>Step 4 — Match the pose to Ultra (pose parity) so one
+calibration serves every arm.</strong> Read Ultra's live
+<code>/ultra/joint_states</code>, convert to pulses
+(<code>pulse = pulse_at_zero_rad + rad / radians_per_pulse</code>, from
+<code>ultra.urdf.xacro</code>), move Halo to the same pulses one joint
+at a time, and compare side by side. Correct each mismatch with the
+servo's <strong>EEPROM deviation offset</strong>: set the offset,
+<strong>force a real move</strong> (e.g. target + 14 → target — an
+offset change on a servo holding a steady target did not visibly apply),
+compare, then save the offset to EEPROM. About 4.2 counts per degree.
+Mechanical mismatches get fixed mechanically first — on Halo the wrist
+servo mount and the gripper assembly were each rotated 180° to match
+Ultra. <strong>Final Halo offsets:</strong>
+<code>1: 0 · 2: +34 · 3: −23 · 4: +47 · 5: −2 · 6: +50</code> (base +50
+also centres it on the chosen forward mark). Result: the same pulse
+gives the same pose on both robots, so Halo runs Ultra's arm calibration
+<strong>unchanged</strong>.</p>
+<p><strong>Step 5 — Bring up the ROS stack, dry run first.</strong> Halo
+uses arm-only variants in <code>hiwonder_ros2_control</code> (repo
+<code>armpi_ultra</code>): <code>description/halo.urdf.xacro</code> (no
+wheel joints, no IMU), <code>config/halo_controllers.yaml</code>
+(joint_state_broadcaster + arm_controller),
+<code>launch/halo_arm.launch.py</code> (namespace <code>/halo</code>,
+joy + arm_teleop). The launch defaults to <code>dry_run:=true</code>,
+which never opens the serial port — use it to prove the nodes,
+controllers, namespace and DDS before going live.</p>
+<p><strong>Step 6 — Go live only from the firmware startup
+pose.</strong> Park the arm at
+<code>[gripper 210, wrist_rot 500, wrist 110, elbow 825, shoulder 600, base 500]</code>
+first, then launch with <code>dry_run:=false</code>. Opening the port
+resets the STM32, which drives every servo to exactly that pose at full
+speed; starting there makes the snap zero-distance. On activation the
+hardware interface re-seeds its targets from the servos' real positions
+(and refuses to activate if that read fails), so the arm then holds
+still. Verify <code>/halo/joint_states</code> converts back to the
+startup pulses.</p>
+<p><strong>Step 7 — Jog, then teleop.</strong> Gamepad: hold
+<strong>B</strong> + sticks = arm, <strong>X</strong> with B = 2× turbo,
+<strong>SELECT</strong> = latched E-stop. Start with the speed cap low
+(<code>arm_max_rate:=0.5</code>), then raise it to the default 3.4 rad/s
+once every axis has been driven through full range.</p>
+<p><strong>Vendor SDK traps (<code>ros_robot_controller_sdk.py</code>),
+learned the hard way:</strong></p>
+<ul>
+<li><code>bus_servo_enable_torque(id, 1)</code> <strong>unloads</strong>
+(servo goes limp) and <code>bus_servo_enable_torque(id, 0)</code> loads
+— the reverse of what the name says. The vendor's own
+<code>unloadBusServo()</code> passes <code>1</code>.</li>
+<li><code>bus_servo_stop()</code> takes a <strong>list</strong> of IDs
+(<code>[6]</code>), not a single integer.</li>
+<li>Do not run per-command scripts: every script opens and closes the
+port, and every open/close resets the STM32. Hold one session open for
+the whole bench job.</li>
+</ul>
+<hr />
+<h2 id="phase-2--bigclaw--hts-25l-gripper-cycle">Phase 2 — BigClaw +
+HTS-25L gripper cycle</h2>
+<p><strong>Goal:</strong> gripper opens + closes on ROS2 command; no bus
+contention with arm servos.</p>
+<p><strong>Preconditions:</strong> Phase 1 complete. Gripper servo
+(Hiwonder HTS-25L) already installed in the BigClaw jaw per <a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_arm_gripper_upgrade.html"><code>memory/project_arm_gripper_upgrade.md</code></a>.</p>
+<p><strong>Authoritative refs:</strong></p>
+<ul>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_arm_gripper_upgrade.html"><code>memory/project_arm_gripper_upgrade.md</code></a>
+— BigClaw + HTS-25L 85 mm jaw, drop-in.</li>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_cross_fleet_gripper_standardization.html"><code>memory/project_cross_fleet_gripper_standardization.md</code></a>
+— same gripper on Yahboom X3PLUS; UART 115200 + U-bracket shared.</li>
+<li>Gripper conventions (from <a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/MEMORY.html"><code>MEMORY.md</code></a>
+"Arm Home Positions"):
+<ul>
+<li><strong>Rosmaster:</strong> gripper is servo ID <strong>6</strong>;
+30° = closed, 180° = open.</li>
+<li><strong>Ultra:</strong> gripper is servo ID <strong>1</strong>; 500
+pulse = closed, 200 pulse = open.</li>
+</ul></li>
+</ul>
+<p><strong>Bring-up steps:</strong></p>
+<ol type="1">
+<li>Verify gripper appears in <code>/joint_states</code> at its own
+servo ID (bus is still the arm daisy-chain).</li>
+<li>Command the gripper to <strong>open</strong> slowly (fraction of
+full stroke first). Verify motion + no bus errors.</li>
+<li>Command <strong>close</strong>. Verify jaw closes without stalling
+before target.</li>
+<li>Repeat open/close 5 × in a row — check for consistent latency and no
+thermal cutout.</li>
+<li>Object test: insert a wand-diameter cylinder in the jaw. Verify jaw
+closes on it and holds without slip.</li>
+</ol>
+<p><strong>Verify checklist:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Gripper responds to open/close
+commands.</label></li>
+<li><label><input type="checkbox" />Close-on-object test holds securely
+(no slip; no stall shutdown).</label></li>
+<li><label><input type="checkbox" />No packet loss / bus contention with
+arm servos during simultaneous arm jog + gripper cycle.</label></li>
+</ul>
+<h3 id="phase-2-status-on-halo">Phase 2 status on Halo</h3>
+<p>As of 2026-09-27:</p>
+<ul>
+<li><strong>Mounting:</strong> BigClaw back plate on the wrist-rotation
+servo in <strong>orientation B</strong> (jaws about 1 inch inside the
+old gripper's envelope). Orientation A was rejected because the jaw arms
+block the camera. The gripper assembly was later rotated 180° to match
+Ultra.</li>
+<li><strong>Horn:</strong> the aluminium horn salvaged from the old
+gripper servo was used instead of the plastic one with metal inserts. It
+leaves the two jaw gears about 0.2 mm out of plane.</li>
+<li><strong>Index:</strong> re-coupled with the jaws fully closed at
+pulse 500, so <strong>500 = closed, 200 = fully open</strong>, the same
+as Ultra. Both ends confirmed.</li>
+<li><strong>Grip range:</strong> because of the jaw-gear play, the
+BigClaw <strong>cannot firmly hold anything thinner than about 0.8–1 cm,
+even at full close</strong>. The wand ear was widened to <strong>25.4 mm
+(one inch)</strong> across its tangential faces on 2026-09-28
+(<code>EAR_TANG</code> = 25.4 in the wand CAD; see the <a
+href="3D_Printing_Guide.html#stl--step-files-canonical-paths-under-cadexportsstlstep">3D
+printing guide exports note</a> and the <a
+href="3D_Printing_Guide.html#after-printing">post-print checklist</a>),
+which puts the grip well inside the firm range.</li>
+<li><strong>Grip test (2026-09-28):</strong> with the gripper slowed to
+0.25 rad/s (D-pad left-right), the jaws were tapped closed onto a
+<strong>3 cm block</strong> and held it <strong>firmly</strong>; the
+jaws stopped at about pulse 478, so the servo was holding at most ~22
+pulses (~5°) past contact, and the servo was <strong>not warm</strong>
+afterwards. Tap closed only until the grip is firm — extra taps add
+holding current and heat, not useful grip.</li>
+<li><strong>Rubber pads are required on both sides of the grip.</strong>
+The BigClaw jaws carry the kit's rubber pads. The wand ear needs
+<strong>one-sided adhesive rubber pads glued into both jaw
+cradles</strong> (the 32 × 22 mm faces the jaws clamp) for the grip to
+be fully secure. After fitting them, check that each jaw blade still
+seats in its cradle.</li>
+<li><strong>Remaining:</strong> fit the ear pads on the reprinted 25.4
+mm ear and repeat the wand grip test with it.</li>
+</ul>
+<hr />
+<h2 id="phase-3--bay-fans-pwm--tach--ina226-power-monitor">Phase 3 — Bay
+fans (PWM + tach) + INA226 power monitor</h2>
+<p><strong>Goal:</strong> first GPIO + I²C signal traffic on the G469
+chain. Both bay fans move under PWM control; INA226 reads bus voltage +
+current on the shared I²C.</p>
+<p><strong>Preconditions:</strong> Phase 2 complete. All G469 signal
+wiring landed for GPIO12/13 (fan PWM), GPIO5/6 + 3V3 + 10 kΩ pull-up
+pigtails (fan tach), and INA226 pigtail (SDA/SCL/3V3/GND). MECCANIXITY
+breakout inversion + FFC blue-stripe-UP already assembled per Phase 0
+preconditions.</p>
+<p><strong>Authoritative refs:</strong></p>
+<ul>
+<li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>
+§5 "INA226 install" — mount, 3 pad mods (address to 0x44, lift both 01C
+pull-ups), pigtail wiring.</li>
+<li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>
+§11.2.2 "Bay fans — wiring" — the fan cut-and-re-crimp table + the 2× 10
+kΩ tach pull-up pigtails at G469 (GPIO5/6 → 3V3).</li>
+<li><a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§2 "Master Connection Map" — the single-source-of-truth pin table for
+INA226 + fan lines.</li>
+<li><a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§2 "I²C address allocation" — pull-up reconciliation (INA226 pull-ups
+<strong>lifted</strong>; bay TMP102 4.7 kΩ carries the bus, wand end has
+PCA9685 + wand TMP102).</li>
+</ul>
+<p><strong>Pin summary (G469 screw terminals):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>G469 terminal</th>
+<th>BCM</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fan #1 PWM</td>
+<td><code>GPIO12</code></td>
+<td>12</td>
+<td>Pi5 hardware PWM channel 0</td>
+</tr>
+<tr>
+<td>Fan #2 PWM</td>
+<td><code>GPIO13</code></td>
+<td>13</td>
+<td>Pi5 hardware PWM channel 1</td>
+</tr>
+<tr>
+<td>Fan #1 TACH</td>
+<td><code>GPIO5</code></td>
+<td>5</td>
+<td>Needs 10 kΩ pull-up pigtail to <code>3V3</code> — <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>
+§11.2.2</td>
+</tr>
+<tr>
+<td>Fan #2 TACH</td>
+<td><code>GPIO6</code></td>
+<td>6</td>
+<td>Needs 10 kΩ pull-up pigtail to <code>3V3</code> — <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>
+§11.2.2</td>
+</tr>
+<tr>
+<td>I²C SDA</td>
+<td><code>GPIO2</code> (pin 3)</td>
+<td>2</td>
+<td>Shared I²C bus</td>
+</tr>
+<tr>
+<td>I²C SCL</td>
+<td><code>GPIO3</code> (pin 5)</td>
+<td>3</td>
+<td>Shared I²C bus</td>
+</tr>
+<tr>
+<td>INA226 VCC</td>
+<td><code>3V3</code></td>
+<td>—</td>
+<td>From G469 3V3 rail</td>
+</tr>
+<tr>
+<td>INA226 GND</td>
+<td><code>GND</code></td>
+<td>—</td>
+<td>Any G469 GND terminal</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bring-up steps:</strong></p>
+<ol type="1">
+<li>Power up. <code>i2cdetect -y 1</code> on Pi5 → <strong>0x44</strong>
+present.</li>
+<li>Launch <code>ina226_node</code> (or <code>python3 -c</code>
+one-liner using the <code>pi-ina226</code> library) → read bus voltage +
+current. Expected: <strong>~13.8 V</strong>, current = bay quiescent
+(Pi5 + STM32 + both fans at full RPM ≈ 1.5-2.5 A total).</li>
+<li>Launch <code>fan_controller_node</code>. Command 100 % duty on both
+fans (steady state, no change). Then sweep to 40 %: both fans should
+audibly slow.</li>
+<li>Verify tach readback via <code>fan_controller_node</code> telemetry:
+at 100 % duty ≈ 5000 RPM, at 40 % duty ≈ 2000 RPM per Noctua NF-A4x20
+spec.</li>
+<li>Return fans to their nominal duty curve (usually driven by
+TMP102-bay in Phase 4; before Phase 4 sits at a fixed ~50 % duty).</li>
+</ol>
+<p><strong>Verify checklist:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" /><code>i2cdetect</code> shows 0x44
+(only).</label></li>
+<li><label><input type="checkbox" />INA226 bus voltage reads 13.8 V ±
+0.2.</label></li>
+<li><label><input type="checkbox" />INA226 current reads sane baseline
+(~1.5-2.5 A quiescent).</label></li>
+<li><label><input type="checkbox" />Both fan PWM sweeps 100→40 %;
+audible speed change on both.</label></li>
+<li><label><input type="checkbox" />Both tach readbacks track duty
+commands (approximate linearity).</label></li>
+<li><label><input type="checkbox" />No I²C bus errors under sustained
+sweep + INA226 poll.</label></li>
+</ul>
+<p><strong>Status on Halo (2026-09-23):</strong> INA226-MAIN answers at
+<strong>0x44</strong> and reads <strong>13.71 V</strong> through the
+full chain (ferruled wires → G469 screw terminals → power-bay breakout →
+FFC → elec-bay breakout → Pi5). Fan PWM + tach not started. If the I²C
+bus shows up empty or the Pi reboots, check that the G469 is seated
+flush first — a partially seated G469 produced exactly that (<a
+href="Power_Bay_Design.html#4-power-bay-g469-terminal-block--ffc-chain-mount">G469
+mount</a>).</p>
+<p><strong>Failure modes to watch for:</strong></p>
+<ul>
+<li>Only one fan responds → check per-fan PWM landing at G469 (GPIO12 vs
+GPIO13 confusion).</li>
+<li>INA226 reads 0 V → address pads mis-modded (should be A0=GND top-row
++ A1=VCC bottom-row → 0x44); or the shunt is in the wrong direction
+(V+/ISENSE+/ISENSE−/GND per <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>
+§5.1).</li>
+<li>I²C bus locks / no response → pull-up reconciliation wrong — INA226
+01C pull-ups must be <strong>lifted</strong> (<a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §5.3);
+if not lifted, the bus is over-stiffened.</li>
+</ul>
+<hr />
+<h2 id="phase-4--tmp102-thermal-telemetry-bay--wand">Phase 4 — TMP102
+thermal telemetry (bay + wand)</h2>
+<p><strong>Goal:</strong> both TMP102 sensors join the I²C bus and
+report ambient temps.</p>
+<p><strong>Preconditions:</strong> Phase 3 complete. TMP102-bay pigtail
+landed at G469 (SDA/SCL/3V3/GND). Wand tether landed at G469
+(SDA/SCL/3V3 for TMP102-wand + PCA9685). Both TMP102 modules physically
+installed per <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §6.4
+(bay, on 15 mm brass studs at grating col 6/9 row 14) + <a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+§20.3 (wand, thermal-bonded to heatsink underside). <strong>Carrier
+builds (2026-10-23):</strong> the TMP102-bay has no pigtail of its own.
+It's the END board of the bay I²C daisy chain (G469 → INA226-MAIN →
+INA226-BATT → TMP102; Power_Bay §16c row 13), and pin 14 is free. Check
+the whole chain with one <code>i2cdetect</code> (0x44 + 0x45 +
+0x48).</p>
+<p><strong>Authoritative refs:</strong></p>
+<ul>
+<li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>
+§6 — TMP102 (bay): factory 0x48, no mod, 4.7 kΩ pull-up KEPT (this is
+the primary bus pull-up at the bay end).</li>
+<li><a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+§20 — TMP102 (wand): address relocated to 0x49 via 1 jumper cut + 1
+solder bridge (ADDR → V+); 4.7 kΩ pull-up KEPT (secondary pull-up at the
+wand end of the long tether).</li>
+<li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>
+§2.1 — I²C address table + pull-up reconciliation summary.</li>
+</ul>
+<p><strong>Bring-up steps:</strong></p>
+<ol type="1">
+<li><code>i2cdetect -y 1</code> on Pi5 → <strong>0x44 + 0x48 +
+0x49</strong> all present. (0x41 PCA9685 — A0 bridged — comes online in
+Phase 5.)</li>
+<li>Launch <code>bay_thermal_node</code> → reads TMP102-bay. Expected
+~28 °C at closed bay + room ambient.</li>
+<li>Launch <code>wand_thermal_node</code> → reads TMP102-wand. Expected
+~30 °C at wand at rest (heatsink at room ambient).</li>
+<li>Cross-check both against a calibrated reference thermometer — should
+agree ± 2 °C.</li>
+<li>Return <code>fan_controller_node</code> to its
+<strong>TMP102-driven</strong> duty curve (fixed 50 % since the end of
+Phase 3; this closes the loop on TMP102-bay).</li>
+</ol>
+<p><strong>Verify checklist:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" /><code>i2cdetect</code> shows 0x44 +
+0x48 + 0x49.</label></li>
+<li><label><input type="checkbox" />Both TMP102 read within ± 2 °C of
+bench reference.</label></li>
+<li><label><input type="checkbox" />Fan curve responds to a heat gun /
+hair dryer aimed at TMP102-bay for a few seconds (temp climbs → fan RPM
+climbs).</label></li>
+<li><label><input type="checkbox" />TMP102-wand stays flat under the
+same test (thermally isolated from the bay sensor).</label></li>
+</ul>
+<hr />
+<h2 id="phase-5--pca9685-wand--led-bring-up">Phase 5 — PCA9685 (wand) +
+LED bring-up</h2>
+<p><strong>Goal:</strong> wand PCA9685 responds on the I²C bus; all 12
+LED channels dim/brighten smoothly; wand fan runs on PCA9685
+<strong>ch13</strong> PWM, powered from the fan rail's <code>FAN</code>
+berg (col 14). The fan PWM comes from the PCA, not from a rail.</p>
+<p><strong>Preconditions:</strong> Phase 4 complete. Wand tether V+/GND
++ SDA/SCL/3V3 all landed. All 12 LED driver modules mounted on the wand
+rails per <a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+§22. LED MCPCB wired per <a
+href="Electronics_Assembly_Guide.html"><code>Electronics_Assembly_Guide.md</code></a>
+§12. Wand fan wired per <a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+§24.</p>
+<p><strong>Authoritative refs:</strong></p>
+<ul>
+<li><a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+§21 — PCA9685 address bridge + verify (A0 closed → 0x41; all other A5-A0
+pads OPEN → 0x40).</li>
+<li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>
+§16.4 — LED full-bright bench check.</li>
+<li><a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+— wand internal architecture, the <strong>v9.11 three-rail</strong>
+distribution, LED driver variants (Variant B KESHY 3W = production;
+Variant A PT4115 = prototype; Variant C AliExpress 3W = alternate).</li>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_lumi_wand_v2_hardware.html"><code>memory/project_lumi_wand_v2_hardware.md</code></a>
+— hardware architecture.</li>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_lumi_wand_3w_driver_inventory.html"><code>memory/project_lumi_wand_3w_driver_inventory.md</code></a>
+— 29 driver boards, R=0.222Ω, V_REF≈0.155V.</li>
+</ul>
+<p><strong>Note:</strong> all LED drivers run at their factory current
+set point — no sense-resistor swap in this phase.</p>
+<blockquote>
+<p>✅ <strong>Baseline already proven (India rig,
+2026-09-01/05/06):</strong> stars, PCA9685, KESHY drivers with the 1 kΩ
+PWM pull-down, single-wire PWM, <code>INVRT=0</code> /
+<code>OUTDRV=1</code> (<a
+href="Wand_Bench_Test_Phases.html">Wand_Bench_Test_Phases</a> Phases 0–1).
+This phase proves only what is new on a built wand (2026-10-24, <a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">Integration
+§10.5.9</a>): the soldered pad leads with trimmed headers, the rails →
+cradle topology and the channel ↔︎ seat map.</p>
+<p><strong>Also new (CAD fdda60c):</strong> the <strong>PCA's top-end
+header is trimmed and its I/O lead soldered to the pads, with
+<code>OE</code> linked to <code>GND</code> there</strong> (done before
+the PCA goes on its forks). <strong>Rail 270 carries no berg:</strong>
+its four DP leads and P270 are soldered into its holes.</p>
+<p><strong>Before power:</strong></p>
+<ul>
+<li><code>GND-power</code>↔︎<code>GND-logic</code> OPEN at the
+cradle.</li>
+<li><code>PWM</code>↔︎<code>VIN−</code> ≈ 1 kΩ on every driver (the trim
+must not have lost an 0805).</li>
+<li>KESHY in the four 60° / 300° seats.</li>
+<li><strong><code>OE</code>↔︎<code>GND</code> = 0 Ω at the PCA
+pads.</strong></li>
+<li><strong>PCA I/O lead continuity, pad to rail 30 col 15</strong>,
+each of GND / VCC / SDA / SCL to its strip (4 / 3 / 1 / 2).</li>
+<li><strong>Rail 270: strip 7 ↔︎ strip 6 OPEN</strong>, and each soldered
+lead to its strip.</li>
+</ul>
+</blockquote>
+<p><strong>Bring-up steps:</strong></p>
+<ol type="1">
+<li><code>i2cdetect -y 1</code> on Pi5 → <strong>0x41</strong> (PCA9685,
+A0 bridged) now visible alongside 0x44 + 0x48 + 0x49 (and 0x40 = the HAT
+INA219 once Phase 7.6 is in). <strong>A scan showing 0x40-but-no-0x41
+pre-HAT means the A0 bridge was missed — stop, bridge it first
+(Integration §21).</strong></li>
+<li>Launch <code>wand_led_node</code> → set all 12 channels to 0 % duty.
+LEDs off. Wand fan may still be off (fan lives on ch13).</li>
+<li>Set <strong>channel 0</strong> to 5 % duty. Only that channel's LED
+should light dimly, and it must be <strong>the seat the map
+says</strong> (CH0 = 60°-Hi → LED1 R). Check every channel against the
+§10.5.9 seat table as you sweep; a wrong seat is a crossed DW lead in a
+PCA housing.</li>
+<li>Sweep channel 0 from 0 → 100 → 0. Verify smooth dim curve, no
+flicker.</li>
+<li>Repeat for channels 1-11.</li>
+<li>Set channel 13 (wand fan) to 30 %. Fan should spin.</li>
+<li>Full-bright test (all 12 channels @ 100 % for ~5 s): check
+TMP102-wand telemetry — heatsink should show temp rise within 30 s.
+<strong>Do NOT hold full-bright &gt; 30 s</strong> without airflow.</li>
+</ol>
+<p><strong>Verify checklist:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" /><code>i2cdetect</code> shows 0x40 +
+0x44 + 0x48 + 0x49.</label></li>
+<li><label><input type="checkbox" />All 12 LED channels dim smoothly
+across 0-100 %.</label></li>
+<li><label><input type="checkbox" />Wand fan spins on ch13.</label></li>
+<li><label><input type="checkbox" />Full-bright test drives TMP102-wand
+up by ≥5 °C within 30 s (confirms thermal path + sensor
+bonding).</label></li>
+</ul>
+<hr />
+<h2 id="phase-6--pir-presence-array-4-hc-sr501">Phase 6 — PIR presence
+array (4× HC-SR501)</h2>
+<p><strong>Goal:</strong> 4× fence-mounted HC-SR501 PIRs publish
+<code>/presence/pir</code> (array-of-4 bool) +
+<code>/presence/pir/quadrant</code> (compass mapping). No cross-talk. No
+false triggers.</p>
+<p><strong>Preconditions:</strong> Phase 5 complete. PIRs physically
+installed on the fence slants (already mounted per user note
+2026-08-05). Combiner harness wiring lands at G469.</p>
+<p><strong>Authoritative refs:</strong></p>
+<ul>
+<li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>
+§13 — PIR bench prep + wiring (jumper H, delay pot ~3 s, sensitivity pot
+LOW; wire to G469).</li>
+<li><a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§5 "<code>pir_sensor_node</code>" — the node contract + config
+YAML.</li>
+<li><a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+Master Connection Map — GPIO 16/17/20/21 landings.</li>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_bay_thermal_acoustic_design.html"><code>memory/project_bay_thermal_acoustic_design.md</code></a>
+— committed PIR GPIO map (16/17/20/21, matching this bring-up).</li>
+</ul>
+<h3
+id="60-pot--jumper-adjustment--at-the-bench-before-the-pir-goes-into-the-fence">6.0
+Pot + jumper adjustment — at the BENCH, before the PIR goes into the
+fence</h3>
+<p>Source: <a
+href="SR501%20Motion%20Sensor.pdf"><code>SR501 Motion Sensor.pdf</code></a>
+(Handson Technology). Page references below are to that PDF. Same
+procedure as <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §13.1;
+this is the bring-up copy with the reasons.</p>
+<p><strong>⚠️ Do this BEFORE mounting. After mounting, the pots cannot
+be reached.</strong> The board screws flush on the fence's inner wall
+with the component side facing into the bay, so the outside shows only
+the dome through the Ø24 opening. The pots sit along the long edge
+opposite the header, adjuster faces pointing into the bay at Z ≈ 9–41
+from the plate. <strong>With the carrier fitted</strong> (its underside
+at Z 44, 3 mm above the board top), a screwdriver can't get at them.
+Even with the carrier off, the lid and arm are on top, so on a built
+robot any re-adjustment means taking the bay apart. <strong>Halo's four
+PIRs were bench-set before mounting (2026-08), so don't re-adjust them;
+walk-test only (6.2).</strong> Each new board (Nova, spares) is set and
+walk-tested on the bench first.</p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>Datasheet</th>
+<th><strong>LumiAI target</strong></th>
+<th>How to set</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sensitivity (Sx) pot</strong></td>
+<td>3–7 m range; <strong>CW = less sensitive, fully CW ≈ 3 m; CCW = more
+sensitive, fully CCW ≈ 7 m</strong> (p. 3)</td>
+<td><strong>Fully CW (≈ 3 m)</strong></td>
+<td>Turn CW to the end stop. Leave it there.</td>
+<td>The PIRs sit in the bay wall next to the PSU, the fans' plumes and
+the battery. Low sensitivity rejects that thermal drift and HVAC. At 3 m
+the hung robot still sees a person well out across the floor. An end
+stop is repeatable on every board without a meter.</td>
+</tr>
+<tr>
+<td><strong>Time-delay (Tx) pot</strong></td>
+<td>OUT stays HIGH after motion for <strong>≈ 3 s (fully CCW) to ≈ 5 min
+(fully CW)</strong> (p. 4). p. 1 says "0.3–5 min" and p. 2 says "5 s–5
+min": the vendor's own numbers disagree, so measure.</td>
+<td><strong>Minimum, ≈ 3 s</strong></td>
+<td>Turn CCW to the end stop, then back off <strong>~1/16 turn
+CW</strong> so the wiper isn't parked on the stop.</td>
+<td><code>/presence/pir</code> and the quadrant prior should follow
+motion. A long delay holds a stale quadrant and keeps the light
+"present" after people leave. The node and the Layer-4 state machine do
+their own hold-off in software.</td>
+</tr>
+<tr>
+<td><strong>Trigger jumper (L/H)</strong></td>
+<td><strong>L = single trigger</strong> (delay starts at the first
+motion); <strong>H = repeatable</strong>, each motion restarts the delay
+(p. 1, p. 4)</td>
+<td><strong>H (repeatable)</strong></td>
+<td>Move the yellow shunt to the H pair.</td>
+<td>OUT stays HIGH for as long as someone keeps moving, then drops ≈ 3 s
+after the last motion. With L, OUT drops mid-motion and then goes blind
+(next row).</td>
+</tr>
+</tbody>
+</table>
+<p><strong>After every delay ends, the module is blind for ≈ 3
+s</strong> (OUT LOW, no detection; p. 4 "3 Seconds Off", examples pp.
+5–6). With H, this only happens once motion has stopped. Expect it in
+the walk test; it isn't a fault.</p>
+<p>⚠️ <strong>Clone lots can have a pot reversed.</strong> Confirm the
+direction on the bench (Power_Bay §13.1 step 3) before trusting "fully
+CW". With the delay at minimum, sensitivity is the pot whose turning
+changes how far away a walk-by triggers.</p>
+<h4 id="61-bench-walk-test-each-board-before-it-goes-into-the-fence">6.1
+Bench walk test (each board, before it goes into the fence)</h4>
+<ol type="1">
+<li>Power the board at 5 V (VCC/GND), with a meter or logic probe on
+OUT. <strong>Wait 60 s.</strong> The module "requires nearly a minute to
+initialize" and can false-trigger during that time (p. 1 to p. 2).</li>
+<li>Hand-wave at ~0.5 m: OUT goes <strong>HIGH (3.3 V)</strong>. Stop
+moving: OUT drops after <strong>≈ 3 s</strong>, then the ≈ 3 s blind
+period.</li>
+<li>Keep waving continuously for ~10 s: OUT must stay HIGH throughout.
+That proves the jumper is at H.</li>
+<li>Walk across the dome's view at <strong>≈ 3 m</strong>: it should
+trigger. Walk across at <strong>≈ 5 m</strong>: it should mostly NOT
+trigger. That proves sensitivity is at the low end.</li>
+<li>Label the board with its position (FL / FR / BL / BR) once it
+passes, then mount it.</li>
+</ol>
+<h4
+id="62-walk-test-once-hung-the-robot-in-its-installed-position-60-s-after-power-on">6.2
+Walk test once hung (the robot in its installed position, 60 s after
+power-on)</h4>
+<ol type="1">
+<li>Use <code>ros2 topic echo /presence/pir</code>. Walk a
+<strong>circle of ~2.5–3 m radius</strong> around the robot at normal
+pace. Each bit should go HIGH in its own quadrant: <strong>FL / FR
+toward the front (+Y) corners, BL / BR toward the back</strong>, with
+overlaps where neighbouring cones meet (sides 39°, back 15°; <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+E.2).</li>
+<li><strong>Front blind lane:</strong> walk <strong>straight toward the
+FRONT wall along its centreline</strong>, starting at ~4 m. At the
+datasheet's 110° cone there's a <strong>13° gap between the FL and FR
+cones</strong> there, ~0.14 m wide at the wall and ~0.8 m wide at 3 m
+(E.2). Record the distance at which FL or FR first triggers, or "none".
+Then walk the same line ~0.5 m to each side; that should trigger the FL
+/ FR on that side. Write the results in E.2. This tells us how wide the
+lane really is on our boards (the PDF's own bound is 120°, which would
+leave only a 3° gap).</li>
+<li>Stand still for 5 min. No bit stays HIGH (the node warns at
+<code>stuck_high_warn_s: 300</code>).</li>
+<li>If one PIR false-triggers in place (fan plume, sun, HVAC), check
+first that its sensitivity is really at the CW end, on the bench before
+mounting. A PIR already at minimum sensitivity that still false-triggers
+is an environment issue (baffle / aim), not a pot setting. On a built
+robot, record it; don't open the bay to chase it.</li>
+</ol>
+<p><strong>Wiring landing at G469:</strong></p>
+<table>
+<thead>
+<tr>
+<th>PIR pin (all 4)</th>
+<th>G469 terminal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCC (bussed at combiner)</td>
+<td><code>5V</code></td>
+</tr>
+<tr>
+<td>GND (bussed at combiner)</td>
+<td><code>GND</code></td>
+</tr>
+<tr>
+<td>OUT — FL (front-left)</td>
+<td><code>GPIO 16</code></td>
+</tr>
+<tr>
+<td>OUT — FR (front-right)</td>
+<td><code>GPIO 17</code></td>
+</tr>
+<tr>
+<td>OUT — BL (back-left)</td>
+<td><code>GPIO 20</code></td>
+</tr>
+<tr>
+<td>OUT — BR (back-right)</td>
+<td><code>GPIO 21</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bring-up steps:</strong></p>
+<ol type="1">
+<li>Continuity-check each G469 GPIO screw terminal to the corresponding
+PIR OUT pin (power OFF).</li>
+<li>Power ON. <strong>Wait 60 s.</strong> HC-SR501 needs 30-60 s to
+stabilize; readings before that are garbage (the node's
+<code>warmup_discard_s: 60</code> handles this, but bench-verify
+first).</li>
+<li>Launch <code>pir_sensor_node</code>.
+<code>ros2 topic echo /presence/pir</code> should show all 4 bits LOW at
+rest.</li>
+<li>Wave hand in front of PIR-FL → FL bit goes HIGH, then clears ≈ 3 s
+after the hand stops (followed by ≈ 3 s blind; 6.0). Others stay
+LOW.</li>
+<li>Repeat for FR, BL, BR. <strong>Each PIR must trigger
+INDEPENDENTLY.</strong> Simultaneous multi-trigger = wiring cross
+(re-check the combiner splice OUT wires).</li>
+<li>Sit quiet for 5 min. No PIR should stuck-HIGH. Node warns at
+<code>stuck_high_warn_s: 300</code>.</li>
+<li>If any PIR false-triggers under HVAC / fan / sun exposure, see 6.2
+step 4. Sensitivity is already at minimum (fully CW), and the pots can't
+be reached once mounted.</li>
+<li>Walk test once hung: 6.2 (quadrants + the front blind lane).</li>
+</ol>
+<p><strong>Verify checklist:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />All 4 PIRs trigger independently
+under targeted hand-wave.</label></li>
+<li><label><input type="checkbox" />No cross-triggers.</label></li>
+<li><label><input type="checkbox" />No stuck-HIGH warnings at 5-min
+quiet mark.</label></li>
+<li><label><input type="checkbox" /><code>/presence/pir/quadrant</code>
+publishes compass mapping when a PIR triggers.</label></li>
+</ul>
+<p><strong>Signal-integrity watch item:</strong> PIR OUT signals ride
+the shared 500 mm FFC alongside I²C / UART / PWM (<a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§2 shared-FFC watch item). PIRs are slow so cross-talk is unlikely, but
+if erratic PIR readings appear under heavy fan-PWM or I²C traffic, this
+is the SI watch item cashing in.</p>
+<hr />
+<h2 id="phase-7--hazard-sensor-bring-up-sps30--ze15-co">Phase 7 — Hazard
+sensor bring-up (SPS30 + ZE15-CO)</h2>
+<p><strong>Goal:</strong> both hazard sensors publish
+<code>/hazard/pm</code> (SPS30) + <code>/hazard/co</code> (ZE15-CO) at
+their advertised rates with indoor-ambient baselines.</p>
+<p><strong>Vendor PDFs (local copies in repo):</strong></p>
+<ul>
+<li><a
+href="../Sensirion_PM_Sensors_Datasheet_SPS30.pdf"><code>docs/Sensirion_PM_Sensors_Datasheet_SPS30.pdf</code></a>
+— SPS30 electrical datasheet + SHDLC UART command set + register
+map.</li>
+<li><a
+href="../Sensirion_Particulate_Matter_AppNotes_SPS30_Mechanical_Design_and_As%20%281%29.pdf"><code>docs/Sensirion_Particulate_Matter_AppNotes_SPS30_Mechanical_Design_and_As (1).pdf</code></a>
+— SPS30 mechanical design + assembly guidelines.</li>
+<li><a
+href="../Sensirion_PM_Sensors_SPS30_STEP_File.zip"><code>docs/Sensirion_PM_Sensors_SPS30_STEP_File.zip</code></a>
+— SPS30 3D CAD model (STEP).</li>
+<li><a
+href="../ze15-co-module-manual-v1_1.pdf"><code>docs/ze15-co-module-manual-v1_1.pdf</code></a>
+— Winsen ZE15-CO Module Manual v1.1 (UART command set + PCB drawing with
+both header locations).</li>
+</ul>
+<p><strong>Preconditions:</strong> Phase 6 complete. <strong>SPS30 +
+ZE15-CO physically installed on the base plate</strong> (already mounted
+per user note 2026-08-05):</p>
+<ul>
+<li>SPS30 on the printed carrier from <a
+href="../cad/freecad/lumi_sps30_carrier.py"><code>cad/freecad/lumi_sps30_carrier.py</code></a>
+(v6: 55×55×3 mm plate, integrated pillars + flat strap + interference
+clamp, GREEN face DOWN, <strong>2× M4</strong> mounts at plate (X=50,
+Y=20.75) and (X=50, Y=36.611), the base plate's measured 15.861
+pitch).</li>
+<li>ZE15-CO on the printed carrier from <a
+href="../cad/freecad/lumi_ze15co_carrier.py"><code>cad/freecad/lumi_ze15co_carrier.py</code></a>
+(v7: 45×30×3 mm plate, single M4 mount + 2× M2 clamp screws,
+orientation-independent header slots, blue cap UP).</li>
+</ul>
+<p>Sensor tails routed through the large servo hole, joining the shared
+FFC path to the G469 in the power bay.</p>
+<p><strong>Authoritative refs:</strong></p>
+<ul>
+<li><a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§2 "UART (hazard sensors)" — SPS30 → uart0 (GPIO14/15, pins 8/10,
+Sensirion SHDLC, 115200 8N1); ZE15-CO → 2nd PL011 via
+<code>dtoverlay</code> on GPIO8/9 (pins 24/21), 3.0 V TTL.</li>
+<li><a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§2 Master Connection Map SPS30 UART + ZE15-CO UART rows.</li>
+<li><a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§3 SPS30 + ZE15-CO mechanical spec + placement.</li>
+<li><a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§5 "<code>hazard_health_node</code>" — the Layer-4 node contract that
+consumes both.</li>
+</ul>
+<p><strong>Wiring landing at G469:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Sensor pin</th>
+<th>G469 terminal</th>
+<th>BCM</th>
+<th>Pi5 physical pin</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SPS30 VDD (5 V)</td>
+<td><code>5V</code></td>
+<td>—</td>
+<td>2 or 4</td>
+<td>From vendor 5-pin ZH 1.5 pigtail</td>
+</tr>
+<tr>
+<td>SPS30 RX (Pi5-TX line)</td>
+<td><code>TXD</code></td>
+<td>14</td>
+<td>8</td>
+<td>uart0. <strong>Must free from Linux serial console.</strong></td>
+</tr>
+<tr>
+<td>SPS30 TX (Pi5-RX line)</td>
+<td><code>RXD</code></td>
+<td>15</td>
+<td>10</td>
+<td>uart0.</td>
+</tr>
+<tr>
+<td>SPS30 SEL</td>
+<td>(leave floating = NC)</td>
+<td>—</td>
+<td>—</td>
+<td><strong>NEVER pull to 5 V</strong> (abs max 4 V). Floating = UART
+mode.</td>
+</tr>
+<tr>
+<td>SPS30 GND</td>
+<td><code>GND</code></td>
+<td>—</td>
+<td>—</td>
+<td></td>
+</tr>
+<tr>
+<td>ZE15-CO VCC (5 V)</td>
+<td><code>5V</code></td>
+<td>—</td>
+<td>2 or 4</td>
+<td>Module spec supports 5-12 V; use 5 V.</td>
+</tr>
+<tr>
+<td>ZE15-CO RX (Pi5-TX line)</td>
+<td><code>CE0</code> ⚠️</td>
+<td>8</td>
+<td>24</td>
+<td>⚠️ Silk labelled by default SPI alt-function; becomes 2nd PL011 TX
+after <code>dtoverlay</code>.</td>
+</tr>
+<tr>
+<td>ZE15-CO TX (Pi5-RX line)</td>
+<td><code>MISO</code> ⚠️</td>
+<td>9</td>
+<td>21</td>
+<td>⚠️ Same — silk labelled <code>MISO</code>; becomes 2nd PL011 RX
+after <code>dtoverlay</code>.</td>
+</tr>
+<tr>
+<td>ZE15-CO GND</td>
+<td><code>GND</code></td>
+<td>—</td>
+<td>—</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>One-time Pi5 config:</strong></p>
+<ol type="1">
+<li>Free uart0 from Linux serial console: <code>sudo raspi-config</code>
+→ Interface Options → Serial Port → login shell <strong>NO</strong> →
+hardware serial <strong>YES</strong>. Reboot.</li>
+<li>Enable 2nd PL011 on GPIO8/9. Add to
+<code>/boot/firmware/config.txt</code>:
+<pre><code>dtoverlay=uart3-pi5
+# GPIO8/9 → /dev/ttyAMA3 (Halo, live since 2026-09-28)</code></pre>
+(Overlay name varies with kernel version — see <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§2 UART section for the exact overlay tested per kernel.)</li>
+<li>Reboot. Verify <code>/dev/ttyAMA0</code> (uart0) +
+<code>/dev/ttyAMA3</code> (uart3-pi5) both present. Record which
+<code>ttyAMA*</code> is which sensor per unit (native ttyAMA is
+config-stable — no by-id juggling like ttyUSB).</li>
+</ol>
+<p><strong>Bring-up steps:</strong></p>
+<ol type="1">
+<li>Verify device nodes: <code>ls /dev/ttyAMA*</code> → 2 devices.</li>
+<li>Launch <code>hazard_health_node</code> (or standalone
+<code>sps30_node</code> + <code>ze15co_node</code> for first
+bring-up).</li>
+<li><strong>SPS30:</strong> should audibly hear the internal SPS30 fan
+start (small internal fan for particle intake). <code>/hazard/pm</code>
+publishes at ~1 Hz within 8 s (Sensirion &lt;8 s startup spec). Expected
+indoor ambient baseline: PM2.5 ≈ 5-15 µg/m³.</li>
+<li><strong>ZE15-CO:</strong> allow <strong>60 s warmup</strong>
+(electrochemical cell stabilization; datasheet spec 30 s, use 60 s for
+margin). <code>/hazard/co</code> should publish 0-2 ppm baseline in
+normal indoor air.</li>
+<li><strong>Provoke test — SPS30:</strong> hold a lit match ~30 cm from
+the SPS30 intake, let smoke waft over. <code>/hazard/pm</code> PM2.5
+should spike from ~10 µg/m³ to 100-1000+ µg/m³ within 5 s, then decay
+over 30-60 s. <strong>DO NOT blow into the SPS30 intake
+directly</strong> — moisture damages the laser sensor.</li>
+<li><strong>Provoke test — ZE15-CO:</strong> brief breath (a few
+seconds) into the CO sensor's gas-diffusion face.
+<code>/hazard/co</code> should show 5-15 ppm rise, decay back to
+baseline within a minute. Do NOT sustain — cell life is 3-5 years and
+provocation shortens it.</li>
+</ol>
+<p><strong>Verify checklist:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" /><code>/dev/ttyAMA0</code> +
+<code>/dev/ttyAMA3</code> both present after reboot with
+overlays.</label></li>
+<li><label><input type="checkbox" />SPS30 fan audible on
+power-up.</label></li>
+<li><label><input type="checkbox" /><code>/hazard/pm</code> publishes at
+~1 Hz within 30 s.</label></li>
+<li><label><input type="checkbox" />SPS30 smoke provocation: PM2.5 spike
++ decay observed.</label></li>
+<li><label><input type="checkbox" /><code>/hazard/co</code> publishes at
+≥1 Hz after 60 s warmup.</label></li>
+<li><label><input type="checkbox" />CO breath provocation: measurable
+ppm rise + decay observed.</label></li>
+<li><label><input type="checkbox" />No UART framing errors in either
+node's logs.</label></li>
+</ul>
+<p><strong>Signal-integrity watch item:</strong> SPS30 (115200 8N1) +
+ZE15-CO (~9600) 3.3 V TTL both ride the shared 500 mm FFC alongside I²C
+/ PWM / tach / PIR (<a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§2 shared-FFC watch item, elevated importance 2026-05-24 after FFC
+length doubled from 250 → 500 mm). Framing errors here → check SDA/SCL
+eye margin on a scope; consider slowing I²C from 100 kHz to 50 kHz as a
+diagnostic.</p>
+<hr />
+<h2
+id="phase-75--iflytek-mic-array-r818--ring-poc--added-2026-10-13">Phase
+7.5 — iFLYTEK mic array (R818 + ring) POC — added 2026-10-13</h2>
+<p><strong>Goal:</strong> the mic set mounted on the EB cover, both USB
+links up, wake + DOA events and clean beamformed audio reaching the Pi5.
+Hardware/electrical spec: <a
+href="Electronics_Bay_Design.html#34-iflytek-far-field-microphone-array-hiwonder-r818--ring-6-mic--two-usb-cables-bus-powered-eb-cover-mount"><code>Electronics_Bay_Design.md</code>
+§3.4</a>. <strong>The iFLYTEK MSC SDK stays DECLINED</strong> — skip
+<code>xf_mic_asr_offline</code>'s APPID path (its Lesson-4 setup needs
+an xfyun.cn account); use its source only as serial-protocol reference.
+whisper.cpp remains the fleet STT.</p>
+<ol type="1">
+<li><strong>Windows smoke test (bench, BEFORE mounting):</strong> both
+USB cables → PC; power LED red; "USB-SERIAL CH340 (COMx)" in Device
+Manager (never COM1); HiWonder Serial Port Debugging Tool → Open Serial
+Port → send <code>{"type":"version"}</code>; set wake word via pinyin
+JSON
+<code>{"type":"wakeup_keywords","content":{"keyword":"…","threshold":"900"}}</code>;
+speak → <code>aiui_event</code> JSON with <code>angle</code> +
+<code>keyword</code>; UAC device records in Sound Recorder. <strong>Mark
+the mic-1 / 0° reference on the casing now. This bench pass verifies
+wake/angle FUNCTION only</strong> — Halo hangs upside-down in service
+(operator, 2026-10-13), so the ring is inverted and DOA handedness
+MIRRORS: a sound moving clockwise seen from above moves
+counter-clockwise in the ring's frame. The mark is a reference, never a
+calibration — <strong>do not bake a bench-measured offset into the
+node.</strong></li>
+<li><strong>EB-cover mount on the Halo mic carrier</strong> (EBD §3.4;
+hardware + build order <a
+href="Electronics_Assembly_Guide.html#16-halo-mic-carrier--iflytek-r818--ring--speaker--sound-card-dongle-assembly--cables">Assembly
+Guide §16</a>) — nylon-standoff isolation, one-point star-washer cover
+ground bond.</li>
+<li>Pi5 connection per §3.4: UAC → blue #2 via the CableCreation
+extension; serial → black #2; JST ends up through the cover's data lane,
+USB-A + CH340 dongle below deck, both runs dressed away from the OAK-D
+USB3 cable — and dressed <strong>against gravity</strong> (the cover
+faces DOWN in service): anchors loaded, loops out of the arm's swept
+volume (§3.4 orientation note).</li>
+<li>udev pin <code>/dev/iflytek_halo</code> (by physical port, like
+<code>/dev/stm32_halo</code>); verify
+<strong><code>usb_max_current_enable=1</code></strong> in
+<code>/boot/firmware/config.txt</code>; inline-USB-meter both mic cables
+(expect ≤400 mA combined) and record the OAK-D draw while
+streaming.</li>
+<li>ALSA: <code>arecord -l</code> shows the UAC card; capture 16 kHz
+S16_LE; replay off-target; whisper.cpp <code>tiny.en</code> sanity pass
+on the clip.</li>
+<li>Thin ROS node: pyserial on <code>/dev/iflytek_halo</code> (confirm
+baud against the HiWonder tool, commonly 115200 8N1) publishing
+<code>/voice/angle_deg</code> + wake events. The node's zero-offset /
+mirror parameters stay <strong>UNSET</strong> until step 7's hung
+calibration.</li>
+<li><strong>Acceptance — IN THE HANGING ORIENTATION:</strong> the real
+DOA zero + handedness are set only after the carrier is mounted on the
+ceiling-hung arm, angles mapped to the robot frame there; then wake from
+4 quadrants at 2–3 m, angle within ±5° of truth in the robot frame;
+vibration sweep — wake score logged at bay fans 0/50/100 %, repeated
+with the arm moving once Phase 8 motion exists.</li>
+</ol>
+<p><strong>Gate to next phase:</strong> wake + angle JSON on
+<code>/dev/iflytek_halo</code>, clean 16 kHz capture through
+whisper.cpp, 4-quadrant DOA within ±5° (hung, robot frame).</p>
+<hr />
+<h2
+id="phase-76--waveshare-hat--bay-5-v-rail--added-2026-10-13-gated-on-hat-arrival">Phase
+7.6 — Waveshare HAT + bay 5 V rail — added 2026-10-13, GATED ON HAT
+ARRIVAL</h2>
+<p><strong>Wiring + bench steps:</strong></p>
+<ol type="1">
+<li>Land <strong>D16/D17</strong> per <a
+href="Power_Bay_Design.html#1133-distribution-module-port-assignments-a-bus--v-b-bus--gnd">Power_Bay
+§11.3.3</a> (A5 → 3 A ATC → MusRock IN+; B5 → IN−; 22 AWG twisted pair,
+E0508).</li>
+<li><strong>MusRock no-load check before the HAT ever connects:</strong>
+5.0–5.2 V at both USB-C sockets (§16.2 row).</li>
+<li><strong>C-to-C:</strong> the HOTNOW 1.5 ft first (on hand; route ≥
+0.46 m measured, operator 2026-10-30). If it fails the gate, retest with
+a 5 A e-marked ~0.5–0.6 m cable (EBD §3.6.2). If the ≥ 4.90 V gate
+fails, the planned LM25116 replaces the buck (EBD §3.6.3 gate 1).</li>
+<li>Route the C-to-C via the base-servo hole alongside D14/D15;
+<strong>verify the hole's edge protection where the new cable
+bears</strong> — add caterpillar strip if the edge is bare.</li>
+<li><strong>Backfeed check — the one hazardous unknown, explicit pass
+criteria:</strong> (a) Pi OFF + MusRock rail ON → the Pi's 5 V rail
+reads <strong>~0 V</strong> (no back-powering through the HAT/PCIe); (b)
+MusRock OFF + Pi ON → <strong>no current into the MusRock
+outputs</strong>. Fail either way = stop and isolate before any soak.
+<strong>Ultra runs this first (operator, 2026-10-17, single-supply
+method):</strong> robot main power OFF, the Pi's USB-C unplugged from
+the STM32 board, external 5 V into the HAT POWER port, meter GPIO
+<strong>header pin 2</strong> — 0 V = isolated; ~5 V = the HAT feeds the
+Pi rail, so <strong>no dual feed until there's an isolating
+part</strong>. (The STM32 board feeds the Pi through its USB-C, not the
+GPIO pins — so pin 2 cleanly isolates the HAT's contribution.) ✅
+<strong>Direction (a) PASSED on Ultra, 2026-10-17 (operator
+measurements):</strong> external 5 V (DROK 0–32→5 V 6 A) into HAT POWER,
+inline USB-C meter at the input reading <strong>5.1 V</strong> (so the
+HAT was proven RECEIVING power — the CC-negotiation doubt is closed),
+<strong>header pin 2 = 0 V</strong>, Pi LEDs dark, header-fed CPU fan
+off. <strong>The HAT's POWER input is isolated from the Pi 5 V rail;
+dual feed is OK in that direction</strong> (MusRock → HAT POWER while
+the STM32 board → Pi USB-C). *Supporting data point, same day: a live
+INA219 read (factory 0x40, Ultra's bare bus) during the DUAL-FEED bench
+state — the external DROK 5 V still in HAT POWER, STM32 board → Pi USB-C
+— showed 4.936 V bus / 14.35 mV shunt (~1.43 A; shunt since confirmed
+0.010 Ω, EBD §3.6.4). <strong>Bench-state label only: this is NOT the
+≥4.90 V BC-3 gate result</strong> — that gate needs the MusRock feeding
+the HAT; what it does show is dual feed running cleanly, consistent with
+the isolation verdict.* ⚠️ <strong>Direction (b) still runs at Halo's
+swap — 2 minutes, not skippable:</strong> isolation (a) proves a blocker
+external→Pi, NOT the reverse. With the Pi ON and the MusRock rail OFF,
+check (1) the HAT loads (SSD/USB) do NOT silently ride the Pi's 5 V rail
+— that silent fallback is the exact brownout trap the bay rail exists to
+prevent, and it would mask a dead MusRock; (2) no voltage sits on the
+unpowered MusRock's output terminals (back-driving a synchronous buck's
+output is not universally safe). Inline meter on the C-to-C, Pi booted,
+MusRock fuse pulled.</li>
+<li><strong>Stack-up at the swap:</strong> the elec-bay FFC breakout
+plugs straight onto the <strong>HAT's 40-pin pass-through
+header</strong> (operator 2026-10-17: "the HAT gives us the height"; no
+extension header). FFC orientation, the pin-1 rotation rule and
+blue-stripe-UP-both-ends apply as in EBD §4. ✅ <strong>Height CHECKED —
+FITS (operator, 2026-10-18)</strong>: lid clearance confirmed on
+hardware. Remaining at the swap: just the physical re-seat (breakout
+onto the HAT's header).</li>
+<li><strong>Halo as-built cover mount only</strong> (carrier builds skip
+this — the Mus-14 and G469 self-tap onto the power-bay carrier,
+Power_Bay §11.3.9). Board-map update at arrival: the G469 moves one hole
+toward the edge — record the new grating holes, re-check FFC reach +
+fence clearance, and update the §11.3.4 board map (its current breakout
+coordinates are flagged ⏳ stale-at-arrival).</li>
+</ol>
+<p><strong>Goal:</strong> X1001 → Waveshare PCIe TO M.2 USB HAT+ swap
+with the NVMe boot SSD on a bay-fed 5 V rail. Spec: <a
+href="Electronics_Bay_Design.html#36-waveshare-pcie-to-m2-usb-hat--nvme--usb-hub--ina219-bay-fed-5-v"><code>Electronics_Bay_Design.md</code>
+§3.6</a> + the UPS doc's MusRock rows. Supply: the MusRock Mus-14
+dual-USB-C buck (fixed 5 V, 3 A with the bay's external cooling, native
+CC on its sockets); no room for a 2nd DROK (operator).</p>
+<ol type="1">
+<li><strong>MusRock checks, off-robot</strong> (= "the drok we bought
+last week"; fixed 5 V output, no trim): <strong>meter the real output,
+no-load and at ~2.5 A</strong> (5.0–5.2 V expected; record it); confirm
+both sockets share one 3 A budget; C-to-C into the HAT powers it (the
+sockets advertise CC natively — if the HAT stays dark on C-to-C, that is
+a finding to report, not a thing to bodge). <strong>Fit the copper
+heatsink (≥10 × 10 mm, thermal tape/pad) on the buck IC — the small
+square chip, NOT the inductor</strong> — before any load testing.</li>
+<li><strong>Mount (carrier builds):</strong> the Mus-14 self-taps onto
+its carrier posts (M1.7 × 6) beside the elec-bay feed; heatsink fitted
+first. <strong>Halo (pre-carrier as-built):</strong> on the PSU cover
+beside the G469, G469 moved one hole right (step 7 above).</li>
+<li><strong>BC-2 — dual-feed/backfeed:</strong> Pi powered normally +
+USB-C fed; measure current direction/magnitude in the GPIO 5 V path.
+Expect ~0 into the Pi; any backfeed → find the isolation jumper or
+forbid dual-feed. <strong>This is the one hazardous unknown — resolve
+before leaving both connected.</strong></li>
+<li><strong>NO HAT address change (operator 2026-10-17: the HAT's back
+resistors are undocumented — "I cannot tell on the damn HAT where to
+desolder"):</strong> every HAT stays at <strong>factory 0x40,
+fleet-wide, forever</strong> — the <strong>PCA9685 vacates 0x40 for 0x41
+instead</strong>, via its silk-labeled, photographed <strong>A0 pad
+bridge</strong> (<a
+href="Lumi_Wand_Integration.html#21-pca9685-wand--verify-defaults--cable-bench">Integration
+§21</a>; firmware <code>ADDR_PCA9685</code> updated with it). The bridge
+happens on the <strong>wand bench BEFORE the tether ever joins a bus
+carrying a HAT</strong>. Arrival check here reduces to:
+<code>i2cdetect</code> on <strong>HALO</strong>
+(<code>raspberrypidev</code>, container <code>LumiHalo</code> — the
+power bay/G469/INA226 live there; Ultra's bare bus showing only 0x40 is
+normal) → <strong>0x40 = the HAT's INA219</strong> alongside
+0x44/0x48/0x49; chip check <code>i2cget -y 1 0x40 0x00 w</code> →
+<code>0x9f39</code>. The INA219 reads the HAT's own 5 V input, so it
+logs the BC-3 ≥4.90 V gate in-band (Ultra's
+<code>hat_power_logger</code> stays on 0x40 untouched).</li>
+<li>HAT swap: X1001 off, Waveshare on (same 16-pin FPC), SSD moves over.
+Wire the MusRock input from the D-1459 per wiring step 1 (A5/B5, 22 AWG
+/ E0508 twisted pair, 3 A ATC inline; <strong>Halo:</strong> the DROK
+input screws, no F4, per the <a
+href="Bench_Plan_2026-11-02_to_11-06.html">Bench plan §3</a>) —
+<strong>same master-switched bus as the 7.5 V DROK, never separately
+switched</strong> (late HAT rail = no boot drive).</li>
+<li><strong>BC-3 — boot soak + voltage-under-load gate:</strong> 20 cold
+power cycles at the master switch; NVMe boot success each time.
+<strong>Then the gate: ≥4.90 V held at the HAT input through
+<code>fio</code> + audio playing, inline meter logging current</strong>
+(heatsinked module rated 3 A with the bay's external cooling; measured
+Pro-build max 2.11 A + stick ~0.5 A ≈ 2.6 A peak, EBD §3.6.2 Budget).
+<strong>If voltage sags: the planned LM25116 (CV 5.20 V) replaces the
+buck</strong>; if it still fails, load-shed — mic serial + UAC go to the
+Pi's native ports, HAT rail carries only HAT + SSD + stick (~1.1 A typ).
+Scope ripple at the HAT input under SSD load (&lt; ~100 mV p-p).</li>
+<li><strong>BC-4 — path confirmation:</strong> <code>fio</code> SSD
+stress with USB-C connected vs disconnected while watching the GPIO-5
+V-path current — confirms the M.2 actually rides the bay feed.</li>
+<li>Move the <strong>OAK-D S2</strong>, the mic serial + UAC (and, at
+the speaker phase, the sound-card stick) to HAT ports (operator ruling
+2026-10-27: "The OAK-D plugs into the HAT … as does the iflytek");
+confirm the OAK enumerates at <strong>5000M on the HAT's VL805
+bus</strong> (<code>lsusb -t</code>); <strong>re-pin
+<code>/dev/iflytek_halo</code></strong> (devpath changes; verify
+<code>/dev/stm32_halo</code> untouched — the STM32 stays on its native
+Pi port precisely so its pin never moves); re-run the inline-USB-meter
+audit; confirm Pi <strong>blue #1 + blue #2 + black #2</strong> are
+freed.</li>
+</ol>
+<p><strong>Gate:</strong> 20/20 boot soak, backfeed question answered,
+mic events still arriving on the re-pinned port.</p>
+<hr />
+<h2
+id="phase-77--ina226-batt-battery-monitor--pull-the-ac-test--added-2026-10-22-halo-ultra-nova">Phase
+7.7 — INA226-BATT battery monitor + pull-the-AC test — added 2026-10-22
+(Halo, Ultra, Nova)</h2>
+<p><strong>Why:</strong> Ultra went fully dark on an AC drop on
+2026-10-22 with a UPS that should have carried it; nothing showed
+whether the pack was charging or ever took the load. Spec: <a
+href="Power_Bay_Design.html#5a-ina226-batt--second-ina226-on-the-ups-battery-lead-added-2026-10-22-halo--ultra--nova">Power_Bay
+§5a</a>.</p>
+<ol type="1">
+<li>Board prep: address <strong>0x45</strong> (top-row U + bottom-row U
+— continuity-ID first), lift both 01C pull-ups, label "PSU ← | →
+PACK".</li>
+<li>Wire per §5a.4: F1 stays at the pack; ISENSE+ toward the PSU
+(charging reads <strong>positive</strong>); VBUS jumpered to the pack
+side; 18 AWG fork lugs. <strong>Carrier builds:</strong> self-tap
+through the board's dead Ø2.0 @ 17.5 mm pair, side by side with
+INA226-MAIN; F1 in its carrier cradle. <strong>Halo's cover
+mount:</strong> all-nylon.</li>
+<li>Logic per §5a.5 — <strong>update the G469 landing map + master pin
+table in the same commit and pass <code>check_g469_map.py</code> before
+landing</strong>. <strong>Ultra: done as part of its early-November
+Halo-parity upgrade</strong> (operator, 2026-10-22) — it lands on
+Ultra's new G469 like Halo, and every no-INA226-MAIN caveat in §5a
+disappears with that upgrade.</li>
+<li><code>i2cdetect -y 1</code> → 0x45 added to the expected set; read
+signed current with AC on (expect + at bulk, near 0 at float).</li>
+<li>Fleet: logger + cron <code>check.sh</code> per §5a.6 (Path C1);
+prove each alert with a <strong>scratch copy at a lowered threshold —
+never change a live threshold to test</strong>.</li>
+<li><strong>Inspect first (generic build check):</strong> AC input-side
+termination tug-test (inlet + in-bay AC terminals) and mains plug fully
+seated (§16.1 rows).</li>
+<li><strong>AC-cut test per §5a.7 — at the robot's rocker or PSU inlet,
+never the wall; logger running first; never hand-chatter mains</strong>
+— the gate. Pass = no reboot, sign flip within ~1 s, no new undervoltage
+bit, charge resumes within 60 s of AC return; runtime recorded (never to
+BMS cut-off).</li>
+</ol>
+<p><strong>Gate:</strong> 0x45 reads plausible signed current; all six
+alerts proven on scratch thresholds; pull-the-AC passes on that
+robot.</p>
+<hr />
+<h2
+id="phase-8--full-arm-motion--gamepad-integration--home-sign-off">Phase
+8 — Full arm motion + gamepad integration + HOME sign-off</h2>
+<p><strong>Out of scope for this bring-up plan.</strong> Owned entirely
+by <a
+href="ULTRA_GAMEPAD_INTEGRATION_PLAN.html"><code>docs/ULTRA_GAMEPAD_INTEGRATION_PLAN.md</code></a>,
+which has its own per-phase sign-off structure. Do not enable HOME or
+multi-joint pose commands until Phase 8 sign-off per that plan.</p>
+<h3 id="phase-8-status-on-halo">Phase 8 status on Halo</h3>
+<p>As of 2026-09-27, by operator decision, arm gamepad teleop was
+brought up <strong>before</strong> phases 3–7:</p>
+<ul>
+<li>Halo runs its own ROS stack (<code>halo_arm.launch.py</code>,
+namespace <code>/halo</code>, container <code>LumiHalo</code>) with joy
++ arm_teleop. Full range on every axis was validated, first at 0.5
+rad/s, then at the full 3.4 rad/s (same as Ultra).</li>
+<li><strong>Gamepads:</strong> Halo uses the HiWonder stock pad's
+receiver on its Pi (it is also a ShanWan <code>2563:0526</code>, same
+button layout); Ultra keeps the ShanWan/DuLingKer. A radio cross-talk
+test in both directions (one pad powered off at a time, both robots'
+<code>joy</code> topics watched) showed <strong>no cross-talk</strong>.
+To power a ShanWan pad off, hold Select + L3 (click the left stick
+down).</li>
+<li><strong>HOME verified 2026-09-28 on both Halo and Ultra.</strong>
+The gesture is: <strong>hold B first, then long-press START (button 11)
+for 1.5 s, and keep holding B</strong> until it finishes — the arm moves
+to the vendor home pose <code>[210, 500, 110, 825, 600, 500]</code> at
+the slow 0.5 rad/s home rate, and releasing B aborts the motion. START
+on its own, or START pressed before B, does nothing by design (the
+earlier "HOME doesn't work" reports were this). The HOME
+<em>sign-off</em> in the gamepad integration plan is still
+separate.</li>
+<li><strong>Gamepad mapping change 2026-09-28 (both robots, shared
+<code>arm_teleop_node.py</code>, armpi_ultra
+<code>5b28cb4</code>):</strong> D-pad left-right = gripper, D-pad
+up-down = wrist up/down, right-stick left-right = wrist rotation.
+Gripper jog rate cut to 0.25 rad/s (full stroke ~5 s) so grip force can
+be dialed in with D-pad taps; X doubles it.</li>
+<li><strong>Taught pose:</strong> a "crouch" rest pose was taught by
+hand (arm limp → placed → read → held): pulses
+<code>1: 496 · 2: 512 · 3: 873 · 4: 587 · 5: 523 · 6: 529</code>. Moves
+to it are made one joint at a time, never as one multi-joint
+command.</li>
+</ul>
+<p><strong>Related memory:</strong> <a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_2026_04_28_arm_slam_incident.html"><code>memory/project_2026_04_28_arm_slam_incident.md</code></a>
+— the incident that motivated the strict per-phase discipline.</p>
+<hr />
+<h2 id="cross-phase-safety-references">Cross-phase safety
+references</h2>
+<ul>
+<li><strong>Arm safety:</strong> no HOME / multi-joint pose until Phase
+8 sign-off per the <a href="ULTRA_GAMEPAD_INTEGRATION_PLAN.html">gamepad
+integration plan</a>.</li>
+<li><strong>STM32 resets whenever its serial port is opened or closed
+(verified on Halo, 2026-09-27).</strong> On these Hiwonder controllers
+DTR is wired to the STM32 reset line. Every open or close of the port —
+a script exiting, a stack restart, even <code>stty</code> — reboots the
+board, and the firmware then drives <strong>every servo to its startup
+pose <code>[210, 500, 110, 825, 600, 500]</code> at full speed</strong>.
+On Halo this tipped the base over once. Clearing the port's
+<code>HUPCL</code> flag did <strong>not</strong> prevent it. Rules:
+clamp the base; hold one serial session open for a whole bench job
+instead of per-command scripts; open or restart anything that owns the
+port <strong>only with the arm already parked at the startup
+pose</strong>, so the snap is zero-distance. Restarting any ROS node
+<em>other than</em> <code>ros2_control_node</code> (for example
+<code>arm_teleop</code>) does not touch the port and is safe. Recognise
+the signature: joints reading ≈ 210/500/110/825/600/500 right after a
+port open mean the board just reset.</li>
+<li><strong>Power discipline:</strong> AC rocker OFF between wiring
+changes. DC rocker cuts DROK-only (fans + wand rail stay live when DC is
+OFF).</li>
+<li><strong>Wand thermal discipline:</strong> do not hold full-bright
+&gt; 30 s on the LED bank without airflow. TMP102-wand telemetry (Phase
+4) must be live before any sustained LED work.</li>
+<li><strong>Hazard-sensor discipline:</strong> do not blow into the
+SPS30 intake (moisture kills the laser). Do not over-provoke the ZE15-CO
+(electrochemical cell wears with cumulative exposure).</li>
+</ul>
+<h2 id="related-docs">Related docs</h2>
+<ul>
+<li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> —
+full wiring / mount / solder reference for every bay + wand component.
+This bring-up plan defers to it for the <em>how</em>.</li>
+<li><a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+— Master Connection Map (single source of truth for every GPIO / I²C /
+UART landing), cable inventory (MECCANIXITY 24 AWG 6-cond fleet
+standard), INA226 / TMP102 / PIR / hazard sensor design + Layer-4
+nodes.</li>
+<li><a
+href="Electronics_Bay_Design.html"><code>Electronics_Bay_Design.md</code></a>
+— Pi5 stack, MECCANIXITY FFC path, cable exit routes, right-angle
+adapter BoM.</li>
+<li><a
+href="Electronics_Soldering_Guide.html"><code>Electronics_Soldering_Guide.md</code></a>
+— sibling bench-ops guide for all soldering operations referenced by <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>.</li>
+<li><a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+— wand internal architecture (rails, PCA9685, LED drivers, tether, wand
+fan).</li>
+<li><a
+href="ULTRA_GAMEPAD_INTEGRATION_PLAN.html"><code>docs/ULTRA_GAMEPAD_INTEGRATION_PLAN.md</code></a>
+— arm gamepad + motion plan (owns Phase 8+).</li>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_bay_rail_split_stm32_vs_wand.html"><code>memory/project_bay_rail_split_stm32_vs_wand.md</code></a>
+— split-rails topology (wand 13.8 V direct, STM32 via DROK 7.5 V, fans
+13.8 V direct, no diode chain).</li>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_lumi_bay_ffc_assembly_rules.html"><code>memory/project_lumi_bay_ffc_assembly_rules.md</code></a>
+— MECCANIXITY breakout inversion + FFC blue-stripe-UP rules.</li>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_arm_gripper_upgrade.html"><code>memory/project_arm_gripper_upgrade.md</code></a>
+— BigClaw + HTS-25L install.</li>
+<li><a
+href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_2026_04_28_arm_slam_incident.html"><code>memory/project_2026_04_28_arm_slam_incident.md</code></a>
+— arm-motion discipline rationale.</li>
+<li><a
+href="../cad/freecad/lumi_sps30_carrier.py"><code>cad/freecad/lumi_sps30_carrier.py</code></a>
+— SPS30 carrier bracket (v6).</li>
+<li><a
+href="../cad/freecad/lumi_ze15co_carrier.py"><code>cad/freecad/lumi_ze15co_carrier.py</code></a>
+— ZE15-CO carrier bracket (v7 as of 2026-08-04).</li>
+</ul></body></html>

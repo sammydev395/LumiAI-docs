@@ -1,0 +1,3124 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Electronics_Assembly_Guide</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="lumiai--electronics-assembly-guide">LumiAI — Electronics Assembly
+Guide</h1>
+<p><strong>Purpose:</strong> the bench-side guide for the
+<strong>general bench stock and the non-soldering assembly operations
+that remain here</strong>: the bench inventory (§1), JST-XH crimping
+(§3), LED MCPCB wire prep + heatsink bonding (§12), the
+flashlight-extension harness and +Y joint connector (§14a), and the
+bonding reference (§15). Soldering operations live in <a
+href="Electronics_Soldering_Guide.html"><code>Electronics_Soldering_Guide.md</code></a>.</p>
+<blockquote>
+<p><strong>Power-bay sections live in <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a></strong>
+under the same section numbers and anchors: conventions (§0), operations
+summary (§2), the G469/FFC chain (§4), INA226 (§5), both TMP102s
+(§6–§7), PCA9685 (§8), the internal rails (§9), fan wiring + bay 13.8 V
+distribution (§11), PIR (§13) and power-up verification (§16). The bench
+inventory (§1) and JST-XH crimping (§3) are here.</p>
+</blockquote>
+<hr />
+<h2 id="1-bench-inventory">1. Bench Inventory</h2>
+<blockquote>
+<p><strong>Section references in the rows below:</strong> §12, §14a and
+§15 are in this guide; §7–§10 (wand bench work) are <a
+href="Lumi_Wand_Integration.html#20-tmp102-wand-local--address-mod--thermal-bond--wiring-bench"><code>Lumi_Wand_Integration.md</code>
+§20–§23</a>; every other §-number (§2, §4–§6, §11, §13, §16) refers to
+<a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>,
+where those procedures live under the same numbers.</p>
+</blockquote>
+<h3 id="11-tools--in-hand-inventory-non-soldering">1.1 Tools — in-hand
+inventory (non-soldering)</h3>
+<blockquote>
+<p><strong>Soldering irons (Yanecty 80 W + Weller WLSK3012A), Engineer
+SS-03 desoldering pump, Drdefi 10× magnifier + helping hands, fine SMD
+tweezers, brass-cleaner-ball kit, Thermaltronics tip tinner</strong>
+live in <a
+href="Electronics_Soldering_Guide.html"><code>Electronics_Soldering_Guide.md</code></a>
+§1. The non-soldering tools below cover crimping, stripping, measuring,
+power, mounting, mechanical cuts.</p>
+</blockquote>
+<p><strong>Additional tools confirmed in inventory:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Model</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Bench multimeter</strong></td>
+<td><strong>Tektronix DMM912</strong> — 4½-digit benchtop DMM,
+continuity (beep), DCV, ACV, DCA, resistance, plus capacitance +
+frequency</td>
+<td>Covers every measurement in this guide: §5.2 INA226 address-pad
+continuity ID (silk-bypass continuity check), §5.3 pull-up disable
+verification, §7.1 wand TMP102 ADDR-mod verification (ADD0-cut +
+V+-bridge correctness), §16 power-up V/I checks. Benchtop unit &gt;
+handheld for hands-free bench work.</td>
+</tr>
+<tr>
+<td><strong>Crimper #1 — JST-XH / Dupont</strong></td>
+<td><strong>PEBA Crimping Tool and Dupont Connector Kit</strong> — 21
+types of 2.54 mm Dupont connectors + crimp pins, 2.5 mm JST-XH contacts
++ housings, rated AWG 32–20</td>
+<td>Covers all JST-XH crimping work in this guide. AWG range fits our
+wire stocks (22 / 26 AWG silicone for the tether + internal harness).
+Dupont contacts useful for any one-off jumper to GPIO pin headers.</td>
+</tr>
+<tr>
+<td><strong>Crimper #2 + automatic wire stripper (coarse)</strong></td>
+<td><strong>Haisstronica Wire Stripper + Ratchet Crimping Tool</strong>
+— automatic stripping AWG 24–10, ratchet crimping AWG 22–10 (for
+insulated barrel / heat-shrink / U-shaped / spade / butt-splice
+connectors)</td>
+<td><strong>Wire stripping:</strong> automatic strip for 24 AWG and
+bigger (covers our 22 AWG tether power + 20 AWG rail bus). For finer
+gauges, use the <strong>30-AWG T-Stripper</strong> (next row).
+<strong>Crimping:</strong> the ratchet handles the insulated U-shaped
+connectors + heat-shrink connectors (out-of-scope for the LumiAI build
+since we're JST-XH-only, but available for one-off wire splices). Note:
+does NOT crimp JST-XH — use the PEBA for those.</td>
+</tr>
+<tr>
+<td><strong>Wire stripper — fine gauges</strong></td>
+<td><strong>30-AWG T-Stripper</strong> — calibrated notches for 30 / 28
+/ 26 / 24 / 22 / 20 AWG</td>
+<td>Covers everything the Haisstronica can't auto-strip: <strong>26 AWG
+silicone</strong> (tether SDA/SCL/3.3 V + internal rail signal buses +
+LED MCPCB wires), <strong>28 AWG silicone</strong> (bench-stock
+one-offs), <strong>30 AWG</strong> (any future fine-wire jumpering).
+Overlap with the Haisstronica at 24/22/20 AWG is fine — use whichever is
+at hand. The T-stripper's calibrated notches won't crush silicone
+strands the way the Haisstronica's auto jaws would on 26+ AWG.</td>
+</tr>
+<tr>
+<td><strong>Bench DC power supply</strong></td>
+<td><strong>Nice-Power Lab DC Power Supply</strong> — 0–30 V / 0–5 A,
+encoder-knob digit-set V &amp; I, 3-digit LED display (0.1 V / 0.01 A
+resolution), CV + CC mode, OVP / OCP / OTP / short-circuit protection,
+~0.69 kg</td>
+<td>Covers §16.2 pre-install voltage probing, §9.6 rail-PCB bench
+verification, and LED brightness checks in §16.4. Sequential per-channel
+sweep at 700 mA each works fine, as does parallel testing of <strong>all
+12 channels (~2.4 A total, measured 2026-09-01) — inside the 5 A
+ceiling; see §16.4.</strong> In the robot the wand LED rail comes off
+the <strong>13.8 V distribution block fed from PSU CH1</strong> (§11.2),
+not the DROK (which feeds only the STM32).</td>
+</tr>
+<tr>
+<td><strong>Heat-shrink gun</strong> (portable)</td>
+<td><strong>Hot Air Gun, 110 V, 180–200 °C</strong> — pencil-grip
+portable, integrated stand, on/off rocker switch</td>
+<td><strong>Heat-shrink work ONLY.</strong> Covers Noctua TACH/joint
+heat-shrink (bay fans Power_Bay §11.2; wand fan <a
+href="Lumi_Wand_Integration.html#24-wand-fan--noctua-nf-a4x10-pwm-40--40--10-mm-connector-re-crimp-bench">Integration
+§24</a>), §12.1 LED-bundle wire-end finishing, §13 PIR pigtail
+terminations, general harness cleanup. <strong>NOT a substitute for an
+SMD hot-air rework station</strong> — 200 °C max is well below the
+280–300 °C needed for SMD reflow. Don't try to use it for the INA226
+R4/R5 lift (<a
+href="Electronics_Soldering_Guide.html"><code>Electronics_Soldering_Guide.md</code></a>
+§5.2) — won't work + risks overheating the gun. For SMD work, stay with
+the iron+tweezers method (Soldering Guide §4.2 lift / §4.3 place).</td>
+</tr>
+<tr>
+<td><strong>Fine SMD tweezers</strong></td>
+<td><strong>ESD-safe, black-coated stainless, curved
+fine-tip</strong></td>
+<td>Parts placement / lift on 0805 + 0603 SMD work: §5.3 INA226 R4/R5
+lift (the "01C" pull-up resistors) — the sole SMD op. Curved geometry is
+the right choice — straight tip slips off small parts under tweezer-grip
+pressure. Black-coated surface prevents solder splatter from sticking
+and ruining the tip.</td>
+</tr>
+<tr>
+<td><strong>Hobby knife set</strong></td>
+<td><strong>X-Acto knife handles + replacement blade set</strong> (#11
+scalpel-style blades + assortment)</td>
+<td>Cutting trace jumpers (§7.1 TMP102 ADD0 cut — score with 3-5 light
+strokes until copper severed), scoring perfboard for snap cuts (§9.1 —
+score along the 4th-row boundary on both faces, then snap). <strong>#11
+blades dull quickly on copper — swap to fresh for each ADD0
+cut.</strong> Fine-wire stripping of 26/28/30 AWG silicone uses the
+30-AWG T-Stripper above, not the knife.</td>
+</tr>
+<tr>
+<td><strong>Stripboard cutting — hobby SCROLL SAW</strong></td>
+<td><strong>In hand</strong> — the operator's hobby scroll saw. Blade
+class: <strong>fine skip-tooth</strong>.</td>
+<td><strong>The sanctioned way to cut any stripboard/perfboard TO
+SIZE</strong> (operator safety call 2026-10-06): both hands guide the
+work, the blade cannot skate, and the cut line is away from the fingers.
+Cut <strong>just outside a hole row, then file back to the
+holes</strong>. Know-how: FR4 is glass-epoxy and abrasive — it
+<strong>eats fine blades, expect to replace them</strong> (brown
+phenolic like the ST1 cuts easily by comparison); <strong>tape over the
+cut line</strong> cuts chipping and thin-board chatter; <strong>wear the
+dust mask</strong> — a scroll saw makes far more airborne dust than
+scoring did, and the garage fan recirculates it. Track mods are a
+different job and already solved — spot-face cutter or 3 mm drill
+twirled by hand; the v9.11 rails need no track cuts at all.
+<strong>Push-scoring a board to size with the X-Acto is banned</strong>;
+the scalpel stays for SMD trace cuts on flat boards only.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>All bench tools are in inventory</strong> — the LumiAI
+electronics build is fully equipped at the bench.</p>
+<p><strong>Hot-air rework station: DECIDED NOT TO PURCHASE
+(2026-05-31).</strong> The total SMD lift/swap work across the whole
+build is:</p>
+<ul>
+<li><strong>INA226 R4/R5 lift × 2 resistors × 1 unit = 2 SMD
+ops</strong> (the "01C" 10 kΩ pull-up disable, §5.3)</li>
+<li><strong>TMP102 ADD0 cut + V+ bridge × 1 unit = 1 cut + 1 small
+solder bridge</strong> (§7.1) — not an SMD lift, doesn't need hot
+air.</li>
+</ul>
+<p><strong>Total: 2 SMD ops, never to be repeated at this
+scale.</strong> Iron+tweezers (<a
+href="Electronics_Soldering_Guide.html"><code>Electronics_Soldering_Guide.md</code></a>
+§4.2 lift / §4.3 place) handles both. A hot-air station ($100+) is not
+justified for a one-time work envelope. LED drivers run at their factory
+current set point (no sense-R swap). Iron-only is the only path, and
+that decision is final.</p>
+<h3 id="12-consumables">1.2 Consumables</h3>
+<blockquote>
+<p>🎯 <strong>Fleet wire palette — LOCKED 2026-09-30 (inventory
+standardization): the whole LumiAI design uses exactly THREE hookup
+gauges — 18 AWG (power: every bay 13.8 V segment), 22 AWG (mid: tether
+V+/GND, fan branches, taps, signal extensions), 26 AWG (signal: I²C,
+3V3, tach pull-ups).</strong> A deliberate 4-AWG gap between steps.
+Everything else in the drawers (30/28/24/20/16/14/12) is bench stock,
+not design. ⚠️ One ferrule rule at the <strong>G469</strong>: 22 AWG
+goes in the <strong>AIRIC violet ferrule</strong> — proven to 0.516 mm²
+of copper in those cages (four 26 AWG bench-crimped and as-built
+2026-09-23, collars clearing the pitch on consecutive terminals; a
+single 22 AWG is 0.326 mm²). <strong>The XHF kit's E0508 stays banned at
+the G469</strong> (bench-tested 2026-09-01, does not fit the
+clamps).</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Item — brand, descriptor, use case</th>
+<th>Spec</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Heat-shrink tubing — 2:1 ratio multi-diameter, multi-color
+kit (1060 / 530 / 127 pcs assortments). Covers 1.5 / 3 / 5 / 8 mm
+diameters.</strong></td>
+<td>2:1 kit</td>
+<td><strong>Stock.</strong> Used for: Noctua TACH-wire insulation (§11),
+pigtail terminations on PIRs (§13), wire-end finishing on the LED bundle
+(§12). Heat with the 180-200 °C heat-shrink gun (§1.1) or a lighter held
+back ~5 cm.</td>
+</tr>
+<tr>
+<td><strong>Thermal epoxy — MG Chemicals 8329TCM (2-part, ~1 W/m·K).
+Used for §7.3 wand TMP102 → heatsink bond + §12.4 LED stars → heatsink
+bond — both one-way operations.</strong></td>
+<td>2-part 6 ml</td>
+<td>Stock — opened</td>
+</tr>
+<tr>
+<td><strong>Thermal grease — Arctic MX-4 or Noctua NT-H1
+(fan-to-heatsink contact if any non-bonded interface).</strong></td>
+<td>tube</td>
+<td>Stock</td>
+</tr>
+<tr>
+<td><strong>VHB foam tape — 3M VHB 5952 (or equivalent). Used for
+LED-driver mounts (both KESHY B and AliExpress C boards sit on VHB pads;
+wand doc §9.6 specifies 3M 4910); fallback for PCA9685 if M3 standoffs
+unavailable.</strong></td>
+<td>0.8–1 mm</td>
+<td>Stock</td>
+</tr>
+<tr>
+<td><strong>JST-XH 2.54 mm housings + crimps — PEBA crimper kit + bagged
+contacts. Crimp range 28-22 AWG per the PEBA spec.</strong> <strong>22
+AWG is the heaviest wire that reaches an XH contact anywhere in this
+build</strong> (the tether power leg, <a
+href="Lumi_Wand_Integration.html#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand">Integration
+§10.5.2</a>); anything heavier has to land somewhere other than an
+XH.</td>
+<td>2 / 4 / 5 / 6 / 7-pin, F + M</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>Pre-made JST-XH cables — 5-pack assortments, ~30 cm
+pre-crimped, 26 AWG silicone. Cut to length + re-crimp opposite end for
+shorter custom cables, saving both-ends crimps on common runs (e.g. the
+<strong>3-pin</strong> inter-rail jumpers <code>PWR IN</code> and
+<code>SIG IN</code> in §9, ~48 mm — cut from a 10 cm pre-made
+3-pin).</strong></td>
+<td>2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 / 10-pin</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>0.1″ pin headers, 2.54 pitch straight male — from Amazon
+hardware kit.</strong></td>
+<td>2 / 4 / 5 / 6-pin</td>
+<td>Stock</td>
+</tr>
+<tr>
+<td><strong>Fermerry 26 AWG silicone hookup wire — 6 colors × 25 ft each
+spool. Tinned copper stranded.</strong> Used for: <strong>the 4 carrier
+PIR leads, built from scratch: ~4.5 m per robot (3 × [460 + 510 + 240 +
+280] mm, carrier v18d); red 5 V, black GND, OUT FL yellow / FR white /
+BL blue / BR green (Power_Bay §16c row 16);</strong> tether SDA / SCL /
+3.3 V (§10.1 schedule), internal SDA / SCL / 3.3 V buses on rails
+(§9.3), 26 AWG signal cables. 6-color set lets you color-code per the
+schedule (e.g. blue = SDA, yellow = SCL, orange = 3.3 V).</td>
+<td>26 AWG, 6 × 25 ft</td>
+<td><strong>Stock 2026-09-30: 5 colors at 85 %+, black ~60
+%.</strong></td>
+</tr>
+<tr>
+<td><strong>DIY Wire &amp; Cable 22 AWG silicone hookup wire — stranded,
+multi-color 5 × 10 m. Used for: tether V+ × 2 and GND × 2 (§10.1 —
+<strong>peak ~2.6 A</strong> through 2 contacts, so each conductor
+carries ~1.3 A; 22 AWG is good for 7 A @ 30 °C rise, so this is ~5×
+over-specified (<a
+href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
+§5.3</a>, measured 2026-09-01)). Color suggestion: red = V+ both wires,
+black = GND both wires.</strong></td>
+<td>22 AWG, 5 × 10 m</td>
+<td><strong>Stock 2026-09-30: all colors at 85 %+.</strong></td>
+</tr>
+<tr>
+<td><strong>Fermerry 14 AWG silicone hookup wire — 6 colors × 10 ft each
+spool. Tinned copper stranded.</strong> Bench stock only — <strong>there
+is no 14 AWG in the build</strong> (operator-confirmed 2026-09-30). The
+bay 13.8 V segments (D1–D4, D7–D9, D14, D15) are 18 AWG / E1008 for new
+builds; Halo v1 as built runs them in 16 AWG / E1508.</td>
+<td>14 AWG — black + red OUT; blue + white ~50 % used; remaining spools
+unused</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>Tinned-copper 16 AWG high-durability silicone wire — 35 A
+rated, red + black, 3 m total.</strong> Bench stock — 16 AWG is
+off-palette (Halo v1's as-built bay runs are 16 AWG; new builds spec
+18).</td>
+<td>16 AWG, 3 m (red/black)</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>NAOEVO 16 AWG silicone hookup wire — multi-color.</strong>
+<strong>Effectively depleted — all colors below 2 %
+(2026-09-30).</strong> Off-palette; do not re-order.</td>
+<td>16 AWG</td>
+<td><strong>&lt; 2 % remaining.</strong></td>
+</tr>
+<tr>
+<td><strong>18 AWG silicone hookup wire — ✅ IN HAND 2026-10-08</strong>
+(ASIN <code>B0CQP39WVB</code>, 8 colours × 16.5 ft silicone
+tinned-copper stranded, 132 ft total). The palette's power gauge: every
+bay 13.8 V segment (D1–D4, D7–D9, D14, D15) specs 18 AWG for new builds;
+ferrule <strong>E1008</strong>.</td>
+<td>18 AWG</td>
+<td><strong>On hand</strong></td>
+</tr>
+<tr>
+<td><strong>Fermerry 12 AWG silicone hookup wire — 6 colors × 5 ft each
+spool. Tinned copper stranded.</strong> Bench stock — <strong>NOT spec'd
+for any §11 or LumiAI segment</strong> (nothing heavier than 18 AWG is
+spec'd; Halo v1 as built uses 16 AWG). Kept available for future /
+experimental higher-current runs (e.g. a shorter, higher-current
+LiFePO4-to-PSU tap if the pack current envelope changes).</td>
+<td>12 AWG, 6 × 5 ft</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>Silicone hookup wire — multi-AWG kit (30 / 28 / 26 / 24 / 22
+/ 20 / 18 / 16 AWG).</strong> Bench stock for one-offs and the
+off-palette gauges. <strong>Its 24 AWG is the flashlight EXTENSION's
+signal wire</strong> (every extension signal run except the B1 / B3
+cartridge taps; Flashlight §4.1.1 gauge box). The internal LED bundle is
+<strong>26 AWG</strong> (inside the PEBA 28–22 crimp range); taps are
+<strong>22 AWG</strong>.</td>
+<td>8 gauges, kit</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>Brass standoffs — M2 / M2.5 / M3 / M4 / M5 multi-kit, hex
+pillar / spacer column, male-female + female-female, various lengths.
+Used for: G469 standoffs (M2.5 × ~5 mm, §4), the power-bay breakout →
+PSU-top mounting (M2.5), PCA9685 in-wand standoffs if not VHB-mounted
+(M3 × ~5 mm), general bench fixturing. M4 × 40 mm male-female and M4 ×
+15 mm female-female specifically called out in stock.</strong></td>
+<td>M2 – M5 kit</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>M2 × 4–6 mm self-tap screws — for rail PCB mount into
+printed posts.</strong></td>
+<td>M2 × 4–6 mm</td>
+<td>Stock</td>
+</tr>
+<tr>
+<td><strong>RPi5 PCIe → M.2 NVMe + USB 3.2 Gen1 HAT+</strong> —
+2230–2280 SSD, bootable NVMe, 4-port USB expansion, plug-and-play PCIe
+adapter board. <strong>Used for: electronics bay RPi5</strong> (the "USB
++ NVMe HAT" of the bay stack — part of why the bay has no room for the
+R818, hence the carrier/shroud).</td>
+<td>RPi5 HAT+</td>
+<td><strong>Stock</strong> (delivered 2026-10-14, Amazon
+111-9801283-1653030).</td>
+</tr>
+<tr>
+<td><strong>DC-DC buck modules — 5 pcs, 3 A, dual USB-C output, 9–36 V →
+FIXED 5 V</strong> (car-charger style step-down; the listing names no
+trim). <strong>This 5-pack IS the MusRock Mus-14 — one unit is the Halo
+HAT bay 5 V rail buck</strong> (segments D16/D17, <a
+href="Power_Bay_Design.html#1133-distribution-module-port-assignments-a-bus--v-b-bus--gnd">Power_Bay
+§11.3.3</a>; spec + gates in <a
+href="Electronics_Bay_Design.html#36-waveshare-pcie-to-m2-usb-hat--nvme--usb-hub--ina219-bay-fed-5-v">Electronics_Bay_Design
+§3.6</a> and BringUp Phase 7.6 — copper heatsink on the buck IC before
+load testing). The other 4 = spares / bench 5 V taps. ⚠️ Screw-terminal
+cold-flow rule applies if any ship with terminals (§12.2 note).</td>
+<td>5× 3 A USB-C buck</td>
+<td><strong>Stock</strong> (delivered 2026-10-14, same package).</td>
+</tr>
+<tr>
+<td><strong>Easycargo copper heatsinks, 10 × 10 mm, 3M 8810 thermal tape
+pre-applied.</strong> ⚠️ <em>For the Mus-14 buck IC only, NOT an NVMe
+heatsink (none on hand; the creator 4 TB drive gets its own, EBD
+§3.6).</em> First use: one on the <strong>MusRock buck IC — the small
+square chip, NOT the inductor — before any load testing</strong>
+(BringUp Phase 7.6 step 1).</td>
+<td>10 × 10 mm copper</td>
+<td>✅ <strong>On hand</strong> — operator-confirmed arrived
+2026-10-17.</td>
+</tr>
+<tr>
+<td><strong>USB-C to USB-C cables — HOTNOW 1.5 ft, 3-pack, right-angle
+90°, PD 65 W</strong> (<a href="https://a.co/d/09YEH9LF">Amazon</a>).
+Short right-angle C-to-C for tight routing in the electronics bay (the
+USB cables that come into the bay are part of its space problem —
+right-angle ends buy clearance).</td>
+<td>3× 1.5 ft 90° PD</td>
+<td><strong>Stock</strong> — on hand, <strong>pending the interim gate
+test</strong> (D18, §17 U9).</td>
+</tr>
+<tr>
+<td><strong>M3 × 5–8 mm cap-head — for PCA9685 standoffs, BigClaw,
+generic.</strong></td>
+<td>M3 × 5–8 mm</td>
+<td>Stock</td>
+</tr>
+<tr>
+<td><strong>0805 0R15 sense resistors — from the abandoned custom-PCB
+inventory. Not used in the build (all LED drivers run at their factory
+current set point).</strong> Kept as bench stock for future SMD 0805
+needs.</td>
+<td>0R15, 0.15 Ω 1 %</td>
+<td>100 pcs</td>
+</tr>
+<tr>
+<td><strong>Wago 221 lever-nut splicing connectors</strong> — 2, 3, 4,
+5-pos in stock. Not used in the bay 13.8 V distribution. Bench stock for
+one-off splices / prototyping / low-current jumps.</td>
+<td>2 / 3 / 4 / 5-pos, mixed</td>
+<td>Stock</td>
+</tr>
+<tr>
+<td><strong>APIELE 15 A 5-position dual-row covered barrier
+strip</strong> — 5-pack (5× blocks + 2× red jumper strips + 3× black
+jumper strips). <strong>CURRENT-GENERATION block:</strong> on Halo v1 as
+built, and the <strong>4 in-stock spares cover the pending Ultra bay
+retrofit</strong>; the HL-PBB-2-6-MINI (§1.4) takes over <strong>from
+the Nova build</strong> — <strong>1× MODIFIED block</strong> (5 internal
+copper conductors removed, top row = V+, bottom row = GND — see §11.3.2)
+forms the bay 13.8 V distribution mounted on standoffs above the PSU
+top. Each block: 63 × 22 × 15 mm, 15 A/position, integral M4 mount ears,
+clear snap-on cover, 0.39" (10 mm) column pitch.</td>
+<td>15 A / 5-pos dual-row</td>
+<td>Stock (5-pack; <strong>1 in active use</strong> for the bay 13.8 V
+distribution block, <strong>4 spare</strong> — plus 1 red + 2 black
+spare jumper strips)</td>
+</tr>
+<tr>
+<td><strong>1N4007 rectifier diodes</strong> — 1000 V / 1 A silicon
+rectifiers, DO-41 axial. Bench-stock spares. Available for through-hole
+prototype reverse-polarity protection at low currents.</td>
+<td>1N4007 / 1 A / 1000 V</td>
+<td>Stock (qty TBD — user to confirm)</td>
+</tr>
+<tr>
+<td><strong>IRLZ44N N-channel logic-level MOSFETs</strong> — 55 V / 49 A
+rated, TO-220 through-hole, Rds(on) 22 mΩ @ Vgs=5 V. Bench-stock spares
+from the abandoned custom-PCB inventory. Not used in the current build
+(the LED drivers are bought modules). Available for future
+power-switching needs.</td>
+<td>IRLZ44N / TO-220</td>
+<td>Stock (qty TBD — user to confirm; ~15 pcs per the custom-PCB
+BOM)</td>
+</tr>
+<tr>
+<td><strong>1N5408 rectifier diodes</strong> — 3 A / 1000 V silicon
+rectifiers, DO-201AD axial. Bench stock. <strong>Not used in the
+build</strong> — the bay fans run direct on 13.8 V (Pi5-PWM-controlled;
+the ~5 % over-spec vs the Noctua's 13.2 V is inside its tolerance,
+bench-tested at 13.8 V direct). Kept for future / experimental
+voltage-drop needs.</td>
+<td>1N5408 / 3 A / 1000 V</td>
+<td>Stock (10 pcs — none in active use).</td>
+</tr>
+<tr>
+<td><strong>10 kΩ 1/4 W thru-hole axial resistors</strong> — 5-band
+precision, 1 % tolerance. <strong>In active use</strong> — 2× per bay
+build for the Noctua NF-A4x20 tach pull-ups (one pigtail per fan tach:
+10 kΩ inline between G469 <code>GPIO5</code>/<code>GPIO6</code> screw
+terminal and G469 <code>3V3</code> screw terminal, heat-shrink insulated
+— see §11.2.2 "TACH pull-ups"). Also useful for any future GPIO input
+pull-up / pull-down needs.</td>
+<td>10 kΩ / 1/4 W / 1 %</td>
+<td><strong>Stock</strong> — bench-verified 2026-08-03;
+<strong>restocked 2026-09-29: 100-pc Amazon pack, 1/4 W ±1 % metal
+film</strong> (multi-value listing, 10 kΩ selected) — fleet-depth supply
+for the 2×-per-build tach pull-ups plus general GPIO pull-up/down bench
+stock.</td>
+</tr>
+<tr>
+<td><strong>Piggyback spade connectors — Tellegloww 25-pack, 3-way Dual
+Male-to-Female</strong>. Single-piece crimp: one crimp barrel + one
+female Faston socket + one male Faston tab in T-shape. <strong>Not used
+in any build.</strong> The AC rocker LAMP tap (A4a) is a double crimp
+with A4 in one blue-band straight 4.8 × 0.8 Faston at the C14 N blade
+(Power_Bay §11.3), and the DC rocker has no piggyback either. Spare
+bench stock only.</td>
+<td>Piggyback 6.3 × 0.8 mm / 18-22 AWG barrel</td>
+<td><strong>Spare</strong> — 25 in stock, none spec'd.</td>
+</tr>
+<tr>
+<td><strong>Kuject 320-pc heat-shrink terminal kit</strong> — mixed ring
+/ fork / spade / butt / male-Faston / female-Faston crimp terminals with
+<strong>integrated heat-shrink insulation</strong> (marine-grade — strip
+wire, insert, crimp, heat with the §1.1 heat-shrink gun, terminal seals
+watertight around the wire). Three wire-gauge families in the box:
+<strong>red (AWG 22-16)</strong>, <strong>blue (AWG 16-14)</strong>,
+<strong>yellow (AWG 12-10)</strong>. <strong>In active use — this is the
+source for the stud fork/spade lugs at the PSU / INA226 / DROK screws
+(§11.3 segment map; the distribution-block landings are ferrules), butt
+splices for the fan-lead extensions (§11.2.2); red band (22-18) for the
+18 AWG standard gauge.</strong> <strong>Not for the C14 or rocker
+blades:</strong> its 4.8 Fastons are STRAIGHT, and straight ones don't
+fit behind the rockers, where the AC rocker blades point at the battery
+and the DC rocker blades at the PSU (operator 2026-11-06). Every blade
+(§11.3 A2-A5, A4a, D7-D8, D8a) takes a <strong>right-angle (flag) 4.8 ×
+0.8 (.187″) fully insulated female Faston</strong>: per build <strong>8
+red (22-18)</strong> on the AC rocker LINE / LOAD / LAMP (A2, A3, A4a),
+the DC rocker LINE / LOAD / LAMP (D7, D8, D8a), C14 L (A2) and C14 E
+(A5), and <strong>1 blue (16-14)</strong> on C14 N (A4 + A4a double
+crimp, 2 × 18 AWG = 1.64 mm²). Flag dimensions: <a
+href="Power_Bay_Design.html">Power_Bay_Design.md "Blade-size note"</a>.
+<strong>🟡 ON ORDER (AliExpress, 2026-11-06, est. Nov 19): FLDNY1.25-187
+red (22-18) ×50 + FLDNY2-187 blue (16-14) ×20</strong>, enough for 32
+red + 4 blue (Halo, Ultra, Nova + spare). Neither in-stock flag/spade
+kit fits: both are 6.3 (.250″), loose on a 4.8 blade (see the TICONN and
+flag-kit rows). <a href="https://a.co/d/0aXLdgeH">Amazon</a></td>
+<td>320 pcs, mixed types + 3 AWG bands</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>TICONN 100-pc nylon spade quick-disconnect connectors
+kit</strong> — plain nylon-insulated male + female Faston connectors,
+straight (no heat-shrink; the insulator is a fixed nylon sleeve). Same
+three color-coded AWG bands as the Kuject kit (red 22-16 / blue 16-14 /
+yellow 12-10). <strong>⚠️ 6.3 × 0.8 (.250″) size: loose on this build's
+4.8 blades. NOT for the C14, the rockers or any mains landing</strong>
+(operator 2026-11-06). Bench stock for 6.3-blade jobs only. <a
+href="https://a.co/d/04JCp7r2">Amazon</a></td>
+<td>100 pcs, male + female 6.3 Faston, 3 AWG bands</td>
+<td><strong>Stock — not for this build.</strong></td>
+</tr>
+<tr>
+<td><strong>91-pc right-angle (flag) spade connector kit with flag
+terminal crimper.</strong> <strong>⚠️ The flags are 6.3 × 0.8 (.250″):
+loose on this build's 4.8 blades. NOT for the C14, the rockers or any
+mains landing</strong> (operator 2026-11-06). <strong>The flag crimper
+IS used</strong>: it crimps the 4.8 flags on order (Kuject row).</td>
+<td>91 flags (6.3) + flag crimper</td>
+<td><strong>Stock</strong>: crimper in use, 6.3 flags not for this
+build.</td>
+</tr>
+<tr>
+<td><strong>Pre-bent 90° insulated fork terminals SV1.25-4-90D, red
+(22-16 AWG), M4 stud.</strong> For the PSU strip's screws (L · N · ⏚ ·
+−V · +V), so no fork is bent by hand; red covers the 18 AWG mains L/N
+too. ⚠️ <strong>The strip's screw size is not measured: caliper it and
+test-fit one fork before relying on M4.</strong></td>
+<td>50</td>
+<td><strong>🟡 ON ORDER</strong> (AliExpress, 2026-11-06, $9.99, est.
+Nov 21)</td>
+</tr>
+<tr>
+<td><strong>MECCANIXITY 24 AWG 6-conductor bonded parallel electrical
+wire — 39 ft roll</strong>. PVC jacket per conductor + bonded
+side-by-side; tinned copper stranded core; 6-color coded (black / yellow
+/ green / red / blue / white). Single-conductor OD ~1.6 mm → full-strip
+width ~9.6 mm × ~1.6 mm thick. <strong>In active use — this is the
+FLEET-STANDARD signal cable roll</strong> covering every multi-conductor
+signal / logic / low-current run in the build: INA226 pigtail (4
+conductors), TMP102-bay pigtail (4), PIR trunk (6 — full width), ZE15-CO
+tail (4), wand tether signal leg (5). <em>(<strong>Not</strong> the
+per-PIR leads — those are built from scratch in 26 AWG Fermerry
+silicone, row above; see §13.)</em> Peel off unused conductors at each
+end + snip flush to match the pin count needed (2 / 3 / 4 / 5 or the
+full 6). See <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html#master-connection-map-single-source-of-truth--every-pi-side-gpio--ic--uart"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code>
+§2 fleet cable stock</a> for the canonical single-SKU-covers-everything
+rationale.</td>
+<td>24 AWG × 6 cond, 39 ft</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>TAREA 29-values 600-pc JST-XH 2.54 mm connector kit</strong>
+— bagged assortment of housings + pins covering 2/3/4/5/6/7/8-pin sizes
+in <strong>both female and male, both straight and curved</strong>
+PCB-mount headers, plus 380 pcs of female crimp pins. Complements the
+PEBA crimper kit (row above) with a much broader housing selection — the
+PEBA kit is crimp-heavy but housing-light. <strong>Bench stock — this is
+the primary housing source for every JST-XH cable in the build</strong>
+(<strong>wand tether: two 3-pin sidewall windows <code>PWR OUT</code> +
+<code>SIG OUT</code>; +Y joint 6-pin; rail-to-rail 3-pin × 2; PCA cable
+5-pin at the module + 2× 2-pin at the rail; TMP102-wand 4-pin; wand-fan
+2-pin; wand fan-PWM 2-pin</strong>, and any future JST-XH cables).
+Straight-vs-curved (right-angle) matters for tight-clearance PCB-mount
+landings on the wand rails — pick the geometry that keeps the cable exit
+clear of neighbouring components. <a
+href="https://a.co/d/0451mCP1">Amazon</a></td>
+<td>JST-XH 2.54 mm, 29 SKUs / 600 pcs</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>DIN 46228-4 fine ferrules for the G469 — E0308 (24 AWG) +
+E0208 (26 AWG).</strong> From the manufacturer dimension chart (read
+carefully: <strong>Ød1 is the BORE, <code>S</code> = 0.15 mm is WALL, so
+OD = Ød1 + 2S</strong>): both are <strong>bore Φ0.8 · OD Φ1.1 · collar
+ØW 1.9 · barrel L2 8 mm · overall L1 12.4 mm · strip 10 mm</strong>.
+E0308 is rated 0.34 mm² (24 AWG, 60 % fill on our 0.205 mm² wire); E0208
+is 0.25 mm² (26 AWG). <strong>One OD across both gauges.</strong> Every
+24 / 26 AWG G469 landing takes one of these; a 22 AWG landing (or a
+multi-conductor shared landing) takes the <strong>AIRIC violet</strong>
+ferrule, and E0508 stays banned there (<a
+href="Power_Bay_Design.html#1122-wiring--cut-off-stock-4-pin-spade-lug-the-12-v-pair-land-gpio-wires-direct-at-g469">Power
+Bay §11.2.2 gauge note</a>), so both sizes present the same Φ1.1 mm
+barrel to the terminal. <strong>Collar clears 2.54 mm pitch by 0.64
+mm</strong> → no long/short staggering on adjacent terminals. <strong>8
+mm barrel</strong> also suits the partial-crimp fallback (<a
+href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29">Power
+Bay §11.3</a>). ⚠️ <strong>Gated on the crimper</strong> — same gate as
+any fine ferrule, see §11.3.</td>
+<td>E0308 200 pc + E0208 200 pc</td>
+<td><strong>Stock</strong> — every G469 landing is ferruled as-built
+(2026-09-28).</td>
+</tr>
+<tr>
+<td><strong>XHF 1700-pc insulated wire-end ferrule kit</strong> — 7
+gauge sizes covering AWG 22-10 (E0508 0.5 mm² white → E6012 6.0 mm²
+yellow, sizes intermediate: E7508 gray, E1008 red, E1508 black, E2508
+blue, E4009 gray) + hexagonal ferrule crimper. Ferrules compress
+stranded wire into a solid cylindrical pin — <strong>the correct
+termination for stranded-wire → screw-terminal landings</strong> (no
+fraying, no stray strand shorts to adjacent terminals, tighter clamp
+force, permanent). <strong>In scope on the LARGER landings
+only.</strong> <strong>NOT the G469 — bench-tested 2026-09-01, the E0508
+does not fit its M2.5 clamps.</strong> The G469 takes the <strong>E0308
+/ E0208</strong> DIN fine ferrules instead (row above). In scope for:
+the INA226 / PSU CH1 / DROK screw terminals; the distribution-block
+cages take the E-series ferrules directly. Never tin a wire end going
+into a screw terminal (§12.2 cold-flow rule). <a
+href="https://a.co/d/0gLykKG5">Amazon</a></td>
+<td>1700 pcs, AWG 22-10, 7 sizes + crimper</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>Permatex 81158 Black Silicone Adhesive Sealant — 3 oz
+tube</strong>. Neutral-cure RTV silicone (skin ~1 h at room temp; full
+cure 24 h; temp range −65 to +450 °F). <strong>In active use — this is
+the fleet-standard RTV, used for the modified APIELE block's M4-nut
+retention</strong> (§11.3.2 recipe: after drilling out the internal
+copper conductors and installing M4 screws + nuts on the nut-side face,
+apply a thick bead of Permatex 81158 across the nut hex flats to bond
+them to the block's plastic housing pocket — prevents rotation when
+tightening the fork/spade lugs from the top-row side). Non-conductive
+when cured, mechanically removable with heat + pick if the block ever
+needs to be reverted. <strong>Also the cartridge strain-relief RTV
+(load-bearing, 2026-10-09):</strong> the service-loop tack + slot mouth
+seal on the cell-cartridge caps (<a
+href="Electronics_Soldering_Guide.html#165-bms-wires--gauge-where-each-lands-and-how-to-solder-them">Soldering
+§16.5</a>) — chosen deliberately because neutral-cure/non-acetoxy
+releases no acetic acid next to the solder joint. Also usable for
+general non-structural sealing / potting / vibration-damping around
+low-voltage bay wiring. <a
+href="https://a.co/d/03Is59jW">Amazon</a></td>
+<td>Permatex 81158, 3 oz black RTV</td>
+<td><strong>Stock — opened 2026-08-02</strong> (used for the modified
+APIELE block; enough remaining for many more repairs / builds).</td>
+</tr>
+<tr>
+<td><strong>Small-gauge heat-shrink crimp terminal set — 50 sets,
+0.5-1.5 mm² (AWG 20-16)</strong>. Smaller-gauge alternate to the Kuject
+320-pc kit's red band (AWG 22-16). Same
+integrated-heat-shrink-on-crimp-barrel construction. <strong>Bench stock
+— NOT currently spec'd for any §11 or LumiAI power-path
+segment.</strong> Available if a signal / low-current run wants a
+heat-shrink-insulated terminal narrower than the Kuject red-band Fastons
+will accept.</td>
+<td>50 sets, 0.5-1.5 mm² heat-shrink</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>Bullet connectors — 2 mm / 3.5 mm / 4 mm, male + female
+pairs</strong>. RC-hobby standard solder-cup or crimp bullets with
+individual heat-shrink insulation per bullet. Current ratings: 2 mm ≈
+15-20 A continuous, 3.5 mm ≈ 40-50 A continuous, 4 mm ≈ 60-70 A
+continuous. <strong>Bench stock — NOT spec'd for any §11 or LumiAI
+power-path segment.</strong> Kept in inventory for future / experimental
+higher-current power-path connections.</td>
+<td>2 / 3.5 / 4 mm bullet, M + F</td>
+<td><strong>Stock — inherited from RC ESC / motor bench
+stock</strong>.</td>
+</tr>
+<tr>
+<td><strong>Deans (T-plug) 2-pin polarity-keyed connectors — male +
+female pairs</strong>. RC-hobby standard polarity-keyed 2-conductor
+power connector, rated ~30-40 A continuous. Solder-cup terminals; wrap
+the exposed metal in heat-shrink after soldering + mating. <strong>In
+active use</strong> — the D14/D15 DROK output → STM32 blue terminal
+block link uses one Deans pair as a mid-cable serviceable disconnect
+(see §11.3 D14/D15 rows for the wiring recipe: DROK-side pigtail with
+Kuject fork lugs → Deans → STM32-side pigtail with XHF ferrules;
+heat-shrink over the exposed Deans blades). Advantage over the 2 mm /
+3.5 mm bullets: polarity-keyed housing prevents reverse-plugging,
+2-conductor pair carried by ONE housing (not two separate bullets),
+heat-shrink outside instead of individual per-bullet.</td>
+<td>Deans T-plug M + F</td>
+<td><strong>Stock — inherited from RC ESC / motor bench
+stock</strong>.</td>
+</tr>
+<tr>
+<td><strong>Adoreen Cat 6 flat Ethernet patch cables — 2 ft, 10-pack,
+white</strong>, slim low-profile RJ45, 10 Gbps, PoE-capable. Short runs
+from the robot switch / robots to the network.</td>
+<td>2 ft × 10</td>
+<td><strong>Stock</strong> (arrived)</td>
+</tr>
+<tr>
+<td><strong>EZYUMM RJ45 Ethernet couplers — female-female, gold-plated,
+Cat 5e/6/7, 3-pack.</strong> Joins two patch cables into a longer
+run.</td>
+<td>3-pack × 2 = 6</td>
+<td><strong>Stock</strong> (arrived)</td>
+</tr>
+<tr>
+<td><strong>HanTof 625-pc M2 / M3 / M4 Phillips pan-head self-tapping
+screw kit</strong> (black carbon steel, sharp point; Amazon B09CPHWX7P),
+the operator's self-tap kit. M2 × 6 / 8 / 10: 60 each · M3 × 6 / 8 / 10
+/ 12 / 16: 50 each, M3 × 20: 40 · M4 × 8: 40, M4 × 12: 40, M4 × 16: 30,
+M4 × 20: 25, M4 × 30: 20. Covers every <strong>pan self-tap</strong> in
+the build at M2 / M3 / M4 (carrier M2 × 8, mic carrier, base cover,
+phone cradle). Not the M3 × 8 <strong>machine</strong> screws (mic
+carrier corners)</td>
+<td>625 pcs</td>
+<td><strong>Stock</strong></td>
+</tr>
+<tr>
+<td><strong>304 stainless six-lobe TORX pan-head MACHINE screw kit
+(GB2672), "Set D", 2100 pcs</strong>: 700 screws + 700 hex nuts + 700
+flat washers + 4 Torx keys. Screws: M1.6 × 4 / 6 / 8 / 10, M2 × 6 / 8 /
+10 / 12, M2.5 × 8 / 10 / 12 / 16 (50 each); M3 × 8 / 12 / 16 / 20 (25
+each). Nuts and washers: M1.6 / M2 / M2.5 200 each, M3 100 each. Used
+for: the M3 × 8 holding the electronics-bay cover down, and the mic
+carrier v5's 4 corner screws into the bay plates' threaded flanges</td>
+<td>2100 pcs</td>
+<td><strong>Stock</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-existing-inventory-worth-noting-re-used-not-re-bought">1.3
+Existing inventory worth noting (re-used not re-bought)</h3>
+<p>From the abandoned custom PCB build (per <a
+href="Lumi_Wand_Custom_PCB_Design.html"><code>Lumi_Wand_Custom_PCB_Design.md</code></a>
+§11):</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Qty</th>
+<th>Re-use note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5× PCA9685 PW TSSOP-28 (bare IC)</td>
+<td>5</td>
+<td>Spare; current design uses the SunFounder breakout instead</td>
+</tr>
+<tr>
+<td><strong>PCA9685 16-channel PWM breakout boards</strong> (SunFounder
+/ Estardyn, same NXP PCA9685PW layout)</td>
+<td><strong>3 TOTAL</strong></td>
+<td><strong>Operator count, 2026-10-25.</strong> 1 per wand. Planned
+wands: <strong>Halo</strong> (in build) + <strong>Nova</strong> (day 1)
+= 2 → 🟢 <strong>HAVE, 1 spare</strong>. A third wand (e.g. Ultra) would
+use the spare and leave none: 🟡 just enough. Each needs the A0 bridge →
+0x41. Reconciles with the order history: 1 SunFounder (Amazon POC) + 2
+Estardyn (AliExpress, 2026-05-03) = 3 (<a
+href="Lumi_Wand_Integration.html">Integration §15 orders</a>).</td>
+</tr>
+<tr>
+<td>15× IRLZ44N TO-220 MOSFETs</td>
+<td>15</td>
+<td>Not used in current design (the LED drivers are bought modules)</td>
+</tr>
+<tr>
+<td>20× PT4115 SOT-89-5 ICs</td>
+<td>20</td>
+<td>Not used in current design (the driver modules are bought KESHY
+boards)</td>
+</tr>
+<tr>
+<td>100× 0805 0R15 sense resistors</td>
+<td>100</td>
+<td>Bench stock; not used in the build (no sense-R swap on any driver).
+Retained for future 0805 SMD needs.</td>
+</tr>
+<tr>
+<td>Proto/prod PCB blanks (60×65, 120×65)</td>
+<td>5 + 5</td>
+<td>Possible carrier substrates if needed; not currently planned</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-available-but-not-in-current-design-alternates">1.4
+Available-but-not-in-current-design alternates</h3>
+<p>Stocked from other projects, kept for reference. Not part of the
+current LumiAI Ultra electronics build, but useful to know are on hand
+if a need arises (e.g. flashlight variant battery charging, future
+repairs, prototyping):</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Stock</th>
+<th>Where it might fit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>USB connector assortment kit</strong> — 180 pcs / 16 models
+(USB 3.0 male × 2, USB 2.0 female × 5, USB-C × 6, Micro-USB × 3)</td>
+<td>Stock</td>
+<td><strong>In scope for flashlight variant</strong> (decided
+2026-05-31): a panel-mount USB-C bulkhead from the 6× USB-C selection
+serves as a dedicated <strong>ESP32 dev port</strong> — the LilyGO
+T-Display-S3's onboard USB-C wires to the panel-mount jack internally,
+so user-facing plug/unplug stress lands on the robust bulkhead instead
+of the LilyGO's small SMD connector. <strong>Note:</strong> the
+<em>PD-charge</em> USB-C is separate (the PD/QC trigger module's onboard
+USB-C, §3.8 of the flashlight doc). The kit-derived panel-mount jack is
+the <em>second</em> USB-C on the flashlight, exclusively for ESP32
+dev/programming access. See <code>Lumi_Wand_Flashlight_Variant.md</code>
+§3.2.</td>
+</tr>
+<tr>
+<td><strong>JST-PHD 2.0 connectors</strong> (2-row IDC-style, 2×N pitch)
+— 2×2P, 2×4P pre-made cables</td>
+<td>Stock</td>
+<td>Compact alternative connector if a future board calls for 2-row 2.0
+mm. Not used in current rail design (everything is JST-XH 2.54 mm).</td>
+</tr>
+<tr>
+<td><strong>JST-PH 2.0 connectors</strong> (1-row, 2.0 mm pitch) —
+pre-made female-female cables</td>
+<td>Stock</td>
+<td>Compact alternative for very tight spaces; not used in current
+design (JST-XH is the fleet standard).</td>
+</tr>
+<tr>
+<td><strong>U-shaped wire crimp terminals + heat-shrink kit</strong>
+(0.5–1.5 mm² range)</td>
+<td>Stock</td>
+<td>Quick wire splices outside the wand/inter-bay scope. Not used inside
+the JST-XH-only fleet harness.</td>
+</tr>
+<tr>
+<td><strong>Dupont connectors</strong> (21 types, 2.54 mm) — part of the
+PEBA kit</td>
+<td>Stock</td>
+<td>One-off jumpers from a board pin header to a Pi GPIO (e.g. INA226
+ALERT line if wired to a free GPIO, §5.4).</td>
+</tr>
+<tr>
+<td><strong>CZH-Labs D-1459 30 A / 48 V 2×6-position terminal-block
+distribution module</strong> — one high-current 2-position input (A / B:
+7.62 mm pitch, 26–10 AWG / 4.0 mm², 30 A, 8 mm strip) fanning out to 12
+distribution screws (A1–A6 on the A bus, B1–B6 on the B bus: 5.0 mm
+pitch, 26–12 AWG / 2.5 mm², <strong>16 A per position</strong>, 7 mm
+strip). M3 steel screws (Cr3+ Zn), brass pin header + cage, UL/CE/CQC
+terminal blocks, FR-4 PCB, 57 × 38 mm, 4× Ø3.2 mounting holes, ships
+with 4× nylon spacers + M3×16 screws.</td>
+<td><strong>Stock: 1 on hand</strong></td>
+<td><strong>Bench spare — the HL-PBB-2-6-MINI is the block of record
+from Nova onward</strong> (operator 2026-10-20: "we are using these
+going forward"; Power_Bay §11.3.2). The D-1459's 30 A input is the
+fallback if a future build ever outgrows the HL-PBB's 16 A. Wiring +
+port map (1:1 for both parts): <a
+href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29">Power
+Bay §11.3</a>. Halo v1 keeps the modified APIELE as built. A bus = 13.8
+V, B bus = GND, fed once at the big A/B input — <strong>zero
+modification</strong> (the APIELE needed 5 internal conductors removed
+at receipt), <strong>ferrule-based</strong> (the proven E-series
+ferrules drop into 5.0/7.62 mm-pitch cage clamps), and far smaller than
+the barrier strip + fork-lug approach.</td>
+</tr>
+<tr>
+<td><strong>YRYAR HL-PBB-2-6-MINI 16 A / 48 V 2×6-position distribution
+module</strong> (AliExpress, $6.82; family runs 2-4 / 2-6 / 2-8 / 2-10 /
+2-12 / 2-16 output positions) — input A/B blocks 7.5 mm pitch,
+distribution screws 5.0 mm pitch, <strong>all positions 26–12 AWG / 2.5
+mm², 16 A, 7 mm strip</strong>; M3 steel screws (Cr3+ Zn), brass header
++ cage, UL/CE/CQC blocks, FR-4; <strong>70 × 22 mm, ~26 mm
+tall</strong>. Input blocks at <strong>both</strong> ends → daisy-chain
+A/B module-to-module for expansion (vendor connection diagram
+filed).</td>
+<td><strong>Block of record from Nova onward</strong> (operator
+2026-10-20); 2 ordered 2026-10-22 (§17.10a)</td>
+<td>The dual-bus, zero-modification, ferrule-based bay distribution
+block for every new bay — functionally interchangeable with the D-1459
+at our loads. Differences worth knowing: <strong>16 A total vs the
+D-1459's 30 A</strong> (bay peak is 8 A, so both carry it — the D-1459
+just has more headroom), input wire ceiling <strong>12 AWG / 2.5 mm² vs
+10 AWG / 4.0 mm²</strong> (the 18 AWG bay feed fits either), narrower
+board (22 vs 38 mm), and the chainable dual input the D-1459 lacks.</td>
+</tr>
+<tr>
+<td><strong>LEDiL RGBX single lenses</strong> — TIR optics
+purpose-designed for multi-die RGB(W) emitters: <a
+href="https://www.ledil.com/product-landing/single-lenses/rgbx/">ledil.com/product-landing/single-lenses/rgbx/</a>.
+The <em>proper</em> fix for multi-die colour-separation fringing — each
+die's beam is mixed in the TIR body instead of imaged by a flashlight
+collimator, so narrow beams stay colour-clean (the beaded uxcell
+collimators only mitigate this — <a
+href="Lumi_Wand_Integration.html#-beaded-vs-frosted--they-are-not-the-same-surface-2026-09-07">Integration
+§8 lens caveat + "Beaded vs frosted"</a>). <strong>Candidate for a
+next-phase wand head optic, especially the content-creation assistant
+feature</strong> (key light on camera needs clean colour + even field at
+narrow angles). Fit against the Ø20 MCPCB stars + lens-plate bores
+before any order.</td>
+<td>Reference URI only</td>
+<td><strong>NOT ordered</strong> — recorded 2026-10-02.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3
+id="15-rpi5-gpio-header--pinout-functions-protocols-bench-reference">1.5
+RPi5 GPIO header — pinout, functions, protocols (bench reference)</h3>
+<p>Generic Raspberry Pi 5 40-pin header references, filed 2026-10-02 so
+the pinout is at hand during bench work without browsing. ⚠️
+<strong>These are VENDOR-GENERIC references — the committed LumiAI pin
+assignments live in the <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html#master-connection-map-single-source-of-truth--every-pi-side-gpio--ic--uart">EXTERNAL
+master connection map</a> and the G469 landing map, and those win
+wherever they differ</strong> (e.g. our fan PWM on GPIO12/pin 32, tachs
+on GPIO5/6, PIRs on GPIO16/17/20/21, I²C on GPIO2/3 = pins 3/5).</p>
+<p><img src="images/hardware/rpi5_gpio_pinout_diagram.png"
+alt="Raspberry Pi 5 40-pin GPIO header pinout diagram — physical pins 1–40 down the centre with per-pin GPIO numbers and colour-coded alternate functions: 3V3 (pins 1/17), 5V (2/4), GND (6/9/14/20/25/30/34/39), I²C SDA/SCL on GPIO2/3 (pins 3/5), UART TX/RX on GPIO14/15 (pins 8/10), SPI MOSI/MISO/SCLK/CE0/CE1 on GPIO10/9/11/8/7, PWM0 on GPIO12/18, PWM1 on GPIO13/19, PCM CLK/FS/DIN/DOUT on GPIO18/19/20/21, ID EEPROM on GPIO0/1." /></p>
+<p><img src="images/hardware/rpi5_gpio_board_and_header.png"
+alt="Raspberry Pi 5 board photo beside the same colour-coded 40-pin header map, showing where the header sits on the board (top edge, next to the wireless can)." /></p>
+<p><img src="images/hardware/rpi5_gpio_pin_functions_table.png"
+alt="GPIO pin function table — physical pin number vs GPIO number vs function for all assignable pins: I²C (3/5), UART (8/10), PWM-capable (12, 32, 33, 35), SPI group (19/21/23/24/26), ID EEPROM reserved (27/28), and the general-purpose pins." /></p>
+<p><img src="images/hardware/rpi5_gpio_protocols_reference.png"
+alt="Communication-protocols summary for the Pi 5 header — I²C (pins 3/5, multi-drop bus), SPI (19/21/23 + CE0/CE1 on 24/26), UART (8 TXD / 10 RXD, serial console enabled by default), PWM (PWM0 on pins 12 + 32, PWM1 on 33 + 35), PCM audio (CLK 12, FS 35, DIN 38, DOUT 40)." /></p>
+<hr />
+<h2 id="3-jst-xh-254-mm-crimping-the-fleet-standard-connector">3. JST-XH
+2.54 mm Crimping (the fleet-standard connector)</h2>
+<p><strong>Goal:</strong> every in-house cable terminates in JST-XH at
+at least one end. The PEBA crimper handles all sizes from 28–22 AWG; the
+same dies cover all the housings we use (2 / 3 / 4 / 5 / 6-pin).</p>
+<p><strong>Procedure (one crimp):</strong></p>
+<ol type="1">
+<li>Strip wire ~3 mm. Don't twist the strands — solid-tin already.</li>
+<li>Place the crimp barrel in the PEBA jaw matching the wire AWG
+(smallest barrel for 28 AWG, largest for 22 AWG).</li>
+<li>Insert wire so the bare-conductor crimp wings sit at the wire-end
+and the insulation-grip wings sit on the insulated section.
+<strong>There must be ~0.5 mm of bare conductor visible past the crimp
+wings</strong> — if zero, the conductor isn't seated; if more than 1 mm,
+pull back.</li>
+<li>Squeeze the crimper fully closed. The detent releases.</li>
+<li>Tug-test: pull the wire firmly. The crimp must not slip. Reject if
+it does.</li>
+<li>Insert into housing until you feel the latch click
+(audible/tactile). Verify by tugging the wire — the latch should hold
+the crimp in place.</li>
+</ol>
+<p><strong>Gotchas:</strong></p>
+<ul>
+<li>A loose crimp passes the tug test once but fails after thermal
+cycling. If in doubt, re-crimp.</li>
+<li>Housing latches: female crimps have a flat lance that the housing
+window catches; orient correctly or the crimp won't latch. Look at a
+good housing under a loupe before crimping a batch.</li>
+<li>Mating direction:
+<strong>B</strong><em>n</em><strong>B-XH-A</strong> = top-mount male
+(PCB through-hole), <strong>S</strong><em>n</em><strong>B-XH-A</strong>
+= side-mount male, <strong>XHP-</strong><em>n</em> = female housing with
+crimps. The wand uses both <code>B</code>/<code>S</code> (PCB-mount male
+sockets on the rails and on the joint boards) and <code>XHP</code>
+(female on cables). Live sizes: <strong>B3B / XHP-3</strong> on every
+tether and inter-rail leg, <strong>B6B-XH-A / XHP-6</strong> at the +Y
+joint, B2B/B4B on the fan and TMP102 taps.</li>
+</ul>
+<p><strong>Tip:</strong> crimp all the cables for one assembly step at
+once (a batch of 12 driver-power cables, say) rather than mixing
+crimping with soldering — the bench setup is different.</p>
+<hr />
+<h2 id="12-led-mcpcb--wire-solder--heatsink-bonding">12. LED MCPCB —
+Wire Solder + Heatsink Bonding</h2>
+<p><strong>Goal:</strong> each of the 3× RGBW (or RGBWW) LED stars (10 W
+5050 RGBW/RGBWW on Ø20 mm aluminum MCPCB, 8-pad individual-channel
+layout) is bonded to the CNC aluminum heatsink AND has 8 wires (4
+channels × 2 wires) soldered directly to the MCPCB pads. LED stars don't
+have connectors — bare-PCB direct-solder is the only option at this
+current spec.</p>
+<p><strong>Per-star configuration — LOCKED 2026-05-31:</strong></p>
+<table>
+<thead>
+<tr>
+<th>LED star</th>
+<th>Z position</th>
+<th>Type</th>
+<th>White CCT</th>
+<th>Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Star 1 (bottom)</td>
+<td>Z = 26 mm</td>
+<td><strong>RGBW</strong></td>
+<td>Cool ~6500 K</td>
+<td>Cool-biased outer pair</td>
+</tr>
+<tr>
+<td>Star 2 (middle)</td>
+<td>Z = 66 mm</td>
+<td><strong>RGBWW</strong></td>
+<td>Warm ~3000 K</td>
+<td>Single warm channel for software CCT range</td>
+</tr>
+<tr>
+<td>Star 3 (top)</td>
+<td>Z = 106 mm</td>
+<td><strong>RGBW</strong></td>
+<td>Cool ~6500 K</td>
+<td>Cool-biased outer pair, symmetric with Star 1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rationale for cool-biased 2× RGBW + 1× RGBWW
+mix:</strong></p>
+<ul>
+<li>LumiAI MVP positioning is utility-first (garage, kitchen, factory
+task lighting per <a
+href="LumiAI%20Robotic%20Arm%20System.html"><code>LumiAI Robotic Arm System.md</code></a>
+§165/§171) — cool/daylight CCT is the dominant use case.</li>
+<li>Single warm-white middle star gives software enough headroom to bias
+toward warm-ambient (restaurant/music-sync mode) without losing the cool
+peak brightness for task lighting.</li>
+<li>Symmetric layout (cool-warm-cool, bottom-to-top) looks visually
+balanced when the wand rotates or tilts — no "warm side / cool side"
+bias.</li>
+<li>Software effectively gets a 5-channel mixer (R / G / B / Cool-W /
+Warm-W) by treating the 3 white channels as 2× cool + 1× warm.</li>
+</ul>
+<p><strong>Lens — ship-both-sets convention (LOCKED
+2026-05-31):</strong> every unit ships with <strong>3× 30° lens caps
+(narrow spotlight beam)</strong> + <strong>3× 60° lens caps (wide flood
+beam)</strong> + their white lens holders. End user picks one set at
+install by unscrewing the M70×3 head cap, popping in the chosen lenses,
+re-threading. 30-second swap, no tools. Use cases per <a
+href="LumiAI%20Robotic%20Arm%20System.html"><code>LumiAI Robotic Arm System.md</code></a>
+— 30° for spotlight/tracking/task; 60° for ambient/flood/decorative.
+Lens-to-ring-tower mechanical compatibility is owned by <a
+href="3D_Printing_Guide.html"><code>3D_Printing_Guide.md</code></a>.</p>
+<blockquote>
+<p><strong>Lens-cup mechanical fit — out of scope for this
+guide.</strong> Lens-to-ring-tower geometry and the print-time
+mechanical-compatibility check live in <a
+href="3D_Printing_Guide.html"><code>3D_Printing_Guide.md</code></a>. This
+guide owns only the electrical + thermal interface (wire solder to MCPCB
+pads + heatsink bond).</p>
+</blockquote>
+<h3 id="121-wire-prep-24-wires-total-per-wand-12-channels--2">12.1 Wire
+prep (24 wires total per wand: 12 channels × 2)</h3>
+<ul>
+<li>26 AWG silicone-insulated, ~50–90 mm per pair (length depends on
+which driver Z position and which LED star angular position — see wand
+doc §10.5.5.2).</li>
+<li>Strip ~3 mm at each end.</li>
+<li><strong>Tin both ends</strong> — both ends are soldered
+(§12.2).</li>
+</ul>
+<h3
+id="122-driver-end--soldered-to-the-keshys-clipped-header-stubs">12.2
+Driver end — soldered to the KESHY's clipped header stubs</h3>
+<blockquote>
+<p><strong>The driver end is SOLDERED to the KESHY's <code>LED+</code> /
+<code>LED−</code> header stubs (pins 6 / 7), every header pin clipped to
+≤ 2.0 mm</strong> (operator, 2026-11-05). KESHY (Variant B) at all 12
+seats; no connector at the driver. No housing at the driver; tin both
+ends. Pad map, lengths and build card: <a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">Integration
+§10.5.9</a>; technique: <a
+href="Electronics_Soldering_Guide.html">Soldering Guide §12a</a>.</p>
+</blockquote>
+<ul>
+<li><strong>The KESHY has NO screw terminal.</strong> Its LED output is
+on its <strong>7-pin header row</strong>:
+<code>1 VIN+ · 2 VIN+ · 3 VIN− · 4 VIN− · 5 PWM · 6 LED+ · 7 LED−</code>
+(operator read the silk, 2026-09-01). ⚠️ <strong>The LED pair is pin 6
+<code>LED+</code> → pin 7 <code>LED−</code>, in that order</strong> —
+backwards reverse-biases the channel. <strong>Glance at the silk on the
+first board of any new batch</strong> — a later production run could
+differ.</li>
+<li>Per channel: 2 wires (<code>LED+</code> / <code>LED−</code>) → the
+corresponding colour pad on the assigned LED star.</li>
+<li>Per <a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+§10.5.5.2 table for the 12-channel driver → LED-star → colour
+mapping.</li>
+</ul>
+<blockquote>
+<p><strong>The cold-flow rule.</strong> Never tin a wire end going into
+a <strong>screw terminal</strong> (solder creeps under clamp pressure
+and the joint backs out — rule of 2026-08-14). That covers the PD
+trigger <code>VOUT</code>, the buck if it ships with terminals, and the
+INA226 — <strong>not</strong> the LED drivers, which have none.</p>
+</blockquote>
+<h3 id="123-led-mcpcb-end--solder">12.3 LED MCPCB end — solder</h3>
+<p><strong>See <a
+href="Electronics_Soldering_Guide.html"><code>Electronics_Soldering_Guide.md</code></a>
+§10</strong> for the full procedure (MCPCB high-thermal-mass solder
+technique).</p>
+<p>Quick reference: aluminum MCPCB substrate sucks heat — chisel tip at
+<strong>380–400 °C</strong>, preheat board to ~100 °C if available, tin
+pad first then place tinned wire, reflow both ~2 s. Watch for cold
+joints (gray, dull, frosty) — they're weak; reflow with more heat +
+flux. 8 pads per star (4 channels × 2 wires) × 3 stars = 24 wires
+total.</p>
+<h3 id="124-heatsink-bonding--mg-8329tcm-thermal-epoxy">12.4 Heatsink
+bonding — MG 8329TCM thermal epoxy</h3>
+<p>After all 24 wires are soldered to the 3× LED stars but BEFORE the
+stars are bonded:</p>
+<ol type="1">
+<li><strong>Bench test</strong>: power up each star via its driver
+(bench supply current-limited to 700 mA per channel) → confirm all 3×
+LED stars × 4 channels light correctly. If any channel doesn't light,
+debug here (cold solder joint? swap wires? driver swap?). Far easier to
+fix before the stars are epoxied down.</li>
+<li><strong>Surface prep</strong>: clean the heatsink LED-bonding face
+(the top face of the CNC aluminum puck) with IPA. Lightly abrade with
+400-grit paper if mirror-polished.</li>
+<li><strong>MCPCB prep</strong>: clean the back of each MCPCB with
+IPA.</li>
+<li><strong>Mix MG 8329TCM</strong> per datasheet (1:1 by volume; mix 60
+s; <strong>pot life 45 min</strong> — see §15.1. One batch covers all 3
+stars <em>and</em> the §7.3 TMP102 bond; do them together).</li>
+<li><strong>Apply</strong> a thin layer (~0.3–0.5 mm) to the heatsink at
+the LED-star footprint positions per
+<code>Lumi_Wand_Integration.md</code> §10.5.5.2 (LED1 at 90° + offset,
+LED2 at 210° + offset, LED3 at 330° + offset, all on a Ø30 BCD).</li>
+<li><strong>Press</strong> each MCPCB onto its position. Some
+squeeze-out is fine. Wipe excess with IPA. Don't twist after placement —
+slide if needed for alignment, then settle.</li>
+<li><strong>Cure</strong>: 24 h at room temperature for full strength.
+<strong>Don't power up during cure</strong> — heat from running LEDs
+would set the epoxy unevenly.</li>
+</ol>
+<p>After cure: light cable management to bundle the 24 wires up through
+the cyl-to-heatsink 5 mm annulus per §10.5.5.2.</p>
+<hr />
+<h2 id="14-smd-soldering-technique-reference--moved">14. SMD Soldering
+Technique Reference — moved</h2>
+<p><strong>Moved to <a
+href="Electronics_Soldering_Guide.html"><code>Electronics_Soldering_Guide.md</code></a>
+§4</strong> (technique primitives).</p>
+<p>What you'll find there:</p>
+<ul>
+<li>§4.1 Through-hole header solder</li>
+<li>§4.2 SMD lift (iron + tweezers "tin and slide")</li>
+<li>§4.3 SMD place + reflow ("tack and flow")</li>
+<li>§4.4 Solder-bridge for address pads</li>
+<li>§4.5 Trace cut + bridge (TMP102 ADD0-style)</li>
+<li>§4.6 Wire-to-pad on MCPCB (high thermal mass)</li>
+<li>§4.7 Perfboard jumper-wire bus</li>
+<li>§4.8 JST-XH PCB-mount connector orientation</li>
+<li>§4.9 EIA-96 + common SMD silk-marking decoder table</li>
+</ul>
+<hr />
+<h2
+id="14a-flashlight-extension-harness-e1e13--the-y-joint-connector">14a.
+Flashlight-Extension Harness (E1–E13) + the +Y Joint Connector</h2>
+<p><em>The bench-side entry point for the flashlight extension; <a
+href="Lumi_Wand_Flashlight_Variant.html"><code>Lumi_Wand_Flashlight_Variant.md</code></a>
+is the design authority.</em></p>
+<h3 id="14a1-the-harness">14a.1 The harness</h3>
+<p><img src="images/hardware/ext_wiring.png"
+alt="Flashlight extension harness E1–E14 — the pack / BMS / rocker positive leg runs left to right, and the system ground along the bottom is now TWO buses: P−power (black, LED return — joint pin 2 and the rocker lamp) and P−logic (purple, the I²C reference — buck GND, joint pin 6, LCD GND), separated by the strip-3 hole-3 cut with the E14 BMS feed surface-soldered across it as the single star point. The joint is a 6-pin JST-XH: 1 V+, 2 GND-power, 3 SDA, 4 SCL, 5 3V3, 6 GND-logic. E10 goes straight to the BMS P− pad and no longer lands on the board" /></p>
+<p><strong>Interactive version:</strong> <a
+href="images/hardware/ext_wiring.html">ext_wiring.html</a>. Open it in a
+browser (download it; GitHub shows HTML as source): toggle each lead
+E1–E14, the two ground buses and the joint pins; presets for the
+positive leg, P−power / P−logic, charging, the joint and the MCU; click
+a wire to focus it, scroll to zoom, drag to move.</p>
+<p><em>Generated by <a
+href="images/hardware/gen_ext_wiring.py"><code>images/hardware/gen_ext_wiring.py</code></a>
+— edit the generator, not the SVG. Wire colours: red = unswitched pack,
+orange = switched, black = P− ground, green = 5 V, blue = signal, purple
+= USB. The per-conductor table (gauge, endpoints, notes) is <a
+href="Lumi_Wand_Flashlight_Variant.html#411-extension-harness--rocker-buck-and-pd-trigger-wiring">Flashlight
+Variant §4.1.1</a>.</em></p>
+<p>Three things on this drawing bite people, so read them off the
+picture before you cut any wire:</p>
+<ol type="1">
+<li><strong>The BMS switches the NEGATIVE leg.</strong> The Lisolec
+module is common-port: <code>B+</code> is a straight pass-through, so
+the rocker sits in the <strong>POSITIVE</strong> leg and
+<strong><code>P−</code> is system ground for everything.</strong> Never
+take a ground from <code>B−</code>.</li>
+<li><strong>The PD-charge path bypasses the rocker</strong> — by design,
+so the pack charges with the light off. Anything you meter downstream of
+the rocker reads 0 V while charging, and that is correct.</li>
+<li>🔴 <strong>14 AWG will not crimp into a JST-XH contact.</strong> The
+XH range is <strong>28–22 AWG</strong> (§3). The pack legs at the joint
+are <strong>22 AWG</strong>, which carries the measured 2.6 A with
+roughly 7 A of headroom.</li>
+</ol>
+<p><strong>There is no 14 AWG in the extension.</strong> The measured
+peak is <strong>2.6 A</strong>. Harness runs are <strong>18 AWG</strong>
+from the in-house multi-AWG kit — 5.4 mV of drop over 100 mm, and it
+fits a perfboard bus, which 14 AWG does not. The two cell-cap leads stay
+<strong>16 AWG</strong> (INVENTO, in hand) for thermal mass at the
+hardest joint in the pack, not for ampacity.</p>
+<h3 id="14a3-the-p-ground-bus-board">14a.3 The P− ground-bus board</h3>
+<p>Both multi-drop nodes in the extension land on <strong>one 16 × 25 mm
+board at 40°</strong>, on 4× M2 self-tap into printed Ø5 posts — the
+same mount as the dual-USB panel. Full spec: <a
+href="Lumi_Wand_Flashlight_Variant.html#384-p-ground-bus-board-40--locked-2026-09-19">Flashlight
+Variant §3.8.4</a>.</p>
+<p><img src="images/hardware/ground_bus_board.png"
+alt="The P− ground-bus board laid out strip by strip, viewed from inside the cavity with the copper side toward you — everything solders on this face, the bare side sits flat on the four post tips. A 6-strip × 9-hole blank cut from a BusBoard ST1, strips running axially: strip 1 tap node A, strip 2 dead (M2), strip 3 split into two buses by the one deliberate track cut at hole 3 — P−power on holes 1–2 (black) and P−logic on holes 4–8 (purple) — strip 4 the switched V+ bus, strip 5 dead (M2), strip 6 tap node B. The cut is drawn as a red bar ACROSS the strip, which is what severing an axial copper run looks like, with E14 the 18 AWG BMS P− feed surface-soldered vertically over it: that wire is the star point and the only place the two grounds meet. The four M2 holes sever only strips 2 and 5, which carry no net, so the screw heads land on dead copper. R1 bridges dead strip 5, R2 and C1 bridge dead strip 2, so no bare lead crosses a live bus; only the insulated jumper tying the two tap halves does." /></p>
+<p>The reason it exists is worth knowing at the bench:
+<strong><code>P−</code> carries eight landings</strong> — its feed from
+the BMS (E14), five loads (E3, E5, E7, and E8's pin-2 and pin-6 grounds)
+and the E13 divider's two component leads (R2 and C1). E10 (the PD
+trigger return) lands on the BMS <code>P−</code> pad, not on this board.
+The Lisolec's <code>P−</code> is one small solder pad on a 55 × 23 mm
+module. They do not fit, and an eight-way solder blob in a sealed,
+drop-tested handheld is the joint that fails at week 4.</p>
+<table>
+<tbody>
+<tr>
+<td>Stock</td>
+<td><strong>BusBoard ST1 stripboard</strong>, 6 strips × 9 holes = 15.24
+× 25.4 mm, strips running axially. Same board as the wand rails (§9) —
+the <strong>copper strip IS the bus</strong>, so there is no bus wire to
+lay and nothing on the back.</td>
+</tr>
+<tr>
+<td>Strip map</td>
+<td><code>1</code> tap node A · <code>2</code> <strong>dead</strong>
+(M2) · <code>3</code> <strong>P− bus, split</strong>:
+<strong>P−power</strong> holes 1–2 (E8 pin 2; E3 surface-soldered) and
+<strong>P−logic</strong> holes 4–8 (E5, E7, E8 pin 6, R2, C1) ·
+<code>4</code> <strong>V+ bus</strong> · <code>5</code>
+<strong>dead</strong> (M2) · <code>6</code> tap node B</td>
+</tr>
+<tr>
+<td>Track cuts</td>
+<td><strong>One: strip 3 at hole 3</strong>, the star-ground cut between
+P−power and P−logic. <strong>E14 (the BMS <code>P−</code> feed) is
+surface-soldered ACROSS the cut</strong> and is the only point the two
+buses meet. <strong>Meter P−power ↔︎ P−logic OPEN before E14 goes
+on</strong>, and solder E14 last. The four M2 holes sever only the dead
+strips 2 and 5.</td>
+</tr>
+<tr>
+<td>Board prep</td>
+<td>Drill the four existing holes at <strong>strips 2 and 5, holes 1 and
+9</strong> out to <strong>Ø2.2</strong> for the M2 self-tap. Nothing is
+measured or marked — the pattern is whole strips and whole holes.</td>
+</tr>
+<tr>
+<td>⚠️ 18 AWG</td>
+<td>Does <strong>not</strong> thread a 1.02 mm hole (stranded 18 AWG is
+~1.1–1.3 mm OD). Solder E2 and E14 to the <strong>strip
+surface</strong>. The 22/26 AWG loads drop into holes normally.</td>
+</tr>
+<tr>
+<td>⚠️ Crossings</td>
+<td>R1 bridges dead strip 5; R2 and C1 bridge dead strip 2. <strong>No
+bare lead crosses a live bus.</strong> The only thing that does is the
+insulated jumper tying the two tap halves — keep it insulated.</td>
+</tr>
+<tr>
+<td>Order</td>
+<td>Build and continuity-check the board <strong>on the bench</strong>,
+then mount it, then land the harness. Meter every strip end to end first
+— a stripboard blank can arrive with a hairline break.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>E13, the one part on here you may not recognise.</strong> The
+ESP32's <code>BAT_ADC</code> (GPIO 4) is wired to the board's 1S LiPo
+connector and tops out near 4.2 V, so it cannot read a 12.8–14.6 V pack.
+An external <strong>100 kΩ / 20 kΩ</strong> divider off the
+<em>switched</em> rail feeds <strong>GPIO 3</strong> — 14.6 V reads 2.43
+V, 122 µA while on, 100 nF to ground. Spec: the pin-map traps (<a
+href="Lumi_Wand_Flashlight_Variant.html#421-esp32-waveshare-esp32-s3-touch-lcd-19-pin-assignments--build-board-mapped-2026-08-28">Flashlight
+Variant §4.2.1</a> trap 3); this board carries it. <strong>Calibrate
+against a DMM</strong> — the ESP32-S3 ADC is not accurate out of the
+box.</p>
+<h3 id="14a2-the-y-joint-connector--both-halves">14a.2 The +Y joint
+connector — both halves</h3>
+<p>The wand↔︎extension joint is a <strong>6-pin JST-XH</strong>, and the
+two halves are <strong>not</strong> built the same way. Both use the
+<strong>same board — 3 rows × 12 columns of STRIPBOARD, 6.85 × 30.48 mm
+(inner edge trimmed)</strong>, strips across the rows so every column is
+one isolated net, <strong>screwed down with 2× M2 self-tap into the
+cradle's 3 mm ears, 22.86 mm apart</strong>. The extension's screws get
+only <strong>2.0 mm</strong> of thread (in a 2.5 mm-tall spigot) against
+the wand's 5.0. Everything else differs: the <strong>wand</strong> half
+is a <strong>pin header soldered to the board</strong>, body hanging
+down into the pocket — <strong>no glue</strong>; the
+<strong>extension</strong> half is an <code>XHP-6</code> <strong>crimp
+shell bottoming on its board and bonded into the proud spigot
+pocket</strong> that captures its lower 2.5 mm, its six tails passing
+down through the board. ✅ <em>Operator, 2026-10-03: "Wand side should
+have strip board mounted jst."</em> Full procedure: <a
+href="Electronics_Soldering_Guide.html#95-the-two-y-joint-boards--6-pin-one-on-each-side-of-the-seam">Soldering
+Guide §9.5</a>.</p>
+<p><img src="images/hardware/joint_seating.png"
+alt="Section of the +Y joint connector on the tangential–axial plane, drawn from the live CAD values with both halves on one Z scale — the assembled frame, in which the extension&#39;s top face is wand Z = 0. Left: the wand side, cradle opening DOWN at Z = 3.5, the 8 mm female XHP-6 glued in and filling the 8 mm slot, and the 3 × 12 stripboard capping it at Z = 11.5 with two M2 screws through it. Right: the extension side, cradle recessed into the rim, the same board landing in the ear seat 0.5 mm proud, and all 7.0 mm of the male B6B-XH-A standing on its top face. The red band between them is the 4.0 mm of engagement." /></p>
+<p><strong>The SCREWS are the depth gauge.</strong> There is no seating
+flange: the board is 30.48 mm long, sits on <strong>top</strong> of a
+28.4 mm cradle on both halves, and two M2 screws set its depth.</p>
+<p><img src="images/hardware/joint_stripboard.png"
+alt="The joint stripboard, drawn at its real proportions from the live CAD values: 3 rows by 12 columns of 0.1-inch stripboard, 6.85 x 30.48 mm with its inner long edge trimmed back, with the copper strips running ACROSS the rows so every column is one isolated net three holes long. The OUTER row (r 27.45) carries the JST, the MIDDLE row (r 24.91) carries the outgoing pigtails and the two M2 screws at columns 2 and 11, and the INNER row (r 22.37) is an unwired stiffener that lands over the cradle&#39;s inner wall. The six middle columns, 4 to 9, carry the connector and are coloured by net: 13.8 V, GND-power, SDA, SCL, 3V3, GND-logic. Both outer corners are broken back about 1 by 2 mm to clear the wand&#39;s 64 mm bore; since the joint body moved inboard on 2026-10-03 the cut no longer reaches the outer row, so all twelve columns are three holes long. Below the board, notes on why there are three rows and not two, why the screws sit at plus or minus 11.43 and not 13.97, how the corners are cut, and the two different populations the one pattern carries." /></p>
+<p>⚠️ <strong>Break the two outer corners off both boards before
+fitting.</strong> A straight knife cut on each end — about <strong>1 × 2
+mm</strong> off each <strong>outer</strong> corner. The wand's bore is
+Ø64 and the board is flat; without the chamfers the corners stand 3 mm
+into the wall and the board will not go in.</p>
+<p><strong>Bench order, both sides — this order is forced, not
+preferred:</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Step</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Cut the board to 3 × 12 (scroll saw, just outside a hole row, file
+back — §1.1 tool row; no push-scoring) and <strong>chamfer its two outer
+corners</strong></td>
+<td>It will not enter the wand's bore otherwise, and you cannot file it
+in situ</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Mark the <strong>pin 1 end</strong> on the copper side of each
+board</td>
+<td>Pin 1 is the column nearest the wand's <strong>0° meridian</strong>,
+on BOTH halves. The two boards face each other, so copper-up their pin 1
+ends are at <strong>opposite</strong> ends — this is the one thing here
+that is easy to build backwards</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Solder the <strong>MIDDLE row</strong> (the outgoing pigtails)
+<strong>first</strong> on the <strong>wand</strong> half</td>
+<td>Both land on the board's top face there, and once the header body is
+seated the iron cannot reach the middle row cleanly past it. On the
+extension both land underneath, so the order is free</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Fit the connector: <strong>wand</strong> = header posts up through
+the OUTER row from underneath, body on the far side, solder to the 1.8
+mm pin tail + pad on the TOP face; <strong>extension</strong> = crimp
+six <code>SXH</code> tails, seat them in the <code>XHP-6</code> until
+each clicks, pass the free ends DOWN through the OUTER row and solder
+underneath</td>
+<td>⚠️ Nothing threads through the hole beside a 0.64 mm pin in a 1.02
+mm hole — not even 26 AWG. The wire goes in the <strong>adjacent hole of
+the same column</strong></td>
+</tr>
+<tr>
+<td>5</td>
+<td>Tie each bundle through a spare hole (column 1, 3, 10 or 12),
+<strong>by leg</strong> — power is pins 1, 2, 6; signal is 3, 4, 5</td>
+<td>This is the strain relief and it is the only one. Six solder joints
+and two M2 screws are all that resists a pull</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Continuity-check <strong>end to end AND column to
+column</strong></td>
+<td>Adjacent columns are 2.54 mm of bare copper apart; a bridge between
+columns 4 and 5 shorts <code>13.8 V</code> to
+<code>GND-power</code></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Screw the board on — <strong>wand: DOWN into the ears from the board
+face</strong>, 5.0 mm pilots. <strong>Extension: UP into the spigot from
+underneath</strong>, only 2.0 mm — gently</td>
+<td>The wand's board caps its cradle; the extension's sits under a proud
+spigot</td>
+</tr>
+<tr>
+<td>8</td>
+<td><strong>Extension only:</strong> epoxy the <code>XHP-6</code> shell
+<strong>into its spigot pocket</strong> (§15.4) — a bead on the two end
+walls — cure fully, <strong>then</strong> mate</td>
+<td>A push-mate against a green bond lifts the shell straight back
+out.</td>
+</tr>
+</tbody>
+</table>
+<p>🔴 <strong>Neither board is optional.</strong> The wand's half is a
+PCB header whose contacts are <strong>3.4 mm solid solder posts with no
+crimp barrel</strong>, so a wire cannot be attached to it except through
+a board; the extension's shell has no posts, so its tails have to land
+somewhere.</p>
+<p>🔴 <strong>The extension-side shell cannot be soldered to a
+board.</strong> An <code>XHP-6</code> is a crimp shell with no posts. It
+bottoms on the board, is bonded into the spigot pocket above it, and its
+six tails pass down through the board; the board is a wire-to-wire
+junction on that half. The <strong>wand</strong> half has no bond at all
+— its header is plain through-hole.</p>
+<p>⚠️ <strong>This mate is blind and is not bench-testable</strong> — it
+first happens at week-4 integration, inside a closed shell.
+Continuity-check both halves end-to-end before either one goes into a
+cradle.</p>
+<p>⬜ <strong>Pull-test the first assembled pair.</strong> Engagement is
+<strong>4.0 mm of a 7.0 mm body</strong> — the operator's number, not a
+datasheet's; the XH's internal contact-engagement depth is not in hand.
+Withdrawal is resisted by the extension-side bond (§15.4) and the M2
+screws on both halves.</p>
+<hr />
+<h2 id="15-bonding-reference">15. Bonding Reference</h2>
+<p>Used in: TMP102 → heatsink (§7.3), LED MCPCB → heatsink (§12.4),
+VHB-mount LED drivers (wand doc §10.5), <strong>the EXTENSION-side
+JST-XH shell → its spigot pocket (§14a.2, §15.4)</strong> — the only
+connector bond.</p>
+<h3 id="151-thermal-epoxy--mg-chemicals-8329tcm">15.1 Thermal epoxy — MG
+Chemicals 8329TCM</h3>
+<ul>
+<li><strong>Conductivity</strong>: <strong>1.36 W/m·K</strong> (low
+compared to thermal grease at ~5–10, but epoxy gives mechanical
+retention which grease can't — and the heatsink-to-air step at ~5 °C/W
+dominates total junction-to-ambient anyway, so the bond costs only ~2 °C
+at the junction).</li>
+<li><strong>Mix ratio</strong>: 1 : 1 by volume (A : B).</li>
+<li><strong>Mix time</strong>: 60 s. Don't whip air bubbles — mix
+slowly.</li>
+<li><strong>Pot life</strong>: <strong>45 min after mixing</strong> —
+enough for a single-batch bond of 3 LED stars + the TMP102; see <a
+href="Lumi_Wand_Integration.html#step-3-led-cluster-thermal-adhesive-bond-gauged-through-the-lens-plate"><code>Lumi_Wand_Integration.md</code>
+§13 Step 3</a>).</li>
+<li><strong>Working time</strong>: 45 min of genuine positioning time.
+Place deliberately; don't rush the alignment.</li>
+<li><strong>Cure</strong>: <strong>7 h minimum to handle / 24 h at room
+temp (22 °C) for full strength.</strong> 1 h at 65 °C for accelerated
+cure — but don't use a heat gun (uneven). A printer-bed oven works.</li>
+<li><strong>Don't power up during cure</strong> — uneven LED heat would
+set the epoxy unevenly + degrade thermal conductivity.</li>
+</ul>
+<p><strong>Bond surface prep (universal):</strong></p>
+<ol type="1">
+<li>Clean both surfaces with IPA.</li>
+<li>Light abrasion (400-grit paper) if mirror-polished.</li>
+<li>Dry fully before mixing epoxy.</li>
+</ol>
+<p><strong>Don't over-epoxy.</strong> A thin layer (0.3–0.5 mm) is
+enough. Excess epoxy is mostly a thermal barrier (the polymer matrix is
+not conductive — the conductivity comes from the suspended particles,
+which need to bridge gap continuously). More is NOT better.</p>
+<h3 id="152-vhb-foam-tape--3m-vhb-5952-or-equivalent">15.2 VHB foam tape
+— 3M VHB 5952 (or equivalent)</h3>
+<ul>
+<li><strong>Thickness</strong>: 0.8–1 mm (0.04″).</li>
+<li><strong>Bond strength</strong>: builds over 72 h at room temp; 50 %
+within 1 h.</li>
+<li><strong>Surface prep</strong>: IPA clean both surfaces.
+Pressure-press for 10 s (firm thumb pressure).</li>
+<li><strong>Use cases</strong>: LED-driver mounting, both variants (the
+modules have no mounting holes, so VHB is the only mount option; wand
+doc §9.6). PCA9685 fallback mount if M3 standoffs are unavailable.</li>
+<li><strong>Don't VHB-bond components that will see &gt; 80 °C
+continuous</strong> — the foam softens. The PT4115 modules dissipate
+&lt; 0.5 W each and stay well below this.</li>
+</ul>
+<h3
+id="154-the-extension-side-connector-shell-into-its-spigot-pocket--jst-xh-at-the-y-joint">15.4
+The extension-side connector shell into its spigot pocket — JST-XH at
+the +Y joint</h3>
+<p><em>What glues a connector housing into a printed pocket. Used in: <a
+href="#14a2-the-y-joint-connector--both-halves">§14a.2</a>, the
+extension half of the wand↔︎extension joint.</em></p>
+<p>⚠️ <strong>This section applies to the EXTENSION half only.</strong>
+One end of an XH pair is a <strong>crimp shell</strong> with no solder
+posts, so it has nothing to solder to and must be bonded. That end is
+the <strong>extension's</strong> (operator, 2026-10-03: <em>"Wand side
+should have strip board mounted jst"</em>); the <strong>wand's</strong>
+half is a pin header that solders to its stripboard and is <strong>never
+glued</strong>. ✅ <em>Operator, 2026-10-03: "We can use glue, not an
+issue."</em></p>
+<p>Two M2 self-taps hold the <strong>board</strong>, so the epoxy only
+resists axial pull-out of the housing.</p>
+<p><strong>Substrate: glass-filled PA66 nylon</strong> (the JST-XH body)
+<strong>against PETG or ABS</strong> (the printed cradle).</p>
+<ul>
+<li>🔴 <strong>Do NOT use CA / superglue.</strong> PA66 is a
+low-surface-energy plastic; cyanoacrylate gives a bond that looks fine
+on the bench and lets go under the push-mate load — and this joint is
+blind, so you learn about it at final assembly. CA also wicks, which is
+exactly the failure mode you cannot afford here (see below).</li>
+<li>✅ <strong>Use a two-part epoxy.</strong> The <strong>MG Chemicals
+8329TCM already in inventory for §15.1 works</strong> — the thermal
+filler is irrelevant here but harmless, and its <strong>45 min pot
+life</strong> is generous for a fiddly placement. A plain 5-minute
+structural epoxy is also fine; the load is small.
+<ul>
+<li>⚠️ Before using 8329TCM near contacts, <strong>read the
+tube</strong>: it is a ceramic-filled, not silver-filled, epoxy and is
+not sold as an electrically conductive adhesive — but do not lean on
+that. Keep it out of the contacts regardless (next bullet).</li>
+</ul></li>
+<li><strong>The pocket is the retention; the glue only resists axial
+pull-out.</strong> The cradle already captures the body on all four
+sides — three printed 2.5 mm walls plus the shell wall as the fused
+fourth side. You are not structurally bonding anything, you are stopping
+it backing out.</li>
+</ul>
+<p><strong>Method:</strong></p>
+<ol type="1">
+<li>IPA-clean the cradle walls and the two <strong>end</strong> faces of
+the housing. Let it flash off.</li>
+<li><strong>A thin bead on the two END walls only.</strong> Those are
+the faces that take the push-mate force. Do not butter the whole pocket
+— squeeze-out has to go somewhere and the only places left are the
+contacts and the mating face.</li>
+<li>Bond the shell <strong>into the spigot pocket</strong>, a bead on
+the two end walls, then <strong>screw its board up</strong> into the
+spigot from underneath (§14a.2) — the two M2 screws are the depth stop.
+There is no bearing flange; the board is 30.48 mm over a 28.4 mm cradle
+and sits on top of it.</li>
+<li><strong>Cure fully before mating</strong>: 7 h to handle, 24 h at 22
+°C for full strength (8329TCM figures, §15.1). Mating against a green
+bond lifts the housing out of the cradle.</li>
+</ol>
+<p>🔴 <strong>Keep epoxy off the mating face and out of the
+contacts.</strong> Epoxy in a contact is an open circuit that is both
+unrecoverable and unmeasurable from outside — and on a blind joint you
+will not see it before it fails. If you get squeeze-out onto the mating
+face, wipe it with IPA <strong>immediately</strong>, while it is still
+wet.</p>
+<p>⚠️ <strong>Not a field-serviceable joint.</strong> Once cured,
+removing a housing means destroying either the housing or the printed
+cradle. If the glued cradles prove unreliable in service, the documented
+fallback is a proto-board-soldered connector with the cradles reworked
+for a horizontal PCB mount — <a
+href="Lumi_Wand_Flashlight_Variant.html#39a-internal-y-board-to-board-jst-xh-at-the-joint-v96">Flashlight
+Variant §3.9a</a>.</p>
+<hr />
+<h2
+id="16-halo-mic-carrier--iflytek-r818--ring--speaker--sound-card-dongle-assembly--cables">16.
+Halo Mic Carrier — iFLYTEK R818 + ring + speaker + sound-card dongle
+(assembly + cables)</h2>
+<p>One printed plate carries the whole mic stack on Halo's
+electronics-bay top cover: the ring 6-mic array, the R818 under its
+clear shroud, the kit speaker, and the sound-card dongle.
+<strong>Division of labour:</strong> print settings + design files live
+in <a
+href="3D_Printing_Guide.html#34-halo-mic-carrier--r818-shroud-iflytek-mic-array">3D
+Printing Guide §3.4</a>; the electrical spec, cover lanes, grounding and
+the DOA calibration rule live in <a
+href="Electronics_Bay_Design.html#34-iflytek-far-field-microphone-array-hiwonder-r818--ring-6-mic--two-usb-cables-bus-powered-eb-cover-mount">Electronics_Bay_Design
+§3.4</a>; bring-up is BringUp Phase 7.5. This section owns
+<strong>hardware + build order + the cable schedule</strong>.</p>
+<p>⚠️ <strong>Halo hangs inverted.</strong> Build the carrier COMPLETE
+on the bench and bolt the finished unit to the cover — never fit parts
+overhead, and dress every run against gravity (anchors loaded, loops out
+of the arm's swept volume — EBD §3.4 orientation note).</p>
+<h3
+id="161-hardware-carrier-v5-cad-2026-10-23--r818-shroud-v11-no-inserts-no-captive-nuts-no-nylon">16.1
+Hardware (carrier <strong>v5</strong>, CAD 2026-10-23 + R818 shroud
+V1.1; no inserts, no captive nuts, NO nylon)</h3>
+<p>✅ <strong>v5 (operator, 2026-10-23): the carrier lies FLAT on the
+electronics-bay metal cover and bolts through the cover's own 4 corner
+holes</strong> (Ø3.2, 101.5 × 101.9) with <strong>4 × M3 × 8 Torx pan
+machine screws</strong> (304 SS, GB2672 kit, §1.2) into the
+<strong>threaded M3 top flanges of the bay's front and back
+plates</strong>. 4 carrier + 1.5 cover + 1.5 flange = 7 clamped, 1
+protruding into empty bay space. Ø3.4 clearance holes in the carrier; no
+standoffs, no bosses. The hanging stack: R818 side ~31, speaker ~37
+below the cover. The cover's central Ø4.2 holes are unused.</p>
+<table>
+<thead>
+<tr>
+<th>Qty</th>
+<th>Part</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>M3 × 8 pan self-tap</td>
+<td>ring → its 3 posts</td>
+</tr>
+<tr>
+<td>4</td>
+<td>M3 × 8 pan self-tap + rubber washer under each ear</td>
+<td>speaker → its 4 posts</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>M3 × 16</strong> pan self-tap</td>
+<td><strong>shroud face → hollow column → R818 mounting hole →
+tower</strong> — one screw clamps board + shroud</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>M3 × 8 Torx pan MACHINE screw</strong> (304 SS, GB2672 kit)
+— <strong>v5</strong></td>
+<td>carrier → cover corner holes → <strong>threaded front/back plate
+flanges</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1 mm foam strip</td>
+<td>between the dongle and the speaker back</td>
+</tr>
+</tbody>
+</table>
+<h3 id="162-build-order-bench--from-the-macro-header">16.2 Build order
+(bench — from the macro header)</h3>
+<ol type="1">
+<li><strong>Dongle, then speaker:</strong> sound-card dongle into the
+walled bay; 1 mm foam strip on it; speaker onto its 4 posts (M3 × 8
+self-taps, rubber washers under the ears). The dongle sits UNDER the
+speaker.</li>
+<li><strong>Ring</strong> onto its 3 posts (3× M3 × 8 self-tap).</li>
+<li><strong>R818 + shroud:</strong> board onto its 4 towers, shroud over
+it, 4× M3 × 16 down through the shroud's hollow columns and the board
+into the towers. <em>(Snap fingers are gone — V1's rattled and wouldn't
+stay clicked.)</em></li>
+<li><strong>Carrier onto the cover (v5):</strong> lay it flat on the
+cover, corner holes aligned. <strong>4 × M3 × 8 Torx pan machine
+screws</strong> through carrier + cover into the threaded front/back
+plate flanges. Snug.</li>
+<li><strong>Cables</strong> per §16.3, dressed against gravity.</li>
+</ol>
+<h3 id="163-cable-schedule--kit-lengths-vs-what-the-carrier-needs">16.3
+Cable schedule — kit lengths vs what the carrier needs</h3>
+<p>Kit contents: 2× 2 ft 6-pin JST-XH → USB-A (CH340 serial; UAC), 1×
+12″ FFC, 1× 12″ straight USB-A M→F extension, the speaker lead. The
+kit's <strong>ferrite USB-A extension is not used</strong> — the dongle
+sits on the carrier.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Run</th>
+<th>V1 (bring-up, Phase 7.5)</th>
+<th>Production</th>
+<th>Electrical notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Mic ring ↔︎ R818 FFC</td>
+<td>Z-fold the 12″ flat, Kapton tacks, no crease at the connector
+ends</td>
+<td><strong>Length by the ring connector's face (operator 2026-11-02):
+top/front face → 60 mm overall; BACK face → 80 mm overall.</strong>
+Operator checks the face on the kit. CAD hand estimate: ~40 mm
+connector-to-connector on the top face (~5–20 mm slack at 60), ~55 mm on
+the back face (~25 mm slack at 80) — to order. Little slack: plug the
+R818 end through the shroud notch after mounting, not with the board
+lifted off (CAD). No Z-fold: dress the slack flat against the shroud
+wall on the −Y side, outside the R818 footprint (CAD)</td>
+<td>keep the slack off the mic ports (mics 3/4) and out of the open
+band</td>
+</tr>
+<tr>
+<td>2</td>
+<td>CH340 serial: R818 → Pi5 black #2 (→ HAT at 7.6)</td>
+<td>as shipped (2 ft), coiled</td>
+<td>cut + re-crimp the XH end — <strong>length TBD: string-measure the
+route on the robot + ~3 cm</strong> (the Pi5 isn't modelled)</td>
+<td>⚠️ <strong>record the colour → pin map BEFORE cutting</strong></td>
+</tr>
+<tr>
+<td>3</td>
+<td>UAC audio: R818 → Pi5 blue #2 via the CableCreation extension (→ HAT
+at 7.6)</td>
+<td>as shipped (2 ft), coiled</td>
+<td>same treatment, <strong>length TBD</strong> by the same
+string-measure</td>
+<td>colour → pin map first; <strong>keep the USB D+/D− pair
+twisted</strong> through the re-crimp</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Dongle USB → Pi5 (→ HAT at 7.6), down the data lane</td>
+<td>kit 12″ straight extension</td>
+<td><strong>right-angle USB-A M → F</strong> (operator) — to order;
+<strong>check the angle points the cable toward the data
+lane</strong></td>
+<td>pick a right-angle part with a ferrite (or add a clip-on) — a USB
+device beside the analog ring</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Speaker → dongle SPK±</td>
+<td>kit lead as shipped</td>
+<td><strong>length TBD</strong> at bench</td>
+<td>carrier-local; twisted</td>
+</tr>
+<tr>
+<td>6</td>
+<td>RLN/RLP: dongle → R818 reference port (AEC)</td>
+<td>kit lead as shipped</td>
+<td><strong>length TBD</strong> at bench</td>
+<td>carrier-local; its OWN twisted pair, never bundled with USB</td>
+</tr>
+</tbody>
+</table>
+<p>All TBD lengths close at the Phase 7.5 bench session (string-measure
+with the carrier mounted). Lane rule from EBD §3.4: the three USB runs
+(2/3/4) cross the cover through the <strong>data lane</strong>; nothing
+crosses the speaker lane.</p>
+<h2 id="17-nova-build--bill-of-materials-compiled-2026-10-20">17. Nova
+Build — Bill of Materials (compiled 2026-10-20)</h2>
+<p><strong>Nova</strong> is the next robot after Halo (name locked
+2026-06-14). It is a fleet codename: the product is still LumiAI Halo;
+Nova is <em>which</em> machine. It is an Ultra-compatible arm kit, with
+the same codebase as Halo and Ultra and per-unit config only. Host
+<code>lumiai-nova</code>, container <code>LumiNova</code>, namespace
+<code>/nova</code>, ROS_DOMAIN_ID 100.</p>
+<p>Compiled from every domain session on 2026-10-20: Electronics, CAD,
+3D Printing, CNC, Ultra, ROSMaster, Fleet and Marketing. Stock was
+checked against every inventory and order record in the repo.</p>
+<p><strong>Colour key (operator 2026-10-20):</strong></p>
+<ul>
+<li>🟢 <strong>we have it</strong> for Nova (on hand, spare, or comes
+with a kit we have).</li>
+<li>🔴 <strong>we need it</strong>: to buy, or it comes inside a kit we
+still have to buy.</li>
+<li>🟡 <strong>just enough for Halo</strong>: stock covered Halo, but
+there is no confirmed spare for Nova. Count it on the shelf (§17.9)
+before ordering.</li>
+</ul>
+<p><strong>Status key:</strong></p>
+<ul>
+<li><strong>ON HAND</strong>: the operator has it, set aside for
+Nova.</li>
+<li><strong>SPARE</strong>: the docs record a spare left after Halo and
+Ultra.</li>
+<li><strong>TO BUY</strong> / <strong>TO MAKE</strong> / <strong>TO
+PRINT</strong> / <strong>TO MACHINE</strong>: still to do.</li>
+<li><strong>COUNT</strong>: the docs give no usable count. Check the
+shelf before ordering (§17.9).</li>
+</ul>
+<h3 id="171-what-changes-from-halo">17.1 What changes from Halo</h3>
+<ol type="1">
+<li><strong>Distribution block: HL-PBB-2-6-MINI</strong> (16 A / 48 V, 2
+inputs, 6 output pairs) replaces both the modified APIELE (Halo, Ultra)
+and the D-1459. Operator 2026-10-20: "we are using these going forward".
+Electronics 6372c3c makes it the block of record; the D-1459 becomes a
+bench spare.
+<ul>
+<li>The §11.3.3 port map carries over 1:1.</li>
+<li>Mount: self-taps onto the power-bay carrier (M2.5 × 8, §17.8
+carrier-screw row). ⚠️ The ~60 mm hole spacing is an eyeball:
+<strong>caliper it</strong> and re-check the footprint before landing
+anything. The board is 70 × 22 mm against the D-1459's 57 × 38.</li>
+<li>Loads: bay peak ~8 A = 50 % of 16 A; busiest branch DROK ~5.5 A = 34
+%.</li>
+</ul></li>
+<li><strong>DC rocker UPSTREAM of the whole V+ bus</strong> (the Halo-v2
+fix):
+<code>PSU CH1 → INA226 → DC rocker LINE→LOAD → HL-PBB input</code>. ⚠️
+This segment-map row does not exist yet (Power_Bay_Design §11.3 note);
+draw it with Nova's map. The rocker now carries the full bus, ~8–9 A DC
+peak. <strong>Operator ruling (2026-10-20): the KCD1 stays.</strong>
+These switches have been in service for 6 months on AC and DC. The
+KCD1's documented ratings are AC only (6 A at 250 VAC / 10 A at 125
+VAC); Halo's DC rocker carries the DROK branch (≤ 5.5 A), so Nova is the
+first at full-bus current. Feel the switch body after a long run.</li>
+<li><strong>Bay power wiring 18 AWG / E1008 from day one</strong> (Halo
+v1 ran 16 AWG).</li>
+<li><strong>No extra-tall 2×20 stacking header</strong> — the HAT's
+pass-through gives the height.</li>
+<li><strong>PCA9685 (wand) ships at 0x41</strong>, with the A0 pad
+bridged. 0x40 is the HAT's INA219, which stays at its factory
+address.</li>
+<li><strong>EBC covers v6</strong> (CAD 2df29a1, watertight). Plate 06
+still prints with supports ON (critical-only): Studio flags the left
+cover with them off.</li>
+<li><strong>Production material is ASA</strong> for structural prints
+(§17.6).</li>
+<li><strong>Fence fans mount on self-tapping threaded inserts</strong>
+in the fence's existing Ø4.0 bores (operator 2026-10-20). The fence is
+unchanged and there is no CAD change.</li>
+<li>Not bought for Nova: the ArmPi hex servo base plate, the arm base
+plate and the STM32 (all come with the HiWonder arm kit), the APIELE,
+WonderEcho, X1001, extra-tall header, the Ultra mecanum
+chassis/motors/encoder module, and the legacy CNC ceiling channels.</li>
+</ol>
+<h3 id="172-arm-control-and-compute">17.2 Arm, control and compute</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Use</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HiWonder ArmPi Ultra arm, 6 bus servos (IDs 1–6) + hex servo base
+plate + arm base plate</td>
+<td>1 kit</td>
+<td>Arm</td>
+<td>🟢 <strong>ON HAND</strong> (operator)</td>
+</tr>
+<tr>
+<td>HiWonder STM32 controller (CH340 1a86:7523)</td>
+<td>1</td>
+<td>Servo bus, 5 V 5 A USB-C out to the Pi</td>
+<td>🟢 <strong>ON HAND</strong> (in the kit)</td>
+</tr>
+<tr>
+<td>BigClaw gripper body + HTS-25L servo (85 mm jaw, fleet
+standard)</td>
+<td>1</td>
+<td>End effector</td>
+<td>🟢 <strong>ON HAND</strong>: one extra BigClaw + HTS-25L for Nova
+(operator 2026-10-20)</td>
+</tr>
+<tr>
+<td>Rubber pads, one-sided adhesive (jaws + wand-ear cradles)</td>
+<td>1 set</td>
+<td>Gripper</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td><em>(optional accessory)</em> BigClaw <strong>phone cradle</strong>
+hardware: 1 × <strong>M4 × 40 hex bolt</strong>, 304 fully threaded, 7
+AF (uxcell, Amazon B07JFJGJ91); 1 × <strong>flat knurled thumb nut, M4,
+Ø20 × 5</strong>, 304 (MECCANIXITY, Amazon B0FJMQF9HD); 1 × <strong>M4
+DIN 125 washer</strong>; <strong>4</strong> × M3 × 12 self-tap (knob
+frame; +2 for the catch); <strong>2 × M4 × 16 pan self-tap</strong>
+(post → foot; HanTof kit); <strong>1 × HELIFOUNER 1/4"-20 steel screw-in
+insert, 10 mm</strong> (the post's base end); silicone grease</td>
+<td>1 set</td>
+<td>Holds 40 phones (80 variants, bare or slim case) in the BigClaw —
+BOM in <a
+href="LumiAI%20Robotic%20Arm%20System.html#mounts--payloads-one-arm-many-configurations">Robotic
+Arm System → Mounts &amp; Payloads</a></td>
+<td>🟡 <strong>ON HOLD</strong> until the printed fit is accepted: the
+M4 × 40 bolt and the thumb nut (to buy). Washer, M3 × 12, M4 × 16, the
+1/4"-20 insert and grease: <strong>Stock</strong></td>
+</tr>
+<tr>
+<td>Aluminium servo horn, base joint</td>
+<td>1</td>
+<td>Base servo</td>
+<td>🟢 <strong>ON HAND</strong>: comes with the BigClaw (operator
+2026-10-20)</td>
+</tr>
+<tr>
+<td><strong>Raspberry Pi 5, 16 GB</strong> (the production floor; 8 GB
+is bench only)</td>
+<td>1</td>
+<td>Compute</td>
+<td>🔴 <strong>TO BUY</strong> (operator 2026-10-20)</td>
+</tr>
+<tr>
+<td>Pi 5 active cooler (with a working tach)</td>
+<td>1</td>
+<td>Pi</td>
+<td>🟡 <strong>COUNT</strong>. ⚠️ Power it from the Pi fan header,
+<strong>never</strong> the RasAdapter/STM32 5 V (Ultra's 09-26
+lapse)</td>
+</tr>
+<tr>
+<td>Waveshare <strong>PCIe TO M.2 USB HAT+</strong> (INA219 0x40, R010
+shunt, isolated POWER input)</td>
+<td>1</td>
+<td>NVMe + 4× USB</td>
+<td>🔴 <strong>TO BUY</strong> (the two on record are on Ultra and
+Halo)</td>
+</tr>
+<tr>
+<td>NVMe M.2 SSD 2230–2280</td>
+<td>1</td>
+<td>Boot drive on the HAT</td>
+<td>🔴 <strong>TO BUY</strong>. Prefer a Samsung like Ultra's; a
+Kingston NV2 needs APST/ASPM disabled in cmdline (Halo, 10-16)</td>
+</tr>
+<tr>
+<td>microSD for the restic backup repo</td>
+<td>1</td>
+<td>Backups (Halo: 117 GB)</td>
+<td>🔴 <strong>TO BUY</strong>. Size for ~2.5× the raw image (~22 GB) +
+Docker images (~5–10 GiB)</td>
+</tr>
+<tr>
+<td>ShanWan gamepad + 2.4 GHz dongle (2563:0526, same button map
+fleet-wide)</td>
+<td>1 pair</td>
+<td>Teleop + latched SELECT E-stop</td>
+<td>🔴 <strong>TO BUY</strong>. Verify no cross-talk against BOTH
+Ultra's and Halo's dongles before trusting the E-stop</td>
+</tr>
+<tr>
+<td>Ethernet cable to the robot switch behind Devs_EXT</td>
+<td>1</td>
+<td>Wired net (Wi-Fi: Devs_EXT2)</td>
+<td>🟢 <strong>ON HAND</strong> (plenty)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="173-sensors-camera-voice">17.3 Sensors, camera, voice</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Use</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Luxonis OAK-D S2, auto-focus (AF)</strong> (operator
+2026-10-20)</td>
+<td>1</td>
+<td>Arm-end camera → <strong>a HAT USB 3 port</strong> (operator ruling
+2026-10-27: "The OAK-D plugs into the HAT … as does the iflytek")</td>
+<td>🔴 <strong>TO BUY</strong></td>
+</tr>
+<tr>
+<td><strong>HiWonder far-field mic array, FULL bundle</strong>: R818 +
+ring 6-mic + casing + FFC + CH340 JST→USB-A + UAC JST→USB-A + brass
+standoffs + "USB TO AUDIO" stick + speaker + ferrite extension</td>
+<td>1 kit</td>
+<td>EB-cover carrier (§16)</td>
+<td>⛔ <strong>DO NOT BUY</strong>: <strong>iFLYTEK DROPPED as a
+fleet/production part (operator 2026-11-02): no more kits, not for new
+builds. The one kit already owned stays in use on Ultra or Halo.
+Production replacement not chosen.</strong></td>
+</tr>
+<tr>
+<td>GODIYMODULES <strong>INA226</strong> (R002), address mod →
+<strong>0x44</strong></td>
+<td>1</td>
+<td>In series on PSU CH1; self-taps onto its carrier posts (Halo v1
+as-built: PSU-cover studs)</td>
+<td>🟡 <strong>COUNT</strong>: 2 owned on record; Halo uses 1, an Ultra
+retrofit would take the other</td>
+</tr>
+<tr>
+<td>GODIYMODULES <strong>INA226-BATT</strong> (R002, stock 2 mΩ),
+address <strong>0x45</strong> (A0 = A1 = VS), both pull-ups lifted</td>
+<td>1</td>
+<td>Battery + lead: pack → F1 → shunt → PSU CH2 BAT+ (ISENSE+ toward the
+PSU: charge +, discharge −). Signed pack current/voltage + AC→battery
+switchover. <strong>Side by side with INA226-MAIN on the power-bay
+carrier</strong>, each on its own printed self-tap posts (operator
+2026-10-22; the carrier insulates every screw, so no nylon hardware).
+Mount detail Power_Bay §5a.4, 18 AWG + Kuject fork lugs, logic on G469
+pins 3/5/1/9. Power_Bay §5a, BringUp Phase 7.7 pull-the-AC gate
+(Electronics 02eed75, fleet-wide after Ultra's 10-22 mains-drop
+blackout)</td>
+<td>🟡 <strong>ORDERED, in transit</strong> (AliExpress):
+<strong>4</strong> (Halo, Ultra, Nova + 1 spare)</td>
+</tr>
+<tr>
+<td>SparkFun Qwiic <strong>TMP102</strong></td>
+<td>2</td>
+<td>Bay 0x48 (no mod) + wand 0x49 (ADD0 cut + V+ bridge)</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td><strong>HC-SR501</strong> PIR</td>
+<td>4 (2 packs)</td>
+<td>Fence corners → G469 GPIO 16/17/20/21</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>Sensirion <strong>SPS30</strong> + Winsen
+<strong>ZE15-CO</strong></td>
+<td>1 + 1</td>
+<td>Bay hazard sensing (Ph7)</td>
+<td>🟢 <strong>ON HAND</strong>: "we have extra ones for nova in stock"
+(operator 2026-10-20). Nova gets them</td>
+</tr>
+<tr>
+<td><strong>Sunon MC40201V2-Q000-S99</strong>: 4020, 12 V, 4-wire PWM
+(AliExpress, SZYTF, ~$4 each)</td>
+<td>2</td>
+<td>Fence back wall; GPIO12 PWM, tach GPIO5/6. Mount: self-tapping
+inserts in the fence's existing Ø4.0 bores</td>
+<td>🔴 <strong>TO BUY</strong> (operator 2026-10-20: "nova will use the
+new fans we order"). Run each through the Power_Bay §11.2.0a acceptance
+test (no datasheet exists for this P/N; tach ≈ 12 V open-circuit =
+REJECT) and record its PWM open-circuit voltage (§11.2.0: ≤ 3.6 V direct
+drive, ~5 V add a 1 kΩ series resistor)</td>
+</tr>
+<tr>
+<td>Wand fan: <strong>ACP4010-12-PWM</strong> 40 × 40 × 10 mm, 12 V,
+4-pin PWM (AliExpress, ACP Cooling Fan Store, item 3256810252164814;
+replaces the Noctua NF-A4x10 in the wand)</td>
+<td>1</td>
+<td>Wand fan (PCA ch13)</td>
+<td>🟢 <strong>ON HAND</strong>: 1 spare (operator). <strong>Order 2
+more</strong> (operator 2026-10-20)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fence fans:</strong> Nova moves off the Noctua NF-A4x20
+(Halo/Ultra) to the Sunon MC40201V2. Its one spec advantage is a 13.8 V
+family max, equal to the bus. Acceptance per Power_Bay §11.2.0a.</p>
+<h3 id="174-power-bay">17.4 Power bay</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Use</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MZMW PSC-100-12</strong> UPS PSU (100–240 VAC → 13.8 V 5 A +
+13.8 V 2 A charge, 100 W)</td>
+<td>1</td>
+<td>Mains → bay</td>
+<td>🔴 <strong>TO BUY</strong> (operator 2026-10-20)</td>
+</tr>
+<tr>
+<td><strong>ALEAIVY LiFePO4 32700 4S1P</strong> 12.8 V 10 Ah (BMS, 5.5 ×
+2.1 barrel)</td>
+<td>1</td>
+<td>PSU CH2 battery</td>
+<td>🔴 <strong>TO BUY / COUNT</strong>. ⚠️ Verify the BMS has
+low-temperature charge cutoff</td>
+</tr>
+<tr>
+<td><strong>HL-PBB-2-6-MINI</strong> distribution module (AliExpress,
+Dongguan ARYRA; ~$6.85)</td>
+<td>1 per robot, <strong>order 3</strong></td>
+<td>13.8 V distribution (A = V+, B = GND)</td>
+<td>🔴 <strong>TO BUY</strong> (Nova + bench/first-article + spare)</td>
+</tr>
+<tr>
+<td>CZH-Labs D-1459</td>
+<td>0</td>
+<td>Bench spare / 30 A fallback</td>
+<td>🟢 <strong>1 on hand</strong></td>
+</tr>
+<tr>
+<td><strong>DROK</strong> buck 5.3–32 V → 7.5 V, 8 A</td>
+<td>1</td>
+<td>HL-PBB → STM32 7.5 V</td>
+<td>🔴 <strong>TO BUY / COUNT</strong></td>
+</tr>
+<tr>
+<td>HAT 5 V supply: the <strong>dual-USB-C buck, doc name MusRock
+Mus-14</strong>: the operator's "the DROK we bought last week" (one
+2026-10-13 order, qty 5, fixed 5 V, 3 A with the bay's external
+cooling), <strong>self-tapped onto the power-bay carrier</strong> (M1.7
+× 6)</td>
+<td>1</td>
+<td>HL-PBB → HAT POWER USB-C (D16–D18)</td>
+<td>🟢 <strong>ON HAND</strong> from the 5-pack. Interim buck; planned
+replacement = LM25116 300 W CC/CV (🔴 not ordered, EBD §3.6.2). The
+"DROK" and the Mus-14 are the same part (Electronics ed3e869)</td>
+</tr>
+<tr>
+<td>KCD1-104 / KCD1-106/2P illuminated rocker</td>
+<td>2</td>
+<td>1 AC + 1 DC: the <strong>DC rocker sits in the FRONT fence
+half</strong> (operator 2026-10-20), wired <strong>upstream</strong> of
+the block</td>
+<td>🟢 <strong>ON HAND</strong>: 6–7 in stock (operator 2026-10-20)</td>
+</tr>
+<tr>
+<td>IEC320 C14 panel inlet, <strong>AC-04C</strong> (the part in use) +
+C13 kettle cord</td>
+<td>1 + 1</td>
+<td>Fence back wall / wall feed</td>
+<td>🟢 C14: <strong>4 ON ORDER</strong> (Purchasing 2026-11-05: TLZWLA
+Official Store, AliExpress, AC-04C, $1.59 ea, $6.91 total; ~7 days
+typical). Stock was 0. Cord <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td><strong>Locking C14 inlet</strong>: C14 with a cord-retention clip
+(wire bail over the C13 plug, on the inlet flange screws)
+<strong>or</strong> a V-Lock/IEC-Lock C14 + matching locking cord</td>
+<td>1 per robot</td>
+<td>Fence back wall, replaces the plain C14. Production item after
+Ultra's 10-22 blackout was traced to a <strong>loose connection at its
+AC inlet</strong> (male side; Electronics 4e866d1). ⚠️ <strong>Ultra's
+inlet was ALREADY a locking type</strong> (operator 2026-10-22), so a
+locking inlet alone did not prevent it: also check the inlet's
+terminations and seat the plug fully, and the robot must still ride
+through on battery. Fit-check against the fence cut-out depth before
+ordering in quantity</td>
+<td>🔴 <strong>TO BUY</strong>: 2 (Nova + Halo). Ultra has one as
+built.</td>
+</tr>
+<tr>
+<td>Fuses + holders — <strong>shipping configuration: F1 only; future
+HV-servo upgrade: F1 + the servo fuse, nothing else</strong>:
+<strong>F1</strong> 10 A fast-blow glass 6 × 30 (uxcell inline holder,
+16 AWG), battery + → PSU CH2 BAT+; <strong>servo fuse</strong> 10 A
+glass 6 × 30 in a spare 6 × 30 inline holder, on the 11.1 V servo rail
+in the base's second opening (under the solid cover): <strong>future
+HV-servo upgrade, not the shipping configuration</strong> (EBD §1). No
+CH1, DROK-branch or HAT-feed fuses.</td>
+<td>1 + holder (2 with the HV upgrade)</td>
+<td>Battery lead (+ servo rail with the HV upgrade)</td>
+<td>🟢 <strong>ON HAND</strong>: ≥ 10 spare 6 × 30 glass holders and
+glass fuses; fuse counts and F/T marking ⏳ to read</td>
+</tr>
+<tr>
+<td>Deans T-plug pair</td>
+<td>1</td>
+<td>DROK out → STM32 disconnect</td>
+<td>🟡 <strong>SPARE</strong> (RC stock, no count)</td>
+</tr>
+<tr>
+<td>5.5 × 2.1 male barrel pigtail</td>
+<td>1</td>
+<td>Battery → CH2</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>MECCANIXITY FFC/FPC 40P breakout, <strong>female</strong> 2×20 (elec
+bay) + <strong>male</strong> 2×20 (power bay)</td>
+<td>1 + 1</td>
+<td>GPIO chain</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>Geekworm <strong>G469</strong> GPIO terminal breakout</td>
+<td>1</td>
+<td>Power bay</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>10 kΩ 1 % resistors</td>
+<td>2</td>
+<td>Fan tach pull-ups to 3V3</td>
+<td>🟢 <strong>SPARE</strong> (100-pc)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="175-usb-and-data-cables-every-cable-with-its-angle">17.5 USB and
+data cables (every cable, with its angle)</h3>
+<p><strong>Fleet layout rule (2026-10-17):</strong></p>
+<ul>
+<li>STM32 → Pi 5 <strong>native black #1</strong>.</li>
+<li>OAK-D → <strong>HAT USB 3 port</strong> (operator ruling 2026-10-27:
+"The OAK-D plugs into the HAT … as does the iflytek").</li>
+<li>Mic CH340, mic UAC and the sound-card dongle → <strong>HAT
+ports</strong>.</li>
+<li>Pi 5 native blue #1 / #2: <strong>free</strong>.</li>
+</ul>
+<p>All bay cables are right-angle; no straight-out plugs.</p>
+<blockquote>
+<p>⛔ <strong>U4 / U5 / U6 / U7 / U8 / U10 / U13 are the iFLYTEK set:
+iFLYTEK DROPPED as a fleet/production part (operator 2026-11-02): no
+more kits, not for new builds. The one kit already owned stays in use on
+Ultra or Halo. Production replacement not chosen.</strong> No buys; the
+owned kit keeps its own cables. Hold every mic-set buy until the
+replacement is picked.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Cable (exact part)</th>
+<th>Qty</th>
+<th>From → to</th>
+<th>Angle</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>U1</td>
+<td><strong>GELRHONR</strong> USB-A → USB-C, 90°, 18 W,
+<strong>Black-Left, 1 m</strong>, USB 3 5 Gbps (<a
+href="https://a.co/d/06Ygfak8">Amazon</a>, B0BRFZW7NH; the cable Ultra
+uses)</td>
+<td>1</td>
+<td><strong>HAT USB 3 port</strong> → OAK-D S2 (⏳ re-check the 1 m
+length and the left-angle exit from the HAT's port position)</td>
+<td><strong>LEFT, both ends</strong></td>
+<td>🔴 <strong>TO BUY</strong> for Nova (Halo and Ultra each have one in
+service, operator 2026-11-02)</td>
+</tr>
+<tr>
+<td>U2</td>
+<td><strong>Right-angle USB-C ↔︎ USB-C, 0.5 ft (6 in), 65 W</strong>
+(3-pack)</td>
+<td>1</td>
+<td>STM32 5 V USB-C OUT → Pi 5 USB-C PWR</td>
+<td>right-angle, both ends</td>
+<td>🟡 <strong>SPARE</strong> (1 left of the 3-pack if Ultra + Halo each
+used one): <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>U3</td>
+<td><strong>chenyang USB-C angled → 90° USB 3.0 A, 30 cm, Type-03, 5
+Gbps</strong> (<a href="https://a.co/d/0fyf4ezg">Amazon</a>, B0714LJP4F;
+the cable Ultra uses). Alternate: GELRHONR 90° short USB-A → USB-C, 25
+cm, USB 3.0 5 Gbps (<a href="https://a.co/d/07s7pIXW">Amazon</a>,
+B0B8N8DDPW)</td>
+<td>1</td>
+<td>STM32 USB-C control → Pi black #1 (udev
+<code>/dev/stm32_nova</code>)</td>
+<td>right-angle L-shape</td>
+<td>🔴 <strong>TO BUY</strong></td>
+</tr>
+<tr>
+<td>U4</td>
+<td>CH340 serial cable, JST-XH 6-pin → USB-A (in the mic kit)</td>
+<td>1</td>
+<td>R818 serial → HAT port</td>
+<td>straight</td>
+<td>🔴 <strong>TO MAKE</strong> from the kit: cut and re-crimp the XH
+end (string-measure + 3 cm)</td>
+</tr>
+<tr>
+<td>U5</td>
+<td>UAC cable, JST-XH → USB-A (in the mic kit)</td>
+<td>1</td>
+<td>R818 UAC → HAT port</td>
+<td>straight</td>
+<td>🔴 <strong>TO MAKE</strong> from the kit (keep D+/D− twisted)</td>
+</tr>
+<tr>
+<td>U6</td>
+<td><strong>USB 3.0 extension, 6″ (~0.15 m), Left Angle, M→F</strong>:
+the 6″ length of the CableCreation left-angle line (braided, 5 Gbps; the
+listing warns to check the USB-A male angle direction), in place of the
+<strong>CableCreation 1 ft</strong> (<a
+href="https://a.co/d/08DHvVpR">Amazon</a>, B01M1JZZV7) in use on Halo
+for the iFLYTEK, which is too long (operator 2026-10-20: "its too long,
+for nova we will get a 6" one"). ⏳ Confirm 6″ reaches on Halo before
+buying</td>
+<td>1 per build (Halo, Nova)</td>
+<td>iFLYTEK UAC → HAT port</td>
+<td><strong>LEFT</strong></td>
+<td>🔴 <strong>TO BUY</strong> (6″); the 1 ft spares (2 of the 3-pack)
+are the fallback</td>
+</tr>
+<tr>
+<td>U7</td>
+<td><strong>Left-angle USB extension, M→F</strong>, length
+string-measured at the speaker phase, + a clip-on ferrite (the dongle
+sits beside the analog mic ring)</td>
+<td>1</td>
+<td>Sound-card dongle (on the carrier, under the speaker) → down the
+data lane → HAT port</td>
+<td><strong>LEFT</strong></td>
+<td>⏳ length at the speaker phase (a 1 ft CableCreation spare may
+serve); clip-on ferrite <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>U8</td>
+<td>Kit 12″ straight USB-A M→F extension</td>
+<td>1</td>
+<td>Dongle, V1 stopgap only</td>
+<td>straight</td>
+<td>🔴 comes in the mic kit</td>
+</tr>
+<tr>
+<td>U9</td>
+<td><strong>D18: HOTNOW USB-C ↔︎ USB-C 1.5 ft 90°, PD 65 W</strong> (<a
+href="https://a.co/d/09YEH9LF">Amazon</a>, 3-pack) — <strong>only if it
+fails the interim gate:</strong> a 5 A e-marked 240 W right-angle
+~0.5–0.6 m cable (candidate Poyiccot <a
+href="https://www.amazon.com/dp/B0CNYR9H17">B0CNYR9H17</a>)</td>
+<td>1</td>
+<td>MusRock → HAT POWER (D18), via the base-servo hole</td>
+<td>right-angle at the HAT end</td>
+<td>🟢 <strong>ON HAND</strong>, pending the interim gate test: the
+3-pack covers <strong>Halo + Ultra + Nova exactly, no spare</strong>; 5
+A cable: buy only if the HOTNOW fails</td>
+</tr>
+<tr>
+<td>U10</td>
+<td>Mic ring ↔︎ R818 FFC, <strong>60 mm if the ring connector is on its
+top/front face, 80 mm if on its BACK face</strong> (operator 2026-11-02;
+operator checks the face on the kit). Pin count, pitch and contact type
+(A same-side / B opposite): read off the kit FFC first</td>
+<td>1</td>
+<td>Ring → R818</td>
+<td>n/a</td>
+<td>🔴 <strong>TO BUY</strong> after the kit FFC is read (the kit's 12″
+Z-folded is the V1 fallback)</td>
+</tr>
+<tr>
+<td>U11</td>
+<td><strong>MECCANIXITY FFC 40-pin 0.5 mm A-type, 500 mm</strong></td>
+<td>1</td>
+<td>Elec-bay breakout → power-bay breakout, blue stripe UP both
+ends</td>
+<td>n/a</td>
+<td>🟢 <strong>SPARE</strong> (8–9 of the 10-pack)</td>
+</tr>
+<tr>
+<td>U12</td>
+<td>PCIe 16-pin FPC</td>
+<td>1</td>
+<td>Pi 5 PCIe → HAT</td>
+<td>n/a</td>
+<td>🔴 comes with the HAT</td>
+</tr>
+<tr>
+<td>U13</td>
+<td>Speaker SPK± + AEC RLN/RLP leads</td>
+<td>1 + 1</td>
+<td>Dongle → speaker / R818 reference</td>
+<td>twisted pairs</td>
+<td>🔴 kit leads; length set at the bench</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Other builds, same table:</strong></p>
+<ul>
+<li><strong>Halo:</strong> has U1 (GELRHONR 1 m, in service), U9
+(HOTNOW, on hand). The owned iFLYTEK kit stays on Halo or Ultra with its
+own cables; nothing to buy.</li>
+<li><strong>Ultra upgrade</strong> (mic: the WonderEcho, or the one
+owned iFLYTEK kit if it goes on Ultra; no iFLYTEK buys, operator
+2026-11-02): has U1 + U3 in service. Needs U9 (1 HOTNOW, on hand). If
+the owned iFLYTEK goes on Ultra, it moves with its own cables. No FFC
+U11 and no new boards.</li>
+</ul>
+<h3
+id="176-printed-parts-production-material-per-the-operator-2026-10-20">17.6
+Printed parts (production material per the operator, 2026-10-20)</h3>
+<p>Books: H2S = <code>lumiAi_Complete_PROD_H2S.3mf</code>, X1C =
+<code>lumiAi_Complete.3mf</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Part (export stem)</th>
+<th>Qty</th>
+<th>Material / printer</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fence front + back half</td>
+<td>1 + 1</td>
+<td><strong>ASA</strong> black, H2S S2 (trial; the red PETG+ fence is
+production-grade 10-19)</td>
+<td>Back ~4 h 40 m, front ~2 h 14 m</td>
+</tr>
+<tr>
+<td>Base cover top + base</td>
+<td>1 + 1</td>
+<td>blue PLA+, X1C S1</td>
+<td>Top roof −5.08, field pass 10-20</td>
+</tr>
+<tr>
+<td>EBC cover L + R (v6, 2df29a1)</td>
+<td>1 + 1</td>
+<td><strong>ASA</strong>, H2S S2, supports ON</td>
+<td>~2 h each</td>
+</tr>
+<tr>
+<td>Battery strap L + R</td>
+<td>1 + 1</td>
+<td>clear PETG+, X1C S4</td>
+<td></td>
+</tr>
+<tr>
+<td>Camera L-adapter <code>lumi_halo_camera_adapter</code></td>
+<td>1</td>
+<td><strong>grey PETG+</strong>, X1C S2</td>
+<td>~41 m</td>
+</tr>
+<tr>
+<td>Mic carrier <strong>v5</strong> (CAD 3b36242) + R818 shroud V1.1
+(<code>cad/freecad/output/…_DRAFT</code>)</td>
+<td>1 + 1</td>
+<td>clear PETG+, X1C S4</td>
+<td>Shroud production-ready 10-20</td>
+</tr>
+<tr>
+<td>SPS30 carrier plate + strap; ZE15-CO carrier</td>
+<td>1 + 1; 1</td>
+<td>blue PLA+, X1C S1</td>
+<td><strong>TO PRINT</strong>: Nova gets the hazard sensors</td>
+</tr>
+<tr>
+<td>Wand shell +Y / −Y</td>
+<td>1 + 1</td>
+<td><strong>ASA</strong>, H2S S2</td>
+<td>~5 h each</td>
+</tr>
+<tr>
+<td>Head ring</td>
+<td>1</td>
+<td><strong>ASA</strong>, H2S S2</td>
+<td></td>
+</tr>
+<tr>
+<td>Lens plate:
+<strong><code>lumi_wand_cyl_lens_plate_WHITE21</code></strong>
+(white-lens mandate 10-17)</td>
+<td>1</td>
+<td>NylonX, H2S S5 (PrintDry 85 °C ≥ 48 h)</td>
+<td><strong>WHITE21 confirmed</strong> (operator 2026-10-20); 2 to print
+in NylonX on 10-21</td>
+</tr>
+<tr>
+<td>End plate (holed) + blank end plate (flashlight tail)</td>
+<td>1 + 1</td>
+<td><strong>grey PETG+</strong>, X1C S2</td>
+<td>Done 10-20 for the current set</td>
+</tr>
+<tr>
+<td>End ring ×2 + retaining ring ×1</td>
+<td>3</td>
+<td><strong>ASA</strong>, H2S S2 (plate 25)</td>
+<td>All rings ASA (operator 10-20)</td>
+</tr>
+<tr>
+<td>Extension half +Y LilyGO / −Y</td>
+<td>1 + 1</td>
+<td><strong>ASA</strong>, H2S S2</td>
+<td>~4 h 15 m each; field pass 10-20, zero strings</td>
+</tr>
+<tr>
+<td>Cartridge: cap rigid, cap sprung, tube (print 2), cell spacer ×2, M8
+nut ×2</td>
+<td>set</td>
+<td><strong>grey PETG+</strong>, X1C S2</td>
+<td>Current set already printed (operator)</td>
+</tr>
+<tr>
+<td>Rail stops</td>
+<td>4</td>
+<td>PA-CF</td>
+<td><strong>TO PRINT</strong>: Nova ships with its own rail (operator
+2026-10-20)</td>
+</tr>
+<tr>
+<td><em>U-bracket</em></td>
+<td>—</td>
+<td>—</td>
+<td>Shop alignment jig, not a robot part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Filament for one Nova:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Filament</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ASA black</td>
+<td>🟡 Spool open, <strong>COUNT</strong> remaining. ASA now covers most
+parts: allow ~1 kg per Nova</td>
+</tr>
+<tr>
+<td>NylonX</td>
+<td>🟢 0.5 kg on hand</td>
+</tr>
+<tr>
+<td>PETG+ clear</td>
+<td>🟢 ~1 kg, minus the shroud</td>
+</tr>
+<tr>
+<td>PETG+ black</td>
+<td>🟢 1 kg (now minor)</td>
+</tr>
+<tr>
+<td>PETG+ grey</td>
+<td>🟡 <strong>COUNT</strong>. The open spool tangled twice on 10-20;
+the operator may exchange it at Micro Center</td>
+</tr>
+<tr>
+<td>PLA+ blue</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="177-machined-parts-cnc-session-2026-10-20">17.7 Machined parts
+(CNC session, 2026-10-20)</h3>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Qty</th>
+<th>Stock</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LumiAI main base plate (<code>LumiAI_Base_Plate.nc</code>, 22
+holes)</td>
+<td>1</td>
+<td><strong>uxcell 6061, 300 × 200 × 3 mm</strong> (Amazon, <a
+href="https://a.co/d/0a7k0UIZ">https://a.co/d/0a7k0UIZ</a>; the NC
+zeroes on the stock centre, so 200 × 300 fits; the finished part is 155
+× 277)</td>
+<td>🔴 <strong>TO BUY</strong> + <strong>TO MACHINE</strong> on the 3.00
+mm NC (<code>LumiAI_Base_Plate.nc</code>). Operator 2026-10-21: Nova and
+future base plates use this uxcell 6061 sheet; the remaining AliExpress
+<strong>1060 200 × 300 × 3</strong> is repurposed for camera-mount
+cutouts. <strong>Halo's base plate is already cut from the AliExpress
+1060 and installed</strong> (operator 2026-10-21); it stays until the
+Nova sheet is machined, then Halo gets a 6061 replacement cut in the
+same session (operator 2026-10-21). ⚠️ 1060 is very soft: check Halo's
+8× M3 carriage holes for elongation and the plate for sag
+periodically.</td>
+</tr>
+<tr>
+<td>OAK-D camera plate (<code>CameraMount_Oak-D.nc</code>, 91.3 × 51 ×
+2.04)</td>
+<td>1</td>
+<td><strong>uxcell 6061 sheet, 300 × 150 × 2 mm, ~185 mm unused</strong>
+(115 mm used; operator 2026-10-21): nest 3 plates on the existing 2 mm
+NC. Also for camera-mount cutouts (operator 2026-10-21): the spare
+<strong>5052, 200 × 200 × 2</strong> (blue sandblasted/anodized; the
+existing 2 mm NC) and the remaining <strong>AliExpress 1060, 200 × 300 ×
+3</strong> (⚠️ needs a 3 mm camera NC: the 2 mm NC's Z −3.0 won't break
+through).</td>
+<td>🟢 Stock <strong>ON HAND</strong> (operator: plenty) + <strong>TO
+MACHINE</strong>. <strong>Machine 3 in one fixture session: Halo + Nova
++ a spare</strong> (operator 2026-10-20: once a plate is in the fixture,
+cut more, since every run means a chip mess and a clean-up)</td>
+</tr>
+<tr>
+<td>Wand heatsink puck Ø54 × 10
+(<code>lumi_wand_heatsink.nc</code>)</td>
+<td>1 per wand</td>
+<td><strong>Finned Al heatsink extrusion, 300 × 60, ~200 mm
+left</strong> (100 mm used; operator 2026-10-21)</td>
+<td>🟢 Stock <strong>ON HAND</strong> + <strong>TO MACHINE</strong>: 2
+pucks in the 2026-10-21 session (Nova gets a wand on day 1).</td>
+</tr>
+<tr>
+<td>ArmPi hex servo base plate</td>
+<td>0</td>
+<td>—</td>
+<td>🟢 Comes with the arm</td>
+</tr>
+</tbody>
+</table>
+<p>Tools: all in kit (MM-1000 takes OZ8 collets; 1/8" + 1/4" on
+hand).</p>
+<h3 id="178-fasteners-hardware-and-consumables-from-the-cad-macros">17.8
+Fasteners, hardware and consumables (from the CAD macros)</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Where</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MGN15H rail (~302 mm, confirm vs Ceiling_Rail_Mount_Guide) +
+carriage</td>
+<td>2 + 2</td>
+<td>Ceiling mount</td>
+<td>🟢 <strong>ON HAND</strong>: Nova gets its own rail; "an extra one
+in stock" (operator 2026-10-20). Confirm it's the full set: 2 rails + 2
+carriages</td>
+</tr>
+<tr>
+<td>M3 SHCS (carriage → plate)</td>
+<td>8</td>
+<td>Base plate</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>M4 female threaded standoff, Ø5.4 body (fence posts 1–6)</td>
+<td>6</td>
+<td>Fence</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td><strong>M4 M-F brass hex standoff, 30 mm</strong> (fence 60 →
+<strong>90 mm</strong>, operator 2026-10-22, for the power-bay carrier
+headroom): one added per fence post, between the plate stud and standoff
+#2 (CAD)</td>
+<td>6 per robot</td>
+<td>Fence posts 1–6</td>
+<td>🟡 <strong>COUNT</strong> in the brass multi-kit, else 🔴 <strong>TO
+BUY</strong>: 18 for Halo, Ultra and Nova (+ spares)</td>
+</tr>
+<tr>
+<td><strong>Power-bay carrier screws, self-tap only</strong> (operator
+2026-10-22; CAD self-tap-only gate): <strong>counts per robot:</strong>
+<strong>M1.7 × 6 button-head-with-washer self-tap ×8</strong> (INA226 ×2
+boards × 2 + Mus-14 × 4; Ø1.3 pilots; <strong>dry-fit one screw per
+board</strong>: if the washer flange sits on the INA226 header plastic,
+use a plain M1.7 pan head or a nylon washer instead); <strong>M2.5 × 8
+pan self-tap ×4</strong> for the one TMP102 (+ <strong>×2</strong> more
+only if the robot carries the HL-PBB); <strong>M2 × 8 pan self-tap
+×6</strong>: 2 for the G469's 2 support posts (Ø1.6 pilots; posts stop
+0.1–0.5 under the seated board, shim at fit) + <strong>4 for the raised
+IP6518 phone charger</strong> (2026-10-27); <strong>M3 × 8 pan self-tap
+×14</strong> (D-1459 ×4 if fitted, breakout ×2, 6 strap screws = 2 PSU
+strap + 4 battery-strap tabs, PSU strap → fence pads). Plus <strong>1
+printed TAB_CAP</strong> (insulating) on the strap-tab screw by the L
+terminal, <strong>retained with a dot of RTV 81158</strong>. G469
+stacked on the breakout header <strong>plus 2 carrier posts</strong>
+(operator: header-only was wobbly).</td>
+<td>per robot</td>
+<td>Power-bay carrier</td>
+<td>M1.7 × 6 (XunLiu stainless, button head with washer, 100 pcs) and
+M2.5 × 8 (CLAHJQX 304 stainless, Phillips pan, 100 pcs): 🟡
+<strong>ORDERED</strong>, arriving 2026-10-29 (Amazon
+111-5664886-5186639). <strong>M2 × 8 and M3 × 8 pan self-taps:
+Stock</strong> (HanTof kit, §1.2)</td>
+</tr>
+<tr>
+<td>3/4″ M4 F standoff + M4 SHCS + M4 fender washer ≥ Ø15</td>
+<td>2 + 2 + 2</td>
+<td>Base-cover tubes</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>Per EBC cover: 3/4″ M4 F standoff + M4 SHCS + plain 1″ post</td>
+<td>×2 covers</td>
+<td>EBC covers</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>M3 self-tapping threaded insert (for the existing Ø4.0 bores) +
+<strong>M3 × 25 machine screw</strong> (through the 20 mm NF-A4x20 frame
+into the insert)</td>
+<td>8 + 8</td>
+<td>Fence fans</td>
+<td>🟡 <strong>COUNT</strong> (inserts and screws: both kits stop at M3
+× 20)</td>
+</tr>
+<tr>
+<td>M2 × 10 Torx pan machine screw + M2 nut (PIR: through fence wall +
+PCB, nut on the PCB side)</td>
+<td>8 + 8</td>
+<td>Fence</td>
+<td><strong>Stock</strong> (GB2672 kit)</td>
+</tr>
+<tr>
+<td>M3 × 8 pan self-tap (DROK ×4, into the fence bosses) + M3 pan
+self-tap (AC inlet ×2, into the fence's M3 mount posts)</td>
+<td>6</td>
+<td>Fence</td>
+<td><strong>Stock</strong> (HanTof kit)</td>
+</tr>
+<tr>
+<td>M4 SHCS + 2 mm foam pad (battery straps)</td>
+<td>4 + 2</td>
+<td>Base plate</td>
+<td>🟡 <strong>COUNT</strong> (nut side not modelled: Electronics to
+confirm)</td>
+</tr>
+<tr>
+<td>M3 × 10 pan self-tap</td>
+<td>4</td>
+<td>Base cover</td>
+<td><strong>Stock</strong> (HanTof kit)</td>
+</tr>
+<tr>
+<td>Mic carrier <strong>v5</strong> (CAD 3b36242): 7× M3 × 8 pan
+self-tap, 4× M3 × 16 pan self-tap (R818/parts, unchanged) + <strong>4×
+M3 × 8 Torx pan MACHINE screws</strong> (304 SS, GB2672 kit) through the
+carrier's corner Ø3.4 holes and the elec-bay cover into the front/back
+plate flanges' M3 threads (M3 × 10 also clears), rubber washers, 1 mm
+foam</td>
+<td>set</td>
+<td>§16</td>
+<td>Self-taps (M3 × 8, M3 × 16): <strong>Stock</strong> (HanTof kit). M3
+× 8 Torx machine: <strong>Stock</strong> (GB2672 kit). The carrier lies
+flat on the cover; the cover's central Ø4.2 holes are unused</td>
+</tr>
+<tr>
+<td>Camera adapter: 2× M2 (servo) + 2× M3 (plate) Torx pan machine
+screws; OAK-D M4 pair</td>
+<td>set</td>
+<td>Camera</td>
+<td>M2 / M3: <strong>Stock</strong> (GB2672 kit). OAK-D <strong>M4
+machine pair: 🟡 COUNT</strong> (neither kit has M4 machine screws)</td>
+</tr>
+<tr>
+<td>Wand: 3× M3 SHCS (heatsink), M2 self-taps (KESHY posts ×6, JST-F ×2,
+cradle ears ×2), bulkhead M3 self-tap ×4 (verify v9.12), 3× VMQ O-ring
+(<strong>19 × 21 × 1.0</strong> for WHITE21)</td>
+<td>set</td>
+<td>Wand</td>
+<td>🟡 O-rings: 50 + 50 ordered 10-17 (confirm delivery)</td>
+</tr>
+<tr>
+<td>Cartridge: Keystone 5221 buttons + 5222 springs (4× 26700); contact
+plates 2× M1.2 × 3 round-head self-tap each (16 total; CAD draws × 2.5,
+the 3 mm tip breaks the cap's outboard face by 0.09 mm at r ≈ 18, clear
+of the stop ring); spacers 4× M1.2 × 3 CS each (8 total)</td>
+<td>set</td>
+<td>Cartridge</td>
+<td>✅ <strong>M1.2 Stock</strong>: uxcell 50× M1.2 × 3 round head +
+100× M1.2 × 3 countersunk, delivered 2026-10-07/08 (Amazon
+111-1212720-8179424)</td>
+</tr>
+<tr>
+<td>Wire 18 / 22 / 26 AWG silicone; 18 AWG mains-rated + green</td>
+<td>spools</td>
+<td>Bay</td>
+<td>🟡 18/22/26 <strong>SPARE</strong>; mains-rated
+<strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>Ferrules E1008 / E0508 / E0308 / E0208 + AIRIC violet (E0508
+<strong>banned at the G469</strong>)</td>
+<td>kits</td>
+<td>All cage landings</td>
+<td>🟡 <strong>SPARE</strong> (no per-size count)</td>
+</tr>
+<tr>
+<td>JST-XH (TAREA 600-pc), Kuject terminals, Fastons, Tellegloww
+piggybacks (23+), heat-shrink, Permatex 81158, Wago</td>
+<td>kits</td>
+<td>General</td>
+<td>🟢 <strong>SPARE</strong></td>
+</tr>
+<tr>
+<td>Wand electronics (<strong>Nova gets a wand on day 1</strong>): KESHY
+3 W drivers ×12, PCA9685 (0x41; 🟢 <strong>3 in stock total, operator
+2026-10-25: Halo + Nova use 2, 1 spare</strong>), LED stars ×3 (2 RGBW +
+1 RGBWW), lens set, 8329TCM epoxy, ST1 rails ×3, 6-pin XH tether (22 AWG
+×3 + 26 AWG ×3, ~550–600 mm)</td>
+<td>set</td>
+<td>Wand</td>
+<td>🟡 KESHY: 29 on hand (Electronics) vs 14/15 in WI.
+<strong>COUNT</strong>. PCA9685: 3 boards owned. Stars: 10 + 10 owned,
+<strong>COUNT</strong> unbonded</td>
+</tr>
+</tbody>
+</table>
+<h3 id="179-count-on-the-shelf-no-usable-count-in-the-docs">17.9 Count
+on the shelf (no usable count in the docs)</h3>
+<p>Check these physically, then strike them from the order list or add
+them to it.</p>
+<ul>
+<li>🟡 <strong>Compute:</strong> spare Pi 5 cooler, NVMe, MECCANIXITY
+breakouts (female + male), G469.</li>
+<li>🟡 <strong>Arm:</strong> rubber pads.</li>
+<li>🟡 <strong>Sensors:</strong> TMP102 ×2, HC-SR501 ×4, M3 self-tapping
+threaded inserts ×8 (fence fans).</li>
+<li>🟡 <strong>Power:</strong> ALEAIVY pack, DROK (STM32 7.5 V) 8 A, C14
+(4 on order, AC-04C), 4.8 flag Fastons 8 red + 1 blue (on order, est.
+Nov 19), C13 cord, barrel pigtail, mains-rated 18 AWG, whether the
+D-1459 arrived.</li>
+<li>🟡 <strong>USB:</strong> 0.5 ft C-C (3-pack remainder),
+CableCreation (3-pack remainder).</li>
+<li>🟡 <strong>Hardware:</strong> M4 F standoffs (Ø5.4, 3/4″), plain 1″
+posts, M3 × 16 pan self-taps, M2/M3 screws, Keystone 5221/5222.</li>
+<li>🟡 <strong>Filament:</strong> ASA black, PETG+ grey, PLA+ blue
+remaining.</li>
+</ul>
+<h3 id="1710-order-list-confirmed-to-buy-as-of-2026-10-20">17.10 Order
+list (confirmed TO BUY as of 2026-10-20)</h3>
+<p><strong>Compute:</strong></p>
+<ul>
+<li>🔴 Raspberry Pi 5 16 GB</li>
+<li>🔴 Waveshare PCIe TO M.2 USB HAT+</li>
+<li>🔴 NVMe SSD (Samsung preferred)</li>
+<li>🔴 microSD (backup repo)</li>
+<li>🔴 ShanWan gamepad + dongle</li>
+</ul>
+<p><strong>Sensors:</strong></p>
+<ul>
+<li>🔴 OAK-D S2 <strong>auto-focus</strong></li>
+<li>⛔ HiWonder mic array full bundle: do not buy. <strong>iFLYTEK
+DROPPED as a fleet/production part (operator 2026-11-02): no more kits,
+not for new builds. The one kit already owned stays in use on Ultra or
+Halo. Production replacement not chosen.</strong></li>
+<li>🔴 Sunon MC40201V2-Q000-S99 fence fan ×2 (AliExpress)</li>
+<li>🔴 ACP4010-12-PWM wand fan ×2 (1 spare already on hand)</li>
+</ul>
+<p><strong>Power:</strong></p>
+<ul>
+<li>🔴 MZMW PSC-100-12</li>
+<li>🔴 HL-PBB-2-6-MINI ×3</li>
+<li>🟡 Power-bay carrier self-taps <strong>M1.7 × 6</strong> (8; XunLiu
+button head with washer) and <strong>M2.5 × 8</strong> (4, +2 with an
+HL-PBB; CLAHJQX pan): <strong>ORDERED</strong>, arriving 2026-10-29
+(Amazon 111-5664886-5186639).</li>
+<li>🟢 PIR leads built from scratch (Electronics 40e356f): ~4.5 m of 26
+AWG Fermerry silicone per robot (carrier v18d cuts 460/510/240/280) + 4
+Dupont 3-way housings + 12 female pins (PEBA kit), all in stock</li>
+<li>🔴 M4 M-F brass hex standoff, 30 mm ×18 (+spares): taller 90 mm
+fence, 6 per robot; check the brass kit first</li>
+<li>🔴 Locking C14 inlet (retention clip or V-Lock + locking cord) ×2:
+Nova + Halo (Ultra already has one); fit-check one first</li>
+<li>🟡 Flashlight cartridge connector: <strong>XT30</strong> (operator,
+2026-11-05). <strong>ON ORDER</strong> (AliExpress, 2026-11-06, est. Nov
+19): XT30/XT30U yellow, 10 pairs. Not stated as genuine Amass: on
+arrival, solder one pair and check the housing doesn't soften at the
+cup, and meter polarity per <a href="Power_Bay_Design.html">Power_Bay
+§16b.1</a>.</li>
+<li>🔴 ALEAIVY pack + DROK (STM32 7.5 V), unless the shelf count finds
+spares</li>
+</ul>
+<p><strong>Cables:</strong></p>
+<ul>
+<li>⛔ U6 / U10 (iFLYTEK UAC extension, mic FFC): do not buy (iFLYTEK
+dropped as a fleet part)</li>
+<li>🔴 GELRHONR USB-A→C 1 m Black-Left</li>
+<li>🔴 20 cm flat A→C, unless spare</li>
+</ul>
+<p><strong>Aluminium:</strong></p>
+<ul>
+<li>🔴 uxcell 6061 sheet, 300 × 200 × 3 mm, <strong>×2</strong>: Nova
+base plate + Halo's 6061 replacement, machined together (<a
+href="https://a.co/d/0a7k0UIZ">https://a.co/d/0a7k0UIZ</a>)</li>
+</ul>
+<p><strong>CNC tooling:</strong></p>
+<ul>
+<li>🔴 SHARPRO 1/8" (Ø3.175) single-flute O-flute endmill, 1/4" shank,
+flute ≥ 15 mm, <strong>×2</strong> (only one on hand, in the chuck; CNC
+402902b)</li>
+</ul>
+<p>Camera-plate and heatsink stock are on hand.</p>
+<ul>
+<li>🔵 <strong>Creator edition only, buy WITH the 4 TB NVMe (not
+now):</strong> a low-profile <strong>M.2 2280 heatsink, ≤ 4 mm total
+incl. pad</strong>, aluminium / copper, top-side pad, adhesive or clips
+(no under-drive bands); fallback a 0.5–1 mm copper / graphene
+heat-spreader label. <strong>Measure first:</strong> the gaps under and
+above the drive on the real stack. Drive criteria + gate: EBD §3.6
+"Creator edition — 4 TB NVMe option".</li>
+</ul>
+<h3 id="1710a-ordered-2026-10-22-aliexpress">17.10a Ordered 2026-10-22
+(AliExpress)</h3>
+<p><strong>Arrival checklist:</strong> <a
+href="Power_Bay_Design.html">Power_Bay_Design.md §16b</a> (Electronics
+b586eac). It covers the battery XT30 lead + BMS ≥ 10 A, the INA226 shunt
+code (⚠️ R010 clips the ~8 A peaks), TMP102 ADD0 tied in the cable, and
+a CC/CV buck ≥ 8 A continuous. Caliper every board's holes for CAD.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Total</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MZMW <strong>PSC-100-12</strong> UPS PSU, 100–240 V, 100 W</td>
+<td>1</td>
+<td>$25.95</td>
+<td>confirmed</td>
+<td>Nova PSU</td>
+</tr>
+<tr>
+<td><strong>32700 4S1P 12 V 10 Ah LiFePO4</strong> pack, <strong>XT30 +
+JST</strong> leads</td>
+<td>1</td>
+<td>$39.96</td>
+<td>confirmed</td>
+<td>⚠️ XT30, NOT the ALEAIVY 5.5 × 2.1 barrel: needs an XT30 → CH2 lead
+(F1 stays first off the pack). Check the BMS low-temp cut-off on
+arrival</td>
+</tr>
+<tr>
+<td><strong>HL-PBB-2-6-MINI</strong> 16 A / 48 V distribution</td>
+<td>2</td>
+<td>$14.52</td>
+<td>confirmed</td>
+<td>✅ Enough: 1 D-1459 on hand + these 2 HL-PBB = <strong>3 blocks for
+3 robots</strong> (operator 2026-10-22)</td>
+</tr>
+<tr>
+<td><strong>INA226, R002 shunt</strong> (orange + green screw terminals,
+A0/A1 address pads, header GND/SCL/SDA/VCC): the same GODIYMODULES-style
+board as Halo's INA226-MAIN</td>
+<td>4</td>
+<td>—</td>
+<td><strong>in transit</strong> (collected by carrier 2026-10-23)</td>
+<td>✅ Meets the spec (Electronics c52bde5): R002 confirmed from the
+listing photo's shunt body code. The carrier's existing posts fit it
+(dead Ø2.0 @ 17.5 mm pair); verify on arrival. INA226-BATT for Halo,
+Ultra, Nova + 1 spare</td>
+</tr>
+<tr>
+<td><strong>HC-SR501 PIR</strong> (HC-SR501-BLUE, 10-pack)</td>
+<td>10</td>
+<td>$11.64</td>
+<td>confirmed 2026-10-24</td>
+<td>Nova's 4 + spares. Same module the fence PIR mounts and the carrier
+PIR-corner keep-outs are modelled on; caliper the back-component height
+on arrival (CAD assumed 8.5)</td>
+</tr>
+<tr>
+<td><strong>SPS30</strong> particulate (dust) sensor</td>
+<td>1</td>
+<td>$24.27</td>
+<td>confirmed 2026-10-24</td>
+<td>Nova's hazard pair (§17.3) is covered + one spare. Check the
+variant/cable on arrival (listing SKU text is blank)</td>
+</tr>
+<tr>
+<td><strong>TMP102</strong> high-precision module</td>
+<td>4</td>
+<td>$7.63</td>
+<td>confirmed</td>
+<td>⚠️ Generic, not SparkFun Qwiic: check its hole pattern vs the
+carrier's 21 × 21 posts, the connector and the address pins on
+arrival</td>
+</tr>
+<tr>
+<td><strong>Geekworm G469</strong> terminal breakout</td>
+<td>2</td>
+<td>$20.71</td>
+<td><strong>shipped</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>40P FPC/FFC adapter board</strong> (0.5 mm → 2.54 mm)</td>
+<td>4</td>
+<td>$26.12</td>
+<td>confirmed</td>
+<td>The breakout the carrier is being made compatible with (53.87 ×
+25.81, 2 holes ~48.8 c/c, caliper on arrival)</td>
+</tr>
+<tr>
+<td>40P FFC/FPC 0.5 mm connector, straight header</td>
+<td>4</td>
+<td>$17.09</td>
+<td>confirmed</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Sunon MC40201V2-Q000-S99</strong> fence fan</td>
+<td>4</td>
+<td>$24.81</td>
+<td>confirmed</td>
+<td>Planned 2; 4 ordered (Electronics suggested 3–4). Acceptance test
+per Power_Bay §11.2.0a</td>
+</tr>
+<tr>
+<td><strong>ACP4010-12-PWM</strong> wand fan, 12 V, double ball</td>
+<td>1</td>
+<td>$13.52</td>
+<td>confirmed</td>
+<td>✅ Enough: 2 already in stock + this 1 = <strong>3 wand fans for 3
+wands</strong> (operator 2026-10-22)</td>
+</tr>
+<tr>
+<td>CC/CV buck converter, DC-DC</td>
+<td>1</td>
+<td>$14.66</td>
+<td>confirmed</td>
+<td>Presumed the STM32 7.5 V buck (DROK slot): confirm the part</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1711-open-decisions">17.11 Open decisions</h3>
+<ol type="1">
+<li><strong>HAT 5 V source.</strong> The dual-USB-C buck (doc name
+Mus-14, fixed 5 V), 5 on hand, self-tapped onto the power-bay carrier.
+It stays unless the ≥ 4.90 V gate fails at install; the interim until
+the LM25116 300 W CC/CV buck (🔴 not ordered; CAD reserves its carrier
+spot, ≈ 61 × 53 × 28).</li>
+<li><strong>DC rocker — closed.</strong> The operator keeps the KCD1,
+which has 6 months of AC/DC service. The <strong>DC rocker is in the
+front fence half</strong>; the rocker cutouts are CAD's proven design
+(operator 2026-10-20), so no change is needed.</li>
+<li><strong>Fusing — closed.</strong> The shipping configuration carries
+one fuse, F1 on the battery lead; the future HV-servo upgrade adds the
+servo-rail fuse. Both 10 A 6 × 30 glass, in stock.</li>
+<li><strong>HL-PBB mount:</strong> when the boards arrive, caliper the
+centre-to-centre spacing of the two mounting holes (planned ~60 mm,
+eyeballed). It self-taps onto the carrier's posts (M2.5 × 8), so check
+the spacing against them.</li>
+<li><strong>Rail — closed.</strong> Nova gets its own rail (one spare in
+stock); 4 PA-CF rail stops to print.</li>
+<li><strong>Hazard sensors — closed.</strong> Nova gets the SPS30 +
+ZE15-CO, both in stock.</li>
+<li><strong>Wand — closed.</strong> Nova gets a wand on day 1 (operator
+2026-10-20). The heatsink, KESHY, PCA9685, LED, lens, tether and
+wand-fan lines all apply.</li>
+<li><strong>Lens plate — closed.</strong> WHITE21; 2 NylonX prints on
+2026-10-21 (H2S plate 23). ⏸ <em>2nd print on hold (operator 2026-10-23)
+until the uxcell-lens mechanical fit is confirmed.</em></li>
+<li><strong>OAK-D S2 — closed.</strong> Auto-focus.</li>
+<li><strong>U7 extension — closed.</strong> A 6″ left-angle USB 3.0 M→F
+extension (the 1 ft CableCreation is too long) + a clip-on ferrite.</li>
+<li><strong>"3 simple CNC plates" — closed.</strong> They are the OAK-D
+camera mounting plates; batch all 3 in one fixture session.</li>
+</ol>
+<h3 id="1712-bring-up-and-config-no-purchase-mirror-halo">17.12 Bring-up
+and config (no purchase; mirror Halo)</h3>
+<ul>
+<li><strong>Network:</strong>
+<ul>
+<li>hostname <code>lumiai-nova</code>, with
+<code>127.0.1.1 lumiai-nova</code> in its <code>/etc/hosts</code>.
+Without it, every sudo waits ~88 s on DNS.</li>
+<li>two static IPs (wired + Wi-Fi) with two AmpliFi DHCP reservations by
+MAC.</li>
+<li>GMKtec <code>/etc/hosts</code> + the fleet sync map.</li>
+</ul></li>
+<li><strong>Access:</strong> login user, GMKtec SSH key, NOPASSWD sudo,
+docker group.</li>
+<li><strong>Container:</strong> <code>LumiNova</code>
+(<code>lumiai-ultra:v1.0-dev</code>),
+<strong><code>--privileged -v /dev:/dev</code></strong>, never a frozen
+<code>--device</code> list (Rosmaster lost its gamepad and STM32 for 5
+days). Label <code>ai.lumi.fleet.role=ros-runtime</code>.</li>
+<li><strong>ROS:</strong> CycloneDDS with
+<code>/etc/sysctl.d/99-cyclonedds.conf</code> (rmem_max). udev
+<code>/dev/stm32_nova</code> by the ID_PATH of Pi native black #1, never
+a raw ttyUSBn.</li>
+<li><strong>Robot description:</strong> <code>nova.urdf.xacro</code> /
+controllers yaml / launch cloned from Halo (<code>/nova</code>),
+<code>auto_reconnect=true</code>, <code>recovery_glide_rad_s=0.4</code>,
+<code>nova_stack.service</code>.</li>
+<li><strong>Servo commissioning:</strong> IDs 1–6, horn index at pulse
+500, per-unit EEPROM offset trims to Ultra pose parity. Startup pose
+[210, 500, 110, 825, 600, 500].</li>
+<li><strong>Backups:</strong> restic daily/weekly + Docker images. In
+cron.d use <strong><code>MAILTO=""</code></strong>: a bare
+<code>MAILTO=</code> silently disabled every image backup on 10-11..13.
+Set <code>RESTIC_RUN_AS</code> to the repo owner.</li>
+<li><strong>Fleet:</strong> monitoring rows (Fleet session adds them
+once the hardware is up); Telegram name "Nova".</li>
+<li><strong>EBC cover fit:</strong> Nova is built on the ArmPi Ultra
+base plate from the start, unlike Halo (an FPV moved onto it, whose bay
+sits a little off). At assembly, caliper the elec bay wall END → each
+cover's panel inner face (front, back, top) and send the numbers to CAD,
+which will check the bay position in the assembly model (operator
+2026-10-20: "we'll caliper the nova when we get to it").</li>
+<li><strong>Labels:</strong>
+<ul>
+<li>an asset label on the unit: hostname, eth + Wi-Fi MAC, static
+IPs.</li>
+<li>a label on the gamepad dongle, so pads never swap between
+robots.</li>
+</ul></li>
+</ul>
+<h2
+id="16b-power-bay-carrier-build--where-it-lives-pointer-2026-10-23">16b.
+Power-bay carrier build — where it lives (pointer, 2026-10-23)</h2>
+<p>The power-bay <strong>carrier</strong> (Nova onward; Halo/Ultra when
+carriered) replaces mounting boards on the PSU cover. Everything for
+building it lives in Power_Bay_Design, not here:</p>
+<ul>
+<li><p><strong>Layout, mounting and rules:</strong> <a
+href="Power_Bay_Design.html#1139-power-bay-carrier--layout-requirements-in-design-2026-10-22">Power_Bay
+§11.3.9</a>. Boards self-tap onto moulded posts (no studs, <strong>no
+nylon</strong>); one distribution block per robot; INA226-MAIN +
+INA226-BATT side by side; F1 in its cradle; the mains on its own
+right-edge lane.</p></li>
+<li><p><strong>Wiring schematic:</strong> routes are unchanged through
+v18d, and the route IDs are the labels embossed on the carrier.</p>
+<p><img src="images/power_bay/carrier_wiring.png"
+alt="Power-bay carrier wiring schematic: every harness by its CAD route ID." /></p></li>
+<li><p><strong>Routing diagram (current, v18d):</strong> where each
+route runs on the carrier: lanes, fork sites, entries. Mounting points
+and the fit in the fence are in <a
+href="Power_Bay_Design.html#1139-power-bay-carrier--layout-requirements-in-design-2026-10-22">Power_Bay
+§11.3.9</a>.</p>
+<p><img src="images/power_bay/carrier_routing.png"
+alt="Carrier wiring (current CAD layout): every harness from terminal to terminal in CAD&#39;s wire colours, shared lanes drawn as parallel tracks, plain +Z top view, fans/back wall at the top." /></p></li>
+</ul>
+<p><strong>Interactive version:</strong> <a
+href="images/power_bay/carrier_routing.html">carrier_routing.html</a>.
+Open it in a browser (download it; GitHub shows HTML as source). Toggle
+harnesses or single routes, click a route to focus it, scroll to zoom,
+drag to pan.</p>
+<ul>
+<li><strong>Harness build list</strong> (every harness: conductors,
+gauge, CAD-measured length, terminations, build order): <a
+href="Power_Bay_Design.html#16c-carrier-harness-build-list--every-harness-by-cad-route-id-carrier-builds-2026-10-23">Power_Bay
+§16c</a>.</li>
+<li><strong>Crimping the I²C daisy chain:</strong> each board's 4-way
+female housing takes TWO 26 AWG per contact (in + out). Strip both wires
+to the same length, twist them, crimp them together in one barrel (§3
+technique), then tug-test each wire separately. The end board (TMP102)
+is single-wire. Crimp by NET: the INA226 and TMP102 header orders
+differ.</li>
+<li>Screws: the §17 carrier-screw row.</li>
+</ul>
+<h2 id="related-docs">Related Docs</h2>
+<ul>
+<li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> —
+power-bay sections: G469 chain, sensor installs, rails, fans, APIELE /
+HL-PBB / D-1459 distribution, PIR, power-up verification</li>
+<li><a
+href="Electronics_Soldering_Guide.html"><code>Electronics_Soldering_Guide.md</code></a>
+— sibling bench-ops guide owning all soldering operations</li>
+<li><a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+— wand design, rails, tether, joint</li>
+<li><a
+href="Lumi_Wand_Flashlight_Variant.html"><code>Lumi_Wand_Flashlight_Variant.md</code></a>
+— flashlight SKU: extension, ground-bus board, cartridge</li>
+<li><a href="3D_Printing_Guide.html"><code>3D_Printing_Guide.md</code></a>
+/ <a
+href="CNC_Machining_Guide.html"><code>CNC_Machining_Guide.md</code></a> —
+sibling bench-ops guides</li>
+</ul></body></html>

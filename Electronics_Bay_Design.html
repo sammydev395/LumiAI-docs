@@ -1,0 +1,1463 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Electronics_Bay_Design</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="lumiai-ultra--electronics-bay-stm32--rpi5--usb-cable-bom">LumiAI
+Ultra — Electronics Bay: STM32 + RPi5 + USB Cable BoM</h1>
+<p><strong>Purpose:</strong> documents the ArmPi Ultra STM32 controller
+card + Raspberry Pi 5 (16 GB) + the right-angle USB cable and adapter
+selections chosen to keep the bay compact while carrying USB power in /
+control, camera stream (OAK-D S2), and voice (iFLYTEK far-field mic
+array). The Pi5 runs headless (Wi-Fi only, no monitor / no Ethernet in
+the production config).</p>
+<p><strong>Scope boundary:</strong> the bay's <strong>thermal / acoustic
+/ structural design</strong> (fence CAD, PIR mounts, bay-fan mount +
+wiring, PSU + AC rocker) is <strong>owned by a separate Electronics-bay
+agent</strong> and lives at <a
+href="../memory/project_bay_thermal_acoustic_design.html"><code>memory/project_bay_thermal_acoustic_design.md</code></a>
++ <a
+href="Power/Compact_UPS_Power_System_HiWonder_RPi5.html"><code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code></a>.
+<strong>This doc only covers the STM32-Pi5 stack + the cables/adapters
+that live between them and their external interfaces.</strong></p>
+<p>Related docs:</p>
+<ul>
+<li><a
+href="Lumi_Wand_Integration.html#51-power-chain"><code>Lumi_Wand_Integration.md</code>
+§5.1</a> — split-rails power topology (bay D-1459 distribution block →
+wand 13.8 V + STM32-DROK 7.5 V)</li>
+<li><a
+href="Lumi_Wand_Integration.html#102-end-to-end-diagram-power-bay--arm--gripper--wand"><code>Lumi_Wand_Integration.md</code>
+§10.2</a> — end-to-end power bay wiring diagram</li>
+<li><a
+href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+§11.3</a> — bay 13.8 V distribution-block assembly (D-1459 of record;
+Halo v1 / Ultra-retrofit APIELE as-built §11.3.7)</li>
+<li><a
+href="Power/Compact_UPS_Power_System_HiWonder_RPi5.html"><code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code></a>
+— PSU, DROK, battery, fuse specs</li>
+</ul>
+<hr />
+<h2
+id="1-stm32-controller-card--hiwonder-armpi-ultra-high-performance-robotic-arm-controller">1.
+STM32 Controller Card — Hiwonder ArmPi Ultra High-Performance Robotic
+Arm Controller</h2>
+<p>Modular design with a high-performance STM32 processor + 2 bus servo
+ports + buzzer + customizable keys + I²C and GPIO breakouts. Acts as the
+bay's <strong>power hub</strong> — takes 7.4-8.4 V in (<strong>7.5
+V</strong>, Hiwonder's own adapter voltage; until the HV servo swap the
+same input feeds the servo bus, after it the servos get their own 11.1 V
+rail, see <em>Servo and board power</em> below), and provides regulated
+5 V @ 5 A out to feed the RPi5 and downstream USB peripherals.</p>
+<blockquote>
+<p><em>STM32 controller card photo — drop at
+<code>docs/images/electronics_bay/armpi_ultra_stm32_controller.png</code>
+when captured.</em></p>
+</blockquote>
+<p><strong>Parameters (per vendor spec sheet):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Power input</td>
+<td><strong>7.4-8.4 V</strong> (vendor spec; held at <strong>7.5
+V</strong> on every build, see <em>Servo and board power</em>
+below)</td>
+<td>LED</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Bus servo port</td>
+<td>2</td>
+<td>I²C port</td>
+<td>2</td>
+</tr>
+<tr>
+<td>GPIO port</td>
+<td>2</td>
+<td>Buzzer</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Custom key</td>
+<td>2</td>
+<td>USB port</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5 V 5 A external power port</td>
+<td>1 (USB-C, powers RPi5)</td>
+<td>Controller switch</td>
+<td>1 (on/off)</td>
+</tr>
+<tr>
+<td>Installation hole distance</td>
+<td><strong>49 × 38 mm</strong></td>
+<td>Product size</td>
+<td><strong>73 × 65 mm</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Ports (per the vendor callout diagram):</strong></p>
+<ul>
+<li><strong>STM32 Core Board</strong> with onboard flash (located under
+the core board)</li>
+<li><strong>2× LEDs</strong> (status)</li>
+<li><strong>1× USB port</strong> (control / firmware — connects to Pi5
+USB-A per §3.3 below)</li>
+<li><strong>2× Bus servo ports</strong> — for the arm servo bus (LX-225,
+HTS-16L, HTS-25L, etc.)</li>
+<li><strong>2× GPIO ports</strong> — general-purpose I/O breakouts</li>
+<li><strong>2× I²C ports</strong> — extra I²C headers (fleet-standard
+I²C is on the G469 chain, not these)</li>
+<li><strong>2× Custom keys</strong> — assignable</li>
+<li><strong>Power port</strong> (screw-terminal) — input +V / GND,
+<strong>7.5 V</strong> (from the DROK today; from the 7.5 V board buck
+after the HV servo swap)</li>
+<li><strong>5 V 5 A external power port</strong> — USB-C
+<strong>OUTPUT</strong> that powers the RPi5 (see §3.2 below)</li>
+<li><strong>Buzzer</strong></li>
+<li><strong>Controller switch</strong> — on-off, integral to the STM32
+board (separate from the bay-level AC/DC rockers on the fence)</li>
+</ul>
+<p><strong>Power flow through the STM32 board (bay-level
+context):</strong></p>
+<pre><code>PSU 13.8 V → D-1459 A2 → DROK buck (7.5 V, 8 A rated) → STM32 power port                                                              │
+                                                              ▼
+                                             STM32 board internal 5 V regulator
+                                                              │
+                                                              ▼
+                                             5 V 5 A external USB-C output
+                                                              │
+                                                              ▼
+                                              RPi5 USB-C power input (§3.2)
+                                                              │
+                                                              ▼
+                                         Downstream 5 V loads on the Pi5:
+                                         - NVMe drive
+                                         - OAK-D S2 (via §3.1)
+                                         - iFLYTEK mic array
+                                         - PIR modules (via GPIO)
+                                         - Wand tether +3.3 V (via G469)</code></pre>
+<blockquote>
+<p>🎯 <strong>Distribution block — design of record 2026-09-29:</strong>
+<strong>CZH-Labs D-1459</strong> or <strong>YRYAR
+HL-PBB-2-6-MINI</strong> dual-bus distribution module, ferrule-based,
+zero modification — <strong>from the NOVA build on</strong> (next build,
+Ultra-compatible kit in stock). <strong>Halo v1 keeps its as-built
+modified APIELE, and the pending Ultra bay retrofit uses the 4 in-stock
+APIELE spares</strong> (spec + port map: <a
+href="Power_Bay_Design.html#1137-apiele-barrier-strip--physical-spec"><code>Power_Bay_Design.md</code>
+§11.3.7</a>). Wiring + port map: <a
+href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+§11.3</a>; part spec: <a
+href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
+§1.4</a>.</p>
+</blockquote>
+<p><strong>Servo and board power (operator, 2026-11-12):</strong> the
+STM32 board passes its input to its bus-servo port with no series diode
+(Halo's servos read within 0.05–0.15 V of the board input; at no load,
+port 1 reads the input terminal), so whatever feeds the board also feeds
+the servos unless the port's V+ is cut out of the path. <strong>The path
+is resistive:</strong> Halo's board at ~12 V with a 2.8 A resistive load
+on port 1 (2026-11-12) dropped ~0.7 V input terminal → port (~0.24 Ω;
+~0.56 V on the + side, ~0.13 V on the −; slide switch not warm, so
+likely trace; the port reading includes the load's plug contact).
+<strong>Only port 1 carries load:</strong> port 2's voltage collapsed
+under the same load with no current, so the servo chain always goes on
+port 1. The same 12 V test ran the board, Pi and 5 V converter clean
+(<code>get_throttled</code> 0x0, EXT5V 5.16–5.19 V, 7 power-ups under
+load incl. 5 back-to-back; nothing warm); it was 2.8 A, so nothing above
+3 A is proven. The board's own rating is <strong>7.4–8.4 V</strong>; its
+16 V input tantalums (under the child board) and the unidentified CUR6UA
+regulator are why it is never run higher: at 11.1 V the tantalums sit at
+69 % of rating, past the common 50 % tantalum derating, and surviving
+seven inrushes does not prove long-term life. <strong>Every build holds
+the board at 7.5 V</strong>, Hiwonder's own adapter voltage (7.5 V 6 A,
+read off the stock adapter's label).</p>
+<ul>
+<li><strong>Shipping configuration (LV servos: LX-15D, HTS-25L, LX-225,
+HX-06L, all 6–8.4 V):</strong> one rail. The DROK sets <strong>7.5
+V</strong> and that is both the board and the servo voltage.
+<strong>Never set it above 8.4 V.</strong> <strong>One fuse: F1</strong>
+(10 A glass, battery + → PSU CH2 BAT+); the DROK branch and every other
+CH1 branch are unfused, cleared only by the PSU's own output limit (on
+AC) or F1 (on battery). Per robot: <strong>Halo ✅</strong> 7.5 V
+verified 2026-11-02 (servos 7.41–7.51 V, board input 7.56 V, Pi
+<code>get_throttled</code> 0x0, EXT5V 5.16 V); <strong>Ultra ⏳</strong>
+measured 9.11 V on 2026-11-02, re-set per <a
+href="Power_Bay_Design.html">Power_Bay §4 power-up</a>;
+<strong>Nova</strong> sets 7.5 V at first power-up.</li>
+<li><strong>Future upgrade, not the shipping configuration: the HV servo
+swap (all six HV, 9–12.6 V; all six together or none; deferred, the
+product releases with the LV servos).</strong> Everything below this
+bullet applies only after the swap. Two independent rails, both behind
+the DC rocker so one switch kills servos and board together.
+<ul>
+<li><strong>Servo rail 11.1 V:</strong> the existing DROK, re-set to
+11.1 V → <strong>10 A 6 × 30 glass fuse</strong> (F1's type, fast-blow,
+in a spare 6 × 30 inline holder) <strong>in the base's second opening,
+under the SOLID cover</strong> (the servo opening, under the GRILLE
+cover, keeps the ZE15-CO and SPS30 on the ceiling-mount version). After
+the swap the robot carries <strong>two fuses only: this servo fuse and
+F1</strong> (10 A glass, battery + → PSU CH2 BAT+). Consequence: the
+Deans DROK-out run to this fuse is unfused, protected only through the
+converter by the PSU's own output limit (on AC) or F1 (on battery).
+<strong>Fast-blow against servo peaks:</strong> an ~8 A stall is 80 % of
+rating and never opens it; a fast-blow 6 × 30 opens at 135 % only within
+about an hour and at 200 % within seconds, so multi-joint start bursts
+of tens of milliseconds pass. ⏳ Operator question, not a change: if it
+ever opens at power-up or on a hard stall with no fault, swap in a 10 A
+slow-blow 6 × 30 of the same size. From the fuse → <strong>injector
+pigtail</strong> between the board's bus port and servo 6 (first on the
+chain). <strong>No DROK current limit:</strong> its CC mode and current
+display are invalid once IN− and OUT− are tied (DROK manual, Attention
+#1), and the injector's common ground ties them, so neither is relied
+on.</li>
+<li><strong>Injector pigtail (PROPOSED, awaiting operator
+acceptance):</strong> board-side plug carries <strong>SIGNAL + GND
+only</strong> (V+ contact pulled from the housing and insulated);
+servo-side receptacle takes SIGNAL straight through, V+ from the fused
+11.1 V lead, and GND joined to the board GND and to the 11.1 V return.
+Identify the V+ pin by meter with the board at 7.5 V before building. No
+board modification, no stock cable cut. The injector goes on
+<strong>port 1</strong> (the port proven to carry load); port 2 stays
+empty. With the injector, the servo current no longer crosses the
+board's ~0.24 Ω path and the input tantalums stay at 7.5 V (47 % of
+rating); the injector's reason is the board's 7.4–8.4 V rating and those
+tantalums, not the drop (the HV arm draws ~0.68× the LV current, so
+through the board it would lose less than today's 7.5 V arm does).</li>
+<li><strong>Ground:</strong> the servo signal is referenced to board
+GND, so GND stays through the injector. The 11.1 V return gets its own
+18 AWG conductor back to the <strong>DROK OUT−</strong> terminal. Both
+bucks are non-isolated with common negatives (check IN− to OUT−
+continuity on the board buck before fitting).</li>
+<li><strong>Board rail 7.5 V:</strong> <strong>7.5 V buck (part
+TBD)</strong> mounted <strong>in the base's second opening (solid
+cover)</strong> beside the fuse (no free carrier footprint), fed
+<strong>13.8 V from the distribution block input at the DC rocker
+LOAD</strong> (11.5–13.8 V on battery; ~4 V of buck headroom) with
+<strong>no fuse of its own</strong>; consequence: a short in the buck
+branch is cleared only by the PSU's own output limit (on AC) or F1 (on
+battery), and takes the whole bay down. Return to the block's B input, a
+new 18 AWG pair from the block tap down to the base's second opening,
+and an 18 AWG 7.5 V pair from the buck to the STM32 power terminal
+(lengths and paths: CAD). <strong>Why not the servo rail:</strong> one
+gripper stall pulled Halo's bus from 7.4 to 6.58 V (11 %, 2026-11-11);
+the same dip on 11.1 V lands near 9.9 V, at an adjustable buck's ~9.5 V
+brownout floor, and heavier HV servos dip deeper. A board brownout
+resets the STM32, which drives every servo to the startup pose at full
+speed with the Pi down and nothing logging it. The arbiter's undervolt
+rest reads servo telemetry and cannot catch a stall transient, so no
+software or capacitance mitigation is defended; the separate feed
+removes the cascade. Load: ~0.7 A measured on Halo, 2.5–3 A estimated
+worst case (the board's 5 V Pi output). Whatever part is picked:
+non-isolated common negative, rated ≥ 5 A, output set to 7.5 V and the
+trim locked (glued) if it is adjustable, then the <strong>buck
+gate</strong> (multimeter, inline USB-C meter, and the electronic load's
+NTC sensor for temperature only): (1) <strong>before it touches the
+board:</strong> 13.8 V in, no load, output 7.4–7.6 V on the multimeter,
+trim glued, re-read after the glue cures; (2) <strong>30 min soak on the
+real load:</strong> board + Pi running with the Pi under load
+(<code>stress-ng --cpu 4</code> plus its normal USB devices), output
+7.4–7.6 V at the board power terminal throughout, Pi
+<code>get_throttled</code> 0x0 and
+<code>vcgencmd pmic_read_adc EXT5V_V</code> ≥ 4.9 V at the end, board→Pi
+current logged off the inline USB-C meter; regulator IC below 85 °C,
+read on the electronic load's screen from its NTC sensor taped to the IC
+with Kapton (check the sensor reads past 85 °C before relying on it).
+The soak proves the buck only up to the Pi's load during the run (well
+under the 3 A estimate); the inline meter's reading is recorded as that
+ceiling, and acceptance (d) is the full-load check. Switching ripple is
+not measured; it is judged after the board's 5 V regulator, through
+<code>get_throttled</code> and EXT5V.</li>
+<li><strong>Overload:</strong> a servo overload opens the 10 A servo
+fuse, or on battery F1, and the arm goes limp. The thin servo chain
+cable is protected as in Hiwonder's stock arm (it carries the arm's
+total servo current, with no fuse of its own); the stall guard and the
+servos' own stall/over-temperature protection cover a stalled
+joint.</li>
+<li><strong>Rules:</strong> never power the 11.1 V rail with the board
+off (with both rails behind the rocker this only happens if the
+board-buck pair is disconnected; never run the arm with the board dark).
+The board's controller switch no longer cuts servo power. In the same
+change, set the arm arbiter's servo-voltage limits per robot in its
+launch params (the 8.4 V overvolt rests the arm the moment it starts at
+11.1 V). <strong>PROPOSED, awaiting operator confirmation:</strong>
+overvolt ~12.0 V and a new undervolt ~10.0 V.</li>
+<li><strong>Acceptance:</strong> (a) board-buck input lead disconnected,
+11.1 V live → board power terminal ~0 V (proves the injector blocks
+backfeed); (b) injector unplugged from the servo chain → its servo-side
+V+ live, its board-side V+ contact absent; (c) servo VIN reads (cmd 27)
+~11.1 V, board input 7.5 V; (d) arm at its heaviest load (full-reach
+hold, then fast moves on all joints), Pi running: board input stays ≥
+7.4 V on the multimeter and Pi <code>get_throttled</code> stays 0x0.
+Instruments: multimeter + inline USB-C meter only; the servo-rail
+current is not read at acceptance.</li>
+<li>⏳ <strong>Power budget:</strong> PSU CH1 is labelled 13.8 V / 5.0
+A. Heavy HV arm motion plus the rest of the bay can exceed it, with the
+battery covering peaks. Read INA226-MAIN and INA226-BATT during
+acceptance (d): CH1 sustained above 5 A, or battery discharge during
+normal arm motion, goes back to the operator.</li>
+<li>⏳ Bench check before building: continuity/diode mode from the board
+power-terminal + to a bus-port V+ pin, both directions, controller
+switch ON and OFF.</li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="2-raspberry-pi-5-16-gb--the-bay-compute-node">2. Raspberry Pi 5
+(16 GB) — the bay compute node</h2>
+<ul>
+<li><strong>RPi5 16 GB</strong> (Pi 5 top SKU) with <strong>NVMe
+HAT</strong> underneath for storage.</li>
+<li><strong>Power in:</strong> 5 V @ ~5 A via USB-C from the STM32
+board's 5 V 5 A external power port (§3.2 cable).</li>
+<li><strong>HDMI out:</strong> unused in the production config — Pi5
+runs headless (SSH / VNC over Wi-Fi for bench debug).</li>
+<li><strong>USB-A ports:</strong> ✅ <strong>OAK-D S2 and the iFLYTEK
+set are on the HAT's USB ports</strong> (§3.6, operator ruling
+2026-10-27: "The OAK-D plugs into the HAT … as does the iflytek"). The
+Pi's native ports carry the <strong>STM32 control/serial link (§3.3,
+black #1)</strong> and the gamepad dongle; <strong>blue #1 / blue #2 are
+free</strong>. The iFLYTEK R818 set needs two USB links (serial + UAC).
+Blue vs black selection notes in each section.</li>
+<li><strong>Ethernet:</strong> unused — Wi-Fi only.</li>
+<li><strong>GPIO 40-pin header:</strong> extended via HAT pass-through +
+FFC chain to the G469 screw terminal block in the bay for wand-tether
+SDA/SCL/+3.3 V + PIR + INA226 signals (see
+<code>Lumi_Wand_Integration.md</code> §10.5.2).</li>
+</ul>
+<hr />
+<h2
+id="3-cable--adapter-bom-all-right-angled-to-fit-the-bay-envelope">3.
+Cable + Adapter BoM (all right-angled to fit the bay envelope)</h2>
+<h3 id="31-pi5-usb--oak-d-s2-camera-single-cable">3.1 Pi5 USB → OAK-D S2
+camera (single cable)</h3>
+<p><strong>Camera: Luxonis OAK-D S2</strong> — stereo depth camera + 12
+MP central RGB + on-device AI accelerator (4 TOPS total, 1.4 TOPS for
+AI). Mounted at the arm end; carries the vision pipeline for LumiAI's
+spotlight/tracking use case.</p>
+<p><img src="images/electronics_bay/oak_d_s2_camera_view1.png"
+alt="OAK-D S2 camera — front view. Central 12 MP RGB camera (auto-focus or fixed-focus variant depending on SKU), flanked by the stereo depth pair. Runs any AI model (including custom architected/trained models) on-device via the Myriad-X SoC." /></p>
+<p><img src="images/electronics_bay/oak_d_s2_camera_view2.png"
+alt="OAK-D S2 — angled 3/4 view showing the aluminum enclosure + USB-C port on the side. USB-C carries both power delivery + data (USB 2 or USB 3, self-negotiating)." /></p>
+<p><img src="images/electronics_bay/oak_d_s2_camera_view3.png"
+alt="OAK-D S2 — back / port view. USB-C port for host connection; on-device SoC handles all AI inference so only compressed AI-metadata + optional low-rate previews need to cross the USB link." /></p>
+<p><strong>Key camera specs (per <a
+href="https://shop.luxonis.com/products/oak-d-s2?variant=42455432233183">Luxonis
+product page</a>):</strong></p>
+<ul>
+<li><strong>Central RGB:</strong> 12 MP, available in
+<strong>auto-focus</strong> or <strong>fixed-focus</strong> SKU variants
+(choose per install — fixed-focus for a locked-focus commercial
+deployment, auto-focus for bench/dev flexibility)</li>
+<li><strong>AI processing:</strong> <strong>4 TOPS</strong> total (1.4
+TOPS dedicated to AI inference on the Myriad-X SoC)</li>
+<li><strong>Model support:</strong> any AI model, including
+custom-architected / custom-trained ones (YOLO variants, MobileNet,
+custom depth-fusion pipelines, etc.)</li>
+<li><strong>USB:</strong> USB 2 / USB 3, single cable for power +
+communication (self-negotiates)</li>
+</ul>
+<p>Also see <a
+href="../memory/project_oak_onboard_encoding.html"><code>memory/project_oak_onboard_encoding.md</code></a>
+for the low-bandwidth MJPEG encoding config
+(<code>i_low_bandwidth:true</code> +
+<code>i_low_bandwidth_profile:4</code>) that cut depthai CPU from 91 % →
+40 % — production-recommended default.</p>
+<p><strong>Cable to the Pi5:</strong> <em>GELRHONR Right / Left Angle
+USB Type C Cable — 90° 18 W Fast Charging USB-A to USB-C, Black-Left, 1
+m — USB 3, 5 Gbps.</em></p>
+<p><img
+src="images/electronics_bay/gelrhonr_usb_a_to_c_1m_black_left_18w.png"
+alt="GELRHONR USB-A to USB-C cable, 1 m, LEFT-angled at both connector ends. Single cable, no adapter chain. Per Amazon spec: 18 W USB-PD fast-charging AND 5 Gbps USB 3 data (&quot;syncs 1 GB in 30 s&quot;). Carries the OAK-D S2 stream at the Pi5&#39;s full USB 3 line rate." /></p>
+<ul>
+<li><strong>Source (cable):</strong> <a
+href="https://a.co/d/06Ygfak8">Amazon</a> (ASIN B0BRFZW7NH). In service
+on Ultra (operator, 2026-10-30).</li>
+<li><strong>Source (camera):</strong> <a
+href="https://shop.luxonis.com/products/oak-d-s2?variant=42455432233183">Luxonis
+shop</a></li>
+<li><strong>Function:</strong> connects a HAT USB-A (USB 3) port to the
+OAK-D S2's USB-C port in a single cable, no adapter chain.</li>
+<li><strong>Length:</strong> 1 m — enough to route from bay through the
+arm's cable channels to the camera at the wand-tip.</li>
+<li><strong>Both ends:</strong> 90° left-angle for tight in-bay +
+at-camera routing.</li>
+<li><strong>Data speed:</strong> <strong>5 Gbps (USB 3)</strong> per
+Amazon vendor spec. Matches the HAT's USB 3.2 Gen 1 ports (5 Gbps).</li>
+<li><strong>Power:</strong> 18 W USB-PD provides plenty of headroom for
+the OAK-D's ~2 A @ 5 V typical draw (10 W) via the single cable — no
+separate power feed needed.</li>
+<li><strong>Port choice:</strong> ✅ <strong>a HAT USB 3 port</strong>
+(VL805, 5 Gbps, confirmed at 5000M on Ultra 2026-10-27; operator ruling
+2026-10-27: "The OAK-D plugs into the HAT … as does the iflytek"). See
+<a
+href="#36-waveshare-pcie-to-m2-usb-hat--nvme--usb-hub--ina219-bay-fed-5-v">§3.6.1</a>
+for the port plan and the reason.</li>
+</ul>
+<h3 id="32-stm32-5-v-power-out--pi5-usb-c-power-in">3.2 STM32 5 V power
+out → Pi5 USB-C power in</h3>
+<p><strong>Cable:</strong> <em>Right Angle USB C to USB C Cable, 0.5 FT
+(6 inch) — Short, 3-Pack, 65 W Fast Charging.</em></p>
+<p><img
+src="images/electronics_bay/right_angle_usbc_to_usbc_0_5ft_view1.png"
+alt="Right-angle USB-C to USB-C 0.5 ft (6 inch) cable. Both ends 90° angled. Extremely short (6 inch) which is exactly what we need: STM32 5 V USB-C out and Pi5 USB-C power in sit within a few cm of each other in the bay stack, so a longer cable would just loop uselessly and pick up EMI." /></p>
+<p><img
+src="images/electronics_bay/right_angle_usbc_to_usbc_0_5ft_view2.png"
+alt="Right Angle USB C 0.5 FT cable, second view. 3-pack purchase gives spare cables for other bench work. Rated 65 W fast-charge (way overspec for the ~5 W @ 5 V idle to ~25 W @ 5 V under Pi5 peak load)." /></p>
+<ul>
+<li><strong>Source:</strong> <a
+href="https://a.co/d/0fqDzT10">Amazon</a></li>
+<li><strong>Function:</strong> carries <strong>power only</strong> (5 V
+@ up to 5 A) from the STM32's 5 V 5 A external USB-C OUT port to the
+Pi5's USB-C PWR IN port. Both ends' 90° angles keep the cable flat
+against the bay stack.</li>
+<li><strong>Why 0.5 ft specifically:</strong> STM32 and Pi5 stack
+essentially adjacent to each other in the bay; any longer cable creates
+loops that add EMI risk + look messy. 6 inch is the exact hop
+distance.</li>
+</ul>
+<h3 id="33-stm32-usb-control--serial--pi5-usb-a">3.3 STM32 USB (control
+/ serial) → Pi5 USB-A</h3>
+<p><strong>Cable:</strong> <em>chenyang Reversible USB 3.1 Type C USB-C
+Angled to 90 Degree Right Angled USB 3.0 Cable, 30 cm, Type-03 — 5
+Gbps.</em> In service on Ultra (operator checked the cable,
+2026-10-30).</p>
+<ul>
+<li><strong>Source:</strong> <a
+href="https://a.co/d/0fyf4ezg">Amazon</a> (ASIN B0714LJP4F)</li>
+<li><strong>Alternate (also fits):</strong> GELRHONR 90° short USB-A →
+USB-C, 25 cm, 18 W, USB 3.0 5 Gbps (<a
+href="https://a.co/d/07s7pIXW">Amazon</a>, B0B8N8DDPW). Ultra uses this
+one for its WonderEcho voice module.</li>
+<li><strong>Function:</strong> the STM32 exposes a <strong>USB-C control
+/ serial interface</strong> (CH340, <code>/dev/stm32_ultra</code>)
+distinct from its 5 V 5 A power OUT port. That control port connects to
+a Pi5 USB-A port (Pi5 acts as USB host, STM32 as USB device).</li>
+<li><strong>Length:</strong> 30 cm — STM32 and Pi5 stack sit adjacent in
+the bay, so 30 cm is enough with a small service loop.</li>
+<li><strong>USB speed:</strong> the cable is USB 3.0 (5 Gbps); the CH340
+link runs at USB full speed. The serial link is 1 000 000 baud, far
+below either.</li>
+<li><strong>Why right-angle:</strong> a straight USB-C body stands up
+beside the Pi5 GPIO header and blocks the HAT / inverted FPC breakout
+stack (§4 Pi5 stack). The 90° L-shape keeps the plug flat.</li>
+<li><strong>Note on the Pi5-USB / STM32 dual-CH340 caveat:</strong> if
+the STM32 exposes over CH340 (very common on Hiwonder boards),
+enumeration collisions with any other CH340 in the system (e.g. the
+WonderEcho, per <a
+href="../memory/project_yahboom_dual_ch340_devpath.html"><code>project_yahboom_dual_ch340_devpath.md</code></a>)
+require <strong>devpath-pinned udev rules</strong>. Fleet-standard
+practice — verify per-unit at bring-up.</li>
+</ul>
+<h3
+id="34-iflytek-far-field-microphone-array-hiwonder-r818--ring-6-mic--two-usb-cables-bus-powered-eb-cover-mount">3.4
+iFLYTEK Far-Field Microphone Array (HiWonder R818 + ring 6-mic) — two
+USB cables, bus-powered, EB-cover mount</h3>
+<blockquote>
+<p>⛔ <strong>iFLYTEK DROPPED as a fleet/production part (operator
+2026-11-02): no more kits, not for new builds. The one kit already owned
+stays in use on Ultra or Halo. Production replacement not
+chosen.</strong> This section stays valid for the one owned kit; nothing
+here is to be bought or built into new robots.</p>
+</blockquote>
+<p>The shipping hardware (HiWonder lessons) is a <strong>two-board
+set</strong> — the <strong>R818 noise-reduction board</strong> (90 × 50
+× 1.2 mm, 4× Ø3.5 on 80.0 × 40.0, shield can H3.5 / back H4 / tallest
+connector H6, DC 5 V 250/300/400 mA min/typ/max) plus the <strong>ring
+6-mic array</strong> (annulus Ø79.5 OD / Ø60 ID, 6× SPA1687LR5H-1, 3.3 V
+MICBIAS 0.8 mA from the R818), joined by a short FFC (~115 × 12 mm
+nominal — measure on receipt) — and it needs <strong>TWO USB
+links</strong>: a <strong>serial cable</strong> (JST → USB-A, CH340;
+JSON control + wake/DOA events) and a <strong>UAC cable</strong> (JST →
+USB-A; USB Audio Class device).</p>
+<p><strong>Hardware ON HAND (operator, 2026-10-13, kit photographed) —
+the FULL bundle variant, hiwonder.com far-field-microphone-array-module
+("Ring Microphone Array Module + Protective Casing + Driver-Free USB
+Sound Card + Speaker"):</strong> R818 board + ring 6-mic array +
+<strong>ring-only white protective casing</strong> + mic FFC (AWM 20624
+ribbon, visibly longer than the 115 mm nominal — measure before any slot
+design) + serial CH340 USB cable (JST→USB-A) + UAC USB cable (JST→USB-A)
++ <strong>brass standoffs + screws (the R818's own mounts — its 4× Ø3.5
+holes; the casing carries only the ring)</strong> + <strong>HiWonder
+"USB TO AUDIO" driver-free sound card stick</strong> (PWR LED; SPK−/SPK+
+speaker terminals; <strong>RLN/RLP = the AEC reference pair that wires
+back to the R818's reference port</strong>) + <strong>a small
+speaker</strong> + a ferrite USB-A extension. The CableCreation
+extension is also on hand (operator-confirmed: <em>CableCreation Short
+USB 3.0 Extension Cable 1FT, Left Angle, Space Gray 0.3M</em>). The
+sound-card stick is a <strong>third USB device</strong> (speech OUTPUT
+path), not the UAC link; the mic's UAC link is the plain JST→USB-A
+cable.</p>
+<p>🚩 <strong>USB count (vendor wiring diagram):</strong> mic-only POC =
+<strong>2 ports</strong> (serial + UAC — on Pi native ports at Phase
+7.5). Full voice I/O adds the sound-card stick = <strong>3 ports → all
+three on the HAT from Phase 7.6 (<a
+href="#36-waveshare-pcie-to-m2-usb-hat--nvme--usb-hub--ina219-bay-fed-5-v">§3.6</a>).</strong>
+The speaker + AEC loop (stick RLN/RLP → R818 reference port) is all
+in-kit; no parts to buy.</p>
+<p><img src="images/electronics_bay/iflytek_mic_array_product_1.jpg"
+alt="HiWonder product shot: the ring 6-mic array PCB (DP_MIC6_V01 — black annulus, 6 MEMS mics + FFC connector) beside the R818 noise-reduction board (DP_MB_V04 — 90 × 50 mm, large shield can, 4 corner holes, JST ports on both long edges + central FFC)." /></p>
+<p><img src="images/electronics_bay/iflytek_mic_array_product_5.jpg"
+alt="HiWonder kit contents, base variant: R818 board, ring array, long white FFC (blue stiffeners), serial + UAC JST→USB-A cables, brass standoffs + screws, and the white ring-only protective casing." /></p>
+<p><img src="images/electronics_bay/iflytek_mic_array_product_6.jpg"
+alt="HiWonder kit contents, FULL bundle (the on-hand variant): everything in the base kit plus the black &quot;USB TO AUDIO&quot; driver-free sound card stick, a small 8 Ω-class speaker with red/black leads, and a ferrite USB-A male-to-female extension. The stick&#39;s terminals: SPK−/SPK+ to the speaker, RLN/RLP back to the R818 reference port for AEC." /></p>
+<p><strong>Pi5 port assignment (Halo):</strong></p>
+<ul>
+<li><p><strong>Phase 7.5 POC (interim, pre-HAT):</strong> <strong>UAC
+cable → blue USB3 #2</strong> via the CableCreation extension (UAC
+traffic is USB 2-class, so blue is not <em>required</em> — it is the
+reserved port); <strong>serial CH340 cable → black USB2 #2</strong>.
+Pre-HAT, Halo's Pi5 USB is fully allocated (blue #1 OAK-D S2 §3.1, blue
+#2 mic UAC, black #1 STM32 §3.3, black #2 mic serial).</p></li>
+<li><p><strong>End state (Phase 7.6 on):</strong> ✅ <strong>OAK-D +
+iFLYTEK (+ sound-card stick) on HAT ports</strong> (§3.6, operator
+2026-10-27); any further USB device needs a hub. HAT spec, bay-fed 5 V
+and INA219: <a
+href="#36-waveshare-pcie-to-m2-usb-hat--nvme--usb-hub--ina219-bay-fed-5-v">§3.6</a>.</p></li>
+<li><p><strong>udev:</strong> the mic serial is a <strong>second
+permanent CH340</strong> beside the STM32's — devpath-pinned
+<code>/dev/iflytek_halo</code> is mandatory (see
+<code>Electronics_BringUp_Plan.md</code>; a wrong-port open resets the
+STM32 and snaps the arm).</p></li>
+</ul>
+<p><strong>Power decision (2026-10-13): bus-powered.</strong> Both
+cables' VBUS carry the R818's 250/300/400 mA total; the independent
+power port stays unused. No topology win in feeding it separately —
+every 5 V source on Halo (Pi VBUS, G469 5 V, STM32 I²C-port 5 V)
+originates from the same STM32 internal 5 V regulator, so the load lands
+there either way
+(<code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code> Power
+Performance). Two Pi-side checks instead:
+<strong><code>usb_max_current_enable=1</code></strong> must be set in
+<code>/boot/firmware/config.txt</code> (the STM32 5 V 5 A USB-C does no
+PD negotiation, so the Pi otherwise caps aggregate USB VBUS at 600 mA —
+the OAK-D alone exceeds that), and the mic cables get an
+inline-USB-meter measurement at POC. Fallback if the 1.6 A aggregate
+measures tight: feed the independent power port from the STM32's spare
+I²C-port 5 V header (1 A max), 22 AWG pigtail — and bench-verify whether
+the R818 then stops drawing VBUS (vendor silent; the data pairs stay
+connected regardless).</p>
+<p><strong>Pass-through (EB aluminum top cover → Pi5 below):</strong>
+the ring and the R818 both mount <strong>on the cover top</strong> (on
+the carrier below), so the ring↔︎R818 FFC never crosses the cover. Only
+the USB runs penetrate, through the <strong>data lane</strong> of the
+cover opening (below): the <strong>small JST ends go UP</strong> (the
+XH-class JST plug is ~12.4 × 8 mm, one plug at a time); the **USB-A
+overmoulds (~16 × 8 mm) and the serial cable's CH340 dongle stay BELOW
+deck** (keeps the CH340 hash under the metal plane, away from the analog
+ring). Grommet/edge protection <strong>mandatory</strong> in aluminum.
+Dress the mic runs away from the OAK-D USB3 cable.</p>
+<p><strong>Cover grounding + vibration isolation:</strong> bond the
+anodized cover to the star ground (distribution-block common point) at
+<strong>one point with a star washer through the anodize</strong> —
+unbonded it is floating metal under an analog mic ring; do
+<strong>not</strong> also ground it through the R818/casing screws
+(single-point only). Mount the casing on elastomer (silicone
+grommets/O-rings or VHB/foam): the cover sits over the Pi5 active-cooler
+fan and the chassis carries power-bay-fan + servo vibration.</p>
+<p><strong>Carrier integration (carrier v5 + R818 shroud V1.1, CAD
+2026-10-23, part <code>lumi_halo_mic_carrier</code>):</strong> one PETG+
+plate <strong>110.5 × 110.9 × 4</strong> lying flat on the
+electronics-bay metal cover, bolted through the cover's own 4 corner
+holes with <strong>4 × M3 × 8 Torx pan machine screws</strong> (304 SS,
+GB2672 kit) into the bay plates' threaded M3 top flanges (no standoffs,
+no nylon). Ring at (231.44, 88.0) on 3 posts (self-tapping screws);
+<strong>R818 above it</strong>, clamped by the clear printed shroud (4×
+M3 × 16 through its hollow columns). <strong>Speaker</strong> 70 × 31
+along the −Y edge on 4 posts with rubber washers, lead-tab notches both
+ends — sealed-back, cone-up, bench-confirmed. <strong>The sound-card
+dongle lives ON the carrier</strong>, in a walled bay UNDER the speaker,
+a 1 mm foam strip between them (operator, 2026-10-16). Hardware + build
+order: <a
+href="Electronics_Assembly_Guide.html#16-halo-mic-carrier--iflytek-r818--ring--speaker--sound-card-dongle-assembly--cables">Assembly
+Guide §16</a>; print settings: <a
+href="3D_Printing_Guide.html#34-halo-mic-carrier--r818-shroud-iflytek-mic-array">3D
+Printing Guide §3.4</a>.</p>
+<p><strong>The cover's 25.8 × 48.4 opening is DIVIDED by a 2 mm web at Y
+56 (moulded into the carrier lip):</strong></p>
+<ul>
+<li><strong>Speaker-pair lane (8.5 × 25.8):</strong> NOTHING crosses
+here — SPK± and RLN/RLP are carrier-local; the lane stays as airflow +
+spare.</li>
+<li><strong>Data lane (38 deep, under the ring centre):</strong> CH340
+serial + UAC + the dongle's USB go DOWN to the Pi.</li>
+<li>The lanes are <strong>deliberately unequal = unmirrorable</strong>.
+Assembly order (in the part header): <strong>data cables first, JST ends
+up, then edge-trim.</strong></li>
+</ul>
+<p><strong>Sound-card dongle: ON THE CARRIER, in the walled bay UNDER
+the speaker</strong> (operator, 2026-10-16), a 1 mm foam strip between
+the dongle and the speaker back. Its USB run goes DOWN the data lane to
+the Pi5 (HAT at 7.6) on a <strong>right-angle USB-A M → F
+extension</strong> (to order; angle must point the cable toward the data
+lane — the kit's straight 12" is the V1 stopgap; pick a right-angle part
+with a ferrite or add a clip-on, since this is a USB device living
+beside the analog ring). SPK± and RLN/RLP are
+<strong>carrier-local</strong> — NO analog pair crosses the cover; the
+three USB runs (CH340, UAC, dongle) are what cross.</p>
+<p><strong>Orientation in service (operator, 2026-10-13): Halo hangs
+UPSIDE-DOWN from the ceiling — the EB cover and this carrier face DOWN
+into the room.</strong> Two consequences:</p>
+<ul>
+<li><strong>DOA handedness MIRRORS when the ring is inverted</strong> —
+a sound moving clockwise seen from above moves counter-clockwise in the
+ring's frame. The software offset absorbs this, but only if the
+calibration is done IN THE HANGING ORIENTATION: the bench smoke test
+verifies wake/angle <em>function</em> only, and the real DOA zero +
+4-quadrant acceptance happen after mounting, angles mapped to the robot
+frame then (<a
+href="Electronics_BringUp_Plan.html#phase-75--iflytek-mic-array-r818--ring-poc--added-2026-10-13">BringUp
+Phase 7.5</a> steps 1/6/7). Never bake a bench-calibrated offset into
+the node.</li>
+<li><strong>Cable dressing works against gravity:</strong> every run on
+the carrier and through the cover hangs from its anchors, so anchors
+take real weight (no adhesive-only clips on the inverted face), and
+service loops are sized so nothing droops into the arm's swept volume
+below the cover.</li>
+</ul>
+<p>Acoustics are otherwise <em>improved</em> by the inversion (ring +
+speaker cone face the room). The mechanical side is unaffected —
+everything on the carrier is positively fastened, nothing gravity-seated
+(same note in the CAD part header, 3322f10).</p>
+<p><strong>Mic-stack run table (phase column is load-bearing — M1/M2
+move at Phase 7.6):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Path</th>
+<th>Dress</th>
+<th>Phase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>M1</strong> serial (CH340)</td>
+<td>R818 → data lane ↓ → Pi <strong>black #2</strong>
+(<code>/dev/iflytek_halo</code>, udev-pinned)</td>
+<td>with M2, data lane only</td>
+<td><strong>7.5</strong> on Pi native; <strong>→ HAT port at
+7.6</strong></td>
+</tr>
+<tr>
+<td><strong>M2</strong> UAC</td>
+<td>R818 → data lane ↓ → Pi <strong>blue #2</strong> via the
+CableCreation extension</td>
+<td>with M1</td>
+<td><strong>7.5</strong> on Pi native; <strong>→ HAT at
+7.6</strong></td>
+</tr>
+<tr>
+<td><strong>M3</strong> dongle USB</td>
+<td>dongle (carrier, under the speaker) → <strong>data lane ↓</strong> →
+right-angle USB-A M-F extension → <strong>HAT port</strong></td>
+<td>data lane, with M1/M2</td>
+<td><strong>7.6</strong> (HAT-gated — full voice I/O)</td>
+</tr>
+<tr>
+<td><strong>M4</strong> SPK±</td>
+<td>dongle → speaker lead tabs — <strong>carrier-local</strong> (both on
+the carrier)</td>
+<td>twisted pair, never crosses the cover</td>
+<td>with M3 (<strong>7.6</strong>)</td>
+</tr>
+<tr>
+<td><strong>M5</strong> RLN/RLP (AEC ref)</td>
+<td>dongle → R818 reference input — <strong>carrier-local</strong></td>
+<td>its OWN twisted pair, no shared tie points with data</td>
+<td>with M3 (<strong>7.6</strong>)</td>
+</tr>
+</tbody>
+</table>
+<p>Cover grounding follows the one-point bond scheme above — the printed
+plate is insulating; the bond point stays on the cover, chosen knowing
+the M3 extension's shield bonds cover-side metal to the HAT through its
+connectors.</p>
+<p><strong>HiWonder's reference mount (photo below):</strong> the
+acrylic carrier plate stands on short standoff feet, the ring mounts on
+the plate, and the <strong>R818 rides ABOVE the ring's centre on the
+tall standoffs</strong> — a two-deck stack sharing one footprint, FFC
+looping between decks. That is the kit's intended topside configuration;
+the Halo carrier keeps the same two-deck arrangement (R818 above the
+ring) on the EB cover.</p>
+<p><img src="images/electronics_bay/iflytek_mic_array_mount_stack.png"
+alt="HiWonder reference mounting stack: clear acrylic carrier plate on four short brass standoff feet; the ring 6-mic array sits on the plate; the R818 board (iFLYTEK shield up, cables exiting) is elevated above the ring centre on four tall brass standoffs. The FFC loops from the ring up to the R818&#39;s underside connector." /></p>
+<p><img src="images/electronics_bay/iflytek_mic_array_product_2.jpg"
+alt="HiWonder wiring diagram: R818 serial + UAC cables to two host USB ports; the driver-free sound card (VOLN/VOLP/VORP/VORN terminals) on a third USB port via the ferrite extension, speaker on its VOL terminals, and the VORP/VORN pair looping back to the R818&#39;s reference-signal port for AEC." /></p>
+<p><img src="images/electronics_bay/iflytek_mic_array_product_3.jpg"
+alt="R818 &quot;Module Mainboard&quot; port map: serial port (top left edge), UAC port (top right edge), and along the bottom edge reference-signal port, central FFC microphone port, power port. UAC = audio output; reference = amplifier/echo-cancellation reference; microphone port also accepts HiWonder&#39;s linear arrays." /></p>
+<p><img src="images/electronics_bay/iflytek_mic_array_product_4.jpg"
+alt="Ring array mic numbering (DP_MIC6_V01): mics 1–6 clockwise from upper-left — 1 top-left, 6 top-right, 2 left, 5 right, 3 bottom-left, 4 bottom-right; the FFC connector is at the bottom edge between mics 3 and 4. The DOA 0° convention is NOT documented against this numbering — establish it empirically at the Windows smoke test and mark the carrier (BringUp Phase 7.5 step 1); that mark is a REFERENCE only — the service zero is calibrated after mounting, hanging/inverted, where handedness mirrors (orientation note above)." /></p>
+<p><strong>Extension cable:</strong> <em>CableCreation Short USB 3.0
+Extension Cable, 1 ft (0.3 m) — Left Angle Extender Cord, Male to
+Female, 90°, Space Gray.</em></p>
+<p><img
+src="images/electronics_bay/cablecreation_usb3_extension_1ft_90deg_left.png"
+alt="CableCreation USB 3.0 (blue) extension cable, 1 ft, 90° LEFT-angled male end. Male end plugs into a Pi5 USB-A blue (USB 3) port; female end accepts the iFLYTEK microphone array module&#39;s UAC cable. Left-angle male keeps the cable exit close to the Pi5 face." /></p>
+<ul>
+<li><strong>Function:</strong> at the Phase 7.5 POC, extends Pi5 blue #2
+by 1 ft with a 90° bend so the iFLYTEK UAC cable plugs into a reachable
+female USB-A without stressing the Pi5-side port. UAC is USB 2-class —
+blue is used only because it is the reserved port. The DOA/wake data
+rides the separate CH340 serial cable on black #2, not this one.</li>
+<li><strong>Length:</strong> 1 ft (0.3 m) — enough to reach from the Pi5
+up to the EB cover's data lane.</li>
+</ul>
+<p><strong>iFLYTEK Far-Field Microphone Array Module (ROS six-microphone
+voice board):</strong></p>
+<p><img
+src="images/electronics_bay/iflytek_far_field_mic_array_module.png"
+alt="iFLYTEK Far-Field Microphone Array Module — full assembly view. Ring microphone array (top) + module mainboard (bottom, split from the mic ring in this version so users can swap in linear mic arrays if desired). Pickup range up to 10 m. 360° sound source localization via TDOA algorithm, 1° azimuth resolution. From HiWonder." /></p>
+<p><img src="images/electronics_bay/iflytek_far_field_main_board.png"
+alt="iFLYTEK Far-Field module — main-board only view. Split from the microphone ring in the latest revision. Contains the iFLYTEK DSP + audio codec + USB interface; mic ring plugs in via a flat cable." /></p>
+<p><img src="images/electronics_bay/iflytek_far_field_microphones.png"
+alt="iFLYTEK Far-Field module — microphone ring only view. 6 microphones arrayed around the ring for 360° pickup + sound-source localization. Split design allows linear-array alternatives." /></p>
+<p><img src="images/electronics_bay/iflytek_far_field_kit.png"
+alt="iFLYTEK Far-Field module — full kit contents (mainboard + mic ring + cable + optional protective casing)." /></p>
+<ul>
+<li><strong>Source (module):</strong> <a
+href="https://www.hiwonder.com/products/far-field-microphone-array-module?variant=40549359779927">HiWonder
+— Far-Field Microphone Array Module</a></li>
+<li><strong>Source (extension cable):</strong> CableCreation USB 3.0
+Extension 1 ft, Left Angle (<a
+href="https://a.co/d/08DHvVpR">Amazon</a>, B01M1JZZV7). In service on
+Halo for the iFLYTEK (operator, 2026-10-30).</li>
+<li><strong>Capabilities:</strong>
+<ul>
+<li><strong>10 m pickup range</strong> — iFLYTEK far-field
+noise-reduction tech; meets the LumiAI commercial spec (20 ft target),
+which the <a
+href="../memory/project_wonderecho_range_findings.html">WonderEcho ≤ 5 ft
+range</a> could not.</li>
+<li><strong>360° sound source localization</strong> via
+<strong>TDOA</strong> (Time Difference of Arrival) across the 6-mic
+ring; azimuth resolution down to <strong>1°</strong>. Publishes
+<code>/voice/angle_deg</code> per <a
+href="../memory/project_iflytek_hardware_integration.html">Phase 9.5
+iFLYTEK integration memory</a>.</li>
+<li><strong>Offline voice recognition</strong> via iFLYTEK's onboard
+engine — no cloud dependency for basic ASR.</li>
+<li><strong>Cloud services</strong> (optional) — voiceprint recognition,
+pronunciation correction, meeting-transcription APIs via iFLYTEK's voice
+cloud.</li>
+<li><strong>Split design</strong> — mic ring separate from the
+mainboard; users can substitute linear-array mics if the geometry
+demands (e.g. long room vs 360° room center).</li>
+<li><strong>Optional protective casing</strong> — cosmetic enclosure;
+recommended for the robot-facing installation to avoid the mic ring
+being an exposed PCB.</li>
+</ul></li>
+<li><strong>Fleet decision:</strong> iFLYTEK replaces WonderEcho for the
+LumiAI commercial spec — see <a
+href="../memory/project_iflytek_hardware_integration.html">project_iflytek_hardware_integration
+memory</a>. Whisper.cpp stays as the STT engine (the iFLYTEK SDK was
+declined — Entity List + closed binary + Mandarin-first UX); we use
+iFLYTEK hardware for its AEC/beamforming/localization DSP + get the
+6-channel raw audio + the <code>/voice/angle_deg</code> publication over
+the USB link.</li>
+<li><strong>Mount location:</strong> on top of the Electronics Bay
+aluminum top cover (operator, 2026-10-13), in the acoustic field above
+the Pi5/STM32, on the carrier above.</li>
+</ul>
+<h3 id="35-pi5-gpio--meccanixity-40-p-fpc-breakout-ribbon-cable">3.5 Pi5
+GPIO → MECCANIXITY 40 P FPC breakout (ribbon cable)</h3>
+<p><strong>FFC ribbon:</strong> <em>MECCANIXITY 10 pcs FFC FPC Flat
+Flexible Cable, 40 Pin 0.5 mm Pitch A Type 500 mm Long for LCD 3D
+Printer Camera DVD TV Laptop Audio.</em></p>
+<ul>
+<li><strong>Function:</strong> carries all 40 Pi5 GPIO signals from the
+inverted MECCANIXITY FPC breakout board (mounted above the Pi5
+<strong>on the HAT's 40-pin pass-through header</strong> — see <a
+href="#pi5-stack--single-extra-tall-header--inverted-fpc-breakout">§4
+Pi5 stack</a>) out to the second FPC breakout that lives near the
+destination signal endpoints (STM32 carrier area, wand/G469 GPIO chain,
+PIRs, etc.).</li>
+<li><strong>Length:</strong> 500 mm — much longer than the intra-bay run
+needs; will be shortened by the fold-back over the top of the FPC PCB
+and the routing path through the back-cover cable exit hole. Excess
+length coils flat above the FPC board with no functional cost.</li>
+<li><strong>A-type orientation (contacts on the same face at BOTH
+ends):</strong> correct for this build. The FPC breakout mounts INVERTED
+— the FFC connector ends up on the OPPOSITE side of the board from where
+it sits on a non-inverted mount, and <strong>the pin-1 marker on the
+female 2×20 socket ends up on the LEFT</strong> of the now-inverted
+board (see <a
+href="#pi5-stack--single-extra-tall-header--inverted-fpc-breakout">§4
+assembly implications</a> for the pin-1-to-Pi5-GPIO orientation
+requirement). With A-type contacts on the same face, the ribbon exits
+the breakout, folds 180° back over the top of the FPC PCB toward the
+back-cover exit hole, and the destination FPC connector accepts the same
+face without any additional twist.</li>
+<li><strong>Pitch:</strong> 0.5 mm — matches the MECCANIXITY 40 P
+breakout board's FPC connector.</li>
+<li><strong>Inventory:</strong> 10 pcs on hand — 1 per build + 9 spares.
+No re-order needed for the current fleet size.</li>
+<li><strong>Signal-integrity note:</strong> GPIO speeds (I²C ≤ 400 kHz,
+SPI ≤ 40 MHz, digital DC-ish) are trivially fine over 500 mm of
+unshielded FFC. Above ~50 MHz clock rates, ribbon capacitance would
+matter — moot here.</li>
+<li><strong>Older cable (bench inventory, not this route):</strong> the
+5 pcs <em>Uxcell 36 Pin 0.5 mm Pitch 500 mm A Type FFC</em> is
+<strong>not compatible</strong> with the MECCANIXITY 40 P board (4 pins
+short). Keep for future 36-pin FPC destinations (some camera modules,
+some LCDs) but do NOT use it here.</li>
+</ul>
+<hr />
+<h3
+id="36-waveshare-pcie-to-m2-usb-hat--nvme--usb-hub--ina219-bay-fed-5-v">3.6
+Waveshare PCIe TO M.2 USB HAT+ — NVMe + USB hub + INA219 (bay-fed 5
+V)</h3>
+<h4 id="361-the-board-and-why-its-in-the-build">3.6.1 The board, and why
+it's in the build</h4>
+<table>
+<tbody>
+<tr>
+<td><strong>Board</strong></td>
+<td>Waveshare <strong>"PCIe TO M.2 USB HAT+"</strong> (the
+EXTERNAL_SENSOR plan's "NVMe+USB HAT") — PCIe over the Pi5's 16-pin FPC.
+Amazon ASIN B0GJL9R855.</td>
+</tr>
+<tr>
+<td><strong>Gives</strong></td>
+<td><strong>4× USB 3.2 Gen1 ports + bootable M.2 NVMe
+2230–2280</strong>, HAT+ EEPROM, onboard <strong>INA219</strong> power
+monitor (§3.6.4), and a <strong>40-pin GPIO pass-through header on
+top</strong> (Ultra-confirmed 2026-10-16; the inverted FPC breakout sits
+on it, <a
+href="#pi5-stack--single-extra-tall-header--inverted-fpc-breakout">§4
+Pi5 stack</a>).</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><strong>Ultra already runs one</strong> — ⚠️ <strong>on a
+WALL-powered bench DROK, NOT UPS-backed</strong> (operator-confirmed
+2026-10-22, after Ultra went dark on an AC drop). Its NVMe root, OAK and
+WonderEcho all die on any AC loss until the Mus-14 fix in <a
+href="Power_Bay_Design.html#5a-ina226-batt--second-ina226-on-the-ups-battery-lead-added-2026-10-22-halo--ultra--nova">Power_Bay
+§5a</a> lands. <strong>Halo runs one</strong> in place of the Geekworm
+X1001: NVMe boot on the HAT, fed from the Pi's GPIO 5 V until its Mus-14
+rail goes in (<a
+href="Bench_Plan_2026-11-02_to_11-06.html">Bench_Plan_2026-11-02_to_11-06</a>).</td>
+</tr>
+<tr>
+<td><strong>Why</strong></td>
+<td>Pi5 USB is FULLY allocated on Halo pre-HAT (§3.4) and the HAT's 4
+ports ride the PCIe lane — <strong>ZERO Pi USB ports consumed</strong>.
+<strong>The speaker/voice-output phase forces the swap</strong>: the
+sound-card stick is a 3rd USB device.</td>
+</tr>
+<tr>
+<td><strong>Ports — design of record</strong></td>
+<td>✅ <strong>The OAK-D S2 AND the iFLYTEK set plug into the
+HAT</strong> (operator ruling 2026-10-27: "The OAK-D plugs into the HAT
+… as does the iflytek"). Verified live on Ultra the same day: OAK
+<code>03e7:f63b</code> at <strong>5 Gb/s on the HAT's VL805</strong>,
+the mic's CH340 + UAC behind a hub on the HAT, and both native Pi blue
+ports empty. <strong>Ultra's mic is the WonderEcho today</strong>
+(operator 2026-11-02); the one owned iFLYTEK kit goes on Ultra or Halo
+(robot not chosen yet). The Pi's native ports keep only the STM32 (black
+#1, so <code>/dev/stm32_*</code> never moves) and the gamepad dongle.
+<strong>WHY the OAK is on the HAT (operator):</strong> <em>"the oak-d on
+the rpi5 usb was too problematic"</em>, so the Pi's native USB is the
+<strong>known-bad</strong> home for the OAK and is never its fallback.
+<strong>Relief valve</strong> if the HAT's lane or its 5 V budget gets
+tight: <strong>move the iFLYTEK (UAC + CH340) to a native Pi 5
+port</strong> (operator: <em>"we can move the iflytek to the rpi5 port
+if need be, remember the stm32 card is on the rpi5 port already"</em>).
+That frees ~0.4 A of HAT current and a little lane bandwidth; blue #1 /
+#2 are free for it, and the move means re-pinning
+<code>/dev/iflytek_*</code> (devpath changes).</td>
+</tr>
+<tr>
+<td><strong>Bandwidth — honest consequence</strong></td>
+<td>OAK video and the boot NVMe now <strong>share the one PCIe Gen2 x1
+lane</strong> (~4 Gb/s raw, ~3.2 usable) through the HAT's ASM1182e
+switch. In practice: the OAK runs the <strong>onboard-MJPEG
+low-bandwidth profile</strong> (<code>i_low_bandwidth</code>, tens of
+Mb/s), and Ultra has run this way since its HAT went in with no
+lane-related fault on record. <strong>Risk:</strong> contention if raw /
+depth streams run at full rate <em>while</em> the NVMe takes heavy
+sustained writes (e.g. rosbag recording raw video), showing up as OAK
+frame drops or XLink timeouts, not as storage errors.
+<strong>Mitigations, in order:</strong> keep the OAK on MJPEG /
+low-bandwidth; record compressed, not raw; if still tight, <strong>move
+the iFLYTEK to a native Pi 5 port</strong> (the relief valve above).
+Moving the OAK to a native Pi port is <strong>not</strong> a mitigation
+(operator: too problematic there).</td>
+</tr>
+<tr>
+<td><strong>Power options</strong></td>
+<td>Default: the HAT runs from the Pi GPIO 5 V. Its dedicated
+<strong>USB-C POWER input</strong> can instead be fed from the power
+bay, fully offloading the Pi's own input budget — that bay feed is
+§3.6.2.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="362-bay-fed-5-v-rail--musrock-mus-14">3.6.2 Bay-fed 5 V rail —
+MusRock Mus-14</h4>
+<p><strong>The chain:</strong> D-1459 <strong>A5/B5</strong> (B5
+released by the operator 2026-10-13 — <a
+href="Power_Bay_Design.html#1133-distribution-module-port-assignments-a-bus--v-b-bus--gnd">Power_Bay
+§11.3.3</a>) → <strong>22 AWG / E0508 twisted pair</strong> → <strong>3
+A ATC inline fuse</strong> → MusRock IN (~1.2 A peak at 13.8 V) →
+<strong>C-to-C</strong> → the HAT's power-only USB-C.</p>
+<table>
+<tbody>
+<tr>
+<td><strong>Converter</strong></td>
+<td><strong>MusRock Mus-14</strong> DC-DC buck (the operator's
+2026-10-13 5-pack: "5Pcs DC-DC 3A Buck Step-Down Power Supply Module
+Dual Type-C USB Output 9V 12V 24V 36V to 5V"), 9–36 V in → <strong>FIXED
+5 V</strong> dual USB-C out (the listing names no trim), <strong>3 A
+with the bay's external cooling</strong>, 30 × 24.8 × 5 mm. Its USB-C
+source sockets advertise 5 V on CC natively (no pigtail). 5-pack on
+hand, four spares (Assembly Guide §1). <strong>Interim HAT buck</strong>
+until the LM25116 arrives (operator 2026-10-30). ⏳ Meter one unit's
+real output at the bench, no-load and at ~2.5 A: fixed "5 V" boards
+often sit at ~5.1 V, and that number decides the interim gate. Not yet
+in service: Ultra's HAT runs on the bench DROK directly (§3.6.3 gate 1).
+⚠️ <strong>Naming ledger — three "DROKs" circulate:</strong> (1) the bay
+<strong>9 V DROK</strong> buck (STM32 branch), (2) the operator's
+<strong>bench DROK</strong> 0–32 V screen supply (feeding Ultra's HAT
+today), (3) <strong>"the drok we bought last week" = this dual-USB-C
+5-pack, doc name Mus-14.</strong> <strong>No second DROK</strong> —
+operator: <em>"we do not have room for a 2nd DROK, period."</em></td>
+</tr>
+<tr>
+<td><strong>Planned replacement</strong> (🔴 <strong>NOT
+ORDERED</strong>: absent from the AliExpress order history, Purchasing
+2026-11-02)</td>
+<td><strong>LM25116 300 W / 20 A CC/CV step-down board</strong> (<a
+href="https://www.aliexpress.us/item/3256813186638079.html">listing</a>):
+synchronous, ≈ 61 × 53 × 28 mm (finned heatsinks on both long edges), 4
+corner holes (spacing ⏳ caliper), CV + CC trim pots, green screw
+terminals. <strong>CV 5.20 V</strong> no-load at the plug, CC ≥ 4 A.
+Lead: Maixbomr 1 m 18 AWG USB-C → bare wires (<a
+href="https://www.amazon.com/dp/B0H1XFWZ32">B0H1XFWZ32</a>; not found in
+the 2026 Amazon orders, older pages unchecked), cut to the route, E1008
+ferrules. <strong>CAD: reserve a carrier spot for it now</strong> (the
+30 × 24.8 slot is too small).</td>
+</tr>
+<tr>
+<td><strong>C-to-C cable (D18)</strong></td>
+<td><strong>HOTNOW USB-C ↔︎ USB-C, 1.5 ft ≈ 0.46 m, right-angle</strong>
+(<a href="https://a.co/d/09YEH9LF">listing</a>; on hand) for the interim
+gate test; route ≥ 0.46 m (measured). <strong>Only if it fails the
+gate:</strong> a 5 A e-marked 240 W right-angle C-to-C, ~0.5–0.6 m —
+candidate Poyiccot 0.61 m (<a
+href="https://www.amazon.com/dp/B0CNYR9H17">B0CNYR9H17</a>; ⏳ VBUS
+gauge and price not verified). <strong>Expected drop of the 5 A
+cable</strong> (assuming 20 AWG VBUS/GND, 0.61 m, ~20–40 mΩ of plug
+contacts, ≈ 0.06–0.08 Ω loop): <strong>≈ 0.16–0.21 V at the 2.6 A peak,
+≈ 0.08–0.11 V at the 1.4 A mean.</strong> From a 5.00 V source that is
+<strong>≈ 4.80–4.84 V at peak (fails 4.90)</strong> and ≈ 4.9 V at the
+mean; a unit that sits at 5.10 V lands ≈ 4.89–4.94 V at peak
+(borderline). The HOTNOW (thinner copper) drops more; the interim gate
+run with it decides, and the LM25116 removes the problem. Right-angle at
+the HAT end; routed via the base-servo hole with D14/D15.</td>
+</tr>
+<tr>
+<td><strong>Mandatory prep</strong></td>
+<td><strong>Copper heatsink ≥10 × 10 mm on the buck IC — the SMALL
+square chip, NOT the inductor</strong> — thermal tape/pad (✅ on hand:
+10-pack 10 × 10 × 4 with pre-applied 3M 8810). At ~14 W out the board
+wastes ~1–1.5 W; heatsinked, it is rated <strong>3 A with the bay's
+external cooling</strong>.</td>
+</tr>
+<tr>
+<td><strong>Mount</strong></td>
+<td>On the PSU cover <strong>beside the G469, with the G469 moved one
+hole right</strong> (operator, 2026-10-13; dry-fit the G469's harness
+reach before unscrewing anything).</td>
+</tr>
+<tr>
+<td><strong>Switching rule</strong></td>
+<td><strong>Same master-switched bus as the DROK — never separately
+switched</strong>: a late HAT rail = NVMe boot failure (the SSD is the
+Pi's boot drive and powers from the HAT's USB-C feed, not the PCIe
+ribbon).</td>
+</tr>
+<tr>
+<td><strong>Budget</strong></td>
+<td>✅ <strong>MEASURED, Pro build with the OAK-D S2 + iFLYTEK + NVMe on
+the HAT</strong> (Ultra <code>hat_power_logger</code>, INA219,
+2026-10-20…26, ~600 k one-second rows of ~50 Hz samples): <strong>mean
+1.36 A, 50 Hz peak p99 1.82 A, max 2.11 A.</strong> Add the sound-card
+stick (~0.5 A, speaker phase) → **~2.6 A peak / ~1.7–1.9 A typical**:
+inside the Mus-14's <strong>3 A with the bay's external
+cooling</strong>. Current is not the risk; <strong>voltage is</strong>:
+Ultra's bench DROK (mean 4.985 V) dipped below 4.90 V in 0.62 % of
+seconds (worst 4.81 V, during the 10-22 AC-loss event), and the Mus-14
+is a fixed 5 V source. That is why the IC heatsink and the gate-1 run
+matter; the CV-trimmed LM25116 (planned) carries the margin.
+<strong>Creator edition</strong> (no OAK, no iFLYTEK; phone does voice):
+≈ HAT logic + NVMe (+ stick if used): **~0.8–1.2 A typical, ~1.5–2 A
+peak**. That leaves ~1 A at 5 V for anything else, too little for a 5–8
+W phone, and port 2 is plain 5 V with no PD, so <strong>the separate PD
+phone charger stands</strong> (Electronics 2026-10-27). The STM32 5 V
+rail sheds the loads moved to the HAT.</td>
+</tr>
+<tr>
+<td><strong>Creator edition — 4 TB NVMe option</strong> (operator,
+2026-10-27; bought with the drive, NOT now)</td>
+<td><strong>Drive:</strong> one M.2 <strong>2280</strong> in the HAT's
+single 2230–2280 slot. Choose by datasheet <strong>peak / active power ≤
+~6 W</strong> (≈ 1.4 A at 5 V after the HAT's conversion, the NVMe line
+of the budget above). <strong>DRAM-less (HMB) Gen3 / Gen4
+"low-power"</strong> drives fit best: the Pi 5 links at Gen2 x1, so a
+fast drive gives no speed, only heat and current. <strong>Single-sided
+strongly preferred</strong> (many 4 TB 2280s put flash on both faces).
+<strong>Heatsink, bought WITH the 4 TB drive:</strong> low-profile M.2
+2280, <strong>≤ 4 mm total including the pad</strong>, aluminium or
+copper, <strong>top-side pad only</strong>, held by adhesive or clips.
+<strong>Not rubber bands or anything that wraps under the drive</strong>
+(HAT underside clearance). <strong>Fallback if there is no
+height:</strong> a 0.5–1 mm copper or graphene M.2 heat-spreader label.
+⚠️ The Easycargo 10 × 10 copper heatsinks on hand are for the
+<strong>Mus-14 buck IC only</strong>. There is no NVMe heatsink on hand,
+and current boot drives don't need one. <strong>Gate before buying
+either:</strong> on the real stack (HAT on the Pi 5 + active cooler,
+breakout on the pass-through), measure (1) the gap
+<strong>UNDER</strong> the M.2 slot area (under ~1.5 mm rules out a
+double-sided drive) and (2) the clearance <strong>ABOVE</strong> the
+drive to the next board or the lid (sets the heatsink height).
+<strong>Why:</strong> creators offload hours of 4K, which means
+sustained writes in a warm bay; Gen2 x1 caps the speed, but a 4 TB drive
+can still throttle on heat. After fitting, re-run §3.6.3 gate 1 with the
+4 TB drive in.</td>
+</tr>
+</tbody>
+</table>
+<h4
+id="363-gates-before-trusting-it-as-the-boot-drive-rail-bringup-phase-76">3.6.3
+Gates before trusting it as the BOOT-DRIVE rail (BringUp Phase 7.6)</h4>
+<ol type="1">
+<li><strong>The hard one — voltage under load: ≥4.90 V at the HAT input
+with the SSD under <code>fio</code> AND audio playing</strong>, inline
+meter logging current (measure, don't assume). <strong>The gate binds on
+the MINIMUM, not the mean:</strong> dips during NVMe/load bursts are
+exactly the brownout mechanism — the Pi 5's own undervoltage threshold
+is 4.75 V, and 4.90 is that plus 150 mV engineering margin, so a healthy
+mean with deep dips is a FAIL. Measure the minimum over the whole soak
+via <code>hat_power_logger</code>'s per-second vbus-min column (it
+samples ~50 Hz, so sub-ms transients are the ripple gate's job, row 2).
+<strong>Status: ⏳ PENDING on a dedicated HAT supply (the Mus-14 feeding
+ONLY the HAT through the D18 cable, judged by the logger's
+vbus_min).</strong> <strong>Bench evidence so far (Ultra, not a pass of
+this gate):</strong> Ultra's HAT is fed DIRECTLY by the operator's
+<strong>bench DROK</strong> (0–32 V → 5 V 6 A screen supply; the Mus-14
+is NOT in the chain), which <strong>also powers two LCD
+displays</strong>. ✅ <strong>24 h continuous HAT operation on Ultra,
+ZERO camera dropouts</strong> (operator, 2026-10-18: "it is a
+non-issue"); confound: the STM32 moved OFF the HAT and the WonderEcho
+ONTO it at 10-17 09:05, so the outcome can't be credited to the supply
+alone. Logger figures (2026-10-17/18, ~84k samples): <strong>vbus min
+4.872 V (10-17 13:48) and 4.864 V (10-18 01:31) at peaks up to 2.16 A;
+means steady at 4.96–4.97 V</strong>; HAT current 1.36 A mean. The
+INA219's current is the HAT's own draw (accurate), but its vbus is the
+shared DROK output after the HAT cable, so the dips may come from the
+LCD load, NOT the HAT — the bench result likely UNDERSTATES what a
+dedicated supply holds. <strong>Ledger: operationally clean, but the
+≥4.90 V paper gate is 36 mV short at the worst peak</strong> — the Pi
+5's 4.75 V line still clears by 114 mV, which is why nothing drops;
+until closure the gate line stays 4.90 and this paragraph is the waiver
+record. <strong>Fix order for a fail (operator 2026-10-30): (1) replace
+the BUCK, not the cable</strong> — the planned LM25116 (§3.6.2, CV 5.20
+V; ceiling 5.25 V at the HAT input at idle, read on the INA219) replaces
+the Mus-14, <strong>(2) load-shed.</strong> <strong>D16/D17/D18 and the
+3 A ATC feed fuse</strong> stay as specced. The Mus-14 heatsink is
+§3.6.2 mandatory prep BEFORE it carries load. <strong>Load-shed fallback
+if it still fails (no DROK plan B exists):</strong> mic serial + UAC go
+to the Pi's native ports (STM32 rail); the HAT rail carries only HAT
+logic + SSD + the stick (~2.0 A peak / ~1.1 A typ).</li>
+<li><strong>Ripple</strong> (unspecified by the vendor): scope &lt; ~100
+mV p-p at the HAT input under SSD load.</li>
+<li><strong>Board temperature</strong> through the boot soak (~1 W
+dissipated in a 30 mm bare board on a warm PSU cover; bay fans
+help).</li>
+<li><strong>Both sockets share one 3 A budget</strong> — assume yes,
+confirm at arrival.</li>
+<li><strong>Dual-feed / backfeed:</strong> direction (a) — external 5 V
+into HAT POWER backfeeding the Pi rail — ✅ <strong>PASSED on Ultra
+2026-10-17</strong> (5.1 V proven at the input, header pin 2 = 0 V;
+measurements in <a href="Electronics_BringUp_Plan.html">BringUp 7.6 step
+5</a>). Direction (b) — Pi ON, MusRock OFF: HAT loads must NOT ride the
+Pi rail, no voltage on the unpowered MusRock output — <strong>⏳ still
+runs at Halo's swap</strong> (2 min, same step).</li>
+<li><strong>When the mic serial moves to a HAT port: re-pin
+<code>/dev/iflytek_halo</code></strong> (devpath changes). End state:
+<strong>OAK-D S2 + iFLYTEK (serial + UAC) + sound-card stick on HAT
+ports</strong>; on the Pi's native ports only <strong>black #1
+STM32</strong> (+ the gamepad dongle); <strong>blue #1 + blue #2
+free</strong> (operator ruling 2026-10-27: "The OAK-D plugs into the HAT
+… as does the iflytek").</li>
+</ol>
+<h4
+id="364-ina219-power-monitor--stays-at-factory-0x40-flipped-2026-10-17">3.6.4
+INA219 power monitor — stays at FACTORY 0x40 (flipped 2026-10-17)</h4>
+<p><strong>No HAT is ever re-addressed: every HAT in the fleet keeps
+factory 0x40.</strong> The PCA9685 takes 0x41 instead, via its
+silk-labeled A0 pad bridge (<a
+href="Lumi_Wand_Integration.html#21-pca9685-wand--verify-defaults--cable-bench">Integration
+§21</a>), because Waveshare publishes no pad map for this board. Ultra's
+<code>hat_power_logger</code> reads 0x40.</p>
+<p>The onboard power monitor is a TI <strong>INA219</strong> on header
+I²C1, factory <strong>0x40</strong> (chip identity proven live on Ultra
+2026-10-17: power-on default config 0x399F;
+<code>i2cget -y 1 0x40 0x00 w</code> → <code>0x9f39</code>, the
+byte-swapped default).</p>
+<p><img
+src="images/electronics_bay/waveshare_hat_front_oak_20261017.jpg"
+alt="Waveshare PCIe TO M.2 USB HAT+ — front face in the operator&#39;s hand (OAK frame, 2026-10-17): silk &quot;PCIe TO M.2 USB HAT+&quot; + HAT+ mark + Waveshare logo, the 40-pin GPIO pass-through row along the top edge, 4× stacked USB-A on the right/bottom edges, the PCIe FFC entering at left, and the 4R7 inductor + R010 shunt near the POWER corner (bottom-left in this view — the board is held upside-down, so the silk reads inverted)." /></p>
+<p><img src="images/electronics_bay/waveshare_hat_shunt_R010_crop.png"
+alt="3× crop of the POWER corner: the R010 current-sense shunt (large 2512-class resistor, body code &quot;R010&quot; = 0.010 Ω) immediately beside the 4R7 inductor — the frame that confirmed the shunt value." /></p>
+<ul>
+<li>✅ <strong>Shunt confirmed <code>R010</code> = 0.010 Ω</strong>
+(2026-10-17; the large current-sense resistor beside the 4R7 inductor at
+the POWER corner, read off an OAK snapshot). Every amps figure from
+<code>hat_power_logger</code> is valid as logged.</li>
+<li><strong>One reader only:</strong> Ultra's
+<code>hat_power_logger.service</code> (Multi-Robot
+<code>provision/ultra/</code>) holds the chip open. Never run a second
+poller against it while the logger runs — read its CSV
+(<code>/var/log/hat_power/hat_power_&lt;date&gt;.csv</code>)
+instead.</li>
+</ul>
+<h4
+id="365-phone-charger--creator-edition-musrock-ip6518-candidate-operator-rulings-2026-10-27">3.6.5
+Phone charger — creator edition (MusRock IP6518, candidate; operator
+rulings 2026-10-27)</h4>
+<p><strong>Why:</strong> in the creator edition the BigClaw holds the
+user's phone (CAD phone cradle), and the phone is the camera, eyes and
+mic, so it runs hot all session. The Mus-14 cannot charge it: its two
+ports share the HAT's 3 A, it has plain 5 V with no PD, and the HAT is
+the boot drive (§3.6.2 / §3.6.3). <strong>A separate PD source</strong>,
+not a replacement of the Mus-14 (Electronics, 2026-10-27).</p>
+<table>
+<tbody>
+<tr>
+<td><strong>Part</strong></td>
+<td><strong>MusRock IP6518 module</strong>, silk
+<code>IP6518_A1V1.0</code> (Amazon, ~$4.50; buy 2, one spare). Listing
+claims (⏳ unverified): 4.5–36 V in, PD 3.0 + PPS + QC4.0 / SCP / AFC /
+Apple 2.4 A, 45 W peak, 1 × USB-C + 1 × USB-A, &lt; 100 µA quiescent,
+OVP / OCP / OTP, <strong>no reverse-polarity protection</strong>, 56 ×
+23 mm with 4 corner holes, input on 2 corner solder pads, caps ~10 mm
+tall (measure). The listing prints no PDO list and no ambient
+rating.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td>🔶 <strong>Candidate: conditional GO</strong> pending the bench
+checks below.</td>
+</tr>
+<tr>
+<td><strong>Feed</strong></td>
+<td>From the <strong>wand tether's V+ / <code>GND-power</code>
+position</strong> on the distribution block (A1 / B1 on the D-1459 map,
+§11.3.3 in Power_Bay). It is unused in the creator edition, because the
+phone replaces the wand in the BigClaw; the phone's ~33 W in roughly
+replaces the wand's measured ~33 W, so the bay budget is unchanged.
+<strong>18 AWG twisted pair SOLDERED to the two corner VIN pads</strong>
+(operator: solder, not the DC5521 jack). <strong>Meter polarity at the
+pads before first power</strong> (the board has no reverse protection).
+Strain-relieve the pair in <strong>CAD's post tie groove</strong>.</td>
+</tr>
+<tr>
+<td><strong>Fuse</strong></td>
+<td>🔴 <strong>NONE: operator ruling 2026-10-27</strong> (<em>"its a
+small 6-dof robot with tons of stuff already in the power bay"</em>:
+small 6-DOF arm, power bay already full). The IP6518's own output OCP /
+short protection covers phone-side faults; the input run is unfused like
+every CH1 branch (Power_Bay §11.3.2a, two-fuse design). <strong>Accepted
+trade-off:</strong> an input-side short is cleared only by the PSU's own
+output limit (on AC) or F1 (on battery) and darkens the whole bay.</td>
+</tr>
+<tr>
+<td><strong>Mount</strong></td>
+<td>CAD: raised on <strong>4 × 19 mm M2 posts over the PSU intake,
+beside the tether riser</strong>. No fuse holder to place.</td>
+</tr>
+<tr>
+<td><strong>Ports</strong></td>
+<td><strong>USB-C → the phone. USB-A stays EMPTY</strong>, covered with
+a printed blank or tape. Dual-port chips in this class typically drop
+both ports to 5 V when a second device attaches.</td>
+</tr>
+<tr>
+<td><strong>Cable up the arm</strong></td>
+<td>One continuous high-flex silicone USB-C cable, ≥ 24 AWG VBUS (3 A,
+no e-marker needed), along the wand tether's route, with service loops
+at each joint and a generous one at the wrist roll. Tie it within ~30 mm
+of the module's receptacle so arm motion never reaches the SMD
+socket.</td>
+</tr>
+<tr>
+<td><strong>Bench checks before install</strong></td>
+<td>1) Polarity, then first power from the bench PSU at 13.8 V,
+current-limited. 2) <strong>PPS verified by the operator's S22 showing
+"Super fast charging"</strong> (the S22's 25 W mode needs PPS; operator,
+no PD tester). 3) USB-A dual-port behaviour noted if convenient. 4) Hole
+pattern + max height → CAD. 5) <strong>Thermal soak in the bay: 9 V 3 A
+(or the S22 charging hard) for 30 min, lid on, fans running; IC &lt; ~85
+°C</strong>, else one spare Easycargo 10 × 10 on the IC and re-test. 6)
+Power_Bay §5a.7 runtime leg with the phone charging (UPS hold-up
+cost).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="4-assembly-notes">4. Assembly notes</h2>
+<p><strong>Cable-routing discipline:</strong></p>
+<ul>
+<li>All USB cables into the Pi5 use right-angle cable ends. <strong>No
+straight-out cables</strong> — they'd protrude beyond the bay lid and
+either crush against the lid or apply strain to the Pi5's fragile
+connectors.</li>
+<li><strong>STM32 board is the power hub</strong> — never plug the Pi5's
+USB-C directly into a wall charger or the DROK output. It always sources
+from the STM32's 5 V 5 A external port. This ensures the DROK's 8 A
+output is fully accounted for and the STM32 board's internal 5 V
+regulator + protection is in the path.</li>
+<li><strong>Reserve spares</strong> of each GELRHONR / CableCreation
+3-pack in the bench spares drawer.</li>
+</ul>
+<p><strong>Vertical stack budget — Pi5 + Waveshare HAT + inverted FPC
+board:</strong></p>
+<p>The electronics bay is <strong>~43.75 mm</strong> high inside (bay
+floor to underside of the HiWonder OEM lid — fixed, cannot be raised).
+It contains TWO independent vertical stacks that share the same
+horizontal footprint area: the Pi5 (left in the layout) and the STM32
+carrier + core board (center).</p>
+<p><img src="images/electronics_bay/stm32_carrier_core_bay_layout.png"
+alt="Electronics bay interior — Pi5 on 5 mm standoffs at LEFT, STM32 carrier + core assembly at CENTER. Blue arrows label the STM32 carrier board and the STM32 core board that sits on top of it." /></p>
+<h3
+id="stm32-stack-bay-floor--stm32-push-button-tops--informational-no-vertical-collision-with-pi5-stack">STM32
+stack (bay floor → STM32 push-button tops) — informational, no vertical
+collision with Pi5 stack</h3>
+<table>
+<thead>
+<tr>
+<th>Absolute height above bay floor (mm)</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Bay floor</td>
+</tr>
+<tr>
+<td>10.0</td>
+<td>STM32 carrier standoff tops (10 mm posts)</td>
+</tr>
+<tr>
+<td>11.6</td>
+<td>STM32 carrier PCB top (~1.6 mm PCB)</td>
+</tr>
+<tr>
+<td>20.1</td>
+<td>STM32-core-to-carrier header top (~8.5 mm header between carrier +
+core)</td>
+</tr>
+<tr>
+<td>21.7</td>
+<td>STM32 core PCB top (~1.6 mm PCB)</td>
+</tr>
+<tr>
+<td><strong>~26.7</strong></td>
+<td><strong>STM32 push-button tops</strong> (2 tactile buttons flanking
+the USB-C port on the core board, ~5 mm above core PCB)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The inverted MECCANIXITY FPC breakout board above the Pi5
+does NOT collide with any part of the STM32 stack</strong> — the FPC
+board's horizontal footprint sits clear of the STM32 core area (the
+fence CAD positions the two boards with enough lateral separation). No
+vertical constraint from the STM32 side.</p>
+<h3 id="pi5-stack--single-extra-tall-header--inverted-fpc-breakout">Pi5
+stack — single extra-tall header + inverted FPC breakout</h3>
+<p>The stack is <strong>Pi5 → Waveshare PCIe TO M.2 USB HAT+ (on its own
+standoffs + header) → inverted MECCANIXITY FPC breakout directly on the
+HAT's 40-pin pass-through header</strong> (operator 2026-10-17: <em>"the
+HAT gives us the height"</em>; pass-through Ultra-confirmed 2026-10-16).
+No extension header. The breakout mounts INVERTED, the pin-1 rotation
+rule applies (FPC connector end points at the STM32 carrier), and the
+FFC goes blue-stripe-UP at both ends. ✅ <strong>Stack height CHECKED ON
+HARDWARE — IT FITS (operator, 2026-10-18): no extension headers
+needed</strong>; lid clearance is closed (HAT-era heights are not
+tabulated — add them if a future change needs them). The 5 mm Pi5
+standoff lock and the §3.1/§3.4 right-angle USB cable heights still
+bind. Halo's physical seat onto the HAT happens at BringUp Phase 7.6
+step 6.</p>
+<p><strong>Note on the MECCANIXITY FPC breakout board's 2×20 female
+header:</strong> it is a BLIND SOCKET (not thru-holes on the FPC PCB).
+Only the female-header body itself accepts pin insertion — pins do NOT
+protrude above the FPC PCB. The HAT's pass-through pins insert as deep
+as the socket body allows and stop there.</p>
+<p><strong>⚠️ Pi5 standoff LOCKED at 5 mm.</strong> Raising the Pi5
+higher would push the Pi5 USB-A port heights up too — the right-angle
+USB-A cables (§3.1 OAK-D + §3.4 iFLYTEK) would then collide with the top
+edge of the electronics bay side covers. Pi5 standoff stays at 5 mm.</p>
+<p><strong>Physical assembly implications:</strong></p>
+<ul>
+<li><img src="images/hardware/elecbay_fpc_orientation.png"
+alt="Elec-bay FPC breakout — inverted mount and the rotation that sets pin 1: side view of the Pi5 → HAT pass-through → inverted breakout stack (⏳ the figure itself still draws the retired tall header; regenerate) with the FFC folding 180° back toward the back-cover exit, and plan view showing the FPC connector end pointing at the STM32 carrier, which is what lands breakout pin 1 over Pi5 pin 1 (square-pad corner, SD-card end). Includes the assembly order and the 180°-wrong symptom (G469 &quot;3V3&quot; terminal reads a floating GPIO level, not 3.3 V)." /></li>
+<li><strong>Board orientation — pin 1 lands on the LEFT of the inverted
+board:</strong> the MECCANIXITY FPC board mounts
+<strong>INVERTED</strong> — its 2 × 20 female socket faces DOWN onto the
+HAT's pass-through pins, and the FPC (FFC ribbon input) connector ends
+up on the OPPOSITE end of the board from where it sits on a non-inverted
+mount. <strong>When inverted, the pin-1 marker on the female socket ends
+up on the LEFT side</strong> of the now-inverted board (as viewed from
+what is now the top). The assembler must position the board so this
+LEFT-side pin-1 lands over the Pi5 GPIO pin 1 (Pi5 GPIO pin 1 is the
+corner-most pin closest to the Pi5's SD-card / USB-C-power edge); check
+the pin-1 silk mark on BOTH the breakout socket and the Pi5 GPIO before
+pressing the board down onto the pass-through pins. FPC-connector-to-FFC
+cable exits from the opposite (right-side) end of the inverted board
+(see <a
+href="#pi5-stack--single-extra-tall-header--inverted-fpc-breakout">cable
+exit paths</a> below for FFC fold-back routing).</li>
+<li><strong>Downstream implication — none. FFC installs blue-stripe UP
+at BOTH ends, no flip anywhere.</strong> Bench-verified 2026-08-02:
+A-type FFC is straight-through (wire N → wire N), and each MECCANIXITY
+board's PCB traces map its socket pin N to FPC-connector wire N
+intrinsic to the board (unaffected by physical mount orientation). The
+elec-bay board's rotation (FPC end pointing at the STM32) puts breakout
+pin 1 physically over Pi5 GPIO pin 1; from there, straight-through wire
+mapping carries pin 1 all the way to the G469. Power-bay breakout mounts
+in whatever orientation makes the cable exit clean — no pin-1
+constraint. Full procedure in <code>Power_Bay_Design.md</code> §4 steps
+1–5.</li>
+<li><strong>No pin protrusion above FPC PCB:</strong> the FPC breakout's
+female sockets are BLIND (SMT-mount on the FPC PCB underside, no
+thru-holes). The HAT's pass-through pins insert as deep as the socket
+body allows and stop there — nothing pokes up above the FPC PCB top
+face.</li>
+<li><strong>Signal integrity:</strong> the short pass-through conductor
+per pin is trivially fine for GPIO speeds (I²C ≤ 400 kHz, SPI ≤ 40 MHz,
+digital DC-ish) — moot below MHz.</li>
+<li><strong>Mechanical stability:</strong> the breakout is a friction
+fit on the HAT's pass-through header. If any wobble is observed under
+arm vibration or servo-current spikes, add a printed brace pillar from
+bay floor up to the FPC PCB corner opposite the FFC connector.</li>
+<li><strong>Assembly order:</strong> seat the HAT on the Pi5 GPIO (on
+its own standoffs, fully seated, no gap). Then drop the inverted FPC
+board onto the HAT's pass-through pins. Check each seat is flush before
+wiring further.</li>
+</ul>
+<hr />
+<p><strong>Cable exit paths — electronics bay ↔︎ power bay:</strong></p>
+<p>The bay has <strong>TWO distinct exit routes</strong> through the
+Hiwonder black base plate — pick the right one per cable based on where
+it originates and where it terminates. Do NOT lump them into one
+harness.</p>
+<p><strong>Route A — back-cover exit + base-servo hole</strong> (for
+cables going TO the arm or TO the external chassis):</p>
+<p>Cables leave the electronics bay through the <strong>big cable hole
+in the bay's back cover</strong>, then run down through the
+<strong>base-servo hole in the black base plate</strong> into the power
+bay / down the arm. Cables using Route A:</p>
+<ul>
+<li><strong>FFC ribbon (40-conductor GPIO extension)</strong> — folds
+back over the top of the inverted MECCANIXITY FPC breakout board (which
+sits on the <strong>HAT's 40-pin pass-through header</strong> above the
+Pi5 GPIO) and routes to the back-cover exit. Terminates at the G469
+screw terminal chain in the power bay.</li>
+<li><strong>OAK-D S2 camera cable</strong> — GELRHONR USB-A→USB-C 1 m
+(§3.1). HAT-side plug stays in the electronics bay; USB-C tail runs
+through the back-cover exit and down the arm to the camera.</li>
+<li><em>(Not on this route: the iFLYTEK / sound-card USB runs drop
+through the EB cover's data lane — §3.4 run table.)</em></li>
+<li><strong>Servo bus cable from STM32</strong> — carries the arm's
+servo daisy chain (LX-225, HTS-16L, HTS-25L, HTS-25L per gripper — the
+Hiwonder bus servo protocol on a single UART / power pair). Routes from
+the STM32's bus servo port through the back-cover exit, down through the
+base-servo hole, and up the arm to each servo.</li>
+</ul>
+<p>Route them together as one grouped harness (adhesive cable clip /
+small zip tie every 40-50 mm) to keep the bay tidy. Leave a <strong>~30
+mm service loop</strong> at the back-cover exit so the electronics bay
+lid can lift for service without tugging on any connector.</p>
+<p><strong>Route B — direct opening in black base plate under the STM32
+board</strong> (for the STM32's power feed):</p>
+<ul>
+<li><strong>DROK 7.5 V output → STM32 blue terminal block</strong>
+(power-in) — routes UP from the power bay (where the DROK lives, on the
+PSU top) through <strong>openings in the Hiwonder black base plate
+directly beneath the STM32 board</strong>, and lands at the STM32's
+blue-terminal-block power-input header. Does NOT go through the
+back-cover hole; does NOT share the base-servo harness. Keeping the
+STM32 power feed on its own opening isolates it from the signal harness
+(no inductive coupling from the ~5.5 A DROK-output current into the FFC
+/ USB cables) and keeps the entry point right under the STM32's terminal
+block for the shortest possible power lead.</li>
+</ul>
+<p><strong>Static-side / moving-side notes:</strong> the electronics bay
+lid is static (screws into fence). The Hiwonder base-plate opening is
+ALSO static. Vertical stack, bottom-up:</p>
+<ul>
+<li><strong>Black base plate</strong> = 0 mm reference (rectangular
+slot/hole cut in it directly under the base servo)</li>
+<li><strong>Golden standoffs</strong> raise the base-servo plate ~40 mm
+above the black base plate</li>
+<li><strong>Base-servo plate</strong> (silver, static) — the base servo
+mounts THROUGH this plate: body hangs BELOW the plate, output shaft goes
+UP through the plate to drive the shoulder assembly above</li>
+<li><strong>Base-servo body bottom</strong> ends up ~15 mm above the
+black base plate hole — this ~15 mm gap between the servo body and the
+black plate is where the harness fans out horizontally after coming up
+through the hole</li>
+</ul>
+<p><strong>Nothing that carries a cable rotates at this exit
+point.</strong> The rotation happens above: the base servo's OUTPUT
+(rotor) drives the arm's shoulder assembly. The servo body, both plates,
+the standoffs, and the black-base-plate hole are all static. Any cables
+that need to reach the arm (e.g. the STM32 servo bus cable up to
+shoulder / elbow / wrist / gripper) route from the STATIC exit hole up
+around / through the base-servo assembly and only encounter twist at the
+servo's own rotor interface — not at the base-plate hole. Silicone wire
+jackets are still preferred for the STM32 bus cable's arm-side segment
+(above the base servo) for the twist tolerance there.</p>
+<p><strong>Bring-up sequence:</strong></p>
+<ol type="1">
+<li>Land Pi5 in the bay per the (separately-owned) Electronics-bay
+agent's fence CAD + PSU-top mounting.</li>
+<li>Land STM32 controller card per the fence CAD.</li>
+<li>Wire STM32 power port from the DROK output (V+ / GND) using the
+DROK's screw-terminal output.</li>
+<li>Plug the STM32's 5 V 5 A external USB-C port into the Pi5's USB-C
+PWR port using the §3.2 right-angle 0.5 ft cable.</li>
+<li>Plug the STM32's USB-C control port into Pi5 black #1 using the §3.3
+flat-silicone 20 cm cable.</li>
+<li>Fit the §3.1 GELRHONR 1 m cable into a HAT USB 3 port (USB-A end);
+the USB-C end plugs into the OAK-D S2 at the arm tip when the
+wand+camera assembly goes on.</li>
+<li>Route the iFLYTEK runs per the §3.4 run table (Pi native ports at
+Phase 7.5, HAT ports from 7.6).</li>
+</ol>
+<p><strong>Test before closing the bay lid:</strong></p>
+<ul>
+<li>Power-up sequence: (a) AC rocker ON (kills all bay), (b) DC rocker
+ON (enables DROK + downstream), (c) STM32 controller switch ON (enables
+the STM32 board and its 5 V out to Pi5).</li>
+<li>Pi5 should boot within 5-10 s of the STM32 5 V rail coming up.
+Access via SSH over Wi-Fi (headless — no monitor).</li>
+<li><code>dmesg | tail</code> should show the STM32 as a USB device on
+the control USB-A port.</li>
+<li>OAK-D S2 (if connected) should show up in <code>lsusb</code> as a
+USB 3 device <strong>on the HAT's VL805 bus</strong>
+(<code>xhci_hcd</code>, not the RP1 <code>xhci-hcd</code> buses) — the
+GELRHONR is USB 3 5 Gbps rated, and the HAT port confirms at 5000M.
+(<code>lsusb -t</code> shows the tree with speeds).</li>
+<li>iFLYTEK mic array (if connected) should show up in
+<code>lsusb</code> (CH340 + UAC) on the ports given in the §3.4 run
+table.</li>
+</ul></body></html>

@@ -1,0 +1,95 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>cnc</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="cnc-rules--the-stepcraft-840-d3-and-uccnc">CNC rules — the Stepcraft
+840 D3 and UCCNC</h1>
+<!-- Domain rules split out of CLAUDE.md on 2026-10-03: the file had
+reached 279 lines, past the two-screen limit it sets for itself. Content
+is unchanged from CLAUDE.md as of 1c30ee2. Same bar applies here: only an
+operator instruction, or a defect that already cost time. -->
+
+<p>Back to <a href="../../CLAUDE.html"><code>../../CLAUDE.md</code></a> ·
+<a
+href="../CNC_Machining_Guide.html"><code>../CNC_Machining_Guide.md</code></a></p>
+<p>The hand-written NCs
+(<code>cad/exports/cnc/lumi_wand_heatsink.nc</code>,
+<code>cad/exports/cnc/ArmPiUltra_Servo_BasePlate*.nc</code>) and the
+generated base-plate NC (<a
+href="../../cad/freecad/gen_baseplate_nc.py"><code>cad/freecad/gen_baseplate_nc.py</code></a>)
+all have to satisfy the same syntax rules or UCCNC refuses to load the
+file — or worse, loads it and plunges with a dead spindle. Four workshop
+trips were lost between 2026-07-13 and 07-18 learning these one at a
+time (<code>5928ab5</code>, <code>3fc6d9f</code>, <code>a4ddc30</code>,
+<code>5439025</code>, <code>8a61bc9</code>).</p>
+<ul>
+<li><strong>Comments are <code>(...)</code> block style, one line each —
+never <code>;</code>.</strong> Our UCCNC install silently drops some
+<code>;</code> lines; stick to Mach3-canon.</li>
+<li><strong>No <code>(</code> or <code>[</code> inside the body of any
+<code>(...)</code> block.</strong> Both open the lexer and a wrapped
+close is a load error. Substituting one for the other just moves the
+failure — strip both.</li>
+<li><strong>ASCII only (Windows-1252 codepage).</strong> <code>°</code>,
+<code>Ø</code>, <code>×</code>, <code>→</code>, en/em dashes, smart
+quotes, non-breaking space all crash the parser with the same "Error
+reading line N" the bracket cases give — don't mistake one for the
+other.</li>
+<li><strong>CRLF line endings.</strong> UCCNC on LF-only reads the whole
+file as one line and the error-line number becomes nonsense.</li>
+<li><strong>Delete every <code>T# M6</code> line.</strong> On this
+manual-tool-change install the M6 macro consumes the next
+<code>S...M3</code>, the spindle never starts, and the first plunge
+snaps the bit. Keep the <code>(T# = ...)</code> description for the
+on-screen tool identity.</li>
+</ul>
+<p><code>gen_baseplate_nc.py</code> <code>E()</code> applies all five
+rules on every emit; a regen can't reintroduce them. For hand-edited
+NCs, verify before the file is loaded on the Stepcraft: zero non-ASCII
+bytes, zero <code>;</code>-starting lines containing <code>()[]</code>,
+zero <code>T# M6</code> lines, zero lone-LF line endings. All four
+counts must be zero.</p>
+<p>Operator rules that cost parts or cutters:</p>
+<ul>
+<li><strong>Every <code>M0</code> pause must be followed by
+<code>S...M3</code> + <code>G4 Px</code> dwell before any G1/G2/G3
+cut.</strong> 2026-07-18, the OP3 slot NC was going to plunge a fresh
+SHARPRO bit with a dead spindle; <code>67d2f27</code> added the
+restart.</li>
+<li><strong>Re-touch Z=0 on the new endmill at every tool-change
+<code>M0</code>.</strong> Not optional — the SHARPRO tip sits at a
+different axial position than the Milwaukee drill's split point, and the
+OP3 breakthrough is only 0.05 mm into the spoilboard. (Operator standing
+rule.)</li>
+<li><strong>Heatsink slot cuts in its own op, on an isolated
+puck.</strong> The v9.8.2 integrated per-pass slot detour broke a
+SHARPRO 1/8" bit on pass 2, 2026-07-17: the cutter hard-turned into the
+puck rim while surrounded by 60×60 stock and stalled. v9.9
+(<code>a1b5259</code>) split the waste-removal M0 out so OP3 cuts a
+free-standing puck; v9.9.1 (<code>0afb78f</code>) retracts Z between the
++Y and −Y wall cuts so a 1-flute O-flute can clear chips in a closed
+pocket.</li>
+<li><strong>Use a real split-point twist drill for axial pecks — never
+an endmill.</strong> A 2 mm SainSmart endmill snapped on hole #1 of the
+v1 servo-plate run. Canonical pilot is a <strong>Milwaukee 1/8" cobalt
+(HSS-Co M35/M42, 135° split point)</strong> in a 1/8" OZ8 collet. OP1 is
+written around it on both heatsink and base plate.</li>
+<li><strong>The Kodiak 1/8" 2-flute carbide (1/8" shank) is
+retired.</strong> The only 1/8" endmill on hand is the <strong>SHARPRO
+1/8" O-flute, 1/4" shank</strong>, so every T1 → T2 swap on the heatsink
+and base-plate NCs is a real <strong>collet change 1/8" OZ8 → 1/4"
+OZ8</strong>, not just a bit swap.</li>
+<li><strong>The heatsink NC is hand-written and does not propagate from
+any macro.</strong> <code>HEATSINK_OD</code> lives in
+<code>cad/freecad/lumi_wand_cyl_v1.py</code>; the NC carries the
+arithmetic by hand. When <code>HEATSINK_OD</code> moves (Ø48 → Ø54 at
+v9.10, <code>50b3013</code> 2026-09-18), the NC is rewritten by hand and
+<code>docs/CNC_Machining_Guide.md</code> §3 is swept behind it. The
+2026-09 sweep (<code>48994cd</code>) caught the OP2 table still
+describing the Ø48 program — following the doc would have cut a 6 mm
+undersize puck. <strong>Treat the NC as the source of truth; the guide
+is a reader-aid.</strong></li>
+<li><strong>Base plate holes are emitted in <code>toolB</code>
+(X-mirrored) coordinates.</strong> The NC viewer looks "wrong" by design
+— the operator's post-install flip of the finished plate about its long
+Y axis is what lands each hole at its designed position. Cross-check:
+for any drilled hole, <code>world.X_after_flip = −machine.X</code> must
+equal <code>FILE.x − Cx</code>.</li>
+</ul></body></html>

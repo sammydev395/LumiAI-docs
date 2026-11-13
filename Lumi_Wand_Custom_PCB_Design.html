@@ -1,0 +1,666 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lumi_Wand_Custom_PCB_Design</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="lumi-wand--custom-pcb-design-deprecated">Lumi Wand — Custom PCB
+Design (DEPRECATED)</h1>
+<p><strong>Company:</strong> DrDev <strong>Product:</strong> LumiAI
+Robotic Arm — Lumi Arc <strong>Document:</strong> Custom KiCad PCB
+Designs — Historical Reference <strong>Status:</strong>
+<strong>DEPRECATED 2026-05-02</strong> — superseded by off-the-shelf
+PT4115 module design <strong>Date:</strong> March 2026 (initial);
+archived 2026-05-02</p>
+<hr />
+<blockquote>
+<p><strong>THIS DOCUMENT IS HISTORICAL.</strong> It describes two custom
+KiCad PCB designs (prototype MOSFET + production PT4115) that were
+designed, fabricated, and partially assembled during March-April 2026
+before being abandoned in favor of off-the-shelf PT4115 modules. The
+PCBs and parts are kept in inventory but not maintained.</p>
+<p><strong>Active design:</strong> <a
+href="Lumi_Wand_LED_Fixture_Design.html"><code>Lumi_Wand_LED_Fixture_Design.md</code></a>
+— uses 12× off-the-shelf PT4115 modules + PCA9685 breakout in a
+clamshell PETG handle.</p>
+<p><strong>Why deprecated:</strong></p>
+<ul>
+<li>JLCPCB fab + Freerouter routing + SMT assembly workflow
+eliminated</li>
+<li>12× drop-in modules with screw terminals replace ~80 SMT joints
+(PCA9685 TSSOP-28, PT4115 SOT-89-5, 0805 sense resistors, etc.)</li>
+<li>4-wire arm tether recovered (was 13-14 conductors when the
+production PCB was relocated to the robot base for thermal/EMI
+reasons)</li>
+<li>~$10/unit cheaper, zero fab overhead, instant turnaround once parts
+in hand</li>
+</ul>
+</blockquote>
+<hr />
+<h2 id="1-two-pcb-variants-built">1. Two PCB Variants Built</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Prototype (MOSFET)</th>
+<th>Production v2.0 (PT4115)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Current limiting</td>
+<td>10Ω 5W resistors (inline on cathode wires)</td>
+<td>PT4115 buck CC drivers (on-board)</td>
+</tr>
+<tr>
+<td>Switching</td>
+<td>IRLZ44N MOSFETs</td>
+<td>PT4115 internal switch (DIM pin)</td>
+</tr>
+<tr>
+<td>Heat waste @ full power</td>
+<td>~52W</td>
+<td>~4.2W</td>
+</tr>
+<tr>
+<td>Efficiency</td>
+<td>~40%</td>
+<td>~95%</td>
+</tr>
+<tr>
+<td>LED type</td>
+<td>Individual-anode star with hand-bridged anodes</td>
+<td>Individual-anode star (native)</td>
+</tr>
+<tr>
+<td>PCB size</td>
+<td>60 × 65 mm (rev)</td>
+<td>120 × 65 mm (rev — 6×2 layout)</td>
+</tr>
+<tr>
+<td>Components per channel</td>
+<td>6 (MOSFET + 3 resistors + gate/pulldown)</td>
+<td>4 (PT4115 + inductor + diode + sense R)</td>
+</tr>
+<tr>
+<td>Status</td>
+<td>Ordered + assembled, sunk</td>
+<td>Ordered + DRC clean, sunk</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-project-files">2. Project Files</h2>
+<h3 id="prototype-mosfet-version">Prototype (MOSFET Version)</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KiCad project</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver/Lumi_Wand_12CH_Driver.kicad_pro</code></td>
+</tr>
+<tr>
+<td>Schematic</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver/Lumi_Wand_12CH_Driver.kicad_sch</code></td>
+</tr>
+<tr>
+<td>PCB layout</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver/Lumi_Wand_12CH_Driver.kicad_pcb</code></td>
+</tr>
+<tr>
+<td>Trace generator</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver/gen_traces.py</code></td>
+</tr>
+<tr>
+<td>Gerbers ZIP</td>
+<td><code>kicad/gerbers/Lumi_Wand_12CH_Driver.gerbers.zip</code></td>
+</tr>
+<tr>
+<td>JLCPCB order</td>
+<td>2026-04, $4.76 (qty 5)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="production-pt4115-version">Production (PT4115 Version)</h3>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KiCad project</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver_PROD/Lumi_Wand_12CH_Driver_PROD.kicad_pro</code></td>
+</tr>
+<tr>
+<td>PCB layout</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver_PROD/Lumi_Wand_12CH_Driver_PROD.kicad_pcb</code></td>
+</tr>
+<tr>
+<td>PCB generator</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver_PROD/gen_prod_pcb.py</code></td>
+</tr>
+<tr>
+<td>Gerbers ZIP</td>
+<td><code>kicad/Lumi_Wand_12CH_Driver_PROD/Lumi_Wand_12CH_Driver_PROD.gerbers.zip</code></td>
+</tr>
+<tr>
+<td>JLCPCB order</td>
+<td>2026-04-18, $11.82 (qty 5, order
+<code>W2026041912450771</code>)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-prototype-circuit-per-channel">3. Prototype Circuit (per
+channel)</h2>
+<pre><code>PCA9685 PWM Out ─── 100Ω ──── IRLZ44N Gate
+                               │
+                         100kΩ ┤ (pull-down)
+                               │
+                              GND
+
+10V+ ──── LED+ (anode)
+           LED (chip)
+           LED- (cathode) ──── MOSFET Drain
+                               MOSFET Source ──── GND
+
+(Inline 10Ω 5W on cathode wire between PCB JST output and LED star,
+ housed in robot base alongside the PCB)</code></pre>
+<ul>
+<li>Current: I = (10V − Vf) / 10Ω ≈ 700 mA</li>
+<li>MOSFETs run cold (Rds_on = 0.022Ω)</li>
+<li>Resistors run <strong>very hot</strong> (~5W each, 60W total for 12
+channels)</li>
+</ul>
+<h2 id="4-production-circuit-per-channel">4. Production Circuit (per
+channel)</h2>
+<pre><code>         VIN (Pin 2)
+          |
+10V+ ────+         +── Inductor (47µH) ── LED+ (anode)
+          |         |
+          PT4115 SW─+
+          |    |
+          |   SS14 diode (freewheeling: cathode=SW, anode=GND)
+          |   GND
+          |
+     DIM (Pin 4) &lt;── PCA9685 CH output (PWM, 3.3V logic)
+          |
+     CSN (Pin 5) ── 0.15Ω sense ── GND
+                         |
+                    LED- (cathode)
+          |
+     GND (Pin 1) ── GND</code></pre>
+<ul>
+<li>Current: I = 0.1V / 0.15Ω = 667 mA ≈ 700 mA</li>
+<li>Dimming: PCA9685 sends 1 kHz PWM to PT4115 DIM pin</li>
+<li>~95% efficient, ~4.2W total heat waste</li>
+</ul>
+<h2 id="5-pcb-design-specifications">5. PCB Design Specifications</h2>
+<h3 id="board-specs-production">Board specs (production)</h3>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dimensions</td>
+<td>120 × 65 mm (2 rows × 6 cols layout)</td>
+</tr>
+<tr>
+<td>Layers</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Thickness</td>
+<td>1.6 mm</td>
+</tr>
+<tr>
+<td>Copper</td>
+<td>1 oz (35 µm)</td>
+</tr>
+<tr>
+<td>Surface finish</td>
+<td>HASL (lead-free)</td>
+</tr>
+<tr>
+<td>Solder mask</td>
+<td>Black</td>
+</tr>
+<tr>
+<td>Silkscreen</td>
+<td>White</td>
+</tr>
+<tr>
+<td>Min trace/space</td>
+<td>0.2 mm / 0.2 mm</td>
+</tr>
+<tr>
+<td>Min drill</td>
+<td>0.3 mm</td>
+</tr>
+</tbody>
+</table>
+<h3 id="routing-workflow-freerouter">Routing workflow (Freerouter)</h3>
+<p>Production PCB was generated programmatically via
+<code>gen_prod_pcb.py</code> (placement only) and routed externally:</p>
+<ol type="1">
+<li>KiCad 8 → File → Export → Specctra DSN</li>
+<li>Open DSN in Freerouter v2.1</li>
+<li>Click "Autoroute" → wait for completion</li>
+<li>File → Export → Specctra Session (.ses)</li>
+<li>Back in KiCad: File → Import → Specctra Session</li>
+<li>Press B (Fill All Zones) to connect GND zone</li>
+<li>Run DRC → 0 violations, 0 unconnected</li>
+</ol>
+<h3 id="drc-status-final">DRC status (final)</h3>
+<ul>
+<li><strong>Prototype:</strong> 6 unconnected items (1 real Q8 stub, 5
+cosmetic GND zone islands), 48 lib_footprint env warnings, 42 silkscreen
+rule warnings (cosmetic)</li>
+<li><strong>Production:</strong> 0 unconnected, 59 lib_footprint env
+warnings, cosmetic silk warnings only</li>
+</ul>
+<h2 id="6-production-pcb-component-layout">6. Production PCB Component
+Layout</h2>
+<pre><code>+─────────────────────────────────────────────────────+
+| [MH1]     [J1 INPUT]  [U1 PCA9685]  [C1][C2]       |
+|           10V+ GND     TSSOP-28      10uF 100nF     |
+|           SDA SCL 3V3  [R_SDA][R_SCL]               |
+|                         10K    10K                   |
+| R  G  B  W    ← LED1 channels (4x PT4115 stages)   |
+| U2 U3 U4 U5  ← PT4115 ICs (SOT-89-5)              |
+| L1 L2 L3 L4  ← 47uH inductors (CD43 4x4mm)        |
+| D1 D2 D3 D4  ← SS14 diodes (SMA)                   |
+| R1 R2 R3 R4  ← 0.15Ω sense resistors (0805)        |
+|                                                     |
+| R  G  B  W    ← LED2 channels                       |
+| U6 U7 U8 U9                                        |
+| ...etc...                                           |
++─────────────────────────────────────────────────────+</code></pre>
+<h2 id="7-original-bom--prototype-mosfet">7. Original BOM — Prototype
+(MOSFET)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Component</th>
+<th>Value / Part</th>
+<th>Qty</th>
+<th>Search term</th>
+<th>Est. Price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>IRLZ44N MOSFET</td>
+<td>TO-220</td>
+<td>12 (+3)</td>
+<td><code>IRLZ44N MOSFET TO-220</code></td>
+<td>~$3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Current-limit resistor</td>
+<td>10Ω, 5W, axial wirewound</td>
+<td>12 (+8)</td>
+<td><code>10 ohm 5W ceramic resistor</code></td>
+<td>~$6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Gate resistor</td>
+<td>100Ω, 0805</td>
+<td>12</td>
+<td><code>100 ohm 0805 SMD resistor</code></td>
+<td>~$1</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Gate pull-down</td>
+<td>100kΩ, 0805</td>
+<td>12</td>
+<td><code>100k ohm 0805 SMD resistor</code></td>
+<td>~$1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>PCA9685 IC</td>
+<td>TSSOP-28</td>
+<td>1</td>
+<td><code>PCA9685 TSSOP-28 I2C PWM</code></td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Bulk decoupling cap</td>
+<td>10µF, 25V, 0805</td>
+<td>2</td>
+<td><code>10uF 25V 0805 ceramic</code></td>
+<td>~$1</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Bypass cap</td>
+<td>100nF, 0805</td>
+<td>1</td>
+<td><code>100nF 0805 ceramic capacitor</code></td>
+<td>~$1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>I2C pull-up</td>
+<td>10kΩ, 0805</td>
+<td>2</td>
+<td><code>10k ohm 0805 SMD resistor</code></td>
+<td>~$1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>JST-XH 5-pin connector kit</td>
+<td>XH2.54 5Pin</td>
+<td>1</td>
+<td><code>JST XH2.54 5Pin Wire Cable Connector</code></td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>10</td>
+<td>2.54mm pin header</td>
+<td>1×9 vertical</td>
+<td>3</td>
+<td><code>2.54mm pin header 1x9</code></td>
+<td>~$1</td>
+</tr>
+<tr>
+<td>11</td>
+<td>M2 brass standoff + screw kit</td>
+<td>M2×6mm</td>
+<td>1 kit</td>
+<td><code>M2 standoff brass 6mm</code></td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Prototype PCB (JLCPCB)</td>
+<td>60×65 mm 2-layer</td>
+<td>5</td>
+<td>—</td>
+<td>~$5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Prototype total:</strong> ~$26-30 USD</p>
+<h2 id="8-original-bom--production-pt4115">8. Original BOM — Production
+(PT4115)</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Component</th>
+<th>Value / Part</th>
+<th>Qty</th>
+<th>Search term</th>
+<th>Est. Price</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>PT4115 IC</td>
+<td>PT4115B0TR SOT-89-5</td>
+<td>15</td>
+<td><code>PT4115 SOT89 LED driver</code></td>
+<td>~$3</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Inductor</td>
+<td>47µH, 1A, SMD 4×4mm shielded</td>
+<td>15</td>
+<td><code>CD43 47uH SMD power inductor 4x4x3mm shielded</code></td>
+<td>~$4</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Schottky diode</td>
+<td>SS14, SMA</td>
+<td>15</td>
+<td><code>SS14 SMA DO-214AC</code></td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Sense resistor</td>
+<td>0.15Ω, 1%, 0.5W, 0805</td>
+<td>15</td>
+<td><code>0R15 0805 1% SMD resistor</code></td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Input decoupling</td>
+<td>100nF, 0805</td>
+<td>15</td>
+<td><code>100nF 0805 ceramic capacitor</code></td>
+<td>~$1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>PCA9685 IC</td>
+<td>TSSOP-28</td>
+<td>1</td>
+<td><code>PCA9685 TSSOP-28 I2C PWM</code></td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Bulk decoupling</td>
+<td>10µF, 0805</td>
+<td>3</td>
+<td><code>10uF 25V 0805 ceramic</code></td>
+<td>~$1</td>
+</tr>
+<tr>
+<td>8</td>
+<td>I2C pull-up</td>
+<td>10kΩ, 0805</td>
+<td>2</td>
+<td><code>10k ohm 0805 SMD resistor</code></td>
+<td>~$1</td>
+</tr>
+<tr>
+<td>9</td>
+<td>JST-XH 5-pin connector kit</td>
+<td>XH2.54 5Pin</td>
+<td>1</td>
+<td><code>JST XH2.54 5Pin Wire Cable Connector</code></td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>10</td>
+<td>2.54mm pin header</td>
+<td>1×9 vertical</td>
+<td>3</td>
+<td><code>2.54mm pin header 1x9</code></td>
+<td>~$1</td>
+</tr>
+<tr>
+<td>11</td>
+<td>M2 brass standoff + screw kit</td>
+<td>M2×6mm</td>
+<td>1 kit</td>
+<td><code>M2 standoff brass 6mm</code></td>
+<td>~$2</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Production PCB (JLCPCB)</td>
+<td>120×65 mm 2-layer</td>
+<td>5</td>
+<td>—</td>
+<td>~$8</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production total:</strong> ~$30-35 USD</p>
+<h2 id="9-pcb-location--robot-base-mounting">9. PCB Location — Robot
+Base Mounting</h2>
+<p>The PCBs were originally designed to fit inside the wand handle
+(30×25×55 mm) but were too large; both ended up mounted in the robot
+base on top of the LiFePO4 battery's retainer plate. This added EMI
+complications because the 12× PT4115 SW nodes (500 kHz switching) ran
+~100 cm through the arm cable, parallel to the servo bus.</p>
+<p><strong>EMI mitigation options considered (none applied — design
+abandoned before bring-up):</strong></p>
+<ol type="1">
+<li>Accept and shield (braid + ferrites + twisted pairs)</li>
+<li>Move inductors + diodes + sense resistors to a small daughter board
+at the wand head</li>
+<li>Put PT4115 array back at the wand head (essentially the
+off-the-shelf module path that ultimately won)</li>
+</ol>
+<h2 id="10-kicad-project-tasks-completed-before-deprecation">10. KiCad
+Project Tasks (completed before deprecation)</h2>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Create KiCad projects for
+both proto and prod variants</label></li>
+<li><label><input type="checkbox" checked="" />Draw 12-channel
+schematics</label></li>
+<li><label><input type="checkbox" checked="" />Place components per
+layout strategy</label></li>
+<li><label><input type="checkbox" checked="" />Route power, drain,
+signal traces</label></li>
+<li><label><input type="checkbox" checked="" />Add bottom-layer ground
+plane pour with via stitching</label></li>
+<li><label><input type="checkbox" checked="" />Add silkscreen labels for
+all channels</label></li>
+<li><label><input type="checkbox" checked="" />Run ERC + DRC, resolve
+all errors</label></li>
+<li><label><input type="checkbox" checked="" />Export Gerber files for
+fabrication</label></li>
+<li><label><input type="checkbox" checked="" />Order 5× prototype + 5×
+production PCBs from JLCPCB</label></li>
+</ul>
+<h2 id="11-inventory-kept-as-fallback">11. Inventory (kept as
+fallback)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Proto PCBs (60×65 mm, MOSFET)</td>
+<td>5 boards</td>
+<td>In inventory</td>
+</tr>
+<tr>
+<td>Prod PCBs (120×65 mm, PT4115)</td>
+<td>5 boards</td>
+<td>In inventory</td>
+</tr>
+<tr>
+<td>IRLZ44N TO-220 MOSFETs</td>
+<td>15</td>
+<td>In inventory</td>
+</tr>
+<tr>
+<td>10Ω 5W axial wirewound resistors</td>
+<td>20</td>
+<td>In inventory</td>
+</tr>
+<tr>
+<td>PT4115 SOT-89-5 ICs</td>
+<td>20</td>
+<td>In inventory</td>
+</tr>
+<tr>
+<td>47 µH CD43 SMD inductors</td>
+<td>20</td>
+<td>In inventory</td>
+</tr>
+<tr>
+<td>SS14 SMA Schottky diodes</td>
+<td>50</td>
+<td>In inventory</td>
+</tr>
+<tr>
+<td>0805 0.15Ω 1% sense resistors</td>
+<td>100</td>
+<td><strong>In use for the §13 Step 0 POC bench rig only</strong> —
+swapped onto 3 VEEKET PT4115 modules (1R0 → 0R15) for the
+bench-validation stack. Not needed for the production KESHY-based handle
+(KESHY ships factory-set at 700 mA). 0805 overhangs the modules' 0603
+footprint by ~0.2 mm but solders cleanly. See <a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+§7.2.</td>
+</tr>
+<tr>
+<td>PCA9685 PW TSSOP-28 ICs</td>
+<td>5</td>
+<td>Spare (now using breakout)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-datasheets">12. Datasheets</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Package</th>
+<th>Datasheet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PCA9685 16-channel 12-bit I²C PWM LED controller</td>
+<td>TSSOP-28</td>
+<td><a href="https://www.nxp.com/docs/en/data-sheet/PCA9685.pdf">NXP
+PCA9685 (PDF)</a></td>
+</tr>
+<tr>
+<td>PT4115 step-down constant-current LED driver</td>
+<td>SOT-89-5</td>
+<td><a
+href="https://www.umw-ic.com/static/pdf/8981e46c7438b0a35f87966b2c04ce4f.pdf">UMW
+PT4115 (PDF)</a></td>
+</tr>
+<tr>
+<td>IRLZ44N logic-level N-channel MOSFET</td>
+<td>TO-220AB</td>
+<td><a
+href="https://www.infineon.com/dgdl/Infineon-IRLZ44N-DataSheet-v01_01-EN.pdf">Infineon
+IRLZ44N (PDF)</a></td>
+</tr>
+<tr>
+<td>SS14 Schottky barrier rectifier, 40 V / 1 A</td>
+<td>SMA (DO-214AC)</td>
+<td><a href="https://www.vishay.com/docs/88746/ss12.pdf">Vishay
+SS12-SS16 series (PDF)</a></td>
+</tr>
+<tr>
+<td>CD43-family 47 µH SMD power inductor</td>
+<td>4.5 × 4.0 × 3.3 mm drum core</td>
+<td><a
+href="https://products.sumida.com/products/pdf/CDRH4D28.pdf">Sumida
+CDRH4D28 (PDF)</a></td>
+</tr>
+<tr>
+<td>JST XH B5B-XH-A / B9B-XH-A through-hole connectors</td>
+<td>THT vertical header</td>
+<td><a href="https://www.jst-mfg.com/product/pdf/eng/eXH.pdf">JST XH
+series (PDF)</a></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Document: Custom PCB Design (DEPRECATED) — Historical
+Reference</em> <em>Version: 1.0 — archived 2026-05-02 | DrDev /
+LumiAI</em></p></body></html>

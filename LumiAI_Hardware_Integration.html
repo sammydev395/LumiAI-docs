@@ -1,0 +1,1760 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LumiAI_Hardware_Integration</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="lumiai-hardware-integration">LumiAI Hardware Integration</h1>
+<p>Catch-all reference for <strong>purchased-component
+integration</strong> — mechanical mounting (panel cutouts, fence/bay
+pockets) and electrical notes — for parts that don't warrant their own
+document. Larger subsystems keep dedicated docs:</p>
+<ul>
+<li>Lumi Wand → <a
+href="Lumi_Wand_Integration.html">Lumi_Wand_Integration.md</a></li>
+<li>PIR motion sensing → <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html">EXTERNAL_SENSOR_INTEGRATION_PLAN.md</a>
+Appendices E (design + ROS node) + F (fence CAD); bench procedures in <a
+href="Electronics_Soldering_Guide.html">Electronics_Soldering_Guide.md</a>
+§11 (pigtail) + <a href="Power_Bay_Design.html">Power_Bay_Design.md</a>
+§13 (jumper/pot + mount + wiring)</li>
+<li>Print/cutout dimensions for printed parts → <a
+href="3D_Printing_Guide.html">3D_Printing_Guide.md</a></li>
+<li>Machined-part dimensions → <a
+href="CNC_Machining_Guide.html">CNC_Machining_Guide.md</a></li>
+<li>Ceiling rail mount → <a
+href="Ceiling_Rail_Mount_Guide.html">Ceiling_Rail_Mount_Guide.md</a></li>
+</ul>
+<hr />
+<h2
+id="product-vs-fleet--what-ships-on-a-customer-arm-operator-2026-10-07">Product
+vs fleet — what ships on a customer arm (operator, 2026-10-07)</h2>
+<p><strong>A standalone customer arm ships:</strong> ROS2 Humble in
+Docker (arm driver, teleop, web video), the <strong>OAK-D S2</strong>
+(operator-confirmed variant, 2026-10-08 — RVC2-class on-camera compute;
+same unit as-built on Ultra, and the bay cable BoM in <a
+href="Electronics_Bay_Design.html"><code>Electronics_Bay_Design.md</code>
+§3.1</a> is specified against it) as passthrough — <strong>vision
+inference runs on the camera's own silicon</strong> — the small voice
+pieces (whisper.cpp tiny.en ~75 MB + Piper TTS), <strong>and an ON-BOARD
+CONVERSATIONAL MODEL — a product REQUIREMENT</strong> (operator, same
+day: "We need a conversational model, absolutely"). Model class TBD; a
+7–8B q4 is ~5–6 GB resident with KV, putting everything-warm at **~9–11
+GB**.</p>
+<p><strong>Fleet/bench infrastructure — never ships:</strong> the GMKtec
+control plane, monitoring, OpenClaw, dashboards, and the GMKtec's dev
+models (gpt-oss/Qwen). ⚠️ The operator's "Ollama is for fleet mgmt"
+refers to THOSE — it does not exclude an Ollama runtime on the arm
+serving the product's own models. Ph17 voice still routes ASR to the
+phone app's mic.</p>
+<p><strong>Consequence — customer-site arm Pi RAM FLOOR = 16 GB</strong>
+(decided by purchase 2026-10-07, $305 in the DRAM shortage). 8 GB
+remains fine for bench/dev boards that never ship. The sizing follows
+from this product/infra line and nothing else.</p>
+<p><strong>⚠️ OPEN (architecture, decide before volume): is a Pi 5 16 GB
+the right shipped-product compute at all in this market?</strong>
+$305/board today, DRAM not easing until late 2027 (real supply 2028),
+and the line is RISING — at production quantities the SBC becomes a
+serious BOM item. Alternatives (CM5-class module, different SoC,
+RAM-price-hedged sourcing) deserve a deliberate decision while one board
+is being bought, not when fifty are.</p>
+<p><strong>⚠️ OPEN (bench): benchmark the full creator-assistant vision
+load on the S2's RVC2</strong> — the validated S2 workload today is
+onboard MJPEG encode (measured: Pi CPU 91 %→40 %) plus the Phase-8
+tracking in use on Ultra; the Layer-4 presence + content-creator
+tracking feature SET has no fps benchmark on RVC2 yet. RVC2 is not
+unlimited — know before volume whether it carries the whole feature set
+or the feature set gets trimmed to it.</p>
+<p><strong>⚠️ OPEN (bench): measure a real RAM high-water mark under
+full product load incl. the conversational model</strong> — the 9–11 GB
+is a component sum, and it has far less slack against 16 GB than the old
+sum had against 8.</p>
+<h2 id="rocker-switches--kcd1-104--kcd1-106-fence-mounted">Rocker
+switches — KCD1-104 / KCD1-106 (fence-mounted)</h2>
+<p>Snap-in panel rocker switches mounted in the <strong>3D-printed
+fence</strong>. Two body families share the same <strong>19 × 13
+mm</strong> panel cutout so they are mechanically interchangeable in the
+fence; they differ in body depth, pin count, and available switching
+circuits.</p>
+<p><img src="images/hardware/kcd1_104_switch.png"
+alt="KCD1-104 datasheet" /> <img
+src="images/hardware/kcd1_106_switch.png"
+alt="KCD1-106 datasheet" /></p>
+<h3 id="common-electrical-ratings-both-families">Common electrical
+ratings (both families)</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rated voltage / current</td>
+<td>6 A @ 250 V AC · 10 A @ 125 V AC</td>
+</tr>
+<tr>
+<td>Insulation resistance</td>
+<td>≥ 100 MΩ</td>
+</tr>
+<tr>
+<td>Contact resistance</td>
+<td>≤ 50 mΩ</td>
+</tr>
+<tr>
+<td>Dielectric strength</td>
+<td>1500 V AC / 5 s</td>
+</tr>
+<tr>
+<td>Endurance</td>
+<td>≥ 10 000 cycles</td>
+</tr>
+<tr>
+<td>Ambient temperature</td>
+<td>T 85 (85 °C)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="panel-cutout-identical-for-both-families">Panel cutout
+(identical for both families)</h3>
+<p>Rectangular snap-in cutout, <strong>Y = 13 mm</strong>, X widens with
+panel thickness (tolerances X⁺⁰·¹⁰, Y⁺⁰·¹⁰):</p>
+<table>
+<thead>
+<tr>
+<th>Panel thickness</th>
+<th>X cutout</th>
+<th>Y cutout</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.6 – 1.2 mm</td>
+<td>19.0 mm</td>
+<td>13 mm</td>
+</tr>
+<tr>
+<td>1.2 – 2.0 mm</td>
+<td>19.2 mm</td>
+<td>13 mm</td>
+</tr>
+<tr>
+<td>2.0 – 3.0 mm</td>
+<td>19.4 mm</td>
+<td>13 mm</td>
+</tr>
+</tbody>
+</table>
+<p>→ Fence wall is in the 2–3 mm range → use <strong>19.4 × 13
+mm</strong> (confirm against the current fence model). Model the pocket
+once; it accepts either body — just check depth clearance behind the
+fence for the deeper KCD1-106.</p>
+<h3 id="kcd1-104-4-pin">KCD1-104 (4-pin)</h3>
+<p>Boat-style rocker, single circuit, 4 terminals (DPST or SPST +
+lamp).</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Value (mm)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bezel face (W × H)</td>
+<td>21.1 ±0.15 × 24.8 ±0.2</td>
+</tr>
+<tr>
+<td>Bezel window</td>
+<td>19 ±0.1 × 16.3 ±0.1</td>
+</tr>
+<tr>
+<td>Body width (below bezel)</td>
+<td>21.9 ±0.1 outer · 18.5 · 8.8 ±0.1</td>
+</tr>
+<tr>
+<td>Depth</td>
+<td>15.1 ±0.1 over bezel · 13 ±0.1 body · 10.6 insert</td>
+</tr>
+<tr>
+<td>Bezel lip thickness</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Terminal blade</td>
+<td>4.8 ±0.1 long, 0.8 thick</td>
+</tr>
+</tbody>
+</table>
+<p>Variants: <strong>KCD1-104</strong> = ON–OFF ·
+<strong>KCD1-104/N</strong> = ON–OFF illuminated (neon/lamp). Terminal
+styles: <strong>A</strong> = straight blade 4.8 × 0.8 ·
+<strong>L</strong> = bent blade 1.2 × 0.8.</p>
+<h3 id="kcd1-106">KCD1-106</h3>
+<p>Same cutout, deeper body; more circuit options (incl. momentary and
+3-position center-off).</p>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Value (mm)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Body height</td>
+<td>23.2 ±0.3 · 14.8 ±0.2</td>
+</tr>
+<tr>
+<td>Body width</td>
+<td>22.2 ±0.1 outer · 18.9 · 14 ±0.1</td>
+</tr>
+<tr>
+<td>Bezel lip thickness</td>
+<td>1.9</td>
+</tr>
+<tr>
+<td>Terminal blade</td>
+<td>4.8 ±0.1 long, 0.8 thick</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Circuit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KCD1-106/2P</td>
+<td>ON–OFF (SPST)</td>
+</tr>
+<tr>
+<td>KCD1-106/3P</td>
+<td>ON–ON</td>
+</tr>
+<tr>
+<td>KCD1-106/N</td>
+<td>ON–OFF (illuminated)</td>
+</tr>
+<tr>
+<td>KCD1-106/2PV</td>
+<td>(ON)–OFF (momentary)</td>
+</tr>
+<tr>
+<td>KCD1-106/D</td>
+<td>ON–OFF–ON (3-position)</td>
+</tr>
+<tr>
+<td>KCD1-106/DW</td>
+<td>(ON)–OFF–(ON) (momentary both)</td>
+</tr>
+</tbody>
+</table>
+<p>Terminal styles: <strong>A</strong> = 4.8 × 0.8 (blade depth 8.5
+±0.1) · <strong>B</strong> = 3.2 × 0.8 (depth 4.5 ±0.1) ·
+<strong>T</strong> = 1.2 × 0.8 (depth 8.5 ±0.1).</p>
+<h3 id="ordering-options-both-families">Ordering options (both
+families)</h3>
+<p><strong>Marking</strong> (printed on rocker): 1 = none · 2 = "○ / —"
+· 3 = "●" · 4 = 关/开 (OFF/ON CJK) · 5 = "○ / |" · 6 = OFF / ON · 7 =
+customer-specified. <strong>Color code:</strong> K black · W white · Y
+yellow · R red · G green · O orange · B blue.</p>
+<h3 id="lumi-integration-notes--rockers">Lumi integration notes —
+rockers</h3>
+<ul>
+<li>Mains-rated parts (250 V AC) switching low-voltage DC rails in Lumi
+— ratings are far in excess; derate is irrelevant here.</li>
+<li>Default fence power/aux switches should be the
+<strong>latching</strong> /2P (or the 104); use momentary (/2PV, /DW)
+only where a latched-off is undesirable.</li>
+<li><strong>2026-08-09 fence rev:</strong> both rockers AND the AC inlet
+sit on <strong>12 mm raised hollow frames</strong> (snap face = 4.0 mm,
+same click as the old flat wall; the AC frame face carries its two M3
+mount holes). Purpose: <strong>straight 4.8 mm FASTON
+receptacles</strong> now fit behind the switches — the right-angle ones
+were painful to seat and hard to source in 4.8 mm.</li>
+</ul>
+<hr />
+<h2
+id="ac-inlet-socket--iec-320-c14-panel-mount-w-spring-cover-qteatak-wpf-1">AC
+inlet socket — IEC 320 C14 panel-mount w/ spring cover (QTEATAK
+WPF-1)</h2>
+<p>Fence-mounted mains inlet — accepts a standard IEC C13 line cord
+(kettle cord). Hinged spring cover keeps the socket protected when the
+cord is unplugged. Purchased as <strong>2-pack</strong> — Amazon: <a
+href="https://a.co/d/08zcMkqZ">a.co/d/08zcMkqZ</a>.</p>
+<p><img src="images/hardware/iec_c14_panel_mount.png"
+alt="IEC 320 C14 panel-mount inlet with spring cover, product view — hinged black plastic cover open showing the 3-pin C14 male header (L, E, N blades) with 2 M3 mount ears flanking the body. Companion C13 female plug shown at right for reference." /></p>
+<p><img src="images/hardware/iec_c14_panel_mount_detail.png"
+alt="IEC 320 C14 panel-mount inlet — datasheet views. Product QTEATAK WPF-1, 10 A 250 V AC, CE certified, 3 terminals (N/E/L). Body 48.8 × 22.5 mm with 40 mm M3 mount-hole pitch. Panel cutout ~27.1 × 19.8 mm. Behind-panel depth 15.5 mm. Terminal blades 4.8 × 0.8 mm quick-connect. Insulation resistance ≥100 MΩ @ 500 VDC. Rated ≥5000 mating cycles." /></p>
+<h3 id="electrical-ratings">Electrical ratings</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rated voltage / current</td>
+<td><strong>10 A @ 250 V AC</strong></td>
+</tr>
+<tr>
+<td>Certifications</td>
+<td>CE</td>
+</tr>
+<tr>
+<td>Terminals</td>
+<td>3 (Line / Earth / Neutral, silk-labeled L / E / N on the back)</td>
+</tr>
+<tr>
+<td>Terminal type</td>
+<td>4.8 × 0.8 mm blade quick-connect (standard C14)</td>
+</tr>
+<tr>
+<td>Insulation resistance</td>
+<td>≥ 100 MΩ @ 500 VDC</td>
+</tr>
+<tr>
+<td>Endurance</td>
+<td>≥ 5000 mating cycles</td>
+</tr>
+</tbody>
+</table>
+<h3 id="mechanical-spec-mm-from-the-datasheet-view">Mechanical spec (mm,
+from the datasheet view)</h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bezel outer (L × W)</td>
+<td>48.8 × 22.5</td>
+</tr>
+<tr>
+<td>Body without mount ears (L × W)</td>
+<td>31 × 22.5</td>
+</tr>
+<tr>
+<td>Panel cutout</td>
+<td>~27.1 × 19.8</td>
+</tr>
+<tr>
+<td>Mount-hole pitch (M3 through-hole spacing)</td>
+<td><strong>40.0 mm</strong> center-to-center</td>
+</tr>
+<tr>
+<td>Mount-hole diameter</td>
+<td>2 × Ø 3.3 mm (M3 clearance)</td>
+</tr>
+<tr>
+<td>Bezel lip thickness</td>
+<td>~5 mm above panel face (3.5 mm ridge + 1.5 mm outer rim)</td>
+</tr>
+<tr>
+<td>Insert depth behind panel</td>
+<td>~15.5 mm</td>
+</tr>
+<tr>
+<td>Terminal blade spacing</td>
+<td>12.3 mm (L to N pitch, blade tips at 15.3 mm)</td>
+</tr>
+<tr>
+<td>Terminal projection past body</td>
+<td>~7 mm</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fence CAD implications:</strong> the 40 mm M3 mount-hole
+pitch drives the fence back-wall inlet pocket geometry. Cutout is a
+<strong>27.1 × 19.8 mm rectangular hole</strong> flanked by <strong>2 ×
+M3 self-tap posts at 40 mm spacing</strong> centered on the rectangle.
+The bezel needs ~5 mm clearance around the cutout (bezel outer 48.8 ×
+22.5 mm — 27.1 × 19.8 mm cutout = ~11 mm / ~3 mm bezel overhang on the 4
+sides), and ~15.5 mm depth behind the fence wall for the socket body to
+clear whatever sits inside (PSU top, bay-fan lead pass-through, DC
+rocker back terminals). Verify against the current fence model.</p>
+<h3 id="lumi-integration-notes--ac-inlet">Lumi integration notes — AC
+inlet</h3>
+<ul>
+<li><strong>Wired as the mains entry point on the electronics-bay fence
+back wall</strong>, centered between the two bay fans. AC power rocker
+sits at the upper-left of the back wall (above FAN #1). DC rocker is on
+the fence <strong>front slanted wall</strong> — NOT on the back wall.
+See <code>Power_Bay_Design.md</code> §11.3 for the full fence-wall
+layout diagrams + CAD reference images.</li>
+<li><strong>Ground (E) pin bonds to chassis</strong> per the
+mains-routing rule in
+<code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code> §"Mains
+routing rule". The E blade of the inlet lands at a chassis-ground point
+(any exposed metal on the vendor base plate); L → AC rocker → PSU L; N →
+PSU N directly.</li>
+<li><strong>Spring cover default position is closed</strong> when no
+cord is plugged — provides a passive shock-safety barrier + keeps dust /
+debris out of the socket. Do not remove the cover.</li>
+<li><strong>Quick-connect blades vs solder terminals:</strong> the 4.8 ×
+0.8 mm blades accept standard 4.8 mm Faston / spade female crimps.
+Prefer <strong>fully insulated female disconnects</strong> (Panduit / TE
+/ uxcell — 22–16 AWG for our 16 AWG mains wire) over uninsulated crimps
++ separate heat-shrink, so the crimps meet the same 6 mm creepage /
+clearance rule as the rest of the mains wiring.</li>
+</ul>
+<hr />
+<h2
+id="geekworm-x1001-pcie-to-m2-nvme-hat-current-nvme-carrier">Geekworm
+X1001 PCIe-to-M.2 NVMe HAT (current NVMe carrier)</h2>
+<p>Carries the Pi5's NVMe SSD via the Pi5's onboard <strong>PCIe Gen 2 /
+3 FPC connector</strong> — not the GPIO 2×40 header. Because it doesn't
+touch the GPIO, it coexists cleanly with the electronics-bay Pi5 GPIO
+tall-header stack that carries the MECCANIXITY FPC breakout (see
+<code>Electronics_Bay_Design.md</code> §4).</p>
+<p><img src="images/electronics_bay/geekworm_x1001_nvme_hat_board.png"
+alt="Geekworm X1001 board — top and back views. Top view shows the M.2 Key-M slot on the right edge (supporting 2230 / 2242 / 2260 / 2280 SSDs), the PCIe FPC input on the right side, an ACT status LED (top-left, &quot;On: Power OK / Standby · Flashing: Reading / Writing&quot;), and an optional XH2.54 5 V IN header for extra SSD current when the Pi5&#39;s 5 V GPIO can&#39;t source enough. Bottom view labeled &quot;SupTronics Technologies X1001 V1.1 NVMe M.2 SSD Shield&quot;. Board dimensions 87 mm × 56 mm with a corner notch 28.5 × 30.5 mm. Mount holes at 4 corners (M2.5)." /></p>
+<p><img src="images/electronics_bay/geekworm_x1001_nvme_hat_on_pi5.png"
+alt="Geekworm X1001 mounted on a Pi5 — the X1001 PCB sits vertically beside the Pi5 with the M.2 SSD extending horizontally above the Pi5&#39;s active cooler. A short blue FPC ribbon connects the X1001 to the Pi5&#39;s onboard PCIe connector. Compatible with other HAT shields — GPIO 2×40 header remains free." /></p>
+<h3 id="specs">Specs</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Board dimensions</td>
+<td>87 mm × 56 mm (with a 28.5 × 30.5 mm corner notch to clear Pi5-top
+components)</td>
+</tr>
+<tr>
+<td>Mount holes</td>
+<td>4× M2.5 clearance holes (corners)</td>
+</tr>
+<tr>
+<td>M.2 form factors</td>
+<td>Key-M NVMe SSD, 2230 / 2242 / 2260 / 2280</td>
+</tr>
+<tr>
+<td>PCIe interface</td>
+<td>Pi5's onboard PCIe FPC connector (Gen 2 default, Gen 3 tunable via
+firmware)</td>
+</tr>
+<tr>
+<td>Optional 5 V IN</td>
+<td>XH2.54 2-pin header — use ONLY if the Pi5 5 V GPIO can't source
+enough current for the SSD (high-power NVMe drives)</td>
+</tr>
+<tr>
+<td>ACT LED</td>
+<td>On = power OK / standby · Flashing = read / write</td>
+</tr>
+<tr>
+<td>Vendor part</td>
+<td>Geekworm X1001 (SupTronics Technologies branded PCB, V1.1)</td>
+</tr>
+<tr>
+<td>ATP tag</td>
+<td>"Compatible with Other HAT Shield" — leaves the Pi5 GPIO 2×40 header
+free</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lumi-integration-notes--nvme-hat">Lumi integration notes — NVMe
+HAT</h3>
+<ul>
+<li><strong>Coexistence with our FPC breakout stack:</strong> the X1001
+does NOT stack on the Pi5 GPIO — it uses the PCIe FPC only. Our single
+extra-tall header + inverted MECCANIXITY FPC breakout stack
+(Electronics_Bay_Design.md §4) mounts on the Pi5 GPIO independently.
+<strong>No mechanical conflict</strong> as long as the X1001 board and
+its M.2 SSD footprint don't extend over the Pi5 GPIO edge (Pi5 GPIO is
+on one long edge — X1001 sits on the opposite side using the PCIe
+connector, and the M.2 extends laterally over the Pi5's SoC / cooler,
+not over the GPIO). Verify on first-assembly dry-fit.</li>
+<li><strong>Do NOT populate the XH2.54 5 V IN header</strong> unless a
+specific SSD draws more current than the Pi5 5 V GPIO can provide. Our
+fleet uses the STM32-hub-supplied 5 V rail; adding an independent XH2.54
+5 V input would create a dual-source condition on the Pi5 5 V rail and
+could backfeed the STM32-hub supply.</li>
+<li><strong>SSD choice:</strong> any Key-M NVMe SSD in 2230 / 2242 /
+2260 / 2280 is compatible. Fleet-standard SSD choice is documented
+separately in <code>Electronics_Bay_Design.md</code> §2 (Raspberry Pi 5
+details).</li>
+<li><strong>ACT LED visibility:</strong> the LED sits on the X1001 board
+face-up. If a cover is placed over the electronics bay, the LED is
+hidden — assemblers who need boot diagnostics should open the bay to
+observe LED state during bring-up.</li>
+</ul>
+<hr />
+<h2
+id="psc-100-12-ups-switching-power-supply-bay-138-v-rail-source">PSC-100-12
+UPS Switching Power Supply (bay 13.8 V rail source)</h2>
+<p><strong>Part:</strong> <em>PSC-100-12 UPS Switching Power Supply —
+100–240 V AC in, 100 W total, 13.8 V DC out with battery charge function
+(SMPS).</em> Dual-output 13.8 V rail: <strong>CH1 5.0 A nominal</strong>
+(load feed to the bay distribution block + DROK + wand) + <strong>CH2
+2.0 A</strong> (dedicated LiFePO4 battery charge output for the UPS
+function).</p>
+<p><img src="images/hardware/psc_100_12_ups_psu_view1.png"
+alt="PSC-100-12 SMPS UPS — 3/4 view. Perforated aluminum case with hex vent pattern on top. Red / black output wires exit the left short face. Overall footprint 129 × 97 mm, 30 mm tall." /></p>
+<p><img src="images/hardware/psc_100_12_ups_psu_view2.png"
+alt="PSC-100-12 — screw-terminal side view. Shows the barrier strip with L / N / GND AC input on one side and CH1 (+V / GND / +V / GND) + CH2 (BAT+ / BAT−) DC outputs on the other side, with a pot access hole for CH1 voltage trim." /></p>
+<p><img src="images/hardware/psc_100_12_ups_psu_view3.png"
+alt="PSC-100-12 — dimension + label view. Silkscreen shows the model number, rated inputs / outputs, safety certifications, and terminal pinout." /></p>
+<h3 id="specs-1">Specs</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC input</td>
+<td>100–240 V AC, 50 / 60 Hz</td>
+</tr>
+<tr>
+<td>Total power</td>
+<td>100 W</td>
+</tr>
+<tr>
+<td>CH1 output</td>
+<td>13.8 V DC, 5.0 A nominal (field-sustains 10–12 A per empirical data
+in <code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code>)</td>
+</tr>
+<tr>
+<td>CH2 output</td>
+<td>13.8 V DC, 2.0 A — dedicated LiFePO4 charge port with
+charge-management circuitry</td>
+</tr>
+<tr>
+<td>UPS mode</td>
+<td>On AC loss, CH1 output continues from the LiFePO4 pack via reverse
+feed through CH2 (transparent switchover)</td>
+</tr>
+<tr>
+<td>Case</td>
+<td>Perforated aluminum, ~129 × 97 × 30 mm</td>
+</tr>
+<tr>
+<td>Terminals</td>
+<td>Screw-clamp barrier strip (AC input side: L / N / GND · DC side: CH1
++V/GND ×2, CH2 BAT+/BAT−)</td>
+</tr>
+<tr>
+<td>Voltage trim</td>
+<td>Multi-turn pot on CH1 (accessed via hole on top face) — factory-set
+to 13.8 V, tune to 13.8 V ± 0.1 as needed</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lumi-integration-notes--psu">Lumi integration notes — PSU</h3>
+<ul>
+<li><strong>Fleet-standard PSU</strong> for the LumiAI bay per
+<code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code> (that doc
+is the power-topology source of truth; this section is the part
+reference for procurement + mount + electrical hookup).</li>
+<li><strong>Bay mount:</strong> the PSU sits on the bay floor between
+the black base plate and the electronics-bay fence. <strong>Carrier
+builds (Nova; Halo/Ultra once carriered, 2026-10-23):</strong> the
+distribution block (one per robot: D-1459 or HL-PBB), G469 + breakout,
+INA226 ×2, TMP102, Mus-14 and fuses all self-tap onto the
+<strong>power-bay carrier</strong>. It's strap-mounted to the base plate
+over the PSU and battery, nothing touches the PSU cover, and it lifts
+off as one unit (<code>Power_Bay_Design.md</code> §11.3.9; wiring §16c).
+The fence grows 60 → 90 mm for it.</li>
+</ul>
+<blockquote>
+<p>🎯 <strong>Distribution block — design of record 2026-09-29:</strong>
+<strong>CZH-Labs D-1459</strong> or <strong>YRYAR
+HL-PBB-2-6-MINI</strong> dual-bus distribution module, ferrule-based,
+zero modification — <strong>from the NOVA build on</strong> (next build,
+Ultra-compatible kit in stock). <strong>Halo v1 keeps its as-built
+modified APIELE, and the pending Ultra bay retrofit uses the 4 in-stock
+APIELE spares</strong> (spec + port map: <a
+href="Power_Bay_Design.html#1137-apiele-barrier-strip--physical-spec"><code>Power_Bay_Design.md</code>
+§11.3.1</a>). Wiring + port map: <a
+href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+§11.3</a>; part spec: <a
+href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
+§1.4</a>.</p>
+</blockquote>
+<ul>
+<li><strong>AC input</strong> enters via the fence-back-wall IEC C14
+inlet (this doc §"AC inlet socket"), routes through the fence-back-wall
+AC rocker (this doc §"Rocker switches"), and lands at the PSU's L / N /
+GND barrier terminals.</li>
+<li><strong>CH1 output</strong> lands at the fence-front-slanted-wall DC
+rocker (this doc §"Rocker switches"), then at the distribution-block
+input <code>IN-A</code> (<code>Power_Bay_Design.md</code> §11.3.3).</li>
+<li><strong>CH2 output</strong> goes directly to the LiFePO4 pack's BMS
+input (see next section) — a 10 A inline fuse on the CH2 +V leg is
+mandatory per
+<code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code> §"Fuse
+Selection".</li>
+<li><strong>Voltage calibration:</strong> verify 13.8 V ± 0.1 at CH1
+with a multimeter before wiring downstream loads; if drift, adjust the
+top-face pot with a small flat driver.</li>
+</ul>
+<hr />
+<h2
+id="lifepo4-32700-4s1p-12-v-10-ah-battery-pack-ups-backup-source">LiFePO4
+32700 4S1P 12 V 10 Ah Battery Pack (UPS backup source)</h2>
+<p><strong>Part:</strong> <em>ALEAIVY 32700 4S1P 12 V 10 Ah LiFePO4
+Battery Pack with 4S Balanced BMS — Rechargeable for Electric Boat,
+Uninterrupted Power Supply, UPS.</em> 4S1P = 4 cells in series, 1 cell
+in parallel per string (single-string pack). Cell chemistry: LiFePO4
+(LFP). Nominal pack voltage: 12.8 V (4 × 3.2 V). Fully-charged: 14.4 V.
+Discharge cutoff: 10.0 V (BMS enforced).</p>
+<p><img src="images/hardware/lifepo4_32700_4s1p_10ah_view1.png"
+alt="ALEAIVY LiFePO4 32700 4S1P 12 V 10 Ah pack — top view. 4× 32700 cylindrical cells (32 mm diameter × 70 mm length) arrayed in a 1×4 line inside a shrink-wrapped bundle with the balanced BMS PCB tucked on top. Red (+) and black (−) discharge leads exit one short end with pre-crimped ring terminals." /></p>
+<p><img src="images/hardware/lifepo4_32700_4s1p_10ah_view2.png"
+alt="ALEAIVY LiFePO4 pack — labeling view. Shows the &quot;12 V 10 Ah LiFePO4 4S1P&quot; spec label with rated capacity, chemistry, BMS specs (overcharge, over-discharge, short-circuit protection)." /></p>
+<h3 id="specs-2">Specs</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chemistry</td>
+<td>LiFePO4 (LFP) — safer thermal profile than NMC / LiPo, ~2 000-cycle
+lifetime</td>
+</tr>
+<tr>
+<td>Cell format</td>
+<td>32700 (32 mm Ø × 70 mm length)</td>
+</tr>
+<tr>
+<td>Series / parallel</td>
+<td>4S1P (4 cells in series, single string)</td>
+</tr>
+<tr>
+<td>Nominal voltage</td>
+<td>12.8 V</td>
+</tr>
+<tr>
+<td>Charged voltage</td>
+<td>14.4 V</td>
+</tr>
+<tr>
+<td>Discharge cutoff</td>
+<td>10.0 V (BMS enforced)</td>
+</tr>
+<tr>
+<td>Capacity</td>
+<td>10 Ah (nominal), ~9.5–9.8 Ah usable to the BMS cutoff</td>
+</tr>
+<tr>
+<td>Continuous discharge</td>
+<td>Typically 10–30 A per BMS spec — verify per-unit at receipt (BMS
+label)</td>
+</tr>
+<tr>
+<td>Peak discharge</td>
+<td>Typically 30–60 A for &lt; 3 s</td>
+</tr>
+<tr>
+<td>BMS features</td>
+<td>4S balanced, overcharge / over-discharge / short-circuit
+protection</td>
+</tr>
+<tr>
+<td>Fuse</td>
+<td>External 10 A inline glass fuse (6 × 30 mm) MUST be added on the
+pack + lead per
+<code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code> §"Fuse
+Selection"</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lumi-integration-notes--battery">Lumi integration notes —
+battery</h3>
+<ul>
+<li><strong>Fleet-standard UPS battery</strong> for the LumiAI bay per
+<code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code>.</li>
+<li><strong>Wiring:</strong> connect BAT+ → 10 A fuse → PSC-100-12 CH2
+BAT+; connect BAT− → PSC-100-12 CH2 BAT− directly. Keep leads short
+(&lt; 20 cm) to minimize IR drop during the fault-clearing peak the BMS
+may need to sink.</li>
+<li><strong>Pack-side connectors as shipped (ALEAIVY, verified
+2026-08-05):</strong> the pack has <strong>two connectors</strong> on
+the discharge leads — a <strong>male XT30</strong> (main power, ~15 A
+continuous / 30 A burst rated) and a <strong>small JST</strong> (almost
+certainly the BMS balance port — 4-pin JST-XH-class, low-current signal
+only; <strong>NOT</strong> intended as a power path). Do NOT use the JST
+for the PSU CH2 connection — it's not gauge-rated for the ~5-7 A
+continuous UPS current, let alone peaks. Leave the JST unused (the BMS
+is internal to the pack and self-balancing per spec; no external balance
+charger needed).</li>
+<li><strong>Bay-side connector — cut XT30, replace with heat-shrink
+Faston spade pair (fleet-standard for the LiFePO4 tap, locked
+2026-08-05):</strong> a female XT30 is not in bench stock. Cut the
+pack's male XT30 off, strip the two discharge leads, and terminate with
+<strong>male + female 6.3 × 0.8 mm insulated Faston spades from the
+Kuject 320-pc heat-shrink terminal kit</strong> (see <a
+href="Electronics_Assembly_Guide.html#12-consumables"><code>Electronics_Assembly_Guide.md</code>
+§1.2 consumables</a> Kuject row) — <strong>blue band (AWG
+16-14)</strong>, matching the pack's ~16 AWG discharge leads. Kuject
+terminals have integrated heat-shrink insulation on the crimp barrel:
+strip, crimp with the Haisstronica ratchet crimper, then hit with the
+heat-shrink gun until the barrel-sleeve seals watertight around the
+wire. Convention: <strong>male Faston on the pack's +V lead, female
+Faston on the pack's GND lead</strong> (or vice-versa, pick one and be
+consistent across the fleet). Mating pair goes on the PSU CH2 leads with
+the opposite polarity, with the <strong>10 A fuse in-line on the +V
+leg</strong> between the Faston and the PSU CH2 BAT+ screw terminal.
+<strong>Why heat-shrink Faston and not bullets or bare screw:</strong>
+already in bench stock (Kuject kit, no additional SKU); crimp-only, no
+solder; heat-shrink integrated, no separate insulation step; blade
+rating (~15-20 A for a blue-band 6.3 mm Faston) is comfortable margin
+over the 5-7 A steady UPS current + BMS fault-clearing peaks; keys the
+polarity by dissimilar (M/F) blades so the pack can't be re-plugged
+backwards after service.</li>
+<li><strong>Cold-charge cutoff caveat:</strong> if this build ships into
+an unheated garage / northern climate deployment, <strong>verify the BMS
+implements low-temperature charge cutoff (&lt; 5 °C)</strong>. Many
+low-cost BMS chips lack this — see
+<code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code>
+§"Cold-charge" for the mitigation options (external NTC comparator,
+Pi-side firmware cutoff via INA226 + MOSFET, or spec a BMS with native
+cold-charge cutoff for production).</li>
+<li><strong>Storage / long-term care:</strong> for units that sit
+unpowered &gt; 1 month, top-charge to ~13.6 V (~90 % SoC) before
+shelving. LiFePO4 self-discharge is low (~3 %/month) but sitting at full
+charge accelerates capacity fade.</li>
+<li><strong>Do NOT deep-discharge repeatedly</strong> to the BMS cutoff
+(10 V) — reduces cycle life. Set the Pi-side UPS-management logic to
+trigger a graceful shutdown at ~11.5 V pack voltage (leaves ~15 % SoC as
+a floor).</li>
+</ul>
+<hr />
+<h2
+id="drok-cc-cv-dc-dc-buck-converter-12-a--160-w-stm32-75-v-rail">DROK
+CC-CV DC-DC Buck Converter 12 A / 160 W (STM32 7.5 V rail)</h2>
+<p><strong>Part:</strong> <em>DROK CC CV Buck Converter DC-DC 5.3–32 V
+to 1.2–32 V, 12 A / 160 W, Step-Down Power Supply Module with LCD
+Voltage Regulator.</em> Adjustable-output buck converter with LCD
+display (V-in / V-out / A-out / W-out), CV (constant voltage) and CC
+(constant current) modes, dedicated pots for V-set and I-set. Enclosed
+metal case with front-panel LCD + FUNC push-buttons.</p>
+<p><img src="images/hardware/drok_dcdc_buck_12a_160w_view1.png"
+alt="DROK 12 A 160 W CC-CV buck converter — front view. Rectangular metal enclosure with a bright LCD on the front face showing V-in, V-out, A-out, W-out. Two FUNC push-buttons flank the LCD. Two multi-turn pots on the front for CV (voltage-set) and CC (current-set). Input terminals on the rear; output terminals on the rear opposite." /></p>
+<p><img src="images/hardware/drok_dcdc_buck_12a_160w_view2.png"
+alt="DROK 12 A 160 W — side / dimension view. Shows the aluminum heat-sink case with cooling slots and the physical footprint. Screw-terminal barrier strips on both ends for input / output wiring." /></p>
+<p><strong>Vendor manual (PDF):</strong> <a
+href="DROK%20Buck%20Boost.pdf"><code>DROK Buck Boost.pdf</code></a> —
+full DROK product documentation including LCD field definitions,
+FUNC-button sequences (display mode toggle / preset save / hardware
+reset), CV/CC mode-transition behavior, over-temp fold-back curve, and
+terminal pinout. Read this before adjusting the FUNC buttons — some
+presses cycle non-obvious display modes.</p>
+<h3 id="specs-3">Specs</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Input range</td>
+<td>5.3 – 32 V DC</td>
+</tr>
+<tr>
+<td>Output range</td>
+<td>1.2 – 32 V DC (adjustable, must be ≥ 1.2 V AND ≤ V-in − ~1 V)</td>
+</tr>
+<tr>
+<td>Max output current</td>
+<td>12 A continuous (with adequate airflow)</td>
+</tr>
+<tr>
+<td>Max output power</td>
+<td>160 W</td>
+</tr>
+<tr>
+<td>Efficiency</td>
+<td>~95 % near rated load</td>
+</tr>
+<tr>
+<td>Modes</td>
+<td>CV (constant voltage), CC (constant current) — auto-transition based
+on load</td>
+</tr>
+<tr>
+<td>Display</td>
+<td>Front-panel LCD: V-in / V-out / I-out / P-out</td>
+</tr>
+<tr>
+<td>Controls</td>
+<td>2× FUNC push-buttons (display / mode toggle), 2× multi-turn pots
+(V-set, I-set)</td>
+</tr>
+<tr>
+<td>Case</td>
+<td>Metal enclosure with cooling slots; front-panel-mount friendly</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lumi-integration-notes--drok">Lumi integration notes — DROK</h3>
+<ul>
+<li><p><strong>Fleet-standard STM32 rail source</strong> for the LumiAI
+bay: DROK input from PSC-100-12 CH1 (13.8 V) via distribution-block
+position A2, output to the STM32 controller's blue terminal-block power
+input at <strong>7.5 V</strong> (Hiwonder's own adapter voltage; it is
+also the arm's servo-bus voltage, ≤ 8.4 V ceiling) (see
+<code>Power_Bay_Design.md</code> §11.3 for the wiring path + power
+sequencing; <code>Electronics_Bay_Design.md</code> §4 Route B for the
+physical cable route).</p></li>
+<li><p><strong>Bay mount:</strong> DROK mounts INSIDE the electronics
+bay on horizontal posts on the <strong>fence front vertical
+wall</strong>; the fence has external cutouts for the DROK's LCD, FUNC
+buttons, and V/I pots so the user can read / adjust without opening the
+bay (see <code>Power_Bay_Design.md</code> §11.3 fence-wall layouts + the
+CAD reference image
+<code>fence_front_drok_mount_and_access_cutouts.png</code>).</p></li>
+<li><p><strong>Bench-calibration procedure — DO THIS BEFORE LANDING
+D14/D15 ON THE STM32 (unloaded, safe sequence, added
+2026-08-09):</strong></p>
+<p>Vendor manual: <a
+href="DROK%20Buck%20Boost.pdf"><code>DROK Buck Boost.pdf</code></a> for
+the FUNC-button sequences + LCD field definitions.</p>
+<ol type="1">
+<li><strong>AC rocker ON, DC rocker ON</strong> → DROK sees 13.8 V input
+(LCD <code>Vin</code> field). Since the DC rocker sits between
+distribution-block A2 and DROK input (per <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §11.3
+wiring segment map row D7/D8), both rockers must be ON for the DROK to
+have input power.</li>
+<li><strong>STM32 disconnected</strong> — D14/D15 wires terminated in
+XHF ferrules on the STM32 end, but NOT yet inserted into the STM32 blue
+terminal block. This is the "unloaded" state: DROK is powered but has no
+load; safe to sweep V-set through its full range without damaging
+anything downstream.</li>
+<li><strong>V-set pot (CV)</strong> — turn slowly clockwise, watch the
+LCD <code>Vout</code> field. <strong>Target: 7.50 V ± 0.05</strong>
+(tighter than the ±0.1 default in the Assembly Guide checklist — you're
+setting once for the lifetime of the build, so spend the extra 30
+seconds getting it exact). <strong>Multimeter on the DROK output
+terminals is more accurate than the LCD for the final trim</strong> —
+LCD typically lags actual by 20-50 mV. Final adjustment with the
+multimeter reading.</li>
+<li><strong>I-set pot (CC)</strong> — needs a load to precisely
+calibrate the trip point, but you don't need precision here: the current
+limit is a <strong>fault backstop</strong>, not a load-shaping tool.
+<strong>Recommended: set to ~6-8 A</strong> (turn CW past mid-rotation;
+exact value doesn't matter as long as it's above the STM32+Pi5 stack's
+~4-5 A worst-case draw and below the DROK's 12 A absolute max). This
+gives ~2× headroom over normal draw and folds back before the DROK's
+thermal limit kicks in on a downstream short.</li>
+<li><strong>DC rocker OFF</strong> → DROK output drops to ~0 V (LCD
+<code>Vout</code> may show ~0.1 V residual from its own draw). This
+confirms the DC rocker is actually in the DROK power path and gives you
+a safe state before landing D14/D15.</li>
+<li><strong>NOW land D14/D15</strong> on the STM32 blue terminal (via
+the XHF ferrules on the STM32 end + Kuject M4 fork lugs bent up on the
+DROK output end).</li>
+<li><strong>DC rocker ON</strong> → STM32 boots, Pi5 boots off the
+STM32's 5 V/5 A external port.</li>
+</ol>
+<p>Post-calibration under normal load: LCD reads <code>Vin ~13.8</code>,
+<code>Vout ~7.5</code>, <code>Iout ~4-5 A</code> (typical STM32+Pi5
+stack draw), <code>Pout ~30-38 W</code>. If <code>Vout</code> sags
+noticeably below 7.5 V under load, either the I-set is throttling (turn
+CW) or the DROK is thermally folding back (check bay
+ventilation).</p></li>
+<li><p><strong>Why 7.5 V:</strong> the STM32 board passes its input
+straight to its bus-servo ports, so with today's LV servos (6–8.4 V) the
+DROK setpoint is the arm's servo voltage; the board itself (7.4–8.4 V)
+is held at 7.5 V on every build, Hiwonder's stock adapter voltage (7.5 V
+6 A). Never set the DROK above 8.4 V while LV servos are fitted. At the
+HV servo swap (a future upgrade, not the shipping configuration; the
+product releases with the LV servos) the DROK becomes an 11.1 V
+servo-only rail (10 A 6 × 30 glass fuse, injector pigtail) and a
+separate 7.5 V buck (part TBD) feeds the board from the 13.8 V block,
+unfused. The shipping configuration carries one fuse, F1 (battery →
+PSU); after the swap, two only: the servo fuse and F1. Full design:
+<code>Electronics_Bay_Design.md</code> §1 <em>Servo and board
+power</em>.</p></li>
+<li><p><strong>Do NOT feed non-STM32 loads from the DROK</strong> — the
+split-rails topology (locked 2026-06-28) sized the DROK for STM32-only.
+Any new bay load should go to a distribution-block spare position (A5/A6
+with its B return) directly at 13.8 V, not to the DROK.</p></li>
+</ul>
+<hr />
+<h2 id="noctua-nf-a4x20-pwm-bay-fans-2-per-build">Noctua NF-A4x20 PWM
+(bay fans, 2× per build)</h2>
+<p><strong>Part:</strong> <em>Noctua NF-A4x20 PWM — High-Performance
+Quiet Fan, 40 mm × 40 mm × 20 mm thick, 5000 RPM 4-pin PWM, with
+Noctua's rich accessory kit (anti-vibration mounts, OmniJoin adaptor
+set, 4-pin extension, low-noise adaptor).</em> Fleet uses <strong>2 per
+build</strong> — both mounted on the electronics-bay fence back wall
+(see <code>Power_Bay_Design.md</code> §11.2 for mount + wiring, §11.3
+for the back-wall layout showing FAN #1 / FAN #2 flanking the AC
+inlet).</p>
+<p><img src="images/hardware/noctua_nf_a4x20_pwm_view1.png"
+alt="Noctua NF-A4x20 PWM — beige / brown 40 × 40 × 20 mm cooling fan with Noctua&#39;s signature AAO frame (rounded corners, integrated anti-vibration pads at the mounting holes). 4-wire cable with the 4-pin PWM connector (GND / +12V / TACH / PWM) shown coiled beside the fan." /></p>
+<p><img src="images/hardware/noctua_nf_a4x20_pwm_view2.png"
+alt="Noctua NF-A4x20 PWM — accessory-kit view. Includes 4× rubber anti-vibration mounts, OmniJoin adaptor set (for connecting to proprietary fan headers), a 4-pin extension cable, and a low-noise adaptor (inline resistor that drops the peak RPM for even quieter operation)." /></p>
+<h3 id="specs-4">Specs</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dimensions</td>
+<td>40 × 40 × 20 mm</td>
+</tr>
+<tr>
+<td>Bearing</td>
+<td>Noctua SSO2 (self-stabilizing oil-pressure)</td>
+</tr>
+<tr>
+<td>Max RPM</td>
+<td>5000 RPM (PWM-controlled, 0–100 % duty)</td>
+</tr>
+<tr>
+<td>Min RPM</td>
+<td>~1200 RPM (with the included low-noise adaptor: ~4500 RPM peak)</td>
+</tr>
+<tr>
+<td>Airflow</td>
+<td>9.4 CFM @ 5000 RPM</td>
+</tr>
+<tr>
+<td>Static pressure</td>
+<td>3.94 mm H₂O @ 5000 RPM</td>
+</tr>
+<tr>
+<td>Noise</td>
+<td>14.9 dB(A) @ 5000 RPM (very low for a 40 mm at that speed)</td>
+</tr>
+<tr>
+<td>Input voltage range</td>
+<td>4.8 – 13.2 V DC (12 V nominal)</td>
+</tr>
+<tr>
+<td>Current draw</td>
+<td>~0.06 A max (typical ~0.04 A)</td>
+</tr>
+<tr>
+<td>Connector</td>
+<td>4-pin PWM (industry-standard: GND / +12 V / TACH / PWM)</td>
+</tr>
+<tr>
+<td>MTBF</td>
+<td>&gt; 150 000 h @ 25 °C</td>
+</tr>
+<tr>
+<td>Warranty</td>
+<td>6 years (Noctua's standard)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lumi-integration-notes--bay-fans">Lumi integration notes — bay
+fans</h3>
+<ul>
+<li><strong>Fleet-standard bay fans</strong> — 2 per build, mounted with
+M3 self-tap through the fence back wall (per
+<code>Power_Bay_Design.md</code> §11.2.1). Anti-vibration rubber mounts
+from the Noctua accessory kit are RECOMMENDED but optional (M3 self-tap
+through the fan corner holes also works if the rubber mounts don't fit
+the fence pocket).</li>
+<li><strong>Wiring — re-crimped to 2× 2-pin JST-XH per fan:</strong> the
+stock 4-pin fan cable is cut and split into a 2-pin +12 V / GND power
+pair (routed to the distribution block per
+<code>Power_Bay_Design.md</code> §11.3.3 — fan #1 A3/B3, fan #2 A4/B4)
+and a 2-pin TACH / PWM signal pair (routed to a Pi5 GPIO pin pair via
+the G469 for RPM readback + duty control). Full procedure in
+<code>Power_Bay_Design.md</code> §11.2.2.</li>
+<li><strong>13.8 V direct — diode chain RETIRED 2026-08-09:</strong> the
+distribution bus is 13.8 V and the Noctua's rated max is 13.2 V; the ~5
+% overage is accepted in-spec margin because the fans are
+Pi5-PWM-controlled. Each fan's V+ leg runs straight from the
+distribution block to the fan lead (GND leg direct as always) — the
+former inline <strong>2× 1N5408 diode chain</strong> (<del>13.8 V →
+~12.4 V</del>) is retired. Straight-through branch procedure in
+<code>Power_Bay_Design.md</code> §11.3.3 "Bay-fan branch".</li>
+<li><strong>PWM control:</strong> Pi5 side runs a small userspace loop
+that reads TMP102 (bay temp) and sets fan duty via the Pi5 GPIO PWM pin
+→ G469 terminal → fan PWM wire. Base curve: 0 % duty below 35 °C, ramp
+linearly to 100 % at 65 °C. Not implemented as of last audit —
+placeholder for the bay-thermal control node.</li>
+<li><strong>TACH readback:</strong> Pi5 GPIO pin (via G469) counts
+open-collector pulses from the fan TACH wire. Convert pulses/second →
+RPM as <code>RPM = (pulses/s × 60) / 2</code> (2 pulses per revolution
+for Noctua 4-pin fans).</li>
+<li><strong>Accessory kit — what we use:</strong> 4× rubber
+anti-vibration mounts (M3 fence self-tap alternative). 4-pin extension
+cable stays in bench spares. Low-noise adaptor (LNA) is <strong>not
+used</strong> in this build — we want the full RPM headroom for hot-day
+operation; the PWM duty curve handles noise reduction dynamically
+instead.</li>
+</ul>
+<hr />
+<h2
+id="hiwonder-bus-servo-replacement--general-procedure-with-servo-id-reprogramming">Hiwonder
+bus servo replacement — general procedure (with servo-ID
+reprogramming)</h2>
+<p>Applies to any arm-bus servo swap on an Ultra-class arm (Ultra,
+raspberrypidev gen2, any future LumiAI arm): elbow add-back, gripper
+HTS-25L swap, or any post-failure replacement. <strong>This is the
+authoritative procedure for future reference; specific installs
+(BigClaw, etc.) reference it below.</strong></p>
+<h3 id="why-the-id-matters-context">Why the ID matters (context)</h3>
+<p>Hiwonder bus servos (LX-225, HTS-16L, HTS-25L, etc.) share a single
+<strong>half-duplex UART daisy-chain</strong> driven from the STM32's
+bus servo port. Every servo on the chain must have a <strong>unique
+1-byte ID</strong> (typically 1–253; 0xFE = 254 is broadcast). A new
+servo out of the box <strong>defaults to ID 1</strong>. Wiring an ID-1
+new servo onto a chain that already has an ID-1 gripper produces
+<strong>bus collisions</strong> — both servos try to answer the same
+query, the STM32 sees framing errors, and NEITHER servo works reliably.
+<strong>Always reprogram a new servo's ID before daisy-chaining it into
+a working arm.</strong></p>
+<p>Ultra ID convention (from project <code>MEMORY.md</code> "Arm Home
+Positions"):
+<code>1=gripper 2=wrist_rot 3=wrist 4=elbow 5=shoulder 6=base</code>
+(reversed from joint numbering). Yahboom uses <code>6=gripper</code>.
+Confirm per robot before assigning.</p>
+<p><strong>ArmPi Ultra per-joint servo model (verified
+2026-05-21):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Joint</th>
+<th>Servo ID</th>
+<th>Model</th>
+<th>Torque (approx)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base</td>
+<td>6</td>
+<td>Hiwonder HTS-25L family (larger)</td>
+<td>25 kg·cm</td>
+<td>Per <code>project_arm_gripper_upgrade.md</code> "same family as the
+existing base servo"</td>
+</tr>
+<tr>
+<td>Shoulder</td>
+<td>5</td>
+<td>Larger-class (verify per unit — model not recorded)</td>
+<td>—</td>
+<td>Bears the arm-plus-payload moment; not LX-15D</td>
+</tr>
+<tr>
+<td>Elbow</td>
+<td>4</td>
+<td><strong>Hiwonder LX-15D</strong></td>
+<td>~15 kg·cm</td>
+<td>Verified 2026-05-21</td>
+</tr>
+<tr>
+<td>Wrist</td>
+<td>3</td>
+<td><strong>Hiwonder LX-15D</strong></td>
+<td>~15 kg·cm</td>
+<td>Verified 2026-05-21</td>
+</tr>
+<tr>
+<td>Wrist-rot</td>
+<td>2</td>
+<td>Verify per unit — model not recorded</td>
+<td>—</td>
+<td>Smaller than LX-15D typical</td>
+</tr>
+<tr>
+<td>Gripper</td>
+<td>1</td>
+<td><strong>Hiwonder HTS-25L</strong> (post-BigClaw upgrade); was LX-15D
+/ LDX-335 stock</td>
+<td>25 kg·cm (was ~8–15 kg·cm)</td>
+<td>Per <code>project_arm_gripper_upgrade.md</code> +
+<code>project_cross_fleet_gripper_standardization.md</code></td>
+</tr>
+</tbody>
+</table>
+<p>When ordering replacements, match the joint's original class — an
+under-torqued replacement will stall / brownout under load; an
+over-torqued one adds weight and can over-drive the mechanical linkage.
+IDs 5 + 6 (base, shoulder) bear the arm-plus-payload moment and take the
+largest servos; IDs 3 + 4 (wrist, elbow) are LX-15D on the ArmPi Ultra
+family.</p>
+<h3 id="vendor-software-on-the-rpi5">Vendor software on the RPi5</h3>
+<p>Both live under <code>/home/pi/software/</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Path</th>
+<th>Type</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hiwonder Servo Upper Computer</strong></td>
+<td><code>/home/pi/software/Servo_upper_computer/main.py</code></td>
+<td>PyQt5 GUI (needs an X display — SSH X-forward, VNC, or attach a
+monitor)</td>
+<td>Interactive bench-config: scan bus, read a servo's
+ID/position/temperature, sweep it live, set a new ID</td>
+</tr>
+<tr>
+<td><strong><code>servo_tool</code></strong></td>
+<td><code>/home/pi/software/servo_tool/</code> (launcher:
+<code>config/servo_tool.sh</code>)</td>
+<td>CLI wrapper + <code>bus_servo_control.py</code> Python API</td>
+<td>Headless / scripted config; use the <code>BusServoControl</code>
+class directly for repeatable programming</td>
+</tr>
+</tbody>
+</table>
+<p>The underlying protocol code (<code>bus_servo_control.py</code>)
+exposes the key APIs — mirrored in three places on the Pi
+(<code>servo_tool/config/</code>, <code>armpi_ultra_control/</code>,
+<code>hand2cam_tf_matrix_software/calibration/</code>); all identical,
+use whichever your script already imports from:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>setBusServoID(oldid, newid)</code></td>
+<td>Reprogram a servo's ID. <code>oldid=0xFE</code> (254) broadcasts
+(all servos on the bus get the new ID — <strong>safe only if exactly one
+servo is connected</strong>).</td>
+</tr>
+<tr>
+<td><code>getBusServoID(servo_id=None)</code></td>
+<td>Read a servo's ID. <code>servo_id=None</code> = broadcast query
+(safe with one servo; ambiguous with many).</td>
+</tr>
+<tr>
+<td><code>setBusServoPulse(servo_id, position, duration)</code></td>
+<td>Command a servo to a pulse value (500 = mid, range 0–1000; duration
+in ms).</td>
+</tr>
+<tr>
+<td><code>getBusServoPulse(servo_id)</code></td>
+<td>Read current pulse (position).</td>
+</tr>
+<tr>
+<td><code>stopBusServo(servo_id)</code></td>
+<td><strong>Torque OFF</strong> — critical to run before physically
+removing a servo, so the servo doesn't fight your hands or spring back
+on release.</td>
+</tr>
+<tr>
+<td><code>setBusServoDeviation(servo_id, offset)</code> +
+<code>saveBusServoDeviation(servo_id)</code></td>
+<td>Per-servo trim offset (Hiwonder's calibration mechanism). Save
+writes to servo EEPROM.</td>
+</tr>
+<tr>
+<td><code>setBusServoAngleLimit(servo_id, low, high)</code> /
+<code>getBusServoAngleLimit(servo_id)</code></td>
+<td>Read/write the servo's mechanical range limits.</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="preferred-transport-isolate-the-servo-on-a-debugger-dongle">Preferred
+transport: isolate the servo on a debugger dongle</h3>
+<p>The <strong>safest</strong> way to reprogram an ID is with a
+<strong>dedicated Hiwonder USB Servo Debugger dongle</strong> — a small
+USB-serial adapter with a 3-pin JST servo port. The target servo is the
+ONLY device on that bus, so a broadcast
+<code>setBusServoID(0xFE, target_id)</code> cannot accidentally affect
+any other arm servo. If the dongle is available, always use it for ID
+work.</p>
+<p><strong>Bench pigtail method (fleet standard, no dongle
+required):</strong> keep a dedicated <strong>single-servo direct
+pigtail</strong> — same 3-pin JST as the arm bus. At the STM32's bus
+servo port, <strong>unplug the arm's daisy-chain connector</strong>,
+then plug the direct pigtail (with only the target servo on it) into
+that same port. Program + verify the ID via RPi5 →
+<code>/dev/ttyUSB0</code> → STM32 → pigtail → single servo. Then unplug
+the pigtail and reconnect the arm-bus daisy-chain. <strong>One connector
+swap in, one out — no daisy-chain disassembly, no risk of a broadcast
+<code>setBusServoID(0xFE, X)</code> accidentally reprogramming any of
+the arm's other servos.</strong> This is the fleet-standard approach in
+the absence of a dedicated debugger dongle.</p>
+<h3
+id="procedure--reprogramming-a-servos-id-bench-before-install">Procedure
+— reprogramming a servo's ID (bench, before install)</h3>
+<p><strong>Preconditions:</strong> target servo held safely (not on the
+arm), bus power available (dongle self-powers the servo from USB; STM32
+pass-through requires the STM32 booted per
+<code>Electronics_BringUp_Plan.md</code> Phase 0).</p>
+<ol type="1">
+<li><strong>Connect the target servo alone</strong> to the dongle (or to
+the STM32 bus servo port with ALL other servos physically
+unplugged).</li>
+<li><strong>Read its current ID</strong> to know what you're starting
+from:
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bus_servo_control <span class="im">import</span> BusServoControl  <span class="co"># path varies; use the copy your project already imports</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>bus <span class="op">=</span> BusServoControl(port<span class="op">=</span><span class="st">&#39;/dev/ttyUSB0&#39;</span>)     <span class="co"># dongle path may differ, e.g. /dev/ttyUSB1</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>current_id <span class="op">=</span> bus.getBusServoID()               <span class="co"># broadcast — safe with one servo</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;current servo ID = </span><span class="sc">{</span>current_id<span class="sc">}</span><span class="ss">&#39;</span>)      <span class="co"># typical fresh-servo default = 1</span></span></code></pre></div></li>
+<li><strong>Write the new ID</strong> (e.g. 4 for elbow on Ultra
+convention):
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>bus.setBusServoID(<span class="bn">0xFE</span>, <span class="dv">4</span>)                     <span class="co"># broadcast old-ID → new-ID 4</span></span></code></pre></div></li>
+<li><strong>Verify</strong> by reading back:
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">assert</span> bus.getBusServoID() <span class="op">==</span> <span class="dv">4</span></span></code></pre></div></li>
+<li><strong>Torque OFF</strong> so the servo doesn't hold pose when you
+handle it:
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>bus.stopBusServo(<span class="dv">4</span>)</span></code></pre></div></li>
+<li>Physically <strong>label</strong> the servo with its new ID (silver
+Sharpie on the case, or a tape flag) — future-you will thank you when
+the arm has 6 identical-looking bus servos.</li>
+</ol>
+<p><strong>Alternative — Servo Upper Computer GUI:</strong>
+<code>DISPLAY=:0 python3 /home/pi/software/Servo_upper_computer/main.py</code>
+(or over SSH with <code>-Y</code> X-forward). The GUI has an "ID" panel:
+read current ID, type new ID, click set, click read to verify. Same
+underlying protocol; same isolation rule (broadcast ID-write affects
+every servo on the bus).</p>
+<h3
+id="procedure--horn-indexing-before-coupling-to-mechanical-linkage">Procedure
+— horn indexing before coupling to mechanical linkage</h3>
+<p><strong>Applies to ANY new servo whose output shaft couples to a new
+mechanical assembly</strong> — base servo ↔︎ base-rotation plate,
+shoulder ↔︎ shoulder link, elbow ↔︎ elbow link, gripper servo ↔︎ jaw gear
+plate, any custom joint. If the horn is engaged to the mechanical
+linkage at any servo position <strong>other than mechanical center
+(pulse 500)</strong>, the whole downstream reference frame shifts by
+that offset: every hard-coded HOME value, every
+<code>/joint_states</code> readback, every FK/IK computation, every
+gamepad center-position assumption misaligns by the same amount.</p>
+<p><strong>The rule:</strong> the servo's output horn MUST be at
+<strong>pulse 500 (mechanical center)</strong> when it is physically
+coupled to whatever it drives. Do this <strong>on the bench, before
+final mechanical assembly onto the arm</strong>.</p>
+<p><strong>Procedure (bench, after ID reprogramming from previous
+subsection):</strong></p>
+<ol type="1">
+<li><strong>Power the servo</strong> from the bench pigtail (STM32
+pass-through, or dongle if available).</li>
+<li><strong>Command the servo to pulse 500</strong> with a slow move so
+you can see it settle:
+<code>bus.setBusServoPulse(&lt;id&gt;, 500, 1000)</code> (1000 ms
+travel). Let it hold for ~2 s.</li>
+<li><strong>Verify it arrived</strong> (a load-fought move can stall
+mid-travel): <code>bus.getBusServoPulse(&lt;id&gt;)</code> — should
+return ~500.</li>
+<li><strong>Torque off</strong> so the shaft doesn't spring back or
+resist your hands during coupling:
+<code>bus.stopBusServo(&lt;id&gt;)</code>.</li>
+<li><strong>Physically couple</strong> the horn / gear plate / output
+linkage to the mechanical assembly. The shaft is at its mechanical zero;
+whatever pose the mechanism ends up in when coupled at this shaft
+position becomes the ROS "pulse 500 = …" reference. Match that pose to
+what the codebase / URDF assumes for this joint (arm-forward-center for
+base, jaws-closed for gripper, per-joint HOME for the arm links).</li>
+<li><strong>Power down</strong>, install on arm per the next
+subsection.</li>
+</ol>
+<p><strong>Why 500?</strong> Hiwonder LX/HTS bus servos range 0–1000
+pulse over their ~240° mechanical travel; 500 = physical mid-position.
+Ultra's conventions anchor here — e.g. base HOME = 500 pulse =
+arm-forward-center; gripper closed = 500 pulse. If a specific joint's
+HOME value in <code>MEMORY.md</code> is NOT 500 (e.g. Ultra elbow HOME =
+825, shoulder = 600), that's an <em>intentional</em> post-coupling pose
+choice baked in the codebase, not a coupling error — the horn was still
+indexed at pulse 500 during coupling; the codebase then commands a
+non-500 pulse to reach the preferred HOME.</p>
+<p><strong>Recovery if a servo was coupled off-index:</strong></p>
+<ul>
+<li><strong>Cheap bench check first</strong> — with the servo powered
+but torque off, aim the mechanical linkage to its intended reference
+pose by hand, then read <code>bus.getBusServoPulse(&lt;id&gt;)</code>.
+Delta from 500 tells you how far off the coupling was and which recovery
+to use.</li>
+<li><strong>Small offset</strong> (roughly ± 22° ≈ ± 125 pulse counts,
+per typical Hiwonder deviation range): trim in EEPROM with
+<code>bus.setBusServoDeviation(&lt;id&gt;, &lt;offset&gt;)</code> +
+<code>bus.saveBusServoDeviation(&lt;id&gt;)</code>. Persists across
+power cycles.</li>
+<li><strong>Larger offset</strong>: torque off, disassemble the shaft ↔︎
+linkage coupling, re-command pulse 500 + verify, re-couple at the
+correct index, re-tighten.</li>
+</ul>
+<p><strong>Extra weight for reference-frame joints (base
+especially):</strong> a mis-indexed base means the whole arm's world
+orientation is offset — the arm will <em>swing</em> when first commanded
+to HOME. Always verify the base index <strong>before</strong> the first
+Phase 1 bring-up, and keep the arm supported by hand on the first base
+position read. Same principle at a smaller scale for shoulder + elbow
+(arm reach envelope shifts by the offset).</p>
+<h3 id="procedure--replacing-a-servo-on-a-live-arm">Procedure —
+replacing a servo on a live arm</h3>
+<p><strong>Preconditions:</strong> the new servo has already been
+reprogrammed to its target ID (previous procedure) and labeled. Arm is
+powered down at the DC rocker OR the STM32's controller switch.
+Container idle, no bringup stack running (per
+[[feedback_never_autostart_robot_stack]]).</p>
+<ol type="1">
+<li><strong>Torque OFF the joint(s) around the servo you're
+replacing.</strong> If the arm is powered, run
+<code>bus.stopBusServo(&lt;affected_ids&gt;)</code> first. Then power
+the arm DOWN at the DC rocker (or STM32 controller switch) — no bus
+power during physical work.</li>
+<li><strong>Support the arm by hand</strong> or in a bench cradle so it
+can't fall / swing when the servo is disconnected.</li>
+<li><strong>Disconnect the servo's daisy-chain leads</strong> at the
+connectors on either side of it (bus servos daisy-chain
+input↔︎servo↔︎output; the servo has 2 identical 3-pin JST connectors so
+power/data pass through to the next servo).</li>
+<li><strong>Unbolt the failed/removed servo</strong> from its arm
+bracket (typically 4× M2/M3 into the servo case).</li>
+<li><strong>Bolt the new servo</strong> into the same bracket. Note the
+horn orientation — Hiwonder bus servos have a defined 0°/500-pulse
+position; the horn must be indexed to that position before you
+cross-couple it to the mechanical linkage, or the joint's zero will be
+off. Follow the original arm's assembly reference for the horn
+orientation at each joint.</li>
+<li><strong>Reconnect the daisy-chain leads</strong> — either lead into
+either of the servo's 2 connectors (they're symmetric).</li>
+<li><strong>Power up</strong> — DC rocker ON, STM32 controller switch ON
+(per <code>Electronics_BringUp_Plan.md</code> Phase 0 sequencing).</li>
+<li><strong>Bench-verify per <code>Electronics_BringUp_Plan.md</code>
+Phase 1 (CONDITIONAL)</strong> — read-only
+<code>motor_controller_node</code> launch, confirm all 6 arm servos
+publish in <code>/joint_states</code>, then supported-by-hand single 5°
+jog on the replaced joint. Compare jog latency + holding torque to a
+known-good joint. <strong>No HOME / no multi-joint pose
+commands</strong> until Phase 8 sign-off per <a
+href="ULTRA_GAMEPAD_INTEGRATION_PLAN.html"><code>docs/ULTRA_GAMEPAD_INTEGRATION_PLAN.md</code></a>
+— <a
+href="../memory/project_2026_04_28_arm_slam_incident.html"><code>project_2026_04_28_arm_slam_incident</code></a>
+rule applies.</li>
+</ol>
+<h3 id="safety-callouts">Safety callouts</h3>
+<ul>
+<li><strong>Never <code>setBusServoID(0xFE, X)</code> with multiple
+servos on the bus.</strong> Broadcast ID-writes hit every connected
+servo. Isolate first.</li>
+<li><strong>Torque off before physical work.</strong> A powered bus
+servo holds its commanded position with ~25 kg·cm — physically forcing
+it while powered can damage the gearset. <code>stopBusServo(id)</code>
+cuts torque cleanly; power-down at the DC rocker does it more
+forcefully.</li>
+<li><strong>Zero the horn</strong> on install. If the servo is mounted
+with the horn off its 0°/500-pulse index, <code>/joint_states</code>
+readback will be off by the same offset and every downstream computation
+(IK, kinematics, forward planning) will be off. Save any needed trim
+with <code>setBusServoDeviation</code> +
+<code>saveBusServoDeviation</code>.</li>
+<li><strong>New servo out-of-box default = ID 1.</strong> ID-1 is the
+Ultra gripper. A new servo daisied without reprogramming = ID collision
+on the gripper.</li>
+<li><strong>No HOME until Phase 8.</strong> <a
+href="../memory/project_2026_04_28_arm_slam_incident.html"><code>project_2026_04_28_arm_slam_incident</code></a>
+— a single-shot HOME teleport from unknown pose destroyed the Ultra
+elbow servo. The whole per-phase discipline in
+<code>Electronics_BringUp_Plan.md</code> +
+<code>docs/ULTRA_GAMEPAD_INTEGRATION_PLAN.md</code> exists because of
+this incident.</li>
+</ul>
+<hr />
+<h2
+id="bigclaw--hts-25l-gripper-fleet-wide-arm-end-effector-standard">BigClaw
++ HTS-25L gripper (fleet-wide arm end-effector standard)</h2>
+<p><strong>Part:</strong> <em>Hiwonder BigClaw Mechanical Gripper</em>
+(85 mm max jaw, aluminum) paired with a <strong>Hiwonder HTS-25L bus
+servo</strong> (25 kg·cm rated, UART bus protocol). Product page: <a
+href="https://www.hiwonder.com/products/bigclaw-mechanical-gripper?variant=32473859620951">hiwonder.com/products/bigclaw-mechanical-gripper</a>.</p>
+<p><strong>Fleet decision:</strong> BigClaw + HTS-25L is the <strong>arm
+end-effector standard on every LumiAI-class robot</strong> — Ultra
+(production), <strong>raspberrypidev (Ultra gen2 dev target,
+2026-05-21)</strong>, and Yahboom X3PLUS. Shared U-bracket + shared UART
+115 200 baud across the fleet.</p>
+<h3 id="specs-5">Specs</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Max jaw opening</td>
+<td>85 mm</td>
+</tr>
+<tr>
+<td>Servo</td>
+<td>Hiwonder HTS-25L, 25 kg·cm @ 7.4 V, bus (UART) protocol</td>
+</tr>
+<tr>
+<td>End-effector mass (BigClaw + HTS-25L + wand + Lumi Wand v2
+hardware)</td>
+<td>~498 g</td>
+</tr>
+<tr>
+<td>Arm-reach rule with wand mounted</td>
+<td>≤ 20 cm (per end-effector mass + arm torque envelope)</td>
+</tr>
+<tr>
+<td>Install</td>
+<td><strong>Drop-in unmodified</strong> per calliper-verified
+dimensions</td>
+</tr>
+<tr>
+<td>Wiring</td>
+<td>Single lead into the STM32's bus servo port — HTS-25L joins the arm
+daisy-chain with the other bus servos, no separate power feed</td>
+</tr>
+</tbody>
+</table>
+<h3 id="integration-notes">Integration notes</h3>
+<ul>
+<li><strong>Mechanical: pure bolt-on, no solder, no bonding.</strong> M3
+cap-heads from the BigClaw screw pack (or general M3 inventory) fasten
+the BigClaw gear plate to the HTS-25L's included circular disc horn.
+Full mechanical procedure: BigClaw manual (in-box) + <a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code>
+§3.2</a>.</li>
+<li><strong>Electrical:</strong> HTS-25L wires into the arm's UART bus
+daisy-chain at the STM32's bus servo port; no separate power / signal
+pair.</li>
+<li><strong>Servo ID convention differs per robot</strong> (per project
+<code>MEMORY.md</code> "Arm Home Positions"):
+<ul>
+<li><strong>Ultra + raspberrypidev gen2:</strong> gripper is servo ID
+<strong>1</strong>; <strong>500 pulse = closed, 200 pulse =
+open</strong>. Full Ultra ID map:
+<code>1=gripper 2=wrist_rot 3=wrist 4=elbow 5=shoulder 6=base</code>
+(reversed from joint numbering).</li>
+<li><strong>Yahboom (Rosmaster):</strong> gripper is servo ID
+<strong>6</strong>; <strong>30° = closed, 180° = open</strong>.</li>
+</ul></li>
+</ul>
+<h3 id="as-installed-on-halo-2026-09-28">As installed on Halo
+(2026-09-28)</h3>
+<p>The first BigClaw install in the fleet, on Halo
+(<code>raspberrypidev</code>). Details and evidence: <a
+href="Electronics_BringUp_Plan.html#phase-2-status-on-halo">bring-up plan,
+Phase 2 status on Halo</a>.</p>
+<ul>
+<li><strong>Mount orientation B.</strong> The back plate bolts onto the
+wrist-rotation servo in two possible orientations. Orientation A puts
+the jaws about 1 inch further out but the jaw arms block the camera, so
+it is rejected. Orientation B tucks the jaws about 1 inch inside the old
+gripper's envelope. The assembly was later rotated 180° on the wrist to
+match Ultra.</li>
+<li><strong>Horn.</strong> The aluminium horn salvaged from the old
+gripper servo is used instead of the kit's plastic horn with metal
+inserts. It leaves the two jaw gears about 0.2 mm out of plane, which
+shows up as play in the free jaw.</li>
+<li><strong>Index.</strong> Coupled with the jaws fully closed at pulse
+500: <strong>500 = closed, 200 = fully open</strong>, same as
+Ultra.</li>
+<li><strong>Grip range.</strong> Because of the jaw-gear play, the claw
+cannot firmly hold anything thinner than about 0.8–1 cm even at full
+close. The wand ear is 25.4 mm (one inch) wide, well inside the firm
+range. A 3 cm block was held firmly with the gripper servo only slightly
+warm.</li>
+<li><strong>Rubber pads on both sides.</strong> The jaws carry the kit's
+rubber pads; the wand ear gets one-sided adhesive rubber pads glued into
+both jaw cradles (<a
+href="3D_Printing_Guide.html#after-printing">post-print
+checklist</a>).</li>
+<li><strong>Gamepad control.</strong> D-pad left-right drives the
+gripper at 0.25 rad/s (full stroke about 5 s) so the grip can be
+tightened in small taps. Tap closed only until the grip is firm; extra
+taps add holding current and heat.</li>
+</ul>
+<h3 id="bring-up-recipe">Bring-up recipe</h3>
+<p>Authoritative: <a
+href="Electronics_BringUp_Plan.html"><code>Electronics_BringUp_Plan.md</code></a>
+<strong>Phase 2 (BigClaw + HTS-25L gripper cycle)</strong> — verify
+gripper in <code>/joint_states</code> at its assigned servo ID → open
+slowly → close → 5× cycle → close-on-wand-diameter-cylinder object test.
+<strong>Do NOT issue HOME or multi-joint pose commands until Phase 8
+sign-off</strong> per <a
+href="ULTRA_GAMEPAD_INTEGRATION_PLAN.html"><code>ULTRA_GAMEPAD_INTEGRATION_PLAN.md</code></a>
+— the arm-slam-incident rule applies to every LumiAI-class arm.</p>
+<h3
+id="detailed-procedure--swap-raspberrypidev-gripperservo--bigclaw--hts-25l">Detailed
+procedure — swap raspberrypidev gripper+servo → BigClaw + HTS-25L</h3>
+<p>This is a specific instance of the <a
+href="#hiwonder-bus-servo-replacement--general-procedure-with-servo-id-reprogramming">general
+Hiwonder bus servo replacement procedure above</a> — read that first for
+the servo-ID isolation + programming rules, then apply the
+BigClaw-specific mechanical detail below.</p>
+<p><strong>A. Bench-assemble the BigClaw + HTS-25L (before touching the
+arm):</strong></p>
+<ol type="1">
+<li><strong>Unbox</strong> the BigClaw and the HTS-25L. Confirm the
+BigClaw screw pack is present (M3 cap-heads for gear-plate ↔︎ disc-horn
+engagement) and the HTS-25L ships with its <strong>included circular
+disc horn</strong> + horn-mount screw.</li>
+<li><strong>Program the HTS-25L to ID 1</strong> using the <a
+href="#procedure--reprogramming-a-servos-id-bench-before-install">general
+procedure above</a>. A fresh HTS-25L defaults to ID 1 (which IS the
+Ultra gripper ID), so if the arm's existing gripper has already been
+physically removed from the bus, no reprogramming is needed — but
+<strong>verify</strong> with <code>getBusServoID()</code> before
+daisy-chaining. If the ID happens to be anything other than 1, reprogram
+to 1 now. Label the servo case with a "1" for future reference.</li>
+<li><strong>Index the HTS-25L horn at pulse 500 before engaging the disc
+horn with the BigClaw gear plate</strong> — per the general <a
+href="#procedure--horn-indexing-before-coupling-to-mechanical-linkage">horn-indexing
+procedure above</a> (<code>setBusServoPulse(1, 500, 1000)</code> →
+verify → torque off → couple). Gripper-specific note: for the BigClaw
+the <strong>jaws-closed position corresponds to pulse 500</strong> —
+coupling the gear plate to the disc horn at that shaft index is what
+makes the codebase's <code>500 = closed / 200 = open</code> gripper
+convention work.</li>
+<li><strong>Torque OFF</strong> so the servo doesn't fight during
+assembly: <code>stopBusServo(1)</code>. Then power the servo down.</li>
+<li><strong>Bolt the HTS-25L into the BigClaw body</strong> — the
+HTS-25L case has 4× M2/M3 mount points (per the standard Hiwonder
+bus-servo case). The BigClaw body has the mirror-image mounting holes on
+its rear plate. Align, insert screws from the BigClaw's outer face into
+the servo case, snug. Do not overtighten into the servo case (aluminum
+threads on the servo case strip under excessive torque).</li>
+<li><strong>Mount the disc horn onto the servo output shaft</strong> —
+dry-fit first without the gear plate engaged, so you can confirm the
+horn indexes at 500 pulse (mid-position). Secure with the HTS-25L's
+included horn-mount screw (M3 typically). The horn should have zero slop
+on the output spline.</li>
+<li><strong>Engage the BigClaw gear plate onto the disc horn</strong> —
+the BigClaw's driven gear has M3 through-holes that align with the disc
+horn's threaded holes at the 500-pulse index. Fasten with M3 cap-heads
+from the BigClaw screw pack. This is the critical rotational coupling —
+servo pulse → gear plate rotation → gripper jaws.</li>
+<li><strong>Hand-cycle the assembled gripper</strong> (servo unpowered)
+to confirm the jaws open and close smoothly through the full mechanical
+range. Any binding at this stage means the gear engagement is off or the
+horn wasn't at 500-pulse when coupled — disassemble step 7 and
+redo.</li>
+</ol>
+<p><strong>B. Swap on the raspberrypidev arm:</strong></p>
+<ol start="9" type="1">
+<li><strong>Torque OFF the current gripper servo:</strong>
+<code>stopBusServo(&lt;current_gripper_id&gt;)</code> (usually 1). Then
+power the arm DOWN at the DC rocker (or STM32 controller switch) — no
+bus power during physical work.</li>
+<li><strong>Support the arm by hand</strong> or in a bench cradle so it
+can't fall / swing while the gripper is off.</li>
+<li><strong>Disconnect the old gripper's daisy-chain lead</strong> at
+the connector between it and its upstream neighbor (typically the
+wrist-rot servo, ID 2, per Ultra convention where the gripper is the
+terminal end of the chain).</li>
+<li><strong>Unbolt the old gripper assembly</strong> from the arm's
+end-effector bracket.</li>
+<li><strong>Bolt the pre-assembled BigClaw + HTS-25L (from A
+above)</strong> into the same end-effector bracket. Match the existing
+arm's U-bracket geometry — cross-fleet standardization per
+<code>MEMORY.md</code> shares the U-bracket across Ultra +
+raspberrypidev + Yahboom.</li>
+<li><strong>Reconnect the daisy-chain lead</strong> into the HTS-25L's
+bus servo connector (either of its 2 symmetric 3-pin JST ports — the
+other one is left unpopulated since the gripper is the chain
+terminal).</li>
+<li><strong>Power up</strong> — DC rocker ON, STM32 controller switch ON
+(per <code>Electronics_BringUp_Plan.md</code> Phase 0 sequencing).</li>
+</ol>
+<p><strong>C. Verify per bring-up plan:</strong></p>
+<ol start="16" type="1">
+<li><strong>Run <a
+href="Electronics_BringUp_Plan.html"><code>Electronics_BringUp_Plan.md</code></a>
+Phase 1 (CONDITIONAL) — REQUIRED here</strong> because
+raspberrypidev-gen2 is a fresh build (new base servo + user-machined
+base plate + add-back elbow + new gripper all landing together).
+Supported-by-hand, per-joint 5° jog on every joint. Compare the new
+elbow's and gripper's jog latency + holding torque to a known-good joint
+(e.g. wrist-rot).</li>
+<li><strong>Run <a
+href="Electronics_BringUp_Plan.html"><code>Electronics_BringUp_Plan.md</code></a>
+Phase 2</strong> — gripper open (200 pulse) / close (500 pulse) cycle ×
+5, no bus contention; close-on-wand-diameter-cylinder object test (jaw
+holds without slip or thermal cutout).</li>
+<li><strong>NO HOME / no multi-joint pose commands</strong> until Phase
+8 sign-off per <a
+href="ULTRA_GAMEPAD_INTEGRATION_PLAN.html"><code>ULTRA_GAMEPAD_INTEGRATION_PLAN.md</code></a>
+— the <a
+href="../memory/project_2026_04_28_arm_slam_incident.html"><code>project_2026_04_28_arm_slam_incident</code></a>
+rule applies unconditionally.</li>
+</ol>
+<p><strong>Common pitfalls:</strong></p>
+<ul>
+<li><strong>Horn not indexed at 500 pulse when engaging the gear
+plate</strong> → every <code>500=closed / 200=open</code> assumption in
+the codebase misaligns. Symptom: the gripper won't fully close (or
+over-closes and stalls) at the commanded pulse. Fix: disassemble the
+gear-plate ↔︎ disc-horn coupling and redo step 7 with the horn re-indexed
+at 500 pulse.</li>
+<li><strong>HTS-25L still at default ID 1 while the old gripper is still
+on the bus</strong> → bus collision (both servos at ID 1). Symptom:
+<code>motor_controller_node</code> reports intermittent packet loss on
+the gripper node; jaw motion is erratic. Fix: physically remove the old
+gripper from the bus first, THEN daisy-chain the new BigClaw.</li>
+<li><strong>Old gripper had a <code>setBusServoDeviation</code> trim
+saved</strong> → the new HTS-25L's zero isn't trimmed to match. Symptom:
+the physical jaw resting position is slightly off from the previous
+gripper. Fix: use <code>setBusServoDeviation(1, offset)</code> +
+<code>saveBusServoDeviation(1)</code> to trim the new servo to
+match.</li>
+<li><strong>Missing safety supported-by-hand</strong> during Phase 1
+verification → the arm can swing under gravity when torque is applied to
+a mis-indexed servo. Always physically support the arm during first
+bench jogs of a replaced joint.</li>
+</ul>
+<hr />
+<h2
+id="hiwonder-stm32-controller--firmware-flashing-replacement-boards-ship-blank">Hiwonder
+STM32 controller — firmware flashing (replacement boards ship
+BLANK)</h2>
+<p>Applies to any Hiwonder ArmPi Ultra STM32 controller obtained as a
+bare replacement (core board + carrier), on any LumiAI arm host
+(raspberrypidev/Halo gen2, Ultra, future builds). <strong>This is the
+authoritative recovery procedure — a blank replacement board is the
+<em>expected</em> state, not a fault.</strong></p>
+<h3 id="why-it-matters-the-month-and-a-half-failure-mode">Why it matters
+(the month-and-a-half failure mode)</h3>
+<p><strong>Replacement controller boards ship with an empty STM32 flash
+— no application firmware.</strong> A blank board is indistinguishable
+from a "dead" one by every normal test:</p>
+<ul>
+<li>Powers up (core + carrier <strong>red LEDs lit</strong>), CH340
+enumerates as <code>/dev/ttyUSB0</code> (bcdDevice
+<code>c233</code>).</li>
+<li><strong>Totally silent to the app protocol at every baud</strong> —
+no buzzer, no <code>get_battery()</code>/<code>get_imu()</code> data,
+WonderPi app connects but the arm never moves.</li>
+<li>Identical behaviour whether tested under our Ubuntu, Hiwonder's
+vendor OS, or A/B against a known-good Ultra.</li>
+</ul>
+<p>A factory-complete robot (e.g. Ultra) works only because its
+controller was flashed on the assembly line. Verified 2026-09-22: this
+was the entire Aug→Sep "DOA controller" saga on Halo — <strong>the
+boards were never broken; they were unflashed.</strong> Full incident +
+root-cause in <a
+href="../memory/project_raspberrypidev_is_ultra_gen2.html"><code>memory/project_raspberrypidev_is_ultra_gen2.md</code></a>.</p>
+<h3
+id="critical-hardware-fact--the-reset-strap-why-stm32flash-cannot-flash-this-board">Critical
+hardware fact — the reset strap (why <code>stm32flash</code> CANNOT
+flash this board)</h3>
+<p>On this board: <strong>DTR <em>is</em> wired to <code>NRST</code>,
+but BOOT0 is <em>not</em> wired to RTS.</strong> Two consequences that
+break every "normal" flashing method:</p>
+<ol type="1">
+<li><strong>No software bootloader entry.</strong> BOOT0 can't be driven
+from the host, so DTR/RTS auto-reset sequences (ATK-XISP style,
+<code>stm32flash -i ...</code>) <strong>all time out.</strong> The chip
+can only be put into ROM bootloader with the <strong>physical BOOT + RST
+buttons.</strong></li>
+<li><strong><code>stm32flash</code> resets the chip out of the
+bootloader the instant it opens the port.</strong> Opening the tty
+asserts DTR → <code>NRST</code> low → the manually-entered bootloader is
+wiped before the first sync byte. <code>stm32flash</code> therefore
+<strong>can never flash this board</strong> (always "Failed to init
+device, timeout"), even with a perfect manual BOOT+RST first.</li>
+</ol>
+<blockquote>
+<p>Hiwonder's generic guide
+<code>3. Project Compilation and Download.pdf</code> (ATK-XISP over
+Type-C UART, "Reset@DTR Low / ISP@RTS High", 115200 baud) is what
+revealed flashing is a <strong>UART</strong> operation — no SWD/ST-Link
+needed — but its DTR/RTS auto-reset applies to their M4 (F407)
+controller, <strong>not</strong> this board.</p>
+</blockquote>
+<h3
+id="the-working-procedure-repeatable--for-spare-sets--to-recover-any-doa-board">The
+working procedure (repeatable — for spare sets + to recover any "DOA"
+board)</h3>
+<p><strong>Tooling</strong> — canonical, version-controlled: <strong><a
+href="tools/hiwonder_stm32_flash.py"><code>docs/tools/hiwonder_stm32_flash.py</code></a></strong>
+(the pyserial flasher) + <a
+href="tools/hiwonder_bl_listen.py"><code>docs/tools/hiwonder_bl_listen.py</code></a>
+(a no-reset <code>0x7F</code> bootloader prober for a quick alive/blank
+check). Firmware <code>ArmPiUltra.hex</code> (Hiwonder-supplied, 114666
+B hex / 40752 B binary) is <strong>not</strong> committed — keep it at
+<code>~/ArmPiUltra.hex</code> on the target host +
+<code>~/Downloads/ArmPiUltra.hex</code> on the dev machine. Run the
+flasher as
+<code>python3 hiwonder_stm32_flash.py [firmware.hex] [/dev/ttyUSB0]</code>
+(defaults find <code>./ArmPiUltra.hex</code> or
+<code>~/ArmPiUltra.hex</code>).</p>
+<ol type="1">
+<li><strong>Confirm the board is enumerating</strong> —
+<code>ls /dev/ttyUSB0</code>, CH340 <code>1a86:7523</code> bcdDevice
+<code>c233</code>. Ensure <code>ModemManager</code> is masked (it grabs
+new CH340s).</li>
+<li><strong>Launch the flasher FIRST, then press the buttons.</strong>
+Run <code>python3 ~/hiwonder_stm32_flash.py</code>. It opens the port
+with <strong><code>dtr=False, rts=False</code> (no reset on
+open)</strong> and prints a prompt, then polls <code>0x7F</code> for ~90
+s. <strong>Order matters</strong> — opening first, pressing second,
+avoids the open-transient DTR pulse fighting the button.</li>
+<li><strong>Enter ROM bootloader with the physical buttons:</strong>
+<strong>HOLD BOOT → tap RST (while holding BOOT) → keep BOOT held ~2 s →
+release BOOT.</strong></li>
+<li>The flasher auto-runs the STM32 ROM bootloader protocol: sync
+<code>0x7F</code> @ <strong>115200 8E1</strong> → Get → Get-ID →
+<strong>global erase (<code>0x43</code>)</strong> → write-memory
+(<code>0x31</code>, 256 B blocks) → Go (<code>0x21</code>). Expect:
+bootloader ver <code>0x22</code>, <strong><code>CHIP_PID=0x0410</code> =
+STM32F103</strong> (medium-density; matches the F103RBT6 datasheet —
+<em>not</em> the F407 in the generic PDF). Firmware writes in ~2 s.</li>
+<li><strong>Verify</strong> with the SDK
+(<code>~/software/Servo_upper_computer/ros_robot_controller_sdk.py</code>,
+device <code>/dev/ttyUSB0</code>, <strong>1 M 8N1</strong> for the app —
+note: app baud ≠ bootloader baud): <code>board.enable_reception()</code>
+→ <code>board.set_buzzer(...)</code> should <strong>beep</strong>, and
+<code>board.get_battery()</code> should return <strong>~9 V</strong>
+(the DROK rail). Beep + battery = firmware alive. (Reference-good values
+from Ultra: ~9.1 V.)</li>
+</ol>
+<h3 id="common-pitfalls">Common pitfalls</h3>
+<ul>
+<li><strong>Reaching for <code>stm32flash</code> / an ST-Link.</strong>
+Neither is needed and <code>stm32flash</code> <strong>can't work
+here</strong> (resets on open — see above). The pyserial no-reset
+flasher is the only method that works over the Type-C UART. SWD would
+work but is unnecessary.</li>
+<li><strong>Pressing BOOT+RST <em>before</em> the flasher opens the
+port</strong> → the open-transient reset can knock the chip back out of
+bootloader. Always <strong>launch the flasher first</strong>, watch for
+its prompt, <em>then</em> press.</li>
+<li><strong>Assuming a silent board is dead / RMA-ing it.</strong>
+Blank-from-factory is the default for bare replacement boards. Flash it
+before concluding anything about the hardware.</li>
+<li><strong>Wrong baud on verify.</strong> The ROM bootloader is 115200
+8E1; the <em>application</em> runs at <strong>1 M 8N1</strong>.
+Verifying at 115200 after flashing will read nothing — use the SDK
+default (1 M).</li>
+<li><strong>Firmware <code>.hex</code> missing.</strong> If
+<code>~/ArmPiUltra.hex</code> was wiped (e.g. OS reinstall), restore
+from the dev machine <code>~/Downloads/ArmPiUltra.hex</code> before
+flashing.</li>
+</ul></body></html>

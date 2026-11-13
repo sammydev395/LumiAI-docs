@@ -1,0 +1,535 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LumiAI
+Robotic Arm System
+(Customer-Facing)</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="rocket-lumiai-robotic-arm-system">🚀 LumiAI Robotic Arm System</h1>
+<div align="center">
+  <img src="media/LumiAI.png.png" alt="LumiAI Electronics Logo" width="150" height="150">
+  <br>
+  <strong>Advanced AI-Powered Robotic Lighting Platform</strong>
+</div>
+
+<hr />
+<blockquote>
+<p><strong>Customer-facing copy.</strong> Source copy for the marketing
+website and all customer-facing materials. The internal master
+(sourcing, production, pricing strategy, go-to-market) is maintained
+separately — keep this doc free of internal-only detail.</p>
+</blockquote>
+<hr />
+<h1 id="dart-brand-messaging--positioning">🎯 Brand Messaging &amp;
+Positioning</h1>
+<h3 id="tagline--headline-rotation">Tagline / Headline Rotation</h3>
+<ul>
+<li><strong>One robot that guards.</strong></li>
+<li><strong>One robot that sees.</strong></li>
+<li><strong>One robot that reacts.</strong></li>
+<li><strong>One robot that lights.</strong></li>
+</ul>
+<h3 id="hero-statement">Hero Statement</h3>
+<p>LumiAI started as a light that aims itself. It's grown into a
+<strong>6-axis AI robot for your ceiling</strong> — spotting hazards,
+tracking your space, and responding to gestures, with precise light now
+just one of the things it does.</p>
+<h3 id="headline-stats">Headline Stats</h3>
+<table>
+<thead>
+<tr>
+<th>Stat</th>
+<th>Descriptor</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>6-axis</strong></td>
+<td>robotic arm</td>
+</tr>
+<tr>
+<td><strong>On-device</strong></td>
+<td>AI vision</td>
+</tr>
+<tr>
+<td><strong>24/7</strong></td>
+<td>safety watch</td>
+</tr>
+</tbody>
+</table>
+<h3 id="core-narrative-one-machine-many-jobs">Core Narrative (One
+Machine, Many Jobs)</h3>
+<p>Position LumiAI as a <strong>single ceiling-mounted machine that does
+the work of several devices at once</strong> — the same arm, camera, and
+sensor suite handle multiple jobs simultaneously, and the platform is
+extensible to more:</p>
+<ul>
+<li><strong>Light</strong> — aims a precise, tracked beam exactly where
+it's needed, hands-free, from spotlight to RGBW scene.</li>
+<li><strong>Guard</strong> — watches for fire, intruders, CO, and falls
+around the clock, corroborating alarms and flagging what people
+miss.</li>
+<li><strong>Sense</strong> — tracks people, tables, and occupancy in
+real time with on-device vision that understands the whole room, not
+just a point.</li>
+<li><strong>Voice &amp; Gesture</strong> — talk to it, point, or just
+walk in; the <strong>iFlytek far-field sound array</strong> (mic array +
+speaker) takes natural spoken commands and talks back, alongside
+on-device face and gesture recognition.</li>
+</ul>
+<h3 id="how-it-works-sense--see--aim--light">How It Works (Sense → See →
+Aim → Light)</h3>
+<p>A passive sensor wakes the system, the camera understands the scene,
+the arm aims, and the wand lights — in well under a second, with zero
+buttons.</p>
+<ol type="1">
+<li><strong>Sense presence</strong> — a 4-sensor PIR ring gives ~360°
+coverage in total darkness, waking the arm the instant anyone enters (or
+on the spoken wake word, at micro-amp standby).</li>
+<li><strong>See the scene</strong> — the <strong>OAK-D S2</strong>
+stereo-depth AI camera recognizes faces, gestures, and motion on-device
+(OpenCV + PyTorch on a Raspberry Pi 5).</li>
+<li><strong>Aim precisely</strong> — six degrees of freedom let the arm
+track a moving target smoothly: a person, a performer, or your hands on
+the workbench.</li>
+<li><strong>Light it up</strong> — the Lumi Wand delivers a clean
+spotlight today, with 12-channel addressable RGBW scenes, beam shaping,
+and music sync next.</li>
+</ol>
+<h3 id="three-parts-one-brain">Three Parts, One Brain</h3>
+<p>An arm to move, a wand to light, and a sensor suite to perceive —
+engineered in-house on a Raspberry Pi 5 platform with battery
+backup.</p>
+<ul>
+<li><strong>The Arm — LumiAI Arm</strong>: a 6-axis chassis with a
+custom camera mount, machined base plate, and an integrated LiFePO4 UPS.
+Ceiling- or wall-mounted for full-room reach. <em>(Compute: RPi 5 + 1 TB
+NVMe · Backup: LiFePO4 UPS)</em></li>
+<li><strong>The Wand — Lumi Wand</strong>: the business end — a
+12-driver addressable RGBW light head with active thermal control,
+swappable between spotlight, floodlight, and effect attachments.
+<em>(Control: I²C · PCA9685 · Variants: Arm / Flashlight)</em></li>
+<li><strong>The Sensors — Sensor Suite</strong>: a perception ring
+around the base — passive PIR presence that fires in total darkness,
+plus power, thermal, and air-quality telemetry that corroborate your
+alarms and feed the AI. <em>(Presence: 4× PIR in the dark · Hazard: CO +
+smoke + PM · Voice: iFlytek far-field sound array)</em></li>
+</ul>
+<hr />
+<h1 id="rocket-product-overview">🚀 Product Overview</h1>
+<h3 id="concept">Concept</h3>
+<p>A <strong>6-DOF robotic arm platform</strong> integrating an
+<strong>AI-driven optical camera</strong> and a <strong>versatile
+gripper-mounted lighting system</strong>. Designed to be <strong>modular
+and environment-adaptive</strong>, the product enhances lighting control
+in <strong>garages, kitchens, restaurants, and entertainment
+venues</strong> by intelligently following human gestures, faces, and
+movement. The system is typically <strong>ceiling-mounted
+(inverted)</strong> or <strong>side wall-mounted</strong>, providing
+optimal coverage and tracking capabilities from elevated positions.</p>
+<h3 id="key-features">Key Features</h3>
+<ul>
+<li><strong>AI Vision System</strong>:
+<ul>
+<li>Arm-mounted <strong>OAK-D S2 stereo-depth AI camera</strong>
+(standard on every unit) for on-device face, gesture, and depth-aware
+tracking.</li>
+<li><strong>PIR sensor</strong> for initial presence detection, enabling
+smart energy usage.</li>
+</ul></li>
+<li><strong>Voice System</strong>:
+<ul>
+<li><strong>iFlytek far-field sound array</strong> (far-field mic array
++ speaker) for natural spoken commands, wake-word standby, and voice
+feedback.</li>
+</ul></li>
+<li><strong>Lighting System</strong>:
+<ul>
+<li>Relay-controlled spotlight (first release).</li>
+<li><strong>Lumi Wand</strong>: 12-channel addressable RGBW light module
+(3× independently controllable 10 W RGBW LEDs) gripped and aimed by the
+arm.</li>
+<li><strong>Modular &amp; standalone-capable</strong>: the same Lumi
+Wand can be sold separately as a battery-powered handheld light via the
+<strong>LumiAI Battery Extension</strong> (see <em>Standalone
+Product</em> section).</li>
+<li>Future versions: RGB light effects, dynamic beam shaping, and
+synchronized music-light interactions.</li>
+<li>Flexible gripper mount allows swap-out between spotlight,
+floodlight, or decorative lighting attachments.</li>
+</ul></li>
+<li><strong>Robotic Arm</strong>:
+<ul>
+<li><strong>US-assembled 6-axis robotic arm</strong>, finished with
+custom camera integration, UPS housing, and sensor boards.</li>
+<li><strong>Mounting Options</strong>: Typically installed as
+<strong>ceiling-mounted (inverted)</strong> or <strong>side
+wall-mounted</strong> for optimal coverage and tracking range.</li>
+</ul></li>
+<li><strong>Hardware Platform</strong>:
+<ul>
+<li><strong>Raspberry Pi 5</strong>, upgraded with <strong>1 TB
+NVMe</strong> storage.</li>
+<li>Integrated <strong>UPS module</strong> for uninterrupted
+operation.</li>
+<li>On-device AI models for gesture and face recognition (OpenCV +
+PyTorch/ONNX on RPi5).</li>
+<li>Future roadmap: MQTT/REST API integration for home-automation &amp;
+restaurant lighting systems.</li>
+</ul></li>
+</ul>
+<h3 id="why-lumiai-is-different">Why LumiAI Is Different</h3>
+<ul>
+<li>Most robotic lighting systems are <strong>fixed-mount and
+pre-programmed</strong> (DJ lights, moving-head lights).</li>
+<li>LumiAI adds <strong>true autonomy + human interaction</strong>,
+making it ideal for smart homes, garages, kitchens, gyms, and
+<strong>restaurants/bars seeking interactive ambiance</strong>.</li>
+<li>Scalable from <strong>utility (garage task light)</strong> to
+<strong>experience (dance floor entertainment)</strong> to <strong>AI
+coaching (gym/fitness)</strong>.</li>
+<li><strong>Modular product family</strong>: one shared wand engine
+sells two ways — embedded in the robotic arm system <em>and</em> as a
+standalone battery-powered handheld light — broadening what you can do
+with a single platform.</li>
+</ul>
+<hr />
+<h1 id="robot-intelligent-functions">🤖 Intelligent Functions</h1>
+<p>The LumiAI Robotic Arm System can be controlled via <strong>gestures,
+voice commands, and autonomous operation</strong> to perform a wide
+range of intelligent functions across different industries and
+environments.</p>
+<h2 id="hotel-hospitality-industry">🏨 Hospitality Industry</h2>
+<h3 id="table-management">Table Management</h3>
+<ul>
+<li><strong>Table Scan &amp; Tracking</strong>: Automatically scan and
+track available tables in real-time, updating occupancy status for staff
+and reservation systems.</li>
+<li><strong>Unbused Table Detection</strong>: Identify tables that
+should have been cleaned after customers left, alerting staff to
+prioritize cleanup tasks.</li>
+</ul>
+<h3 id="security--safety">Security &amp; Safety</h3>
+<ul>
+<li><strong>Theft Detection</strong>:
+<ul>
+<li>Monitor kitchen areas for unauthorized food removal.</li>
+<li>Detect suspicious activity at cash registers and point-of-sale
+systems.</li>
+</ul></li>
+<li><strong>Pest Detection</strong>: Identify rodents and other pests
+using AI vision, alerting management for immediate action.</li>
+<li><strong>Fire Detection</strong>:
+<ul>
+<li>Monitor front-of-house and back-of-house (kitchen) areas for fire
+hazards.</li>
+<li>Automatic alert system with visual and audio notifications.</li>
+</ul></li>
+<li><strong>Intruder Detection</strong>: Security monitoring during
+off-hours with motion detection and alert capabilities.</li>
+<li><strong>Employee Safety</strong>: Detect safety issues such as
+slips, falls, or unsafe working conditions in real-time.</li>
+<li><strong>Employee Tardiness Detection</strong>: Monitor employee
+arrival times and attendance automatically.</li>
+</ul>
+<h3 id="environmental-monitoring">Environmental Monitoring</h3>
+<ul>
+<li><strong>Kitchen Carbon Monoxide Levels</strong>: Continuous
+monitoring of CO levels in kitchen areas with automatic alerts when
+thresholds are exceeded.</li>
+</ul>
+<h3 id="entertainment--ambiance">Entertainment &amp; Ambiance</h3>
+<ul>
+<li><strong>Dance Floor Spotlight Management</strong>:
+<ul>
+<li>Automatic spotlight lighting with multi-color LED systems.</li>
+<li>Auto-tracking for couple dances and group dances.</li>
+<li>Theme-based lighting synchronized with music and dance
+patterns.</li>
+</ul></li>
+</ul>
+<h2 id="factory-factory-floor">🏭 Factory Floor</h2>
+<h3 id="safety--security">Safety &amp; Security</h3>
+<ul>
+<li><strong>Fire Detection</strong>: Continuous monitoring of factory
+floor for fire hazards with immediate alert capabilities.</li>
+<li><strong>Intruder Detection</strong>: Security monitoring during
+off-hours to protect equipment and facilities.</li>
+<li><strong>Employee Safety Issues</strong>: Real-time detection of
+safety hazards, unsafe behaviors, or emergency situations.</li>
+<li><strong>Employee Tardiness Detection</strong>: Automated attendance
+tracking and monitoring.</li>
+</ul>
+<h3 id="environmental-monitoring-1">Environmental Monitoring</h3>
+<ul>
+<li><strong>Carbon Monoxide Levels</strong>: Continuous air quality
+monitoring with automatic alerts for dangerous CO concentrations.</li>
+</ul>
+<h3 id="operational-support">Operational Support</h3>
+<ul>
+<li><strong>Spotlight Function</strong>:
+<ul>
+<li>Automatic spotlight activation for areas requiring attention.</li>
+<li>Auto-tracking of workers or equipment in need of focused
+lighting.</li>
+<li>Enhanced visibility for critical work zones.</li>
+</ul></li>
+</ul>
+<h2 id="house-garagehome">🏠 Garage/Home</h2>
+<h3 id="safety--security-1">Safety &amp; Security</h3>
+<ul>
+<li><strong>Fire Detection</strong>: Continuous monitoring for fire
+hazards throughout the home/garage area.</li>
+<li><strong>Intruder Detection</strong>: Security monitoring during
+off-hours with motion detection and alert systems.</li>
+<li><strong>Pest Detection</strong>: Identify rodents and other pests
+using AI vision, alerting homeowners.</li>
+</ul>
+<h3 id="environmental-monitoring-2">Environmental Monitoring</h3>
+<ul>
+<li><strong>Carbon Monoxide Levels</strong>: Continuous monitoring of CO
+levels with automatic alerts when dangerous concentrations are
+detected.</li>
+</ul>
+<h3 id="family--pet-care">Family &amp; Pet Care</h3>
+<ul>
+<li><strong>Young Child Safety &amp; Monitoring</strong>:
+<ul>
+<li>Monitor children in designated areas.</li>
+<li>Alert parents to potential safety concerns or unusual activity.</li>
+</ul></li>
+<li><strong>Pet Monitoring</strong>: Track and monitor pets, ensuring
+their safety and well-being.</li>
+</ul>
+<h3 id="utility-functions">Utility Functions</h3>
+<ul>
+<li><strong>Spotlight with Auto-Tracking</strong>:
+<ul>
+<li>Hands-free lighting that follows movement.</li>
+<li>Automatic activation when presence is detected.</li>
+<li>Ideal for garage work, home projects, and general illumination.</li>
+</ul></li>
+</ul>
+<h2 id="weight_lifting-gym--fitness">🏋️ Gym &amp; Fitness</h2>
+<p>When ceiling- or wall-mounted in a home gym, studio, or commercial
+fitness floor, the LumiAI arm becomes an <strong>AI personal-training
+companion</strong> — pairing its camera-based pose tracking with a
+companion <strong>mobile app</strong> that coaches the user in real
+time.</p>
+<h3 id="workout-monitoring">Workout Monitoring</h3>
+<ul>
+<li><strong>AI Pose &amp; Form Analysis</strong>: Track body position,
+joint angles, and movement paths during exercises using the arm-mounted
+AI vision camera.</li>
+<li><strong>Automatic Rep &amp; Set Counting</strong>: Detect and log
+repetitions and sets per exercise without wearables or manual
+tracking.</li>
+<li><strong>Exercise Recognition</strong>: Identify the exercise being
+performed (squat, deadlift, press, curl, etc.) and adapt analysis
+accordingly.</li>
+<li><strong>Tempo &amp; Range-of-Motion Tracking</strong>: Measure
+cadence, time-under-tension, and full vs. partial range of motion.</li>
+</ul>
+<h3 id="coaching--improvement-suggestions">Coaching &amp; Improvement
+Suggestions</h3>
+<ul>
+<li><strong>Real-Time Form Feedback</strong>: Flag unsafe or inefficient
+form (e.g., rounded back, knee cave, uneven bar path) and surface
+corrective cues.</li>
+<li><strong>Personalized Workout Suggestions</strong>: Recommend
+adjustments to weight, reps, rest intervals, and progression based on
+observed performance trends.</li>
+<li><strong>Spotlight &amp; Focus Tracking</strong>: Auto-track and
+illuminate the user during a set for better visibility and
+recording.</li>
+</ul>
+<h3 id="mobile-app-integration">Mobile App Integration</h3>
+<ul>
+<li><strong>Live Companion App</strong>: The arm streams form feedback,
+rep counts, and coaching cues to a paired iOS/Android app over the local
+network/Wi-Fi.</li>
+<li><strong>Progress History &amp; Trends</strong>: Log workouts, track
+personal records, and visualize improvement over time in-app.</li>
+<li><strong>Session Recording &amp; Playback</strong>: Capture annotated
+video of sets for self-review or remote coach review.</li>
+<li><strong>Routine Library &amp; Reminders</strong>: Push guided
+routines, reminders, and goal tracking directly to the user's
+phone.</li>
+<li><strong>Multi-User Profiles</strong>: Recognize and maintain
+separate profiles for household members or gym members.</li>
+</ul>
+<h2 id="clapper-content-creation--creator-studio">🎬 Content Creation /
+Creator Studio</h2>
+<p>For solo creators — YouTubers, streamers, podcasters, crafters, and
+cooks — LumiAI becomes a <strong>hands-free camera crew</strong>: a
+robotic camera operator you direct <strong>by voice</strong> while you
+create. No second person, no reaching for the rig. This is
+<strong>LumiAI Creator</strong>, our <strong>desktop</strong> arm for
+content creators — your <strong>phone is the camera, eyes and
+ears</strong> via the LumiAI app (the ceiling arm with the spotlight,
+camera and far-field mic is <strong>LumiAI Halo</strong>).</p>
+<h3 id="two-ways-to-run-it">Two ways to run it</h3>
+<ul>
+<li><strong>Base Creator</strong> — your <strong>phone's own
+camera</strong> does the tracking, so the arm follows you <strong>while
+you record in the LumiAI app</strong>, then you share the clip wherever
+you like.</li>
+<li><strong>Add the OAK-D S2 (optional)</strong> — an onboard AI camera
+does the tracking for you, so you can <strong>record in any app —
+TikTok, Instagram, your own camera</strong> — and the arm keeps
+following. This option also unlocks the real <strong>dolly-in</strong>
+move.</li>
+</ul>
+<h3 id="your-camera-operated-by-voice">Your Camera, Operated by
+Voice</h3>
+<ul>
+<li><strong>Voice-Directed Framing</strong>: say "follow me", "frame my
+hands", "frame the product", "closer" — the arm moves and keeps you
+framed.</li>
+<li><strong>Auto-Follow Framing</strong>: small pan / tilt / roll moves
+keep you in frame as you work at your desk. <em>(Today's moves are
+gentle reframing moves, not room-scale tracking.)</em></li>
+<li><strong>Bring Your Own Camera</strong>: a swappable <strong>camera
+adapter</strong> (standard 1/4"-20) mounts your phone, webcam,
+action-cam, or mirrorless — your camera, your look.</li>
+</ul>
+<h3 id="iphone-your-phone-becomes-the-robots-camera-star-coming-soon">📱
+Your Phone Becomes the Robot's Camera ⭐ <em>(coming soon)</em></h3>
+<p>Clip your phone into the LumiAI cradle and the arm becomes your
+camera operator: it moves, settles, and the LumiAI app <strong>takes the
+shot or starts recording at exactly the right moment</strong> — exposure
+and focus locked, framed from what your phone sees. Flip
+<strong>portrait ↔︎ landscape</strong> with a flick of the arm's wrist,
+and direct it all <strong>hands-free by voice or a gesture</strong>
+("take a picture", "start recording", a thumbs-up for a countdown). Or
+bring your own mount via the 1/4"-20 tip. The arm even <strong>keeps
+your phone fast-charging (USB-C PD / PPS) while it shoots.</strong>
+<em>In development — the cradle is in first test print; the phone-camera
+app is on the way, built into the one LumiAI app.</em></p>
+<h3 id="a-key-light-that-follows-you--on-lumiai-halo">A Key Light That
+Follows You — <em>on LumiAI Halo</em></h3>
+<ul>
+<li>On the ceiling <strong>Halo</strong> arm, the Lumi Wand acts as a
+<strong>tracked key light</strong> on your face — flattering, consistent
+lighting with no lighting assistant, and tunable RGBW color. <em>(The
+desktop Creator product has no Lumi Wand and no following
+light.)</em></li>
+</ul>
+<h3 id="mount-it-your-way">Mount It Your Way</h3>
+<ul>
+<li><strong>Desk clamp</strong> at eye level for talking-head shots
+(Creator); <strong>ceiling / overhead</strong> (Halo) for top-down
+cooking, crafts, and tutorial shots. The same arm and software work
+either way — the mount is the difference.</li>
+</ul>
+<hr />
+<h1 id="flashlight-lumi-wand-anywhere--standalone-battery-powered">🔦
+Lumi Wand Anywhere — Standalone (Battery-Powered)</h1>
+<p>The <strong>Lumi Wand</strong> is a <strong>standalone product in its
+own right</strong> — a battery-powered, app- and touch-controlled RGBW
+light that goes anywhere: no arm, no tether, no mains, no install. The
+<strong>LumiAI Battery Extension</strong> (a modular bottom section)
+screws onto the exact same wand upper assembly used in the arm system,
+so you get the Halo arm's premium light engine in a take-anywhere form.
+Sold standalone as the <strong>Lumi Wand Anywhere</strong>.
+<em><strong>Studio-grade color, anywhere. The light that goes where you
+do.</strong></em></p>
+<h3 id="how-it-works--one-wand-two-products">How It Works — One Wand,
+Two Products</h3>
+<p>The wand body is <strong>variant-agnostic</strong>: it terminates in
+a standard threaded joint and <strong>one 6-pin connector in its end
+plate</strong>, and does not care what is on the other side of it — the
+arm tether and the battery extension present the same six nets on the
+same connector.</p>
+<ul>
+<li><strong>Arm-Tethered SKU</strong> → wand body + <strong>end plate
+and retaining ring</strong>, powered/controlled through the robotic
+arm's power bay via the end-plate connector.</li>
+<li><strong>Standalone SKU</strong> → wand body + <strong>Battery
+Extension</strong>, fully self-contained and portable.</li>
+</ul>
+<h3 id="whats-in-the-battery-extension">What's in the Battery
+Extension</h3>
+<ul>
+<li><strong>12-Channel Addressable RGBW Light</strong>: 3× independently
+controllable 10 W RGBW LEDs — the same premium light engine as the
+arm-mounted wand.</li>
+<li><strong>Touchscreen Control</strong>: Integrated 1.9" color
+<strong>touch LCD</strong> for on-device color, brightness, and effect
+selection — no phone or app required to operate.</li>
+<li><strong>Wireless Connectivity</strong>: Built-in <strong>Wi-Fi +
+Bluetooth 5.0</strong> for app control, firmware updates, and future
+smart-lighting integrations.</li>
+<li><strong>LiFePO4 Battery + USB-C PD</strong>: 4× 26700
+<strong>LiFePO4</strong> cells (~51 Wh), recharged from any standard
+USB-C PD charger — no proprietary dock. <em>(Runtime, light output, and
+IP rating are TBD — bench measurement pending.)</em></li>
+<li><strong>Mounts Anywhere</strong>: a <strong>1/4"-20 threaded
+insert</strong> on the body screws onto any <strong>camera tripod, light
+stand, or bracket</strong> (LCD facing up) — or just hold it. ~1 kg,
+balanced for any ball/pan head.</li>
+<li><strong>Rugged, One-Handed Form Factor</strong>: illuminated rocker
+switch and a stepped, grippable silhouette built for field use.</li>
+</ul>
+<h3 id="standalone-use-cases">Standalone Use Cases</h3>
+<ul>
+<li><strong>Patio / deck / garden</strong>: on a stand, set color scenes
+and brightness from your phone.</li>
+<li><strong>Workbench &amp; inspection</strong>: bench task light, or a
+hand-held inspection lamp.</li>
+<li><strong>Outside work</strong>: garage, driveway, and car repair —
+hold it, or clamp it to a stand.</li>
+<li><strong>Camping / tailgating / backyard events</strong>: battery
+color mood light, no outlet needed.</li>
+<li><strong>Photo / video</strong>: tunable RGBW fill and accent on a
+light stand — for creators, product shots, and streaming.</li>
+<li><strong>Emergency / power-outage light</strong>: a bright, long-life
+light when the power's out.</li>
+<li><strong>Trade-show &amp; retail display</strong>: plug-free display
+and accent lighting.</li>
+<li><strong>Hobby</strong>: aquarium/terrarium viewing, model &amp;
+miniature painting, plant photography.</li>
+<li><strong>Demo &amp; on-ramp</strong>: the accessible first LumiAI
+purchase — and the plug-free way to show the light engine, which grows
+into the full Halo arm system.</li>
+</ul>
+<hr />
+<h1 id="shopping_cart-models--pricing">🛒 Models &amp; Pricing</h1>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>What's Included</th>
+<th>MSRP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LumiAI MVP Kit</strong></td>
+<td>Arm + RPi 5 + UPS + relay spotlight module</td>
+<td>~$499–699</td>
+</tr>
+<tr>
+<td><strong>LumiAI Standard System</strong></td>
+<td>Arm with standard <strong>OAK-D S2</strong> camera, <strong>iFlytek
+far-field sound array</strong>, and <strong>Lumi Wand</strong></td>
+<td>~$999</td>
+</tr>
+<tr>
+<td><strong>LumiAI Restaurant Edition</strong></td>
+<td>Standard system + RGB &amp; effects</td>
+<td>~$999+</td>
+</tr>
+<tr>
+<td><strong>Lumi Wand Anywhere</strong></td>
+<td>Standalone battery-powered wand (Battery Extension) — entry point to
+the ecosystem</td>
+<td>~$199–299</td>
+</tr>
+<tr>
+<td><strong>Creator Kit</strong> (accessory)</td>
+<td>Camera adapter (1/4"-20) + desk-clamp mount — turns any arm into a
+hands-free, voice-directed camera operator for your own camera</td>
+<td>~$49–99</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>LumiAI — human-centric AI, built for
+versatility.</em></p></body></html>

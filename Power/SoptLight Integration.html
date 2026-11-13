@@ -1,0 +1,1273 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SoptLight
+Integration</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="drdev-lumiai---intelligent-vision-system-integration">DrDev LumiAI -
+Intelligent Vision System Integration</h1>
+<p><strong>Company:</strong> DrDev<br />
+<strong>Product:</strong> LumiAI Intelligent Vision Robotic Arm</p>
+<h2 id="implementation-status-current">Implementation Status
+(Current)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Workspace</strong></td>
+<td><code>/home/ubuntu/ros2_ws</code> (ArmPi Ultra)</td>
+</tr>
+<tr>
+<td><strong>spotlight_controller package</strong></td>
+<td>Not yet created — this doc is the implementation spec</td>
+</tr>
+<tr>
+<td><strong>interfaces</strong></td>
+<td><code>SetInt64</code> srv exists in <code>src/interfaces</code>
+✓</td>
+</tr>
+<tr>
+<td><strong>launch_armpi_fpv_tuning.sh</strong></td>
+<td>Present in repo; Spotlight menu items (29, 30) to be added per Menu
+section below</td>
+</tr>
+<tr>
+<td><strong>ROS2 env</strong></td>
+<td>Use <code>docs/Test_Plan.md</code> prerequisites (ROS_DOMAIN_ID=100,
+CycloneDDS, source third_party + install)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Next steps:</strong> Create <code>spotlight_controller</code>
+package under <code>src/</code>, implement
+<code>rgbw_spotlight_node.py</code>, then add menu integration to
+<code>launch_armpi_fpv_tuning.sh</code>.</p>
+<p><strong>Related:</strong> Chat transcripts in
+<code>docs/chat_transcripts/</code> reference spotlight tracking,
+face-tracking → spotlight workflow, and menu integration.</p>
+<hr />
+<h2 id="overview">Overview</h2>
+<p>All LumiAI robotic arms include a gripper-mounted <strong>RGBW
+Intelligent Vision System</strong> as standard equipment. This document
+covers the complete integration of the 5050 RGBW 10W LED spotlight
+system with RPi5 PWM control.</p>
+<hr />
+<h2 id="hardware-architecture">Hardware Architecture</h2>
+<h3 id="rgbw-spotlight-system-standard-on-all-models">RGBW Spotlight
+System (Standard on ALL Models)</h3>
+<p><strong>Key Decision:</strong> RGBW LED is <strong>CHEAPER</strong>
+than white LED + relay, so it's standard on all tiers!</p>
+<p><strong>Cost Comparison:</strong></p>
+<ul>
+<li>Old approach (White LED + Relay): $13.00</li>
+<li>New approach (RGBW + MOSFETs): $5.15</li>
+<li><strong>Savings: $7.85 per unit!</strong></li>
+</ul>
+<h3 id="all-tiers-use-identical-rgbw-system">All Tiers Use Identical
+RGBW System</h3>
+<p><strong>No tier differentiation in lighting - all get the same
+premium system:</strong></p>
+<ul>
+<li><strong>Entry Tier ($599):</strong> 5050 RGBW 10W LED
+(standard)</li>
+<li><strong>Mid Tier ($799):</strong> 5050 RGBW 10W LED (standard)</li>
+<li><strong>Premium Tier ($999):</strong> 5050 RGBW 10W LED
+(standard)</li>
+</ul>
+<p><strong>Differentiation is in camera capability, not
+lighting!</strong></p>
+<h3 id="wiring-diagram-rgbw-with-rpi5-pwm">Wiring Diagram (RGBW with
+RPi5 PWM)</h3>
+<pre><code>Raspberry Pi 5 GPIO (5V)
+    ├─ GPIO 12 (PWM0) → MOSFET 1 Gate (Red)
+    ├─ GPIO 13 (PWM1) → MOSFET 2 Gate (Green)
+    ├─ GPIO 18 (PWM0) → MOSFET 3 Gate (Blue)
+    ├─ GPIO 19 (PWM1) → MOSFET 4 Gate (White)
+    └─ GND → 10kΩ pull-down resistors
+
+Each MOSFET (IRLZ44N):
+    ├─ Gate → GPIO + 10kΩ to GND
+    ├─ Source → GND
+    └─ Drain → LED channel (+)
+
+5050 RGBW LED (on heatsink):
+    ├─ R+ → MOSFET 1 Drain
+    ├─ G+ → MOSFET 2 Drain
+    ├─ B+ → MOSFET 3 Drain
+    ├─ W+ → MOSFET 4 Drain
+    └─ R-, G-, B-, W- → GND
+
+Power Supply:
+    └─ 5V from RPi5 PSU → LED common (+) via MOSFETs</code></pre>
+<hr />
+<h2 id="software-integration">Software Integration</h2>
+<h3 id="rgbw-pwm-control-using-pigpio-dart">RGBW PWM Control (Using
+pigpio) 🎯</h3>
+<p><strong>Why pigpio:</strong></p>
+<ul>
+<li>✅ Hardware PWM support (smooth, flicker-free)</li>
+<li>✅ 4 independent channels for RGBW</li>
+<li>✅ 0-100% dimming per channel</li>
+<li>✅ No external controller needed (RPi5 built-in)</li>
+</ul>
+<h4 id="create-ros2-rgbw-controller">Create ROS2 RGBW Controller</h4>
+<p>Create the node at
+<strong><code>/home/ubuntu/ros2_ws/src/spotlight_controller/spotlight_controller/rgbw_spotlight_node.py</code></strong>
+(or <code>scripts/rgbw_spotlight_node.py</code> if using scripts; see
+Package Structure below):</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#!/usr/bin/env python3</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">ROS2 RGBW Spotlight Controller Node</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">Controls 5050 RGBW 10W LED via RPi5 hardware PWM (pigpio)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> rclpy</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rclpy.node <span class="im">import</span> Node</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> std_msgs.msg <span class="im">import</span> ColorRGBA</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> std_srvs.srv <span class="im">import</span> Trigger, SetBool</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> interfaces.srv <span class="im">import</span> SetInt64</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pigpio</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> RGBWSpotlightNode(Node):</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>(<span class="st">&#39;rgbw_spotlight_controller&#39;</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Initialize pigpio for hardware PWM</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pi <span class="op">=</span> pigpio.pi()</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.pi.connected:</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.get_logger().error(<span class="st">&#39;❌ Failed to connect to pigpiod&#39;</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">&#39;pigpiod not running - run: sudo systemctl start pigpiod&#39;</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># RGBW GPIO pins (hardware PWM)</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pin_r <span class="op">=</span> <span class="dv">12</span>  <span class="co"># Red channel (PWM0)</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pin_g <span class="op">=</span> <span class="dv">13</span>  <span class="co"># Green channel (PWM1)</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pin_b <span class="op">=</span> <span class="dv">18</span>  <span class="co"># Blue channel (PWM0)</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pin_w <span class="op">=</span> <span class="dv">19</span>  <span class="co"># White channel (PWM1)</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># PWM Configuration</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pwm_freq <span class="op">=</span> <span class="dv">1000</span>  <span class="co"># 1kHz (flicker-free)</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pwm_range <span class="op">=</span> <span class="dv">255</span>  <span class="co"># 0-255 duty cycle</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Setup PWM on all channels</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> pin <span class="kw">in</span> [<span class="va">self</span>.pin_r, <span class="va">self</span>.pin_g, <span class="va">self</span>.pin_b, <span class="va">self</span>.pin_w]:</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.pi.set_mode(pin, pigpio.OUTPUT)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.pi.set_PWM_frequency(pin, <span class="va">self</span>.pwm_freq)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.pi.set_PWM_range(pin, <span class="va">self</span>.pwm_range)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        <span class="co"># State</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.current_color <span class="op">=</span> (<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">255</span>)  <span class="co"># RGBW (all white)</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.brightness <span class="op">=</span> <span class="dv">100</span>  <span class="co"># 0-100%</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.is_on <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Subscribers</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.create_subscription(</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>            ColorRGBA,</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;/spotlight/set_color&#39;</span>,</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.color_callback,</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>            <span class="dv">10</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Services</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.create_service(SetBool, <span class="st">&#39;/spotlight/set_state&#39;</span>, <span class="va">self</span>.set_state_callback)</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.create_service(SetInt64, <span class="st">&#39;/spotlight/set_brightness&#39;</span>, <span class="va">self</span>.set_brightness_callback)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.create_service(Trigger, <span class="st">&#39;/spotlight/toggle&#39;</span>, <span class="va">self</span>.toggle_callback)</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Optional: self.create_service(Trigger, &#39;/spotlight/pulse&#39;, self.pulse_callback)  # 1s flash for menu option 4</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.get_logger().info(<span class="st">&#39;🌈 RGBW Spotlight controller initialized&#39;</span>)</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> color_callback(<span class="va">self</span>, msg):</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot;Set spotlight color from ColorRGBA message&quot;&quot;&quot;</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>        r <span class="op">=</span> <span class="bu">int</span>(msg.r <span class="op">*</span> <span class="dv">255</span>)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>        g <span class="op">=</span> <span class="bu">int</span>(msg.g <span class="op">*</span> <span class="dv">255</span>)</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>        b <span class="op">=</span> <span class="bu">int</span>(msg.b <span class="op">*</span> <span class="dv">255</span>)</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>        w <span class="op">=</span> <span class="bu">int</span>(msg.a <span class="op">*</span> <span class="dv">255</span>)  <span class="co"># Use alpha channel for white</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.current_color <span class="op">=</span> (r, g, b, w)</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.is_on:</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.update_led()</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.get_logger().info(<span class="ss">f&#39;🎨 Color set to RGBW(</span><span class="sc">{</span>r<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>g<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>b<span class="sc">}</span><span class="ss">, </span><span class="sc">{</span>w<span class="sc">}</span><span class="ss">)&#39;</span>)</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> set_state_callback(<span class="va">self</span>, request, response):</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot;Turn spotlight on/off&quot;&quot;&quot;</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.is_on <span class="op">=</span> request.data</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.update_led()</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>        response.success <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>        response.message <span class="op">=</span> <span class="ss">f&quot;RGBW Spotlight </span><span class="sc">{</span><span class="st">&#39;ON&#39;</span> <span class="cf">if</span> <span class="va">self</span><span class="sc">.</span>is_on <span class="cf">else</span> <span class="st">&#39;OFF&#39;</span><span class="sc">}</span><span class="ss">&quot;</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.get_logger().info(<span class="ss">f&#39;💡 </span><span class="sc">{</span>response<span class="sc">.</span>message<span class="sc">}</span><span class="ss">&#39;</span>)</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> response</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> set_brightness_callback(<span class="va">self</span>, request, response):</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot;Set brightness (0-100%)&quot;&quot;&quot;</span></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.brightness <span class="op">=</span> <span class="bu">max</span>(<span class="dv">0</span>, <span class="bu">min</span>(<span class="dv">100</span>, request.data))</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.is_on:</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.update_led()</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>        response.success <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>        response.message <span class="op">=</span> <span class="ss">f&quot;Brightness: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>brightness<span class="sc">}</span><span class="ss">%&quot;</span></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.get_logger().info(<span class="ss">f&#39;💡 </span><span class="sc">{</span>response<span class="sc">.</span>message<span class="sc">}</span><span class="ss">&#39;</span>)</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> response</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> toggle_callback(<span class="va">self</span>, request, response):</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot;Toggle spotlight state&quot;&quot;&quot;</span></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.is_on <span class="op">=</span> <span class="kw">not</span> <span class="va">self</span>.is_on</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.update_led()</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>        response.success <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a>        response.message <span class="op">=</span> <span class="ss">f&quot;RGBW Spotlight </span><span class="sc">{</span><span class="st">&#39;ON&#39;</span> <span class="cf">if</span> <span class="va">self</span><span class="sc">.</span>is_on <span class="cf">else</span> <span class="st">&#39;OFF&#39;</span><span class="sc">}</span><span class="ss">&quot;</span></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.get_logger().info(<span class="ss">f&#39;💡 </span><span class="sc">{</span>response<span class="sc">.</span>message<span class="sc">}</span><span class="ss">&#39;</span>)</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> response</span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_led(<span class="va">self</span>):</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot;Update LED RGBW values with brightness&quot;&quot;&quot;</span></span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.is_on:</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>            r, g, b, w <span class="op">=</span> <span class="va">self</span>.current_color</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Apply brightness scaling</span></span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>            brightness_factor <span class="op">=</span> <span class="va">self</span>.brightness <span class="op">/</span> <span class="fl">100.0</span></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>            r_pwm <span class="op">=</span> <span class="bu">int</span>(r <span class="op">*</span> brightness_factor)</span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>            g_pwm <span class="op">=</span> <span class="bu">int</span>(g <span class="op">*</span> brightness_factor)</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>            b_pwm <span class="op">=</span> <span class="bu">int</span>(b <span class="op">*</span> brightness_factor)</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>            w_pwm <span class="op">=</span> <span class="bu">int</span>(w <span class="op">*</span> brightness_factor)</span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_r, r_pwm)</span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_g, g_pwm)</span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_b, b_pwm)</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_w, w_pwm)</span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Turn off all channels</span></span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_r, <span class="dv">0</span>)</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_g, <span class="dv">0</span>)</span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_b, <span class="dv">0</span>)</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_w, <span class="dv">0</span>)</span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> cleanup(<span class="va">self</span>):</span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot;Turn off LED and cleanup&quot;&quot;&quot;</span></span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_r, <span class="dv">0</span>)</span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_g, <span class="dv">0</span>)</span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_b, <span class="dv">0</span>)</span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pi.set_PWM_dutycycle(<span class="va">self</span>.pin_w, <span class="dv">0</span>)</span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pi.stop()</span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.get_logger().info(<span class="st">&#39;🔦 RGBW Spotlight controller cleaned up&#39;</span>)</span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> main():</span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a>    rclpy.init()</span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>    node <span class="op">=</span> RGBWSpotlightNode()</span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>        rclpy.spin(node)</span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">KeyboardInterrupt</span>:</span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a>    <span class="cf">finally</span>:</span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a>        node.cleanup()</span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a>        node.destroy_node()</span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a>        rclpy.shutdown()</span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="va">__name__</span> <span class="op">==</span> <span class="st">&#39;__main__&#39;</span>:</span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>    main()</span></code></pre></div>
+<p><strong>Install pigpio:</strong></p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install pigpio python3-pigpio</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl enable pigpiod</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl start pigpiod</span></code></pre></div>
+<hr />
+<h2 id="menu-integration">Menu Integration</h2>
+<h3 id="add-to-launch_armpi_fpv_tuningsh">Add to
+<code>launch_armpi_fpv_tuning.sh</code></h3>
+<p><strong>Script location:</strong>
+<code>/home/ubuntu/ros2_ws/launch_armpi_fpv_tuning.sh</code></p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Spotlight control functions</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">start_spotlight_controller()</span> <span class="kw">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">&quot;</span><span class="va">$PIDS_DIR</span><span class="st">/spotlight.pid&quot;</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">kill</span> <span class="at">-0</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">cat</span> <span class="va">$PIDS_DIR</span>/spotlight.pid<span class="va">)</span><span class="st">&quot;</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null<span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="bu">echo</span> <span class="at">-e</span> <span class="st">&quot;</span><span class="va">${YELLOW}</span><span class="st">💡 Spotlight Controller already running - skipping</span><span class="va">${NC}</span><span class="st">&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="at">-e</span> <span class="st">&quot;</span><span class="va">${GREEN}</span><span class="st">💡 Starting Spotlight Controller...</span><span class="va">${NC}</span><span class="st">&quot;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="ex">setup_ros2_env</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">nohup</span> ros2 run spotlight_controller rgbw_spotlight_node <span class="dt">\</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>        <span class="dv">2</span><span class="op">&gt;&amp;</span><span class="dv">1</span> <span class="kw">|</span> <span class="ex">ts_log</span> <span class="op">&gt;&gt;</span> /tmp/armpi_fpv_spotlight.log <span class="kw">&amp;</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="va">$!</span> <span class="op">&gt;</span> <span class="st">&quot;</span><span class="va">$PIDS_DIR</span><span class="st">/spotlight.pid&quot;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="at">-e</span> <span class="st">&quot;</span><span class="va">${GREEN}</span><span class="st">✅ Started with PID: </span><span class="va">$!${NC}</span><span class="st">&quot;</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">stop_spotlight_controller()</span> <span class="kw">{</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="at">-e</span> <span class="st">&quot;</span><span class="va">${YELLOW}</span><span class="st">Stopping Spotlight Controller...</span><span class="va">${NC}</span><span class="st">&quot;</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">&quot;</span><span class="va">$PIDS_DIR</span><span class="st">/spotlight.pid&quot;</span> <span class="bu">]</span><span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">kill</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">cat</span> <span class="va">$PIDS_DIR</span>/spotlight.pid<span class="va">)</span><span class="st">&quot;</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">||</span> <span class="fu">true</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="fu">rm</span> <span class="at">-f</span> <span class="st">&quot;</span><span class="va">$PIDS_DIR</span><span class="st">/spotlight.pid&quot;</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="ex">pkill</span> <span class="at">-9</span> <span class="at">-f</span> <span class="st">&quot;rgbw_spotlight_node&quot;</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">||</span> <span class="fu">true</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="at">-e</span> <span class="st">&quot;</span><span class="va">${GREEN}</span><span class="st">✅ Stopped Spotlight Controller</span><span class="va">${NC}</span><span class="st">&quot;</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="fu">toggle_spotlight_controller()</span> <span class="kw">{</span></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">[</span> <span class="ot">-f</span> <span class="st">&quot;</span><span class="va">$PIDS_DIR</span><span class="st">/spotlight.pid&quot;</span> <span class="bu">]</span> <span class="kw">&amp;&amp;</span> <span class="bu">kill</span> <span class="at">-0</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">cat</span> <span class="va">$PIDS_DIR</span>/spotlight.pid<span class="va">)</span><span class="st">&quot;</span> <span class="dv">2</span><span class="op">&gt;</span>/dev/null<span class="kw">;</span> <span class="cf">then</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="ex">stop_spotlight_controller</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="ex">start_spotlight_controller</span></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">fi</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Spotlight control menu</span></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="fu">control_spotlight()</span> <span class="kw">{</span></span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    <span class="ex">setup_ros2_env</span></span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="at">-e</span> <span class="st">&quot;</span><span class="va">${YELLOW}</span><span class="st">💡 Spotlight Control</span><span class="va">${NC}</span><span class="st">&quot;</span></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;1. 🔴 Off&quot;</span></span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;2. 🟢 On&quot;</span></span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;3. 🔄 Toggle&quot;</span></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;4. ⚡ Pulse (1s flash)&quot;</span></span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;5. 🌙 Low (25%)&quot;</span></span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;6. 🌗 Medium (50%)&quot;</span></span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;7. 🌕 High (100%)&quot;</span></span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;8. 🔙 Back&quot;</span></span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a>    <span class="bu">read</span> <span class="at">-p</span> <span class="st">&quot;Select option: &quot;</span> <span class="va">choice</span></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">case</span> <span class="va">$choice</span> <span class="kw">in</span></span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a>        <span class="ss">1</span><span class="kw">)</span> <span class="ex">ros2</span> service call /spotlight/set_state std_srvs/srv/SetBool <span class="st">&quot;{data: false}&quot;</span> <span class="cf">;;</span></span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a>        <span class="ss">2</span><span class="kw">)</span> <span class="ex">ros2</span> service call /spotlight/set_state std_srvs/srv/SetBool <span class="st">&quot;{data: true}&quot;</span> <span class="cf">;;</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a>        <span class="ss">3</span><span class="kw">)</span> <span class="ex">ros2</span> service call /spotlight/toggle std_srvs/srv/Trigger <span class="cf">;;</span></span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a>        <span class="ss">4</span><span class="kw">)</span> <span class="ex">ros2</span> service call /spotlight/pulse std_srvs/srv/Trigger <span class="cf">;;</span>  <span class="co"># Implement pulse_callback in node for 1s flash</span></span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a>        <span class="ss">5</span><span class="kw">)</span> <span class="ex">ros2</span> service call /spotlight/set_brightness interfaces/srv/SetInt64 <span class="st">&quot;{data: 25}&quot;</span> <span class="cf">;;</span></span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a>        <span class="ss">6</span><span class="kw">)</span> <span class="ex">ros2</span> service call /spotlight/set_brightness interfaces/srv/SetInt64 <span class="st">&quot;{data: 50}&quot;</span> <span class="cf">;;</span></span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a>        <span class="ss">7</span><span class="kw">)</span> <span class="ex">ros2</span> service call /spotlight/set_brightness interfaces/srv/SetInt64 <span class="st">&quot;{data: 100}&quot;</span> <span class="cf">;;</span></span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>        <span class="ss">8</span><span class="kw">)</span> <span class="cf">return</span> <span class="cf">;;</span></span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>        <span class="pp">*</span><span class="kw">)</span> <span class="bu">echo</span> <span class="at">-e</span> <span class="st">&quot;</span><span class="va">${RED}</span><span class="st">Invalid option</span><span class="va">${NC}</span><span class="st">&quot;</span> <span class="cf">;;</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>    <span class="cf">esac</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sleep</span> 1</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Add to main menu</span></span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a><span class="fu">show_menu()</span> <span class="kw">{</span></span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ... existing menu ...</span></span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;29. 💡 Spotlight Control&quot;</span></span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;30. 🔦 Toggle Spotlight Controller&quot;</span></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a><span class="kw">}</span></span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Add to case statement</span></span>
+<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="va">$choice</span> <span class="kw">in</span></span>
+<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ... existing cases ...</span></span>
+<span id="cb4-75"><a href="#cb4-75" aria-hidden="true" tabindex="-1"></a>    <span class="ss">29</span><span class="kw">)</span> <span class="ex">control_spotlight</span> <span class="cf">;;</span></span>
+<span id="cb4-76"><a href="#cb4-76" aria-hidden="true" tabindex="-1"></a>    <span class="ss">30</span><span class="kw">)</span> <span class="ex">toggle_spotlight_controller</span> <span class="cf">;;</span></span>
+<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="cf">esac</span></span></code></pre></div>
+<hr />
+<h2 id="auto-brightness-with-ambient-light">Auto-Brightness with Ambient
+Light</h2>
+<h3 id="integration-with-tracking-node">Integration with Tracking
+Node</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># In tracking_ros2_professional.py</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ObjectTrackingNode(Node):</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># ... existing init ...</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Spotlight control client</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spotlight_client <span class="op">=</span> <span class="va">self</span>.create_client(</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>            SetBool,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;/spotlight/set_state&#39;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ambient light threshold</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dark_threshold <span class="op">=</span> <span class="dv">50</span>  <span class="co"># lux</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> check_lighting(<span class="va">self</span>):</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot;Auto-enable spotlight in low light&quot;&quot;&quot;</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>        <span class="co"># If you have ambient light sensor</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.ambient_light <span class="op">&lt;</span> <span class="va">self</span>.dark_threshold:</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.enable_spotlight(<span class="va">True</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.enable_spotlight(<span class="va">False</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> enable_spotlight(<span class="va">self</span>, enable):</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        <span class="co">&quot;&quot;&quot;Enable/disable spotlight&quot;&quot;&quot;</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.spotlight_client.wait_for_service(timeout_sec<span class="op">=</span><span class="fl">1.0</span>):</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            request <span class="op">=</span> SetBool.Request()</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>            request.data <span class="op">=</span> enable</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>            future <span class="op">=</span> <span class="va">self</span>.spotlight_client.call_async(request)</span></code></pre></div>
+<hr />
+<h2 id="package-structure">Package Structure</h2>
+<p>Create new package in the <strong>ros2_ws</strong> workspace:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/ubuntu/ros2_ws/src</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> pkg create <span class="at">--build-type</span> ament_python spotlight_controller <span class="dt">\</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">--dependencies</span> rclpy std_msgs std_srvs interfaces</span></code></pre></div>
+<p><strong>Directory structure:</strong></p>
+<pre><code>src/spotlight_controller/
+├── package.xml
+├── setup.cfg
+├── setup.py
+├── resource/spotlight_controller
+├── spotlight_controller/
+│   ├── __init__.py
+│   └── rgbw_spotlight_node.py
+└── config/
+    └── spotlight_config.yaml</code></pre>
+<p>In <code>setup.py</code>, register the node entry point (e.g.
+<code>rgbw_spotlight_node = spotlight_controller.rgbw_spotlight_node:main</code>)
+so that <code>ros2 run spotlight_controller rgbw_spotlight_node</code>
+works.</p>
+<hr />
+<h2 id="testing">Testing</h2>
+<h3 id="test-rgbw-spotlight-with-ros2">Test RGBW Spotlight with
+ROS2</h3>
+<p>Use the <strong>ROS2 environment</strong> from
+<code>docs/Test_Plan.md</code> (e.g.
+<code>cd /home/ubuntu/ros2_ws</code>,
+<code>export ROS_DOMAIN_ID=100</code>,
+<code>export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp</code>, source
+third_party + <code>install/setup.sh</code>).</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start spotlight controller</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> run spotlight_controller rgbw_spotlight_node</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># In another terminal (with same env sourced)</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> service call /spotlight/set_state std_srvs/srv/SetBool <span class="st">&quot;{data: true}&quot;</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> service call /spotlight/toggle std_srvs/srv/Trigger</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ros2 service call /spotlight/pulse std_srvs/srv/Trigger   # if pulse_callback implemented</span></span></code></pre></div>
+<hr />
+<h2 id="product-tier-integration">Product Tier Integration</h2>
+<h3 id="all-tiers-use-identical-rgbw-system-1">ALL Tiers Use Identical
+RGBW System</h3>
+<p><strong>No tier differentiation in lighting:</strong></p>
+<ul>
+<li><strong>Entry Tier ($599):</strong> 5050 RGBW 10W (standard)</li>
+<li><strong>Mid Tier ($799):</strong> 5050 RGBW 10W (standard)</li>
+<li><strong>Premium Tier ($999):</strong> 5050 RGBW 10W (standard)</li>
+</ul>
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>✅ Simplified manufacturing (one BOM)</li>
+<li>✅ Lower costs (bulk ordering)</li>
+<li>✅ Better margins (cheaper than white LED!)</li>
+<li>✅ Premium feature at entry price</li>
+<li>✅ Marketing advantage ("Intelligent Vision System")</li>
+</ul>
+<p><strong>Tier differentiation is ONLY in camera:</strong></p>
+<ul>
+<li>Entry: Arducam CSI (RGB only)</li>
+<li>Mid: OAK-D Lite (RGB + Depth + AI)</li>
+<li>Premium: OAK-D S2 (RGB + Depth + AI + IR)</li>
+</ul>
+<hr />
+<h2 id="advantages-of-mosfet-pwm-vs-relay">Advantages of MOSFET PWM vs
+Relay</h2>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>MOSFET PWM (RGBW)</th>
+<th>Relay Controller (Old)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Color Control</strong></td>
+<td>✅ 4 channels (RGBW)</td>
+<td>❌ ON/OFF only</td>
+</tr>
+<tr>
+<td><strong>Dimming</strong></td>
+<td>✅ 0-100% smooth</td>
+<td>❌ Binary</td>
+</tr>
+<tr>
+<td><strong>Switching Speed</strong></td>
+<td>✅ Fast (µs)</td>
+<td>Slow (ms)</td>
+</tr>
+<tr>
+<td><strong>Noise</strong></td>
+<td>✅ Silent</td>
+<td>Audible click</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>✅ <strong>$5.15</strong></td>
+<td>$13.00</td>
+</tr>
+<tr>
+<td><strong>RPi5 Built-in</strong></td>
+<td>✅ Yes (GPIO PWM)</td>
+<td>❌ External module</td>
+</tr>
+<tr>
+<td><strong>Features</strong></td>
+<td>✅ Colors + dimming</td>
+<td>Basic white</td>
+</tr>
+</tbody>
+</table>
+<p><strong>For RGBW spotlight, MOSFETs are superior AND
+cheaper!</strong> 🎯</p>
+<hr />
+<h2 id="installation-steps">Installation Steps</h2>
+<h3 id="1-build-spotlight-package">1. Build Spotlight Package</h3>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/ubuntu/ros2_ws</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Source env per docs/Test_Plan.md (ROS_DOMAIN_ID=100, RMW_IMPLEMENTATION=rmw_cyclonedds_cpp, third_party, etc.)</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> /opt/ros/humble/setup.sh</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> /home/ubuntu/third_party_ros2/third_party_ws/install/setup.sh</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ex">colcon</span> build <span class="at">--packages-select</span> spotlight_controller <span class="at">--symlink-install</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> install/setup.sh</span></code></pre></div>
+<h3 id="2-test-rgbw-hardware">2. Test RGBW Hardware</h3>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test pigpio daemon is running</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> systemctl status pigpiod</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Test GPIO pins with simple script</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-c</span> <span class="st">&quot;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">import pigpio</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">pi = pigpio.pi()</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">if pi.connected:</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="st">    print(&#39;✅ pigpiod connected!&#39;)</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="st">    # Test PWM on GPIO 12 (Red channel)</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="st">    pi.set_PWM_dutycycle(12, 128)  # 50% brightness</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="st">    print(&#39;Red LED should be at 50% brightness&#39;)</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="st">    pi.stop()</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="st">else:</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="st">    print(&#39;❌ pigpiod not running&#39;)</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;</span></span></code></pre></div>
+<h3 id="3-test-ros2-rgbw-node">3. Test ROS2 RGBW Node</h3>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start RGBW spotlight node (from ros2_ws with env sourced)</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> run spotlight_controller rgbw_spotlight_node</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Test color changes (ColorRGBA: r,g,b,a in 0.0–1.0; alpha = white channel)</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> topic pub /spotlight/set_color std_msgs/msg/ColorRGBA <span class="st">&quot;{r: 1.0, g: 0.0, b: 0.0, a: 0.0}&quot;</span> <span class="at">--once</span>   <span class="co"># Red</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> topic pub /spotlight/set_color std_msgs/msg/ColorRGBA <span class="st">&quot;{r: 0.0, g: 0.0, b: 0.0, a: 1.0}&quot;</span> <span class="at">--once</span>   <span class="co"># White</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Test services</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> service call /spotlight/set_state std_srvs/srv/SetBool <span class="st">&quot;{data: true}&quot;</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> service call /spotlight/set_brightness interfaces/srv/SetInt64 <span class="st">&quot;{data: 50}&quot;</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> service call /spotlight/toggle std_srvs/srv/Trigger</span></code></pre></div>
+<h3 id="4-add-to-menu">4. Add to Menu</h3>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Update launch_armpi_fpv_tuning.sh with spotlight functions (see Menu Integration section)</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/ubuntu/ros2_ws</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="ex">./launch_armpi_fpv_tuning.sh</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Select option 29: Spotlight Control (after adding menu items 29 and 30)</span></span></code></pre></div>
+<hr />
+<hr />
+<h2 id="weight-analysis--component-selection">Weight Analysis &amp;
+Component Selection</h2>
+<h3 id="complete-end-effector-weight-budget">Complete End-Effector
+Weight Budget</h3>
+<p><strong>Total Servo Capacity:</strong></p>
+<ul>
+<li>Base servo (HTS-25L): 25kg·cm @ 7.4V</li>
+<li>Total arm payload: ~500g (arm + gripper + camera + spotlight)</li>
+</ul>
+<h3 id="component-weights">Component Weights</h3>
+<h4 id="camera-options">Camera Options:</h4>
+<pre><code>Arducam CSI (IMX519):        ~15g (lightweight!)
+OAK-D Lite:                  ~60g (with cable)
+OAK-D S2:                    ~65g (with cable)</code></pre>
+<h4 id="gripper-assembly">Gripper Assembly:</h4>
+<pre><code>Gripper mechanism:           ~80g
+Servo (gripper):             ~25g
+Mounting bracket:            ~20g
+Total:                       ~125g</code></pre>
+<h4 id="spotlight-options-comparison">Spotlight Options Comparison:</h4>
+<pre><code>PAR20 LED Bulb Setup (REJECTED):
+  PAR20 LED bulb:            150g
+  Ceramic E26 socket:        100g
+  Mount:                     30g
+  Wiring:                    20g
+  ─────────────────────────
+  Subtotal:                  300g ❌ TOO HEAVY
+
+Mini LED Module (RECOMMENDED):
+  5W LED spotlight:          20g
+  3D printed mount:          10g
+  Wiring:                    5g
+  ─────────────────────────
+  Subtotal:                  35g ✅ PERFECT
+  
+Weight Savings:              265g (88% lighter!)</code></pre>
+<h3 id="weight-budget-by-product-tier">Weight Budget by Product
+Tier</h3>
+<h4 id="entry-tier-arducam--mini-led">Entry Tier: Arducam + Mini
+LED</h4>
+<pre><code>Gripper assembly:            125g
+Arducam CSI:                 15g
+Mini LED spotlight:          35g
+─────────────────────────────────
+Total:                       175g ✅ (35% capacity)
+Margin:                      325g
+Status:                      Excellent!</code></pre>
+<h4 id="mid-tier-oak-d-lite--mini-led">Mid Tier: OAK-D Lite + Mini
+LED</h4>
+<pre><code>Gripper assembly:            125g
+OAK-D Lite:                  60g
+Mini LED spotlight:          35g
+─────────────────────────────────
+Total:                       220g ✅ (44% capacity)
+Margin:                      280g
+Status:                      Perfect balance!</code></pre>
+<h4 id="premium-tier-oak-d-s2--mini-led">Premium Tier: OAK-D S2 + Mini
+LED</h4>
+<pre><code>Gripper assembly:            125g
+OAK-D S2:                    65g
+Mini LED spotlight:          35g
+─────────────────────────────────
+Total:                       225g ✅ (45% capacity)
+Margin:                      275g
+Status:                      Ideal premium setup!</code></pre>
+<p><strong>Conclusion:</strong> PAR20 bulbs are NOT viable for OAK-D
+cameras. Mini LED modules are essential for all tiers.</p>
+<hr />
+<h2 id="rgbw-led---standard-on-all-models">RGBW LED - Standard on All
+Models</h2>
+<h3 id="why-rgbw-is-standard-not-optional">Why RGBW is Standard (Not
+Optional)</h3>
+<p><strong>Company:</strong> DrDev<br />
+<strong>Product:</strong> LumiAI</p>
+<p><strong>Cost Analysis:</strong></p>
+<pre><code>White LED + Relay Setup:
+- White LED: $4
+- Relay: $8  
+- Wiring: $1
+Total: $13
+
+RGBW LED Setup:
+- RGBW LED: $1.30 (10-pack for $13!)
+- MOSFETs (4x): $2
+- Wiring: $1
+Total: $4.30
+
+SAVINGS: $8.70 per unit!</code></pre>
+<p><strong>RGBW is CHEAPER than white LED while providing MORE
+features!</strong></p>
+<h3 id="rgbw-advantages">RGBW Advantages:</h3>
+<p><strong>Functionality:</strong></p>
+<ul>
+<li>✅ Dedicated white LED chip (100 lumens pure white)</li>
+<li>✅ RGB color mixing (Red + Green + Blue)</li>
+<li>✅ Total: ~341 lumens combined output</li>
+<li>✅ Red light for night vision (preserves dark adaptation)</li>
+<li>✅ Color-coded object tracking</li>
+<li>✅ Status indication via colors</li>
+<li>✅ Multi-spectral imaging capability</li>
+</ul>
+<p><strong>Technical:</strong></p>
+<ul>
+<li>✅ RPi5 built-in PWM control (no extra hardware!)</li>
+<li>✅ Smooth 0-100% dimming per channel</li>
+<li>✅ Individual color control</li>
+<li>✅ Lower cost than relay + white LED</li>
+<li>✅ Better margins</li>
+</ul>
+<p><strong>Marketing:</strong></p>
+<ul>
+<li>✅ "Intelligent Vision System" positioning</li>
+<li>✅ Professional feature set</li>
+<li>✅ Competitive differentiation</li>
+<li>✅ Premium perception at base price</li>
+</ul>
+<h3 id="decision-rgbw-standard-on-all-tiers">Decision: RGBW Standard on
+ALL Tiers</h3>
+<p><strong>All LumiAI models include RGBW lighting
+standard:</strong></p>
+<ul>
+<li>Entry ($599): RGBW 10W</li>
+<li>Mid ($799): RGBW 10W</li>
+<li>Premium ($999): RGBW 10W</li>
+</ul>
+<p><strong>No upgrade option needed - it's cheaper and better than white
+LED!</strong></p>
+<hr />
+<h2 id="rgbw-led-component-specifications-standard-equipment">RGBW LED
+Component Specifications (Standard Equipment)</h2>
+<h3
+id="rgbw-led-module---standard-for-all-lumiai-models-starstarstar">RGBW
+LED Module - Standard for All LumiAI Models ⭐⭐⭐</h3>
+<p><strong>Selected Component: 5050 RGBW 10W LED Chip</strong></p>
+<table>
+<thead>
+<tr>
+<th>Specification</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td>RGBW (Red + Green + Blue + Cool White)</td>
+</tr>
+<tr>
+<td><strong>Power</strong></td>
+<td>10W total (2.5W per channel)</td>
+</tr>
+<tr>
+<td><strong>Drive Current</strong></td>
+<td>350-1000mA per channel</td>
+</tr>
+<tr>
+<td><strong>PCB</strong></td>
+<td>20mm x 20mm star board (aluminum backed)</td>
+</tr>
+<tr>
+<td><strong>LED Chip Size</strong></td>
+<td>5mm x 5mm (4-chip RGBW)</td>
+</tr>
+<tr>
+<td><strong>Channels</strong></td>
+<td>4 (R, G, B, W) individually controllable</td>
+</tr>
+<tr>
+<td><strong>Lumens</strong></td>
+<td>850 total @ 1000mA (Red: 620nm, Green: 520nm, Blue: 465nm, White:
+6500K)</td>
+</tr>
+<tr>
+<td><strong>White CCT</strong></td>
+<td>6500K cool white / 3000K warm white options</td>
+</tr>
+<tr>
+<td><strong>Viewing Angle</strong></td>
+<td>120° (wide dispersion)</td>
+</tr>
+<tr>
+<td><strong>Weight</strong></td>
+<td>12g (LED + PCB only), 81g (complete assembly)</td>
+</tr>
+<tr>
+<td><strong>PCB Size</strong></td>
+<td>20mm diameter star-shaped</td>
+</tr>
+<tr>
+<td><strong>Voltage</strong></td>
+<td>3-3.6V per channel (via MOSFETs from RPi5 5V)</td>
+</tr>
+<tr>
+<td><strong>Price</strong></td>
+<td><strong>$1.30/unit</strong> (10-pack for $13!)</td>
+</tr>
+<tr>
+<td><strong>Link</strong></td>
+<td><a
+href="https://www.aliexpress.us/item/2251832820230722.html">AliExpress
+5050 RGBW</a></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why This Module:</strong></p>
+<ul>
+<li>✅ <strong>Cheapest option</strong> ($1.30 vs $4-20 for other
+modules)</li>
+<li>✅ <strong>Best value</strong> (RGBW vs RGB-only)</li>
+<li>✅ <strong>Dedicated white chip</strong> (better than RGB-mixed
+white)</li>
+<li>✅ <strong>Standard 20mm star PCB</strong> (easy heatsink
+mounting)</li>
+<li>✅ <strong>Perfect for cameras</strong> (6000K cool white)</li>
+<li>✅ <strong>RPi5 compatible</strong> (4 PWM channels available)</li>
+<li>✅ <strong>Bulk pricing</strong> (10-pack = 7 spares for
+testing/warranty)</li>
+</ul>
+<p><strong>Standard on ALL LumiAI tiers:</strong></p>
+<ul>
+<li>Entry ($599): 10W RGBW</li>
+<li>Mid ($799): 10W RGBW</li>
+<li>Premium ($999): 10W RGBW</li>
+</ul>
+<p><strong>Why NOT 50W?</strong></p>
+<ul>
+<li><strong>Power:</strong> 50W exceeds entire robot power budget (RPi5
+supply is only 27W!)</li>
+<li><strong>Weight:</strong> Requires 200-300g heatsink = too heavy for
+gripper</li>
+<li><strong>Overkill:</strong> 20W (2000 lumens) is plenty for 20+ foot
+range</li>
+<li><strong>Thermal:</strong> 50W generates massive heat, needs active
+cooling</li>
+</ul>
+<h3 id="power--weight-budget-analysis">Power &amp; Weight Budget
+Analysis:</h3>
+<table>
+<thead>
+<tr>
+<th>LED Power</th>
+<th>Lumens</th>
+<th>LED Weight</th>
+<th>Heatsink</th>
+<th>Total Weight</th>
+<th>Power Draw</th>
+<th>Fits Budget?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>5W</strong></td>
+<td>350</td>
+<td>20g</td>
+<td>30g (passive)</td>
+<td>50g</td>
+<td>5W</td>
+<td>✅ Perfect</td>
+</tr>
+<tr>
+<td><strong>10W</strong></td>
+<td>1000</td>
+<td>35g</td>
+<td>50g (passive)</td>
+<td>85g</td>
+<td>10W</td>
+<td>✅ Excellent</td>
+</tr>
+<tr>
+<td><strong>20W</strong></td>
+<td>2000</td>
+<td>60g</td>
+<td>100g (passive)</td>
+<td>160g</td>
+<td>20W</td>
+<td>✅ Good</td>
+</tr>
+<tr>
+<td><strong>50W</strong></td>
+<td>5000</td>
+<td>80g</td>
+<td>300g (active)</td>
+<td>380g</td>
+<td>50W</td>
+<td>❌ <strong>NO</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>System Power Budget:</strong></p>
+<pre><code>Total Available: 27W (RPi5 supply)
+RPi5: 8W
+Servos: 5-10W (idle-moving)
+Camera: 2-3W
+Margin: 5W (safety)
+────────────────
+Available for LED: 7-12W maximum</code></pre>
+<p><strong>Recommendation:</strong> 10W RGBW with RPi5 built-in PWM (no
+external controller needed!)</p>
+<h3 id="rgb-use-cases-for-robot-vision">RGB Use Cases for Robot
+Vision</h3>
+<h4 id="1-color-coded-object-tracking-art">1. Color-Coded Object
+Tracking 🎨</h4>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Different colors for different tracking modes</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>RED:    Error<span class="op">/</span>Lost target</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>GREEN:  Target acquired</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>BLUE:   Tracking active</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>YELLOW: Approaching target</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>WHITE:  Idle<span class="op">/</span>Searching</span></code></pre></div>
+<h4 id="2-night-vision-modes-crescent_moon">2. Night Vision Modes
+🌙</h4>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Red preserves dark adaptation</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>RED (<span class="dv">630</span><span class="er">nm</span>):     Human night vision (preserves rhodopsin)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>WHITE:           Maximum brightness (manipulation)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>IR (<span class="dv">850</span><span class="er">nm</span>):      Camera<span class="op">-</span>only visibility (stealth)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>UV (<span class="dv">395</span><span class="er">nm</span>):      Fluorescence detection</span></code></pre></div>
+<h4 id="3-fluorescence-detection-gem">3. Fluorescence Detection 💎</h4>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># UV light reveals fluorescent materials</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>UV LED (<span class="dv">395</span><span class="er">nm</span>) <span class="op">+</span> White Camera:</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="op">-</span> Detect oil leaks (fluorescent dye)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="op">-</span> Find hidden markings</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="op">-</span> Authenticate documents</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="op">-</span> Detect biological contamination</span></code></pre></div>
+<h4 id="4-multi-spectral-imaging-microscope">4. Multi-Spectral Imaging
+🔬</h4>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Capture images under different lighting</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>RED <span class="op">+</span> GREEN <span class="op">+</span> BLUE <span class="op">+</span> WHITE:</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="op">-</span> Material identification</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="op">-</span> Surface defect detection</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="op">-</span> Color calibration targets</span></code></pre></div>
+<h4 id="5-status-indication-bar_chart">5. Status Indication 📊</h4>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visual feedback without display</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>PULSE GREEN:     Ready</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>PULSE BLUE:      Processing</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>PULSE YELLOW:    <span class="pp">Warning</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>PULSE RED:       Error</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>RAINBOW CYCLE:   Calibrating</span></code></pre></div>
+<h3 id="rgbw-control-commands">RGBW Control Commands</h3>
+<p><strong>Using the RGBW spotlight node (already defined
+above):</strong></p>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set pure colors (R, G, B, or W)</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> topic pub /spotlight/set_color std_msgs/msg/ColorRGBA <span class="st">&quot;{r: 1.0, g: 0.0, b: 0.0, a: 1.0}&quot;</span>  <span class="co"># Red</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> topic pub /spotlight/set_color std_msgs/msg/ColorRGBA <span class="st">&quot;{r: 0.0, g: 1.0, b: 0.0, a: 1.0}&quot;</span>  <span class="co"># Green</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> topic pub /spotlight/set_color std_msgs/msg/ColorRGBA <span class="st">&quot;{r: 0.0, g: 0.0, b: 1.0, a: 1.0}&quot;</span>  <span class="co"># Blue</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> topic pub /spotlight/set_color std_msgs/msg/ColorRGBA <span class="st">&quot;{r: 0.0, g: 0.0, b: 0.0, a: 1.0}&quot;</span>  <span class="co"># White (alpha channel)</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Mixed colors</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> topic pub /spotlight/set_color std_msgs/msg/ColorRGBA <span class="st">&quot;{r: 1.0, g: 1.0, b: 0.0, a: 0.0}&quot;</span>  <span class="co"># Yellow (R+G)</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> topic pub /spotlight/set_color std_msgs/msg/ColorRGBA <span class="st">&quot;{r: 1.0, g: 0.0, b: 1.0, a: 0.0}&quot;</span>  <span class="co"># Purple (R+B)</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> topic pub /spotlight/set_color std_msgs/msg/ColorRGBA <span class="st">&quot;{r: 0.0, g: 1.0, b: 1.0, a: 0.0}&quot;</span>  <span class="co"># Cyan (G+B)</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn on/off</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> service call /spotlight/set_state std_srvs/srv/SetBool <span class="st">&quot;{data: true}&quot;</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> service call /spotlight/set_state std_srvs/srv/SetBool <span class="st">&quot;{data: false}&quot;</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Set brightness (0-100%)</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> service call /spotlight/set_brightness interfaces/srv/SetInt64 <span class="st">&quot;{data: 50}&quot;</span>  <span class="co"># 50% brightness</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> service call /spotlight/set_brightness interfaces/srv/SetInt64 <span class="st">&quot;{data: 100}&quot;</span>  <span class="co"># Full brightness</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Toggle on/off</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="ex">ros2</span> service call /spotlight/toggle std_srvs/srv/Trigger</span></code></pre></div>
+<hr />
+<h2 id="rgbw-bom---standard-on-all-models">RGBW BOM - Standard on All
+Models</h2>
+<h3
+id="drdev-lumiai-intelligent-vision-system---included-standard">DrDev
+LumiAI "Intelligent Vision System" - Included Standard</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Replaces</th>
+<th>Cost</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5050 RGBW 10W LED</td>
+<td>White LED ($4)</td>
+<td>$1.30</td>
+<td>10-pack for $13</td>
+</tr>
+<tr>
+<td>4x IRLZ44N MOSFETs</td>
+<td>Relay ($8)</td>
+<td>$0.80</td>
+<td>10-pack @ $1.99 each</td>
+</tr>
+<tr>
+<td>RGBW wiring (5-wire JST)</td>
+<td>White wiring (2-wire)</td>
+<td>$1.00</td>
+<td>JST-XH connectors</td>
+</tr>
+<tr>
+<td>36mm finned heatsink</td>
+<td>30mm heatsink</td>
+<td>$0.33</td>
+<td>10-pack @ $3.26</td>
+</tr>
+<tr>
+<td>10kΩ resistors (4x)</td>
+<td>None</td>
+<td>$0.20</td>
+<td>Pull-down</td>
+</tr>
+<tr>
+<td>Thermal paste</td>
+<td>None</td>
+<td>$0.20</td>
+<td>Per unit</td>
+</tr>
+<tr>
+<td>M3 screws (4x)</td>
+<td>None</td>
+<td>$0.32</td>
+<td>Heatsink mount</td>
+</tr>
+<tr>
+<td><strong>Total RGBW System</strong></td>
+<td></td>
+<td><strong>$5.15</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Old White System</strong></td>
+<td></td>
+<td><strong>$13</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>SAVINGS</strong></td>
+<td></td>
+<td><strong>-$7.85</strong></td>
+<td>Per unit!</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What Customers Get Standard:</strong></p>
+<ul>
+<li>✅ Full RGBW color-changing spotlight</li>
+<li>✅ Night vision mode (red light preserves dark adaptation)</li>
+<li>✅ Color-coded object tracking</li>
+<li>✅ Status indication via colors</li>
+<li>✅ Multi-spectral imaging capability</li>
+<li>✅ Dedicated white LED for manipulation</li>
+<li>✅ "Intelligent Vision System" branding</li>
+</ul>
+<p><strong>Amazing Business Case:</strong></p>
+<ul>
+<li><strong>Costs $7.85 LESS</strong> than white LED + relay</li>
+<li><strong>Provides 4x more functionality</strong></li>
+<li><strong>Better product positioning</strong></li>
+<li><strong>Higher perceived value</strong></li>
+<li><strong>Competitive differentiation</strong></li>
+<li><strong>No upgrade option needed - it's standard!</strong></li>
+</ul>
+<p><strong>Marketing Message:</strong> "Every LumiAI robot includes our
+Intelligent Vision System with full RGBW lighting - at no extra
+cost!"</p>
+<hr />
+<h2 id="final-product-line-rgbw-standard-on-all-models-dart">Final
+Product Line: RGBW Standard on All Models 🎯</h2>
+<h3 id="drdev-lumiai---complete-product-line">DrDev LumiAI - Complete
+Product Line</h3>
+<p><strong>ALL models include Intelligent Vision System with RGBW
+lighting:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Price</th>
+<th>Camera</th>
+<th>Spotlight</th>
+<th>Features</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Entry</strong></td>
+<td>$599</td>
+<td>Arducam IMX519</td>
+<td>RGBW 10W</td>
+<td>Budget-friendly AI robotics</td>
+</tr>
+<tr>
+<td><strong>Mid</strong></td>
+<td>$799</td>
+<td>OAK-D Lite</td>
+<td>RGBW 10W</td>
+<td>Professional depth sensing</td>
+</tr>
+<tr>
+<td><strong>Premium</strong></td>
+<td>$999</td>
+<td>OAK-D S2</td>
+<td>RGBW 10W</td>
+<td>Complete 24/7 AI vision system</td>
+</tr>
+</tbody>
+</table>
+<h3 id="why-rgbw-is-standard-not-optional-1">Why RGBW is Standard (Not
+Optional):</h3>
+<ol type="1">
+<li><strong>Cost Advantage:</strong> $7.85 CHEAPER than white LED +
+relay</li>
+<li><strong>Better Features:</strong> 4-channel control vs simple
+ON/OFF</li>
+<li><strong>Market Position:</strong> "Intelligent Vision System"
+standard</li>
+<li><strong>Competitive Edge:</strong> Others have basic white, we have
+RGBW</li>
+<li><strong>No Brainer:</strong> Costs less, does more, looks
+better</li>
+</ol>
+<h3 id="marketing-strategy">Marketing Strategy:</h3>
+<p><strong>Competitors:</strong></p>
+<ul>
+<li>Basic robotic arm</li>
+<li>Simple white LED spotlight</li>
+<li>No special vision features</li>
+</ul>
+<p><strong>DrDev LumiAI:</strong></p>
+<ul>
+<li>Intelligent Vision System (standard!)</li>
+<li>RGBW color-changing spotlight</li>
+<li>Night vision capable</li>
+<li>Color-coded object tracking</li>
+<li>Multi-spectral imaging</li>
+<li>Professional AI-powered lighting</li>
+</ul>
+<p><strong>Same price as competitors, 4x more features!</strong></p>
+<hr />
+<h2 id="actual-components-ordered-initial-2-unit-test-batch">Actual
+Components Ordered (Initial 2-unit test batch)</h2>
+<p><strong>Ordered from AliExpress - Feb 2025:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Qty Ordered</th>
+<th>Unit Cost</th>
+<th>Total</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5050 RGBW 10W LED + 30° lens</td>
+<td>10 pcs</td>
+<td>$1.30</td>
+<td>$13.00</td>
+<td><a
+href="https://www.aliexpress.us/item/2251832820230722.html">AliExpress</a></td>
+</tr>
+<tr>
+<td>36mm Finned Heatsink</td>
+<td>10 pcs</td>
+<td>$0.33</td>
+<td>$3.26</td>
+<td><a
+href="https://www.aliexpress.us/item/3256804796673240.html">AliExpress</a></td>
+</tr>
+<tr>
+<td>IRLZ44N MOSFETs</td>
+<td>10 pcs</td>
+<td>$0.20</td>
+<td>$1.99</td>
+<td><a
+href="https://www.aliexpress.us/item/3256807934257560.html">AliExpress</a></td>
+</tr>
+<tr>
+<td>GD900 Thermal Paste</td>
+<td>1 tube (30g)</td>
+<td>$1.99</td>
+<td>$1.99</td>
+<td><a
+href="https://www.aliexpress.us/item/3256808291981874.html">AliExpress</a></td>
+</tr>
+<tr>
+<td>22AWG Silicone Wire</td>
+<td>1m each (5 colors)</td>
+<td>$1.99</td>
+<td>$1.99</td>
+<td><a
+href="https://www.aliexpress.us/item/3256807204853698.html">AliExpress</a></td>
+</tr>
+<tr>
+<td>JST-XH Connectors</td>
+<td>5 sets (2-pin) + 5 sets (5-pin)</td>
+<td>$1.45</td>
+<td>$1.45</td>
+<td><a
+href="https://www.aliexpress.us/item/3256807274583113.html">AliExpress</a></td>
+</tr>
+<tr>
+<td><strong>TOTAL</strong></td>
+<td></td>
+<td></td>
+<td><strong>$23.68</strong></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Cost per unit (2 units):</strong> $11.84/unit</p>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>Ordered 10-packs for volume pricing (enough for 10 units!)</li>
+<li>Actual per-unit cost in production: <strong>$5.35</strong> (includes
+mount, screws, resistors)</li>
+<li>Testing with 2 units initially before full production run</li>
+</ul>
+<hr />
+<h2 id="3d-printable-gripper-adapter-designs">3D Printable Gripper
+Adapter Designs</h2>
+<h3 id="design-placeholder">Design Placeholder</h3>
+<p><strong>Note:</strong> 3D mount designs will be created using
+Plasticity and added here later. Designs will include:</p>
+<ol type="1">
+<li><p><strong>Clip-On Spotlight Mount</strong> (Simplest)</p>
+<ul>
+<li>Spring-loaded clip attaches to gripper side</li>
+<li>Adjustable angle (30-60°)</li>
+<li>Tool-free installation</li>
+<li>Weight: ~10g (PLA/PETG)</li>
+</ul></li>
+<li><p><strong>Screw-On Bracket</strong> (Most Secure)</p>
+<ul>
+<li>Mounts to gripper base with M3 screws</li>
+<li>Adjustable angle via slot</li>
+<li>Cable management channels</li>
+<li>Weight: ~15g (PETG)</li>
+</ul></li>
+<li><p><strong>Quick-Release Mount</strong> (Professional)</p>
+<ul>
+<li>Dovetail quick-release system</li>
+<li>Multiple angle presets (30°, 45°, 60°)</li>
+<li>Integrated wire routing</li>
+<li>Weight: ~20g (PETG)</li>
+</ul></li>
+</ol>
+<p><strong>3D Printing Specifications:</strong></p>
+<ul>
+<li><strong>Material:</strong> PLA (lightweight) or PETG (heat
+resistant)</li>
+<li><strong>Layer Height:</strong> 0.2mm</li>
+<li><strong>Infill:</strong> 30-40%</li>
+<li><strong>Walls:</strong> 3 perimeters</li>
+<li><strong>Support:</strong> Yes (for angled LED holder)</li>
+<li><strong>Printer:</strong> Bambu Lab X1 Carbon</li>
+</ul>
+<p><strong>STL files and detailed assembly instructions will be added
+after prototyping.</strong></p>
+<hr />
+<h2 id="summary">Summary</h2>
+<p><strong>DrDev LumiAI - Intelligent Vision System
+Integration</strong></p>
+<h3
+id="final-decision-rgbw-standard-on-all-models-white_check_mark">Final
+Decision: RGBW Standard on ALL Models ✅</h3>
+<p><strong>Hardware:</strong></p>
+<ul>
+<li>5050 RGBW 10W LED module with 30° lens</li>
+<li>36mm finned aluminum heatsink</li>
+<li>4x IRLZ44N MOSFETs for RPi5 PWM control</li>
+<li>JST-XH connectors for reliable connections</li>
+<li>GD900 thermal paste for efficient cooling</li>
+<li>3D printed gripper mount (Bambu Lab X1C)</li>
+</ul>
+<p><strong>Cost:</strong></p>
+<ul>
+<li><strong>$5.35 per unit</strong> (vs $13 for old white LED +
+relay)</li>
+<li><strong>$7.65 savings per unit</strong></li>
+<li><strong>Better features at lower cost!</strong></li>
+</ul>
+<p><strong>Control:</strong></p>
+<ul>
+<li>RPi5 hardware PWM (GPIO 12, 13, 18, 19)</li>
+<li>ROS2 node: <code>rgbw_spotlight_node</code> (package:
+<code>spotlight_controller</code>)</li>
+<li>Topics: <code>/spotlight/set_color</code> (std_msgs/ColorRGBA; alpha
+= white channel)</li>
+<li>Services: <code>/spotlight/set_state</code> (SetBool),
+<code>/spotlight/set_brightness</code> (interfaces/SetInt64),
+<code>/spotlight/toggle</code> (Trigger)</li>
+</ul>
+<p><strong>Features:</strong></p>
+<ul>
+<li>Full RGBW color control</li>
+<li>Night vision mode (red light)</li>
+<li>Color-coded object tracking</li>
+<li>Status indication</li>
+<li>Multi-spectral imaging</li>
+<li>Pure white for manipulation tasks</li>
+</ul>
+<p><strong>Product Positioning:</strong></p>
+<ul>
+<li>Entry ($599): Arducam + RGBW</li>
+<li>Mid ($799): OAK-D Lite + RGBW</li>
+<li>Premium ($999): OAK-D S2 + RGBW</li>
+</ul>
+<p><strong>Marketing Message:</strong> "Every LumiAI robot includes our
+Intelligent Vision System with full RGBW lighting - standard on all
+models, at no extra cost!"</p>
+<hr />
+<p><em>Document Version: 2.1 - Feb 2026</em><br />
+<em>Company: DrDev</em><br />
+<em>Product: LumiAI Intelligent Vision Robotic Arm</em><br />
+<em>Workspace: /home/ubuntu/ros2_ws (ArmPi Ultra)</em></p></body></html>

@@ -1,0 +1,1365 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Compact_UPS_Power_System_HiWonder_RPi5</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="battery-compact-ups-power-system-for-hiwonder-stm32--raspberry-pi-5">🔋
+Compact UPS Power System for HiWonder STM32 + Raspberry Pi 5</h1>
+<h2 id="gear-system-overview">⚙️ System Overview</h2>
+<p>A high-efficiency, single-path UPS setup using a <strong>MZMW
+PSC-100-12 UPS/Charge Function Switching Power Supply</strong>, a
+<strong>DROK DC Buck Converter (5.3-32 V in → 9 V out, set via CV pot, 8
+A continuous)</strong> that <strong>replaced the LY-KREE</strong> (the
+LY-KREE failed at the 12 V battery-mode input; the DROK handles the full
+input range in both AC and battery modes), <strong>LiFePO4 battery
+pack</strong>, and the <strong>Lumi Wand v2.0 LED driver
+assembly</strong> (PCA9685 + 12× PT4115 / 3 W 700 mA buck modules) for
+the gripper-held wand head. Designed for a compact robotic arm or
+ceiling-mounted controller assembly.</p>
+<p><strong>⚠️ Charging Voltage Note:</strong> The UPS CH2 outputs 13.8V
+@ 2A, while the LiFePO4 battery requires 14.6V for optimal charging. The
+battery's built-in BMS will manage charging, but charging may be slower
+or incomplete. Consider using an external LiFePO4 charger for full
+capacity charging when AC power is available.</p>
+<p><strong>📌 Why this PSU (and not the SC-180):</strong> an earlier
+iteration used a ZJIVNV SC-180-12 (180 W). It worked electrically but
+<strong>the AC→battery switchover was not fast enough</strong> for the
+STM32 + Pi 5 combination — the bus dipped long enough to brown-out the
+Pi during AC drops. The MZMW PSC-100-12 was substituted because it
+switches <strong>instantly</strong>: the Pi/STM32 see a clean transition
+with no reset. Field-measured current capacity on this part is also
+generous: despite the <strong>5 A nameplate on CH1 it sustains 10–12
+A</strong> without thermal foldback in this enclosure, so the practical
+headroom is closer to ~138–165 W rather than the 69 W you'd compute from
+the nameplate.</p>
+<p><strong>Note:</strong> The 4-Channel Encoder Motor Driver (for
+mecanum chassis) is included for <strong>development/testing purposes
+only</strong> and is <strong>not part of the production
+configuration</strong>. The LED array (gripper LEDs) is used in both
+development and production configurations. When using the LED array, the
+motor driver typically won't be running simultaneously, reducing peak
+power requirements.</p>
+<p><strong>Bay wiring + Pi5 cable-adapter BoM:</strong> see <a
+href="../Electronics_Bay_Design.html"><code>Electronics_Bay_Design.md</code></a>
+for the STM32 controller card specs, the Pi5 stack, and the right-angle
+HDMI / USB-A→USB-C / USB-C→USB-C / Cat6 cable selections chosen to fit
+within the bay envelope.</p>
+<pre><code>AC Mains
+   │
+   ▼
+┌──────────────────────────────┐
+│  MZMW PSC-100-12 Power-UPS   │
+│  CH1: 13.8 V @ 5 A rated      │
+│        (10–12 A field-tested) │
+│  CH2: 13.8 V @ 2 A             │
+│    (battery charge)            │
+│  Instant AC↔battery switch     │
+└──────────────────────────────┘
+   │
+   ├─► CH2 → LiFePO4 Battery Pack (12.8V 10Ah, 5.5×2.1mm barrel connector)
+   │
+   └─► CH1 → Master Power Switch (DC) → Bay D-1459 dual-bus distribution block (A bus V+ / B bus GND, unmodified; v1 as-built: modified APIELE)  (13.8 V)
+             ├─► DROK buck (9 V)          ← STM32-DEDICATED (2026-06-28 split)
+             │      │
+             │      ▼
+             │   HiWonder STM32 Controller
+             │      │
+             │      ▼
+             │   Raspberry Pi 5 (5 V via STM32) + NVMe + OAK-D S2 + mic array + PIRs +
+             │      wand +3.3 V logic (via D-1352 GPIO chain)
+             │
+             ├─► Lumi Wand v2.0 driver: PCA9685 + 12× LED driver modules
+             │      (13.8 V direct from PSU via the bay distribution block V+ bus) [Split 2026-06-28, D-1459 of record 2026-09-29]          │      │      Peak ~2.4 A @ 33 W (measured 2026-09-01); tether V+ single pin 1, GND single pin 2
+             │      ▼
+             │   Wand head: 3× RGBW LED stars on CNC heatsink (gripper holds the wand)
+             │
+             ├─► 2× Noctua NF-A4x20 PWM bay fans — 13.8 V direct
+             │      (2× 1N5408 diode chain RETIRED 2026-08-09; fans are Pi5-PWM-
+             │      controlled, ~5 % over the 13.2 V rated max accepted in-spec)
+             │
+             └─► 4-Channel Encoder Motor Driver (12 V) [Development/Testing Only]
+                    │
+                    ▼
+                 Mecanum Chassis Motors (not in production)</code></pre>
+<blockquote>
+<p>🎯 <strong>Distribution block — design of record 2026-09-29:</strong>
+<strong>CZH-Labs D-1459</strong> or <strong>YRYAR
+HL-PBB-2-6-MINI</strong> dual-bus distribution module, ferrule-based,
+zero modification — <strong>from the NOVA build on</strong> (next build,
+Ultra-compatible kit in stock). <strong>Halo v1 keeps its as-built
+modified APIELE, and the pending Ultra bay retrofit uses the 4 in-stock
+APIELE spares</strong> (spec + port map: <a
+href="../Power_Bay_Design.html#1137-apiele-barrier-strip--physical-spec"><code>Power_Bay_Design.md</code>
+§11.3.1</a>). Wiring + port map: <a
+href="../Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+§11.3</a>; part spec: <a
+href="../Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
+§1.4</a>.</p>
+</blockquote>
+<blockquote>
+<p><strong>Split-rails topology (locked 2026-06-28).</strong> The wand
+LED rail was previously fed from the DROK at 10.6 V (shared with STM32).
+Under the new split, the DROK is STM32-only at 9 V, and the wand LED
+rail runs <strong>direct from the PSU 13.8 V</strong> via the bay
+<strong>dual-bus distribution block</strong> (D-1459 design of record
+2026-09-29; Halo v1 as-built used a single modified APIELE barrier
+strip) mounted above the PSU top. Top row = V+ (bussed with red jumper
+strip), bottom row = GND (bussed with black jumper strip); the 5
+internal front-to-back copper conductors are removed at receipt so the
+two rows are electrically separate. Measured wand draw is <strong>~2.4 A
+at 13.8 V</strong> (<a
+href="../Lumi_Wand_Integration.html#53-power-draw-summary"><code>Lumi_Wand_Integration.md</code>
+§5.3</a>), inside the tether's contact rating. The split removes the
+wand from contention with the STM32's ~8 A of downstream 5 V load on a
+shared 8 A DROK, gives the drivers more Vf headroom, and avoids a buck
+feeding a buck. LED drivers accept 5–35 V so 13.8 V is comfortably in
+spec (Vf-headroom = 10.4 V over the single-3W-LED ~3.4 V Vf). See <a
+href="../Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code>
+§5.1</a> and <a
+href="../Power_Bay_Design.html"><code>Power_Bay_Design.md</code> §11.3</a>
+for the barrier-strip assembly + copper-conductor removal mod.
+<strong>(Design iterations: 2026-06-28 first-cut = Wago 221-415
+lever-nut splicers → 2026-07-29 morning = APIELE dual-row barrier strip
+PAIR (V+ + GND, 2 blocks) → 2026-07-29 afternoon = SINGLE modified
+APIELE block with internal conductors removed. Each iteration halved the
+mount hardware.)</strong></p>
+</blockquote>
+<hr />
+<h2 id="jigsaw-components">🧩 Components</h2>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Example Model</th>
+<th>Specs</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>UPS Power Supply</strong></td>
+<td>MZMW PSC-100-12</td>
+<td>CH1: 13.8 V @ 5 A rated (69 W) — <strong>field-sustains 10–12 A
+(~138–165 W) without thermal foldback</strong>, CH2: 13.8 V @ 2 A
+(battery charge), Rated capacity: 100 W, Efficiency: ~84%</td>
+<td>UPS/Charge Function Switching Power Supply, <strong>129 × 97 × 30
+mm</strong> (≈ 5.1 × 3.8 × 1.2 in). AC input: 100–240 VAC (47–63 Hz).
+CH1 provides 13.8 V on AC and switches to battery voltage (≈12.0–12.8 V
+LiFePO4) on outage; switchover is <strong>instantaneous</strong> (chosen
+specifically because the SC-series didn't switch fast enough to keep the
+Pi 5 from browning out). CH2 trickle-charges the battery at 13.8 V.</td>
+</tr>
+<tr>
+<td><strong>DC-DC Converter</strong></td>
+<td>DROK DC Buck Converter</td>
+<td>In 5.3-32 V → Out 1.2-32 V adjustable (set to 9 V), 8 A continuous,
+95% efficiency, 82×52×32 mm, LCD shows V/I/P, CV/CC pots</td>
+<td>Replaced the LY-KREE ZS240910 to operate across both AC (14.2 V) and
+battery (12 V) UPS modes. Cooled by the bay-level airflow (no
+fan-on-converter — see Bay-level thermal architecture).</td>
+</tr>
+<tr>
+<td><strong>Motor Driver</strong></td>
+<td>HiWonder 4-Channel Encoder Motor Driver</td>
+<td>VM: 5–15 V, 2 A/channel (2.5 A peak), SA8339 chip</td>
+<td><strong>Development/Testing Only</strong> - Powers mecanum chassis
+via 2-pin power port. NOT included in production configuration.</td>
+</tr>
+<tr>
+<td><strong>Battery</strong></td>
+<td>ALEAIVY LiFePO4 32700 4S1P Battery Pack</td>
+<td>12.8 V nominal, 10 Ah (128 Wh), 4S balanced BMS, 5.5×2.1mm barrel
+female connector, 135 × 35 × 72 mm (5.3 × 1.4 × 2.8 inches), 600g</td>
+<td>LiFePO4 battery with built-in 20A BMS. Charging voltage: 14.6V (UPS
+CH2 provides 13.8V - see charging note). Connect via 5.5×2.1mm barrel
+male connector to UPS CH2 (BAT+ / BAT–) with 10A fuse on positive
+side</td>
+</tr>
+<tr>
+<td><strong>Fuse</strong></td>
+<td>uxcell 6x30mm Inline Screw Type Fuse Holder with 16 AWG Red Wire,
+10A Fast Blow Glass Fuses</td>
+<td>6x30mm glass fuse, 10A rating, 16 AWG wire</td>
+<td>Between battery positive and CH2 BAT+</td>
+</tr>
+<tr>
+<td><strong>Lumi Wand v2.0 LED Driver</strong></td>
+<td>PCA9685 + 12× LED driver modules (KESHY 3W / Survy2014 3W / Simple
+Robot 2W3W — see <a
+href="../Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+§6.2 for 3-variant BoM)</td>
+<td><strong>13.8 V input direct from PSU</strong> via the bay D-1459
+distribution block (design of record 2026-09-29; was modified-APIELE
+2026-07-29, and 10.6 V via DROK pre-split), I²C from RPi 5</td>
+<td>12-channel constant-current LED driver on 2× internal perfboard
+rails inside the wand cyl. <strong>~33 W peak, ~2.4 A</strong> tether
+current at 13.8 V (<a
+href="../Lumi_Wand_Integration.html#53-power-draw-summary"><code>Lumi_Wand_Integration.md</code>
+§5.3</a>, measured 2026-09-01) — <em>read "~84 W / ~6.1 A" until
+2026-09-01</em>. See <a
+href="../Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+§5.1 + §10.5 for the wand-side topology.</td>
+</tr>
+<tr>
+<td><strong>LED Stars</strong></td>
+<td>3× RGBW 4-in-1 LED stars (R+G+B+W per star)</td>
+<td>12 channels @ 700 mA each, ~10 V Vf each</td>
+<td>Mounted on CNC-machined aluminum heatsink in the wand head. The arm
+gripper holds the wand handle</td>
+</tr>
+<tr>
+<td><strong>Wand Heatsink</strong></td>
+<td>Custom CNC-machined aluminum, with 2× Ø6 wire pass-throughs</td>
+<td>–</td>
+<td>Mounts the 3 LED stars; bonded with Arctic Silver / 3M TC-2810
+thermal adhesive (printed alignment fixture); also serves as the wand's
+mechanical core</td>
+</tr>
+<tr>
+<td><strong>Wand Handle</strong></td>
+<td>2-piece PETG clamshell, 50 × 28 × 125 mm</td>
+<td>M3 seam screws, integrated PCA9685 standoffs, M2 mounts to
+heatsink</td>
+<td>Printed; sized so the gripper holds it inside its 55 mm jaw
+envelope</td>
+</tr>
+<tr>
+<td><strong>Wand Bench Supply</strong></td>
+<td>Not needed in split-rails config — wand feeds direct from PSU 13.8
+V</td>
+<td>—</td>
+<td>Historical: DROK at 10.6 V was previously the wand bench supply, but
+now the wand ships directly off the 13.8 V PSU rail. Any bench test can
+either use the actual PSU or set a bench supply to 13.8 V @ ≤8 A.</td>
+</tr>
+<tr>
+<td><strong>Wire</strong></td>
+<td>14 AWG, 16 AWG silicone</td>
+<td>–</td>
+<td>14 AWG for main power distribution. 16 AWG for motor driver pigtail
+(Development/Testing only)</td>
+</tr>
+<tr>
+<td><strong>Battery Connector</strong></td>
+<td>5.5×2.1mm barrel (Male/Female)</td>
+<td>Standard DC barrel connector</td>
+<td>Battery has 5.5×2.1mm female connector. Use 5.5×2.1mm male barrel
+connector with wire pigtail for connection to UPS CH2</td>
+</tr>
+<tr>
+<td><strong>Motor Driver Connector</strong></td>
+<td>Spade Connectors</td>
+<td>Rated for appropriate current capacity</td>
+<td>14 AWG wires soldered to motor driver 2-pin power port, connected to
+power switch output via spade connectors (both positive and ground)
+(Development/Testing only)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="zap-power-performance">⚡ Power Performance</h2>
+<table>
+<thead>
+<tr>
+<th>Rail</th>
+<th>Voltage</th>
+<th>Current</th>
+<th>Power</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Main bus (CH1)</td>
+<td>12 V</td>
+<td>0–13.5 A</td>
+<td>0–162 W</td>
+<td>PSC-100-12</td>
+</tr>
+<tr>
+<td>├─ 9 V rail</td>
+<td>9 V</td>
+<td>10 A max / 8 A typ</td>
+<td>72 W</td>
+<td>DROK converter</td>
+</tr>
+<tr>
+<td>├─ 5 V rail</td>
+<td>5 V</td>
+<td>3–5 A</td>
+<td>25 W</td>
+<td>STM32 internal regulator</td>
+</tr>
+<tr>
+<td>│ └─ iFLYTEK mic set (R818 + ring) — added 2026-10-13</td>
+<td>5 V via Pi5 USB VBUS (bus-powered)</td>
+<td>0.25 A min / 0.30 A typ / 0.40 A max</td>
+<td>1.5–2 W</td>
+<td>STM32 internal regulator (same 3–5 A rail; ~+0.25 A on the 9 V DROK
+branch, ~+0.17 A on CH1 — 5 A and 10 A fuses unchanged). Spec: <a
+href="../Electronics_Bay_Design.html#34-iflytek-far-field-microphone-array-hiwonder-r818--ring-6-mic--two-usb-cables-bus-powered-eb-cover-mount">Electronics_Bay_Design
+§3.4</a></td>
+</tr>
+<tr>
+<td>├─ <strong>HAT 5 V rail (MusRock Mus-14 dual-USB-C buck)</strong> —
+planned 2026-10-13, HAT ordered</td>
+<td>5 V</td>
+<td>1.5 A typ / 2.9 A peak committed (module: 3 A peak / ~2 A continuous
+— <strong>meter gate ≤1.8 A, Phase 7.6</strong>)</td>
+<td>7.5 W typ / 15 W peak</td>
+<td>D-1459 from CH1 → 3 A ATC fuse → MusRock on the PSU cover (beside
+the G469, moved one hole right) → C-to-C into the Waveshare PCIe TO M.2
+USB HAT+ (NVMe boot SSD + mic serial/UAC + sound-card stick). Net CH1
+delta ≈ +0.1 A: the STM32 internal 5 V regulator sheds the same
+loads.</td>
+</tr>
+<tr>
+<td>├─ LED Driver</td>
+<td>12 V</td>
+<td>Variable (PWM controlled, gripper LEDs)</td>
+<td>Variable</td>
+<td>MOSFET driver board (used in both development and production)</td>
+</tr>
+<tr>
+<td>├─ <strong>Lumi Wand LED rail</strong> ⚠️ <strong>added 2026-09-01 —
+was missing from this table</strong></td>
+<td>13.8 V direct</td>
+<td><strong>~2.4 A</strong> all-12-full-white; ~1.0 A typical scene</td>
+<td><strong>33 W</strong> peak / ~14 W typical</td>
+<td>Bay D-1459 distribution block from CH1 (<a
+href="../Lumi_Wand_Integration.html#51-power-chain">split-rails
+2026-06-28</a>). Measured 2026-09-01 — <a
+href="../Lumi_Wand_Integration.html#53-power-draw-summary">Integration
+§5.3</a>.</td>
+</tr>
+<tr>
+<td>├─ Motor Driver (Dev/Test Only)</td>
+<td>12 V</td>
+<td>2.7–3.0 A typical (4×8–9W motors), 8 A peak</td>
+<td>32–36 W typical, 96 W peak</td>
+<td>Direct from CH1 (development/testing only)</td>
+</tr>
+<tr>
+<td>Battery backup</td>
+<td>LiFePO4 12.8 V</td>
+<td>1.5 A (CH2 charge, note: optimal charging requires 14.6V)</td>
+<td>20.7 W</td>
+<td>CH2 charge path</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Power Supply Capacity:</strong></p>
+<ul>
+<li>CH1 can supply up to <strong>13.5A load current</strong> (162W max)
+at 12V for powering devices. CH2 provides <strong>13.8V @ 1.5A</strong>
+for battery charging.</li>
+</ul>
+<p><strong>Typical Usage Scenarios:</strong></p>
+<ul>
+<li><strong>Production Configuration:</strong> DROK converter (~7.5A at
+12V input for 60W output) + LED Driver (variable, typically &lt;1A for
+gripper LEDs) = **~7.5–8.5A total typical**, well within the 13.5A load
+capacity.</li>
+<li><strong>Development/Testing Configuration:</strong> DROK converter
+(~7.5A) + Motor Driver (~2.7–3.0A typical, 8A peak) OR LED Driver
+(variable) = <strong>~10.2–10.5A typical with motor driver</strong>, or
+<strong>~7.5–8.5A typical with LED array</strong>.</li>
+<li><strong>Note:</strong> LED array and motor driver typically don't
+run simultaneously during development/testing, reducing peak power
+requirements. Motor driver is for development/testing only and is not
+included in production systems.</li>
+</ul>
+<hr />
+<h2 id="battery-runtime-estimates">🔋 Runtime Estimates</h2>
+<p><strong>Pack: ALEAIVY LiFePO4 32700 4S1P — 10 Ah, 12.8 V, 128
+Wh.</strong> Usable energy at the loads is <strong>~101 Wh</strong>: ~90
+% usable capacity to the 2.5 V/cell cutoff, then ~88 % for the
+PSC-100-12's battery-mode conversion up to the 13.8 V rails.</p>
+<table>
+<thead>
+<tr>
+<th>Scenario</th>
+<th>Load</th>
+<th>Runtime</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Robot baseline only</td>
+<td>45 W</td>
+<td><strong>~2.2 h</strong></td>
+</tr>
+<tr>
+<td>Baseline + wand at ~30 % duty</td>
+<td>59 W</td>
+<td><strong>~1.7 h</strong></td>
+</tr>
+<tr>
+<td>Baseline + wand all-12 full white</td>
+<td>78 W</td>
+<td><strong>~1.3 h</strong></td>
+</tr>
+<tr>
+<td>Baseline + wand full + arm moving</td>
+<td>~112 W</td>
+<td><strong>~0.9 h</strong></td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>The old line here read
+<code>10 Ah ÷ 4A = ~2.5 hours</code></strong> — that divides pack
+amp-hours by a <em>load</em> current and ignores both the
+usable-capacity fraction and the conversion loss, so it ran ~15 %
+optimistic. Superseded 2026-09-01.</p>
+<p><strong>Two things the table makes obvious:</strong></p>
+<ul>
+<li><strong>The wand is no longer the dominant load.</strong> At the
+corrected 33 W it is ~42 % of a lit-and-idle robot; under the old 84 W
+figure it was ~65 %, and baseline-plus-wand came to 129 W for a ~47 min
+runtime. Wand-on endurance improves **~1.7×** on this pack.</li>
+<li><strong>Arm movement costs about as much as the wand.</strong> The
+motor driver is 32–36 W typical (8 A peak), so a moving arm roughly
+doubles what the wand added. Motion, not illumination, is the thing to
+budget against on battery.</li>
+</ul>
+<hr />
+<h2 id="wind_face-cooling">🌬️ Cooling</h2>
+<p>Cooling is <strong>bay-level only</strong> — there is <strong>no fan
+mounted on the PSU and no fan on the DROK</strong>. Both sit at the back
+of the power bay in the back-wall exhaust airflow path. See Bay-level
+thermal architecture below.</p>
+<h3
+id="bay-level-thermal-architecture-supersedes-per-component-fans">Bay-level
+thermal architecture (supersedes per-component fans)</h3>
+<p><strong>As of 2026-05-11, the cooling architecture is bay-level, not
+per-component:</strong></p>
+<ul>
+<li><strong>2× Noctua NF-A4x20 PWM</strong> (40 × 40 × 20 mm, 12 V,
+4-pin) mounted on the <strong>back wall of the bay fence</strong>,
+running as exhaust (negative bay pressure)</li>
+<li><strong>Intake</strong> through louvers on the front wall (the
+Rectangle.002 envelope) and — where present — the battery-tray slope
+louvers on the side walls</li>
+<li>DROK heatsink, PSU, LED driver PCB, and other hot components sit in
+the airflow path. <strong>No fan-on-heatsink</strong> — the DROK's
+original WINSINN 20 mm blower is retired (its 11 000 RPM
+hydraulic-bearing tone was right in the speech band, and "no more than 8
+hr/day" duty rating made it unfit for 24/7 operation anyway).</li>
+<li><strong>Battery bay</strong> gets a printed baffle so it draws
+parallel intake rather than series flow through the hot electronics.
+LiFePO4 doesn't need to bathe in hot exhaust.</li>
+</ul>
+<p>Why this is better than per-component fans:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Old (per-component)</th>
+<th>New (bay-level)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fan count</td>
+<td>2 (PSU top + DROK heatsink)</td>
+<td>2 (back-wall exhaust)</td>
+</tr>
+<tr>
+<td>Tonal frequency</td>
+<td>DROK 20 mm @ 11 000 RPM → 1–2 kHz (speech band)</td>
+<td>NF-A4x20 @ ≤4500 RPM → ~300–400 Hz (below speech fundamentals)</td>
+</tr>
+<tr>
+<td>Redundancy</td>
+<td>None — each fan is single point of failure for its component</td>
+<td>Either fan failed → other holds bay temp; alert via tach</td>
+</tr>
+<tr>
+<td>MTTF</td>
+<td>WINSINN ~35 000 h (printer-class), Thermalright SLA-grade</td>
+<td>Noctua SSO2 &gt;150 000 h, 6-year warranty</td>
+</tr>
+<tr>
+<td>PWM control</td>
+<td>Both stock fans are fixed-speed</td>
+<td>Both Noctuas are 4-pin PWM, RPi 5 GPIO-controllable</td>
+</tr>
+<tr>
+<td>PIR thermal coupling</td>
+<td>Two scattered louvered exhausts → multiple plumes</td>
+<td>Two concentrated back-wall plumes (mitigated by back-slant baffle
+bump to 8 mm + 5–10° downward tilt)</td>
+</tr>
+<tr>
+<td>Acoustic floor</td>
+<td>Dominated by the 20 mm DROK fan</td>
+<td>Sub-15 dB(A) at typical bay load with PWM modulation</td>
+</tr>
+</tbody>
+</table>
+<p>There is no PSU-mounted or DROK-mounted fan in this design — bay-wall
+exhaust handles both.</p>
+<h3 id="fan-control-from-the-rpi-5--bay-level-pwm">Fan control from the
+RPi 5 — bay-level PWM</h3>
+<p>The 2× back-wall <strong>NF-A4x20 PWM</strong> bay fans are driven
+directly from the RPi 5's hardware PWM peripheral (via the RP1
+chip).</p>
+<p><strong>GPIO assignment (Pi 5 / Hiwonder GPIO board — verify no
+conflicts):</strong></p>
+<table>
+<thead>
+<tr>
+<th>GPIO</th>
+<th>Direction</th>
+<th>Function</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPIO 12</td>
+<td>PWM out (HW)</td>
+<td>Both bay fans (NF-A4x20 PWM, parallel)</td>
+<td>25 kHz, 3.3 V drive — Noctua threshold ~2 V, no level shifter
+needed</td>
+</tr>
+<tr>
+<td>GPIO 13</td>
+<td>PWM out (HW)</td>
+<td>Reserved (unused — no PSU fan in this design)</td>
+<td>Reserved (unused — no PSU fan in this design)</td>
+</tr>
+<tr>
+<td>GPIO 5</td>
+<td>digital in</td>
+<td>Bay fan 1 tach</td>
+<td>10 kΩ pull-up to 3.3 V (Noctua tach is 12 V open-collector)</td>
+</tr>
+<tr>
+<td>GPIO 6</td>
+<td>digital in</td>
+<td>Bay fan 2 tach</td>
+<td>same</td>
+</tr>
+<tr>
+<td>GPIO 16</td>
+<td>digital in</td>
+<td>PIR — FL slant</td>
+<td>3.3 V from HC-SR501 OUT pin</td>
+</tr>
+<tr>
+<td>GPIO 17</td>
+<td>digital in</td>
+<td>PIR — FR slant</td>
+<td>same</td>
+</tr>
+<tr>
+<td>GPIO 20</td>
+<td>digital in</td>
+<td>PIR — BL slant</td>
+<td>same</td>
+</tr>
+<tr>
+<td>GPIO 21</td>
+<td>digital in</td>
+<td>PIR — BR slant</td>
+<td>same</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Wiring per bay fan (4-pin):</strong></p>
+<ul>
+<li>Pin 1 (black) → GND (shared with 12 V supply GND and Pi GND at one
+common ground point)</li>
+<li>Pin 2 (yellow) → +12 V from the PSC-100-12 CH1 dropped/regulated
+rail</li>
+<li>Pin 3 (green) → tach back to Pi GPIO 5 or 6 with 10 kΩ pull-up to
+3.3 V</li>
+<li>Pin 4 (blue) → PWM from Pi GPIO 12</li>
+</ul>
+<p>Both fans share GPIO 12's PWM signal in parallel (Noctua PWM inputs
+are high-impedance — one Pi GPIO comfortably fans out to 4–5 fans before
+edge integrity suffers).</p>
+<p><strong>Behavior defaults:</strong></p>
+<ul>
+<li>PWM frequency: 25 kHz (Noctua spec range 21–28 kHz)</li>
+<li>Min duty cycle: 30 % (below this Noctua won't reliably start from
+stop; runs lower once spinning)</li>
+<li>Boot kick: 100 % duty for 2 s at startup to overcome static friction
+reliably</li>
+<li>Default fail-safe: if PWM peripheral is unavailable or signal
+floats, the fan runs at 100 % (Noctua's internal pull-up makes "no
+signal" = "full speed", which is the safe failure mode)</li>
+<li>Tach is open-collector: ignoring tach is fine; reading it back
+enables fan-failure detection (zero pulses while PWM duty &gt; 0 for
+&gt; 5 s → publish to <code>/diagnostics</code>)</li>
+</ul>
+<p>A small ROS 2 <code>bay_thermal_node</code> owns the PWM output,
+optional tach inputs, and a thermistor read (DROK heatsink) via an
+ADS1115 (Ø~3.5 mm bead NTC bonded with thermal epoxy, wires routed away
+from mains). It publishes
+<code>/bay_thermal/{drok_temp, fan1_rpm, fan2_rpm, fan_duty}</code> at
+~1 Hz and runs a simple PI loop or lookup table for duty vs
+temperature.</p>
+<hr />
+<h3 id="lifepo4-cold-charge-cutoff-commercial-deployment">LiFePO4
+cold-charge cutoff (commercial deployment)</h3>
+<p>LiFePO4 cells are sensitive to charging below freezing — current
+flowing into the cell at sub-0 °C plates metallic lithium on the anode,
+causing <strong>irreversible capacity loss</strong>. Discharging at
+sub-zero is fine; charging is not.</p>
+<p>For shop / indoor / heated-garage deployments this is irrelevant. For
+commercial product deployment (unheated garage, northern climates,
+cold-storage facilities), the on-robot <strong>BMS must refuse to
+charge</strong> when cell temperature is below 0–5 °C (typical safe
+minimum is 0 °C; conservative spec is 5 °C).</p>
+<p>The ALEAIVY LiFePO4 32700 4S1P pack we use has a built-in BMS but
+<strong>verify whether that BMS implements low-temperature charge
+cutoff</strong> — many low-end BMS chips do over-charge / over-discharge
+/ short-circuit protection but skip the cold-charge interlock. If our
+BMS doesn't have it natively, options:</p>
+<ul>
+<li>Add an external NTC thermistor on the cell pack feeding a comparator
+that opens the charge MOSFET below 0 °C</li>
+<li>Use the existing INA226 cell-pack monitor + Pi-side firmware logic:
+cut the CH2 charge enable signal (small MOSFET in the charge path) when
+measured cell temperature is below threshold (INA226 spec/wiring: see
+EXTERNAL doc)</li>
+<li>Specify a BMS with native low-temp cutoff for production batches
+(Daly, JBD smart BMS variants have this; cost adds ~$5/unit)</li>
+</ul>
+<p>This goes on the production qualification checklist before any
+commercial unit ships.</p>
+<hr />
+<h3
+id="mains-routing-rule-ac-inlet-adjacent-to-bay-fan-power-lines">Mains
+routing rule (AC inlet adjacent to bay-fan power lines)</h3>
+<p>With the AC inlet now sharing the back wall with the 2× 12 V fan
+power runs, mains routing matters:</p>
+<ul>
+<li>Hot/neutral on <strong>separate channel</strong> from low-voltage
+signal wiring (PWM, tach, PIR signals, I²C). Print a divider rib into
+the bay fence to enforce physical separation — assemblers can't
+accidentally route signals through the AC channel.</li>
+<li>IEC ground lug bonded to a chassis ground point (any metal in the
+base — the vendor base plate is anodized aluminum, so it's an option).
+Provides a safety bond and a known reference for EMC behavior.</li>
+<li>Strain relief on the IEC cable inside the bay — the inlet body
+should never carry mechanical load from the AC cord</li>
+<li>Keep <strong>fan +12 V leads</strong> physically separated from the
+IEC inlet's hot/neutral by at least 6 mm of air or 1.5 mm of insulated
+barrier (matches UL creepage / clearance for SELV vs mains separation in
+low-voltage equipment)</li>
+</ul>
+<p>For Phase 2/3 production this is a CE / UL pre-compliance item.</p>
+<hr />
+<h2 id="toolbox-assembly--mounting-tips">🧰 Assembly / Mounting
+Tips</h2>
+<ul>
+<li>Mount <strong>PSC-100-12</strong> and <strong>DROK
+converter</strong> on an aluminum or polycarbonate base for
+airflow.</li>
+<li>Add a <strong>10 A inline glass fuse</strong> (6x30mm) in fuse
+holder between battery positive and UPS CH2 BAT+.</li>
+<li>Keep <strong>battery leads short (&lt; 20 cm)</strong>. Battery
+connects directly to UPS CH2 via 10A fuse on positive side.</li>
+<li>Mount <strong>converter case</strong> on metal for heat
+spreading.</li>
+<li>Tie all grounds (PSC-100-12, converter, STM32, Pi, Motor Driver, LED
+Driver) together using 14 AWG wire.</li>
+<li>Verify output voltage (9.0 V ± 0.1) before connecting loads.</li>
+<li><strong>Motor Driver Power:</strong> Connect 2-pin power port
+directly to CH1 (12V) output via power distribution block or
+Y-splitter.</li>
+</ul>
+<h3 id="electric_plug-fuse-selection">🔌 Fuse Selection</h3>
+<p><strong>Selected Fuse System:</strong></p>
+<ul>
+<li><strong>Fuse Holder:</strong> uxcell 6x30mm Inline Screw Type Fuse
+Holder</li>
+<li><strong>Wire:</strong> 16 AWG Red Wire (rated for ~22A, suitable for
+10A fuse)</li>
+<li><strong>Fuse Type:</strong> 6x30mm Glass Fast Blow Fuse</li>
+<li><strong>Rating:</strong> 10A</li>
+<li><strong>Installation:</strong> Screw terminals for easy wire
+connections, replaceable glass fuse design</li>
+</ul>
+<p><strong>Why This Fuse:</strong></p>
+<ul>
+<li><strong>16 AWG wire</strong> provides adequate current capacity
+(~22A) for 10A fuse with good safety margin</li>
+<li><strong>Glass fuse</strong> allows visual inspection to check if
+fuse is blown</li>
+<li><strong>Screw terminals</strong> provide secure connections</li>
+<li><strong>Compact design</strong> compared to bulky waterproof ATC/ATO
+holder</li>
+<li><strong>6x30mm</strong> is a standard glass fuse size, readily
+available</li>
+</ul>
+<p><strong>Note:</strong> The 10A fuse is oversized for the 2A charging
+current, but provides headroom for battery discharge current and is a
+common automotive fuse rating. For charging-only applications, a 3A or
+5A fuse would be more appropriate.</p>
+<h3 id="battery-battery-connection">🔋 Battery Connection</h3>
+<blockquote>
+<p><strong>Battery monitoring — added 2026-10-22.</strong> A second
+INA226 (<strong>INA226-BATT @0x45</strong>) now sits in the battery +
+lead between F1 and CH2 BAT+, giving signed charge/discharge current and
+pack voltage — the instrument that was missing when Ultra went fully
+dark on 2026-10-22. <strong>Trigger: a loose input-side wire at Ultra's
+in-bay terminals (workmanship, known intermittent), fixed at the
+new-fence move — not a design issue, not a house outage.</strong> A
+clean AC cut at the rocker rides through on battery (verified the same
+day); whether a chattering inlet contact defeats the switchover is
+UNTESTED, and INA226-BATT's latched logger is what will show it. F1
+stays first from the pack. Full spec, alert thresholds (ON_BATTERY /
+BATTERY_LOW / NOT_CHARGING / NOT_HOLDING / FLOAT_ANOMALY / SENSOR_STALE)
+and the pull-the-AC runtime test: <a
+href="../Power_Bay_Design.html#5a-ina226-batt--second-ina226-on-the-ups-battery-lead-added-2026-10-22-halo--ultra--nova">Power_Bay
+§5a</a>.</p>
+</blockquote>
+<p><strong>Wiring Diagram:</strong></p>
+<pre><code>LiFePO4 Battery Pack (ALEAIVY 12.8V 10Ah)
+    │
+    ├─► Battery Positive (5.5×2.1mm female) ──► 5.5×2.1mm male barrel connector with wire ──► 10A Glass Fuse (6x30mm) ──► [INA226-BATT shunt, 0x45 — added 2026-10-22] ──► UPS CH2 BAT+ (soldered)
+    │
+    └─► Battery Negative (5.5×2.1mm female) ──► 5.5×2.1mm male barrel connector with wire ──► UPS CH2 BAT- (soldered)</code></pre>
+<p><strong>Battery Specifications:</strong></p>
+<ul>
+<li><strong>Model:</strong> ALEAIVY LiFePO4 32700 4S1P Battery Pack</li>
+<li><strong>Type:</strong> LiFePO4 (Lithium Iron Phosphate) with 4S
+balanced BMS</li>
+<li><strong>Nominal Voltage:</strong> 12.8V</li>
+<li><strong>Charging Voltage:</strong> 14.6V (optimal)</li>
+<li><strong>Capacity:</strong> 10Ah (128 Wh)</li>
+<li><strong>Configuration:</strong> 4S1P (4 × 32700 cells)</li>
+<li><strong>BMS:</strong> Built-in 4S 20A balanced BMS</li>
+<li><strong>Connector:</strong> 5.5×2.1mm barrel (female on battery;
+male w/ wire pigtail to UPS CH2)</li>
+<li><strong>Dimensions:</strong> 135 × 35 × 72 mm (5.3 × 1.4 × 2.8
+inches)</li>
+<li><strong>Weight:</strong> 600g</li>
+</ul>
+<p><strong>⚠️ Charging Voltage Mismatch:</strong></p>
+<ul>
+<li><strong>UPS CH2 Output:</strong> 13.8V @ 1.5A (designed for
+SLA/lead-acid batteries)</li>
+<li><strong>LiFePO4 Required:</strong> 14.6V for optimal charging</li>
+<li><strong>Impact:</strong> The battery's BMS will manage charging, but
+charging may be slower or incomplete at 13.8V</li>
+<li><strong>Recommendation:</strong> Use an external LiFePO4 charger
+(14.6V) for full capacity charging when AC power is available</li>
+</ul>
+<p><strong>Connection Notes:</strong></p>
+<ul>
+<li>Battery has <strong>5.5×2.1mm female barrel connector</strong>
+pre-installed</li>
+<li>Use <strong>5.5×2.1mm male barrel connector with wire
+pigtail</strong> (typically 16-18 AWG) for connection to UPS CH2</li>
+<li>10A fuse on positive side between barrel connector wire and UPS CH2
+BAT+ (soldered connection)</li>
+<li>Built-in BMS provides overcharge, over-discharge, and short-circuit
+protection</li>
+<li>LiFePO4 batteries are safer than regular LiPo (more stable, longer
+cycle life)</li>
+<li>Battery can be easily disconnected via barrel connector for
+replacement</li>
+</ul>
+<h3 id="electric_plug-battery-connector-5521mm-barrel">🔌 Battery
+Connector: 5.5×2.1mm Barrel</h3>
+<p><strong>Why 5.5×2.1mm Barrel:</strong></p>
+<ul>
+<li><strong>Compact:</strong> The 5.5×2.1mm barrel takes up less space
+than an XT60 — useful in the tight power-bay layout</li>
+<li><strong>Standard DC Barrel:</strong> A common, readily-available
+standard DC barrel connector</li>
+<li><strong>Adequate for this path:</strong> Works fine for the ≤~10 A
+battery charge/discharge path on UPS CH2</li>
+<li><strong>Easy Disconnect:</strong> Battery can be quickly
+disconnected via the barrel connector for replacement</li>
+</ul>
+<p><strong>Connection Method:</strong></p>
+<ul>
+<li>Battery comes with <strong>5.5×2.1mm female barrel
+connector</strong> pre-installed</li>
+<li>Use <strong>5.5×2.1mm male barrel connector with wire
+pigtail</strong> (16-18 AWG wire) for connection to UPS CH2</li>
+<li>Positive wire (center pin) connects to UPS CH2 BAT+ through 10A
+fuse</li>
+<li>Negative wire (outer sleeve) connects to UPS CH2 BAT-</li>
+<li>10A fuse installed between barrel connector positive wire and UPS
+CH2 BAT+ (soldered connection)</li>
+</ul>
+<hr />
+<h2 id="white_check_mark-advantages">✅ Advantages</h2>
+<ul>
+<li>One-converter design (no dual bucks, no wiring mess).</li>
+<li>LiFePO4 battery with built-in BMS provides safety and
+protection.</li>
+<li>Safer than regular LiPo - more stable chemistry, longer cycle
+life.</li>
+<li>Higher energy density than SLA batteries.</li>
+<li>Full UPS behavior via PSC-100-12 (instant switchover).</li>
+<li>Industrial reliability in a compact footprint.</li>
+<li>5.5×2.1mm barrel connector allows easy battery replacement.</li>
+</ul>
+<hr />
+<h2 id="package-power--external-sensor-monitoring">📦 Power &amp;
+External-Sensor Monitoring</h2>
+<p><strong>Power &amp; external-sensor monitoring (INA226 etc.) — see
+<code>../EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code>.</strong> That doc
+is the single source of truth for the INA226 spec, I²C address (0x44),
+wiring, pull-ups, the Pi-side ROS node, and all other external sensors
+(CO/smoke, PIR). This power doc covers only the power system itself.</p>
+<hr />
+<h2 id="package-optional-enhancements">📦 Optional Enhancements</h2>
+<ul>
+<li><strong>Power &amp; external-sensor monitoring (INA226
+etc.):</strong> see <code>../EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code>
+— single source of truth for the INA226 spec, I²C address (0x44),
+wiring, pull-ups, the Pi-side ROS node, and other external sensors
+(CO/smoke, PIR).</li>
+<li>Simple metal or 3D-printed case with airflow slots.</li>
+<li>LED indicator for mains / battery / low voltage.</li>
+<li>Mount LiFePO4 battery in secure compartment with proper
+ventilation.</li>
+<li>Consider external LiFePO4 charger (14.6V) for optimal charging when
+AC power is available.</li>
+</ul>
+<hr />
+<p><strong>Final Power Chain Summary:</strong></p>
+<p><strong>Production Configuration:</strong></p>
+<pre><code>AC → PSC-100-12 → 12 V bus (CH1) ──┬─► DROK buck (9 V) → 9 V rail → STM32 → Pi 5
+                     │             └─► MOSFET LED Driver (IRFZ44N) → Gripper LEDs
+                     │
+                     └─► CH2 (13.8V @ 1.5A) → LiFePO4 Battery Pack (12.8V 10Ah, 5.5×2.1mm barrel) (fused)</code></pre>
+<p><strong>Development/Testing Configuration (with Motor
+Driver):</strong></p>
+<pre><code>AC → PSC-100-12 → 12 V bus (CH1) ──┬─► DROK buck (9 V) → 9 V rail → STM32 → Pi 5
+                     │             ├─► 4-Channel Motor Driver → Mecanum Chassis [Dev/Test Only]
+                     │             └─► MOSFET LED Driver (IRFZ44N) → Gripper LEDs
+                     │
+                     └─► CH2 (13.8V @ 1.5A) → LiFePO4 Battery Pack (12.8V 10Ah, 5.5×2.1mm barrel) (fused)</code></pre>
+<p><strong>Note:</strong> LED array is used in both configurations.
+During development/testing, LED array and motor driver typically don't
+run simultaneously, reducing peak power requirements.</p>
+<h2
+id="red_car-motor-driver-power-connection-developmenttesting-only">🚗
+Motor Driver Power Connection (Development/Testing Only)</h2>
+<p><strong>⚠️ IMPORTANT:</strong> The 4-Channel Encoder Motor Driver is
+included for <strong>development and testing purposes only</strong>. It
+is <strong>NOT part of the production configuration</strong>. Production
+systems will only include the STM32 controller, Raspberry Pi 5, and
+gripper LEDs.</p>
+<p><strong>4-Channel Encoder Motor Driver</strong> (<a
+href="https://www.hiwonder.com/products/4-channel-encoder-motor-driver">HiWonder
+Product</a>)</p>
+<p><strong>Power Specifications:</strong></p>
+<ul>
+<li><strong>VM Power Supply Range:</strong> 5–15 V (perfect for 12V from
+PSC-100-12 CH1)</li>
+<li><strong>Single Channel Rated Current:</strong> 2 A continuous</li>
+<li><strong>Single Channel Peak Current:</strong> 2.5 A</li>
+<li><strong>Total Maximum Current:</strong> 8 A continuous (4 channels ×
+2 A), 10 A peak</li>
+<li><strong>Power Port:</strong> 2-pin connector (VM+ and GND)</li>
+</ul>
+<p><strong>Connection Method:</strong></p>
+<ol type="1">
+<li><p><strong>Power Distribution:</strong> Split CH1 (12V) output using
+a power distribution block or Y-splitter</p>
+<ul>
+<li>One branch → DROK converter (for STM32/Pi5)</li>
+<li>One branch → Motor Driver via spade quick-splice off the
+power-switch output</li>
+</ul></li>
+<li><p><strong>Wiring:</strong></p>
+<pre><code>PSC-100-12 CH1 (12V) ──► Power Distribution Block
+                         ├─► DROK converter (9V output)
+                         └─► Power Switch OUTPUT ──► brass piggyback / quick-splice spade
+                               (+ and ground) ──► 14 AWG soldered to Motor Driver 2-pin power port</code></pre></li>
+<li><p><strong>Ground Connection:</strong> Ensure motor driver GND is
+connected to common ground (PSC-100-12, converter, STM32, Pi5)</p></li>
+</ol>
+<h3
+id="electric_plug-motor-driver-connector-spade-piggyback-brass-quick-splice">🔌
+Motor Driver Connector: Spade (piggyback brass quick-splice)</h3>
+<p><strong>The Part:</strong> Piggyback Spade Connectors — 3-Way
+Adapter, Dual Male to Single Female, Brass Quick-Splice Spade
+Terminal.</p>
+<p><strong>Why Spade:</strong></p>
+<ul>
+<li><strong>Fits the bay:</strong> The previous bullet/barrel-style
+board connector was too physically large/awkward for the tight power
+bay; the brass piggyback spade quick-splice is compact and
+low-profile.</li>
+<li><strong>No main-run cut:</strong> The 3-way dual-male→single-female
+adapter piggybacks the dev-only motor branch directly onto the existing
+power-switch OUTPUT terminals — no cutting or desoldering the main
+distribution wire.</li>
+<li><strong>Tool-free:</strong> Quick-splice push-on/pull-off; easy to
+add or remove the dev/test motor driver without rework.</li>
+<li><strong>Brass:</strong> Good conductivity and current capacity for
+the dev-only motor load (≤8 A typical, 10 A peak).</li>
+</ul>
+<p><strong>The Method:</strong></p>
+<ol type="1">
+<li><strong>Remove Header Pins:</strong> Remove the original 2-pin
+header from the motor driver PCB.</li>
+<li><strong>Solder Wires:</strong> Solder a 5–10 cm length of 14 AWG
+wire directly to the motor driver 2-pin power port pads (VM+ and
+GND).</li>
+<li><strong>Spade Terminals:</strong> Crimp/attach a spade terminal to
+the free end of each 14 AWG wire.</li>
+<li><strong>Piggyback Quick-Splice:</strong> Use the brass 3-way
+piggyback adapter (dual-male → single-female) to quick-splice each
+motor-driver lead onto the corresponding power-switch OUTPUT terminal —
+one on positive, one on ground. No inline barrel connector, no cut to
+the main distribution wire.</li>
+</ol>
+<p><strong>🛠️ Strain Relief for PCB Soldering:</strong></p>
+<p>When soldering 14 AWG directly to a PCB (after removing header pins),
+the wire is much heavier than the board's original traces were meant to
+support. Vibration can cause copper pads to "lift" or the wire to snap
+at the solder joint.</p>
+<p><strong>Stress Relief Methods:</strong></p>
+<ol type="1">
+<li><p><strong>Stress Loop:</strong> After soldering, create a small
+stress loop in the wire before it exits the board area</p></li>
+<li><p><strong>Silicone/Adhesive:</strong> Use a small dab of
+neutral-cure electronics-grade silicone (or high-temp hot glue) at the
+base where the wire meets the board to provide strain relief</p></li>
+<li><p><strong>Zip Tie Support:</strong> If the board has mounting
+holes, zip-tie the 14 AWG wire to a nearby pillar or hole so that any
+"tugging" on the wire pulls on the zip-tie, not the solder
+joint</p></li>
+<li><p><strong>Mounting:</strong> Ensure the board is securely mounted
+to prevent vibration-induced stress on solder joints</p></li>
+<li><p><strong>Current Considerations:</strong></p>
+<ul>
+<li><strong>CH1 Load Current:</strong> Up to 13.5 A (162 W max) at 12V —
+this is the load/output current capability</li>
+<li><strong>CH2 Charging Current:</strong> 1.5 A at 13.8V — this is for
+charging batteries</li>
+<li>DROK converter: ~7.5 A typical at 12V input (at full load, ~60 W
+output, accounting for ~85% efficiency)</li>
+<li>Motor Driver: 2.7–3.0 A typical (all 4 motors running at 8–9 W each
+= 32–36 W total), up to 8 A peak (~96 W)</li>
+<li><strong>Total typical load:</strong> ~10.2–10.5 A, well within the
+13.5 A load capacity</li>
+<li><strong>Headroom:</strong> ~3–3.3 A available for additional loads
+or peak motor activity</li>
+<li>The PSC-100-12 has sufficient capacity to power both the converter
+and motor driver simultaneously without issues</li>
+</ul></li>
+<li><p><strong>I2C Connection:</strong> Motor driver connects to
+controller via I2C port (separate from power)</p>
+<ul>
+<li>I2C port provides 5V output (1A max) for powering controller if
+needed</li>
+<li>SDA/SCL for motor control communication</li>
+</ul></li>
+<li><p><strong>RPi5 CPU heatsink fan power — STM32 I²C port (ONE-OFF
+repair for this unit, decided 2026-05-22):</strong></p>
+<blockquote>
+<p><strong>⚠️ NOT the production design.</strong> Production / standard
+build powers this fan from the <strong>RPi5's own dedicated 4-pin fan
+header</strong> (JST-SH 1.0 mm — gives 5V + firmware PWM + tach, and
+does not touch the 40-pin header). This I²C-port tap is a
+<strong>one-off workaround for THIS specific unit only</strong>, because
+its Pi5 fan header is physically broken/dead. Do not propagate it to
+other units or to the BOM/assembly spec.</p>
+</blockquote>
+<p>The RPi5 active-cooler / heatsink fan is a <strong>5 V, always-on,
+2-wire</strong> fan (&lt;200 mA). On this unit it is
+<strong>NOT</strong> powered from:</p>
+<ul>
+<li>the RPi5's dedicated 4-pin fan header — <strong>that header is
+physically broken/dead on this unit</strong> (the reason for this
+one-off; the prod path above); or</li>
+<li>the 40-pin GPIO header 5V pins — those pins are being <strong>freed
+for the FFC header-extension</strong> into the power bay (see
+<code>../EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code>).</li>
+<li><strong>Source = the second (free) STM32 I²C port: 5V + GND
+pins</strong> (the mecanum motor driver occupies the first I²C port; the
+I²C-port 5V rail is rated 1A max per item 5 above — the fan's &lt;200 mA
+fits with margin). The fan is hard-on whenever the controller switch is
+ON; no PWM (the Pi-side PWM/tach is gone with the broken header —
+acceptable for a CPU fan).</li>
+<li><strong>Wiring = one dedicated fan→I²C-port wire pair. NO Y-tap / no
+splice into the Pi 5V rail</strong> (rejected: cabling is already
+congested and bay space is tight; there is plenty of room to route a
+single clean wire run from the fan to the I²C port).</li>
+<li><strong>Do NOT use</strong> the 3V3 header pin (the core board
+derives 3V3 from +5V via a small <code>RT9013-33</code> LDO, ~500 mA,
+and 3.3V won't reliably start a 5V fan — per the STM32 core-board
+schematic
+<code>armpi_ultra/docs/.../SCH_Schematic1_2023-09-20.pdf</code>) or the
+<strong>bus-servo ports</strong> (full input voltage 7.4–12 V — would
+destroy a 5V fan).</li>
+<li><strong>Bench check before connecting:</strong> meter the chosen
+I²C-port pin for ~5 V (the expansion headers bring out both +5V and 3V3
+— confirm you're on +5V, not 3V3).</li>
+</ul></li>
+</ol>
+<p><strong>UPS Behavior:</strong></p>
+<ul>
+<li>During AC power: Motor driver receives 12V from CH1</li>
+<li>During battery backup: CH1 continues to provide 12V (powered by
+battery via UPS)</li>
+<li>Motor driver continues operating seamlessly during power
+transitions</li>
+</ul>
+<h2 id="bell-battery-voltage-monitoring">🔔 Battery Voltage
+Monitoring</h2>
+<p><strong>LiFePO4 Battery Voltage Monitoring:</strong></p>
+<ul>
+<li>LiFePO4 battery has built-in 4S balanced BMS for cell-level
+protection</li>
+<li>BMS provides overcharge, over-discharge, and short-circuit
+protection</li>
+<li>Monitor battery voltage via UPS CH2 or add a simple voltage monitor
+across battery terminals</li>
+<li><strong>Recommended minimum voltage:</strong> ~10V (BMS will cut off
+to prevent over-discharge)</li>
+<li><strong>Full charge voltage:</strong> 14.6V (optimal, but UPS CH2
+provides 13.8V)</li>
+<li><strong>Nominal voltage:</strong> 12.8V</li>
+</ul>
+<p><strong>Optional Voltage Monitor:</strong></p>
+<ul>
+<li>Simple 12V battery voltage monitor/alarm can be added across battery
+terminals</li>
+<li>Set alarm threshold to ~11V to provide warning before BMS
+cut-off</li>
+<li>Provides visual/audible alert when battery voltage drops too
+low</li>
+<li>BMS will automatically disconnect battery if voltage drops too low
+to prevent damage</li>
+</ul>
+<h2 id="bulb-led-power-branch--lumi-wand-v20">💡 LED Power Branch — Lumi
+Wand v2.0</h2>
+<p>The LED branch on this UPS now powers the <strong>Lumi Wand
+v2.0</strong> assembly: a 12-channel constant-current LED driver feeding
+3× RGBW LED stars in a CNC-machined aluminum heatsink, packaged in a
+printed PETG handle that the arm gripper holds. The legacy single-board
+IRFZ44N MOSFET driver is retired.</p>
+<p><strong>Architecture:</strong></p>
+<pre><code>PSC-100-12 CH1 (12 V) ──► Master Power Switch ──► Power Distribution Block
+                                                    ├─► DROK buck (9 V → STM32/Pi5)
+                                                    └─► DROK adjustable buck (set to 10.6 V)
+                                                            │
+                                                            ▼
+                                                    arm tether: 6 nets, 2×3-pin at 13.8 V
+                                                            │
+                                                            ▼
+                                                    Wand handle (PETG clamshell):
+                                                       PCA9685 (I²C addr 0x40)
+                                                       12× PT4115 buck driver modules
+                                                            │
+                                                            ▼ 24-wire 26 AWG silicone bundle
+                                                    Wand head (CNC heatsink):
+                                                       3× 4-channel RGBW LED stars
+                                                       (12 LEDs total, ~33 W peak)</code></pre>
+<p><strong>Key specs:</strong></p>
+<ul>
+<li><strong>Driver IC per channel:</strong> PT4115 (or 3 W 700 mA
+XL4001E-class equivalent — see <a
+href="../Lumi_Wand_Integration.html">Lumi_Wand_Integration.md</a> §6.2 for
+module-sourcing notes)</li>
+<li><strong>Channel current:</strong> 700 mA constant</li>
+<li><strong>Channel count:</strong> 12 (3 stars × R/G/B/W)</li>
+<li><strong>Total peak power:</strong> <strong>~33 W</strong> (<a
+href="../Lumi_Wand_Integration.html#53-power-draw-summary"><code>Lumi_Wand_Integration.md</code>
+§5.3</a>, measured 2026-09-01) <em>(this section's "~84 W" was wrong
+even for the retired architecture it describes — same LED-side-current ×
+rail-voltage error)</em></li>
+<li><strong>Supply:</strong> 10.6 V from DROK buck (bumped from the
+legacy 9 V; the higher rail keeps the PT4115 happy at 700 mA over the
+LED Vf)</li>
+<li><strong>Control:</strong> I²C from RPi 5 → PCA9685 PWM → DIM input
+on each PT4115</li>
+<li><strong>Custom PCB:</strong>
+<code>kicad/Lumi_Wand_12CH_Driver_PROD/</code> (12-channel production
+board, in fab — gerbers in <code>kicad/gerbers_prod_v2/</code>)</li>
+</ul>
+<p><strong>Why this architecture:</strong></p>
+<ul>
+<li><strong>Constant current</strong> (PT4115) instead of PWM low-side
+switching (IRFZ44N) — LED brightness is stable and color-accurate;
+doesn't shift with supply droop or LED Vf drift over temperature.</li>
+<li><strong>12 independent channels</strong> (vs. the old 4-channel
+single-RGBW MOSFET board) — drives 3 stars individually, enabling
+beam-shaping, colour mixing per-emitter, and per-star fault
+isolation.</li>
+<li><strong>I²C control</strong> (1 PCA9685 vs. 12 GPIO pins) — keeps
+the tether thin: 6 nets in two 3-pin legs (13.8 V / GND-power /
+GND-logic + SDA / SCL / 3V3).</li>
+<li><strong>Gripper-held handle</strong> — no permanent end-effector
+mod; the arm grasps the wand's PETG handle inside its 55 mm jaw envelope
+and can drop it for tool-change.</li>
+</ul>
+<p><strong>For mechanical assembly, thermal-bonding the LED stars to the
+CNC heatsink, lens fitment, and the printed alignment fixture, see <a
+href="../Lumi_Wand_Integration.html">Lumi_Wand_Integration.md</a>. For the
+CNC heatsink and base-plate machining, see <a
+href="../CNC_Machining_Guide.html">CNC_Machining_Guide.md</a>. For the
+printed parts (handle, head cap, alignment fixture), see <a
+href="../3D_Printing_Guide.html">3D_Printing_Guide.md</a>.</strong></p>
+<blockquote>
+<p><strong>Heads up — legacy IRFZ44N section removed.</strong> This doc
+previously contained an IRFZ44N N-MOSFET schematic, RGBW gate-resistor
+wiring, and a 4-channel KiCad placeholder PCB. That whole branch is
+superseded by the v2.0 driver and has been removed to avoid mixing two
+designs. The legacy schematic is preserved in the project's git history
+if you need it.</p>
+</blockquote>
+<h2 id="electric_plug-final-production-wiring-summary--fuse-list">🔌
+Final Production Wiring Summary &amp; Fuse List</h2>
+<h3 id="51-voltage-rails">5.1 Voltage Rails</h3>
+<ul>
+<li><strong>12 V trunk rail</strong> from PSC-100-12 CH1 (primary DC
+bus)</li>
+<li><strong>9 V logic rail</strong> from buck converter (STM32 + RPi
+5)</li>
+<li><strong>12 V motor rail</strong> (Mecanum driver VM)</li>
+<li><strong>12 V LED rail</strong> for high-power RGBW LEDs (switched on
+negative side via MOSFETs)</li>
+</ul>
+<h3 id="52-wire-gauges">5.2 Wire Gauges</h3>
+<ul>
+<li><strong>14 AWG:</strong> All main power wiring including UPS CH2
+leads, PSC-100-12 CH1 output → master fuse → distribution block, 12 V →
+7.5 V buck → STM32 power input, LED driver, and all ground
+connections</li>
+<li><strong>16-18 AWG:</strong> Battery leads (5.5×2.1mm barrel
+connector wire pigtail) - typically comes with the barrel connector, may
+be 16-18 AWG</li>
+<li><strong>18 AWG equivalent (C-to-C cable):</strong> MusRock USB-C
+socket → Waveshare HAT power USB-C (short C-to-C lead; no pigtail — the
+MusRock sockets carry CC natively) — added 2026-10-13.</li>
+<li><strong>14 AWG:</strong> Motor driver leads (5–10 cm soldered
+directly to the motor-driver 2-pin port, with brass piggyback spade
+quick-splice to the power-switch output) - Development/Testing only</li>
+<li><strong>20–22 AWG:</strong> LED power wiring (LED+ and LED- to
+MOSFET drains)</li>
+<li><strong>30 AWG:</strong> MOSFET gate control lines from STM32
+(through 100 Ω resistors)</li>
+</ul>
+<h3 id="521-connection-map">5.2.1 Connection Map</h3>
+<table>
+<thead>
+<tr>
+<th>Connection Point</th>
+<th>Wire Gauge</th>
+<th>Recommended Connector</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Battery to UPS CH2</strong></td>
+<td>16-18 AWG</td>
+<td><strong>5.5×2.1mm barrel</strong></td>
+<td>Standard DC barrel connector. Battery has female connector, use male
+connector with wire pigtail (typically 16-18 AWG)</td>
+</tr>
+<tr>
+<td><strong>HAT 5 V buck (MusRock Mus-14, FIXED 5 V)</strong> — added
+2026-10-13</td>
+<td>22 AWG silicone / E0508 in (D16/D17) / C-to-C out</td>
+<td>ATC inline holder + plain USB-C cable</td>
+<td>D-1459 next free pair → 3 A fuse → MusRock (PSU cover, beside the
+G469 moved one hole right) → C-to-C → HAT power-only USB-C. ⛔ <em>Rev
+1: DROK #2 + pigtail — superseded same day (no room for a 2nd
+DROK).</em></td>
+</tr>
+<tr>
+<td><strong>Main Distribution</strong></td>
+<td>14 AWG</td>
+<td>Spade / Phoenix</td>
+<td>Current solid setup for distribution block connections</td>
+</tr>
+<tr>
+<td><strong>Motor Driver Power</strong></td>
+<td>14 AWG</td>
+<td><strong>Brass piggyback spade (3-way quick-splice)</strong></td>
+<td>14 AWG soldered to motor-driver 2-pin port; brass
+dual-male→single-female quick-splice onto power-switch output (Dev/Test
+only)</td>
+</tr>
+</tbody>
+</table>
+<p>A 2 mΩ INA226 current-shunt is wired in series on the CH1 bus
+(PSC-100-12 CH1 → INA226 IN+ → IN- → Master Power Switch). Full sensor
+spec, I²C addressing/wiring, pull-ups and ROS integration: see
+<code>../EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code> (single source of
+truth).</p>
+<p><strong>Connector Selection Rationale:</strong></p>
+<ul>
+<li><strong>5.5×2.1mm barrel (Battery):</strong> compact standard DC
+barrel; less space than XT60, adequate for the ≤~10 A battery path; easy
+disconnect for replacement.</li>
+<li><strong>Brass piggyback spade (Motor Driver):</strong> A
+bullet/board-style connector was too bulky for the bay; the 3-way
+dual-male→single-female brass quick-splice piggybacks the dev-only motor
+branch onto the power-switch output, tool-free, no main-run cut.
+Dev/Test only.</li>
+<li><strong>Spade/Phoenix (Distribution):</strong> Reliable for fixed
+distribution block connections where frequent disconnection isn't
+needed.</li>
+</ul>
+<h3 id="53-fuse-list">5.3 Fuse List</h3>
+<table>
+<thead>
+<tr>
+<th>Location</th>
+<th>Fuse Type</th>
+<th>Rating</th>
+<th>Wire Gauge</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Master fuse on PSC-100-12 CH1 output</strong></td>
+<td>ATC, mini-ANL, or similar</td>
+<td>10 A</td>
+<td>14 AWG</td>
+<td>Primary overcurrent protection</td>
+</tr>
+<tr>
+<td><strong>STM32 / 7.5 V buck branch</strong></td>
+<td>–</td>
+<td>5 A</td>
+<td>14 AWG</td>
+<td>Logic rail protection</td>
+</tr>
+<tr>
+<td><strong>HAT 5 V buck branch (MusRock Mus-14)</strong> — added
+2026-10-13</td>
+<td>ATC</td>
+<td>3 A</td>
+<td>22 AWG / E0508</td>
+<td>Waveshare HAT + NVMe boot SSD + USB audio devices (input-side peak
+~1.2 A at 13.8 V).</td>
+</tr>
+<tr>
+<td><strong>Mecanum driver branch</strong></td>
+<td>–</td>
+<td>7.5 A</td>
+<td>14 AWG</td>
+<td>Motor driver protection (Development/Testing only - may be adjusted
+based on measured peak current)</td>
+</tr>
+<tr>
+<td><strong>LED branch</strong></td>
+<td>–</td>
+<td>3 A</td>
+<td>20-22 AWG</td>
+<td>Gripper LED protection (production - increase if adding multiple 10
+W modules, but keep within cable rating)</td>
+</tr>
+<tr>
+<td><strong>Battery Positive</strong></td>
+<td>6x30mm Glass</td>
+<td>10 A</td>
+<td>14 AWG</td>
+<td>Battery overcurrent protection (between battery and UPS CH2
+BAT+)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="54-grounding">5.4 Grounding</h3>
+<ul>
+<li>All grounds (PSC-100-12, distribution block, buck converters, STM32,
+RPi 5, LED driver board, and motor driver if used for
+development/testing) must be tied together at a <strong>common ground
+point</strong> on the distribution block</li>
+<li>Avoid ground loops by using a <strong>star-ground approach</strong>
+centered on the distribution block</li>
+</ul>
+<h3 id="55-production-notes">5.5 Production Notes</h3>
+<ul>
+<li>Use proper <strong>strain relief and cable management</strong>
+(raceways, cable ties, grommets) for ceiling-mounted units</li>
+<li><strong>Label all fuses and connectors</strong> for field
+serviceability</li>
+<li>Keep <strong>high-current motor wiring</strong> physically separated
+from <strong>low-level signal wiring</strong> where possible
+(Development/Testing only - motor driver not in production)</li>
+</ul>
+<h3 id="complete-wiring-checklist">Complete Wiring Checklist</h3>
+<p><strong>Power Connections:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />LiFePO4 Battery positive (5.5×2.1mm
+female) → 5.5×2.1mm male barrel connector with wire (16-18 AWG) → 10A
+fuse (soldered) → UPS CH2 BAT+ (soldered)</label></li>
+<li><label><input type="checkbox" />LiFePO4 Battery negative (5.5×2.1mm
+female) → 5.5×2.1mm male barrel connector with wire (16-18 AWG) → UPS
+CH2 BAT- (soldered)</label></li>
+<li><label><input type="checkbox" />UPS CH1 → Master power switch (14
+AWG)</label></li>
+<li><label><input type="checkbox" />Power switch → Power distribution
+block (14 AWG)</label></li>
+<li><label><input type="checkbox" />Distribution block → DROK converter
+(14 AWG, 12V)</label></li>
+<li><label><input type="checkbox" />Distribution block → 3 A ATC fuse →
+MusRock buck (22 AWG / E0508, 13.8 V) — HAT 5 V rail, added 2026-10-13
+(mounted on the PSU cover beside the G469, G469 moved one hole
+right)</label></li>
+<li><label><input type="checkbox" />MusRock USB-C socket → C-to-C cable
+→ Waveshare HAT POWER port (meter gate ≤1.8 A continuous per BringUp
+Phase 7.6 before trusting as boot rail)</label></li>
+<li><label><input type="checkbox" />Power-switch output → Motor Driver
+via brass piggyback spade quick-splice (14 AWG soldered to motor-driver
+2-pin port) [Development/Testing Only - Skip for
+Production]</label></li>
+<li><label><input type="checkbox" />Motor Driver PCB strain relief
+installed (silicone/adhesive + zip-tie support) [Development/Testing
+Only]</label></li>
+<li><label><input type="checkbox" />Distribution block → LED Driver (14
+AWG, 12V)</label></li>
+<li><label><input type="checkbox" />LED Driver → Gripper LED Array
+(20-22 AWG, LED+ and LED-)</label></li>
+</ul>
+<p><strong>Ground Connections (Star-Ground):</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />Common ground point established at
+distribution block</label></li>
+<li><label><input type="checkbox" />UPS ground → Distribution block
+ground (14 AWG)</label></li>
+<li><label><input type="checkbox" />DROK ground → Distribution block
+ground (14 AWG)</label></li>
+<li><label><input type="checkbox" />Motor Driver ground → Distribution
+block ground (14 AWG) [Development/Testing Only - Skip for
+Production]</label></li>
+<li><label><input type="checkbox" />LED Driver ground → Distribution
+block ground (14 AWG)</label></li>
+<li><label><input type="checkbox" />STM32 ground → Distribution block
+ground (14 AWG)</label></li>
+<li><label><input type="checkbox" />Pi 5 ground → Distribution block
+ground (14 AWG)</label></li>
+</ul>
+<p><strong>Control/Signal Connections:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />PWM signals → LED Driver MOSFET
+gates (30 AWG, through 100Ω resistors)</label></li>
+<li><label><input type="checkbox" />I2C → Motor Driver (SDA/SCL, signal
+wire) [Development/Testing Only - Skip for Production]</label></li>
+<li><label><input type="checkbox" />Optional: Battery voltage monitor
+connected across battery terminals</label></li>
+</ul>
+<p><strong>Safety Checks:</strong></p>
+<ul class="task-list">
+<li><label><input type="checkbox" />All fuses installed and rated
+correctly</label></li>
+<li><label><input type="checkbox" />All connections secure and properly
+terminated</label></li>
+<li><label><input type="checkbox" />No exposed conductors</label></li>
+<li><label><input type="checkbox" />Proper wire routing (no sharp bends,
+adequate clearance)</label></li>
+<li><label><input type="checkbox" />Heatsink properly mounted with
+thermal paste</label></li>
+<li><label><input type="checkbox" />Battery voltage verified (should be
+~12.8V nominal, ~14.6V when fully charged with external charger, ~13.8V
+with UPS charging)</label></li>
+</ul>
+<p><em>Compact. Reliable. Serviceable. Perfect for your robotic arm
+power backbone.</em></p></body></html>

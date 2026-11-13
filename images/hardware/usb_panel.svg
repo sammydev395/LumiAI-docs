@@ -1,0 +1,287 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1760" height="830" viewBox="0 0 1760 830" font-family="DejaVu Sans, Verdana, Helvetica, sans-serif">
+<rect width="1760" height="830" fill="#fff"/>
+<text x="36.0" y="40.0" font-size="21" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">DUAL USB-C BULKHEAD PANEL — the bench view</text>
+<text x="36.0" y="40.0" font-size="21" text-anchor="start" font-weight="700" fill="#111">DUAL USB-C BULKHEAD PANEL — the bench view</text>
+<text x="36.0" y="64.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">2× Type-C 6-pin Female VERTICAL PCB-mount (8.83 × 8.83 mm) on a 30 × 20 mm perfboard scrap, 16 mm centre-to-centre. Openings face OUT of the page,</text>
+<text x="36.0" y="64.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#555">2× Type-C 6-pin Female VERTICAL PCB-mount (8.83 × 8.83 mm) on a 30 × 20 mm perfboard scrap, 16 mm centre-to-centre. Openings face OUT of the page,</text>
+<text x="36.0" y="81.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">through the two wall apertures at 180°. The board mounts copper-side-in on 4× Ø5 printed posts, M2 self-tap.</text>
+<text x="36.0" y="81.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#555">through the two wall apertures at 180°. The board mounts copper-side-in on 4× Ø5 printed posts, M2 self-tap.</text>
+<text x="36.0" y="106.0" font-size="12.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">THE BOARD CARRIES NO NETS. It is a mechanical bulkhead, not a circuit — all twelve conductors run point-to-point from a jack leg to the far end.</text>
+<text x="36.0" y="106.0" font-size="12.5" text-anchor="start" font-weight="700" fill="#a8410f">THE BOARD CARRIES NO NETS. It is a mechanical bulkhead, not a circuit — all twelve conductors run point-to-point from a jack leg to the far end.</text>
+<text x="36.0" y="124.0" font-size="11.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Nothing to trace, bus or jumper. That is also why a pitch mismatch is survivable (Path B, below) rather than a failure.</text>
+<text x="36.0" y="124.0" font-size="11.5" text-anchor="start" font-weight="400" fill="#a8410f">Nothing to trace, bus or jumper. That is also why a pitch mismatch is survivable (Path B, below) rather than a failure.</text>
+<rect x="300.0" y="190.0" width="260.0" height="390.0" rx="4" fill="#e7efe3" stroke="#5a7a63" stroke-width="2.2"/>
+<text x="430.0" y="174.0" font-size="10" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">30 × 20 mm cut  ·  LAMPVPATH 80 × 20 strip</text>
+<text x="430.0" y="174.0" font-size="10" text-anchor="middle" font-weight="700" fill="#5a7a63">30 × 20 mm cut  ·  LAMPVPATH 80 × 20 strip</text>
+<circle cx="316.5" cy="563.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="316.5" cy="530.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="316.5" cy="497.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="316.5" cy="464.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="316.5" cy="431.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="316.5" cy="398.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="316.5" cy="365.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="316.5" cy="332.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="316.5" cy="299.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="316.5" cy="266.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="316.5" cy="233.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="349.5" cy="563.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="349.5" cy="530.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="349.5" cy="497.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="349.5" cy="464.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="349.5" cy="431.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="349.5" cy="398.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="349.5" cy="365.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="349.5" cy="332.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="349.5" cy="299.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="349.5" cy="266.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="349.5" cy="233.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="382.6" cy="563.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="382.6" cy="530.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="382.6" cy="497.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="382.6" cy="464.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="382.6" cy="431.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="382.6" cy="398.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="382.6" cy="365.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="382.6" cy="332.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="382.6" cy="299.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="382.6" cy="266.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="382.6" cy="233.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="415.6" cy="563.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="415.6" cy="530.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="415.6" cy="497.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="415.6" cy="464.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="415.6" cy="431.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="415.6" cy="398.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="415.6" cy="365.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="415.6" cy="332.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="415.6" cy="299.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="415.6" cy="266.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="415.6" cy="233.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="448.6" cy="563.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="448.6" cy="530.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="448.6" cy="497.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="448.6" cy="464.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="448.6" cy="431.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="448.6" cy="398.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="448.6" cy="365.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="448.6" cy="332.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="448.6" cy="299.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="448.6" cy="266.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="448.6" cy="233.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="481.6" cy="563.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="481.6" cy="530.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="481.6" cy="497.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="481.6" cy="464.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="481.6" cy="431.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="481.6" cy="398.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="481.6" cy="365.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="481.6" cy="332.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="481.6" cy="299.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="481.6" cy="266.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="481.6" cy="233.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="514.6" cy="563.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="514.6" cy="530.5" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="514.6" cy="497.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="514.6" cy="464.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="514.6" cy="431.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="514.6" cy="398.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="514.6" cy="365.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="514.6" cy="332.4" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="514.6" cy="299.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="514.6" cy="266.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="514.6" cy="233.3" r="2.1" fill="#fdfdf8" stroke="#b6c2b6" stroke-width="0.6"/>
+<circle cx="534.0" cy="216.0" r="32.5" fill="none" stroke="#7a3fb0" stroke-width="1.5" stroke-dasharray="5 3"/>
+<circle cx="534.0" cy="216.0" r="14.3" fill="#fff" stroke="#7a3fb0" stroke-width="2.6"/>
+<circle cx="534.0" cy="554.0" r="32.5" fill="none" stroke="#7a3fb0" stroke-width="1.5" stroke-dasharray="5 3"/>
+<circle cx="534.0" cy="554.0" r="14.3" fill="#fff" stroke="#7a3fb0" stroke-width="2.6"/>
+<circle cx="326.0" cy="216.0" r="32.5" fill="none" stroke="#7a3fb0" stroke-width="1.5" stroke-dasharray="5 3"/>
+<circle cx="326.0" cy="216.0" r="14.3" fill="#fff" stroke="#7a3fb0" stroke-width="2.6"/>
+<circle cx="326.0" cy="554.0" r="32.5" fill="none" stroke="#7a3fb0" stroke-width="1.5" stroke-dasharray="5 3"/>
+<circle cx="326.0" cy="554.0" r="14.3" fill="#fff" stroke="#7a3fb0" stroke-width="2.6"/>
+<text x="286.0" y="188.0" font-size="9.5" text-anchor="end" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">4× M2 on 26 × 16</text>
+<text x="286.0" y="188.0" font-size="9.5" text-anchor="end" font-weight="700" fill="#7a3fb0">4× M2 on 26 × 16</text>
+<text x="286.0" y="201.0" font-size="8.5" text-anchor="end" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Ø5 posts, Ø1.5 pilots</text>
+<text x="286.0" y="201.0" font-size="8.5" text-anchor="end" font-weight="400" fill="#9a86b0">Ø5 posts, Ø1.5 pilots</text>
+<rect x="372.6" y="223.6" width="114.8" height="114.8" rx="3" fill="#dfe6ee" stroke="#c0392b" stroke-width="2.4"/>
+<text x="430.0" y="285.0" font-size="11" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">USB-C</text>
+<text x="430.0" y="285.0" font-size="11" text-anchor="middle" font-weight="700" fill="#c0392b">USB-C</text>
+<text x="430.0" y="298.0" font-size="7.5" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">opening out of page</text>
+<text x="430.0" y="298.0" font-size="7.5" text-anchor="middle" font-weight="400" fill="#6a7a8a">opening out of page</text>
+<rect x="492.1" y="268.0" width="14" height="26" rx="2" fill="#8a99a8" stroke="#4a5a6a" stroke-width="1.6"/>
+<rect x="353.9" y="268.0" width="14" height="26" rx="2" fill="#8a99a8" stroke="#4a5a6a" stroke-width="1.6"/>
+<rect x="384.5" y="335.4" width="4.8" height="13" rx="1" fill="#d92b2b"/>
+<rect x="401.7" y="335.4" width="4.8" height="13" rx="1" fill="#2f2f2f"/>
+<rect x="419.0" y="335.4" width="4.8" height="13" rx="1" fill="#7a3fb0"/>
+<rect x="436.2" y="335.4" width="4.8" height="13" rx="1" fill="#9b6fd0"/>
+<rect x="453.5" y="335.4" width="4.8" height="13" rx="1" fill="#1f6fd0"/>
+<rect x="470.7" y="335.4" width="4.8" height="13" rx="1" fill="#128a4e"/>
+<rect x="372.6" y="431.6" width="114.8" height="114.8" rx="3" fill="#dfe6ee" stroke="#2d4b73" stroke-width="2.4"/>
+<text x="430.0" y="493.0" font-size="11" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">USB-C</text>
+<text x="430.0" y="493.0" font-size="11" text-anchor="middle" font-weight="700" fill="#2d4b73">USB-C</text>
+<text x="430.0" y="506.0" font-size="7.5" text-anchor="middle" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">opening out of page</text>
+<text x="430.0" y="506.0" font-size="7.5" text-anchor="middle" font-weight="400" fill="#6a7a8a">opening out of page</text>
+<rect x="492.1" y="476.0" width="14" height="26" rx="2" fill="#8a99a8" stroke="#4a5a6a" stroke-width="1.6"/>
+<rect x="353.9" y="476.0" width="14" height="26" rx="2" fill="#8a99a8" stroke="#4a5a6a" stroke-width="1.6"/>
+<rect x="384.5" y="543.4" width="4.8" height="13" rx="1" fill="#d92b2b"/>
+<rect x="401.7" y="543.4" width="4.8" height="13" rx="1" fill="#2f2f2f"/>
+<rect x="419.0" y="543.4" width="4.8" height="13" rx="1" fill="#7a3fb0"/>
+<rect x="436.2" y="543.4" width="4.8" height="13" rx="1" fill="#9b6fd0"/>
+<rect x="453.5" y="543.4" width="4.8" height="13" rx="1" fill="#1f6fd0"/>
+<rect x="470.7" y="543.4" width="4.8" height="13" rx="1" fill="#128a4e"/>
+<text x="525.1" y="279.0" font-size="9.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">SHIELD legs</text>
+<text x="525.1" y="279.0" font-size="9.5" text-anchor="start" font-weight="700" fill="#3a4a5a">SHIELD legs</text>
+<text x="525.1" y="292.0" font-size="8.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">structural — 100% of the</text>
+<text x="525.1" y="292.0" font-size="8.5" text-anchor="start" font-weight="400" fill="#6a7a8a">structural — 100% of the</text>
+<text x="525.1" y="303.0" font-size="8.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">plug force. Solder FIRST.</text>
+<text x="525.1" y="303.0" font-size="8.5" text-anchor="start" font-weight="400" fill="#6a7a8a">plug force. Solder FIRST.</text>
+<text x="278.0" y="550.4" font-size="9.5" text-anchor="end" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">6 SIGNAL legs</text>
+<text x="278.0" y="550.4" font-size="9.5" text-anchor="end" font-weight="700" fill="#444">6 SIGNAL legs</text>
+<text x="278.0" y="562.4" font-size="8.5" text-anchor="end" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">fine pitch · never the</text>
+<text x="278.0" y="562.4" font-size="8.5" text-anchor="end" font-weight="400" fill="#6a7a8a">fine pitch · never the</text>
+<text x="278.0" y="573.4" font-size="8.5" text-anchor="end" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">mechanical anchor</text>
+<text x="278.0" y="573.4" font-size="8.5" text-anchor="end" font-weight="400" fill="#6a7a8a">mechanical anchor</text>
+<text x="430.0" y="606.0" font-size="9.5" text-anchor="middle" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">16.0 mm centre-to-centre</text>
+<text x="430.0" y="606.0" font-size="9.5" text-anchor="middle" font-weight="700" fill="#5a7a63">16.0 mm centre-to-centre</text>
+<text x="700.0" y="168.0" font-size="13.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">UPPER  —  PD CHARGE</text>
+<text x="700.0" y="168.0" font-size="13.5" text-anchor="start" font-weight="700" fill="#c0392b">UPPER  —  PD CHARGE</text>
+<text x="700.0" y="184.0" font-size="9.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">→ PD trigger module's own USB-C  ·  ~40 mm</text>
+<text x="700.0" y="184.0" font-size="9.5" text-anchor="start" font-weight="400" fill="#6a7a8a">→ PD trigger module's own USB-C  ·  ~40 mm</text>
+<rect x="700" y="193" width="26" height="5" rx="1" fill="#d92b2b"/>
+<text x="734.0" y="202.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">VBUS</text>
+<text x="734.0" y="202.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#d92b2b">VBUS</text>
+<text x="792.0" y="202.0" font-size="10" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">22 AWG</text>
+<text x="792.0" y="202.0" font-size="10" text-anchor="start" font-weight="700" fill="#a8410f">22 AWG</text>
+<rect x="700" y="209" width="26" height="5" rx="1" fill="#2f2f2f"/>
+<text x="734.0" y="218.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">GND</text>
+<text x="734.0" y="218.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#2f2f2f">GND</text>
+<text x="792.0" y="218.0" font-size="10" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">22 AWG</text>
+<text x="792.0" y="218.0" font-size="10" text-anchor="start" font-weight="700" fill="#a8410f">22 AWG</text>
+<rect x="700" y="225" width="26" height="2.4" rx="1" fill="#7a3fb0"/>
+<text x="734.0" y="234.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">CC1</text>
+<text x="734.0" y="234.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#7a3fb0">CC1</text>
+<text x="792.0" y="234.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">28 AWG</text>
+<text x="792.0" y="234.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">28 AWG</text>
+<rect x="700" y="241" width="26" height="2.4" rx="1" fill="#9b6fd0"/>
+<text x="734.0" y="250.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">CC2</text>
+<text x="734.0" y="250.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#9b6fd0">CC2</text>
+<text x="792.0" y="250.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">28 AWG</text>
+<text x="792.0" y="250.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">28 AWG</text>
+<rect x="700" y="257" width="26" height="2.4" rx="1" fill="#1f6fd0"/>
+<text x="734.0" y="266.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">D+</text>
+<text x="734.0" y="266.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#1f6fd0">D+</text>
+<text x="792.0" y="266.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">28 AWG</text>
+<text x="792.0" y="266.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">28 AWG</text>
+<rect x="700" y="273" width="26" height="2.4" rx="1" fill="#128a4e"/>
+<text x="734.0" y="282.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">D-</text>
+<text x="734.0" y="282.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#128a4e">D-</text>
+<text x="792.0" y="282.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">28 AWG</text>
+<text x="792.0" y="282.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">28 AWG</text>
+<text x="700.0" y="302.0" font-size="9.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">VBUS + GND carry the full pack charge current — 28 AWG is ~1.4 A and UNDERSIZED.</text>
+<text x="700.0" y="302.0" font-size="9.5" text-anchor="start" font-weight="700" fill="#a8410f">VBUS + GND carry the full pack charge current — 28 AWG is ~1.4 A and UNDERSIZED.</text>
+<text x="700.0" y="332.0" font-size="13.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">LOWER  —  ESP32 DEV</text>
+<text x="700.0" y="332.0" font-size="13.5" text-anchor="start" font-weight="700" fill="#2d4b73">LOWER  —  ESP32 DEV</text>
+<text x="700.0" y="348.0" font-size="9.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">→ LCD/MCU board's own USB-C  ·  ~60–80 mm</text>
+<text x="700.0" y="348.0" font-size="9.5" text-anchor="start" font-weight="400" fill="#6a7a8a">→ LCD/MCU board's own USB-C  ·  ~60–80 mm</text>
+<rect x="700" y="357" width="26" height="2.4" rx="1" fill="#d92b2b"/>
+<text x="734.0" y="366.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">VBUS</text>
+<text x="734.0" y="366.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#d92b2b">VBUS</text>
+<text x="792.0" y="366.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">28 AWG</text>
+<text x="792.0" y="366.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">28 AWG</text>
+<rect x="700" y="373" width="26" height="2.4" rx="1" fill="#2f2f2f"/>
+<text x="734.0" y="382.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">GND</text>
+<text x="734.0" y="382.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#2f2f2f">GND</text>
+<text x="792.0" y="382.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">28 AWG</text>
+<text x="792.0" y="382.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">28 AWG</text>
+<rect x="700" y="389" width="26" height="2.4" rx="1" fill="#7a3fb0"/>
+<text x="734.0" y="398.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">CC1</text>
+<text x="734.0" y="398.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#7a3fb0">CC1</text>
+<text x="792.0" y="398.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">28 AWG</text>
+<text x="792.0" y="398.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">28 AWG</text>
+<rect x="700" y="405" width="26" height="2.4" rx="1" fill="#9b6fd0"/>
+<text x="734.0" y="414.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">CC2</text>
+<text x="734.0" y="414.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#9b6fd0">CC2</text>
+<text x="792.0" y="414.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">28 AWG</text>
+<text x="792.0" y="414.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">28 AWG</text>
+<rect x="700" y="421" width="26" height="2.4" rx="1" fill="#1f6fd0"/>
+<text x="734.0" y="430.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">D+</text>
+<text x="734.0" y="430.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#1f6fd0">D+</text>
+<text x="792.0" y="430.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">28 AWG</text>
+<text x="792.0" y="430.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">28 AWG</text>
+<rect x="700" y="437" width="26" height="2.4" rx="1" fill="#128a4e"/>
+<text x="734.0" y="446.0" font-size="10.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">D-</text>
+<text x="734.0" y="446.0" font-size="10.5" text-anchor="start" font-weight="700" fill="#128a4e">D-</text>
+<text x="792.0" y="446.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">28 AWG</text>
+<text x="792.0" y="446.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">28 AWG</text>
+<text x="700.0" y="466.0" font-size="9.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">≤ ~1 A. 28 AWG on all six. Keep D+/D− adjacent and EQUAL LENGTH.</text>
+<text x="700.0" y="466.0" font-size="9.5" text-anchor="start" font-weight="400" fill="#555">≤ ~1 A. 28 AWG on all six. Keep D+/D− adjacent and EQUAL LENGTH.</text>
+<text x="170.0" y="650.0" font-size="13" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">⚠  Pitch-check EVERY jack dry, before you commit it</text>
+<text x="170.0" y="650.0" font-size="13" text-anchor="start" font-weight="700" fill="#a8410f">⚠  Pitch-check EVERY jack dry, before you commit it</text>
+<text x="170.0" y="672.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">6-pin vertical USB-C legs are usually NOT on 2.54 mm pitch — most are ~1.0–1.6 mm,</text>
+<text x="170.0" y="672.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">6-pin vertical USB-C legs are usually NOT on 2.54 mm pitch — most are ~1.0–1.6 mm,</text>
+<text x="170.0" y="686.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">with the two big shield legs outboard. Sit one on the board dry and look:</text>
+<text x="170.0" y="686.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">with the two big shield legs outboard. Sit one on the board dry and look:</text>
+<text x="170.0" y="708.0" font-size="11" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">PATH A</text>
+<text x="170.0" y="708.0" font-size="11" text-anchor="start" font-weight="700" fill="#2d6a4f">PATH A</text>
+<text x="240.0" y="708.0" font-size="10" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">all 6 legs drop into 0.1″ holes</text>
+<text x="240.0" y="708.0" font-size="10" text-anchor="start" font-weight="700" fill="#111">all 6 legs drop into 0.1″ holes</text>
+<text x="240.0" y="722.0" font-size="9.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">through-hole, §4.1 technique, 350 °C, fine chisel</text>
+<text x="240.0" y="722.0" font-size="9.5" text-anchor="start" font-weight="400" fill="#555">through-hole, §4.1 technique, 350 °C, fine chisel</text>
+<text x="170.0" y="742.0" font-size="11" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">PATH B</text>
+<text x="170.0" y="742.0" font-size="11" text-anchor="start" font-weight="700" fill="#7a3fb0">PATH B</text>
+<text x="240.0" y="742.0" font-size="10" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">they don’t line up  (the common case)</text>
+<text x="240.0" y="742.0" font-size="10" text-anchor="start" font-weight="700" fill="#111">they don’t line up  (the common case)</text>
+<text x="240.0" y="756.0" font-size="9.5" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">carrier mount — anchor by the SHIELD legs (or VHB/epoxy the body), then solder flying leads straight to the 6 signal legs</text>
+<text x="240.0" y="756.0" font-size="9.5" text-anchor="start" font-weight="400" fill="#555">carrier mount — anchor by the SHIELD legs (or VHB/epoxy the body), then solder flying leads straight to the 6 signal legs</text>
+<text x="170.0" y="778.0" font-size="9.5" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Electrically identical — there were never any nets on this board. Decide per jack, note which you used, and do not fight a mismatch.</text>
+<text x="170.0" y="778.0" font-size="9.5" text-anchor="start" font-weight="700" fill="#2d6a4f">Electrically identical — there were never any nets on this board. Decide per jack, note which you used, and do not fight a mismatch.</text>
+<text x="1210.0" y="168.0" font-size="14" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Order — both jacks first, board bare and flat</text>
+<text x="1210.0" y="168.0" font-size="14" text-anchor="start" font-weight="700" fill="#111">Order — both jacks first, board bare and flat</text>
+<text x="1210.0" y="189.0" font-size="10" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">1.  SHIELD legs. Medium chisel, 350 °C, be generous. Structural joint.</text>
+<text x="1210.0" y="189.0" font-size="10" text-anchor="start" font-weight="700" fill="#111">1.  SHIELD legs. Medium chisel, 350 °C, be generous. Structural joint.</text>
+<text x="1210.0" y="203.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">     Check the body sits square and the opening is perpendicular to the board.</text>
+<text x="1210.0" y="203.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">     Check the body sits square and the opening is perpendicular to the board.</text>
+<text x="1210.0" y="217.0" font-size="10" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">2.  The 6 signal legs. Fine conical, 340–350 °C, 0.5 mm solder, flux dot first.</text>
+<text x="1210.0" y="217.0" font-size="10" text-anchor="start" font-weight="700" fill="#111">2.  The 6 signal legs. Fine conical, 340–350 °C, 0.5 mm solder, flux dot first.</text>
+<text x="1210.0" y="231.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">     Minimal solder — a bridge here is invisible until the port misbehaves.</text>
+<text x="1210.0" y="231.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">     Minimal solder — a bridge here is invisible until the port misbehaves.</text>
+<text x="1210.0" y="245.0" font-size="10" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">3.  Wires LAST. They get in the way and act as heat sinks.</text>
+<text x="1210.0" y="245.0" font-size="10" text-anchor="start" font-weight="700" fill="#111">3.  Wires LAST. They get in the way and act as heat sinks.</text>
+<text x="1210.0" y="267.0" font-size="10" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">⚠  ~2 s per leg, then move on.</text>
+<text x="1210.0" y="267.0" font-size="10" text-anchor="start" font-weight="700" fill="#a8410f">⚠  ~2 s per leg, then move on.</text>
+<text x="1210.0" y="281.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">USB-C jacks have plastic between the contacts that deforms and lets pins</text>
+<text x="1210.0" y="281.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">USB-C jacks have plastic between the contacts that deforms and lets pins</text>
+<text x="1210.0" y="295.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">tilt. If a leg won’t wet, add flux and come back after it cools.</text>
+<text x="1210.0" y="295.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">tilt. If a leg won’t wet, add flux and come back after it cools.</text>
+<text x="1210.0" y="319.0" font-size="14" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Flying leads</text>
+<text x="1210.0" y="319.0" font-size="14" text-anchor="start" font-weight="700" fill="#111">Flying leads</text>
+<text x="1210.0" y="340.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Pre-tin the leg AND the wire end separately — it is a butt joint with no hole</text>
+<text x="1210.0" y="340.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">Pre-tin the leg AND the wire end separately — it is a butt joint with no hole</text>
+<text x="1210.0" y="354.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">to hold anything, so both sides must already be wetted.</text>
+<text x="1210.0" y="354.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">to hold anything, so both sides must already be wetted.</text>
+<text x="1210.0" y="368.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Strip ~2 mm, heat-shrink on before you solder.</text>
+<text x="1210.0" y="368.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">Strip ~2 mm, heat-shrink on before you solder.</text>
+<text x="1210.0" y="382.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Strain-relieve at the BOARD, not at the leg — a pull at the leg peels the pad.</text>
+<text x="1210.0" y="382.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">Strain-relieve at the BOARD, not at the leg — a pull at the leg peels the pad.</text>
+<text x="1210.0" y="396.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Tie each jack’s shield to that jack’s GND lead; a floating shell just radiates.</text>
+<text x="1210.0" y="396.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">Tie each jack’s shield to that jack’s GND lead; a floating shell just radiates.</text>
+<text x="1210.0" y="420.0" font-size="14" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">⚠  NO 5.1 kΩ CC pull-downs</text>
+<text x="1210.0" y="420.0" font-size="14" text-anchor="start" font-weight="700" fill="#111">⚠  NO 5.1 kΩ CC pull-downs</text>
+<text x="1210.0" y="441.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">These jacks are PASSIVE bulkheads. CC1/CC2 pass straight through to the PD</text>
+<text x="1210.0" y="441.0" font-size="10" text-anchor="start" font-weight="400" fill="#a8410f">These jacks are PASSIVE bulkheads. CC1/CC2 pass straight through to the PD</text>
+<text x="1210.0" y="455.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">trigger and to the ESP32, each of which terminates CC itself. Adding resistors</text>
+<text x="1210.0" y="455.0" font-size="10" text-anchor="start" font-weight="400" fill="#a8410f">trigger and to the ESP32, each of which terminates CC itself. Adding resistors</text>
+<text x="1210.0" y="469.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">here presents a second sink and breaks PD negotiation. Six wires, nothing else.</text>
+<text x="1210.0" y="469.0" font-size="10" text-anchor="start" font-weight="400" fill="#a8410f">here presents a second sink and breaks PD negotiation. Six wires, nothing else.</text>
+<text x="1210.0" y="493.0" font-size="14" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">Verify before it goes in the shell</text>
+<text x="1210.0" y="493.0" font-size="14" text-anchor="start" font-weight="700" fill="#111">Verify before it goes in the shell</text>
+<text x="1210.0" y="514.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">1.  Continuity, every conductor, jack leg → far end.</text>
+<text x="1210.0" y="514.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">1.  Continuity, every conductor, jack leg → far end.</text>
+<text x="1210.0" y="528.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">2.  Adjacent-leg shorts: none, on both jacks.</text>
+<text x="1210.0" y="528.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">2.  Adjacent-leg shorts: none, on both jacks.</text>
+<text x="1210.0" y="542.0" font-size="10" text-anchor="start" font-weight="700" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">3.  VBUS → GND on each jack: OPEN.</text>
+<text x="1210.0" y="542.0" font-size="10" text-anchor="start" font-weight="700" fill="#a8410f">3.  VBUS → GND on each jack: OPEN.</text>
+<text x="1210.0" y="556.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">     A short here meets a PD brick at 15 V.</text>
+<text x="1210.0" y="556.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">     A short here meets a PD brick at 15 V.</text>
+<text x="1210.0" y="570.0" font-size="10" text-anchor="start" font-weight="400" fill="none" stroke="#fff" stroke-width="3.6" stroke-linejoin="round">4.  Plug a cable into each jack and tug. Shield joints hold, signal legs still.</text>
+<text x="1210.0" y="570.0" font-size="10" text-anchor="start" font-weight="400" fill="#555">4.  Plug a cable into each jack and tug. Shield joints hold, signal legs still.</text>
+</svg>

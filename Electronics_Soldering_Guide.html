@@ -1,0 +1,3350 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Electronics_Soldering_Guide</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="lumiai--electronics-soldering-guide">LumiAI — Electronics Soldering
+Guide</h1>
+<blockquote>
+<p>✅ <strong>The live wand design, and this document is built to
+it.</strong> The wand has <strong>three identical rails — 6 strips × 20
+columns, 17 × 50 mm as cut — at 30/150/270°</strong>, a single
+<strong>6-pin inlet in the end plate</strong>, <strong>no sidewall
+connectors</strong> and <strong>no inter-rail jumpers</strong>. One net
+per strip means <strong>ZERO track cuts and ZERO link wires</strong>;
+the two M2 holes sit between strips 3 and 4. ✅ Source of truth: <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times"><strong>the
+rail layout</strong></a> · <a
+href="Lumi_Wand_Integration.html#-wand-topology--three-rails-one-inlet">topology</a>.</p>
+</blockquote>
+<p><strong>Purpose:</strong> the bench-side guide for every operation
+that involves heat + flux + filler on the LumiAI Ultra electronics
+build. Parallel to <a
+href="3D_Printing_Guide.html"><code>3D_Printing_Guide.md</code></a>
+(filament + print settings) and <a
+href="CNC_Machining_Guide.html"><code>CNC_Machining_Guide.md</code></a>
+(stock + tools + ops). This doc owns the <em>how-to</em> for soldering
+iron selection, tip care, technique reference, and per-part soldering
+procedures. Non-soldering bench work lives in <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> (bay
+mounting, wiring, verification) and <a
+href="Electronics_Assembly_Guide.html"><code>Electronics_Assembly_Guide.md</code></a>
+(bench inventory, crimping, bonding, the wand-head LED work). Design
+decisions + bus addresses + system rationale live in <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>,
+<a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>,
+and <a
+href="Power/Compact_UPS_Power_System_HiWonder_RPi5.html"><code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code></a>.</p>
+<p><strong>Scope boundary:</strong> what's "soldering" here = anything
+involving heat + filler material. <strong>Crimping is NOT
+soldering</strong> (no heat) — that lives in <a
+href="Electronics_Assembly_Guide.html"><code>Electronics_Assembly_Guide.md</code></a>
+§3. <strong>Bonding is NOT soldering</strong> (epoxy or VHB) — lives in
+<a
+href="Electronics_Assembly_Guide.html"><code>Electronics_Assembly_Guide.md</code></a>
+§15.</p>
+<hr />
+<h2 id="0-conventions--read-first">0. Conventions — read first</h2>
+<ul>
+<li><strong>Solder alloy in stock</strong>: Qualitek Delta RA300,
+<strong>Sn60/Pb40, rosin-activated flux core</strong> (IPC-J-STD-004
+ROM1). Melting range <strong>183–188 °C</strong> — <em>not</em> the
+Sn63/Pb37 eutectic at a single 183 °C point. The 5 °C pasty range means
+joints can be disturbed during cool-down — <strong>hold parts steady ~2
+s after the iron pulls away</strong> before disturbing. Common spot to
+miss: tweezer-placed SMD parts; release the tweezers only after the
+joint goes visibly matte → solid.</li>
+<li><strong>Working tip temperatures:</strong>
+<ul>
+<li>Through-hole + JST-XH PCB-mount headers: <strong>350 °C</strong>
+with leaded RA300</li>
+<li>SMD lift + reflow on 0805/0603: <strong>350 °C</strong> with fine
+chisel or fine conical</li>
+<li>LED MCPCB pads (aluminum substrate): <strong>380–400 °C</strong>
+(the aluminum sinks heat — need the thermal reserve)</li>
+<li>20 AWG power buses on perfboard rails: <strong>380 °C</strong> for
+thermal-mass joints</li>
+</ul></li>
+<li><strong>Flux</strong>: Chip Quik CQ4LF no-clean liquid flux in 10 ml
+pen applicator. Single tiny dot per joint — the pen tip dispenses
+precisely, no syringe mess. <strong>Wipe SMD work with 99 % IPA
+after</strong> for long-term reliability in humid environments (power
+bay). RA flux is mildly activated; residues are non-corrosive +
+non-conductive but cheap insurance to clean.</li>
+<li><strong>ESD</strong>: PCA9685, TMP102, INA226 are CMOS but
+ESD-tolerant. Mat + wrist strap = cheap insurance, not strictly
+required.</li>
+<li><strong>Eye protection</strong>: always. The solder spits
+occasionally, especially when reflowing oxidized joints.</li>
+<li><strong>One-bridge-per-row safety</strong> (INA226 address pads):
+re-stated from <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§2 because it's easy to forget under the iron — never have two bridges
+in the same address row simultaneously — it shorts VCC to GND through
+the row trace.</li>
+<li><strong>Always run a continuity check before bridging
+anything.</strong> Silk letters are unreliable across vendor lots (see
+the GVLA/GULA correction recorded in the EXTERNAL doc). Function ID by
+multimeter against known rails on the header is deterministic and takes
+30 seconds.</li>
+</ul>
+<hr />
+<h2 id="1-tool-inventory">1. Tool Inventory</h2>
+<h3 id="11-soldering-irons-two-iron-setup-either-covers-everything">1.1
+Soldering irons (two-iron setup, either covers everything)</h3>
+<blockquote>
+<p><strong>🇮🇳 India bench (2026-08 build) — different primary
+iron.</strong> The table below is the <strong>home-bench, 110 V</strong>
+inventory. On the India bench the primary iron is the <strong>Serplex 80
+W / 220 V digital (200–500 °C)</strong>, delivered 2026-08-21, running
+off hotel mains; every temperature in this guide applies to it
+unchanged. The <strong>Yanecty is 110 V and is backup-only
+there</strong> — it survived a brief 220 V exposure (element measures 50
+Ω = healthy) but its triac is unverified; test it on the 5 kW brick
+before trusting it. The Weller is not on the trip. The BESTEK 250 W
+travel converter runs the bench PSU and the heat gun (short bursts, solo
+load) but <strong>cannot drive digital irons</strong>. See <a
+href="Wand_and_Wand_Extension_Build_Plan.html#0-session-locked-decisions">India
+plan §0</a>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Iron</th>
+<th>Spec</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Yanecty 80 W LCD Digital Soldering Kit</strong>
+(primary)</td>
+<td>80 W ceramic core, 20 s heat-up, 180–480 °C / 380–896 °F, <strong>5
+iron tips</strong> + 7 heat-set insert tips</td>
+<td><strong>Covers ~95 % of work, including SMD.</strong> With a fine
+chisel or fine conical tip at 350 °C, handles 0805 SMD lift/swap and
+address-pad bridging cleanly — temperature-controlled iron means the 80
+W rating is "max heat available to maintain setpoint," not "more heat
+into the joint." LCD digital control + tip flexibility + thermal reserve
+= the more capable iron in every dimension that matters at this scale.
+Also: 20 AWG power buses on rails, JST-XH PCB-mount header soldering
+(5/6/7-pin), LED MCPCB pad soldering at 380–400 °C. Heat-set insert tips
+also double as a melt-in-threaded-insert tool for PETG/PLA prints.</td>
+</tr>
+<tr>
+<td><strong>Weller WLSK3012A Precision Grip Soldering Iron
+Station</strong> (secondary)</td>
+<td>5–30 W, 120 V</td>
+<td>Optional alternative for very fine pad placement (TMP102 ADD0 cut +
+V+ bridge, INA226 address pads with neighboring components) <strong>if
+you prefer pen-grip ergonomics over the Yanecty's iron-stand form
+factor</strong>. Functionally interchangeable with the Yanecty for SMD.
+Either iron alone is sufficient — having both is convenience, not a
+requirement.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tip-selection rule.</strong> Tip choice matters more than
+iron choice — at 350 °C with a fine tip, both irons deliver the same
+thermal envelope to a 0805 pad. Match the tip to the work:</p>
+<table>
+<thead>
+<tr>
+<th>Work</th>
+<th>Tip</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Through-hole headers (JST-XH PCB-mount)</td>
+<td>Fine chisel (~1 mm)</td>
+</tr>
+<tr>
+<td>SMD 0805 lift/swap</td>
+<td>Fine conical or fine chisel (~0.5 mm working face)</td>
+</tr>
+<tr>
+<td>Address pad bridging (~0.5–1 mm pad)</td>
+<td>Fine conical</td>
+</tr>
+<tr>
+<td>20 AWG perfboard power-bus jumpers</td>
+<td>Medium chisel (~2 mm)</td>
+</tr>
+<tr>
+<td>LED MCPCB pads (aluminum substrate)</td>
+<td>Medium chisel; preheat board on hot plate if available</td>
+</tr>
+<tr>
+<td>Wire-to-pad on LED MCPCB</td>
+<td>Medium chisel + patience</td>
+</tr>
+</tbody>
+</table>
+<h3 id="12-desoldering">1.2 Desoldering</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Spec</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Engineer SS-03</strong> (Made in Japan)</td>
+<td>Professional-grade solder sucker (vacuum pump)</td>
+<td>Removing accidental bridges (INA226 same-row mistake recovery),
+clearing pads of residual solder before replacing SMD parts. Use with
+the iron — heat the joint, sucker tip close, fire.</td>
+</tr>
+<tr>
+<td><strong>Desoldering braid (wick)</strong></td>
+<td>Multi-spool stock (6 spools, ~$3 each)</td>
+<td>Final residue cleanup after the SS-03 pulls the bulk. Heat through
+the braid + onto the pad — capillary action wicks remaining solder.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-inspection--part-handling">1.3 Inspection + part
+handling</h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Spec</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Drdefi 10× rectangular magnifier with LED + helping hands
+station</strong></td>
+<td>Real-glass 10×, dual-mode desktop + clamp base, 4 magnetic flexible
+third-hands</td>
+<td>Silk reading on SMD resistors (<code>01C</code> = EIA-96 10 kΩ,
+<code>4R7</code> = 4.7 Ω, <code>R002</code> = 2 mΩ), inspecting joints
+under magnification, holding perfboard + cable + part simultaneously
+during rail-bus soldering. The 4 magnetic helpers are the unsung hero of
+the rail-PCB session.</td>
+</tr>
+<tr>
+<td><strong>Fine SMD tweezers</strong> (ESD-safe, curved fine-tip,
+black-coated stainless)</td>
+<td>Curved geometry</td>
+<td>Parts placement / lift on 0805 + 0603 SMD work. Curved tip grips
+small parts without slipping (straight tip slips off small components
+under pressure). Black coating prevents solder splatter from
+sticking.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="14-tip-care-kit-ordered-2026-05-31">1.4 Tip-care kit (ordered
+2026-05-31)</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Spec</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Brass-cleaner-ball kit</strong> + silicone non-slip holder +
+3× brass cleaner balls</td>
+<td>~$7 Amazon</td>
+<td>Mechanical oxide removal in-session. Stab the hot tip into the brass
+balls — oxide flies off, plating stays intact (brass Mohs 3 &lt; tip
+plating Mohs 5–6). Replaces wet cellulose sponge as the
+active-work-station cleaning tool (cellulose thermal-cycles the tip
+more).</td>
+</tr>
+<tr>
+<td><strong>Thermaltronics TMT-TC-2 Tip Tinner</strong></td>
+<td>20 g / 0.8 oz tin</td>
+<td>Chemical-tip activation + storage protection. Use at
+start-of-session, end-of-session, and any time the tip won't take
+solder. <strong>Why Thermaltronics specifically:</strong> Thermaltronics
+is the OEM that makes the Hakko/Weller-compatible tip plating, so their
+tinner formulation is chemistry-matched to the plating it's reactivating
+— better fit than generic alternatives.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="2-consumables">2. Consumables</h2>
+<blockquote>
+<p><strong>🇮🇳 India bench (2026-08 build) — two of these are NOT on
+hand.</strong> <strong>99 % IPA</strong> and <strong>Kapton
+tape</strong> were deliberately left behind (<a
+href="Wand_and_Wand_Extension_Build_Plan.html#0-session-locked-decisions">India
+plan §0</a>), so every "wipe with IPA" and "mask with Kapton" step below
+needs a substitute on that bench:</p>
+<ul>
+<li><strong>Flux-residue cleanup (§4.1a, §4.2, §5.2, §12.3):</strong>
+RA300's rosin residue is non-corrosive and non-conductive — the wipe is
+insurance, not a requirement. Skip it, or dry-brush the area with a
+clean stiff brush. Prioritise a local IPA buy if one is easy; a
+chemist's rubbing alcohol is not equivalent (water + additives) but is
+better than nothing on the SMD work.</li>
+<li><strong>Bond-surface prep (Assembly Guide §12.4 / §15.1):</strong>
+scrape-clean + dry-wipe. 8329TCM tolerates a clean dry surface; the bond
+area is generous, so the margin loss is acceptable.</li>
+<li><strong>Heat-resistant insulation (§11.3 strain relief, the Noctua
+TACH stub):</strong> use <strong>heat-shrink</strong> instead of
+Kapton.</li>
+</ul>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Spec</th>
+<th>Stock state</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>400-grit silicon carbide wet/dry emery</strong> — Taparia 9″
+× 11″ sheets, pack of 10 (₹259, Amazon India, in hand 2026-09-05).
+<strong>In active use</strong> — abrading nickel strip and 26700 cell
+caps to bright metal before fluxing (<a
+href="#163-why-pure-nickel-fights-you-and-what-to-do-about-it">§16.3</a>).
+SiC cuts nickel better than aluminium-oxide paper and does not load up.
+Tear a small square per joint; <strong>use dry</strong>, no water near a
+cell.</td>
+<td>400 grit, 10 sheets</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>16 AWG tinned-copper silicone wire, red + black</strong> —
+INVENTO 3 m, 3 mm OD, 200 °C silicone (₹820, Amazon India, in hand
+2026-09-05). Bench stock. <strong>Not used for the flashlight pack leads
+any more</strong> — those are 18 AWG (operator 2026-11-05, <a
+href="#165-bms-wires--gauge-where-each-lands-and-how-to-solder-them">§16.5</a>).</td>
+<td>16 AWG, 3 m of each colour</td>
+<td><strong>Stock.</strong></td>
+</tr>
+<tr>
+<td><strong>Solder, leaded</strong></td>
+<td>Qualitek Delta RA300, Sn60/Pb40 rosin-activated flux core (IPC
+ROM1)</td>
+<td><strong>Stock.</strong> 0.5 mm for fine SMD/header work, 0.8 mm for
+20 AWG power-bus joints. Melt range 183–188 °C (5 °C pasty — hold parts
+steady 2 s after the iron pulls away).</td>
+</tr>
+<tr>
+<td><strong>Liquid flux, no-clean</strong></td>
+<td>Chip Quik CQ4LF, 10 ml pen applicator</td>
+<td><strong>Stock.</strong> Pen tip dispenses tiny precise dots — single
+drop per SMD resistor + per address-pad bridge. Also useful for
+re-tinning oxidized tip when the tinner isn't reaching.</td>
+</tr>
+<tr>
+<td><strong>99 % isopropyl alcohol</strong></td>
+<td>for cleaning RA flux residue after SMD work + general tip
+wipedown</td>
+<td><strong>Stock.</strong> Wipe SMD work after lift/swap — see §3.2
+below for RA-flux long-term reliability rationale.</td>
+</tr>
+<tr>
+<td><strong>Kapton tape</strong></td>
+<td>10 mm</td>
+<td><strong>Stock.</strong> For masking adjacent components during
+hot-air work (out-of-kit) + general heat-resistant insulation.</td>
+</tr>
+<tr>
+<td><strong>Solder gauges in stock</strong></td>
+<td>0.5 + 0.8 mm on spool</td>
+<td>Match gauge to work — 0.5 for SMD + fine pads, 0.8 for 20 AWG bus
+joints.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-tip-care--the-routine-that-makes-everything-else-easier">3.
+Tip Care — the routine that makes everything else easier</h2>
+<p>This is the section most hobbyists skip and then wonder why their
+tips die in 6 months. The discipline below is what makes a tip last 5+
+years.</p>
+<h3 id="31-brass-cleaner-balls--in-session-oxide-removal">3.1 Brass
+cleaner balls — in-session oxide removal</h3>
+<p><strong>What it does:</strong> strips oxide + old flux + cooked
+solder off the working face of the tip <em>during</em> a soldering
+session. The brass wool is softer (Mohs 3) than the tip's nickel-iron
+plating (Mohs ~5–6) so it scrubs clean without abrading the protective
+coat.</p>
+<p><strong>How to use:</strong> with the iron hot and on the stand, stab
+the working face into the brass balls and twist briefly (~1 second).
+Oxide + crud falls off. Re-tin (touch a small dab of solder to the tip)
+immediately to keep the face protected. Repeat every few joints during a
+long session.</p>
+<p><strong>Why not a wet sponge:</strong> wet cellulose works but
+thermally shocks the tip (350 °C → wet surface → instant ~100 °C drop,
+then back up). Brass balls don't cool the tip — better thermal stability
+and faster recovery between joints.</p>
+<h3 id="32-tip-tinner-thermaltronics-tmt-tc-2--start-stop-recovery">3.2
+Tip tinner (Thermaltronics TMT-TC-2) — start, stop, recovery</h3>
+<p><strong>Tinner is a flux + low-temp solder compound</strong> that
+chemically etches oxide AND deposits fresh solder simultaneously. It
+serves <em>two distinct</em> purposes:</p>
+<p><strong>A. Recovery from oxidation (mid-session).</strong> If the tip
+goes dull, grayish, dark, or stops accepting solder:</p>
+<ol type="1">
+<li>Iron at working temp (350 °C).</li>
+<li><strong>Press the hot tip directly into the tinner paste</strong>
+for 1–2 seconds. Brief hiss + faint smoke = flux activating.</li>
+<li>Tip comes out coated in fresh shiny solder.</li>
+<li>Wipe excess on the brass cleaner balls.</li>
+<li>Tip is reactivated — back to wetting joints in 2 seconds.</li>
+</ol>
+<p><strong>B. Preventive tinning (the high-leverage habit).</strong>
+This is what extends tip life from months → years:</p>
+<ul>
+<li><strong>End of every soldering session</strong>: heat the iron, dip
+the tip in tinner, leave a fat solder coat on the working face.
+<strong>Then turn off the iron.</strong> The solder coat protects the
+plating from oxidation during cool-down + storage.</li>
+<li><strong>Start of every session</strong>: heat the iron, wipe the old
+solder coat off on the brass balls, dip in tinner again, wipe excess.
+Fresh-tinned working face in ~30 seconds.</li>
+<li><strong>Mid-session if the tip starts looking dull</strong>:
+brass-ball wipe + tinner dip + brass-ball wipe again.</li>
+</ul>
+<p>The 20 g tin lasts essentially forever at hobby scale — one tin =
+years of use.</p>
+<h3 id="33-warning-do-not-use-sandpaper--emery-on-iron-tips">3.3 ⚠️ DO
+NOT use sandpaper / emery on iron tips</h3>
+<p>Even fine 600+ grit is <strong>alumina (Mohs 9)</strong> — harder
+than the tip's thin <strong>nickel-iron plating (~50–100 µm)</strong>.
+Sanding tears through the plating in seconds, exposing the copper core
+which then oxidizes black at 350 °C and <strong>stops accepting solder
+permanently</strong> (de-tinning). The tip is unrecoverable from this
+point — you've destroyed the protective coat that makes it wettable.</p>
+<p>This applies whether the tip is hot or cool. Emery is harder than the
+plating either way.</p>
+<p><strong>The bench sandpaper (100–1000 grit, in stock) stays useful
+for:</strong> deburring brass standoffs, abrading bonding surfaces
+before MG 8329TCM epoxy (see <a
+href="Electronics_Assembly_Guide.html"><code>Electronics_Assembly_Guide.md</code></a>
+§15), general prep. <strong>Just keep it away from iron
+tips.</strong></p>
+<h3 id="34-solder-before-storage">3.4 Solder before storage</h3>
+<p>Final habit: <strong>never store an iron with a bare tip.</strong> A
+bare tip oxidizes overnight; next session, it won't take solder until
+you re-tin. A fat-solder-coated tip stays mint for months. 5 seconds of
+solder dab before turn-off = 30 seconds saved next session + years added
+to the tip's lifespan.</p>
+<hr />
+<h2 id="4-technique-reference">4. Technique Reference</h2>
+<p>Each per-part section in §5+ references one or more of these
+technique primitives. Read this section once; then for each per-part
+procedure you only need to know which technique applies.</p>
+<h3 id="41-through-hole-header-soldering">4.1 Through-hole header
+soldering</h3>
+<p>Used for: JST-XH 2.54 mm PCB-mount headers into bare 0.1″ rows on
+TMP102 boards (§5, §6), 0.1″ pin headers on the rail PCBs (§9), any
+header into a PTH (plated-through-hole) board.</p>
+<ul>
+<li><strong>Tip:</strong> fine or medium chisel (~1 mm working
+face)</li>
+<li><strong>Temp:</strong> 350 °C</li>
+<li><strong>Solder gauge:</strong> 0.5 mm</li>
+<li><strong>Procedure per pin:</strong>
+<ol type="1">
+<li>Insert the header from the back side so the connector body sits
+below the PCB.</li>
+<li>Apply tip to the joint (touch both the pad and the pin
+simultaneously) for ~1 s to bring the joint up to temp.</li>
+<li>Feed solder onto the joint, not the iron. Wait for it to flow around
+the pin and form a smooth fillet (conical, shiny, fills the hole).</li>
+<li>Remove solder, then remove iron. Total ~3 s per joint.</li>
+<li>Inspect under the 10× magnifier — smooth fillet, no bridges to
+adjacent pads.</li>
+</ol></li>
+</ul>
+<p>Bad signs: dull/grainy joint (cold — reflow), excessive solder (too
+much wire fed — feed less), solder didn't flow into the hole (joint
+wasn't hot enough — re-apply iron + a bit more flux).</p>
+<h3
+id="41a-desoldering-an-existing-solder-bridge-between-two-pads-address-pad-rework">4.1a
+Desoldering an existing solder bridge between two pads (address-pad
+rework)</h3>
+<p>Used for: <strong>removing a factory solder bridge between two
+adjacent address-select pads</strong> — most commonly the INA226 A1:G
+factory bridge that has to come off before A1:U can be added (§5.1 sets
+the target address to 0x44 which needs A1=VCC, not the factory A1=GND).
+Also any similar rework where a small blob of tinned solder bridges two
+closely-spaced pads and needs to come off cleanly without lifting either
+pad.</p>
+<p><strong>Why this warrants its own section:</strong> the operator's
+first instinct — SS-03 solder sucker — often doesn't work on thin
+factory bridges. The sucker's nozzle can't get close enough to the flat
+blob to build vacuum. Braid + fresh flux + fresh solder is the reliable
+path. (Field-reported difficulty during INA226 A1:G removal — added
+2026-08-09.)</p>
+<ul>
+<li><strong>Tip:</strong> fine conical (the finer the better — you want
+to concentrate heat on the bridge, not on adjacent pads)</li>
+<li><strong>Temp:</strong> 340–350 °C (same as SMD lift — hot enough to
+reflow, low enough to not lift copper)</li>
+<li><strong>Solder gauge:</strong> 0.5 mm (only used to "re-wet" the old
+bridge)</li>
+<li><strong>Flux:</strong> Chip Quik CQ4LF <strong>essential</strong> —
+a bare cold factory bridge doesn't wick well; flux revives it</li>
+<li><strong>Desoldering braid:</strong> fine-gauge wick (1.5-2 mm
+width), the type in bench stock (see §1.2)</li>
+<li><strong>Procedure:</strong>
+<ol type="1">
+<li><strong>Fresh flux drop on the bridge.</strong> Small dot of CQ4LF
+right on top of the blob and covering both pads. Flux is what makes the
+difference — a dry, oxidized factory bridge stubbornly resists the
+braid; a fluxed bridge wicks in one pass.</li>
+<li><strong>Optional but recommended: re-wet the bridge with a tiny
+amount of fresh 0.5 mm solder</strong> (~0.5 mm of wire fed).
+Counter-intuitive — you're ADDING solder to remove solder — but the
+fresh solder is well-tinned and gives the braid something to grab. Old
+factory bridges can be alloy-mismatched or oxidized enough that they
+wick reluctantly without the fresh-solder reset.</li>
+<li><strong>Cut ~15 mm of clean desoldering braid</strong> and lay it
+directly on top of the bridge (braid touches both pads + the blob
+between them).</li>
+<li><strong>Press the iron tip down onto the braid</strong> so heat
+conducts through the braid → solder blob melts → capillary action wicks
+the molten solder INTO the braid. Watch the braid change color (silvery
+uptake) — that's when it's working.</li>
+<li><strong>Wait 2-4 s</strong> while the braid absorbs the blob. Do NOT
+lift the iron off the braid while the solder is still molten — you'll
+trap the braid to the pad.</li>
+<li><strong>Lift the iron and braid together</strong> in one motion,
+while everything is still molten. Braid comes off cleanly. Cut the used
+section of braid off (it now has old solder in it) — fresh braid for any
+next pass.</li>
+<li><strong>Inspect</strong> with the 10× magnifier: the two pads should
+be flat and DULL (matte grey — the sign of a clean, no-solder pad).
+Shiny = solder still there. Continuity meter across the two pads should
+read OPEN circuit.</li>
+<li><strong>If not fully clean:</strong> repeat steps 1-6 with a fresh
+braid section + more flux. Some factory bridges need 2-3 passes. Don't
+rush and don't hold the braid on the pad for &gt; 5 s continuous
+(copper-lift risk).</li>
+</ol></li>
+<li><strong>Cleanup:</strong> wipe the area with 99 % IPA to remove RA
+flux residue. Inspect adjacent pads — no accidental splash-bridges from
+the wick operation.</li>
+<li><strong>Gotchas:</strong>
+<ul>
+<li><strong>Do NOT use the SS-03 solder sucker for thin factory
+bridges</strong> — nozzle can't seat, vacuum won't grab a flat blob.
+Reserve the SS-03 for full through-hole joints (where the solder is a
+chunky mass), use braid for flat bridges.</li>
+<li><strong>Too much heat + too long dwell = lifted copper pad.</strong>
+Same failure as SMD lift. Cap the braid dwell at ~5 s per pass; step
+back and let the board cool between passes.</li>
+<li><strong>Adjacent-pad splash risk</strong> — if the fresh solder in
+step 2 overshoots, you can accidentally bridge to a NEIGHBOURING pad.
+Feed the tiniest amount possible (&lt; 0.5 mm of wire). Better to re-add
+if too little than to bridge the wrong pair.</li>
+<li><strong>Verify with continuity, not just visual.</strong> A blob can
+look gone under the magnifier and still have a whisker connecting the
+pads. Beep-mode multimeter across the two pads confirms.</li>
+</ul></li>
+</ul>
+<h3 id="42-smd-lift--iron--tweezers-tin-and-slide">4.2 SMD lift — iron +
+tweezers ("tin and slide")</h3>
+<p>Used for: INA226 R4/R5 "01C" pull-up disable (§5.2), PT4115 1R0
+sense-R removal (§8.1).</p>
+<ul>
+<li><strong>Tip:</strong> fine conical or fine chisel</li>
+<li><strong>Temp:</strong> 350 °C</li>
+<li><strong>Flux:</strong> drop of Chip Quik CQ4LF on the part</li>
+<li><strong>Procedure:</strong>
+<ol type="1">
+<li>Drop of flux paste on the part.</li>
+<li>Tin the iron tip lightly.</li>
+<li><strong>Add fresh solder to ONE end of the SMD to build up a fat
+solder blob</strong> — feed 0.5 mm solder wire onto ONE termination of
+the 2-terminal part (0805 has 2 metal end-caps) until you have a chunky
+puddle that engulfs both the SMD's end-cap AND the PCB pad beneath it.
+<strong>You are adding MORE solder, not less</strong> —
+counter-intuitive but this is the key to a clean lift. The chunky puddle
+gives the joint enough thermal mass that heat conducts quickly through
+the whole SMD body when you dwell the iron on it. Small factory joints
+don't have enough mass — you'd end up dwelling for 20+ s and cooking the
+pad. (Note: the "both pads on that side" wording in older versions of
+this doc was confusing — the 0805 has only ONE pad per side. The intent
+is "a fat blob that covers the SMD's termination end-cap AND its PCB pad
+in one big lump.")</li>
+<li>Grip the part mid-body with fine tweezers (curved tip preferred —
+won't slip).</li>
+<li><strong>Slide the iron across both terminations
+alternately.</strong> Both joints soften progressively as heat spreads
+through the part body.</li>
+<li><strong>Lift straight up</strong> (no twist) when both ends are
+molten. Part comes free with no force. Typical total dwell: 8–15 s for
+0805.</li>
+</ol></li>
+<li><strong>Cleanup:</strong> SS-03 sucker on each pad while heating
+with the iron, then desoldering braid for residual. Wipe area with 99 %
+IPA to remove RA flux residue.</li>
+<li><strong>Inspection:</strong> Drdefi 10× magnifier — pads intact, no
+lifted copper, no shorts to neighbors.</li>
+</ul>
+<h3
+id="43-smd-place--reflow-tack-and-flow--historical-no-active-caller">4.3
+SMD place + reflow ("tack and flow") — HISTORICAL (no active
+caller)</h3>
+<blockquote>
+<p><strong>HISTORICAL — DO NOT USE IN CURRENT BUILD.</strong> This
+technique's only caller was the retired <a
+href="#82-place-the-0r15-technique-43--historical">§8.2 PT4115 0R15
+placement</a>. As of 2026-06-18 no driver variant requires an SMD
+sense-R swap (all three are used at factory current). Kept as a
+reference for any future SMD-placement task; if you're a new builder,
+<strong>skip this section</strong>.</p>
+</blockquote>
+<div style="color: #888;">
+
+<p>Used for: PT4115 0R15 sense-R placement (§8.2). Reverse of the lift
+technique.</p>
+<ul>
+<li><strong>Tip:</strong> fine chisel</li>
+<li><strong>Temp:</strong> 350 °C</li>
+<li><strong>Procedure:</strong>
+<ol type="1">
+<li>Drop of flux on the pads.</li>
+<li>Tweezer-place the new SMD across both pads, centered.</li>
+<li><strong>Tack one end</strong> with the iron + a small dab of solder
+— this holds the part in position.</li>
+<li>Check alignment — should sit centered. If skewed, reflow + nudge
+while molten.</li>
+<li>Reflow the other end with iron + dab.</li>
+<li><strong>Hold tweezers steady ~2 s after the iron pulls
+away.</strong> Sn60/Pb40 RA300 has a pasty range 183–188 °C (not the
+Sn63/Pb37 eutectic single-point at 183 °C) — joint passes through ~5 °C
+of mushy phase during cool-down where part movement weakens the joint.
+Don't release until the joint goes visibly matte → solid.</li>
+</ol></li>
+<li><strong>Inspection:</strong> under the magnifier — solder fillets on
+both pads, no tombstoning (one end lifted), no shorts.</li>
+</ul>
+</div>
+
+<h3 id="44-solder-bridge-for-address-pads-one-blob-technique">4.4
+Solder-bridge for address pads (one-blob technique)</h3>
+<p>Used for: INA226 A0/A1 address-pad bridges (§5.1) — sets I²C address
+0x44.</p>
+<ul>
+<li><strong>Tip:</strong> fine conical (the tip's edge, not the
+flat)</li>
+<li><strong>Temp:</strong> 350 °C</li>
+<li><strong>Solder gauge:</strong> 0.5 mm</li>
+<li><strong>Procedure:</strong>
+<ol type="1">
+<li>Flux dot on the chosen pad.</li>
+<li>Tin the iron tip lightly.</li>
+<li><strong>Single small solder blob</strong> between the two halves of
+the pad. Use the tip's edge to draw the blob across the gap.</li>
+<li>The blob should bridge both pad halves cleanly; no spread to
+adjacent pads (the pads are small, 0.5–1 mm — don't be greedy with
+solder).</li>
+<li>⚠️ <strong>One bridge per row only.</strong> Confirm visually that
+no other pad in the same row is bridged. If one is (e.g., the INA226
+factory A1:G bridge that needs to come off before adding A1:U for 0x44),
+<strong>desolder it first per <a
+href="#41a-desoldering-an-existing-solder-bridge-between-two-pads-address-pad-rework">§4.1a
+"Desoldering an existing solder bridge"</a></strong> — braid + flux, NOT
+the SS-03 sucker (the sucker's nozzle can't seat on a flat factory
+bridge; braid + fresh flux + a wetting drop of solder is the reliable
+path).</li>
+</ol></li>
+</ul>
+<h3 id="45-trace-cut--bridge-tmp102-add0-style-relocation">4.5 Trace cut
++ bridge (TMP102 ADD0-style relocation)</h3>
+<p>Used for: TMP102 wand address mod 0x48 → 0x49 (§7).</p>
+<p>This is <em>two</em> discrete operations: a scalpel cut (to break the
+GND tie) + a solder bridge (to make a V+ tie). Continuity-verify between
+them.</p>
+<p><strong>Cut:</strong></p>
+<ol type="1">
+<li>Sharp scalpel or X-Acto #11 blade (fresh — copper dulls blades
+quickly).</li>
+<li>Score the GND-tie trace with 3–5 light strokes until copper is
+visibly severed under the magnifier.</li>
+<li><strong>Continuity-verify:</strong> multimeter at the IC's ADDR pin
+(or the center pad) → known GND on the header → should read OPEN (no
+beep). If it still beeps, re-score.</li>
+</ol>
+<p><strong>Bridge:</strong></p>
+<ol start="4" type="1">
+<li>Fine iron at 350 °C, fine conical tip.</li>
+<li>Flow a small solder blob bridging the ADDR center pad to the V+
+rail-tie pad of the address-select cluster.</li>
+<li><strong>Continuity-verify:</strong> ADDR pin → V+ (header pin) →
+should beep. ADDR pin → GND → should NOT beep.</li>
+</ol>
+<h3 id="46-wire-to-pad-on-led-mcpcb-high-thermal-mass">4.6 Wire-to-pad
+on LED MCPCB (high thermal mass)</h3>
+<p>Used for: 12-channel × 2-wire LED bundle to 3× LED stars (§10).</p>
+<p>LED MCPCB substrate is <strong>aluminum</strong> — large thermal mass
+that sucks heat out of the iron tip. Requires:</p>
+<ul>
+<li><strong>Tip:</strong> medium chisel (the wider footprint helps
+transfer heat)</li>
+<li><strong>Temp:</strong> 380–400 °C (leaded RA300; lead-free would
+need higher)</li>
+<li><strong>Preheat (optional but recommended):</strong> warm the MCPCB
+on a hot plate at ~100 °C for 30 s before soldering. Reduces iron dwell
+time on each pad.</li>
+<li><strong>Procedure per pad:</strong>
+<ol type="1">
+<li>Tin the pad first (small blob, ~1 s with flux paste).</li>
+<li>Place the tinned wire-end on the pad.</li>
+<li>Reflow both together (~2 s).</li>
+</ol></li>
+<li><strong>Inspection:</strong> smooth joint with a small fillet.
+<strong>No cold gray dull joint</strong> (those are weak). If you see
+one, reflow.</li>
+</ul>
+<h3
+id="47-perfboard-bus--bare-stripped-solid-wire-technique-changed-2026-09-05">4.7
+Perfboard bus — BARE stripped solid wire (technique changed
+2026-09-05)</h3>
+<blockquote>
+<p><strong>RETIRED TECHNIQUE — nothing in this build calls it any more
+(2026-09-24).</strong> Its only caller was §9.3, the bare-wire perfboard
+rail, and all three rails are now <a
+href="Lumi_Wand_Integration.html#541-stripboard--busboard-st1-usa-and-its-ampacity">BusBoard
+ST1 stripboard</a> where the copper strip <strong>is</strong> the bus.
+What replaced this section is <strong><a
+href="#410-stripboard-track-cut--the-technique-that-replaced-47">§4.10
+track cuts</a></strong>: you remove copper instead of adding wire. Kept
+for reading boards already built.</p>
+</blockquote>
+<p>Used for: nothing — no live caller.</p>
+<blockquote>
+<h3
+id="white_check_mark-no-more-nicking-the-buses-are-fully-stripped-wire-now">✅
+No more nicking. The buses are FULLY STRIPPED wire now.</h3>
+<p><strong>The <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">v9.11
+layout</a> removes every crossing, and with it the reason to nick — one
+net per strip, so nothing ever has to cross.</strong> Each bus is a
+straight run inside one row, and <strong>within its span every hole
+belongs either to that bus or to nothing at all</strong> — there is no
+third net for a bare wire to touch. So use <strong>fully stripped
+solid-core wire</strong> (breadboard jumper stock), lay it flat in its
+row, and solder it into every hole it passes.</p>
+</blockquote>
+<ul>
+<li><strong>Wire:</strong> fully stripped <strong>solid core</strong>,
+~22 AWG (standard breadboard jumper wire, ~0.6 mm — drops straight into
+a 1.0 mm perfboard hole). Solid core is what makes this work: it stays
+where you put it and will not fray a whisker into the next row.</li>
+<li><strong>Tip:</strong> medium chisel. <strong>Temp:</strong> 380 °C
+for 13.8 V / GND, 350 °C for the three signal buses.</li>
+<li><strong>Procedure:</strong>
+<ol type="1">
+<li>Cut to the span in the bus table, plus a couple of mm.</li>
+<li>Lay it flat along its row on the <strong>OUTER (wall-facing)
+face</strong>, both ends landing <strong>in a hole</strong> — never
+leave a bare end floating over the board.</li>
+<li><strong>Solder every hole it passes</strong>, not just the connector
+landings. Unused holes in the span are isolated pads, so a joint there
+costs nothing and buys strain relief. ~2–3 s per joint with flux.</li>
+<li>Continuity-test end to end before laying the next bus.</li>
+</ol></li>
+<li><strong>Inspect:</strong> every joint shiny; the wire sitting flat
+with no lift between holes; <strong>no strand or burr reaching into an
+adjacent row.</strong></li>
+</ul>
+<h3 id="48-jst-xh-pcb-mount-connector-soldering-orientation-matters">4.8
+JST-XH PCB-mount connector soldering (orientation matters)</h3>
+<p>Used for: <strong>NOT the wand rails — v9.11 has no JST-XH on them at
+all; every rail landing is 0.1″ berg.</strong> The only JST-XH left on
+the wand is the <strong>6-pin in the END PLATE</strong> that the bay
+tether plugs into (§9.5). Still used for: <strong>the two +Y joint
+boards, which take a 6-pin <code>B6B-XH-A</code> / <code>XHP-6</code>
+pair</strong> (§9.5).</p>
+<p>The orientation choice — <strong>body OUT</strong> vs <strong>body
+IN</strong> through the perfboard — affects how the connector mates with
+cables vs. external hardware. Read §9 for the per-connector orientation
+table.</p>
+<ul>
+<li><strong>Tip:</strong> fine chisel</li>
+<li><strong>Temp:</strong> 350 °C</li>
+<li><strong>Solder gauge:</strong> 0.5 mm</li>
+<li><strong>Procedure:</strong> like through-hole headers (§4.1) but
+with the orientation decision per-connector. Insert connector, solder
+all pins through the 0.1″ pitch holes from the opposite face.</li>
+<li><strong>Inspect:</strong> smooth fillets, no solder bridges between
+adjacent pins.</li>
+</ul>
+<h3 id="49-common-smd-silk-marking-decoders">4.9 Common SMD silk-marking
+decoders</h3>
+<table>
+<thead>
+<tr>
+<th>Silk</th>
+<th>Convention</th>
+<th>Value</th>
+<th>Where it appears</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>01C</code></td>
+<td>EIA-96</td>
+<td>10 kΩ (code 01 = value 100; letter C = ×100)</td>
+<td>INA226 R4/R5 — SDA/SCL pull-ups (§5.2)</td>
+</tr>
+<tr>
+<td><code>4R7</code></td>
+<td>Standard 3-character</td>
+<td>4.7 Ω</td>
+<td>INA226 input series R (R1/R3) — <em>leave intact</em></td>
+</tr>
+<tr>
+<td><code>R002</code></td>
+<td>Standard with R prefix</td>
+<td>2 mΩ</td>
+<td>INA226 current shunt (R2) — <em>leave intact</em></td>
+</tr>
+<tr>
+<td><code>1R0</code></td>
+<td>Standard 3-character</td>
+<td>1 Ω</td>
+<td>PT4115 factory sense resistor (§8.1) — <em>lift</em></td>
+</tr>
+<tr>
+<td><code>R150</code> or <code>0R15</code></td>
+<td>Standard</td>
+<td>0.15 Ω</td>
+<td>Replacement sense resistor for 0R15 swap (§8.2) —
+<em>place</em></td>
+</tr>
+<tr>
+<td><code>103</code></td>
+<td>Standard 3-character</td>
+<td>10 kΩ (10 × 10³)</td>
+<td>Some PCA9685 clones use this for the pull-ups</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Don't trust silk alone — multimeter-verify on a lifted/spare
+resistor before placing a replacement.</strong></p>
+<h3 id="410-stripboard-track-cut--the-technique-that-replaced-47">4.10
+Stripboard track cut — the technique that replaced §4.7</h3>
+<p>Used for: <strong>the P− ground-bus board (one cut)</strong> — and,
+as of v9.11, that is the ONLY board in the build with a track cut on
+it.</p>
+<p><strong>The wand rails do not use this technique.</strong> They run
+<strong>one net per strip</strong> and have <strong>no cuts</strong> —
+<a
+href="#94--the-st1-rail--what-you-actually-build-v911-three-of-them-and-nothing-to-cut">§9.4</a>.
+The warning below still matters for the ground-bus board's single cut,
+which is the wand's star point and the highest-stakes cut left in the
+build.</p>
+<blockquote>
+<h3
+id="warning-a-bad-cut-is-invisible-and-a-good-cut-looks-like-nothing">⚠️
+A bad cut is invisible and a good cut looks like nothing</h3>
+<p>This is the failure mode that makes track cuts different from every
+other operation in this guide. A cold solder joint looks wrong.
+<strong>A track cut that did not quite sever the strip looks exactly
+like one that did</strong> — same scraped copper, same gap to the eye —
+and the board powers up and works. On the <strong>P− ground-bus
+board</strong> the strip-3 hole-3 cut is the flashlight SKU's entire
+star ground: if it did not take, <code>P−power</code> and
+<code>P−logic</code> are one bus, 2.4 A of LED return flows through the
+I²C reference, and nothing anywhere is visibly wrong until the bus
+glitches under load. <strong>Meter every cut. There is no visual
+substitute.</strong></p>
+</blockquote>
+<ul>
+<li><strong>Tool:</strong> a stripboard spot-cutter if you have one,
+otherwise a <strong>3 mm drill bit turned BY HAND</strong> in the hole,
+or a sharp hobby knife. Not a powered drill — it grabs and tears the
+pad.</li>
+<li><strong>Where:</strong> at the <strong>hole</strong>, not between
+holes. The copper is narrowest at the hole's annulus and the pad gives
+the cutter something to centre on.</li>
+<li><strong>Procedure:</strong>
+<ol type="1">
+<li>Cut <strong>before</strong> any component goes on the board. Copper
+is easy to reach now and buried later.</li>
+<li>Rotate the bit/knife until the pad's copper ring is gone and you can
+see bare FR4 all the way round the hole. Two or three turns is usually
+enough.</li>
+<li>Brush the swarf off — a loose copper curl lying across the gap reads
+as continuity and is the most common false failure.</li>
+<li><strong>Meter it: one probe each side of the cut, adjacent holes.
+Must read OPEN.</strong> If it beeps, go back in; do not assume the
+probe slipped.</li>
+<li>Re-meter <strong>along</strong> each surviving segment end to end. A
+cutter that wandered can sever the strip a hole early, which fails
+silently in the other direction.</li>
+</ol></li>
+<li><strong>Inspect:</strong> bare FR4 visible through the hole, no
+copper whisker bridging the gap, no lifted pad on either neighbouring
+hole.</li>
+</ul>
+<p><strong>Cut schedule for this build:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Board</th>
+<th>Cuts</th>
+<th>What each one does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wand rails ×3 (ST1, 6 strips × 20)</td>
+<td>✅ <strong>NONE</strong></td>
+<td>One net per strip, so no strip is ever shared and nothing needs
+separating. The star ground is structural — <code>GND-logic</code> on
+strip 4, <code>GND-power</code> on strip 5.</td>
+</tr>
+<tr>
+<td>P− ground-bus board (ST1, 6 strips × 9)</td>
+<td><strong>strip 3, hole 3</strong></td>
+<td>Splits <code>P−power</code> (holes 1–2) from <code>P−logic</code>
+(holes 4–8). E14 straddles it — see §4.11.</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>The rail's M2 holes are not cuts and sever
+nothing:</strong> they sit <strong>between strips 3 and 4</strong> at
+cols 4 and 17, so each Ø2.2 hole trims both strips' edges but cuts
+neither (meter <code>3V3 ↔︎ GND-logic</code> OPEN and both strips
+continuous afterwards). The ground-bus board's four M2 holes are a
+different case — see below.</p>
+<h3 id="411-surface-solder-across-a-cut--the-star-point">4.11
+Surface-solder ACROSS a cut — the star point</h3>
+<p>Used for: <strong>E14, the 18 AWG BMS P− feed on the ground-bus
+board</strong> — the single place where the flashlight SKU's two grounds
+meet. Exactly one wire in the build is soldered this way.</p>
+<blockquote>
+<h3 id="this-wire-is-the-star-point-solder-it-last">This wire is the
+star point. Solder it LAST.</h3>
+<p>E14 sits <strong>on the surface</strong>, bridging the strip-3 hole-3
+cut you just made in §4.10 — it lands on the copper either side, not in
+a hole. That is the entire design: <code>P−power</code> and
+<code>P−logic</code> are otherwise separate, and E14 is the one node
+joining them. Solder it before the rest of the board and every
+subsequent continuity check reads short, so you lose the ability to
+prove the cut took.</p>
+</blockquote>
+<ul>
+<li><strong>Why surface and not through a hole:</strong> stranded 18 AWG
+is ~1.1–1.3 mm OD and an ST1 hole is 1.02 mm. <strong>It was never going
+to thread through</strong> — so this is not a compromise, it is the
+intended landing.</li>
+<li><strong>Tip:</strong> large chisel. <strong>Temp:</strong> 380 °C.
+18 AWG on a copper strip is a real thermal load; a fine tip will stall
+and you will cook the FR4 chasing it.</li>
+<li><strong>Procedure:</strong>
+<ol type="1">
+<li><strong>Do §4.10 first and meter the cut OPEN.</strong> Then do
+every other joint on the board. E14 is last.</li>
+<li>Tin the strip either side of the cut and tin the wire end
+separately.</li>
+<li>Lay the wire along the strip so it covers <strong>both</strong>
+segments with the cut roughly centred under it. Reflow one side, check
+it has not shifted, then the other.</li>
+<li><strong>Meter <code>P−power ↔︎ P−logic</code> — it must now read
+SHORT</strong>, and that is the only route between them. Lift a probe
+onto E14 itself and confirm both sides reach it.</li>
+</ol></li>
+<li><strong>Inspect:</strong> the wire flat against the board on both
+sides of the cut, fillets that wet the strip and not just the wire, and
+<strong>no solder run into the cut gap</strong> — a bridge there defeats
+nothing visibly but moves the star point off the wire.</li>
+</ul>
+<hr />
+<h2 id="5-part-1-ina226--address-bridges--pull-up-disable">5. Part 1:
+INA226 — Address Bridges + Pull-up Disable</h2>
+<p><strong>Goal:</strong> set the INA226 to I²C address
+<strong>0x44</strong> (one bridge per row on the address pads), and
+disable its onboard 10 kΩ SDA/SCL pull-ups (lift R4/R5). Header solder
+is <strong>not required</strong> — the GODIYMODULES INA226 ships with
+the 4-pin logic header and 4-pos screw terminals <strong>pre-installed
+at the factory</strong> (verify on receipt). Full board reference +
+photos in <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§2 "INA226 board reference."</p>
+<h3 id="51-address-pads--set-0x44-technique-44">5.1 Address pads — set
+0x44 (technique §4.4)</h3>
+<p><strong>Confirmed silk on this vendor's board (GODIYMODULES
+clone):</strong> address pads in each row read <strong>G U L A</strong>
+left to right (G=GND, U=VCC, L=SCL, A=SDA). <strong>Row labels: TOP row
+= A0, BOTTOM row = A1</strong> (operator-verified — the EXTERNAL doc
+previously had this inverted; caught + fixed 2026-05-23).</p>
+<p><strong>Target 0x44 = A1=VS, A0=GND</strong> → bridge:</p>
+<ul>
+<li><strong>Top row: silk "G" pad</strong> (A0 → GND) — leftmost pad in
+the A0 row</li>
+<li><strong>Bottom row: silk "U" pad</strong> (A1 → VCC) — second pad
+from left in the A1 row</li>
+</ul>
+<p>⚠️ <strong>One-bridge-per-row safety.</strong> Before bridging
+anything, verify no other pads in those rows are already bridged.
+<strong>Desolder any existing same-row bridge before adding a new
+one.</strong> End state: exactly 2 bridges total, one per row.</p>
+<p><strong>Continuity-verify before bridging</strong> (the only
+deterministic step — silk is unreliable):</p>
+<ol type="1">
+<li>Power off, disconnected.</li>
+<li>Multimeter → continuity (beep) mode.</li>
+<li>The bottom 4-pin logic header (silk GND / SCL / SDA / VCC
+left-to-right) carries the 4 known rails.</li>
+<li>For each of the 8 address-bridge pads, beep against each of the 4
+header pins. Each pad beeps against exactly ONE rail.</li>
+<li>Mark the pad-to-rail mapping. Now you know which pad to bridge
+regardless of how the silk reads.</li>
+</ol>
+<p><strong>Bridge technique:</strong> see §4.4 — fine conical tip at 350
+°C, single small solder blob between the two halves of the chosen pad.
+Don't bridge to neighboring pads.</p>
+<p><strong>Bench check after:</strong> with the INA226 wired to the
+G469, <code>docker exec ArmPiUltra i2cdetect -y 1</code> must show
+<strong>0x44</strong>. If 0x40 → no bridges took. If 0x41 → rows
+mirrored (redo continuity check). If 0x4X for any other X → wrong pad
+somewhere.</p>
+<h3
+id="51a-ina226-batt--set-0x45-added-2026-10-23-same-board-same-technique">5.1a
+INA226-BATT — set 0x45 (added 2026-10-23; same board, same
+technique)</h3>
+<p>The second INA226 (the battery-lead monitor, Power_Bay §5a) sits at
+<strong>0x45 = A1 → VS, A0 → VS</strong>: <strong>top-row "U" (A0 = VCC)
++ bottom-row "U" (A1 = VCC)</strong>. Follow §5.1's procedure exactly:
+<strong>continuity-ID every pad against the header rails FIRST</strong>
+(the silk is ambiguous), <strong>one bridge per row, never two in the
+same row</strong>, then <code>i2cdetect</code> → <strong>0x45</strong>.
+Reading 0x44 means the top-row bridge went to G; 0x41 means the rows are
+mirrored. <strong>Lift both 01C pull-ups (§5.2) on this board
+too.</strong> Mounting on a carrier build uses the board's <strong>dead
+Ø2.0 @ 17.5 mm pair</strong>, never the live Ø2.2 ISENSE± pads
+(Power_Bay §11.3.9).</p>
+<h3 id="52-pull-up-disable--lift-r4--r5-technique-42">5.2 Pull-up
+disable — lift R4 + R5 (technique §4.2)</h3>
+<p><strong>Location:</strong> the <strong>two SMD resistors silk-marked
+"01C" on the right edge</strong> of the board are R4 + R5 = SDA/SCL
+pull-ups to VCC. EIA-96 decode: <strong><code>01C</code> = 10
+kΩ</strong> (see §4.9 decoder table). (The doc previously said "10K"
+silk — wrong; corrected 2026-05-23.)</p>
+<p><strong>Procedure:</strong> see §4.2 SMD lift technique.
+Specifically:</p>
+<ol type="1">
+<li>Drop of Chip Quik CQ4LF flux on each resistor.</li>
+<li><strong>Tin and slide</strong> with the Yanecty (350 °C, fine chisel
+or conical tip).</li>
+<li>Tweezer-lift each resistor straight up when both ends are
+molten.</li>
+<li>Place lifted resistors in a parts tray (label "removed" — don't
+reuse).</li>
+<li>Clean pads with SS-03 sucker, then desoldering braid for
+residue.</li>
+<li><strong>Wipe area with 99 % IPA</strong> — RA flux residue cleanup
+(humidity-prone power bay environment).</li>
+<li>Inspect under magnifier: pads intact, no lifted copper.</li>
+</ol>
+<p><strong>Verify:</strong> with both resistors lifted, multimeter
+SDA-pad → VCC pad → must read <strong>OPEN</strong> (&gt;1 MΩ). If still
+showing ~10 kΩ, one resistor is still in place — find and remove it.</p>
+<p><strong>Why disable:</strong> bus pull-up duty transfers to TMP102's
+4.7 kΩ (power-bay node) + PCA9685's 10 kΩ (wand node) per the
+reconciliation in <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§2.</p>
+<h3 id="53-optional-alert-line-solder">5.3 Optional: ALERT line
+solder</h3>
+<p>The ALERT pin (J11) on the INA226 is a separate single pin not on the
+4-pin logic header. Wire ONLY if the hardware OC/UV latch is used
+(rare). If so, solder a tail to that pin and route to a free Pi GPIO.
+The committed GPIO map is tight — pick a genuinely unused header pin
+before soldering.</p>
+<hr />
+<h2 id="6-part-2-tmp102-bay--5-pin-jst-xh-pcb-mount-header-solder">6.
+Part 2: TMP102 (Bay) — 5-pin JST-XH PCB-Mount Header Solder</h2>
+<blockquote>
+<p><strong>Carrier builds (2026-10-23):</strong> the bay TMP102 is the
+<strong>END board of the I²C daisy chain</strong> (Power_Bay §11.3.9 /
+§16c). The chain's female 4-way housing plugs onto the SDA / SCL / 3V3 /
+GND pins of this header (crimp by NET; ALERT unused). Its GND no longer
+runs to G469 pin 14. <strong>Generic (non-SparkFun) TMP102 boards on
+order:</strong> if ADD0 is a bare header pin rather than a solder
+jumper, <strong>tie it explicitly in the cable</strong> (bay → GND =
+0x48). A floating ADD0 gives an undefined address. 3.3 V only (Power_Bay
+§16b.3).</p>
+</blockquote>
+<p><strong>Goal:</strong> solder a 5-pin JST-XH 2.54 mm PCB-mount male
+header onto the SparkFun Qwiic TMP102's bare 0.1″ through-hole row. The
+SparkFun board ships with Qwiic JST-SH 1.0 mm side connectors but we use
+the through-hole row (silk: <strong>GND / 3V3 / SDA / SCL /
+ALERT</strong>) — fleet standard is JST-XH, not Qwiic.</p>
+<p><strong>Address:</strong> 0x48 (factory default, no pad change).
+<strong>Pull-up jumper:</strong> intact (TMP102's 4.7 kΩ is the bus's
+primary pull-up). See <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §6 for
+the no-mod inspection + mount + cable wiring.</p>
+<h3 id="61-solder-the-5-pin-jst-xh-pcb-mount-male-header">6.1 Solder the
+5-pin JST-XH PCB-mount male header</h3>
+<p><strong>Technique:</strong> through-hole header solder (§4.1).</p>
+<p><strong>Pitch match:</strong> 0.1″ = 2.54 mm = JST-XH 2.54 mm. The
+PCB-mount JST-XH header's pins drop into the 0.1″ through-hole row as an
+<strong>exact fit</strong>.</p>
+<p><strong>Procedure:</strong></p>
+<ol type="1">
+<li>Insert the JST-XH 5-pin PCB-mount male header from the back side of
+the TMP102 board so the connector body sits below the PCB (cable end
+exits downward). <strong>Carrier builds (2026-10-23): NOT this
+orientation.</strong> Fit a plain <strong>straight 0.1" pin header on
+the COMPONENT side, pointing UP</strong> (the chain's Dupont 4-way plugs
+in from above). A downward plug on the carrier's posts (15 mm through
+v17, 10 mm from v18c) would hit the carrier (Power_Bay §11.3.9 v18
+rulings). Put a pin-1 paint dot on board and housing. This step stays
+valid for Halo's cover-mount as-built.</li>
+<li><strong>Orientation:</strong> the JST-XH polarization slot should
+face away from the board so a mating cable can plug in.</li>
+<li>Solder all 5 pins through the through-holes per §4.1 technique.
+Yanecty at 350 °C, fine chisel tip, ~3 s per joint, 0.5 mm solder.</li>
+<li>Inspect under the 10× magnifier: smooth fillets, no solder bridges
+between adjacent pins.</li>
+</ol>
+<p><strong>Result:</strong> the TMP102's ALERT line is also exposed at
+the JST-XH (pin 5) — populated from day one, no second-pass solder
+needed if you later wire ALERT.</p>
+<hr />
+<h2 id="7-part-3-tmp102-wand--address-mod-0x48--0x49--header-solder">7.
+Part 3: TMP102 (Wand) — Address Mod (0x48 → 0x49) + Header Solder</h2>
+<blockquote>
+<p><strong>Generic TMP102 boards (2026-10-23):</strong> the §7.1
+trace-cut + bridge mod is <strong>SparkFun-specific</strong>. On a
+generic board whose ADD0 is a header pin, set 0x49 by <strong>wiring
+ADD0 to 3V3</strong> in the cable instead, never left floating. The wand
+epoxy bond also needs a <strong>flat back face</strong> (Power_Bay
+§16b.3).</p>
+</blockquote>
+<p><strong>Goal:</strong> modify the SparkFun Qwiic TMP102's ADD0 jumper
+to relocate the I²C address from factory <strong>0x48</strong> to
+<strong>0x49</strong> (so it doesn't collide with the bay TMP102 on the
+shared bus), then solder a 4-pin JST-XH PCB-mount male header for cable
+wiring to the rail 30's <code>TMP</code> 4-pin (col 13).</p>
+<h3 id="71-add0-mod--trace-cut--v-bridge-technique-45">7.1 ADD0 mod —
+trace cut + V+ bridge (technique §4.5)</h3>
+<p>The SparkFun board ships with <strong>ADDR tied to GND via the ADD0
+jumper</strong> → factory address 0x48. To move to 0x49 we <strong>cut
+that GND-tie</strong> AND <strong>solder-bridge ADDR to V+</strong>.
+TMP102's ADDR pin has no internal pull-up, so cutting the GND tie alone
+leaves ADDR floating → undefined.</p>
+<p><img
+src="images/external_sensors/sparkfun_tmp102_qwiic_add0_mod_annotated.png"
+alt="Annotated board map for this mod — header row ①, pull-ups-KEEP ②, ADD0 jumper zone ③ (jumper on the BACK), with the cut/bridge/verify summary." /></p>
+<p><img
+src="images/external_sensors/sparkfun_tmp102_qwiic_back_addr_annotated.png"
+alt="BACK side, annotated (photographed from the in-hand board, 2026-08-26): ① CUT the factory 0x48 bridge · ② BRIDGE the 0x49 pair · ③ upper 0x4A/0x4B row stays open · ④ I²C pull-up jumper stays bridged · ⑤ back view = mirrored header order ALERT·SCL·SDA·3V3·GND." /></p>
+<p><strong>Location (as-photographed, current board rev):</strong> ADDR
+jumper cluster on the back, below the vertical "ADDR" silk. Two 3-pad
+rows sharing the center ADDR pads: <strong>lower row =
+<code>0x49 | ADDR | 0x48</code></strong> (the 0x48 side ships
+factory-bridged — that's the ADDR→GND tie to cut; the 0x49 side is the
+ADDR→V+ pair to bridge), <strong>upper row =
+<code>0x4A | ADDR | 0x4B</code></strong> (SDA/SCL ties — leave open). ⚠️
+The back view's header pin order is <strong>mirrored</strong> vs the
+front: ALERT·SCL·SDA·3V3·GND left→right — beep against the correct pin.
+(Silk varies between revisions; if your unit differs, identify by
+continuity — factory state, ADDR reads continuous to GND; that's the tie
+to cut.)</p>
+<p><strong>Cut procedure</strong> (technique §4.5):</p>
+<ol type="1">
+<li>Loupe-inspect the back of the board (Drdefi 10× magnifier). Identify
+the ADD0 jumper (the trace bridging the ADDR center pad to the GND
+rail-tie pad).</li>
+<li><strong>Continuity-verify before cutting:</strong> multimeter at the
+IC's ADDR pin (or center pad of the ADD0 jumper) → known GND on the
+header → should beep.</li>
+<li><strong>Cut the GND trace.</strong> Sharp X-Acto #11 (fresh — copper
+dulls quickly). Score the trace 3–5 light strokes until copper is
+visibly severed.</li>
+<li><strong>Continuity-verify after cutting:</strong> ADDR pin → GND →
+should read OPEN (no beep). If still beeps, re-score.</li>
+</ol>
+<p><strong>Bridge procedure</strong> (technique §4.4):</p>
+<ol start="5" type="1">
+<li>Fine iron (Weller or Yanecty fine tip) at 350 °C.</li>
+<li>Flow a small solder blob bridging the ADDR center pad to the
+<strong>V+ rail-tie pad</strong> of the address-select cluster.</li>
+<li>Inspect under the magnifier — smooth blob, no bleed to adjacent
+SDA/SCL rail-tie pads (those would give 0x4A/0x4B, not 0x49).</li>
+</ol>
+<p><strong>Continuity truth table</strong> (probe the ADDR center pad
+against the labeled header pins — the beep MOVES from GND to 3V3 as the
+mod progresses; that migration IS the success signal):</p>
+<table>
+<thead>
+<tr>
+<th>State</th>
+<th>ADDR ↔︎ GND header pin</th>
+<th>ADDR ↔︎ 3V3 header pin</th>
+<th>Address</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Factory (0x48 bridge intact)</td>
+<td><strong>BEEP</strong></td>
+<td>silent</td>
+<td>0x48</td>
+</tr>
+<tr>
+<td>After CUT, before bridge</td>
+<td>silent (OPEN)</td>
+<td>silent</td>
+<td>⚠️ floating — undefined, don't stop here</td>
+</tr>
+<tr>
+<td>After V+ BRIDGE (done)</td>
+<td><strong>silent</strong></td>
+<td><strong>BEEP</strong></td>
+<td>0x49</td>
+</tr>
+</tbody>
+</table>
+<p><em>(Note: in the final state a meter on the resistance range may
+still show a finite few-kΩ reading ADDR↔︎GND — that's the 3V3 rail's
+LED/divider paths, not a failed cut. The pass/fail test is the
+continuity BEEP, not "OL".)</em></p>
+<p><strong>Bench-verify before bonding to heatsink:</strong> plug the
+wand TMP102 into the G469 temporarily via a 4-pin JST-XH cable.
+<code>i2cdetect -y 1</code> must show <strong>0x49</strong>. Bay TMP102
+(still at 0x48) must still appear. If 0x49 missing → re-check V+ bridge
+(likely cold joint). If 0x48 still on the wand TMP102 → trace cut wasn't
+complete, re-score.</p>
+<blockquote>
+<p><strong>Safety:</strong> before bridging ADDR to V+, confirm the bay
+TMP102 is also wired and at 0x48 — so when you bench-verify, you can
+distinguish "wand mod failed" (only 0x48 shows) from "wand mod worked,
+bay TMP102 disconnected" (only 0x49 shows). Both should appear together
+once everything is right.</p>
+</blockquote>
+<h3 id="72-4-pin-berg-header-solder-wand-tmp102">7.2 4-pin BERG Header
+Solder (wand TMP102)</h3>
+<blockquote>
+<p>✅ <strong>ONE 4-pin, and it is a BERG, not a JST-XH.</strong> Rail
+30° carries <code>SDA · SCL · 3V3 · GND-logic</code> on <strong>adjacent
+strips 1-4</strong>, so the <code>TMP</code> landing at col 13 takes all
+four in one connector — and since that landing is a 0.1″ berg male, the
+module's header is a berg too and the cable is Dupont-to-Dupont.</p>
+</blockquote>
+<p><strong>Technique:</strong> through-hole header solder (§4.1). Same
+as §6.1 but a single <strong>4-pin berg male</strong> — which is what
+the already-built bench unit already carries, so it needs no rework (no
+ALERT line for the wand TMP102 — fan PWM via PCA9685 ch 13 is the
+actuator, not a hardware alert).</p>
+<p><strong>Pinout (silk on the bottom 0.1″ row):</strong> GND / 3V3 /
+SDA / SCL. ⚠️ <strong>The cable is NOT 1:1</strong> — the rail's logic
+group runs <code>SDA / SCL / 3V3 / GND-logic</code>, so crimp the rail
+end in module-pin order <strong>3 · 4 · 2 · 1</strong> and label every
+conductor by NET (<a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">layout</a>).
+⚡ <code>GND</code> lands on <strong><code>GND-logic</code> (strip
+4)</strong>, never <code>GND-power</code> (strip 6). No net is
+straddled.</p>
+<p><strong>Procedure (corrected 2026-08-27 — the earlier "front face
+bonds" wording here was wrong):</strong> the <strong>BACK of the board
+bonds to the heatsink</strong> (<a
+href="Lumi_Wand_Integration.html#203-thermal-bond-to-heatsink-underside"><code>Lumi_Wand_Integration.md</code>
+§20.3</a> — IC faces away; heat path is heatsink → PCB thermal vias →
+die). Therefore the <strong>header body sits on the FRONT (component
+side)</strong>, pins through the 0.1″ row, soldered on the back. Keep
+the 4 back-side joints <strong>low-profile and trim the pin stubs
+flush</strong> — and position the epoxy footprint per §7.3 so the
+header-row edge sits <strong>outside/overhanging the bond area</strong>,
+leaving the back's central region (under the IC's thermal vias) flat
+against the heatsink. Solder per §4.1.</p>
+<hr />
+<h2
+id="8-part-4-pt4115-sense-resistor-swap--retired-2026-06-18-historical-reference-only">8.
+Part 4: PT4115 Sense-Resistor Swap — <strong>RETIRED 2026-06-18
+(historical reference only)</strong></h2>
+<blockquote>
+<p><strong>STATUS — DO NOT PERFORM:</strong> as of 2026-06-18 the PT4115
+(now reclassified as "Variant A" — prototype-only 1W class, per <a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+§6.2 / §7.1) is <strong>used at factory 100 mA, NO sense-R swap
+performed.</strong> Production now uses <strong>Variant B (KESHY
+3W)</strong> or <strong>Variant C (AliExpress 3W)</strong> — both ship
+factory-set at 700 mA with no SMD work required. The procedure below is
+kept as a reference in case a future 700 mA repurposing of the PT4115
+inventory is needed.</p>
+<p><strong>Heads-up:</strong> the "Variant C" naming used in this
+section is the <em>historical</em> PT4115 reference. Under the current
+2026-06-18 nomenclature, Variant C = AliExpress 3W (not used in the
+wand) and PT4115 = Variant A.</p>
+</blockquote>
+<div style="color: #888;">
+
+<p><strong>Goal (historical):</strong> swap the factory 1R0 (1 Ω) sense
+resistor on each VEEKET PT4115 driver module for an 0R15 (0.15 Ω) →
+reconfigures the constant-current set point from 100 mA factory →
+<strong>667 mA</strong> (close to 700 mA target).</p>
+<p><strong>Scope (historical):</strong> original PT4115 handle build (12
+modules). Going forward production uses KESHY or AliExpress 3W modules
+which ship factory-set at 700 mA. <strong>Retired as of
+2026-06-18.</strong></p>
+<h3 id="81-lift-the-1r0-technique-42--historical">8.1 Lift the 1R0
+(technique §4.2) — HISTORICAL</h3>
+<ol type="1">
+<li>Identify the <strong><code>1R0</code> SMD resistor</strong> (silk
+decoder §4.9 — 1 Ω, 0603 case) on each PT4115 module.</li>
+<li><strong>Tin and slide</strong> with the Yanecty at 350 °C, fine
+conical tip, drop of CQ4LF flux.</li>
+<li>Tweezer-lift straight up when molten. Place in parts tray.</li>
+<li>Clean pads with SS-03 + braid.</li>
+</ol>
+<h3 id="82-place-the-0r15-technique-43--historical">8.2 Place the 0R15
+(technique §4.3) — HISTORICAL</h3>
+<ol type="1">
+<li>Verify silk on the replacement resistor: <strong><code>R150</code>
+or <code>0R15</code></strong> (0.15 Ω, see §4.9). Use 0805 from in-house
+inventory (100 pcs in stock from the abandoned custom PCB build). Note:
+0805 overhangs the 0603 footprint by ~0.2 mm but solders cleanly.</li>
+<li>Drop of flux on the pads.</li>
+<li>Tweezer-place across both pads, centered.</li>
+<li><strong>Tack one end</strong> with iron + small dab of solder.</li>
+<li>Check alignment. If skewed, reflow + nudge while molten.</li>
+<li><strong>Reflow the other end.</strong></li>
+<li><strong>Hold tweezers steady ~2 s</strong> after iron pulls away
+(Sn60/Pb40 pasty range — see §0).</li>
+<li>Wipe with 99 % IPA.</li>
+<li>Inspect under magnifier: solder fillets both pads, no tombstoning,
+no shorts.</li>
+</ol>
+<p><strong>Verify (per module):</strong> post-swap, power up the module
+at 5 V with a single test LED in series + ammeter → expect
+<strong>600–700 mA</strong> (I_LED = 0.1 V / 0.15 Ω ≈ 667 mA ≈ 700 mA
+target).</p>
+</div>
+
+<hr />
+<h2
+id="9-part-5-internal-power-rail-pcbs-wand-v911--the-marathon-solder-session">9.
+Part 5: Internal Power-Rail PCBs (Wand v9.11) — The Marathon Solder
+Session</h2>
+<p><strong>Goal:</strong> assemble <strong>3×</strong> internal power
+rails on <strong>BusBoard ST1 stripboard</strong>. Each rail carries
+<strong>only 0.1″ berg landings — no JST-XH, no wall penetration — and
+NO track cuts.</strong> ✅ <strong>All three are the same board, and
+there is nothing to cut.</strong> Build to <a
+href="#94--the-st1-rail--what-you-actually-build-v911-three-of-them-and-nothing-to-cut">§9.4</a>.</p>
+<p>✅ <strong>Full design, strip map and figure: <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">Integration
+— the v9.11 rail layout</a>.</strong> Build to <a
+href="#94--the-st1-rail--what-you-actually-build-v911-three-of-them-and-nothing-to-cut">§9.4</a>
+below. This section is the <strong>bench procedure</strong>.</p>
+<h3
+id="91-connector-orientation-on-a-rail--body-in-every-one-technique-48">9.1
+Connector orientation on a rail — body-IN, every one (technique
+§4.8)</h3>
+<p>Each connector has a <strong>body-out vs body-in</strong> orientation
+choice:</p>
+<ul>
+<li><strong>There is no body-OUT connector on any rail
+(v9.11).</strong></li>
+<li>✅ <strong>EVERY connector</strong> (<code>PWR IN</code>,
+<code>SIG IN</code>, the four driver berg strips, fan, PCA and TMP102
+taps): <strong>body IN</strong>, toward the cylinder center. Pins solder
+on the <strong>OUTER face</strong>. Cables plug in from inside the
+cylinder.</li>
+</ul>
+<p>Solder all pins through 0.1″ pitch holes per §4.1. Yanecty at 350 °C,
+~3 s per joint. Inspect each joint under the magnifier before moving
+on.</p>
+<h3 id="92-driver-power-pin-headers-technique-41">9.2 Driver-power pin
+headers (technique §4.1)</h3>
+<p>✅ <strong>One 4-pin berg strip per strip, on strips 5 and 6, over
+cols 7-10 — contiguous.</strong> Strip 6 is <code>13.8 V</code>, strip 5
+is <strong><code>GND-power</code></strong> (never
+<code>GND-logic</code>, which is the adjacent strip 4). Each of the
+rail's four drivers lands on ONE column, spanning strips 5-6. Full map:
+<a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">the
+rail layout</a>. Rail 270° has no berg: its leads solder straight into
+the holes.</p>
+<h3
+id="93-internal-jumper-wire-buses--retired-there-are-no-hand-laid-buses-on-an-st1-rail">9.3
+Internal jumper-wire buses — RETIRED (there are no hand-laid buses on an
+ST1 rail)</h3>
+<blockquote>
+<p><strong>Nothing in the v9.11 build uses this section.</strong> The
+ST1's etched copper strips <em>are</em> the buses — <strong>one net per
+strip, zero track cuts, zero link wires</strong> (<a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">layout</a>).
+No 22 AWG is stripped, tinned, laid or ordered for a rail. The last
+boards built this way were the cancelled India stopgap rails, and they
+were thrown away.</p>
+</blockquote>
+<p>✅ <strong>Still true for the ST1 rail below.</strong> This is where
+the <strong>brass-cleaner-ball discipline</strong> (§3.1) pays off —
+clean the tip every 4–5 joints.</p>
+<h3
+id="94-white_check_mark-the-st1-rail--what-you-actually-build-v911-three-of-them-and-nothing-to-cut">9.4
+✅ The ST1 rail — what you actually build (v9.11: THREE of them, and
+NOTHING to cut)</h3>
+<blockquote>
+<p>📐 <strong>BUILD AGAINST THE FIGURE — <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">the
+v9.11 rail layout</a>.</strong> It is the <strong>single source of
+truth</strong> for this board and it is drawn to scale: every strip and
+its net, all six landings with their column numbers, and the two M2
+holes between strips 3 and 4. The steps below are the <em>order of
+work</em>; the figure is the <em>geometry</em>. Where they ever
+disagree, the figure wins — it is generated from <a
+href="images/hardware/gen_rail_v911.py"><code>gen_rail_v911.py</code></a>,
+and <code>check_figures_match_docs.py</code> asserts it against the
+Integration table.</p>
+</blockquote>
+<p>§9.1 and §9.2 still apply for tip, temperature and the
+OUTER/wall-facing solder-face rule. §9.3 does not — there is no bus to
+lay, and there is no track-cut step.</p>
+<p><strong>No JST-XH on the rail at all.</strong> §9.1's
+connector-orientation rules do not apply to this board — every landing
+is 0.1″ berg, body-IN. The only JST-XH left on the wand is the
+<strong>6-pin in the end plate</strong>, which is §9.5 work.</p>
+<p><strong>Order, per rail — and all three rails are the same
+board:</strong></p>
+<ol type="1">
+<li><p><strong>Cut the board</strong> to <strong>6 strips × 20 holes, 17
+× 50 mm as cut</strong>. One ST1 makes <strong>three</strong> (1 strip
+waste), so one board makes all three rails. <strong>Cut on the scroll
+saw, just outside a hole row, then file back to the holes</strong> (fine
+skip-tooth blade; tape the cut line; dust mask — Assembly Guide §1.1
+tool row). <strong>Never push-score a board to size with the
+X-Acto</strong> (operator safety call 2026-10-06).</p></li>
+<li><p><strong>No track cuts.</strong> <strong>Do not make any cuts on
+this board.</strong> Each strip carries exactly one net end to end:</p>
+<table>
+<thead>
+<tr>
+<th>Strip</th>
+<th>Net</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>SDA</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>SCL</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>3V3</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>GND-logic</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>GND-power</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>13.8 V</code></td>
+</tr>
+</tbody>
+</table>
+<p>⚡ <strong>The star ground is structural:</strong>
+<code>GND-logic</code> and <code>GND-power</code> are <strong>different
+strips</strong>, never joined, so there is nothing to separate.</p></li>
+<li><p><strong>Berg strips and landings</strong> (§9.2) — two
+<strong>4-pin</strong> strips across strips 5 and 6 over cols 7-10 (the
+four drivers) and <code>PWR IN</code> 2-pin at col 12 (strips 5-6) on
+rails 30° and 150°. <strong>Rail 30° only:</strong> <code>SIG IN</code>
+4-pin at col 7, <code>PCA</code> 4-pin at col 11 and <code>TMP</code>
+4-pin at col 13 (strips 1-4), and <code>FAN</code> 2-pin at col 14
+(strips 5-6). <strong>Rail 270°:</strong> no berg; its leads solder into
+the holes. <strong>No solder in cols 3–5 or 16–18</strong> (the post
+face). 📐 <strong>Count the columns on <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">the
+figure</a> before you solder</strong> — every landing is a contiguous
+run of adjacent strips, so a strip-row off-by-one puts a connector
+across the logic/power boundary.</p></li>
+<li><p><strong>No link wire.</strong> There is no cut and no
+link.</p></li>
+<li><p><strong>Drill the two M2 holes</strong> centred <strong>between
+strips 3 and 4, cols 4 and 17</strong> (<a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">figure</a>)
+— Ø2.2. Each hole trims both strips' edges but cuts neither. ⬜
+<strong>Do the first one on a scrap</strong>, then on every rail meter
+<code>3V3 ↔︎ GND-logic</code> <strong>OPEN</strong> and strips 3 and 4
+each <strong>continuous end to end</strong> past both holes.</p></li>
+<li><p><strong>The pair checks</strong> below.</p></li>
+</ol>
+<blockquote>
+<h3 id="zap-acceptance-fifteen-pairs--same-count-different-failure">⚡
+Acceptance: fifteen pairs — same count, different failure</h3>
+<p>Six nets still means <strong>C(6,2) = 15</strong> pairs, all
+<strong>OPEN</strong>. What changed is what a short <em>means</em>.
+There are no cuts, so a short is no longer "a cut that did not take" —
+it is <strong>a solder bridge between adjacent strips</strong>, and the
+adjacent pairs are the ones to check first:</p>
+<table>
+<thead>
+<tr>
+<th>Pair</th>
+<th>Strips</th>
+<th>If it reads SHORT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>GND-logic</code> ↔︎
+<code>GND-power</code></strong></td>
+<td>4 and 5</td>
+<td><strong>the wand has no star ground</strong> and 2.4 A of LED return
+shares the I²C reference — nothing looks wrong until it glitches under
+load.</td>
+</tr>
+<tr>
+<td><code>3V3</code> ↔︎ <code>GND-logic</code></td>
+<td>3 and 4</td>
+<td>adjacent-strip bridge, or an M2 hole drilled off the strip gap</td>
+</tr>
+<tr>
+<td><code>3V3</code> ↔︎ <code>SCL</code></td>
+<td>3 and 2</td>
+<td>adjacent-strip bridge</td>
+</tr>
+<tr>
+<td><code>SCL</code> ↔︎ <code>SDA</code></td>
+<td>2 and 1</td>
+<td>adjacent-strip bridge</td>
+</tr>
+<tr>
+<td><code>13.8 V</code> ↔︎ <code>GND-power</code></td>
+<td>6 and 5</td>
+<td>adjacent-strip bridge — and this one is a dead short on the 13.8 V
+rail</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<h3
+id="95-the-two-y-joint-boards--6-pin-one-on-each-side-of-the-seam">9.5
+The two +Y joint boards — 6-pin, one on each side of the seam</h3>
+<p><strong>This is the only joint in the wand that is mated BLIND,
+inside a closed shell, at week-4 integration.</strong> Build both boards
+on the bench, continuity-check them end to end, and only then screw them
+into their cradles.</p>
+<h4 id="951-the-board--one-pattern-cut-twice">9.5.1 The board — one
+pattern, cut twice</h4>
+<p><strong>3 rows × 12 columns of 0.1″ stripboard, 6.85 × 30.48
+mm</strong> — cut 3 strips wide, then the INNER long edge trimmed back
+to 0.5 mm from the inner row, with the strips running
+<strong>across</strong> the rows so <strong>every column is one isolated
+net, three holes long</strong>. There is nothing to cut: the strips are
+already separate from each other, and the board <em>is</em> the
+junction. Full layout, both populations and every dimension: <a
+href="images/hardware/joint_stripboard.png"><code>joint_stripboard.png</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th>Row</th>
+<th>radius</th>
+<th>carries</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OUTER</strong></td>
+<td>27.45</td>
+<td>the JST — six <strong>header posts (wand)</strong> or six
+<strong>crimped tails (extension)</strong>.</td>
+</tr>
+<tr>
+<td><strong>MIDDLE</strong></td>
+<td>24.91</td>
+<td>the <strong>outgoing pigtail conductors</strong>, and the two M2
+screws at column 5</td>
+</tr>
+<tr>
+<td><strong>INNER</strong></td>
+<td>22.37</td>
+<td><strong>nothing.</strong> It is a stiffener — it lands over the
+cradle's inner wall on both halves, so <strong>nothing may be soldered
+on its underside.</strong> Top-side test point only.</td>
+</tr>
+</tbody>
+</table>
+<p><img src="images/hardware/joint_stripboard.png"
+alt="The joint stripboard, drawn at its real proportions from the live CAD values: 3 rows by 12 columns of 0.1-inch stripboard, 6.85 x 30.48 mm with its inner long edge trimmed back, with the copper strips running ACROSS the rows so every column is one isolated net three holes long. The OUTER row (r 27.45) carries the JST, the MIDDLE row (r 24.91) carries the outgoing pigtails and the two M2 screws at columns 2 and 11, and the INNER row (r 22.37) is an unwired stiffener that lands over the cradle&#39;s inner wall. The six middle columns, 4 to 9, carry the connector and are coloured by net: 13.8 V, GND-power, SDA, SCL, 3V3, GND-logic. Both outer corners are broken back about 1 by 2 mm to clear the wand&#39;s 64 mm bore; since the joint body moved inboard on 2026-10-03 the cut no longer reaches the outer row, so all twelve columns are three holes long. Below the board, notes on why there are three rows and not two, why the screws sit at plus or minus 11.43 and not 13.97, how the corners are cut, and the two different populations the one pattern carries." /></p>
+<ul>
+<li><strong>Columns 4–9</strong> take the connector. Six pins span
+<strong>12.70 mm</strong> on this grid against the XH's
+<strong>12.50</strong> — <strong>0.10 mm of splay at each end
+pin</strong>, which the 1.0 mm hole swallows. Do not force it; let the
+end pins find their holes before you solder any of them.</li>
+<li><strong>Columns 2 and 11</strong> take the screws, at <strong>±11.43
+mm</strong>. Drill those two <strong>Ø2.2</strong> through the MIDDLE
+row — it removes the pad, which is what you want.</li>
+<li><strong>Columns 1, 3, 10 and 12</strong> carry nothing. Columns 1,
+2, 11 and 12 are only <strong>two holes long</strong>, because the
+corner chamfer takes their outer hole.</li>
+<li>⚠️ <strong>Break the two outer corners off</strong>, or the board
+will not go into the wand at all. A straight knife cut on each end, from
+the outer long edge at ±13.00 mm back <strong>1.0 mm</strong> across
+2.24 mm — barely more than a corner break. The wand's bore is Ø64 and
+the board is flat — without the chamfers its corners stand 3 mm into the
+wall. The cut never reaches the pin row at all, so all twelve columns
+are three holes long.</li>
+</ul>
+<blockquote>
+<h3
+id="warning-male-and-female-mean-the-opposite-thing-on-the-vendors-listing--read-by-part-not-by-word-2026-10-03">⚠️
+"MALE" and "FEMALE" mean the OPPOSITE thing on the vendor's listing —
+read by PART, not by word (2026-10-03)</h3>
+<p><strong>Operator:</strong> <em>"So the female has mounting pins, of
+course the male does not."</em></p>
+<p>On the XH2.54 assortment this build sources from, the part
+photographed and sold as <strong>"FEMALE" is the one with the solder
+PINS</strong> — the board-mount header — and the one sold as
+<strong>"MALE" is the plastic SHELL</strong> that takes crimp contacts.
+That is the <strong>reverse</strong> of this repo's cradle naming, where
+the WAND half is <code>JST_F_*</code> / <code>make_jst_female()</code>
+and the EXTENSION half is <code>JST_M_*</code> /
+<code>make_jst_male()</code>.</p>
+<p><strong>Do not order or build from the words.</strong> The CAD
+identifiers are not being renamed — they are load-bearing across both
+macros, every fit check and a dozen documents — so the two halves are
+defined here by <strong>what the part physically is</strong>:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>WAND half</strong> (<code>JST_F_*</code>,
+<code>make_jst_female</code>)</th>
+<th><strong>EXTENSION half</strong> (<code>JST_M_*</code>,
+<code>make_jst_male</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The part</td>
+<td>the one <strong>with solder pins</strong> — a 6-way XH pin header,
+3.4 mm posts, 7.0 mm body. <em>The vendor calls this
+<strong>FEMALE</strong>, and this is the female half — they
+agree.</em></td>
+<td>the <strong>shell</strong> with crimp contacts — <code>XHP-6</code>
++ 6× <code>SXH-001T-P0.6</code>, 8.0 mm tall. <em>The vendor calls this
+<strong>MALE</strong>, and this is the male half.</em></td>
+</tr>
+<tr>
+<td>Board-mount?</td>
+<td><strong>YES</strong> — soldered into the stripboard's OUTER row from
+ABOVE, body hanging DOWN below the board into the pocket</td>
+<td><strong>NO</strong> — a shell has nothing to solder to. It stands on
+the board's TOP face and its six tails pass down through it</td>
+</tr>
+<tr>
+<td>Which face you solder</td>
+<td>the board's <strong>TOP</strong> face</td>
+<td>the board's <strong>UNDERSIDE</strong></td>
+</tr>
+<tr>
+<td>Retained by</td>
+<td>its own solder joints + the 2 M2 screws holding the board</td>
+<td>the <strong>spigot pocket</strong> round its lower 2.5 mm, a bead of
+epoxy on that pocket's two end walls, and its six tails through the
+board</td>
+</tr>
+<tr>
+<td>Glue?</td>
+<td><strong>none</strong></td>
+<td><strong>yes</strong>, one bead — shell body to board face, ≈103
+mm²</td>
+</tr>
+</tbody>
+</table>
+<p>✅ <strong>Operator: <em>"Wand side should have strip board mounted
+jst."</em></strong> The wand half is the board-mounted header.</p>
+<p>✅ <strong>It cost nothing geometrically.</strong> The shell is 8.0
+mm and the header 7.0, and that 1.0 mm is exactly the slack the header
+leaves at the bottom of the wand's 8 mm slot. The header body sits at Z
+4.5–11.5 with its shroud mouth at <strong>4.5</strong>; the extension's
+shell reaches wand Z <strong>8.5</strong>. Engagement is <strong>4.0
+mm</strong>, the same number as before the swap, and <strong>no constant
+in either macro moved.</strong></p>
+</blockquote>
+<h4 id="952-the-two-populations-are-not-the-same">9.5.2 The two
+populations are NOT the same</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>WAND half (FEMALE)</strong></th>
+<th><strong>EXTENSION half (MALE)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Part</td>
+<td>a 6-way XH <strong>pin header</strong> — 3.4 mm solder posts</td>
+<td><code>XHP-6</code> <strong>shell</strong> + 6×
+<code>SXH-001T-P0.6</code> crimps</td>
+</tr>
+<tr>
+<td>Mounted on the board?</td>
+<td><strong>YES</strong> — through-hole, body <strong>DOWN</strong>,
+posts up</td>
+<td><strong>NO.</strong> A shell has no posts. It <strong>bottoms
+on</strong> the board and is bonded into the <strong>spigot
+pocket</strong> above it</td>
+</tr>
+<tr>
+<td>Which face carries the solder</td>
+<td><strong>TOP</strong> (toward the wand's drivers)</td>
+<td><strong>UNDERSIDE</strong> (into the extension cavity)</td>
+</tr>
+<tr>
+<td>Body</td>
+<td><strong>7.0 mm</strong>, hanging into an 8.0 mm pocket — 1.0 mm
+clear below</td>
+<td><strong>8.0 mm</strong>, all of it proud of the board</td>
+</tr>
+<tr>
+<td>Glue</td>
+<td><strong>none</strong></td>
+<td>one bead, on the pocket's two <strong>end</strong> walls</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Wand half:</strong> drop the header's six posts through the
+OUTER row <strong>from underneath</strong>, so the body ends up on the
+board's far side, and solder on the <strong>top</strong> face. Its
+<strong>3.4 mm posts</strong> leave <strong>1.8 mm of tail</strong>
+proud of a 1.6 mm board — solder to the <strong>pin tail plus its
+pad</strong> (<a
+href="#48-jst-xh-pcb-mount-connector-soldering-orientation-matters">§4.8</a>).
+⚠️ Nothing threads through the hole beside a 0.64 mm pin in a 1.02 mm
+hole — not even 26 AWG. The wire goes in the <strong>adjacent hole in
+the same column</strong>, never into the pin's own hole.</li>
+<li>⚠️ <strong>Do not try to solder an <code>XHP-6</code> to a
+board.</strong> It is a crimp shell with no posts. On the
+<strong>extension</strong> half you crimp six <code>SXH</code> contacts
+onto six ~40 mm tails, seat them in the shell until each clicks, pass
+the free ends <strong>down</strong> through the board's OUTER row and
+solder underneath. The shell then bottoms on the board inside the spigot
+pocket and is bonded to that pocket's two end walls.</li>
+</ul>
+<h4 id="953-pin-1-is-defined-by-the-shell-not-by-the-board">9.5.3 Pin 1
+is defined by the SHELL, not by the board</h4>
+<p>⚠️ <strong>This is the one thing on these boards that is easy to
+build backwards, and you cannot check it after the joint is
+closed.</strong></p>
+<p><strong>On BOTH halves, pin 1 is the column nearest the wand's 0°
+meridian.</strong> The two boards face each other across the joint, so
+<strong>if you lay the two finished boards side by side copper-up, their
+pin 1 ends will be at opposite ends. That is correct.</strong> Mark the
+pin 1 end of each board with a sharpie dot on the copper side before you
+solder anything, and check it against the shell — not against the other
+board.</p>
+<p>The six nets, in column order from pin 1 (<a
+href="Lumi_Wand_Integration.html#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand">Integration
+§10.5.2</a>):</p>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Pin</th>
+<th>Net</th>
+<th>Leg</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td>1</td>
+<td><code>13.8 V</code></td>
+<td>power</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2</td>
+<td><code>GND-power</code></td>
+<td>power</td>
+</tr>
+<tr>
+<td>6</td>
+<td>3</td>
+<td><code>SDA</code></td>
+<td>signal</td>
+</tr>
+<tr>
+<td>7</td>
+<td>4</td>
+<td><code>SCL</code></td>
+<td>signal</td>
+</tr>
+<tr>
+<td>8</td>
+<td>5</td>
+<td><code>3V3</code></td>
+<td>signal</td>
+</tr>
+<tr>
+<td>9</td>
+<td>6</td>
+<td><code>GND-logic</code></td>
+<td>power leg's return</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>The legs interleave</strong> — power is pins 1, 2, 6 and
+signal is 3, 4, 5. They are <strong>not</strong> three-and-three, and
+the pigtails below are grouped by leg, not by position.</p>
+<h4 id="954-the-outgoing-wires-are-the-pigtails">9.5.4 The outgoing
+wires ARE the pigtails</h4>
+<p>Every wire soldered into the <strong>MIDDLE</strong> row leaves the
+board as part of a pigtail. There is no further splice anywhere in the
+joint — <strong>this board is the splice.</strong></p>
+<ul>
+<li><strong>Strip 2.5 mm, tin, and feed from the board's connector
+side</strong> so the insulation stops at the laminate and the tinned end
+sits in the hole with the strip. One wire per hole; never two.</li>
+<li>⚠️ <strong>Solder the MIDDLE row before the connector on the WAND
+half.</strong> Both land on the board's top face there, and once the
+header body is seated the iron cannot reach the middle row cleanly past
+it. On the extension both land underneath, with the shell on the far
+side, so the order is free.</li>
+<li><strong>Bundle by LEG, not by position.</strong> Sleeve pins 1, 2
+and 6 as one bundle and pins 3, 4 and 5 as the other, from the board
+outward. The two legs must stay separated all the way to their
+destinations — see <a
+href="#94--the-st1-rail--what-you-actually-build-v911-three-of-them-and-nothing-to-cut">§9.4</a>
+for where each one lands.</li>
+<li>⚠️ <strong>Strain relief is yours to add, on BOTH boards.</strong>
+Tie each bundle through a spare hole at the free end (columns 1, 3, 10
+or 12) <strong>before</strong> the joint is ever mated. Six solder
+joints and two M2 screws are all that resists a pull on six wires.</li>
+<li><strong>Label both bundles at both ends</strong> before anything
+goes into a shell. After week-4 integration you cannot see either board
+again without taking the joint apart.</li>
+</ul>
+<h4 id="955-screwing-it-down">9.5.5 Screwing it down</h4>
+<p>✅ <strong>Two M2 self-tap screws take the pull, both
+halves.</strong> The ears carry <strong>Ø1.5 pilots 22.86 mm
+apart</strong> (9 × 2.54 — on the stripboard's own grid), on the
+<strong>wire row's</strong> radius. The board is screwed down, not a
+plank resting on two ledges.</p>
+<ul>
+<li><strong>The two halves are no longer the same here.</strong> The
+<strong>wand's</strong> board caps its cradle, so its screws go
+<strong>DOWN</strong> into the ears from the board face. The
+<strong>extension's</strong> board sits <strong>under</strong> a proud
+spigot, so its screws go <strong>UP</strong>.</li>
+<li>⚠️ <strong>Extension side: the screws go UP, and they are
+shallow.</strong> The board sits <strong>under</strong> the spigot
+there, so you drive <strong>up</strong> into it — and only <strong>2.0
+mm</strong> of pilot against the wand's 5.0, because the spigot is 2.5
+mm tall and the pocket runs clean through it. <strong>Drive them
+gently.</strong> This is the shallowest fastening in the wand.</li>
+<li>⬜ <strong>Pull-test the first assembled pair.</strong> Withdrawal
+force goes through the wand-side glue and these screws, and <strong>4.0
+mm of engagement is the operator's number, not a datasheet's</strong> —
+the XH's internal contact-engagement depth is not in hand.</li>
+</ul>
+<p><strong>Continuity-check both halves end to end before either goes
+into a cradle</strong>, and check <strong>column to column</strong> as
+well as end to end: adjacent columns are 2.54 mm apart on bare copper,
+and a solder bridge between two of them shorts two nets — including
+<code>13.8 V</code> to <code>GND-power</code>, which are columns 4 and
+5.</p>
+<p>Full geometry and pin map: <a
+href="Lumi_Wand_Integration.html#10545-the-joint-seats-the-same-way-on-both-sides">Integration
+§10.5.4.5</a> · <a href="images/hardware/joint_seating.png">seating
+section</a> · <a
+href="Lumi_Wand_Flashlight_Variant.html#39a-internal-y-board-to-board-jst-xh-at-the-joint-v96">Flashlight
+§3.9a</a>.</p>
+<h3 id="96-the-p-ground-bus-board-flashlight-extension">9.6 The P−
+ground-bus board (flashlight extension)</h3>
+<p>ST1, 6 strips × 9 holes, 15.24 × 25.4 mm. <strong>One track cut,
+strip 3 hole 3</strong> (<a
+href="#410-stripboard-track-cut--the-technique-that-replaced-47">§4.10</a>),
+splitting <code>P−power</code> (holes 1–2) from <code>P−logic</code>
+(holes 4–8).</p>
+<p><strong>Order:</strong> cut and meter → every landing and component →
+<strong>E14 last</strong> (<a
+href="#411-surface-solder-across-a-cut--the-star-point">§4.11</a>). Hole
+9 stays empty — the Ø5 post reaches within 0.04 mm of it. R1, R2 and C1
+bridge the dead strips 2 and 5, so no bare lead crosses a live bus; the
+one insulated jumper tying the two tap halves is the only thing that
+does.</p>
+<p>⚠️ <strong>E10 (PD charge return) is not on this board</strong> — it
+goes direct to the BMS <code>P−</code> pad. Landing it here would put
+charge return current on whichever half of the split it touched.</p>
+<p>Full layout: <a
+href="Lumi_Wand_Flashlight_Variant.html#384-p-ground-bus-board-40--locked-2026-09-19">Flashlight
+§3.8.4</a>.</p>
+<hr />
+<h2 id="10-part-6-led-mcpcb--wire-to-pad-solder-technique-46">10. Part
+6: LED MCPCB — Wire-to-Pad Solder (technique §4.6)</h2>
+<p><strong>Goal:</strong> solder 24 wires total (12 channels × 2 wires
+per channel) to the 3× LED MCPCB stars (2× RGBW + 1× RGBWW per <a
+href="Electronics_Assembly_Guide.html"><code>Electronics_Assembly_Guide.md</code></a>
+§12 — cool-biased mix). This is the only "must solder at the LED end"
+step — LED stars don't have connectors at Ø20 mm.</p>
+<p><strong>Substrate:</strong> aluminum MCPCB (high thermal mass) —
+requires elevated tip temp + patient dwell.</p>
+<h3 id="101-wire-prep">10.1 Wire prep</h3>
+<ul>
+<li>26 AWG silicone-insulated wire (multi-color stock, §10.1 schedule in
+EXTERNAL doc for color mapping), ~50–90 mm per pair (length depends on
+driver Z position + LED star angular position — see <a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+§10.5.5.2).</li>
+<li>Strip ~3 mm at the LED-end. Tin lightly with a small dab of solder +
+flux.</li>
+</ul>
+<h3 id="102-solder-procedure-technique-46">10.2 Solder procedure
+(technique §4.6)</h3>
+<p>LED MCPCBs are bare metal-core PCB with channel-marked pads (R+/R−,
+G+/G−, B+/B−, W+/W− — 8 pads total per star, individual-channel layout
+confirmed 2026-05-31).</p>
+<ol type="1">
+<li><strong>Preheat option</strong> (recommended): warm the MCPCB on a
+hot plate at ~100 °C for 30 s before soldering. Reduces iron dwell time
+on each pad.</li>
+<li><strong>Iron:</strong> Yanecty, <strong>chisel tip, 380–400
+°C</strong> (yes, higher than usual — the aluminum substrate sucks
+heat).</li>
+<li><strong>Flux:</strong> drop of CQ4LF on each pad before
+soldering.</li>
+<li><strong>Tin the pad first</strong> — small blob, ~1 s.</li>
+<li><strong>Place the tinned wire-end on the pad.</strong></li>
+<li><strong>Reflow both together</strong> — ~2 s.</li>
+<li>Inspect under magnifier: smooth joint with a small fillet.
+<strong>No cold gray dull joint</strong> (those are weak — reflow).</li>
+<li>Repeat for all 8 pads on each LED star (4 channels × 2 wires) × 3
+stars = 24 wires total.</li>
+</ol>
+<h3 id="103-what-right-looks-like">10.3 What "right" looks like</h3>
+<p>Good MCPCB joint:</p>
+<ul>
+<li>Smooth shiny dome around the wire</li>
+<li>Solder visibly wetted into the pad copper (no halo of bare copper at
+the pad edge)</li>
+<li>Wire mechanically secured — gentle pull on the wire shouldn't move
+the joint</li>
+</ul>
+<p>Bad MCPCB joint:</p>
+<ul>
+<li><strong>Cold joint</strong> — dull gray surface, looks "frosty."
+Wire pulls free easily. Reflow with more heat + flux.</li>
+<li><strong>Insufficient heat</strong> — solder blob sits on top of the
+pad without wetting in. Reflow at 400 °C, longer dwell, fresh flux.</li>
+<li><strong>Pad lifted</strong> — too much heat for too long. Stop
+soldering on that pad, switch to an adjacent pad if the channel allows;
+if it's the only pad, the LED star is scrap.</li>
+</ul>
+<p>After all 24 wires are soldered, <strong>bench-test each
+star</strong> (power up each driver via bench PSU, current-limited to
+700 mA per channel) BEFORE moving to the heatsink bonding step in <a
+href="Electronics_Assembly_Guide.html"><code>Electronics_Assembly_Guide.md</code></a>
+§12.4 — once epoxied, repairs are not possible.</p>
+<hr />
+<h2
+id="11-part-7-hc-sr501-pir-pigtail-solder--retired-2026-09-01-historical-reference-only">11.
+Part 7: HC-SR501 PIR Pigtail Solder — <strong>RETIRED 2026-09-01
+(historical reference only)</strong></h2>
+<blockquote>
+<p><strong>STATUS — DO NOT PERFORM. There is NO soldering anywhere in
+the PIR path.</strong></p>
+<p>The HC-SR501 modules ship with their <strong>3-pin male header
+pre-installed</strong>, and the as-built harness plugs into it — no
+pigtail is soldered to anything. This section described soldering 12
+wire-to-pin joints onto four PIR headers; it predates the
+<strong>as-built harness of 2026-08-08</strong> and was the only doc
+still saying to solder them. Operator-corrected 2026-09-01 from the
+built unit.</p>
+<p><strong>It also contradicted two docs that were already
+right:</strong></p>
+<ul>
+<li><a
+href="Power_Bay_Design.html#01-header-inventory--what-needs-soldering-vs-what-ships-pre-populated"><code>Power_Bay_Design.md</code>
+§0.1</a> — <em>"HC-SR501 … 3-pin male header —
+<strong>pre-soldered</strong> … <strong>NO</strong> —
+plug-and-play."</em></li>
+<li><a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+§2 cable inventory + Appendix E.5 — the modified-servo-Y harness.</li>
+</ul>
+<p><strong>What is actually built</strong> (repurposed RC-plane bench
+stock, crimp and cut only):</p>
+<table>
+<thead>
+<tr>
+<th>Element</th>
+<th>Spec</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Per PIR</td>
+<td><strong>F-F 3-wire servo extension lead</strong> plugs onto the
+module's 3-pin header — short for the front pair, longer for the back
+pair to reach the Y</td>
+</tr>
+<tr>
+<td>Bussing</td>
+<td><strong>2× modified servo Y-cables</strong>, one per pair
+(<strong>Y1 = FL+FR, Y2 = BL+BR</strong>) — 5 V and GND are commoned
+<strong>at the Y</strong>, <em>not</em> at a G469 splice</td>
+</tr>
+<tr>
+<td>⚠️ Y modification</td>
+<td>the Y's <strong>shared SIGNAL wire is CUT</strong> — left joined it
+would fight the two PIRs' push-pull OUT drivers against each other</td>
+</tr>
+<tr>
+<td>OUT breakout</td>
+<td>the two individual OUT wires exit each Y via a <strong>JST-XH
+2-pin</strong></td>
+</tr>
+<tr>
+<td>Landing</td>
+<td>each Y's shared 5 V and GND reach the G469 <code>5V</code> /
+<code>GND</code> terminals (two 2-conductor feeds under one screw is
+fine)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Full build recipe + the Y modification procedure:</strong>
+the <strong>"PIR modified-Y harness"</strong> row in <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html#master-connection-map-single-source-of-truth--every-pi-side-gpio--ic--uart"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code>
+§2 cable inventory</a>, with the as-built topology in Appendix E.5.
+<strong>Bench prep (jumpers, pots, OUT verification — still all
+no-solder):</strong> <a
+href="Power_Bay_Design.html#131-bench-prep--set-jumpers--pots-before-assembling-into-the-fence"><code>Power_Bay_Design.md</code>
+§13.1</a>. <strong>Quadrant labelling discipline (FL/FR/BL/BR)</strong>
+survives from the retired text and still matters — it lives in <a
+href="Power_Bay_Design.html#133-wire-to-g469"><code>Power_Bay_Design.md</code>
+§13.3</a>.</p>
+</blockquote>
+<div style="color: #888;">
+
+<p><strong>Everything below is the retired soldered-pigtail procedure.
+Kept only so the change is legible in history. Do not build from
+it.</strong></p>
+<p><strong>Goal:</strong> solder a 3-wire pigtail (VCC / OUT / GND, ~30
+cm of 24 AWG silicone) to each of 4× HC-SR501 PIR modules' 3-pin
+headers. <strong>12 wire-to-pin solder joints total</strong> across the
+4 units. After pigtail solder + jumper/pot config, the PIRs are ready to
+install into the slanted fence facets (mechanical install in <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §13.2;
+full PIR subsystem design + coverage geometry + fence CAD spec in <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+Appendices E + F).</p>
+<h3 id="111-wire-prep-per-pir--3-wires-each">11.1 Wire prep (per PIR — 3
+wires each)</h3>
+<ul>
+<li><strong>24 AWG silicone-insulated wire</strong>, ~30 cm per wire.
+Color suggestion (matches
+<code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code> Appendix E.5 wiring
+table):
+<ul>
+<li><strong>Red</strong> → VCC (5 V)</li>
+<li><strong>Yellow</strong> → OUT (signal to Pi GPIO 16/17/20/21 per
+quadrant)</li>
+<li><strong>Black</strong> → GND</li>
+</ul></li>
+<li>Strip ~3 mm at the PIR-board end. Tin lightly with a small dab of
+solder + flux.</li>
+<li>Other end (G469 / Pi GPIO end): leave bare strip + tinning for now —
+will land at the G469 screw terminals or Dupont jumper to the GPIO
+header per Assembly Guide §13.3.</li>
+</ul>
+<h3
+id="112-solder-procedure-technique-41--through-hole-on-the-3-pin-header">11.2
+Solder procedure (technique §4.1 — through-hole on the 3-pin
+header)</h3>
+<p>HC-SR501 modules ship with a 3-pin straight male 0.1″ pin header
+pre-installed on the back of the PCB. Pins are labeled <strong>VCC / OUT
+/ GND</strong> (silk visible on the board around the header). The
+pre-installed header is a through-hole part with the pins emerging from
+one side — solder the pigtail wires onto the pin tails from that
+side.</p>
+<p><strong>Per pin (technique §4.1):</strong></p>
+<ol type="1">
+<li>Tin the iron tip lightly. Yanecty (or Weller) at <strong>350
+°C</strong>.</li>
+<li>Confirm pin identity from the silk: VCC / OUT / GND. <strong>Do not
+assume orientation</strong> — different HC-SR501 vendors have flipped
+header layouts.</li>
+<li>Touch the iron tip to the joint (pin tail + tinned wire-end
+simultaneously) for ~1 s to bring up to temp.</li>
+<li>Feed solder onto the joint until a smooth fillet forms wrapping the
+wire-to-pin connection. ~3 s per joint total.</li>
+<li>Inspect under the 10× magnifier — smooth fillet, no bridge to
+adjacent pin (especially watch the VCC-to-OUT gap, which carries a 5 V →
+3.3 V mismatch and any solder bridge there could damage the Pi).</li>
+</ol>
+<h3 id="113-strain-relief--labelling">11.3 Strain relief +
+labelling</h3>
+<ul>
+<li>After all 3 wires soldered, slide a small piece of heat-shrink over
+each joint (or one larger piece over all 3) and shrink with the 180 °C
+heat gun.</li>
+<li><strong>Label each pigtail end with its destination
+quadrant</strong>: FL / FR / BL / BR. Mismatched labels at install time
+= wrong PIR quadrant fires → spotlight tracker gets a wrong direction
+prior. This is the #1 install mistake on the PIR subsystem.</li>
+</ul>
+<h3 id="114-bench-verify-per-pir">11.4 Bench-verify per PIR</h3>
+<p>After pigtail solder (and BEFORE installing into the fence):</p>
+<ol type="1">
+<li>Set jumper + pots per <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §13.1
+(retriggerable H, ~3 s delay, LOW sensitivity).</li>
+<li>Apply 5 V to the VCC pigtail end, ground to the GND end.</li>
+<li>Wait 60 s for sensor warm-up.</li>
+<li>Wave hand 1 m away → OUT line should pulse HIGH (3.3 V) on motion,
+drop LOW ~3 s after motion stops.</li>
+<li>If OUT stays low (never triggers) or stays high (stuck) → either the
+jumper/pot is wrong or the module is faulty. Re-set + retry; if still
+stuck, swap to a spare module (you have 4 spare from the 2-pack ×4
+inventory).</li>
+</ol>
+<hr />
+</div>
+
+<hr />
+<h2
+id="12a-led-drivers--keshy-at-all-12-seats-header-pins-clipped-to-2-mm-stubs-leads-soldered-to-the-stubs">12a.
+LED drivers — KESHY at all 12 seats, header pins clipped to 2 mm stubs,
+leads soldered to the stubs</h2>
+<p><strong>One driver type in the wand: the KESHY (Variant B), the 12 in
+hand, and no connector at the driver</strong> (operator 2026-11-05). The
+as-delivered right-angle pins stand 6 mm out and hit the rail at 6 of 12
+seats, so <strong>every pin of the 7-pin header is clipped to a ≤ 2.0 mm
+stub</strong> and the leads solder to the stubs. At Ø86 the stubs clear
+the rail by 0.84 mm and the PCA wedges by 3.12 mm; leave them longer
+than 2.0 mm and they hit the rail. Lead lengths and the full build card:
+<a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">Lumi_Wand_Integration
+§10.5.9</a>.</p>
+<p><strong>Per board: 5 leads</strong> (VIN+ / VIN− 22 AWG, PWM / LED+ /
+LED− 26 AWG). <strong>The 12 KESHYs in hand already carry their proven 1
+kΩ 0805 pull-down across header pads 4–5</strong> (2026-09-07, India rig
+PASSED).</p>
+<ol type="1">
+<li><strong>Board 1: beep the header</strong> — each pin against its
+net:
+<code>1 VIN+ · 2 VIN+ · 3 VIN− · 4 VIN− · 5 PWM · 6 LED+ · 7 LED−</code>.</li>
+<li><strong>Bench-test the driver BEFORE clipping</strong> (<a
+href="Lumi_Wand_Integration.html#73-bench-verify-on-first-sample">Integration
+§7.3</a>): the bench star and jumpers plug onto the full-length
+pins.</li>
+<li>⬜ <strong>Board 1: caliper the header</strong> — how far its
+plastic body overhangs the board edge, the body height, and the pin
+height above the board — and note which long edge carries the header
+(component side toward you, LED end up). Send all four to CAD. The stub
+is measured from the <strong>board edge</strong> and must end ≤ 2.0 mm
+out: with no overhang the clip never meets the plastic; with an overhang
+≤ 2.0 mm, clip flush with the body's face; past 2.0 mm, slide the body
+off first.</li>
+<li><strong>Clip every pin to ≤ 2.0 mm out from the board edge</strong>
+with flush cutters, holding the board so the cut does not lever the
+pads. <strong>Leave the 0805 on pads 4–5 untouched:</strong> the cut is
+out on the pins, away from the board, so it is not at risk.</li>
+<li><strong>Leads:</strong> strip 2 mm, tin, and <strong>lap each one
+along its stub</strong>, 350 °C, ~2 s: <code>VIN+</code> on 1 or 2,
+<code>VIN−</code> on 3 or 4, <code>PWM</code> on 5, <code>LED+</code> on
+6, <code>LED−</code> on 7. <strong>Heat-shrink each joint.</strong>
+Nothing proud of the back face (the VHB face, 1.0 mm foam).</li>
+<li><strong>Beep stub to stub:</strong> 4↔︎5, 5↔︎6 and 6↔︎7 must read
+<strong>OPEN</strong> (1↔︎2 and 3↔︎4 are the same net, so a bridge there
+is harmless). <strong><code>PWM</code>↔︎<code>VIN−</code> must read 1
+kΩ.</strong> Reading open: fit 1 kΩ <code>PWM</code>→<code>VIN−</code>
+(0805 on pads 4–5, or axial across the <code>IN−</code>/<code>PWM</code>
+holes).</li>
+<li><strong>Label</strong> both ends (seat, net, <code>CHn</code> on
+PWM). <strong>RTV 81158</strong> over the joints and lead roots for
+strain relief; let it cure. Check the back face is flat under a
+straightedge.</li>
+</ol>
+<p><strong>PCA9685 — the I/O lead, soldered (do this BEFORE the PCA goes
+on its forks; CAD fdda60c: an end-header Dupont fouls the heatsink and
+the fan):</strong></p>
+<ol start="8" type="1">
+<li>Trim the <strong>TOP-end</strong> 6-pin right-angle header:
+flush-cut each pin at the plastic body, lift the body off, clip the
+stubs flush on both faces. The bottom-end header stays as shipped.</li>
+<li><strong><code>OE</code> → <code>GND</code> link at the
+pads:</strong> a short bare or insulated jumper between the two pads.
+Meter <strong>0 Ω</strong> <code>OE</code>↔︎<code>GND</code>.</li>
+<li>Lap-solder the four 26 AWG leads to <code>GND</code>,
+<code>VCC</code>, <code>SDA</code> and <code>SCL</code>. <strong>Read
+the silk on THIS board; two pin orders are on record</strong> (<a
+href="Lumi_Wand_Integration.html#10543-pca9685--a-4-conductor-lead-soldered-at-the-pca-end">Integration
+§10.5.4.3</a>). <code>V+</code> stays empty. RTV strain relief. The far
+end gets the 4-pin Dupont F for rail 30 col 11, crimped by net (SDA
+strip 1 · SCL 2 · 3V3/VCC 3 · GND-logic 4).</li>
+</ol>
+<p><strong>Rail 270 — direct-solder, no berg (CAD fdda60c: its plugs
+foul the PCA's −Y edge):</strong></p>
+<ol start="11" type="1">
+<li>Fit <strong>no</strong> berg strips on rail 270. Solder the four
+240° / 300° DP pairs and P270 straight into its holes: <strong>strip 6 =
+13.8 V (red), strip 5 = <code>GND-power</code> (black)</strong>, drivers
+at <strong>cols 7–10</strong>, P270 at <strong>col 12</strong>. Insert
+from the inner (component) face, solder on the OUTER (wall-facing)
+copper face, clip flush. Rails 30 and 150 keep their berg strips.</li>
+<li>Meter on rail 270: strip 6 ↔︎ strip 5 <strong>OPEN</strong>; each
+lead's far end to its strip.</li>
+</ol>
+<h2
+id="13-part-9-dual-usb-c-bulkhead-panel-flashlight-extension--jack-solder--flying-leads">13.
+Part 9: Dual USB-C Bulkhead Panel (Flashlight Extension) — Jack Solder +
+Flying Leads</h2>
+<p><strong>Goal:</strong> solder 2× Type-C 6-pin Female <strong>vertical
+PCB-mount</strong> jacks (8.83 × 8.83 mm) onto a ~30 × 20 mm perfboard
+scrap, then solder flying leads off their legs. Upper jack = <strong>PD
+charge</strong>, lower jack = <strong>ESP32 dev</strong>. Design + net
+assignments + gauges live in <a
+href="Lumi_Wand_Flashlight_Variant.html#383-usb-c-jack-selection--perfboard-mount-locked-2026-06-26"><code>Lumi_Wand_Flashlight_Variant.md</code>
+§3.8.3</a>; this section is the bench procedure.</p>
+<blockquote>
+<p><strong>The perfboard carries NO nets.</strong> It is a
+<strong>mechanical bulkhead</strong>, not a circuit — every conductor
+runs point-to-point from a jack leg to the far end. No traces, no buses,
+no jumpers to cut. That is what makes this job tractable on 0.1″ stock,
+and it is why a pitch mismatch (below) is survivable.</p>
+</blockquote>
+<p><img src="images/hardware/usb_panel.png"
+alt="The dual USB-C bulkhead panel as it sits on the bench. Two Type-C 6-pin Female vertical PCB-mount jacks (8.83 × 8.83 mm) on a 30 × 20 mm perfboard scrap at 16 mm centre-to-centre, openings facing out of the page through the two wall apertures at 180°; four Ø2.2 mounting holes on the 26 × 16 mm post rectangle. Each jack shows its two outboard SHIELD legs — the structural anchor that takes 100% of the plug force and gets soldered first — separately from its six fine-pitch SIGNAL legs, which are never the mechanical anchor. The conductor tables give the gauge split: the upper (charge) jack needs 22 AWG on VBUS and GND, everything else is 28 AWG. Below the board, the Path A / Path B pitch decision; at right, the solder order, the flying-lead rules, the no-CC-resistor ban and the pre-install checks." /></p>
+<p><em>Generated by <a
+href="images/hardware/gen_usb_panel.py"><code>images/hardware/gen_usb_panel.py</code></a>
+— edit the generator, not the SVG. Board cut, jack choice and net
+assignments are <a
+href="Lumi_Wand_Flashlight_Variant.html#383-usb-c-jack-selection--perfboard-mount-locked-2026-06-26"><code>Lumi_Wand_Flashlight_Variant.md</code>
+§3.8.3</a>; the mounting-post geometry is
+<code>USB_POST_RECT_AXIAL/TANG</code> and <code>USB_SLOT_SPACING</code>
+in <a
+href="../cad/freecad/lumi_wand_flashlight_extension.py"><code>cad/freecad/lumi_wand_flashlight_extension.py</code></a>.</em></p>
+<h3
+id="131-warning-pitch-check--do-this-before-you-commit-a-jack-to-the-board">13.1
+⚠️ Pitch check — do this BEFORE you commit a jack to the board</h3>
+<p><strong>6-pin vertical USB-C legs are not guaranteed to be 2.54 mm
+pitch.</strong> Most are finer (~1.0–1.6 mm) with two large
+shield/mounting legs outboard. Put one on the 0.1″ perfboard dry and
+look:</p>
+<table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>All 6 signal legs drop into 0.1″ holes</strong></td>
+<td><strong>Path A — through-hole.</strong> Standard §4.1 technique, 350
+°C, fine chisel.</td>
+</tr>
+<tr>
+<td><strong>They don't line up</strong> (the common case)</td>
+<td><strong>Path B — carrier mount.</strong> The board becomes purely
+mechanical: anchor the jack by its <strong>shield/mounting legs</strong>
+into whatever holes they do reach (or VHB/epoxy the body down), then
+solder <strong>flying leads directly to the 6 signal legs</strong>.
+Electrically identical — there were never any nets on this board.</td>
+</tr>
+</tbody>
+</table>
+<p>Decide per jack, note which path you used, and don't fight a mismatch
+— Path B is a legitimate outcome, not a failure.</p>
+<h3 id="132-solder-the-jacks-both-paths">13.2 Solder the jacks (both
+paths)</h3>
+<p>Do <strong>both jacks first, while the board is bare and
+flat.</strong> Wires last — they get in the way and act as heat
+sinks.</p>
+<ol type="1">
+<li><strong>Shield/mounting legs first.</strong> These take 100 % of the
+plug insertion and removal force; the 6 signal legs must never be the
+mechanical anchor. Solder them with a <strong>medium chisel at 350
+°C</strong> and be generous — this is a structural joint. Confirm the
+jack body sits square and its opening is perpendicular to the board face
+(it has to point radially out through the wall cutout).</li>
+<li><strong>Then the 6 signal legs.</strong> Fine conical,
+<strong>340–350 °C</strong>, 0.5 mm solder, <strong>flux dot
+first</strong>. Minimal solder per leg — the gaps are small and a bridge
+here is invisible until the port misbehaves.</li>
+<li><strong>Dwell discipline:</strong> USB-C jacks have plastic between
+the contacts that deforms and lets pins tilt. <strong>~2 s per leg, then
+move on.</strong> If a leg won't wet, add flux and come back after it
+cools — don't sit on it.</li>
+<li><strong>Inspect under the 10× magnifier</strong>, then <strong>beep
+every adjacent leg pair for shorts</strong>. Do this now: after the
+wires are on, access is gone.</li>
+</ol>
+<h3 id="133-flying-leads">13.3 Flying leads</h3>
+<ul>
+<li><strong>Pre-tin the leg and the wire end separately</strong>, then
+join. Wire-to-leg is a butt joint with no hole to hold anything, so both
+sides must already be wetted.</li>
+<li><strong>Strip short (~2 mm)</strong> and slide heat-shrink on before
+you solder. Long strips near a fine-pitch row are how neighbours get
+bridged.</li>
+<li><strong>Strain-relieve at the board</strong>, not at the leg — a
+wire pulled at the leg peels the pad or bends the pin. Anchor the bundle
+to the perfboard with a zip tie or a blob of RTV a few mm back, then
+heat-shrink the whole exit.</li>
+<li><strong>Shield → GND:</strong> tie each jack's shield to that jack's
+GND lead. Both ends of these runs are the same system; there is no
+ground-loop case here, and a floating shell just radiates.</li>
+<li><strong>Do NOT add 5.1 kΩ CC pull-downs.</strong> These jacks are
+<strong>passive bulkheads</strong> — CC1/CC2 pass straight through to
+the PD trigger module and to the ESP32 board, each of which does its own
+CC termination. Adding resistors here presents a second sink and breaks
+PD negotiation. Six wires, straight through, nothing else.</li>
+</ul>
+<h3 id="134-warning-gauge-is-not-the-same-on-both-jacks">13.4 ⚠️ Gauge
+is not the same on both jacks</h3>
+<p>Covered in full in <a
+href="Lumi_Wand_Flashlight_Variant.html#383-usb-c-jack-selection--perfboard-mount-locked-2026-06-26"><code>Lumi_Wand_Flashlight_Variant.md</code>
+§3.8.3</a>, restated here because it is a soldering-bench decision:</p>
+<ul>
+<li><strong>Lower (dev) jack</strong> — ≤ ~1 A. <strong>26 AWG on all
+six</strong> (palette 2026-09-30; <em>was 28</em>) is fine. Keep D+/D−
+adjacent and equal length.</li>
+<li><strong>Upper (charge) jack</strong> — <strong>VBUS and GND carry
+the full pack charge current.</strong> 28 AWG is rated ~1.4 A chassis
+and is <strong>undersized</strong>; use <strong>22 AWG</strong> (~7 A)
+for those two, 28 AWG for CC1/CC2/D+/D−. A 22 AWG conductor on a
+fine-pitch leg needs a bigger tip and a moment longer — tin it well and
+keep the joint compact.</li>
+</ul>
+<h3 id="135-verify-before-it-goes-in-the-shell">13.5 Verify before it
+goes in the shell</h3>
+<ol type="1">
+<li>Continuity, every conductor, jack leg → far end.</li>
+<li>Adjacent-leg shorts: none, on both jacks.</li>
+<li>VBUS → GND on each jack: <strong>open</strong> (a short here meets a
+PD brick at 15 V).</li>
+<li>Plug a USB-C cable into each jack and tug it. The shield joints
+hold; nothing moves on the signal legs.</li>
+</ol>
+<hr />
+<h2
+id="14-part-10-5-v-buck--pd-trigger--pad-soldering-only-if-the-units-arrive-bare-pad">14.
+Part 10: 5 V Buck + PD Trigger — Pad Soldering (only if the units arrive
+bare-pad)</h2>
+<p>Design, placement, and the full connection table live in <a
+href="Lumi_Wand_Flashlight_Variant.html#411-extension-harness--rocker-buck-and-pd-trigger-wiring"><code>Lumi_Wand_Flashlight_Variant.md</code>
+§4.1.1</a>. Only the heat work is here.</p>
+<h3 id="141-pd-trigger-module--no-soldering-at-all">14.1 PD trigger
+module — <strong>no soldering at all</strong></h3>
+<p>The selected module is plug-and-play by design: <strong>DIP
+switch</strong> sets the voltage, <strong>screw terminal</strong> takes
+the output, and its <strong>USB-C is a connector, not pads</strong>.
+Nothing on this board gets an iron. Its only soldered interface is at
+the <em>other</em> end of its USB-C jumper — the upper panel jack, §13
+above.</p>
+<h3 id="142-5-v-buck--check-the-terminals-at-receipt">14.2 5 V buck —
+check the terminals at receipt</h3>
+<p>The received unit (12 V/24 V → 5 V 10 A, 40 × 15 mm) has <strong>VIN+
+/ OUT+ / GND / GND at the four corners</strong>, and the vendor photos
+show it can ship either <strong>screw-terminal</strong> or
+<strong>bare-pad</strong>. Look before you plan:</p>
+<ul>
+<li><strong>Screw terminals</strong> → no soldering. <strong>G469
+breakout: always a ferrule — E0308 (24 AWG) / E0208 (26 AWG)</strong>,
+every landing as-built 2026-09-28. Larger terminals: bare stranded or,
+better, an <strong>XHF ferrule</strong> (<a
+href="Electronics_Assembly_Guide.html#12-consumables"><code>Electronics_Assembly_Guide.md</code>
+§1.2</a>). <strong>Never tin a wire end into a screw terminal</strong> —
+solder cold-flows under clamp pressure and the joint loosens (the
+2026-08-14 cold-flow rule, <a
+href="Electronics_Assembly_Guide.html#122-driver-end--soldered-to-the-keshys-clipped-header-stubs">Assembly
+Guide §12.2</a>).</li>
+<li><strong>Bare pads</strong> → wire-to-pad, procedure below.</li>
+</ul>
+<h3 id="143-wire-to-pad-on-the-buck-fr4--not-the-mcpcb-regime">14.3
+Wire-to-pad on the buck (FR4 — <em>not</em> the MCPCB regime)</h3>
+<p>This is ordinary FR4 with a copper pour, <strong>not</strong> an
+aluminium-core star. <strong>Do not reach for the 380–400 °C of
+§4.6.</strong></p>
+<ul>
+<li><strong>Tip:</strong> medium chisel · <strong>Temp:</strong> 350 °C
+· <strong>Solder:</strong> 0.8 mm · <strong>Flux:</strong> dot per
+pad</li>
+<li><strong>Procedure:</strong> tin the pad (~1–2 s) → tin the wire end
+→ place and reflow together (~2 s). The GND pads sit on a ground pour
+and pull heat — expect a second or so longer there, and if a GND joint
+goes dull, add flux and reflow rather than raising the temperature.</li>
+<li><strong>Gauge:</strong> input side sees ~0.25 A (the ESP32 + LCD is
+a few hundred mA at 5 V, off a 12.8 V rail), output side under 1 A.
+<strong>22 AWG is generous on both</strong> and gives a joint that
+survives handling; 26 AWG is electrically fine if routing is tight.</li>
+<li><strong>Inspect:</strong> shiny fillet, wire mechanically captive.
+Then <strong>beep VIN+ ↔︎ OUT+ — must be OPEN.</strong> Bridging those is
+a direct 12.8 V shot into the ESP32 board.</li>
+</ul>
+<h3 id="144-the-one-gate-that-matters">14.4 The one gate that
+matters</h3>
+<p><strong>Verify 5.00 V ± 0.1 at the buck output — unloaded, then
+loaded — BEFORE its output wire ever reaches the LCD board</strong> (<a
+href="Wand_and_Wand_Extension_Build_Plan.html#26-parallel-track--extension-electronics-bench-bring-up">India
+plan §2.6 step 3</a>). A mis-set or damaged buck presenting 12.8 V to
+the ESP32 kills it instantly, and it is the only irreversible mistake on
+this bench.</p>
+<hr />
+<h2
+id="15-part-11-lilygo-t-display-s3-bench-board--wires-to-the-back-side-rings">15.
+Part 11: LiLyGO T-Display-S3 (bench board) — Wires to the Back-Side
+Rings</h2>
+<blockquote>
+<h3
+id="pushpin-scope--this-part-is-for-the-bare-bench-board-only-2026-09-20">📌
+Scope — this part is for the BARE bench board only (2026-09-20)</h3>
+<p>This procedure exists because the <strong>India bench unit</strong>
+shipped bare. <strong>The LiLyGO now on order is headered</strong>, as
+is the Waveshare — for either of those you <strong>plug in and do not
+desolder</strong> (<a
+href="Lumi_Wand_Flashlight_Variant.html#411-extension-harness--rocker-buck-and-pd-trigger-wiring">Flashlight
+Variant §4.1.1</a>), and none of §15 applies.</p>
+<p>The finding below is <strong>not</strong> contradicted by that. It is
+about <strong>retrofitting</strong> a header to a board whose display is
+already bonded, which is blocked; a factory-headered board has its
+header fitted before the glass goes on. Both are true.</p>
+</blockquote>
+<p><strong>Bench findings 2026-08-28:</strong> the non-touch
+T-Display-S3 in India <strong>shipped with no headers fitted</strong>,
+and — checked on the board — <strong>the display glass overhangs the
+header hole rows on the front face.</strong> Both facts together settle
+the method:</p>
+<blockquote>
+<h3
+id="red_circle-a-header-is-not-possible-on-this-board-solder-wires-to-the-back-side-rings">🔴
+A header is not possible on this board. Solder wires to the back-side
+rings.</h3>
+<p>A through-hole header needs its <strong>plastic body seated on the
+FRONT</strong> face (you then solder on the back, where the pins
+emerge). The glass overhangs those rows, so the body cannot seat.
+<strong>The male headers in the India kit are unusable here</strong> —
+not a supply problem, a geometry one.</p>
+<p><strong>Do not try to lift the display to get at the front.</strong>
+It is adhered with its flex tail running to the board; LilyGO's own
+community carries a <a
+href="https://www.community.lilygo.cc/topic/696/display-removal-t-display-s3"><em>"Display
+removal, T-Display-S3"</em></a> thread whose recurring outcome is
+cracked panels. The touch unit is already dead from a suspected flex
+fault and there is <strong>no spare board in India</strong>. Four wires
+are not worth that bet.</p>
+<p><strong>This costs you nothing you needed.</strong> The whole bench
+requirement is <strong>four conductors</strong>, and this is everything
+they carry:</p>
+<table>
+<thead>
+<tr>
+<th>Wire</th>
+<th>Pad</th>
+<th>Feeds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>3V</code></td>
+<td>PCA9685 <strong><code>VCC</code></strong> + TMP102
+<strong><code>V+</code></strong> + the I²C bus level</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>GND</code></td>
+<td>common return — breadboard rail, tied to bench-PSU GND</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>GPIO 17</code></td>
+<td>SDA</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>GPIO 18</code></td>
+<td>SCL</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The PCA9685 runs on 3.3 V, NOT 5 V</strong> — its onboard ~10
+kΩ pull-ups go to VCC, so a 5 V supply idles SDA/SCL at 5 V and destroys
+both the ESP32-S3 GPIOs and the TMP102 (each 3.6 V max). Its
+<code>V+</code> screw terminal stays unpowered; LED power comes
+per-channel from the drivers. See <a
+href="Lumi_Wand_Integration.html#63-pca9685-breakout">Integration
+§6.3</a>.</p>
+<p><strong>The rig has only two rails: 3.3 V and 12–13.8 V.</strong> A
+fifth wire to the <strong><code>5V</code> pad (left row)</strong> comes
+later for <a
+href="Wand_and_Wand_Extension_Build_Plan.html#26-parallel-track--extension-electronics-bench-bring-up">India
+§2.6 step 5</a> — and note that pad is an <strong>INPUT</strong>, the
+buck powering the board in place of USB. It is not a rail you distribute
+to anything. Four joints now, all on the accessible face.</p>
+</blockquote>
+<p><strong>Why no front access is needed:</strong> these are
+<strong>plated-through holes</strong> — the copper ring exists on
+<strong>both</strong> faces — and <strong>a wire only has to enter the
+barrel, not pass through it.</strong> Solder wicks down the plating from
+the back-side ring and forms a proper joint with the front never
+touched.</p>
+<p><em>(Alternative, if you want something pluggable rather than
+tethered: press a <strong>bare header pin</strong> — plastic stripped
+off — into each hole from the back so it stands proud, and solder it to
+the back ring. You get 4 pins to plug females onto. Mechanically weaker
+than a plastic-supported header, since any lateral force goes straight
+into the pad, so only do this if you'll be re-plugging often. For a rig
+that gets wired once and left, soldered wire with strain relief is the
+sturdier answer.)</em></p>
+<h3
+id="151-warning-identify-the-pads-by-multimeter--the-back-view-is-mirrored">15.1
+⚠️ Identify the pads by multimeter — the back view is MIRRORED</h3>
+<p>Every published T-Display-S3 pinout is drawn
+<strong>front-facing</strong>. You are working on the
+<strong>back</strong>, so pin order runs the other way and counting from
+the same end will put you one row out. This is the same trap the TMP102
+back-side silk sets (<a
+href="#71-add0-mod--trace-cut--v-bridge-technique-45">§7.1</a> —
+<em>"back view = mirrored header order"</em>), and the fleet rule
+applies: <strong>function-ID by meter, never by counting or by
+silk.</strong></p>
+<p><strong>Pad layout, from the vendor pinout</strong> (front-facing —
+remember you are looking at the back):</p>
+<table>
+<thead>
+<tr>
+<th>Row</th>
+<th>Order, top → bottom</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Left (P2)</strong></td>
+<td><strong>3V</strong> · 1 · 2 · 3 · 10 · 11 · 12 · 13 · NC · NC · GND
+· <strong>5V</strong></td>
+</tr>
+<tr>
+<td><strong>Right (P1)</strong></td>
+<td>GND · GND · 43 · 44 · <strong>18</strong> · <strong>17</strong> · 21
+· 16 · NC · GND · GND · <strong>3V</strong></td>
+</tr>
+</tbody>
+</table>
+<p>So <strong>3V sits at the TOP of the left row and the BOTTOM of the
+right row</strong>, 5V at the bottom-left, and there are <strong>NC pads
+mid-row on both sides</strong> — which is exactly why counting positions
+is unreliable and the meter is not optional.</p>
+<ol type="1">
+<li>Power the board over <strong>USB</strong> and let it <strong>boot
+our firmware.</strong></li>
+<li><strong>⚠️ 3V3 reads 0 V unless the board has booted.</strong> GPIO
+15 (<code>PWR_ON</code>) gates the 3V3 rail feeding both the LCD and the
+header 3V3 pads; the firmware asserts it in <code>setup()</code> (<a
+href="../firmware/wand_extension/src/main.cpp"><code>main.cpp</code></a>
+— <code>digitalWrite(PIN_POWER_ON, HIGH)</code>, <em>"keep board rails
+up"</em>). A bare or bootloader-stuck board genuinely measures nothing
+there.</li>
+<li>Find <strong>GND</strong> first — continuity from a pad to the USB-C
+shell. There are plenty: two at the top of the right row, two near its
+bottom, one on the left row.</li>
+<li>With the black probe on that GND, sweep the pads for <strong>~3.3
+V</strong>. There are <strong>two 3V3 pads</strong>, one at the end of
+each row. Mark the one you find.</li>
+<li>Mark <strong>GPIO 17 / 18</strong> by counting <em>from a
+meter-confirmed pad</em>, not from a board edge — they sit 5th and 6th
+down the right row, immediately below 43/44. Sanity-check afterwards
+with the bus scan: wrong pins = no devices found, which is cheap to
+diagnose and harmless.</li>
+</ol>
+<blockquote>
+<p><strong>Aside — the vendor pinout settles the SDA/SCL
+question.</strong> The same diagram's touch-variant note reads
+<strong><code>SDA--IO17  SCL--IO18</code></strong>, which is exactly
+what <a
+href="../firmware/wand_extension/src/config.h"><code>config.h</code></a>
+carries after the 2026-08-27 fix. Third-party pinout pages that list
+"default I²C = SDA 18 / SCL 17" are the outlier. (On the
+<strong>non-touch</strong> board there is no CST816 on those pins
+anyway, so either assignment works electrically — just wire to match
+<code>config.h</code>.)</p>
+</blockquote>
+<h3 id="152-solder-the-wires">15.2 Solder the wires</h3>
+<p><strong>Technique:</strong> wire into a plated-through hole, soldered
+on the <strong>back-side ring only</strong>. Fine chisel, <strong>350
+°C</strong>, 0.5 mm solder, flux dot per ring.</p>
+<p><strong>Per wire:</strong></p>
+<ol type="1">
+<li><strong>Prep the wire.</strong> Take an <strong>M/F dupont
+jumper</strong>, cut the <strong>female</strong> end off, strip ~3 mm,
+tin lightly. The surviving <strong>male</strong> end plugs straight into
+the breadboard, which is what the <a
+href="Wand_Bench_Test_Phases.html#phase-1--minimal-breadboard-rig-1-star-4-drivers-pca9685-tmp102-heatsink">Phase
+1 table</a> assumes. ~15–20 cm so the board sits clear of the breadboard
+rather than tethered on top of it.</li>
+<li><strong>Tin the back-side ring</strong> — flux dot, ~1 s. Small;
+don't flood it.</li>
+<li><strong>Insert from the back</strong>, wire entering the barrel far
+enough to be gripped but <strong>flush with the front face — do not push
+it through.</strong> There is a display on the other side.</li>
+<li><strong>Fillet to the ring</strong>, ~2–3 s. Solder wicks down the
+plating. Target a small shiny cone around the wire, not a ball sitting
+on top.</li>
+<li><strong>Let it set before you move the wire.</strong> Sn60/Pb40 has
+a 5 °C pasty range (<a href="#0-conventions--read-first">§0</a>) — hold
+~2 s after the iron leaves.</li>
+</ol>
+<p><strong>Colour convention</strong> (matches the fleet wire scheme):
+orange or red = <code>3V</code>, black = <code>GND</code>, blue =
+<code>SDA (17)</code>, yellow = <code>SCL (18)</code>.</p>
+<p><strong>Heat discipline — you are working next to a bonded
+display:</strong></p>
+<ul>
+<li><strong>Do the two pairs as separate sessions.</strong>
+<code>3V</code>/<code>GND</code> are adjacent at one end of the row;
+<code>17</code>/<code>18</code> are adjacent further along. Do one pair,
+let the board come back to hand-warm, then the other.</li>
+<li><strong>~3 s per joint, then off.</strong> If a ring won't wet, add
+flux and come back once it has cooled — never dwell.</li>
+<li><strong>Never flex the board while a joint is hot.</strong> The
+display bond and its flex tail are the fragile parts, not the
+rings.</li>
+<li><strong>Support the board display-up</strong> in the helping-hands.
+The glass must never rest on the bench.</li>
+</ul>
+<blockquote>
+<h3 id="warning-strain-relief-is-not-optional-here">⚠️ Strain relief is
+not optional here</h3>
+<p>Because the wire only enters the barrel instead of passing through,
+the joint is <strong>shallower than a normal through-hole joint</strong>
+and a snagged jumper lifts the ring — which on this board is
+unrepairable in India. <strong>Anchor all four wires</strong> with a zip
+tie or a bead of Permatex 81158 a couple of cm back from the joints, so
+any pull lands on the anchor and never on the copper.</p>
+</blockquote>
+<h3 id="153-verify">15.3 Verify</h3>
+<ol type="1">
+<li><strong>No bridges</strong> — 10× magnifier over the four joints,
+then beep each wire against its neighbouring ring.</li>
+<li><strong>3V ↔︎ GND: open.</strong> A bridge here shorts the board's
+own regulator.</li>
+<li><strong>Continuity wire-end → ring</strong> on all four, and a
+<strong>gentle tug</strong> on each (the anchor should take it, not the
+joint).</li>
+<li>Re-boot the board: <strong>~3.3 V at the far end of the 3V
+wire</strong>, and the LCD still runs its boot self-test — that is your
+proof the display survived the heat.</li>
+<li>Only then wire the Phase-1 rig.</li>
+</ol>
+<blockquote>
+<p><strong>Power caution for later:</strong> feeding the buck's 5 V into
+the <strong>+5V pad</strong> back-feeds the USB path. <strong>Do not
+have USB plugged in while the board is running off the buck</strong> (<a
+href="Lumi_Wand_Flashlight_Variant.html#411-extension-harness--rocker-buck-and-pd-trigger-wiring"><code>Lumi_Wand_Flashlight_Variant.md</code>
+§4.1.1</a> makes the same point about the Waveshare's VSYS).</p>
+</blockquote>
+<hr />
+<h2
+id="16-part-12-nickel-strip--26700-lifepo4-cell-caps-flashlight-pack">16.
+Part 12: Nickel Strip → 26700 LiFePO4 Cell Caps (flashlight pack)</h2>
+<blockquote>
+<h1
+id="superseded-2026-09-11--the-pack-no-longer-solders-to-cells">SUPERSEDED
+2026-09-11 — the pack no longer solders to cells</h1>
+<p><strong>The flashlight pack is now the <a
+href="Lumi_Wand_Flashlight_Variant.html#-design-2026-09-06--central-rod--two-end-caps-clamped-by-nuts-no-cage-caps-screwed-onto-the-rod-directly-until-2026-10-07">solder-free
+cell cartridge</a>: Keystone spring + button contacts in printed end
+caps. No iron ever touches a cell.</strong> This section drove the
+decision — <a
+href="#163a--when-it-will-not-wet-at-all--bench-finding-2026-09-06">§16.3a</a>
+records that the caps would not wet <em>at all</em>, which is what
+killed soldering as a method.</p>
+<p><strong>What in this section still applies:</strong></p>
+<table>
+<tbody>
+<tr>
+<td>✅ <a href="#161-before-you-touch-an-iron-to-a-cell">§16.1</a> —
+safety around charged cells</td>
+<td><strong>Still live.</strong> You still handle four charged cells
+building a cartridge. "Cover every terminal you are not working on", "a
+slip that bridges + to − is a dead short at tens of amps", and "leave
+the string un-series as long as possible" are unchanged.</td>
+</tr>
+<tr>
+<td>✅ <a
+href="#165-bms-wires--gauge-where-each-lands-and-how-to-solder-them">§16.5</a>
+— BMS wires</td>
+<td><strong>Still live, new landing.</strong> Gauges (18 AWG pack, 26
+AWG taps) and the connect order — <strong>B− first, B1→B4 ascending,
+balance connector LAST</strong> — are unchanged. What changed is
+<em>where they land</em>: <strong>on the BACK of each contact
+plate</strong>, with the lead brought up from the outboard face through
+a <strong>5.0 (X) × 4.0 (Y) wire slot through the pocket centre</strong>
+(insulated body stops in the slot mouth; strain relief OFF the part —
+RTV-potted slot + tacked service loop, §16.5) — on <strong>both</strong>
+caps (cartridge v3.2, 928dfd4 slot / 6053128, 2026-10-09; detail in
+§16.5). The B1/B3 taps then leave the bottom cap through the
+<strong>Ø2.2 hole at r 25</strong> (insulated through it) and run up the
+outside of the pack. The joint lives under the plate, inside the slot,
+so the cell never bears on it. ✅ <strong>Joint method (Electronics,
+revised 2026-10-09): solder to the back of the plate over the slot,
+plate lifted clear, fillet inside the slot only — no ring
+terminal.</strong> Full call + depth budget in §16.5.</td>
+</tr>
+<tr>
+<td>§16.2, §16.3, §16.4, §16.5a, §16.6, §16.7</td>
+<td><strong>History.</strong> Cell-joint technique, dwell rules,
+acceptance and rework — none of it is performed any more. Retained as
+the record, and as the fallback if the cartridge fails its USA bench
+checks.</td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>Do not treat this as a live procedure.</strong> If you are
+here because another doc sent you, that link is stale — tell it so.</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>This is the highest-risk soldering operation in the
+build.</strong> You are putting a hot iron on a <strong>charged</strong>
+cell. Read <a href="#161-before-you-touch-an-iron-to-a-cell">§16.1</a>
+before starting. Pack topology, cell orientation, insulation and BMS
+wiring order are <strong>not</strong> here — they live in <a
+href="Lumi_Wand_Flashlight_Variant.html#361-pack-assembly--bms-install--the-actual-bench-procedure"><code>Lumi_Wand_Flashlight_Variant.md</code>
+§3.6.1</a>. This section covers only <em>how to make the joint</em>.</p>
+</blockquote>
+<p><strong>Applies to:</strong> 3 series links between 4× VariCore 26700
+LiFePO4 cells, using <strong>0.15 × 8 mm 99.96 % pure nickel
+strip</strong> (in hand 2026-09-01, 10× 100 mm tabs). No spot welder on
+this trip — these are soldered joints by necessity, not by
+preference.</p>
+<h3 id="161-before-you-touch-an-iron-to-a-cell">16.1 Before you touch an
+iron to a cell</h3>
+<ul>
+<li><strong>Never solder a cell that is hot, swollen, dented, or reading
+below 2.5 V.</strong> Reject it.</li>
+<li><strong>A slip that bridges + to − is a dead short at tens of
+amps.</strong> Cover every terminal you are not currently working on —
+kapton, electrical tape, or fish paper. Work <strong>one joint at a
+time</strong>.</li>
+<li><strong>Leave the string un-series as long as possible.</strong>
+Individual cells are 3.3 V; a completed 4S string is 13 V across your
+workspace.</li>
+<li><strong>Have the pack tapes and insulating rings cut and ready
+before you start</strong>, so no joint sits exposed while you go looking
+for materials.</li>
+<li>Work on a non-conductive surface. Remove watch, rings,
+bracelet.</li>
+</ul>
+<h3
+id="162-the-counter-intuitive-rule-hotter-iron-less-heat-in-the-cell">16.2
+The counter-intuitive rule: hotter iron, less heat in the cell</h3>
+<blockquote>
+<p>⚠️ <strong>Scope, added 2026-09-06: this rule applies to the STRIP
+and to the final re-flow — not to raising a cold cell cap from
+scratch.</strong> On the cap's thermal mass a 450 °C tip burns the flux
+off before the metal reaches wetting temperature, and the joint never
+takes at all. See <a
+href="#163a--when-it-will-not-wet-at-all--bench-finding-2026-09-06">§16.3a</a>.</p>
+</blockquote>
+<p>The instinct is to turn the iron down to protect the battery.
+<strong>That is exactly backwards.</strong> A cool iron cannot melt the
+joint quickly, so you hold it there — and total heat into the cell is
+<em>dwell time × temperature</em>. Dwell dominates.</p>
+<table>
+<tbody>
+<tr>
+<td><strong>Iron</strong></td>
+<td>Serplex at <strong>full 80 W</strong></td>
+</tr>
+<tr>
+<td><strong>Tip</strong></td>
+<td><strong>Largest chisel you have.</strong> A fine tip has no thermal
+mass and will stall against a cell cap.</td>
+</tr>
+<tr>
+<td><strong>Temperature</strong></td>
+<td><strong>450 °C</strong> — the hottest operation in this build.
+<strong>Not 500 °C, even though the Serplex goes there</strong> — see
+below.</td>
+</tr>
+<tr>
+<td><strong>Target dwell</strong></td>
+<td><strong>≤ 3 seconds per joint</strong></td>
+</tr>
+<tr>
+<td><strong>Hard stop</strong></td>
+<td>If it has not wetted in <strong>3 s, STOP.</strong> Remove the iron,
+let the cell return to hand temperature, re-abrade, re-flux, try again.
+Do not keep pushing.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<h3 id="why-450-c-and-not-500-c--the-limit-is-the-flux-not-the-iron">Why
+450 °C and not 500 °C — the limit is the flux, not the iron</h3>
+<p>The reason to run hot on a cell is <strong>not</strong> to melt the
+solder. <strong>RA300 is Sn60/Pb40, melting 183–188 °C</strong> (<a
+href="#2-consumables">§2</a>) — at 350 °C you are already at twice its
+melting point. The heat is there to punch through the <strong>thermal
+mass of the can</strong>: a 26700 is ~90 g of steel and lithium bolted
+directly to the joint, sinking heat as fast as you deliver it. That is
+why a modest tip stalls and you end up dwelling, which is the thing that
+damages cells.</p>
+<p><strong>But rosin-activated flux activates around 150–200 °C and
+begins carbonising above ~300 °C.</strong> At a 500 °C tip the flux
+burns off essentially on contact, leaving carbon that <strong>actively
+blocks wetting</strong>. The joint then refuses to take, so you hold the
+iron there longer — the exact failure the 3-second rule exists to
+prevent. Above ~450 °C you trade away the flux to buy thermal drive you
+do not need.</p>
+<p><strong>450 °C is the balance:</strong> enough drive to beat the
+can's thermal mass, still inside the window where RA rosin survives the
+~2 s it has to work.</p>
+<p><strong>Two consequences at 450 °C:</strong></p>
+<ul>
+<li>✅ <strong>Re-flux every attempt.</strong> The first touch consumes
+it. Never retry onto burnt flux — wipe, re-abrade, fresh dot of
+CQ4LF.</li>
+<li>✅ <strong>The tip oxidises faster.</strong> Brass wool between
+joints; hit the tinner if it stops taking solder.</li>
+</ul>
+</blockquote>
+<h3 id="163-why-pure-nickel-fights-you-and-what-to-do-about-it">16.3 Why
+pure nickel fights you (and what to do about it)</h3>
+<p><strong>99.96 % pure nickel is harder to solder than the
+nickel-plated steel strip sold for the same job.</strong> The material
+that welds best solders worst — it passivates instantly with a tenacious
+oxide film. Two consequences:</p>
+<ul>
+<li><strong>Abrasion is mandatory, not optional.</strong> Scuff both the
+strip and the cell cap to bright metal immediately before fluxing.
+Solder will not wet an unabraded surface no matter how hot the iron.
+<strong>Use 400-grit silicon carbide wet/dry</strong> (Taparia 9″×11″
+sheets, in hand 2026-09-05) — SiC cuts nickel better than
+aluminium-oxide paper and does not load up. Tear off a small square per
+joint; a fibreglass scratch pen or needle file also works.
+<strong>Abrade dry</strong> — no water anywhere near a cell.</li>
+<li><strong>Use an active rosin flux and use plenty.</strong>
+<strong>Never plumbing / acid flux</strong> — the residue is corrosive
+and it is sitting on a battery terminal for the life of the
+product.</li>
+</ul>
+<h3
+id="163a-when-it-will-not-wet-at-all--bench-finding-2026-09-06">16.3a
+WHEN IT WILL NOT WET AT ALL — bench finding 2026-09-06</h3>
+<p><strong>Reported from the bench:</strong> cap scuffed with 400-grit
+emery, fluxed, tried at 400 °C and 450 °C — <strong>solder will not take
+at all.</strong> The same iron, same flux, same solder <strong>wets the
+nickel strip with no trouble.</strong></p>
+<blockquote>
+<h3
+id="that-evidence-is-the-diagnosis-it-is-thermal-mass-not-chemistry">That
+evidence is the diagnosis: it is THERMAL MASS, not chemistry</h3>
+<p>Flux, solder and iron are identical between the two surfaces. The
+only thing that differs is what is behind the metal:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Nickel strip</th>
+<th>Cell cap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What you are heating</td>
+<td>0.15 mm of foil</td>
+<td>a cap <strong>welded to a steel can holding ~100 g of
+cell</strong></td>
+</tr>
+<tr>
+<td>Time to reach wetting temp</td>
+<td>well under 1 s</td>
+<td><strong>far longer than the flux survives</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The failure mechanism, and why more heat cannot fix
+it:</strong> a 450 °C tip touching a cold, massive cap <strong>flashes
+the rosin to carbon on contact</strong> — rosin activates at 150-200 °C
+and carbonises above ~300 °C (<a
+href="#162-the-counter-intuitive-rule-hotter-iron-less-heat-in-the-cell">§16.2</a>).
+The cap is still nowhere near wetting temperature. By the time the mass
+does come up, the flux is already dead carbon, which <strong>actively
+blocks</strong> wetting. So you get <em>nothing</em> — not a poor joint,
+no joint — and holding longer only pumps heat into the cell.</p>
+<p><strong>§16.2's "hotter iron, less heat in the cell" rule is right
+for the STRIP and wrong for the CAP.</strong> On a low-mass part,
+hot-and-fast wins. On a high-mass part, the flux dies before the metal
+arrives and the rule inverts.</p>
+</blockquote>
+<p><strong>🛑 First: stop, and treat the cells as suspect.</strong>
+Every failed attempt was heat into a cell with no joint to show for it,
+and the damage is cumulative and invisible — the cap gasket degrades
+long before anything looks wrong. Rest the cells 24 h, then
+<strong>re-check each voltage</strong>; reject any cell that has
+drifted, smells, or shows any deformation. <strong>Do not keep retrying
+the same way.</strong></p>
+<p><strong>Two cheap diagnostics before anything else:</strong></p>
+<ol type="1">
+<li><strong>Abraded vs un-abraded.</strong> Fresh flux on a
+<em>virgin</em> patch of cap, one 3 s attempt. <strong>If un-abraded
+wets better than abraded, you have sanded through the nickel plating to
+the steel underneath</strong> — and rosin flux will not wet bare steel.
+(The acid flux that would is <strong>banned on a battery
+terminal</strong> — corrosive residue sitting on the cell for the life
+of the product.) Fix: stop using 400-grit; a fibreglass scratch pen or
+brass brush cleans the oxide without cutting through the plating.</li>
+<li><strong>The 60-second window.</strong> Nickel <strong>re-passivates
+within about a minute</strong> of being abraded — at room temperature,
+just lying there. If you abrade, then find the flux, then position the
+strip, then pick up the iron, the surface has already re-oxidised.
+<strong>Abrade → flux within 30 s</strong>, everything else laid out
+ready first.</li>
+</ol>
+<p><strong>If you still want to attempt it — three changes, in this
+order:</strong></p>
+<ul>
+<li><strong>Flood the flux, do not dot it.</strong> A blob gives reserve
+after the first flash burns off.</li>
+<li><strong>Drop the tip to ~380-400 °C for the cap only.</strong>
+Slower flux burn-off, and the tip's <em>stored mass</em> does the work
+rather than its setpoint.</li>
+<li><strong>Wet the tip with molten solder before contact</strong> so
+heat crosses through a liquid solder bridge instead of dry
+metal-to-metal. This is the single biggest improvement in transfer rate
+into a massive part — and use the <strong>largest, blunt-faced tip you
+own</strong> for contact area, not a chisel edge.</li>
+</ul>
+<blockquote>
+<h3
+id="white_check_mark-the-honest-recommendation-defer-the-pack-to-the-usa-and-buy-a-welder">✅
+The honest recommendation: defer the pack to the USA and buy a
+welder</h3>
+<p><strong>This joint is marginal by hand, and that is precisely why the
+industry spot-welds it.</strong> Two facts make deferring the right call
+rather than a retreat:</p>
+<ul>
+<li><strong>The pack is not on the critical path.</strong> The measured
+2.4 A draw means the bench PSU runs all 12 channels (<a
+href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
+§5.3</a>), so every remaining bench phase proceeds without a pack.</li>
+<li><strong>More packs are coming.</strong> The commercial SKUs need
+them; a welder is a tool purchase, not a one-off.</li>
+</ul>
+<p>⚠️ <strong>Budget the right money.</strong> Our strip is <strong>0.15
+mm PURE nickel</strong>, which is at the hard end — pure nickel's high
+conductivity carries current <em>through</em> rather than heating the
+interface, so it needs more energy than the nickel-plated steel strip
+most cheap welders are rated on. <strong><span
+class="math inline">30 − 150<em>h</em><em>a</em><em>n</em><em>d</em><em>h</em><em>e</em><em>l</em><em>d</em><em>s</em><em>a</em><em>r</em><em>e</em><em>u</em><em>n</em><em>r</em><em>e</em><em>l</em><em>i</em><em>a</em><em>b</em><em>l</em><em>e</em><em>a</em><em>t</em><em>t</em><em>h</em><em>i</em><em>s</em><em>g</em><em>a</em><em>u</em><em>g</em><em>e</em> * *, <em>a</em><em>n</em><em>d</em><em>a</em><em>w</em><em>e</em><em>l</em><em>d</em><em>t</em><em>h</em><em>a</em><em>t</em><em>l</em><em>o</em><em>o</em><em>k</em><em>s</em><em>f</em><em>i</em><em>n</em><em>e</em><em>a</em><em>n</em><em>d</em><em>f</em><em>a</em><em>i</em><em>l</em><em>s</em><em>u</em><em>n</em><em>d</em><em>e</em><em>r</em><em>l</em><em>o</em><em>a</em><em>d</em><em>i</em><em>n</em><em>s</em><em>i</em><em>d</em><em>e</em><em>a</em><em>s</em><em>e</em><em>a</em><em>l</em><em>e</em><em>d</em><em>p</em><em>a</em><em>c</em><em>k</em><em>i</em><em>s</em><em>w</em><em>o</em><em>r</em><em>s</em><em>e</em><em>t</em><em>h</em><em>a</em><em>n</em><em>n</em><em>o</em><em>w</em><em>e</em><em>l</em><em>d</em>.<em>C</em><em>o</em><em>m</em><em>m</em><em>u</em><em>n</em><em>i</em><em>t</em><em>y</em><em>m</em><em>i</em><em>n</em><em>i</em><em>m</em><em>u</em><em>m</em><em>i</em><em>s</em><em>a</em> * *<em>S</em><em>u</em><em>n</em><em>k</em><em>k</em><em>o</em>737<em>G</em> + ( </span>250-350)</strong>
+or a <strong>kWeld (~$200-300 + supply)</strong>. (<a
+href="https://endless-sphere.com/sphere/threads/what-is-a-good-budget-spot-welder.124788/">Endless
+Sphere</a> · <a
+href="https://themakerschest.com/blogs/spot-welding-hub/best-battery-spot-welders-in-2026-from-diy-to-production-grade">welder
+comparison</a>)</p>
+<p>💡 If buying a welder anyway, consider <strong>nickel-plated steel
+strip</strong> for future packs — it welds far more easily than pure
+nickel, at some cost in resistance.</p>
+</blockquote>
+<h3 id="164-procedure-per-joint">16.4 Procedure per joint</h3>
+<ol start="0" type="1">
+<li>⚠️ <strong>STRAP THE PACK FIRST</strong> — the four cells must be
+bundled into their final 2×2 geometry and <strong>dry-fitted into the
+shell</strong> before a single joint is made (<a
+href="Lumi_Wand_Flashlight_Variant.html#3613a--strap-the-pack-into-final-geometry-before-any-soldering">Flashlight
+§3.6.1.3a</a>). The radial margin is <strong>0.6 mm</strong> (62.8 mm
+bundle in a Ø64.0 mm bore); a pack soldered loose sets oversized and the
+links are permanent by the time you find out. <strong>No rubber bands
+near the joints at 400 °C</strong> — kapton, fibreglass tape or zip
+ties.</li>
+<li><strong>Cut the strip</strong> to length <strong>measured off the
+strapped bundle</strong>, per <a
+href="Lumi_Wand_Flashlight_Variant.html#3613-series-topology-and-which-way-the-cells-face">Flashlight
+§3.6.1.3</a>. ~160 mm total needed against 1000 mm supplied — cut
+generously and practise on offcuts first.</li>
+<li><strong>Pre-tin the strip AWAY from the cell.</strong> Abrade, flux,
+tin both ends on the bench. <strong>Do as much of the work as possible
+with no battery involved</strong> — this is the single biggest thing
+that keeps heat out of the cell.</li>
+<li><strong>Practise on an offcut</strong> until you can wet pure nickel
+inside 3 s. Do not learn this on a cell.</li>
+<li><strong>Abrade the cell cap</strong>, scuff to bright metal, flux
+it.</li>
+<li><strong>Tin the cell cap</strong> — one quick dab, ≤2 s, then off.
+Let it cool.</li>
+<li><strong>Join:</strong> place the pre-tinned strip on the pre-tinned
+cap, press with the flat of the chisel tip, <strong>1–2 s</strong>,
+remove. Both surfaces are already tinned, so this is a re-flow, not a
+fresh wet.</li>
+<li><strong>Let the cell return to hand temperature before the next
+joint on the same cell.</strong> Do not work a hot cell.</li>
+<li><strong>Clean the flux residue</strong> off the terminal.</li>
+</ol>
+<h3
+id="165-bms-wires--gauge-where-each-lands-and-how-to-solder-them">16.5
+BMS wires — gauge, where each lands, and how to solder them</h3>
+<p><strong>Electrical sequence and the pre-plug voltage checks are in <a
+href="Lumi_Wand_Flashlight_Variant.html#3614-bms-wiring--order-of-operations">Flashlight
+§3.6.1.4</a> — follow that for <em>when</em>. This is
+<em>how</em>.</strong></p>
+<blockquote>
+<p>✅ <strong>JOINT METHOD — DECIDED (Electronics, 2026-10-06): SOLDER
+directly to the plate's eyelet END. No ring terminal.</strong> The ~1.2
+mm ceiling decides it (cell bottom at 1.31 mm above the cap face; the
+0.51 mm plate is part of that, leaving ~0.7 mm above the plate top):</p>
+<ul>
+<li><p><strong>Ring terminal under the M1.2 × 2.5 — rejected, three
+ways:</strong> no M1.2 rings in stock (the Kuject rings start at
+M4-class studs); any crimp barrel stands ≥ 1.5 mm proud of the plate —
+over the ~0.7 mm budget on its own; and stacking a terminal under the
+screw that exists to stop the plate pivoting and peeling trades away the
+clamp preload that fix bought. ✅ <strong>REVISED for the v3.2 slot exit
+(2026-10-09, dims final same day — CAD cutting 5.0 × 4.0; operator is
+hand-drilling already-printed caps to match):</strong> the cap wire exit
+is a <strong>5.0 (X) × 4.0 (Y) obround slot centred under each Keystone
+pocket</strong>, through the full 2.4 mm to the outboard face — the Ø2.0
+pass-through and the eyelet-end landing are dead. <strong>The operator's
+intent: the solder joint sits INSIDE the slot, recessed into the 2.4 mm
+depth</strong> — the plate seats flat in its 0.9 mm pocket and the cell
+bears on the contact, never on a solder blob. Everything below
+supersedes the 2026-10-06 block (22 AWG sized against the Ø2.0 hole,
+flattened-paddle against the 1.2 mm ceiling).</p></li>
+<li><p>✅ <strong>2026-10-24 (operator): pack leads are 18 AWG (operator
+2026-11-05) and end in the cartridge-side <strong>XT30</strong> FEMALE;
+balance sense is a 5-pin XH straight onto the BMS header;
+<code>B−</code> / <code>B4</code> sense solder to their pack lead ~5 mm
+behind the XT30 female cup</strong> (<a
+href="Lumi_Wand_Flashlight_Variant.html#3614a-cartridge-connectors--xt30-for-the-main-leads--5-pin-jst-xh-for-balance-operator-2026-10-24">Flashlight
+§3.6.1.4a</a>). 18 AWG silicone fits the 5 × 4 slot with room. XT30
+cups: tin the cup and the wire separately, join at ~380 °C, heat-shrink
+each (§16a).</p></li>
+<li><p><strong>GAUGE: pack leads are 18 AWG silicone</strong> (operator,
+2026-10-09 — the palette power gauge; ~5× margin at the 2.9 A measured
+peak). Balance taps stay 26 AWG. ⚠️ <em>2026-10-25: B2 / B− / B4 sense
+move to 24 AWG (extension stock); <strong>B1 / B3 may be 24 AWG if the
+operator hand-drills each cap's shared tap hole to ~Ø3.6</strong>
+(deburr both faces; keep the wires off the cell-link plates), <strong>or
+stay 26 AWG through the hole as printed</strong> (operator, 2026-10-25).
+No print change; CAD <code>TAP_WIRE_HOLE</code> stays 2.2 (Flashlight
+§4.1.1 gauge box).</em></p></li>
+<li><p><strong>✅ Slot height is 4.0 (resolved — silicone Ø2.8–3.3, 0.7
+mm spare at Ø3.3).</strong> Bare conductor through the wall was never
+acceptable: the outboard face carries the links and taps (live adjacent
+nets, plus the M8 nut sweep), so insulation must reach the slot mouth.
+<strong>Depth budget (fits in 2.4 — no CAD change needed):</strong>
+strip just enough that <strong>~2–3 mm of bare</strong> makes the turn
+to the plate back; the bare-plus-fillet stack under the plate is ≤ 1.5
+mm (round Ø1.2 + thin pre-tinned fillet; flattening buys margin),
+leaving ~0.9 mm clear to the outboard face plane. The <strong>insulated
+Ø3.3 body cannot recess in 2.4 mm</strong> — it seats in the slot mouth
+and lies along the outboard face, which is fine: the RTV-potted slot and
+the tacked service loop retain it (strain-relief bullet below).</p></li>
+<li><p><strong>LANDING: the back (outboard-facing) side of the plate,
+centred over the slot.</strong> Joint is made with the <strong>plate
+LIFTED CLEAR</strong> (standing rule), the wire then dresses down the
+slot as the plate seats. <strong>The fillet must project INTO the slot
+opening only — no solder anywhere else on the plate back</strong>, or
+the plate stands proud of its 0.9 mm pocket and the screws fight it.
+Verify the plate sits flush before driving the M1.2s. The 1.2 mm inboard
+ceiling does NOT apply to this joint (it lives under the plate; the cell
+never sees it) — flattening is no longer load-bearing, just helpful for
+keeping the fillet inside the slot.</p></li>
+<li><p><strong>GATE FIRST: before the caps print, print the test
+coupon</strong> (<code>lumi_cartridge_test_coupon.stl</code>, plate 15 —
+it carries the wire slot and the Ø8.6 shrink-reference bore). Caliper,
+<strong>on the Inland PETG+ preset (not stock Generic PETG)</strong>:
+the slot's short axis at its <strong>narrowest</strong> point (likely
+across the R2.0 arc ends, not the straight section — record WHERE), the
+<strong>Ø8.6 bore</strong> (⚠️ <strong>the shrink figure is in DISPUTE
+and this measurement settles it</strong>: 2026-10-08 recorded −0.3 on
+the same nominal; 2026-10-10 re-measured <strong>+0.08</strong> — spool
+changed between them, Bambu Translucent → Inland PETG+ on 10-07.
+Whichever the coupon reads governs the whole cartridge family, incl.
+<code>CAP_THREAD_RELIEF_D</code> — and a +0.08 result makes the slot's
+RTV step a REAL grommet at the cut 5.0 × 4.0, no geometry change), the
+<strong>Ø1.0 pilots</strong> (the small-feature point, where the shrink
+figure is least trustworthy), and the <strong>actual</strong> 18 AWG
+lead OD. The numbers no longer gate the slot (operator kept 5.0 × 4.0) —
+but a favourable result makes opening it later a one-constant
+<code>WIRE_SLOT_W</code> change.</p></li>
+<li><p><strong>STRAIN RELIEF — OFF THE PART, and it is load-bearing
+procedure, not tidiness</strong> (Electronics, final, 2026-10-09). The
+cap carries no tie feature; the retention chain is <strong>shell anchor
+→ tack → grommet → joint</strong>, and <strong>the joint only carries
+current.</strong> ⚠️ <strong>The tug test is not a formality here: with
+a mouth seal instead of a through-thickness grommet, it is the ONLY
+thing that catches a bad bond.</strong></p>
+<ol type="1">
+<li><strong>FAR-END SLACK RULE.</strong> Every lead leaving the
+cartridge terminates at a shell-mounted part (BMS on +X, rocker on −Y).
+Extraction slack is managed <strong>at the shell anchor</strong>, never
+as a loose bight.</li>
+<li><strong>RTV-TACKED SERVICE LOOP.</strong> A <strong>15–20 mm flat
+loop</strong> immediately outboard of each slot, tacked to the cap face
+with <strong>Permatex 81158</strong> at one point <strong>~8–10 mm from
+the slot</strong>, running <strong>OUTWARD or tangential from the slot —
+NEVER inboard</strong> (the slot corner is at r 15.21, so an 8–10 mm run
+inboard lands at r 8.4–10.4, inside the socket sweep; there is 14+ mm of
+radius outward before the cap edge). The outboard face is the textured
+bed face, the best-keyed surface on the part for the tack. Keep loop and
+tack <strong>outside r 9.5</strong> — the measured 13 mm-socket sweep
+(nut envelope r 7.506; nearest feature the slot corner at r 15.21).
+These numbers supersede the earlier conservative r 8.5 on the cap
+faces.</li>
+<li><strong>RTV MOUTH SEAL.</strong> After solder, dress and seat, fill
+the slot mouth around the insulated lead with 81158, <strong>full
+perimeter</strong>. <strong>This is a MOUTH SEAL keyed into the layer
+lines, not a through-thickness grommet</strong>: the slot is 5.0 × 4.0
+nominal and prints ≈ 4.7 × 3.7 (~0.3 mm measured hole shrink), so there
+is only ~0.2 mm radial around a Ø3.3 lead, and paste RTV will not
+penetrate that through the cap. Treat it as a grommet only if the coupon
+shows ≥ ~0.35 mm radial as printed. <strong>Acceptance is the tug test
+(step 4), never the bond claim.</strong> The slot stays 4.0 by operator
+decision (2026-10-09). <strong>24 h full cure BEFORE cartridge
+insertion</strong>; it cuts out with a scalpel for service.</li>
+<li><strong>ACCEPTANCE.</strong> Tug-test each cured lead <strong>at the
+loop</strong> (~1–2 kg feel) before insertion; if anything shifts, recut
+and re-pot.</li>
+</ol></li>
+<li><p><strong>CURRENT: the wire is not the limit — the 5222 SPRING
+plausibly is</strong> (published spring-contact figures run 30–100 mΩ
+each). The <a href="Lumi_Wand_Flashlight_Variant.html">Flashlight line-549
+four-wire measurement at 2.6 A</a> stays <strong>mandatory before
+commit</strong> — one number: <strong>≤ 30 mΩ measured → the spring
+bypass is optional; above it → solder the bypass strand</strong> (the
+doc's standard fix). Do it during the hand-drilled-cap build.</p></li>
+</ul>
+<p><strong>Gate unchanged in spirit:</strong> after seating, verify
+every plate flush, cells OUT for all soldering; after the 24 h RTV cure,
+tug-test every lead at its loop (step 4 above).</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>Base-cap routing (cartridge v3.1, 2026-10-07): the M8
+clamp nut TURNS over the centre of the outboard face.</strong> The caps
+are flat Ø66 discs now — the thread lives in a separate 13 AF hex nut
+that is run on and off for every cell change, and a cell change is
+routine. So on the base cap: <strong>links A and C stay outside the nut
+sweep at r ≥ 9.5 mm</strong> (never the old straight run at 5.35 mm from
+centre), <strong>B1 and B3 land ON the arc</strong>, and nothing — link,
+tap, or wire slack — crosses the centre of the face. A 13 AF hex sweeps
+a ~7.5 mm corner radius (nut envelope r 7.506); <strong>the keep-out on
+the cap faces is r 9.5 — Electronics' measured 13 mm-socket sweep
+(2026-10-09)</strong>. With the wire slots at the pocket centres
+(2026-10-09) a link run between adjacent slots lies at r ≥ 13 and clears
+it. Geometry + figures are CAD's (print guide + Flashlight §3.6).</p>
+</blockquote>
+<h4 id="wire-schedule">Wire schedule</h4>
+<table>
+<thead>
+<tr>
+<th>Wire</th>
+<th>Gauge</th>
+<th>Lands on</th>
+<th>End</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>pack+ lead</strong> (B+ → rocker LINE)</td>
+<td><strong>18 AWG</strong> silicone (in-house kit; operator
+2026-11-05)</td>
+<td>C1 <code>+</code> cap</td>
+<td>TOP</td>
+</tr>
+<tr>
+<td><strong>BMS <code>B−</code> lead</strong> (main return)</td>
+<td><strong>18 AWG</strong> silicone — <em>a current-carrying return,
+not a sense wire; if the board's factory lead is heavier, splice to 18
+AWG before the XT30</em></td>
+<td>C4 <code>−</code> cap</td>
+<td>TOP</td>
+</tr>
+<tr>
+<td><strong>B1</strong> sense</td>
+<td><strong>26 AWG</strong></td>
+<td>link <strong>A</strong> strap (C1−/C2+)</td>
+<td>BOTTOM</td>
+</tr>
+<tr>
+<td><strong>B2</strong> sense</td>
+<td><strong>26 AWG</strong></td>
+<td>link <strong>B</strong> strap (C2−/C3+)</td>
+<td>TOP</td>
+</tr>
+<tr>
+<td><strong>B3</strong> sense</td>
+<td><strong>26 AWG</strong></td>
+<td>link <strong>C</strong> strap (C3−/C4+)</td>
+<td>BOTTOM</td>
+</tr>
+<tr>
+<td><strong>B4</strong> sense</td>
+<td><strong>26 AWG</strong></td>
+<td>C1 <code>+</code> — <em>same node as pack+</em></td>
+<td>TOP</td>
+</tr>
+<tr>
+<td><strong>B− sense</strong></td>
+<td><strong>26 AWG</strong></td>
+<td>C4 <code>−</code> — <em>same node as the B− lead</em></td>
+<td>TOP</td>
+</tr>
+</tbody>
+</table>
+<p>The Lisolec ships with its sampling harness attached. <strong>Use the
+supplied wires</strong> — extend in 26 AWG only if they will not reach,
+and splice away from the pack.</p>
+<h4
+id="do-the-sense-joints-on-the-strap-before-the-strap-touches-a-cell">Do
+the sense joints on the strap BEFORE the strap touches a cell</h4>
+<p><strong>B1, B2 and B3 land on straps, not on cells.</strong> Solder
+each sense wire to its nickel strap while the strap is still loose on
+the bench — <strong>zero heat into any cell</strong>, and far easier to
+hold. Then fit the strap to the cells per <a
+href="#164-procedure-per-joint">§16.4</a> as one joint instead of
+two.</p>
+<h4 id="put-a-tab-on-pack-and-pack-too">Put a tab on pack+ and pack−
+too</h4>
+<p>C1 <code>+</code> and C4 <code>−</code> each have to carry <strong>an
+18 AWG lead and a 26 AWG sense wire</strong>. Landing both directly on
+the cap is two thermal events on the same cell cap.</p>
+<p>✅ <strong>Cut a short nickel tab for each of those two
+terminals</strong>, solder the heavy lead and the sense wire onto the
+tab on the bench, then make <strong>one</strong> joint to the cell.
+Halves the heat into C1 and C4 — the two cells that would otherwise take
+the most.</p>
+<h4 id="technique-per-gauge">Technique per gauge</h4>
+<p><strong>18 AWG onto nickel — the hardest joint in the pack.</strong>
+Both sides are high thermal mass. Pre-tin the wire and pre-tin the tab
+separately, then join tinned-to-tinned. Stay at <strong>450 °C</strong>
+with the largest chisel. If it stalls, the wire was not tinned properly
+— <strong>do not solve it with dwell.</strong></p>
+<blockquote>
+<p><strong>Why 18 AWG (operator 2026-11-05):</strong> at the measured
+<strong>2.9 A</strong> pack peak, 18 AWG runs <strong>3.5 A/mm²</strong>
+(chassis wiring accepts 4–8) and drops about <strong>6 mV over 100
+mm</strong>, ~9 mV at the 60 W build's ~4.4 A. It is the palette's power
+gauge and the size an XT30 solder cup takes comfortably; 16 AWG is the
+cup's limit.</p>
+</blockquote>
+<p><strong>26 AWG onto nickel.</strong> The wire is trivial; the strap
+is the mass. Tin the wire at <strong>350 °C</strong> (it needs nothing
+more and the insulation shrinks back fast at 450 °C), tin the landing
+spot on the strap at <strong>450 °C</strong>, then join briefly. ⚠️
+<strong>Watch insulation creep</strong> — 26 AWG silicone retreats
+quickly. Strip short, ~3 mm.</p>
+<h4 id="strain-relief--both-gauges-need-it-for-opposite-reasons">Strain
+relief — both gauges need it, for opposite reasons</h4>
+<ul>
+<li><strong>18 AWG</strong> is heavy enough that its own weight works
+the joint. Anchor it to the pack within ~20 mm of the terminal.</li>
+<li><strong>26 AWG</strong> on a strap is fragile in fatigue and will
+crack at the solder edge under vibration. Tack it down close to the
+joint.</li>
+</ul>
+<p>A dab of RTV or a kapton strap over each does both. Do it before the
+pack goes in the shell, not after.</p>
+<h3 id="165a-two-techniques-that-save-a-heat-cycle-each">16.5a Two
+techniques that save a heat cycle each</h3>
+<ul>
+<li>✅ <strong>Solder the BMS sampling wires to the NICKEL STRAP, not to
+the cell terminal.</strong> Same electrical node, one fewer thermal
+event on the cell. See above — do it while the strap is still off the
+pack.</li>
+<li>✅ <strong>Heatsink the strip.</strong> A crocodile clip on the
+strap a few mm from the joint pulls heat sideways instead of down into
+the can.</li>
+</ul>
+<h3 id="166-acceptance">16.6 Acceptance</h3>
+<ul>
+<li><strong>Visual:</strong> shiny, filleted, wetted flat to both
+surfaces. A dull grey ball sitting proud is a <strong>cold joint that
+has not wetted</strong> — the strip is bonded by nothing but solder
+surface tension and it will fail. Re-abrade and redo.</li>
+<li><strong>Tug test</strong> every joint, firmly.</li>
+<li><strong>Measure each cell tap after every joint</strong> — see <a
+href="Lumi_Wand_Flashlight_Variant.html#3614-bms-wiring--order-of-operations">Flashlight
+§3.6.1.4</a>. A cell that has dropped voltage during soldering has been
+damaged.</li>
+<li><strong>Let the finished pack rest an hour, then re-measure all four
+cells.</strong> A cell that sags after soldering is a cell to replace,
+and you want to know before it is inside a sealed wand.</li>
+</ul>
+<h3 id="167-if-it-will-not-take">16.7 If it will not take</h3>
+<p>The fallback in <a
+href="Lumi_Wand_Flashlight_Variant.html#3612--how-the-cells-actually-get-connected--resolved-2026-09-01">Flashlight
+§3.6.1.2</a> is soldering <strong>directly to the cell caps</strong>
+with heavy wire and no strip. Same rules — abrade, flux, big tip, ≤3 s.
+It is worse mechanically (a wire concentrates stress on one point where
+the strip spreads it), so treat it as a last resort rather than a
+shortcut.</p>
+<h2
+id="16a-battery-lead-xt30--inline-fuse-joints-carrier-builds-added-2026-10-23">16a.
+Battery-lead XT30 + inline-fuse joints (carrier builds, added
+2026-10-23)</h2>
+<p>The carrier's battery lead (BATT, Power_Bay §16c row 7): <strong>pack
+XT30 → F1 → INA226-BATT → PSU CH2</strong>.</p>
+<ol type="1">
+<li><strong>XT30 solder cups:</strong> tin the cup and the 18 AWG
+stripped end separately, then join with the iron on the cup (~380 °C, a
+few seconds). Heat-shrink over each cup <strong>before</strong> the
+housing goes on. <strong>Meter polarity end to end before the first
+mate</strong>: the pack's XT30 gender and polarity are recorded at
+arrival (§16b.1).</li>
+<li><strong>F1 holder pigtails (16 AWG) to the 18 AWG run:</strong> an
+inline solder splice (§4 technique) + heat-shrink, staggered. Never tin
+a wire end that lands in a screw terminal: the INA226 ends get fork
+lugs.</li>
+<li><strong>Unfused stub ≤ 150 mm</strong> from the pack terminal to the
+F1 holder, the factory pigtail included.</li>
+</ol>
+<h2 id="17-related-docs">17. Related Docs</h2>
+<ul>
+<li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> —
+sibling bench-ops guide for <strong>non-soldering</strong> power-bay +
+rail work: sensor mounting, wiring/cable routing, power distribution,
+power-up verification, I²C address quick reference</li>
+<li><a
+href="Electronics_Assembly_Guide.html"><code>Electronics_Assembly_Guide.md</code></a>
+— bench inventory + JST-XH crimping, plus the wand-head side: LED MCPCB
+wire prep + heatsink bonding (MG 8329TCM + VHB), flashlight extension
+harness, bonding reference</li>
+<li><a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
+— design source-of-truth: sensor selection, bus address allocation,
+system diagrams, board references (INA226 + TMP102 schematics/photos),
+wiring schedules</li>
+<li><a
+href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
+— wand design, v9.1 band-layout power rails, arm tether, LED-driver
+topology</li>
+<li><a
+href="Lumi_Wand_Flashlight_Variant.html"><code>Lumi_Wand_Flashlight_Variant.md</code></a>
+— flashlight-SKU battery base + ESP32 + LCD</li>
+<li><a
+href="Power/Compact_UPS_Power_System_HiWonder_RPi5.html"><code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code></a>
+— power system canonical</li>
+<li><a
+href="PCB_Fabrication_and_Assembly_Guide.html"><code>PCB_Fabrication_and_Assembly_Guide.md</code></a>
+— historical custom-PCB design (abandoned for off-the-shelf modules;
+kept for reference)</li>
+<li><a href="3D_Printing_Guide.html"><code>3D_Printing_Guide.md</code></a>
+— sibling bench-ops guide for prints</li>
+<li><a
+href="CNC_Machining_Guide.html"><code>CNC_Machining_Guide.md</code></a> —
+sibling bench-ops guide for CNC</li>
+</ul></body></html>

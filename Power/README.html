@@ -1,0 +1,214 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>README</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="rocket-lumiai-electronics">🚀 LumiAI Electronics</h1>
+<div align="center">
+  <img src="LumiAI.png.png" alt="LumiAI Electronics Logo" width="200" height="200">
+  <br>
+  <strong>Advanced Electronics & AI Integration Projects</strong>
+</div>
+
+<hr />
+<h2 id="star2-project-overview">🌟 Project Overview</h2>
+<p>LumiAI Electronics is a comprehensive collection of cutting-edge
+electronics projects that combine hardware innovation with artificial
+intelligence capabilities. Our projects focus on practical applications,
+from smart monitoring systems to intelligent robotic control.</p>
+<h2 id="helicopter-featured-projects">🚁 Featured Projects</h2>
+<h3 id="robot-robotic-arm-system">🤖 Robotic Arm System</h3>
+<ul>
+<li><strong>Advanced 6-DOF robotic arm</strong> with AI-powered motion
+planning</li>
+<li><strong>Computer vision integration</strong> for object recognition
+and manipulation</li>
+<li><strong>Modular design</strong> supporting multiple end
+effectors</li>
+<li><strong>Real-time control</strong> with precision positioning</li>
+</ul>
+<h3 id="battery-ups-monitor-system">🔋 UPS Monitor System</h3>
+<ul>
+<li><strong>Smart UPS monitoring</strong> for Raspberry Pi with
+Waveshare UPS Module 3S</li>
+<li><strong>Multiple interface options</strong>: Desktop GUI, Panel
+Widget, CLI</li>
+<li><strong>Real-time battery monitoring</strong> with intelligent
+alerts</li>
+<li><strong>Auto-start capabilities</strong> and desktop
+integration</li>
+</ul>
+<h3 id="dart-motion-relay-controller">🎯 Motion Relay Controller</h3>
+<ul>
+<li><strong>PIR sensor integration</strong> with relay control</li>
+<li><strong>Motion-activated automation</strong> systems</li>
+<li><strong>Configurable timing</strong> and sensitivity settings</li>
+<li><strong>Multiple relay channel support</strong></li>
+</ul>
+<h2 id="hammer_and_wrench-technology-stack">🛠️ Technology Stack</h2>
+<ul>
+<li><strong>Hardware</strong>: Raspberry Pi 5, Arduino, Custom PCBs</li>
+<li><strong>Software</strong>: Python, C++, AI/ML frameworks</li>
+<li><strong>Sensors</strong>: I2C, SPI, GPIO, Computer Vision</li>
+<li><strong>Control</strong>: PID algorithms, Motion planning, Neural
+networks</li>
+</ul>
+<h2 id="rocket-getting-started">🚀 Getting Started</h2>
+<p>Each project in the LumiAI Electronics suite includes:</p>
+<ul>
+<li><strong>Complete documentation</strong> and setup guides</li>
+<li><strong>Example code</strong> and usage demonstrations</li>
+<li><strong>Hardware schematics</strong> and connection diagrams</li>
+<li><strong>Installation scripts</strong> for easy deployment</li>
+</ul>
+<h2 id="file_folder-project-structure">📁 Project Structure</h2>
+<pre><code>LumiAI-Electronics/
+├── 🚁 robotic_arm_overview.md    # Complete MVP plan
+├── 🔋 ups_monitor_system/        # UPS monitoring suite
+├── 🎯 motion_relay_controller/   # Motion detection &amp; control
+├── 📚 docs/                      # Project documentation
+└── 🧪 examples/                  # Usage examples &amp; demos</code></pre>
+<h2 id="star2-key-features">🌟 Key Features</h2>
+<ul>
+<li><strong>Modular Architecture</strong>: Each project can be used
+independently</li>
+<li><strong>AI Integration</strong>: Machine learning and computer
+vision capabilities</li>
+<li><strong>Real-time Performance</strong>: Optimized for responsive
+operation</li>
+<li><strong>Cross-platform</strong>: Works on Raspberry Pi, Linux, and
+more</li>
+<li><strong>Open Source</strong>: Full source code and documentation
+available</li>
+</ul>
+<h2 id="handshake-contributing">🤝 Contributing</h2>
+<p>We welcome contributions! Please see individual project directories
+for specific contribution guidelines.</p>
+<h2 id="page_facing_up-license">📄 License</h2>
+<p>This project is open source. See individual project directories for
+specific license information.</p>
+<hr />
+<div align="center">
+  <strong>🚀 Building the Future of Electronics & AI Integration 🚀</strong>
+</div>
+
+<h1 id="ups-monitor-for-waveshare-ups-module-3s">UPS Monitor for
+Waveshare UPS Module 3S</h1>
+<p>This package contains GUI applications to monitor your UPS Module 3S
+on Raspberry Pi 5.</p>
+<h2 id="applications-available">Applications Available</h2>
+<h3 id="1-desktop-gui-application-ups_monitor_guipy">1. Desktop GUI
+Application (<code>ups_monitor_gui.py</code>)</h3>
+<ul>
+<li>Full-featured desktop window with real-time monitoring</li>
+<li>Battery level progress bar with color coding</li>
+<li>Voltage, current, and power readings</li>
+<li>Status indicator (green/red)</li>
+<li>Launch from Applications menu: "UPS Monitor"</li>
+</ul>
+<h3 id="2-panel-widget-ups_panel_widgetpy-star-recommended">2. Panel
+Widget (<code>ups_panel_widget.py</code>) ⭐
+<strong>RECOMMENDED</strong></h3>
+<ul>
+<li><strong>Always-visible widget in top-right corner</strong></li>
+<li>Shows battery %, voltage, progress bar, status dot</li>
+<li>Right-click for context menu (open full monitor, hide, close)</li>
+<li><strong>Perfect system tray alternative for XFCE4</strong></li>
+<li>Auto-starts with desktop</li>
+<li>Launch from Applications menu: "UPS Panel Widget"</li>
+</ul>
+<h3 id="3-command-line-monitor-ups_monitor_clipy">3. Command-Line
+Monitor (<code>ups_monitor_cli.py</code>)</h3>
+<ul>
+<li>Terminal-based monitoring with live updates</li>
+<li>Battery bar visualization with unicode characters</li>
+<li>Great for SSH sessions or testing</li>
+<li>Run with: <code>python3 ups_monitor_cli.py</code></li>
+</ul>
+<h3 id="4-smart-launcher-start_ups_monitorsh">4. Smart Launcher
+(<code>start_ups_monitor.sh</code>)</h3>
+<ul>
+<li>Interactive menu to choose monitoring type</li>
+<li>Checks UPS connection before starting</li>
+<li>Shows current battery level</li>
+<li>Run with: <code>./start_ups_monitor.sh</code></li>
+</ul>
+<h2 id="installation-status">Installation Status</h2>
+<p>✅ <strong>FULLY CONFIGURED AND WORKING!</strong></p>
+<ul>
+<li><strong>Applications installed in:</strong>
+<code>/home/sammydev295/ups_monitor/</code></li>
+<li><strong>Desktop entries created in:</strong>
+<code>~/.local/share/applications/</code></li>
+<li><strong>Auto-start configured:</strong> Panel Widget starts with
+desktop login</li>
+<li><strong>Hardware verified:</strong> UPS detected at I2C address
+0x41</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<h3 id="from-desktop">From Desktop</h3>
+<ul>
+<li><strong>Applications Menu</strong> → <strong>System</strong> →
+<strong>"UPS Panel Widget"</strong> ← <strong>RECOMMENDED</strong></li>
+<li><strong>Applications Menu</strong> → <strong>System</strong> →
+<strong>"UPS Monitor"</strong> (full GUI)</li>
+<li><strong>Applications Menu</strong> → <strong>System</strong> →
+<strong>"UPS Monitor Launcher"</strong> (interactive menu)</li>
+</ul>
+<h3 id="from-terminalssh">From Terminal/SSH</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /home/sammydev295/ups_monitor/</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./start_ups_monitor.sh</span>          <span class="co"># Interactive launcher (RECOMMENDED)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> ups_monitor_gui.py      <span class="co"># GUI (needs X11)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> ups_panel_widget.py    <span class="co"># Panel widget (needs X11)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> ups_monitor_cli.py      <span class="co"># Command-line version</span></span></code></pre></div>
+<h2 id="features">Features</h2>
+<ul>
+<li>✅ <strong>Real-time monitoring</strong> of voltage, current,
+power</li>
+<li>✅ <strong>Battery percentage</strong> calculation based on
+voltage</li>
+<li>✅ <strong>Color-coded indicators</strong> (green/orange/red for
+battery levels)</li>
+<li>✅ <strong>Auto-refresh</strong> every 1-2 seconds</li>
+<li>✅ <strong>Desktop integration</strong> with applications menu</li>
+<li>✅ <strong>Auto-start capability</strong> (Panel Widget starts with
+login)</li>
+<li>✅ <strong>XFCE4 compatible</strong> (no problematic system tray
+dependencies)</li>
+</ul>
+<h2 id="hardware-connection">Hardware Connection</h2>
+<ul>
+<li>✅ <strong>UPS Module 3S connected</strong> to Raspberry Pi 5 via
+I2C</li>
+<li>✅ <strong>I2C address:</strong> 0x41 (verified working)</li>
+<li>✅ <strong>Connections:</strong> GND-GND, SDA-SDA (Pin 3), SCL-SCL
+(Pin 5)</li>
+<li>✅ <strong>Power:</strong> UPS powers the Pi (no additional
+connections needed)</li>
+<li>✅ <strong>Status:</strong> Operational for 4+ days</li>
+</ul>
+<h2 id="current-ups-status">Current UPS Status</h2>
+<ul>
+<li>🔋 <strong>Battery Level:</strong> ~91% (EXCELLENT)</li>
+<li>⚡ <strong>Voltage:</strong> ~12.29V (healthy)</li>
+<li>🔌 <strong>Current:</strong> Very low power draw (~0.001A)</li>
+<li>💪 <strong>Runtime:</strong> Successfully powering RPi5 for
+days</li>
+<li>✅ <strong>Connection:</strong> Stable I2C communication</li>
+</ul>
+<h2 id="battery-level-calculation">Battery Level Calculation</h2>
+<p>Battery percentage is calculated based on voltage:</p>
+<ul>
+<li><strong>100%</strong> = 12.6V</li>
+<li><strong>0%</strong> = 9.0V</li>
+<li><strong>Formula:</strong>
+<code>(voltage - 9.0) / 3.6 * 100</code></li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>If applications don't start:</p>
+<ol type="1">
+<li>Check I2C connection: <code>sudo i2cdetect -y 1</code></li>
+<li>Verify UPS at address 0x41</li>
+<li>Check permissions: user should be in <code>i2c</code> group</li>
+<li>For GUI issues, ensure X11/desktop is running</li>
+</ol>
+<p><strong>All applications are working perfectly!</strong> The Panel
+Widget provides the best "always visible" monitoring experience for your
+XFCE4 desktop.</p></body></html>

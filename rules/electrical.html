@@ -1,0 +1,139 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>electrical</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="electrical-rules--the-chain-from-psu-to-led">Electrical rules — the
+chain from PSU to LED</h1>
+<!-- Domain rules split out of CLAUDE.md on 2026-10-03: the file had
+reached 279 lines, past the two-screen limit it sets for itself. Content
+is unchanged from CLAUDE.md as of 1c30ee2. Same bar applies here: only an
+operator instruction, or a defect that already cost time. -->
+
+<p>Back to <a
+href="../../CLAUDE.html"><code>../../CLAUDE.md</code></a></p>
+<ul>
+<li>🔴 <strong>The STM32 DROK setpoint IS the arm's servo voltage: 7.5
+V, never above 8.4 V</strong> (operator, 2026-11-02). The STM32 board
+passes its input straight to the bus-servo ports; the board, the LX-15D
+and the HTS-25L all top out at 8.4 V. The old 9 V setpoint was justified
+against the board alone and ran Halo's servos at 9.2 V. 7.5 V =
+Hiwonder's own adapter for this board.</li>
+<li><strong>Wire palette is LOCKED: 18 / 22 / 26 AWG</strong> (operator,
+2026-09-30, inventory standardization). 18 = power (every bay 13.8 V
+segment), 22 = mid (tether V+/GND, fan branches, taps), 26 = signal
+(I²C, 3V3, pull-ups, LED bundle). Ferrules E1008 / E0508 / E0208. The v1
+as-built differs (16 AWG bay runs, 24 AWG G469 landings) and
+<strong>stays</strong> — label as-built vs new-build, never silently
+renumber a gauge.</li>
+<li>⛔ <strong>Never tin a wire end into a screw terminal.</strong>
+Solder cold-flows under clamp pressure and the joint backs out months
+later as an intermittent fault (2026-08-14 rule). Ferrule or bare
+stranded.</li>
+<li><strong>The G469 ships with NO terminal silkscreen</strong> — the
+product photos show one; the board is blank. Operator-applied labels per
+<code>docs/images/electronics_bay/g469_bay_labels.png</code>.
+Bench-proven ferrules in its 2.54 mm cages: <strong>E0308 (24 AWG),
+E0208 (26 AWG), and the AIRIC violet ferrule for 22 AWG or
+multi-conductor</strong> (proven to 0.516 mm² — four 26 AWG
+bench-crimped + as-built on consecutive terminals, 2026-09-23).
+<strong>The XHF kit's E0508 is ⛔ banned at the G469</strong>
+(2026-09-01 bench test — does not fit the clamps). ⛔ *Until 2026-10-11
+this line called 22 AWG "E0508, unproven — verify or use 26"; retracted
+on operator challenge — the AIRIC part was the proven path all along. A
+partially-seated G469 = empty <code>i2cdetect</code> + reboot loops —
+reseat before any other diagnosis.</li>
+<li><strong>The wand star ground is G469 pin 9, only.</strong>
+<code>GND-logic</code> never lands on the distribution block — two
+grounds on two already-tied bay nodes is a parallel return that diverts
+~0.85 A of LED current through the Pi. The rail GND bus cut plus the
+single pin-9 meeting point IS the design (2026-09-23).</li>
+<li><strong>The bay-fan signal-GND jumper (→ G469 pin 34) is ON HOLD,
+not installed</strong> (2026-09-30) — do not build it from older
+text.</li>
+<li><strong>Distribution block:</strong> the modified APIELE is
+<strong>current-generation</strong> (Halo as-built + the pending Ultra
+retrofit, 4 spares in stock); the <strong>D-1459 / HL-PBB takes over
+from the Nova build</strong>. Port maps:
+<code>Power_Bay_Design.md</code> §11.3.3 (D-1459) and §11.3.7 (APIELE,
+collapsed).</li>
+<li>🔴 <strong>The LED drivers are XL4001E-class bucks, NOT
+PT4115.</strong> Two mistakes already made and withdrawn: the PT4115
+dimming model ("&gt;2.5 V = 100 %, 0.5–2.5 V analog, &lt;0.3 V
+shutdown") is wrong for this hardware, and the generic XL4001E datasheet
+V_REF (≈0.235 V) predicts 1.06 A against the real 0.222 Ω sense — also
+wrong. <strong>Measured wins: V_REF ≈ 0.155 V, R = 0.222 Ω → 700 mA; PWM
+is active-HIGH.</strong> Loupe-verify each board's IC silk + sense
+network per the build plan §2.1 before trusting any current figure. The
+PT4115 mistake <strong>cost several days of shipping in
+India</strong>.</li>
+<li><strong>The driver's dim input is a hard ENABLE, not an analog
+dimmer</strong> — measured 2026-09-03: full current at <strong>1.67
+V</strong>, zero at <strong>0.828 V</strong>, <strong>no analog
+region</strong>. An RC filter or DAC into that pin is a comparator, not
+a dimmer. ⛔ <code>INVRT=0</code>. Both vendor listings claim active-LOW
+and <strong>both are wrong</strong>; <code>INVRT=1</code> boots all 12
+channels <strong>full-on</strong>.</li>
+<li>The PCA9685 tops out near <strong>1.6 kHz</strong>, so 1 kHz PWM
+banding on camera is fixed by a <strong>different PWM source</strong>,
+never by a config change or by going analog — analog dimming moves each
+die's chromaticity with current and breaks an RGBW colour mix. See <a
+href="../../creator/docs/Creator_Dimming.html"><code>creator/docs/Creator_Dimming.md</code></a>.</li>
+<li><strong>Doc ownership (three-way split, 2026-09-29):</strong> bay
+electrics live in <code>Power_Bay_Design.md</code>; general bench work
+(inventory §1, crimping §3, LED MCPCB §12, bonding §15) in
+<code>Electronics_Assembly_Guide.md</code>; the wand bench appendix is
+<code>Lumi_Wand_Integration.md</code> §19a–§25. Section moves preserve
+anchors 1:1. After editing anything they guard, run
+<code>docs/images/check_figures_match_docs.py</code> and
+<code>docs/images/electronics_bay/check_g469_map.py</code> — both must
+end green.</li>
+<li><strong>Epoxy day is gated twice</strong> (one-way bond): Bench
+Phase 3 must pass AND the E1/E2 emitter + optic evaluation must be
+complete — E1/E2 picks what gets bonded.</li>
+<li>⛔ <strong>Never push-score stripboard with a scalpel to size a
+board</strong> (operator safety call, 2026-10-06). Board-to-size = the
+<strong>scroll saw</strong> (in hand): cut just outside a hole row, file
+back; fine skip-tooth blade, tape the cut line, dust mask (FR4 dust + a
+recirculating garage fan). Track mods = spot-face cutter / 3 mm drill by
+hand. The scalpel is for SMD trace cuts on flat boards only.</li>
+<li><strong>Cartridge plate joints (v3.2 / 6053128, 2026-10-09): pack
+leads 18 AWG silicone, soldered to the BACK of the plate over the 5.0 ×
+4.0 centre slot, plate LIFTED CLEAR while soldering, fillet inside the
+slot only — never a ring terminal under the M1.2.</strong> Insulation
+must reach the slot mouth (bare through the wall = short risk on the
+outboard face). <strong>Strain relief is OFF THE PART and
+LOAD-BEARING</strong> (the tie holes + groove of 928dfd4 were dropped in
+6053128): far-end slack at the shell anchors → RTV-tacked 15–20 mm
+service loop on the cap face (<strong>outward or tangential from the
+slot, never inboard</strong> — r 9.5 socket sweep; the textured bed face
+keys the tack) → RTV MOUTH SEAL in the slot (Permatex 81158 —
+non-acetoxy, safe next to the joint; 24 h cure before insertion. ⚠️ a
+mouth seal keyed into layer lines, NOT a through-thickness grommet: the
+operator kept the slot at 5.0 × 4.0, and the recorded ~0.3 mm shrink
+would leave only ~0.2 mm radial. <strong>That shrink figure is
+DISPUTED</strong> — a 2026-10-10 re-measure of the same Ø8.6 nominal
+read <strong>+0.08 OVERSIZE</strong> (spool changed 10-07, Bambu
+Translucent → Inland PETG+); if the new figure holds, the as-printed
+annulus is ~0.39 radial and the grommet is real with NO geometry change.
+The plate-15 coupon arbitrates; grommet wording returns only on a
+coupon-measured ≥ ~0.35 mm radial) → joint carries current only.
+<strong>Acceptance = the tug test on every cured lead, never the bond
+claim.</strong> Coupon first, before any cap print. Cells OUT while
+soldering. Keep-out on BOTH caps' outboard faces: <strong>r 9.5</strong>
+(measured 13 mm-socket sweep; nut envelope r 7.506 — supersedes the old
+r ≥ 8.5 link-arc rule; centre-slot leads naturally run at r ≈ 13). ⛔
+Dead regimes, dated: 22 AWG / Ø2.0 / 1.2 mm-feeler (2026-10-06);
+per-pocket rotation + tie-line bearings (928dfd4, same day). The 5222
+spring's four-wire at 2.6 A still gates the pack (≤ 30 mΩ → bypass
+optional; else solder the bypass strand).</li>
+<li><strong>I²C bus 1 address map (fleet, 2026-10-22):</strong>
+<strong>0x40</strong> HAT INA219 (factory, never reworked) ·
+<strong>0x41</strong> wand PCA9685 (pad A0 bridged) ·
+<strong>0x44</strong> INA226-MAIN (CH1) · <strong>0x45</strong>
+INA226-BATT (battery lead) · <strong>0x48</strong> TMP102-bay ·
+<strong>0x49</strong> TMP102-wand. Change the board that is DOCUMENTED,
+never one whose pads you'd have to guess (the 2026-10-17 HAT/PCA flip).
+Source of truth: Power_Bay §2.1.</li>
+<li><strong>AC tests are cut at the robot's own rocker or PSU inlet,
+never the wall, with the power logger running first. Never hand-chatter
+a live mains connector</strong> (operator, 2026-10-22). Every build
+includes a tug-test of the AC input-side terminations and a fully seated
+plug — a generic workmanship check.</li>
+</ul></body></html>

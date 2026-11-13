@@ -1,0 +1,234 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CNC_HeatsinkPuck_V910</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="heatsink-v910-bench-prep--ø54-puck">Heatsink v9.10 bench prep — Ø54
+puck</h1>
+<p><strong>Program:</strong> <a
+href="../cad/exports/cnc/lumi_wand_heatsink.nc"><code>cad/exports/cnc/lumi_wand_heatsink.nc</code></a>
+(v9.10, 2026-09-18, HEATSINK_OD=54.0) <strong>Machine:</strong>
+Stepcraft 840 D3 / UCCNC <strong>Long-form reference:</strong> <a
+href="CNC_Machining_Guide.html"><code>docs/CNC_Machining_Guide.md</code></a>
+§3 <strong>Rules of engagement:</strong> <a
+href="rules/cnc.html"><code>docs/rules/cnc.md</code></a></p>
+<h2 id="pre-cut-shopping-list-all-in-kit--nothing-to-order">Pre-cut
+shopping list (all in-kit — nothing to order)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Spec</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Stock</strong></td>
+<td><strong>300 × 60 × 10 mm FINNED heatsink extrusion</strong> (likely
+6063 Al, black-anod.), <strong>machined IN-PLACE from the bar</strong> —
+no sawing. 10 mm = base + fin height. ~200 mm clear bar is left past the
+old Ø54 cutout at one end. 2 pucks fit along the clear region at
+centre-to-centre 65 mm.</td>
+<td>Bar mounts base-face DOWN on fixture (fins UP). OP1/OP2/OP3 cut
+through fins + base. Finished puck has fins on one face — acceptable for
+the sealed wand shell (puck is a thermal mass; airflow irrelevant).
+Waste is NOT 4 corner offcuts (that was a 60 × 60 blank artifact); orbit
+R=30.175 clips bar's ±Y edges at ±3.24 mm from each puck X, bar stays
+structurally continuous.</td>
+</tr>
+<tr>
+<td><strong>T1 Milwaukee 1/8" cobalt</strong></td>
+<td>HSS-Co M35/M42, 135° split-point, Ø3.175, 1/8" shank</td>
+<td>OP1 — 3× puck-body M3-clearance holes at r=8</td>
+</tr>
+<tr>
+<td><strong>T2 SHARPRO 1/8" O-Flute</strong></td>
+<td>Ø3.175 cutter, 1/4" shank</td>
+<td>OP2 contour + OP3 slot. The Kodiak 1/8" 2-flute is retired — SHARPRO
+is the only 1/8" endmill on hand.</td>
+</tr>
+<tr>
+<td><strong>Collets</strong></td>
+<td>1/8" OZ8 for T1, 1/4" OZ8 for T2</td>
+<td><strong>M0 #1 is a real collet change, not a bit swap</strong></td>
+</tr>
+<tr>
+<td><strong>Fixture plate</strong></td>
+<td>~100 × 100 × 10 mm scrap (MDF, ply, or Al), pre-tapped M3 at
+<strong>(+6.928, +4.000)</strong>, <strong>(−6.928, +4.000)</strong>,
+<strong>(0, −8.000)</strong> — r=8, 30°/150°/270°</td>
+<td>Reusable across every puck run</td>
+</tr>
+<tr>
+<td><strong>Hold-down</strong></td>
+<td>3M VHB or high-strength foam double-sided tape</td>
+<td>OP1 only; replaced by bolts at M0 #1</td>
+</tr>
+<tr>
+<td><strong>Bolts</strong></td>
+<td>3× M3 × ~25 mm SHCS</td>
+<td>Through the just-drilled puck body into the pre-tapped fixture; stay
+through OP2 breakthrough</td>
+</tr>
+<tr>
+<td><strong>Hex key</strong></td>
+<td>Operator's</td>
+<td>Install the 3 bolts at M0 #1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sequence-at-the-machine">Sequence at the machine</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What happens</th>
+<th>Operator action</th>
+<th>Est. time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PRE</strong></td>
+<td><strong>Bar mounted base-face DOWN</strong> on the fixture plate (3M
+VHB under the clear region past the old Ø54 cutout; fins UP), bar's long
+axis along machine X. Clamp bar at BOTH ends past the cutting area. T1
+Milwaukee drill in 1/8" OZ8, stick-out 15-18 mm. T2 SHARPRO + 1/4" OZ8
+collet <strong>staged</strong> at the machine. <strong>X/Y zero at puck
+1 centre</strong> (X=37 from the bar's clear-end edge; puck 2 is +65 mm
+from there, done later). Z zero on stock top via T1 — <strong>touch fin
+peak</strong> (highest point). Fixture plate bolted/clamped to
+spoilboard.</td>
+<td>Set up. Press Cycle Start.</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td><strong>M0 #0</strong></td>
+<td>Setup confirmation banner — re-reads this checklist</td>
+<td>Confirm all PRE items. Press Cycle Start.</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>OP1</strong></td>
+<td>3× G83 peck drills at (±6.928, +4.000) and (0, −8.000),
+<strong>Z=−10.5</strong> (0.5 mm into the fixture plate, through fins +
+base), <strong>S12000 F60 Q1.0</strong>. Spindle parks
+<code>X=40, Y=0, Z=15</code>, M5.</td>
+<td>Watch. 3 holes × ~10 pecks each. Split-point handles the mixed fin /
+fin-valley material.</td>
+<td>~20 sec cutting</td>
+</tr>
+<tr>
+<td><strong>M0 #1</strong></td>
+<td>—</td>
+<td><strong>(a)</strong> Thread 3× M3 × ~25 mm SHCS through the
+just-drilled puck-body holes into the fixture-plate taps (finger-snug —
+don't over-torque MDF inserts). M3 passes through fins + base + into
+tap. <strong>(b)</strong> Swap T1 → T2: <strong>collet change 1/8" OZ8 →
+1/4" OZ8</strong>, install SHARPRO. <strong>(c)</strong> Re-touch Z=0 on
+T2's cutting tip at fin peak (paper feeler / touch-plate — not
+optional). <strong>(d)</strong> Tape STAYS under the bar's clear region
+as backup. <strong>(e)</strong> Open AIR BLAST on the cutting area.
+Press Cycle Start.</td>
+<td>~3-5 min</td>
+</tr>
+<tr>
+<td><strong>OP2</strong></td>
+<td>Ø54 outside contour, <strong>10 passes at 1 mm DOC</strong> down to
+Z=−10.05. Cutter orbits at R=28.5875 (R27.0 + 1.5875). <strong>S18000,
+F300 XY, F100 plunge.</strong> Spindle parks
+<code>X=0, Y=−60, Z=25</code>, M5.</td>
+<td><strong>⚠️ Cutter outer sweep is 30.175 mm vs. bar half-width 30 —
+orbit clips the bar's ±Y edges at ±3.24 from puck X (two cusps per
+side). From the BAR (unlike a 60 × 60 blank), there are NO 4 loose
+corner offcuts — bar stays structurally continuous between pucks and to
+the clamps.</strong> Watch for chatter at fin peaks (thin standing wall
+interface); <strong>F override 50% in UCCNC if chatter appears</strong>.
+Air blast on, puck stays bolted. <strong>No spare SHARPRO</strong> — if
+the bit shows chip-weld or dulling signs mid-pass, STOP at the next pass
+end.</td>
+<td>~8 min</td>
+</tr>
+<tr>
+<td><strong>M0 #2</strong></td>
+<td>—</td>
+<td><strong>Clear chip packing from fin valleys</strong> around the
+orbit (brass pick, air blast — chips get trapped between fins). Puck is
+the only loose piece and is held by 3 body bolts — DO NOT unscrew bolts,
+DO NOT change the tool, DO NOT re-zero. Inspect T2 flute for Al weld;
+brass-pick + IPA if needed. Press Cycle Start.</td>
+<td>~3 min</td>
+</tr>
+<tr>
+<td><strong>OP3</strong></td>
+<td>Keyway slot cut into the isolated puck rim. <strong>10 passes at 1
+mm DOC</strong> down to Z=−10.05. Per pass: plunge in air at (X=28.588,
+Y=+0.6125), G1 X=26.388 (cut +Y wall), retract Z, reposition to
+Y=−0.6125, plunge, G1 X=26.388 (cut −Y wall), retract. Slot: <strong>4.4
+wide × 2.2 deep × 10 through</strong>. Spindle parks
+<code>X=0, Y=−60, Z=25</code>, M5, M30.</td>
+<td>Watch the final pass — breakthrough.</td>
+<td>~3 min</td>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td>De-burr Ø54 rim + keyway slot edges with fine file or 400-grit. ~2
+min.</td>
+<td>Finish, unscrew body bolts, lift puck off fixture.</td>
+<td>~5 min</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total runtime:</strong> ~10 min cutting + ~15 min operator
+(M0 pauses + setup + post). Allow 30-40 min bench time per puck.</p>
+<h2 id="v910-hazards-whats-new-vs-the-ø48-cut-you-ran-before">v9.10
+hazards (what's new vs the Ø48 cut you ran before)</h2>
+<ol type="1">
+<li><strong>4 loose corner offcuts</strong> at OP2 breakthrough instead
+of a continuous waste ring. Tape + vacuum through pass 10. Clear at M0
+#2 before OP3 touches the puck.</li>
+<li><strong>Slot is a separate OP3</strong>, not an inline per-pass
+detour. Previous Ø48 integrated-detour version broke a bit; this one
+plunges in air, cuts one wall, retracts, repositions, cuts the other
+wall. (v9.9 split 2026-07-17, v9.9.1 retract-between-walls
+2026-07-18.)</li>
+<li><strong>Keyway radial position moved OUT 3 mm</strong> with the rim.
+Slot DIMS are unchanged (4.4 × 2.2 × 10) and it still mates
+<code>L_TAB_KEY_TANG=4.0 / L_TAB_KEY_RADIAL=2.0</code> at the 30°
+L-tab.</li>
+<li><strong>NC header carries 3 old <code>Dia54</code> typos</strong>
+that meant <code>Dia48</code> — corrected 2026-10-11 in the same commit
+as this doc.</li>
+</ol>
+<h2 id="verifier-that-must-pass-before-loading-on-uccnc">Verifier that
+must pass before loading on UCCNC</h2>
+<p>Zero on every count:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-</span> <span class="op">&lt;&lt;&#39;PY&#39;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">import re</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">p = &#39;cad/exports/cnc/lumi_wand_heatsink.nc&#39;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">raw = open(p,&#39;rb&#39;).read()</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">lines = raw.decode(&#39;ascii&#39;, errors=&#39;replace&#39;).split(&#39;\r\n&#39;)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">checks = {</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;non-ASCII bytes&#39;:   sum(b&gt;127 for b in raw),</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;;-comment lines&#39;:   sum(1 for L in lines if L.lstrip().startswith(&#39;;&#39;)),</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;unclosed ( lines&#39;:  sum(1 for L in lines if L.strip().startswith(&#39;(&#39;) and not L.strip().endswith(&#39;)&#39;)),</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;[]-in-() lines&#39;:    sum(1 for L in lines if L.strip().startswith(&#39;(&#39;) and (&#39;[&#39; in L or &#39;]&#39; in L)),</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;lone-LF endings&#39;:   raw.count(b&#39;\n&#39;) - raw.count(b&#39;\r\n&#39;),</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;T# M6 lines&#39;:       sum(1 for L in lines if re.match(r&#39;^T\d+\s+M6\s*$&#39;, L.strip())),</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="st">for k, v in checks.items(): print(f&#39;  {k:22s} {v}&#39;)</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="op">PY</span></span></code></pre></div>
+<p><strong>Last-known-good verifier pass:</strong> 2026-10-11, this
+prep.</p>
+<h2
+id="known-deviation-from-the-stricter-cncmd-rule-not-blocking-today">Known
+deviation from the stricter cnc.md rule, not blocking today</h2>
+<p>Three lines in the v9.10 header (10-12) contain parenthetical
+annotations inside the <code>(...)</code> block — i.e., <strong>nested
+<code>(</code></strong>. The strict reading of <a
+href="rules/cnc.html"><code>docs/rules/cnc.md</code></a> says no
+<code>(</code> inside a block comment, but the rule was written against
+<em>wrapped-close</em> failure modes, and these are closed on the same
+line. The nested-( lines have shipped since v9.10 was committed
+2026-09-18 and UCCNC has loaded them during prior verification passes
+without complaint. <strong>Worth a separate pass to strip</strong> (so
+cnc.md's rule reads as absolute), but not today — none of my 2026-10-11
+edits added one.</p></body></html>

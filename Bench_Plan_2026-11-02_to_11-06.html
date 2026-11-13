@@ -1,0 +1,443 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bench_Plan_2026-11-02_to_11-06</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="bench-plan--mon-2026-11-02-to-fri-2026-11-06-halo">Bench plan — Mon
+2026-11-02 to Fri 2026-11-06 (Halo)</h1>
+<p>Three jobs: <strong>(1)</strong> the Mus-14 HAT rail on Halo and its
+voltage-drop test, <strong>(2)</strong> cut and crimp,
+<strong>(3)</strong> wand boards fit-up. Source docs: <a
+href="Electronics_Bay_Design.html#36-waveshare-pcie-to-m2-usb-hat--nvme--usb-hub--ina219-bay-fed-5-v">EBD
+§3.6</a>, <a
+href="Electronics_BringUp_Plan.html#phase-76--waveshare-hat--bay-5-v-rail--added-2026-10-13-gated-on-hat-arrival">BringUp
+7.6</a>, <a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">Wand
+§10.5.9</a>, <a href="rules/electrical.html">rules/electrical.md</a>.</p>
+<h2 id="0-answer-these-first">0. Answer these first</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Q1</td>
+<td><strong>Halo's Mus-14 feed point.</strong> Halo's APIELE has no free
+column. Proposed: V+ = a 2nd fork under the <strong>DROK input +V
+screw</strong> (rocker-switched, like the DROK); GND = a 2nd fork under
+the <strong>DROK input − screw</strong>. OK?</td>
+<td>The docs' A5/B5 is the D-1459 (Nova). The rail must switch with the
+DROK: a late HAT rail = no boot drive.</td>
+</tr>
+<tr>
+<td>Q2</td>
+<td>Mus-14 input: <strong>screw terminals or solder pads</strong>?</td>
+<td>E0508 ferrule vs solder at that end.</td>
+</tr>
+<tr>
+<td>Q3</td>
+<td>How many <strong>inline USB-C meters</strong>, and do they hold a
+<strong>minimum</strong>?</td>
+<td>1 = at the Mus-14 socket. 2 = also on the Pi's USB-C input, for the
+path check.</td>
+</tr>
+<tr>
+<td>Q4</td>
+<td><strong>No mic on the HAT today</strong> (OAK only). The iFLYTEK is
+dropped as a fleet part (operator 2026-11-02); the one owned kit stays
+on Ultra or Halo. If it goes on Halo's HAT, re-run T6 with
+<code>MIC_CARD=&lt;n&gt;</code>.</td>
+<td>The mic + speaker load is missing, so a pass is provisional until
+the new mic is on the HAT.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-halo-today-read-live-2026-11-01">1. Halo today (read live
+2026-11-01)</h2>
+<ul>
+<li>Boots from the NVMe on the Waveshare HAT (Kingston SNV2S 1 TB, root
+on <code>nvme0n1p2</code>). No under-voltage flags.</li>
+<li>HAT INA219 at 0x40: <strong>5.07 V, 0.48 A</strong>, fed from the
+Pi's GPIO 5 V (nothing in HAT POWER).</li>
+<li>No USB devices on the HAT yet. Pi native ports: STM32 CH340 +
+gamepad dongle.</li>
+<li>✅ On Halo: <code>hat_power_logger.service</code> (active +
+enabled), <code>fio</code> 3.36, <code>~/halo_power_stress.sh</code>
+(Multi-Robot 2499a87).</li>
+<li><strong>Baseline on the Pi GPIO feed</strong> (dry run T2 + T4,
+2026-11-01): idle 5.04–5.11 V at 0.49 A; randrw 5.02–5.11 V, 0.72 A
+peak; EXT5V 5.09–5.14 V; <code>get_throttled</code> 0x0. Compare the
+Mus-14 run against these.</li>
+</ul>
+<h2 id="2-port-map-halo-tomorrow">2. Port map (Halo, tomorrow)</h2>
+<table>
+<thead>
+<tr>
+<th>Plug</th>
+<th>Port</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>STM32 CH340</td>
+<td>Pi native, black #1 (stays; <code>/dev/stm32_halo</code> must not
+move)</td>
+</tr>
+<tr>
+<td>Gamepad dongle</td>
+<td>Pi native (stays)</td>
+</tr>
+<tr>
+<td><strong>OAK-D S2</strong></td>
+<td><strong>HAT</strong> port (5 Gb/s; check <code>lsusb -t</code> =
+5000M)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The OAK goes on the HAT, never on a Pi native port: that is the
+design of record (operator, 2026-10-27: the Pi's native USB was "too
+problematic" for the OAK).</li>
+<li>The budget fits the Mus-14's 3 A. Ultra's HAT (OAK + WonderEcho +
+NVMe) measured mean 1.36 A, max 2.11 A.</li>
+<li><strong>If the rail fails:</strong> the fail actions are in §5.</li>
+</ul>
+<h2 id="3-cut-and-crimp-list">3. Cut and crimp list</h2>
+<p><strong>Power bay (Halo):</strong> two wires, 22 AWG silicone,
+twisted pair. Cut length = string-measure on Halo + 30 mm. <strong>No F4
+fuse on Halo</strong> (operator 2026-11-04: no room for the holder in
+the bay): the pair taps the DROK input screws, so it sits behind the DC
+rocker and is protected only by <strong>F2 (10 A master)</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>From → to</th>
+<th>Wire</th>
+<th>End A</th>
+<th>End B</th>
+<th>Fuse</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>H1 (red)</td>
+<td>DROK input +V screw → Mus-14 IN+</td>
+<td>22 red</td>
+<td>Kuject fork, stacked on D8's fork</td>
+<td>solder + heat-shrink at the pad</td>
+<td>none (F2 only)</td>
+</tr>
+<tr>
+<td>H2 (black)</td>
+<td>DROK input − screw → Mus-14 IN−</td>
+<td>22 black, twisted with H1</td>
+<td>Kuject fork, stacked</td>
+<td>solder + heat-shrink at the pad</td>
+<td>none</td>
+</tr>
+<tr>
+<td>D18</td>
+<td>Mus-14 USB-C → HAT POWER</td>
+<td>factory HOTNOW 1.5 ft</td>
+<td>—</td>
+<td>right-angle end at the HAT</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Never put tinned wire in a screw terminal: use a ferrule or a
+fork.</p>
+<p><strong>Wand:</strong> cut lengths from <a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">§10.5.9</a>.
+Cut <strong>one</strong> wand's set, string-check it against the parts,
+then cut the rest.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Qty</th>
+<th>Wire</th>
+<th>Cut (mm)</th>
+<th>Source end</th>
+<th>Destination end</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P30 / P150 / P270</td>
+<td>3 pairs</td>
+<td>2 × 22 red/black, twisted</td>
+<td>100 / 100 / 160</td>
+<td>lap-soldered on the cradle strips</td>
+<td>2-pin Dupont F (P270: solder)</td>
+</tr>
+<tr>
+<td>S30</td>
+<td>1</td>
+<td>4 × 26</td>
+<td>120</td>
+<td>solder, cradle pins 3–6</td>
+<td>4-pin Dupont F</td>
+</tr>
+<tr>
+<td>DP</td>
+<td>12 pairs</td>
+<td>2 × 22 red/black, twisted</td>
+<td>60–80 per seat</td>
+<td>solder to driver pads</td>
+<td>2-pin Dupont F; rail 270: solder</td>
+</tr>
+<tr>
+<td>DW</td>
+<td>12</td>
+<td>1 × 26 white, tag <code>CHn</code> both ends</td>
+<td>70–130 per seat</td>
+<td>solder (pull-down stays)</td>
+<td>4-pin Dupont F per star</td>
+</tr>
+<tr>
+<td>DL</td>
+<td>12 pairs</td>
+<td>2 × 26 twisted (LED+ R/G/B/yellow, LED− white)</td>
+<td>70 / 110</td>
+<td>solder</td>
+<td>solder to the star pad</td>
+</tr>
+<tr>
+<td>PCA</td>
+<td>1</td>
+<td>4 × 26</td>
+<td>70</td>
+<td>solder to the top I/O pads, header trimmed, OE→GND link</td>
+<td>4-pin Dupont F</td>
+</tr>
+<tr>
+<td>TMP</td>
+<td>1</td>
+<td>4 × 26</td>
+<td>60</td>
+<td>4-pin F on the board's male header</td>
+<td>4-pin Dupont F</td>
+</tr>
+<tr>
+<td>FAN-P / FAN-W</td>
+<td>1 / 1</td>
+<td>Noctua stock</td>
+<td>100</td>
+<td>—</td>
+<td>2-pin / 1-pin Dupont F; clip + insulate the green TACH</td>
+</tr>
+</tbody>
+</table>
+<p>Per wand that is ≈ 2.4 m of 22 AWG and ≈ 4.4 m of 26 AWG.</p>
+<p><strong>Stock:</strong> on hand are 22 AWG, 26 AWG, Kuject forks,
+E0508, Dupont kit, heat-shrink, 10 × 10 copper heatsinks, the HOTNOW
+cable and the 12 KESHY drivers (pull-downs fitted). <strong>To confirm
+on the shelf:</strong> <strong>BusBoard ST1 stripboard</strong>: not in
+the 2026 Amazon orders (Purchasing 2026-11-02). Nothing else is
+missing.</p>
+<h2 id="4-board-install-order">4. Board install order</h2>
+<p><strong>Power bay (Halo, PSU-cover mount):</strong></p>
+<ol type="1">
+<li>Copper heatsink on the Mus-14's buck IC (the small square chip, NOT
+the inductor).</li>
+<li>Move the G469 one hole toward the edge. Dry-fit its harness reach
+before unscrewing it. Record the new holes.</li>
+<li>Mount the Mus-14 beside it: screws if it has holes, VHB if it
+doesn't.</li>
+<li>Main power OFF. Solder both wires at the Mus-14 pads, then land
+<strong>H2 (black) first</strong>. Leave <strong>H1's (red) fork
+unlanded and taped</strong> for now: the backfeed check (§6) runs in
+that state. Red fork is landed last, power off. Plug D18 into the Mus-14
+only.</li>
+</ol>
+<p><strong>Wand (bench fit-up; the halves are not printed):</strong></p>
+<ol type="1">
+<li><strong>PCA9685:</strong> bridge pad A0 (→ 0x41) FIRST, before it
+ever touches Halo's bus (0x40 is the HAT). Trim the top-end header, link
+OE→GND at the pads, then solder the 4 PCA leads.</li>
+<li><strong>Drivers:</strong> on the first KESHY, beep every pad against
+the header map
+(<code>1-2 VIN+ · 3-4 VIN− · 5 PWM · 6 LED+ · 7 LED−</code>) BEFORE
+trimming. Then trim, keeping the 0805 pull-down. Solder DP / DW / DL per
+seat.</li>
+<li><strong>Rails:</strong> build the 3 ST1 rails and meter every strip
+end to end. Then build the cradle board (W10), then the P and S30
+pigtails.</li>
+<li>Wire in this order: rails ← drivers (DP), then the PCA (DW by
+channel), then TMP and the fan.</li>
+</ol>
+<p><strong>Fit-up results CAD needs before the wand halves
+print</strong> (send me the numbers):</p>
+<ul>
+<li>Trimmed KESHY with its leads on: L × W × max height, and where the
+leads exit.</li>
+<li>PCA with the header trimmed and leads on: measured size, and which
+end is CH0.</li>
+<li>Seated 4-pin Dupont height on the PCA header (CAD allows 1.0 mm to
+the 0° drivers).</li>
+<li>Diameter of the DL bundle (12 twisted 26 AWG pairs) going up the 5
+mm annulus.</li>
+<li>String-measured lengths that differ from the table.</li>
+<li>VHB thickness as applied.</li>
+</ul>
+<h2 id="5-mus-14-voltage-drop-test-on-halo">5. Mus-14 voltage-drop test
+(on Halo)</h2>
+<p><strong>Pass = HAT <code>vbus_min</code> ≥ 4.90 V in every state, and
+≤ 5.25 V at idle.</strong> The gate binds on the minimum, not the
+mean.</p>
+<p><strong>Readings in every state:</strong></p>
+<ul>
+<li><strong>V_src</strong> = the inline meter at the Mus-14 socket.</li>
+<li><strong>V_hat</strong> = the HAT INA219 <code>vbus_min</code>.</li>
+<li><strong>A</strong> = the INA219 amps.</li>
+<li>Drop = V_src − V_hat.</li>
+</ul>
+<p><strong>Load = Halo's own HAT + SSD + OAK.</strong> There is no
+electronic load. Off-robot there is no loaded reading: the Mus-14 is
+metered with no load only.</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>State</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T0</td>
+<td>Off-robot: bench supply 13.8 V → Mus-14, no load. <strong>Record
+both sockets</strong> (expect 5.0–5.2; the Mus-14 is fixed 5 V, there is
+no trim).</td>
+<td>2 min</td>
+</tr>
+<tr>
+<td>T1</td>
+<td>On Halo with H1 landed and D18 not in the HAT: Mus-14 socket V
+(5.0–5.2).</td>
+<td>1 min</td>
+</tr>
+<tr>
+<td>T2</td>
+<td>Plug D18 into the HAT. Pi idle, stack running, OAK off.</td>
+<td>3 min</td>
+</tr>
+<tr>
+<td>T3</td>
+<td>Cold boot from the rocker. Watch the meter's minimum.</td>
+<td>1 boot</td>
+</tr>
+<tr>
+<td>T4</td>
+<td>SSD stress (below).</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>T5</td>
+<td>OAK streaming, its normal MJPEG profile.</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td>T6</td>
+<td><strong>Worst case today: OAK streaming + SSD stress</strong> (the
+script's default, no mic).</td>
+<td>10 min</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What a pass proves:</strong> the Mus-14 + HOTNOW hold Halo's
+real load as connected tomorrow. <strong>What it doesn't
+prove:</strong></p>
+<ul>
+<li>Without the stick, ~0.5 A of the 2.6 A design peak is missing, so
+re-run T6 at the speaker phase.</li>
+<li>It is not the 20-boot soak (BC-3); that comes later.</li>
+</ul>
+<p><strong>Fail action, in order:</strong></p>
+<ol type="1">
+<li>Retest with a 5 A e-marked cable if the drop is the problem.</li>
+<li>The LM25116 (CV 5.20 V) replaces the Mus-14. ⚠️ <strong>It is NOT
+ordered</strong> (Purchasing 2026-11-02), so a fail here means ordering
+it.</li>
+<li>Load-shed: the new mic goes on a Pi native port.</li>
+</ol>
+<p><strong>Pre-steps before T2. The operator runs the first two (no
+session has the permission):</strong></p>
+<ol type="1">
+<li>✅ Done 2026-11-01. Install <code>hat_power_logger.service</code> on
+Halo, the Ultra way: Multi-Robot <code>provision/ultra/</code>
+(6bd5613), INA219 0x40, R010. Add the service to Halo's architecture doc
+first. It must be the only reader on 0x40. Check:
+<code>systemctl is-active hat_power_logger</code> → active, and today's
+CSV in <code>/var/log/hat_power/</code> is growing.</li>
+<li>✅ Done 2026-11-01 (fio 3.36). <code>sudo apt install -y fio</code>
+on Halo.</li>
+<li>Plug in the OAK-D S2 per §2 (OAK only today). Check:
+<ul>
+<li><code>lsusb -t</code> shows the OAK at 5000M on the HAT.</li>
+<li><code>/dev/stm32_halo</code> unchanged.</li>
+</ul></li>
+<li>Dry run: <code>SHORT=1 ~/halo_power_stress.sh</code> (✅ T2 + T4
+passed 2026-11-01 on the Pi feed; T5 / T6 wait for step 3).</li>
+</ol>
+<p><strong>The stress run:</strong> <code>~/halo_power_stress.sh</code>
+on Halo (Multi-Robot <code>provision/halo/halo_power_stress.sh</code>
+0925514, written by Ultra's session);
+<code>~/halo_power_stress.sh T5 T6</code> runs those two alone. Its
+preflight stops until the OAK shows on the HAT (<code>03e7</code> in
+<code>lsusb</code>). <code>MIC_CARD</code> is only for the replacement
+mic, later. It runs T2 / T4 / T5 / T6 and reads only the logger CSV
+(columns now end in <code>vbus_max_V</code>). T0, T1 and T3 are by hand
+with the meter.</p>
+<ul>
+<li>Per state, report: min / mean / max of <code>vbus_min_V</code> and
+<code>amps_max</code>, plus <code>vcgencmd get_throttled</code> and
+<code>vcgencmd pmic_read_adc EXT5V_V</code>.</li>
+</ul>
+<h2 id="6-backfeed-check-direction-b--2-min-not-skippable">6. Backfeed
+check, direction (b) — 2 min, not skippable</h2>
+<p>The Pi is ON and the Mus-14 is OFF, with D18 still in the HAT. With
+no F4, "Mus-14 OFF" = <strong>H1's red fork unlanded and taped</strong>
+(the rocker can't do it: it cuts the Pi too).</p>
+<ol type="1">
+<li>Meter the Mus-14 output (the meter at its socket) and its input
+terminals. <strong>Pass ≈ 0 V.</strong> Anything ≥ ~0.5 V means the HAT
+is back-driving the buck: unplug D18 and stop.</li>
+<li>Expect the HAT to keep running from the Pi's 5 V, because that is
+how it runs today.
+<ul>
+<li>The check that matters is the <strong>path check (BC-4)</strong>:
+run SSD stress with H1 unlanded, then (power off, land H1, power on)
+with H1 landed, and watch the Pi's input current (2nd meter, Q3).</li>
+<li>With H1 landed, the Pi's current must drop by roughly the HAT
+current. If it doesn't, the HAT is still riding the Pi rail. Stop and
+report.</li>
+</ul></li>
+</ol>
+<h2 id="7-safety-and-power-up-order">7. Safety and power-up order</h2>
+<ol type="1">
+<li><strong>Before touching the DROK terminals:</strong>
+<ul>
+<li>Arm at HOME and supported. Clean shutdown
+(<code>sudo poweroff</code>).</li>
+<li>DC rocker OFF. Then <strong>meter DROK input +V = 0 V</strong>.</li>
+<li>The APIELE stays live on the UPS battery even with AC off: no tools
+on the APIELE.</li>
+</ul></li>
+<li><strong>Before the first power-on, meter with everything still
+off:</strong>
+<ul>
+<li>Mus-14 IN+ to IN−: not a short (&gt; 1 kΩ).</li>
+<li>Polarity: red goes to IN+.</li>
+<li>No strand bridging at any fork.</li>
+<li>Tug-test every crimp.</li>
+</ul></li>
+<li><strong>First power-on with the Mus-14 fed:</strong> H1 landed, D18
+not in the HAT, rocker ON. Meter the socket at 5.0–5.2 V, then plug in
+D18 (step T2).</li>
+<li><strong>Wand:</strong> meter VIN+ to VIN− on each rail before any
+driver is plugged in. First power comes from a current-limited bench
+supply, not the tether.</li>
+</ol></body></html>

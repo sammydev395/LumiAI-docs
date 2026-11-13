@@ -1,0 +1,1105 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Multi_Robot_Power_Rail</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="multi-robot-bench-power-rail--updated-armpi-mini-armpi-fpv-armpi-ultra-rosmaster-x3-plus">Multi-Robot
+Bench Power Rail – UPDATED (ArmPi Mini, ArmPi FPV, ArmPi Ultra,
+ROSMASTER X3 Plus)</h1>
+<p><strong>Single 12 V 1500 W PSU • Kohree 12-Way Fuse Block • ArmPi
+Ultra DROK Buck Converter + Motor Driver • Yahboom 12 V LiPo + 19 V
+UPS-C • 3× USB-C Touch Displays • NETGEAR GS305 Ethernet
+Switch</strong></p>
+<h2 id="1-system-overview">1. System Overview</h2>
+<p>This document describes the complete power rail for four robots
+mounted along a bench:</p>
+<ul>
+<li>Hiwonder ArmPi Mini (Raspberry Pi 5 + STM32 + Waveshare UPS 3S, 12 V
+input)</li>
+<li>Hiwonder ArmPi FPV (Raspberry Pi 5 + STM32 + Waveshare UPS 3S, 12 V
+input)</li>
+<li>Hiwonder ArmPi Ultra (Raspberry Pi 5 + STM32 via DROK buck converter
++ 4-Channel Encoder Motor Driver, 12 V input)</li>
+<li>Yahboom ROSMASTER X3 Plus (Jetson Orin Nano, internal 9600 mAh Li-Po
+pack, UPS-C module)</li>
+</ul>
+<p>Additionally, the system powers three AOC 16T15 15.6" IPS touch
+displays via USB-C ports (5 V required) and a NETGEAR GS305 5-Port
+Gigabit Ethernet Switch (5 V, 0.7 A required).</p>
+<p>The system is powered by a single HONGPOE MS-1500 adjustable
+switching power supply set to 12 V, feeding a Kohree 12-way marine fuse
+block. Main distribution uses Fermerry 12 AWG silicone wire. Robot drops
+use 16 AWG wire (except ArmPi Ultra which uses 14 AWG). Display and
+ethernet switch power is provided via a single 12 V to 5 V buck
+converter with USB-C outputs for displays and adapter connection for the
+switch.</p>
+<p><strong>IMPORTANT UPDATES:</strong></p>
+<ol type="1">
+<li><p><strong>Yahboom ROSMASTER X3 Plus:</strong> In addition to the
+existing 19 V path (via the DROK buck-boost converter → UPS-C → Jetson
+Orin Nano), the robot also requires a dedicated 12 V feed to its
+internal Li-Po/BMS charge input.</p></li>
+<li><p><strong>ArmPi Mini and ArmPi FPV:</strong> Both robots now
+require separate 12 V feeds - one for the Waveshare UPS 3S (which powers
+the Raspberry Pi 5) and one for the Hiwonder STM32 expansion board. This
+provides better power isolation and allows independent operation of the
+UPS and motor control systems.</p></li>
+<li><p><strong>ArmPi Ultra:</strong> Added power distribution for ArmPi
+Ultra robot with dual 12 V inputs via XT30 connectors:</p>
+<ul>
+<li><strong>Input 1 - Main PSU:</strong> 12 V → 15 A fused branch → 14
+AWG drop → XT30 Male → XT30 Female (on Master Power Switch) - connected
+when AC mains available</li>
+<li><strong>Input 2 - UPS Battery:</strong> UPS CH1 (12V @ 13.5A) → 14
+AWG → XT30 Male → XT30 Female (on Master Power Switch) - connected when
+AC mains fails</li>
+<li><strong>Note:</strong> Only ONE input is connected to the power
+switch at any given time (either main PSU OR UPS battery, not both)</li>
+<li><strong>After Switch:</strong> Master Power Switch (DC) → Power
+Distribution Block → Splits to DROK buck converter (9 V 12 A output,
+with 20mm cooling fan) → HiWonder STM32 controller → Raspberry Pi 5, and
+4-Channel Encoder Motor Driver (5–15 V input, 8 A continuous, 10 A peak,
+powered from 9V) → Mecanum Chassis Motors</li>
+<li><strong>AC Power to UPS:</strong> 120V AC (14 AWG) → MR30 Male 3-Pin
+→ MR30 Female 3-Pin (on UPS AC input)</li>
+<li>Master power switch provides convenient on/off control and seamless
+switching between main PSU and UPS battery backup</li>
+</ul></li>
+<li><p><strong>USB-C Touch Displays + Ethernet Switch:</strong> Three
+AOC 16T15 portable monitors are powered via USB-C ports, each requiring
+5 V at 2 A (10 W per display). A NETGEAR GS305 5-Port Gigabit Ethernet
+Switch is also powered from the same converter, requiring 5 V at 0.7 A
+(3.5 W). Power is derived from the 12 V bus using a single XWST DC-DC
+12V/24V to 5V Buck Converter (20 A output capacity) with USB-C pigtail
+connections for displays and adapter connection for the switch.</p></li>
+</ol>
+<h2 id="2-power-architecture-updated-ascii-diagram">2. Power
+Architecture (Updated ASCII Diagram)</h2>
+<pre><code>AC MAINS (120V)
+|
+v
+120V AC (12 AWG)
+|
+v
++----------------------------------------------+
+| HONGPOE MS-1500 Adjustable PSU (Set to 12 V) |
+| 1500 W Single Output SMPS                    |
++----------------------------------------------+
+                   |
+             [40 A MIDI FUSE]
+                   |
+               12 V (10 AWG)
+                   v
++-------------------------------------------------------------------------------------+
+| KOHREE 12-WAY FUSE BLOCK                                                            |
+| (12 V + Common Ground Bus)                                                          |
++-------------------------------------------------------------------------------------+
+ |        |        |        |        |        |      |          |                | 
+ |        |        |        |        |        |      |          |                | 
+ |        |        |        |        |        |      |          |                | 
+ |        |        |        |        |        |      |          |                | 
+ |        |        |        |        |        |      |          |                | 
+ |        |        |        |        |        |      |          |                | 
+[5A]    [5A]     [5A]     [5A]     [15A]    [15A]    [7.5A]     [10A]            [10A]
+ |        |        |        |        |        |      |          |                | 
+ |        |        |        |        |        |      |          |                |  
+ |        |        |        |        |        |      |          |                |
+ |        |        |        |        |        |      |          |                |
+ |        |        |        |        |        |      |          |                |
+ |        |        |        |        |        |      |          |                |
+ |        |        |        |        |        |      |          |                |
+ |        |        |        |        |        |      |          |                |
+ | 5.5    | 3.0    | 5.5    | 5.5    |        |      | 4.0      | 5.5            |
+ |  X     |  X     |  X     |  X     |        |      |  X       |  X             | 
+ | 2.1    | 1.1    | 2.1    | 2.1    |        |      | 1.7      | 2.5            |
+ | mm     | mm     | mm     | mm     |        |      | mm       | mm             |
+ |barrel  |barrel  |barrel  |barrel  |        |      |barrel    |barrel          |
+ | male   | male   | male   | male   |        |      | male     | male           |
+ |        |        |        |180 deg |        |      |180 deg   |90 deg          |
+12V→    12V→     12V→     12V→     12V→      110V→  12V→       12V→             12V→ |
+ArmPi   ArmPi    ArmPi    ArmPi    ArmPi    ArmPi  Yahboom    DROK 6-30V           XWST 20A
+Mini    Mini     FPV      FPV      Ultra    Ultra  Li-Po/BMS  Buck-Boost→19V      Buck Conv
+UPS     STM32    UPS      STM32    (single   UPS   (CHARGE)     |                   |
+  |       |        |        |        line)    |      |          |                   |
+  |       |        |        |        |        |      |         19V                 5 V
+UPS→RPi5 12V    UPS→RPi5   12V      12AWG   12AWG    |          |                   |
+3S      STM32   3S        STM32      |        |      |          v                   |
+                                     |        |      |       Waveshare            USB-C
+                                     |        |      |         UPS-C            Pigtails
+                                     |        |      |       (15–19V)        (3× displays)
+                                     |        |      |         input         + NETGEAR GS305
+                                     |        |      |          |             Ethernet Switch
+                                     |        |      |          |-→ 19V        (5V, 0.7A)    
+                                     |        |     LiPo             | Jetson    
+                                     |        |    9600maH            Orin Nano      
+                                     |        |MR30 male 3Pin                
+                                     |        |          ┌──────────────────────────────┐
+                                     |        |     MR30 │  PSC-100-12 Power-UPS        │
+                                     |        |   female │  CH1: 13.8 V @ 5.0 A (69 W)  │
+                                     |        └─►    ----|CH2: 13.8 V @ 2 A              │
+                                     |             3Pin  │    (battery charge)           │
+                                     |                   └──────────────────────────────┘
+                                     |                        |    
+                                     |                        |   
+                                     |                        |    
+                                     |                        |   
+                                     |                        |          
+                                     |                        |                     
+                                     | XT30                   | XT30   
+                                     | male                   | male
+                                     └►                      ◄┘
+                                              ↑    
+                                              | XT30
+                                              | female 
+                                              |                              
+                                              | 
+                                              |                                          
+                                           Master Power Switch (DC) → Power Distribution
+                                              |
+                                              ├─► DROK Buck Converter (9 V 12 A) [with 20mm fan]
+                                              |        |
+                                              |        ├─► HiWonder STM32 Controller
+                                              |        |        |
+                                              |        |        └─► Raspberry Pi 5 (5 V via STM32)
+                                              |        |
+                                              |        └─► 4-Channel Encoder Motor Driver (9 V)
+                                              |                 |
+                                              |                 └─► Mecanum Chassis Motors
+                                              |
+                                              └─► MOSFET LED Driver Board (IRFZ44N) (12 V) [Production]
+                                                       |
+                                                       └─► Gripper LED Array
+
+AC MAINS (120V)
+    |
+    ├─► 120V AC (12 AWG) ──► PSC-100-12 PSU/UPS 
+    |
+    └─► 120V AC (14 AWG) ──► (runs alongside ArmPi Ultra drop)
+                                     |
+                                     └─► ArmPi Ultra location
+                                     | Wiring nuts (temp), 16AWG
+                                     |  (Replace with MR60)
+                                     (14 AWG AC line runs parallel to 12V drops)</code></pre>
+<h2 id="3-detailed-per-branch-wiring">3. Detailed Per-Branch Wiring</h2>
+<h3 id="31-main-supply-and-distribution">3.1 Main Supply and
+Distribution</h3>
+<ul>
+<li>HONGPOE MS-1500 PSU set to 12.0 V output.</li>
+<li>10 AWG wire from PSU output → 40 A MIDI fuse (in MIDI fuse holder) →
+Kohree 12-way fuse block input.</li>
+<li>MIDI fuse holder rated for 30–200 A, splash-proof, flame retardant,
+provides circuit protection.</li>
+<li>MIDI fuses rated: 40 A, 58 V DC (well above 12 V operating voltage,
+providing excellent safety margin).</li>
+<li>Kohree block provides fused 12 V outputs and a common negative bus
+for all loads.</li>
+<li><strong>Negative/Ground Connections:</strong> All negative/ground
+wires from loads (robots, buck converters, etc.) connect to the common
+negative bus on the Kohree fuse block. This is typically the negative
+terminal(s) at the top of the block or the dedicated negative bus bar
+running along the side of the block.</li>
+</ul>
+<p><strong>Fan replacement — Noctua (build note, validated
+2026-05):</strong> swap worn/noisy rail fans for Noctuas (e.g. NF-A6x25
+FLX).</p>
+<ul>
+<li><strong>Wiring recipe:</strong> keep the fan's <strong>factory
+connector</strong>, fit a Noctua <strong>NA-EC1 extension
+cable</strong>, cut its <strong>far (source) end</strong>, crimp a
+<strong>JST-XH 2-pin (+12 V + GND; tach wire unused)</strong>, and run
+it to a <strong>fused 12 V branch on the Kohree block</strong>. Do
+<strong>not</strong> mate a homemade connector directly to the fan's own
+plug — use the NA-EC1 so the fan keeps its factory connector and only
+the source end is your XH (a homemade plug into Noctua's shrouded
+housing can seat without making contact).</li>
+<li><strong>Vibration first:</strong> fit the Noctua <strong>silicone
+anti-vibration mounts</strong> (in the box) instead of hard screws —
+that alone cut perceived noise ≈ <strong>50 %</strong> (the PSU case was
+acting as a sounding board).</li>
+<li><strong>Tune RPM per-fan, not globally</strong> (this corrects the
+earlier "skip the resistor adapters entirely" guidance): run
+<strong>well-located fans at full 3 K</strong>; for a fan that's noisy
+<strong>because of its position / the PSU's airflow geometry</strong>,
+drop <em>only that one</em> with a Noctua speed reducer (<strong>RC12 /
+LNA, ~3 K → 1.6 K</strong>). Validated: reducing the single offending
+fan to 1.6 K (other left at 3 K) took the PSU to <strong>zero audible
+noise</strong> with negligible cooling loss — the residual noise was one
+fan resonating/churning against its spot, not the fan itself. So don't
+blanket-reduce (loses airflow in a warm garage) and don't blanket-full
+(leaves the problem fan screaming) — reduce the problem fan only.</li>
+</ul>
+<h3 id="32-armpi-mini-branch-hiwonder-armpi-mini">3.2 ArmPi Mini Branch
+(Hiwonder ArmPi Mini)</h3>
+<p>The ArmPi Mini requires TWO separate 12 V power paths:</p>
+<p><strong>(1) 12 V for Waveshare UPS 3S</strong></p>
+<p><strong>Path:</strong> 12 V from Kohree fuse block → [5 A ATC fuse in
+the block] → 16 AWG drop along the bench → 12 V input of Waveshare UPS
+3S → UPS 3S → 5 V / system power to Raspberry Pi 5</p>
+<p><strong>(2) 12 V for STM32 Expansion Board</strong></p>
+<p><strong>Path:</strong> 12 V from Kohree fuse block → [5 A ATC fuse in
+the block] → 16 AWG drop along the bench → 12 V input of Hiwonder STM32
+expansion board</p>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>Keep ground shared with the main bus for both branches.</li>
+<li>Both branches are independently fused at 5 A each.</li>
+<li>Barrel connectors are used at the robot end (see "Connectors at
+Robot End" below).</li>
+</ul>
+<p><strong>Connectors at Robot End:</strong></p>
+<ul>
+<li><strong>STM32 Board:</strong> 3.0mm × 1.1mm male barrel connector
+with 20 AWG pigtail</li>
+<li><strong>UPS 3S:</strong> 5.5mm × 2.1mm male barrel connector with 16
+AWG pigtail</li>
+</ul>
+<h3 id="33-armpi-fpv-branch-hiwonder-armpi-fpv">3.3 ArmPi FPV Branch
+(Hiwonder ArmPi FPV)</h3>
+<p>The ArmPi FPV requires TWO separate 12 V power paths:</p>
+<p><strong>(1) 12 V for Waveshare UPS 3S</strong></p>
+<p><strong>Path:</strong> 12 V from Kohree fuse block → [5 A ATC fuse in
+the block] → 16 AWG drop along the bench → 12 V input of Waveshare UPS
+3S → UPS 3S → 5 V / system power to Raspberry Pi 5</p>
+<p><strong>(2) 12 V for STM32 Expansion Board</strong></p>
+<p><strong>Path:</strong> 12 V from Kohree fuse block → [5 A ATC fuse in
+the block] → 16 AWG drop along the bench → 12 V input of Hiwonder STM32
+expansion board</p>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>Keep ground shared with the main bus for both branches.</li>
+<li>Both branches are independently fused at 5 A each.</li>
+<li>Barrel connectors are used at the robot end (see "Connectors at
+Robot End" below).</li>
+<li>Identical topology to the ArmPi Mini branch.</li>
+</ul>
+<p><strong>Connectors at Robot End:</strong></p>
+<ul>
+<li><strong>STM32 Board:</strong> 5.5mm × 2.1mm male barrel connector
+with 16 AWG pigtail</li>
+<li><strong>UPS 3S:</strong> 5.5mm × 2.1mm male barrel connector with 16
+AWG pigtail</li>
+</ul>
+<h3 id="34-armpi-ultra-branch-hiwonder-armpi-ultra">3.4 ArmPi Ultra
+Branch (Hiwonder ArmPi Ultra)</h3>
+<p>The ArmPi Ultra uses TWO 12 V power inputs that connect to a master
+power switch (DC), which then splits to feed the DROK buck converter
+(which powers STM32/Pi5 and Motor Driver) and the LED Driver. The UPS
+provides seamless power switching between AC mains (via main PSU) and
+battery backup.</p>
+<p><strong>Power Path:</strong> <strong>Input 1 - Main PSU (12V from
+Kohree fuse block):</strong> 12 V from Kohree fuse block → [15 A ATC
+fuse in the block] → 14 AWG drop along the bench → XT30 Male connector →
+XT30 Female connector (on Master Power Switch input)</p>
+<p><strong>Input 2 - UPS Battery Backup (13.8V from PSC-100-12
+CH1):</strong> UPS CH1 (13.8V @ 5.0A) → XT30 Male connector → XT30
+Female connector (on Master Power Switch input)</p>
+<p><strong>After Power Switch:</strong> Master Power Switch (DC) at
+robot location → Power Distribution Block (after switch) → Splits to two
+branches:</p>
+<ul>
+<li><strong>Branch 1:</strong> DROK buck converter (9 V 12 A output,
+with 20mm cooling fan) → HiWonder STM32 controller → Raspberry Pi 5 (5 V
+via STM32), and 4-Channel Encoder Motor Driver (9 V input) → Mecanum
+Chassis Motors (Development/Testing only)</li>
+<li><strong>Branch 2:</strong> Lumi Wand v2.0 LED driver (PCA9685 12-ch
+I2C + 12× PT4115 / 3W 700 mA buck modules) → 3× RGBW LED stars (gripper
+holds the wand handle) (Production)</li>
+</ul>
+<p><strong>DROK Buck Converter Specifications:</strong></p>
+<ul>
+<li><strong>Model:</strong> DROK DC Buck Converter (5.3-32V to 1.2-32V,
+12A adjustable)</li>
+<li><strong>Input Voltage:</strong> 5.3–32 V (handles both 12V battery
+and 14.2V AC modes)</li>
+<li><strong>Output Voltage:</strong> 1.2–32 V adjustable (set to 9
+V)</li>
+<li><strong>Output Current:</strong> 8 A continuous, 12 A with
+cooling</li>
+<li><strong>Output Power:</strong> 120 W continuous, 160 W max with
+cooling</li>
+<li><strong>Efficiency:</strong> ~95%</li>
+<li><strong>Size:</strong> 82×52×32mm</li>
+<li><strong>Features:</strong> LCD display (shows input/output voltage,
+current, power), CV/CC potentiometers, ON/OFF button</li>
+<li><strong>Cooling:</strong> WINSINN 20mm blower fan (20×20×6mm, 12V,
+0.05A) mounted on heatsink</li>
+<li><strong>Input Current at 12V/14.2V:</strong> ~5.4 A typical
+(depending on load and efficiency)</li>
+<li><strong>Note:</strong> Replaces LY-KREE ZS240910 to enable operation
+in both AC (14.2V) and battery (12V) modes. LY-KREE requires minimum
+12.1–12.2V input and fails when UPS outputs 12V in battery mode.</li>
+</ul>
+<p><strong>4-Channel Encoder Motor Driver Specifications:</strong></p>
+<ul>
+<li><strong>Model:</strong> HiWonder 4-Channel Encoder Motor Driver</li>
+<li><strong>VM Power Supply Range:</strong> 5–15 V (operates from 9 V
+bus via DROK converter)</li>
+<li><strong>Single Channel Rated Current:</strong> 2 A continuous</li>
+<li><strong>Single Channel Peak Current:</strong> 2.5 A</li>
+<li><strong>Total Maximum Current:</strong> 8 A continuous (4 channels ×
+2 A), 10 A peak</li>
+<li><strong>Power Port:</strong> 2-pin connector (VM+ and GND)</li>
+<li><strong>Note:</strong> Development/Testing only - NOT included in
+production configuration. Motor driver now receives 9V from DROK
+converter (motor driver accepts 5-15V, 9V is within range).</li>
+</ul>
+<p><strong>Lumi Wand v2.0 LED Driver Specifications:</strong></p>
+<ul>
+<li><strong>Architecture:</strong> PCA9685 16-channel I²C PWM driver (12
+channels in use) → 12× constant-current buck driver modules (one per LED
+channel) → 3× 4-channel RGBW LED stars</li>
+<li><strong>Driver modules:</strong> PT4115 single-channel CC bucks
+running at 700 mA each (or equivalent 3 W 700 mA XL4001E-class modules —
+see <a
+href="../Lumi_Wand_Integration.html">Lumi_Wand_Integration.md</a>)</li>
+<li><strong>LED stars:</strong> 3× RGBW (one R, one G, one B, one W per
+star = 12 channels total)</li>
+<li><strong>Input Voltage:</strong> 10.6 V (via DROK buck on the wand
+bench supply, bumped from the legacy 9 V — see <a
+href="../../coordination/fleet/...">DROK voltage memory</a>).</li>
+<li><strong>Control:</strong> I²C from RPi 5 → PCA9685 → 12× PWM-DIM
+into PT4115 modules</li>
+<li><strong>Peak Power:</strong> <strong>~33 W</strong> at the input
+(~27 W of LED) (<a
+href="../Lumi_Wand_Integration.html#53-power-draw-summary"><code>Lumi_Wand_Integration.md</code>
+§5.3</a>, measured 2026-09-01).</li>
+<li><strong>Mechanical:</strong> custom CNC-machined aluminum heatsink,
+PETG handle clamshell, the gripper holds the wand handle</li>
+<li><strong>Wire Gauge:</strong> 26 AWG silicone bundle (24 cores;
+palette 2026-09-30 — earlier revisions said 24 or 28 AWG) from driver
+PCB up the wand body to the LED stars</li>
+<li><strong>Custom KiCad PCB:</strong>
+<code>kicad/Lumi_Wand_12CH_Driver_PROD/</code> (12-channel production
+board, in fab)</li>
+<li><strong>Replaces:</strong> the legacy single-board IRFZ44N MOSFET
+driver (low-side switching, 4-channel RGBW only). The old design is no
+longer used in production.</li>
+</ul>
+<p><strong>Master Power Switch:</strong></p>
+<ul>
+<li><strong>Type:</strong> DC power switch (similar to Compact UPS
+system)</li>
+<li><strong>Location:</strong> Mounted at robot location, receives 12V
+input via XT30 connector</li>
+<li><strong>Function:</strong> Provides convenient on/off control for
+entire ArmPi Ultra system</li>
+<li><strong>Rating:</strong> Must handle combined load (15 A minimum
+recommended)</li>
+<li><strong>Input Connector:</strong> Single XT30 Female connector
+(accepts either main PSU 12V OR UPS battery 12V, but not both
+simultaneously)</li>
+</ul>
+<p><strong>12V Power Input Connectors (XT30):</strong></p>
+<ul>
+<li><strong>Main PSU 12V Line:</strong> XT30 Male connector on 14 AWG
+wire from Kohree fuse block (12V from main PSU)</li>
+<li><strong>UPS Battery 13.8V Line:</strong> XT30 Male connector on UPS
+CH1 output (13.8V @ 5.0A)</li>
+<li><strong>Power Switch Side:</strong> Single XT30 Female connector
+(accepts either input - selector switch operation)</li>
+<li><strong>Why XT30:</strong> Compact connector rated for 30A, perfect
+for 12V/13.8V power connections. Smaller than XT60, ideal for power
+switch input.</li>
+<li><strong>Operation:</strong> Either the main PSU 12V line OR the UPS
+battery 13.8V line is connected to the power switch at any given time
+(not both simultaneously)</li>
+</ul>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>Two 14 AWG lines run to robot location (one from main PSU, one from
+UPS CH1)</li>
+<li>Both inputs use XT30 Male connectors; power switch has single XT30
+Female connector</li>
+<li>Only one power source is connected at a time (main PSU when AC is
+available, UPS battery when AC fails)</li>
+<li>Master power switch allows turning entire robot on/off without
+accessing fuse block</li>
+<li>UPS provides seamless power switching between AC mains and battery
+backup</li>
+<li>Power distribution block splits single 12 V feed (after switch) to
+DROK converter and LED Driver (Production). DROK converter then powers
+STM32/Pi5 and Motor Driver (Dev/Test) from its 9V output.</li>
+<li>Keep ground shared with the main bus</li>
+<li><strong>Production load:</strong> ~5.4–6.4 A typical at 13.8V/12V
+(DROK converter ~5.4A + LED Driver &lt;1A), within 15 A fuse rating. UPS
+CH1 provides 5.0A continuous but handles brief spikes above this due to
+superior transient response.</li>
+<li><strong>Development/Testing load:</strong> ~8.1–8.4 A typical at
+13.8V/12V with motor driver, or ~5.4–6.4 A typical with LED array (motor
+driver and LED array typically don't run simultaneously). Motor current
+spikes are handled by capacitors and PSU transient response.</li>
+<li>The DROK buck converter provides isolated 9 V power for the
+STM32/RPi5 system and motor driver</li>
+<li>The motor driver operates from 9 V (via DROK converter) for stable
+operation in both AC and battery modes (Development/Testing only)</li>
+<li><strong>Cooling:</strong> Both PSC-100-12 PSU and DROK converter
+require cooling fans.
+<ul>
+<li><strong>PSU top fan (replaced 2026-05-09):</strong> original
+Thermalright TL-B6B 60×60×25 mm (~25 dB at 3000 RPM, audibly noisy at
+the bench) → <strong>Noctua NF-A6x25 FLX</strong> 60×60×25 mm 12 V 3-pin
+(1600/3000 RPM, 19.3 dB max, ships with Low-Noise + Ultra-Low-Noise
+adapters that drop it further to ~13 dB). Drop-in: same 60×60×25 mm form
+factor, same 12 V supply, same 4-corner M3 mount, same 3-pin connector.
+<strong>Result: zero audible noise at the bench.</strong> Same swap is
+planned for the Compact UPS / robot PSU — see <a
+href="Compact_UPS_Power_System_HiWonder_RPi5.html">Compact_UPS_Power_System_HiWonder_RPi5.md</a>.</li>
+<li><strong>DROK fan:</strong> WINSINN 20mm blower (unchanged) — enables
+12A operation on the DROK heatsink.</li>
+</ul></li>
+<li>The LED driver powers gripper LEDs / power LED held in the gripper
+setup (Production)</li>
+<li>For more details on the DROK buck converter setup, STM32 power
+distribution, and LED driver, see
+<code>Compact_UPS_Power_System_HiWonder_RPi5.md</code> in this Power
+folder (or
+<code>docs/Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code> from
+repo root).</li>
+</ul>
+<p><strong>AC Power Connection to UPS (110V Line):</strong></p>
+<ul>
+<li><strong>AC Input:</strong> 120V AC (14 AWG) runs alongside ArmPi
+Ultra 12V drop from main AC distribution</li>
+<li><strong>Connector:</strong> MR30 3-pin connector system
+<ul>
+<li><strong>MR30 Male 3-Pin:</strong> On AC power line (110V/120V AC
+input)</li>
+<li><strong>MR30 Female 3-Pin:</strong> On PSC-100-12 UPS AC input</li>
+</ul></li>
+<li><strong>Connection:</strong> MR30 male plugs into MR30 female on UPS
+to provide AC power to the UPS</li>
+<li><strong>Purpose:</strong> Supplies AC mains power to the PSC-100-12
+UPS for normal operation and battery charging</li>
+<li><strong>Wire Gauge:</strong> 14 AWG for AC line (runs parallel to
+12V DC drop)</li>
+</ul>
+<p><strong>Connectors at Robot End:</strong></p>
+<ul>
+<li><strong>AC Power Drop Line:</strong> Wiring nuts (temporary), will
+replace with MR60 connector when available</li>
+<li><strong>12V/13.8V Power Lines (Dual Input):</strong>
+<ul>
+<li><strong>Main PSU 12V:</strong> XT30 Male connector on 14 AWG wire
+from Kohree fuse block (12V from main PSU)</li>
+<li><strong>UPS Battery 13.8V:</strong> XT30 Male connector on UPS CH1
+output (13.8V @ 5.0A, 14 AWG wire)</li>
+<li><strong>Power Switch Input:</strong> Single XT30 Female connector
+(accepts either main PSU 12V OR UPS battery 13.8V, but not both
+simultaneously)</li>
+</ul></li>
+<li><strong>Connection Method:</strong> Either the main PSU XT30 Male
+(12V) OR the UPS battery XT30 Male (13.8V) plugs into the single XT30
+Female connector on the Master Power Switch, allowing seamless switching
+between main PSU and UPS battery backup</li>
+</ul>
+<h3 id="35-yahboom-rosmaster-x3-plus--updated-dual-feed">3.5 Yahboom
+ROSMASTER X3 Plus – UPDATED Dual Feed</h3>
+<p>The Yahboom ROSMASTER X3 Plus requires TWO power paths:</p>
+<p><strong>(1) 12 V for Internal Li-Po/BMS (NEW BRANCH)</strong></p>
+<p>The robot includes a 9600 mAh Li-Po battery and onboard BMS, which
+expects a 12 V supply for charging. The 12 V feed charges the battery,
+and the battery then powers the Yahboom ROS robot control board V3.0
+(STM32F103RCT6 expansion board), which serves as the motor controller
+and peripheral interface board.</p>
+<p><strong>Yahboom STM32 Expansion Board Details:</strong></p>
+<ul>
+<li><strong>Model:</strong> ROS robot control board V3.0 with
+STM32F103RCT6 (Yahboom YB-ERF01-V3.0)</li>
+<li><strong>Power Input:</strong> Single 12 V DC input via T-type
+connector (connected to 9600 mAh Li-Po battery)</li>
+<li><strong>Power Outputs:</strong>
+<ul>
+<li>2× DC 12V outputs (for motors and other 12V peripherals)</li>
+<li>1× DC 5V output</li>
+<li>1× Type-C 5V output (Raspberry Pi 5 power supply protocol)</li>
+</ul></li>
+<li><strong>Features:</strong> 4-channel encoder motor drive, 4-channel
+PWM servo control, serial bus servo support, 9-axis IMU (ICM20948), CAN
+bus communication</li>
+<li><strong>Standby Current:</strong> ~50 mA (board itself draws minimal
+power)</li>
+<li><strong>Load:</strong> The board receives power from the battery via
+its 12V input, then distributes it via its outputs to motors, servos,
+and other peripherals, accounting for the higher current draw on this
+branch</li>
+</ul>
+<p><strong>Power Path:</strong> 12 V from Kohree fuse block → [7.5 A ATC
+fuse] → 16 AWG drop to Yahboom main DC input / BMS charge input →
+Charges 9600 mAh Li-Po battery via BMS → Battery connects to STM32
+board's 12V input (T-type connector) → STM32 board distributes battery
+power via its outputs:</p>
+<ul>
+<li>2× 12V outputs → motors and 12V peripherals</li>
+<li>1× 5V output → 5V peripherals</li>
+<li>1× Type-C 5V output → Raspberry Pi 5 (if used)</li>
+</ul>
+<p><strong>(2) 19 V Path for Jetson Orin Nano via UPS-C
+(EXISTING)</strong></p>
+<p>The Jetson Orin Nano is powered through a Waveshare
+UPS-Power-Module-(C), which expects 15–19 V input. To supply this, a
+DROK buck-boost converter is used to boost from 12 V to 19 V. This
+powers the Jetson Orin Nano along with all peripherals: 2 cameras
+(monocular + stereo RGB/IR), void output box, 7DOF arm, Lidar, and
+4-wheel mecanum chassis.</p>
+<p><strong>Path:</strong> 12 V from Kohree fuse block → [10 A ATC fuse]
+→ 10–12 AWG into DROK DC 6–30 V → 0.5–30 V buck/boost module → DROK
+configured to output 19.0 V → 19 V into Waveshare UPS-C input → UPS-C →
+regulated 19 V to Jetson Orin Nano SOC board and all peripherals.</p>
+<p><strong>Grounding:</strong></p>
+<ul>
+<li>The 12 V feed (Li-Po/BMS) and the 19 V feed (UPS-C) must share
+common ground back at the Kohree fuse block negative bus to avoid
+reference issues.</li>
+</ul>
+<p><strong>Connectors at Robot End:</strong></p>
+<ul>
+<li><strong>Li-Po/BMS Branch:</strong> 5.5mm × 2.5mm 90-degree barrel
+connector with 16 AWG pigtail</li>
+<li><strong>19V (DROK) Branch:</strong> 4.0mm × 1.7mm 90-degree barrel
+connector with 16 AWG pigtail</li>
+</ul>
+<h3
+id="36-usb-c-touch-display-power-3-aoc-16t15-monitors--netgear-gs305-ethernet-switch">3.6
+USB-C Touch Display Power (3× AOC 16T15 Monitors) + NETGEAR GS305
+Ethernet Switch</h3>
+<p>All three AOC 16T15 15.6" IPS touch displays and the NETGEAR GS305
+5-Port Gigabit Ethernet Switch are powered from a single XWST DC-DC
+12V/24V to 5V Buck Converter (20 A output capacity). Each display
+requires 5 V at 2 A (10 W power consumption). The NETGEAR GS305 switch
+requires 5 V at 0.7 A (3.5 W power consumption).</p>
+<p><strong>Power Path:</strong> 12 V from Kohree fuse block → [10 A ATC
+fuse in the block] → 12 AWG or 14 AWG drop to converter location → XWST
+DC-DC Buck Converter (12 V input, 5 V output) → 5 V output from
+converter (20 A capacity, ~6.7 A used: 6 A for 3 displays + 0.7 A for
+switch) → USB-C pigtail connections (3× USB-C pigtails wired to
+converter output) → Display USB-C power inputs → 5 V DC barrel connector
+or USB-C adapter (wired to converter output) → NETGEAR GS305 switch
+power input</p>
+<p><strong>Buck Converter Specifications:</strong></p>
+<ul>
+<li><strong>Model:</strong> XWST DC-DC 12V/24V to 5V Buck Converter</li>
+<li>Input voltage: 10–32 V DC (operates from 12 V bus)</li>
+<li>Output voltage: 5 V DC (fixed)</li>
+<li>Maximum output current: 20 A</li>
+<li>Maximum output power: 100 W</li>
+<li>Protection: Over-voltage, over-current, reverse connection,
+overload, over-temperature, short-circuit protection</li>
+</ul>
+<p><strong>USB-C Pigtail Wiring:</strong></p>
+<ul>
+<li>Each USB-C pigtail has 2-pin bare wire ends (red/positive and
+black/negative)</li>
+<li>Connect pigtail red wire to 5 V+ output terminal on buck
+converter</li>
+<li>Connect pigtail black wire to GND/negative terminal on buck
+converter</li>
+<li>USB-C connector end plugs directly into display USB-C power
+port</li>
+</ul>
+<p><strong>NETGEAR GS305 Switch Power:</strong></p>
+<ul>
+<li>Model: NETGEAR 5-Port Gigabit Ethernet Unmanaged Essentials Switch
+(GS305)</li>
+<li>Power requirement: 5 V at 0.7 A (3.5 W)</li>
+<li>Power source: XWST buck converter 5 V output (shared with
+displays)</li>
+<li>Connection: Wire 5 V+ and GND from converter output terminals to
+switch power input (typically via barrel connector adapter or USB-C
+adapter, depending on switch model)</li>
+</ul>
+<p><strong>Notes:</strong></p>
+<ul>
+<li>Single converter powers all 3 displays + ethernet switch (total
+load: 6.7 A at 5 V, well within 20 A capacity)</li>
+<li>Converter should be mounted in a central location or near the
+displays and switch</li>
+<li>Ensure proper heat sinking/ventilation for the converter (100 W
+capacity, ~33.5 W actual load)</li>
+<li>Use quality USB-C pigtails rated for 3 A minimum (22 AWG is
+acceptable for 2 A per display)</li>
+<li>For switch power connection, use appropriate adapter (barrel
+connector or USB-C) or wire directly if switch accepts bare wire
+input</li>
+<li>All negative/ground connections from converter, displays, and switch
+connect back to Kohree fuse block negative bus</li>
+</ul>
+<h2 id="4-current-load-analysis">4. Current Load Analysis</h2>
+<h3 id="41-per-branch-current-draw-estimates-at-12v">4.1 Per-Branch
+Current Draw Estimates (at 12V)</h3>
+<table>
+<thead>
+<tr>
+<th>Branch</th>
+<th>Component</th>
+<th>Typical Load</th>
+<th>Peak Load</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ArmPi Mini UPS 3S</td>
+<td>Raspberry Pi 5 + USB/CSI cameras via UPS 3S</td>
+<td>1.5–2.5 A</td>
+<td>3.5–4.0 A</td>
+<td>RPi5 with cameras: 15–25W typical, 30–35W peak; UPS efficiency
+~85%</td>
+</tr>
+<tr>
+<td>ArmPi Mini STM32</td>
+<td>STM32 board + 6DOF arm servos</td>
+<td>2.0–4.0 A</td>
+<td>5.0–7.0 A</td>
+<td>6 servos active; depends on arm position and load</td>
+</tr>
+<tr>
+<td>ArmPi FPV UPS 3S</td>
+<td>Raspberry Pi 5 + USB/CSI cameras via UPS 3S</td>
+<td>1.5–2.5 A</td>
+<td>3.5–4.0 A</td>
+<td>Same as ArmPi Mini</td>
+</tr>
+<tr>
+<td>ArmPi FPV STM32</td>
+<td>STM32 board + 6DOF arm servos</td>
+<td>2.0–4.0 A</td>
+<td>5.0–7.0 A</td>
+<td>Same as ArmPi Mini</td>
+</tr>
+<tr>
+<td>ArmPi Ultra DROK</td>
+<td>DROK Buck Converter (9V 12A) → STM32 → RPi5</td>
+<td>5.0–6.0 A</td>
+<td>7.0–8.0 A</td>
+<td>9V @ 8-10A output = 72-90W; converter efficiency ~95%; input at
+13.8V/12V</td>
+</tr>
+<tr>
+<td>ArmPi Ultra Motor Driver</td>
+<td>4-Channel Encoder Motor Driver → Mecanum chassis</td>
+<td>2.7–3.0 A</td>
+<td>8.0 A</td>
+<td>4 channels × 2A = 8A continuous, 10A peak; all motors active
+(Development/Testing only); input at 9V via DROK converter</td>
+</tr>
+<tr>
+<td>ArmPi Ultra LED Driver</td>
+<td>MOSFET LED Driver → Gripper LEDs / Power LED</td>
+<td>0.5–1.0 A</td>
+<td>1.0–1.5 A</td>
+<td>PWM controlled gripper LEDs held in gripper setup (Production);
+typically doesn't run simultaneously with motor driver</td>
+</tr>
+<tr>
+<td>Yahboom Li-Po/BMS</td>
+<td>Battery charging + system</td>
+<td>2.0–3.0 A</td>
+<td>6.0 A</td>
+<td>Charging: up to 1C (9.6A), operation: 1–3A</td>
+</tr>
+<tr>
+<td>Yahboom 19V (DROK)</td>
+<td>Jetson Orin Nano + 2 cameras + 7DOF arm + Lidar + 4-wheel chassis
+via UPS-C</td>
+<td>4.0–7.0 A</td>
+<td>8.0–12.0 A</td>
+<td>Jetson + all peripherals: 60–100W typical, 120–150W peak at 19V;
+DROK converter efficiency ~85%</td>
+</tr>
+<tr>
+<td>Displays (XWST)</td>
+<td>3× AOC 16T15 monitors</td>
+<td>2.8–3.0 A</td>
+<td>3.5 A</td>
+<td>30W total at 5V; converter efficiency ~85–90%</td>
+</tr>
+<tr>
+<td>Ethernet Switch (XWST)</td>
+<td>NETGEAR GS305 5-port switch</td>
+<td>0.3–0.35 A</td>
+<td>0.35 A</td>
+<td>0.7A at 5V (1.75W); converter efficiency ~85–90%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="42-total-system-current-load">4.2 Total System Current Load</h3>
+<p><strong>Typical Operating Conditions:</strong></p>
+<ul>
+<li>ArmPi Mini UPS: 2.0 A (average with cameras)</li>
+<li>ArmPi Mini STM32: 3.0 A (average, 6DOF arm active)</li>
+<li>ArmPi FPV UPS: 2.0 A (average with cameras)</li>
+<li>ArmPi FPV STM32: 3.0 A (average, 6DOF arm active)</li>
+<li>ArmPi Ultra DROK: 5.5 A (average, STM32 + RPi5 active, at 13.8V/12V
+input)</li>
+<li>ArmPi Ultra Motor Driver: 2.8 A (average, mecanum motors active, at
+9V input via DROK) [Dev/Test only - typically not simultaneous with
+LED]</li>
+<li>ArmPi Ultra LED Driver: 0.75 A (average, gripper LEDs) [Production -
+typically not simultaneous with motor driver]</li>
+<li>Yahboom Li-Po/BMS: 2.5 A (average)</li>
+<li>Yahboom 19V (DROK): 5.5 A (average, Jetson + all peripherals)</li>
+<li>Displays (XWST): 2.9 A (average)</li>
+<li>Ethernet Switch (XWST): 0.35 A (average)</li>
+<li><strong>Total Typical Load: ~30.8 A at 12V</strong> (with motor
+driver) or <strong>~28.0 A at 12V</strong> (with LED driver,
+production)</li>
+</ul>
+<p><strong>Peak Load Conditions (all systems at maximum):</strong></p>
+<ul>
+<li>ArmPi Mini UPS: 3.75 A (RPi5 + cameras at peak)</li>
+<li>ArmPi Mini STM32: 6.0 A (all 6 servos moving simultaneously)</li>
+<li>ArmPi FPV UPS: 3.75 A (RPi5 + cameras at peak)</li>
+<li>ArmPi FPV STM32: 6.0 A (all 6 servos moving simultaneously)</li>
+<li>ArmPi Ultra DROK: 7.5 A (STM32 + RPi5 at peak load, at 13.8V/12V
+input)</li>
+<li>ArmPi Ultra Motor Driver: 8.0 A (all 4 motors at peak, 10A capacity,
+at 9V input via DROK) [Dev/Test only - typically not simultaneous with
+LED]</li>
+<li>ArmPi Ultra LED Driver: 1.25 A (gripper LEDs at peak) [Production -
+typically not simultaneous with motor driver]</li>
+<li>Yahboom Li-Po/BMS: 6.0 A (charging at 1C)</li>
+<li>Yahboom 19V (DROK): 10.0 A (Jetson + all systems active)</li>
+<li>Displays (XWST): 3.5 A (all displays at full brightness)</li>
+<li>Ethernet Switch (XWST): 0.35 A (steady load)</li>
+<li><strong>Total Peak Load: ~55.6 A at 12V</strong> (with motor driver)
+or <strong>~48.1 A at 12V</strong> (with LED driver, production)</li>
+</ul>
+<p><strong>Power Consumption:</strong></p>
+<ul>
+<li>Typical: 30.8 A × 12 V = <strong>~370 W</strong> (with motor driver)
+or 28.0 A × 12 V = <strong>~336 W</strong> (with LED driver,
+production)</li>
+<li>Peak: 55.6 A × 12 V = <strong>~667 W</strong> (with motor driver) or
+48.1 A × 12 V = <strong>~577 W</strong> (with LED driver,
+production)</li>
+</ul>
+<h3 id="43-power-supply-capacity-analysis">4.3 Power Supply Capacity
+Analysis</h3>
+<p><strong>PSU Specifications:</strong></p>
+<ul>
+<li>Voltage: 0–24 V adjustable (set to 12 V)</li>
+<li>Current: 0.5–62.5 A adjustable</li>
+<li>Maximum power at 12 V: 12 V × 62.5 A = <strong>750 W</strong></li>
+</ul>
+<p><strong>Capacity Assessment:</strong></p>
+<ul>
+<li>Typical load: 30.8 A / 62.5 A = <strong>49% of PSU capacity</strong>
+(with motor driver) or 28.0 A / 62.5 A = <strong>45% of PSU
+capacity</strong> (with LED driver, production)</li>
+<li>Peak load: 55.6 A / 62.5 A = <strong>89% of PSU capacity</strong>
+(with motor driver) or 48.1 A / 62.5 A = <strong>77% of PSU
+capacity</strong> (with LED driver, production)</li>
+<li><strong>PSU Headroom: 6.9 A remaining (11% capacity) at peak load
+with motor driver, or 14.4 A remaining (23% capacity) with LED
+driver</strong></li>
+</ul>
+<p><strong>Master Fuse Analysis:</strong></p>
+<ul>
+<li>Master fuse: 60–70 A MIDI fuse (upgraded from 40 A)</li>
+<li>Typical load: 30.8 A / 60 A = <strong>51% of fuse capacity</strong>
+(with 60 A fuse, motor driver) or 28.0 A / 60 A = <strong>47% of fuse
+capacity</strong> (with 60 A fuse, LED driver)</li>
+<li>Peak load: 55.6 A / 60 A = <strong>93% of fuse capacity</strong>
+(with 60 A fuse, motor driver, at limit) or 48.1 A / 60 A = <strong>80%
+of fuse capacity</strong> (with 60 A fuse, LED driver)</li>
+<li>Peak load: 55.6 A / 70 A = <strong>79% of fuse capacity</strong>
+(with 70 A fuse, motor driver, provides headroom) or 48.1 A / 70 A =
+<strong>69% of fuse capacity</strong> (with 70 A fuse, LED driver)</li>
+<li><strong>Note:</strong> Use 60 A MIDI fuse for typical operation, or
+70 A MIDI fuse for additional headroom during peak loads. The 40 A fuse
+will trip during peak loads and must be upgraded.</li>
+</ul>
+<p><strong>Recommendations:</strong></p>
+<ul>
+<li>Set PSU current limit to 60–65 A for safety margin (peak load is
+55.6 A with motor driver, 48.1 A with LED driver)</li>
+<li>Master fuse upgraded to 60–70 A MIDI fuse to accommodate peak loads
+(~56 A with motor driver, ~48 A with LED driver)</li>
+<li>All branch fuses are appropriately sized for their loads</li>
+<li>System operates at 89% of PSU capacity at peak load with motor
+driver (77% with LED driver) - monitor for thermal issues and ensure
+adequate ventilation</li>
+<li>Consider monitoring actual peak loads - if consistently below 50 A,
+a 60 A fuse is appropriate; if approaching 60 A, use 70 A fuse</li>
+</ul>
+<h2 id="5-wire-gauges-and-fuse-ratings">5. Wire Gauges and Fuse
+Ratings</h2>
+<table>
+<thead>
+<tr>
+<th>Branch</th>
+<th>Voltage</th>
+<th>Fuse</th>
+<th>Suggested Wire Gauge</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Master PSU Output</td>
+<td>12 V</td>
+<td>60–70 A MIDI (58V DC rated)</td>
+<td>10 AWG</td>
+<td>MIDI fuse holder, protects entire bus (upgraded from 40A due to peak
+load)</td>
+</tr>
+<tr>
+<td>ArmPi Mini UPS 3S</td>
+<td>12 V</td>
+<td>5 A</td>
+<td>16 AWG</td>
+<td>UPS 3S input (RPi5 + cameras)</td>
+</tr>
+<tr>
+<td>ArmPi Mini STM32</td>
+<td>12 V</td>
+<td>5 A</td>
+<td>16 AWG</td>
+<td>STM32 + 6DOF arm</td>
+</tr>
+<tr>
+<td>ArmPi FPV UPS 3S</td>
+<td>12 V</td>
+<td>5 A</td>
+<td>16 AWG</td>
+<td>UPS 3S input (RPi5 + cameras)</td>
+</tr>
+<tr>
+<td>ArmPi FPV STM32</td>
+<td>12 V</td>
+<td>5 A</td>
+<td>16 AWG</td>
+<td>STM32 + 6DOF arm</td>
+</tr>
+<tr>
+<td>ArmPi Ultra (main PSU)</td>
+<td>12 V</td>
+<td>15 A</td>
+<td>14 AWG</td>
+<td>Main PSU line with XT30 connector → power switch → splits to DROK
+converter (powers STM32/Pi5 and Motor Driver) + LED Driver</td>
+</tr>
+<tr>
+<td>ArmPi Ultra (UPS battery)</td>
+<td>13.8 V</td>
+<td>15 A</td>
+<td>14 AWG</td>
+<td>UPS CH1 output (13.8V @ 5.0A) with XT30 connector → power switch
+(backup power source)</td>
+</tr>
+<tr>
+<td>Yahboom Li-Po/BMS</td>
+<td>12 V</td>
+<td>7.5 A</td>
+<td>16 AWG</td>
+<td>Battery charging + system</td>
+</tr>
+<tr>
+<td>Yahboom 19 V (UPS-C)</td>
+<td>19 V out (12 V in)</td>
+<td>10 A on 12 V side</td>
+<td>10–12 AWG</td>
+<td>DROK module input fuse (Jetson + all peripherals)</td>
+</tr>
+<tr>
+<td>Displays (USB-C)</td>
+<td>5 V out (12 V in)</td>
+<td>10 A on 12 V side</td>
+<td>12 AWG</td>
+<td>XWST 20A buck converter input (powers all 3 displays + switch)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-bill-of-materials-summary">6. Bill of Materials (Summary)</h2>
+<h3 id="core-power-components">Core Power Components</h3>
+<ul>
+<li>1 × HONGPOE MS-1500 adjustable 12 V SMPS (1500 W, 0–24V,
+0.5–62.5A)</li>
+<li>1 × MIDI fuse holder (ANS style, rated 30–200A, splash-proof, flame
+retardant)</li>
+<li>2 × 60–70 A MIDI fuses (rated 60–70A / 58V DC, high temperature
+resistant, tin-plated zinc terminals, includes 1 spare) -
+<strong>Upgraded from 40A due to peak load requirements</strong></li>
+<li>1 × Kohree 12-way marine ATC fuse block with negative bus</li>
+</ul>
+<h3 id="robot-specific-components">Robot-Specific Components</h3>
+<p><strong>ArmPi Mini:</strong></p>
+<ul>
+<li>1 × Waveshare UPS 3S (12 V input)</li>
+<li>1 × 5 A ATC fuse for UPS 3S branch in Kohree block</li>
+<li>1 × 5 A ATC fuse for STM32 branch in Kohree block (6DOF arm)</li>
+<li>16 AWG wiring for UPS branch, 16 AWG for STM32 branch</li>
+</ul>
+<p><strong>ArmPi FPV:</strong></p>
+<ul>
+<li>1 × Waveshare UPS 3S (12 V input)</li>
+<li>1 × 5 A ATC fuse for UPS 3S branch in Kohree block</li>
+<li>1 × 5 A ATC fuse for STM32 branch in Kohree block (6DOF arm)</li>
+<li>16 AWG wiring for UPS branch, 16 AWG for STM32 branch</li>
+</ul>
+<p><strong>ArmPi Ultra:</strong></p>
+<ul>
+<li>1 × PSC-100-12 UPS/Charge Function Switching Power Supply (13.8V @
+5.0A CH1 on AC / 12V on battery, 13.8V @ 2A CH2, 100W total)</li>
+<li>1 × <strong>Noctua NF-A6x25 FLX</strong> 60×60×25 mm 12 V 3-pin
+top-mount cooling fan for PSC-100-12 PSU (silent, 19.3 dB max; ships
+with LNA/ULNA low-noise adapters; replaces the original Thermalright
+TL-B6B which was audibly noisy)</li>
+<li>1 × DROK DC Buck Converter (5.3-32V input, 9V 12A output,
+82×52×32mm, LCD display, 95% efficiency)</li>
+<li>1 × WINSINN 20mm blower fan for DROK converter heatsink</li>
+<li>1 × HiWonder 4-Channel Encoder Motor Driver (5–15V input, 8A
+continuous, 10A peak, powered from 9V) [Development/Testing only]</li>
+<li>1 × Lumi Wand v2.0 LED driver assembly (PCA9685 + 12× PT4115 / 3W
+700 mA buck modules + 3× RGBW LED stars + CNC heatsink + PETG handle,
+<strong>~33 W peak</strong> (<a
+href="../Lumi_Wand_Integration.html#53-power-draw-summary"><code>Lumi_Wand_Integration.md</code>
+§5.3</a>, measured 2026-09-01) — <em>read "~84 W" until 2026-09-01</em>;
+10.6 V via DROK-bumped rail) [Production]</li>
+<li>1 × Lumi Wand v2.0 head (3× RGBW LED stars + lenses, gripper holds
+the wand handle) [Production]</li>
+<li>1 × 15 A ATC fuse for combined branch in Kohree block</li>
+<li>1 × Master Power Switch (DC, rated for 15A minimum, with single XT30
+Female input connector)</li>
+<li>1 × Power Distribution Block (for splitting single 12V feed to three
+branches: converter, motor driver, LED driver)</li>
+<li>2 × XT30 Male connectors (one for main PSU 12V line, one for UPS CH1
+12V output)</li>
+<li>1 × XT30 Female connector (on Master Power Switch input - accepts
+either main PSU OR UPS battery, but not both simultaneously)</li>
+<li>1 × MR30 Male 3-Pin connector (for AC power line to UPS)</li>
+<li>1 × MR30 Female 3-Pin connector (on UPS AC input, or included with
+UPS)</li>
+<li>14 AWG wiring from fuse block to XT30 connector, then to power
+switch</li>
+<li>14 AWG wiring from UPS CH1 to XT30 connector, then to power
+switch</li>
+<li>14 AWG AC wiring (120V) for UPS AC input connection</li>
+<li>20–22 AWG wiring for LED power lines (LED+ and LED- to MOSFET
+drains)</li>
+<li>30 AWG wiring for PWM gate signals (through 100Ω resistors)</li>
+</ul>
+<p><strong>ROSMASTER X3 Plus (Yahboom):</strong></p>
+<ul>
+<li>1 × dedicated 12 V branch for Li-Po/BMS (7.5 A fuse)</li>
+<li>1 × DROK 6–30 V → 0.5–30 V buck-boost converter (configured to 19 V
+output)</li>
+<li>1 × 15 A fuse on DROK input from 12 V bus (Jetson + cameras + arm +
+lidar + chassis)</li>
+<li>1 × Waveshare UPS-Power-Module-(C) for Jetson</li>
+<li>Wiring: 16 AWG for Li-Po/BMS branch, 10–12 AWG for DROK input
+branch</li>
+</ul>
+<p><strong>USB-C Touch Displays (3× AOC 16T15) + Ethernet
+Switch:</strong></p>
+<ul>
+<li>1 × XWST DC-DC 12V/24V to 5V Buck Converter (20 A output, 100 W
+capacity)</li>
+<li>1 × 10 A ATC fuse in Kohree block for converter input</li>
+<li>3 × USB-C pigtails (90° or straight head, 2-pin bare wire ends, 22
+AWG)</li>
+<li>1 × NETGEAR GS305 5-Port Gigabit Ethernet Unmanaged Switch (5 V, 0.7
+A)</li>
+<li>12 AWG wiring from fuse block to buck converter (positive and
+negative)</li>
+<li>Converter output terminals connect to USB-C pigtail wires (red to
+5V+, black to GND) and switch power input (barrel connector adapter or
+USB-C adapter, depending on switch model)</li>
+</ul>
+<h3 id="wiring--connectors">Wiring &amp; Connectors</h3>
+<ul>
+<li>Fermerry 12 AWG silicone wire kit (various colors for positive runs)
+- for main distribution</li>
+<li>Fermerry 16 AWG silicone wire kit (various colors for positive runs)
+- for robot drops (ArmPi Mini, ArmPi FPV, Yahboom)</li>
+<li>Fermerry 14 AWG silicone wire kit (various colors for positive runs)
+- for ArmPi Ultra drop only</li>
+<li>Matching 16 AWG black wire for returns to negative bus from robots
+(except ArmPi Ultra)</li>
+<li>Matching 14 AWG black wire for returns to negative bus from ArmPi
+Ultra</li>
+<li>Barrel connectors for all robots (see connector specifications in
+each robot section)</li>
+<li>XT30 connectors (2× male, 1× female) for ArmPi Ultra 12V power
+connections (main PSU and UPS battery inputs - only one connected to
+power switch at a time)</li>
+<li>MR30 3-pin connector pair (male/female) for ArmPi Ultra UPS AC power
+connection (110V/120V AC)</li>
+<li>USB-C pigtails (2-pin bare wire ends) for display connections</li>
+<li>Assorted crimp terminals for the Kohree fuse block and PSU</li>
+<li>Heat shrink tubing and cable management accessories</li>
+<li>Wire strippers and crimping tools for USB-C pigtail connections</li>
+</ul>
+<h2 id="7-final-summary-what-changed">7. Final Summary (What
+Changed)</h2>
+<p>The original three-robot bench power rail design used a single 12 V
+1500 W PSU feeding a Kohree 12-way fuse block to supply:</p>
+<ul>
+<li>ArmPi Mini via 12 V → UPS 3S</li>
+<li>ArmPi FPV via 12 V → UPS 3S</li>
+<li>Yahboom ROSMASTER X3 Plus via a 12 V → 19 V boost path into the
+UPS-C → Jetson Orin Nano</li>
+</ul>
+<p><strong>Updates made:</strong></p>
+<ol type="1">
+<li><p><strong>Yahboom ROSMASTER X3 Plus:</strong> Added a dedicated 12
+V feed for its internal Li-Po/BMS system:</p>
+<ul>
+<li><strong>New:</strong> 12 V → 7.5 A fused branch → Yahboom Li-Po/BMS
+input</li>
+<li><strong>Existing:</strong> 12 V → 10 A fused branch → DROK → 19 V →
+UPS-C → Jetson Orin Nano</li>
+</ul></li>
+<li><p><strong>ArmPi Mini and ArmPi FPV:</strong> Updated to provide
+separate 12 V feeds for UPS and STM32:</p>
+<ul>
+<li><strong>UPS Branch:</strong> 12 V → 5 A fused branch → Waveshare UPS
+3S → Raspberry Pi 5</li>
+<li><strong>STM32 Branch:</strong> 12 V → 5 A fused branch → Hiwonder
+STM32 expansion board</li>
+</ul></li>
+<li><p><strong>ArmPi Ultra:</strong> Added power distribution for ArmPi
+Ultra robot with UPS backup:</p>
+<ul>
+<li><strong>Input 1 - Main PSU:</strong> 12 V → 15 A fused branch → 14
+AWG drop → XT30 Male → XT30 Female (on Master Power Switch) - connected
+when AC mains available</li>
+<li><strong>Input 2 - UPS Battery:</strong> UPS CH1 (12V @ 13.5A) → 14
+AWG → XT30 Male → XT30 Female (on Master Power Switch) - connected when
+AC mains fails</li>
+<li><strong>Note:</strong> Only ONE input is connected to the power
+switch at any given time (either main PSU OR UPS battery, not both)</li>
+<li><strong>AC Power to UPS:</strong> 120V AC (14 AWG) → MR30 Male 3-Pin
+→ MR30 Female 3-Pin (on UPS AC input)</li>
+<li><strong>After Switch:</strong> Master Power Switch (DC) → Power
+Distribution Block → Splits to three branches:
+<ul>
+<li><strong>Branch 1:</strong> DROK buck converter (9V 12A, with 20mm
+cooling fan) → HiWonder STM32 → Raspberry Pi 5, and 4-Channel Encoder
+Motor Driver (9V) → Mecanum Chassis Motors</li>
+<li><strong>Branch 2:</strong> MOSFET LED Driver Board (IRFZ44N) →
+Gripper LED Array / Power LED (held in gripper setup) (Production)</li>
+</ul></li>
+<li>Motor driver and LED driver typically don't run simultaneously
+(motor driver for dev/test, LED driver for production)</li>
+<li>Master power switch provides convenient on/off control and seamless
+switching between main PSU and UPS battery backup</li>
+</ul></li>
+<li><p><strong>USB-C Touch Displays + Ethernet Switch:</strong> Added
+power distribution for three AOC 16T15 portable monitors and NETGEAR
+GS305 ethernet switch:</p>
+<ul>
+<li>Single XWST 20 A buck converter: 12 V → 10 A fused branch → Buck
+converter → 5 V output → 3× USB-C pigtails → All 3 displays + NETGEAR
+GS305 switch</li>
+<li>All displays and switch powered from one converter (6.7 A total
+load: 6 A for displays + 0.7 A for switch, well within 20 A
+capacity)</li>
+<li>USB-C pigtails with bare wire ends connect directly to converter
+output terminals</li>
+<li>NETGEAR GS305 switch connects to converter 5 V output via barrel
+connector adapter or USB-C adapter</li>
+</ul></li>
+</ol>
+<p>Each robot has independent power paths for better isolation and
+reliability. All three displays and the ethernet switch share a single
+buck converter, which is sufficient given the 20 A capacity. The system
+uses 8 of the 12 available fuse positions in the Kohree block.
+<strong>Note:</strong> Master fuse upgraded from 40 A to 60–70 A MIDI
+fuse to accommodate peak loads (~59 A).</p></body></html>

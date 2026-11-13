@@ -1,0 +1,443 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CNC_BasePlate_x2</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="lumiai-base-plate-x2--bench-prep-halo-class-base-plates-for-nova--one-more">LumiAI
+base plate x2 — bench prep (Halo-class base plates for Nova + one
+more)</h1>
+<p><strong>Program:</strong> <a
+href="../cad/exports/cnc/LumiAI_Base_Plate_no_carriage.nc"><code>LumiAI_Base_Plate_no_carriage.nc</code></a>
+(3.00 mm, 1060-type sheet, 14 holes) for plate 1. Plate 2 gets a
+skip-list build of the same part once the operator has checked the sheet
+(below). The default <code>LumiAI_Base_Plate.nc</code> keeps all 22
+holes for the ceiling version, which always mounts on the rail; this job
+is the no-rail Ultra/mecanum one-off. <strong>Generator:</strong> <a
+href="../cad/freecad/gen_baseplate_nc.py"><code>cad/freecad/gen_baseplate_nc.py</code></a>,
+geometry from <code>lumi_base_plate.py</code>.
+<strong>Template:</strong> <a
+href="../cad/exports/cnc/baseplate_template_1to1.svg"><code>baseplate_template_1to1.svg</code></a>,
+made by <a
+href="../cad/freecad/gen_baseplate_template.py"><code>gen_baseplate_template.py</code></a>.
+<strong>Per-part mechanics:</strong> <a
+href="CNC_Machining_Guide.html"><code>CNC_Machining_Guide.md</code>
+§6</a>. <strong>Rules:</strong> <a
+href="rules/cnc.html"><code>rules/cnc.md</code></a>.</p>
+<p>No cut until the operator gives the go.</p>
+<h2 id="order-of-work-operator">Order of work (operator)</h2>
+<ol type="1">
+<li>Camera plates and heatsink pucks first (<a
+href="CNC_Batch_CameraPlates_HeatsinkPucks.html"><code>CNC_Batch_CameraPlates_HeatsinkPucks.md</code></a>).</li>
+<li>Base plates last, after a flute inspection.</li>
+</ol>
+<p>The single-SHARPRO protection rules apply across the whole day. The
+spare is undecided (Purchasing has 2 in the cart, no buy yet): until it
+is bought, inspect the flute between every plate and stop at the first
+stringer or stuck chip.</p>
+<h2 id="the-two-sheets-operator-2026-11-02">The two sheets (operator,
+2026-11-02)</h2>
+<p>Both are the older, softer aluminium (1060-type, not 6061); the
+operator accepts that for dev units. 3.00 mm, so the 3.00 mm NCs are
+right (<code>LumiAI_Base_Plate_no_carriage.nc</code> for this job).</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Sheet</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Plate 1</td>
+<td>New 200 × 300 × 3 mm, 1060-type</td>
+<td>Full program, all 14 holes drilled.</td>
+</tr>
+<tr>
+<td>Plate 2</td>
+<td>200 × 300 × 3 mm, taken off the mecanum base and clamped to the
+machine bed. It is the Ultra's sheet: it may have no battery-strap
+holes, and its fence-post and PSU holes may be in the wrong place. It
+carries an engraving.</td>
+<td>The hole set must be checked against the sheet before the drill
+pass. Existing holes that are right are skipped; the rest are
+drilled.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>1060 handling (both plates).</strong> Soft and gummy: it
+loads and welds to the flute. Use cutting fluid (WD-40 mist) or an air
+blast on the cut, watch for chip packing in the slot and for aluminium
+building up on the single SHARPRO flute, and de-burr every edge and hole
+afterwards. Stop at the first stringer or stuck chip.</p>
+<h2 id="plate-2-check-the-hole-set-before-the-drill-pass">Plate 2: check
+the hole set before the drill pass</h2>
+<p>The drill is a Ø3.175 twist drill. A drill that lands
+<strong>partly</strong> on an existing hole walks into the wall and
+breaks. It is safe only when it lands fully inside an existing hole
+(centre within 0.4 mm of that hole's centre for a Ø4.0, 0.65 mm for a
+Ø4.5), or on solid sheet.</p>
+<p><strong>What to do.</strong> Lay the 1:1 template on the sheet and
+look at each of the 14 target holes. The template is in the machine
+frame (mount face up, origin = stock centre, X right, Y up): print it at
+100 % on A3 with no fit-to-page, check the 100 mm bar with a ruler, put
+the sheet's min-X / min-Y corner on the corner mark, and read the holes
+through the paper. Each target has a green ring (r 0.25) and a dashed
+ring (r 5.0). Alternative with calipers, for a 200 × 300 sheet measured
+from the min-X and min-Y edges (use W/2 and H/2 if the real sheet
+differs):</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Final Ø</th>
+<th>X from min-X edge</th>
+<th>Y from min-Y edge</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>POST.1</td>
+<td>4.5</td>
+<td>168.53</td>
+<td>94.85</td>
+</tr>
+<tr>
+<td>POST.2</td>
+<td>4.5</td>
+<td>168.35</td>
+<td>58.69</td>
+</tr>
+<tr>
+<td>POST.3</td>
+<td>4.5</td>
+<td>31.28</td>
+<td>58.60</td>
+</tr>
+<tr>
+<td>POST.4</td>
+<td>4.5</td>
+<td>31.55</td>
+<td>94.56</td>
+</tr>
+<tr>
+<td>POST.5</td>
+<td>4.5</td>
+<td>168.89</td>
+<td>254.02</td>
+</tr>
+<tr>
+<td>POST.6</td>
+<td>4.5</td>
+<td>30.75</td>
+<td>253.85</td>
+</tr>
+<tr>
+<td>POST.7</td>
+<td>4.5</td>
+<td>143.21</td>
+<td>28.74</td>
+</tr>
+<tr>
+<td>POST.8</td>
+<td>4.5</td>
+<td>56.50</td>
+<td>29.01</td>
+</tr>
+<tr>
+<td>PSU.1</td>
+<td>4.0</td>
+<td>57.83</td>
+<td>175.04</td>
+</tr>
+<tr>
+<td>PSU.2</td>
+<td>4.0</td>
+<td>140.08</td>
+<td>51.04</td>
+</tr>
+<tr>
+<td>STRAP.L.hi</td>
+<td>4.5</td>
+<td>158.44</td>
+<td>258.96</td>
+</tr>
+<tr>
+<td>STRAP.L.lo</td>
+<td>4.5</td>
+<td>156.19</td>
+<td>172.09</td>
+</tr>
+<tr>
+<td>STRAP.R.hi</td>
+<td>4.5</td>
+<td>45.70</td>
+<td>258.59</td>
+</tr>
+<tr>
+<td>STRAP.R.lo</td>
+<td>4.5</td>
+<td>45.20</td>
+<td>172.59</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Classify every target:</strong></p>
+<table>
+<thead>
+<tr>
+<th>What is on the sheet</th>
+<th>Rule</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>An existing hole centred within <strong>0.25 mm</strong> of the
+target</td>
+<td>Right</td>
+<td>Put its ID in the skip list.</td>
+</tr>
+<tr>
+<td>No existing hole centre within <strong>5.0 mm</strong> of the
+target</td>
+<td>Missing</td>
+<td>Drill it (leave it out of the skip list).</td>
+</tr>
+<tr>
+<td>An existing hole centre <strong>between 0.25 and 5.0 mm</strong>
+from the target</td>
+<td>Conflict</td>
+<td>Do not drill it: a pilot there lands partly on the old hole. The
+operator decides (accept the old hole where it is, or another method).
+Tell CNC.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why 5.0 mm.</strong> The finished new hole is hand-drilled to
+Ø4.5 (Ø4.0 for PSU) and an old hole may be Ø4.5, so the web between them
+is <code>d − (D_new + D_old)/2</code>, and a 0.5 mm web needs d ≥ 5.0
+mm. Any old hole whose centre is more than 5.0 mm from every target is a
+harmless unused hole.</p>
+<p><strong>On a sheet laid out like the original</strong>, nothing falls
+inside the 5.0 mm rings: the closest target pairs are STRAP.L.hi to
+POST.5 at 11.56 mm, PSU.1 to STRAP.R.lo at 12.87, STRAP.R.hi to POST.6
+at 15.68, PSU.2 to POST.7 at 22.52. If the sheet still has the old
+8-hole carriage set, the closest to a target are POST.1 to CARRIAGE.L.2
+at 10.04, POST.2 to CARRIAGE.L.1 at 12.10 and PSU.2 to CARRIAGE.L.3 at
+16.54, all outside 5.0. The Ultra's own pattern is unknown, so the check
+above is what decides it. The generator's 0.5 mm web guard only compares
+each hole with the outline; it cannot see what is on the sheet.</p>
+<p><strong>Generate the plate 2 NC from the skip list.</strong> The
+operator says which IDs are right; CNC runs</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">BASEPLATE_SKIP</span><span class="op">=</span><span class="st">&quot;CARRIAGE,POST.1,PSU.2&quot;</span> <span class="ex">FreeCAD</span> <span class="at">-c</span> <span class="st">&quot;exec(open(&#39;cad/freecad/gen_baseplate_nc.py&#39;).read()); import sys; sys.exit(0)&quot;</span></span></code></pre></div>
+<p>IDs: POST.1 to POST.8, PSU.1, PSU.2, STRAP.L.lo, STRAP.L.hi,
+STRAP.R.lo, STRAP.R.hi, and CARRIAGE for all eight carriage holes
+(always include it for this job). It writes
+<code>cad/exports/cnc/LumiAI_Base_Plate_plate2.nc</code> and leaves the
+canonical NCs alone. An unknown ID stops the run. The NC lists the
+skipped holes in its header and M0 #0 banner and drills only the
+others.</p>
+<p><strong>Engraving and zero.</strong> Zero on the sheet's corner like
+the other sheet (measure W × H; machine zero = min-X / min-Y corner +
+(W/2, H/2)), same orientation as the original cut: mount face UP,
+engraving face up, long axis along machine Y. The engrave pass runs over
+the existing letters: an air cut if the zero is exact, a recut of the
+letter edges if it is off. Look before Cycle Start.</p>
+<h2 id="stock-fit-measured-from-the-nc">Stock fit (measured from the
+NC)</h2>
+<p>Cutter envelope per plate: <strong>158.32 × 279.78 mm</strong> (X
+±79.16, Y ±139.89 about the stock centre). All 14 drills sit inside
+it.</p>
+<table>
+<thead>
+<tr>
+<th>Sheet</th>
+<th>Margin along 300</th>
+<th>Margin along 200</th>
+<th>Plates per sheet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200 × 300 × 3.00 (1060)</td>
+<td>10.1 per end</td>
+<td>20.8 per side</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>Two plates need two sheets (2 × 158.32 = 316.6 mm exceeds the 200
+width). Long Y along the sheet's long side. The NC banner says "200.6 ×
+302 × 3.000"; the origin is the stock centre, so only the size text
+differs from a 200 × 300 sheet.</p>
+<h2 id="tools">Tools</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Use</th>
+<th>Collet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T1 Milwaukee 1/8" cobalt twist drill</td>
+<td>up to 14 holes through (2 PSU, 4 STRAP, 8 POST; no carriage holes),
+G83 Q1.0, F60, S12000, Z−4.00</td>
+<td>1/8" OZ8</td>
+</tr>
+<tr>
+<td>T2 SHARPRO 1/8" O-flute</td>
+<td>engrave 6,399 mm + contour 4,902 mm = <strong>~11.3 m of XY path per
+plate</strong></td>
+<td>1/4" OZ8</td>
+</tr>
+</tbody>
+</table>
+<p>Off-machine hand-drill after the cut: Ø4.0 × 2 (PSU), Ø4.5 × 12 (4
+strap + 8 post), for the holes this run drilled. The 8 MGN15H carriage
+holes are not drilled in this job (the model keeps them for the ceiling
+version).</p>
+<p><strong>SHARPRO budget:</strong> one bit, no spare. Two plates are
+~22.6 m before the camera plates and pucks, in a gummy alloy. Inspect
+the flute for welded aluminium after every plate.</p>
+<h3
+id="dreanique-dsa1f-d31-l08-3-ordered-2026-11-03-on-aliexpress-526-each-en-route-unproven">Dreanique
+DSA1F-D3.1-L08 (3 ordered 2026-11-03 on AliExpress, $5.26 each, en
+route; unproven)</h3>
+<p>Single-flute solid carbide, 1/8" shank. Not an O-flute. From the
+listing drawing (operator screenshot): cut length 8 mm, overall length
+38.1 mm, shank 3.175 mm, <strong>cutting diameter about 3.1 mm</strong>
+(the "D3.1" in the part number). Flute geometry (spiral up/down) and
+centre-cutting are not stated: read them off the bit before the first
+cut. Until centre-cutting is confirmed, do not use the NC's straight
+vertical plunge on this bit; use a ramped or pre-drilled entry (needs an
+NC variant, not generated yet).</p>
+<ul>
+<li><p><strong>Size:</strong> the NC compensates for 3.175 mm, so a 3.1
+mm cutter cuts the outline about 0.04 mm per side (0.075 mm total) large
+and the engrave lines about 0.075 mm narrower. Measure the real cutting
+diameter with calipers; the fence fit should tolerate it, check on the
+scrap run.</p></li>
+<li><p><strong>Collet:</strong> 1/8" OZ8, the same as T1. The T1 to T2
+swap is a bit swap, not a collet change, so the NC's "1/8" to 1/4""
+wording does not apply to this bit. Re-touch Z.</p></li>
+<li><p><strong>Stick-out:</strong> seat the shank deep; expose the cut
+depth (3.2 mm) plus clamp/screw-head clearance, about 12 mm, not the
+whole shank.</p></li>
+<li><p><strong>Baseline = the NC as written (SHARPRO values):</strong>
+S18000, lateral F600 (0.033 mm per rev), vertical plunge F100, OP3
+passes at 0.6 mm steps to Z-3.20, engrave 0.375 + 0.375. Same cutter
+diameter and flute count, so chip load per flute is unchanged.</p></li>
+<li><p><strong>First run, scrap 1060 3 mm only:</strong> lateral
+override to about 70 % (F400, 0.022 mm per rev), plunge at F60. Cutting
+fluid or air blast. Stop and look at the flute after the engrave and
+again after one full contour. Go to 100 % only if the flute is clean and
+the chips come out as chips, not strings.</p></li>
+<li><p><strong>Not before:</strong> it is not on a plate until it has
+passed the scrap run. The SHARPRO stays the plate tool until
+then.</p></li>
+</ul>
+<h2 id="what-holds-each-plate">What holds each plate</h2>
+<p>No tape or VHB. Clamps hold the sheet for the drill pass, then screws
+hold it from the pause on.</p>
+<ul>
+<li><strong>Drill pass (before the M0): edge toe clamps.</strong> The
+sheet is 200 wide and the cutter edge reaches |X| = 80.75, so there are
+about 19 mm of free sheet on each long side. Put the clamp toes no
+further in than |X| = 86 (5 mm clear of the cutter), three per long side
+at Y ≈ −110, 0 and +110. There is no room at the 300-long ends (8.5 mm
+free). Use low-profile clamps and jog the tool in the spindle over them
+to check the collet nut clears their tops.</li>
+<li><strong>At the M0 (after OP1): screws through four holes</strong>
+into fresh spoilboard: POST.5, POST.6, POST.7 and POST.8, which span the
+plate length. Machine coordinates: POST.5 X +68.886 Y +104.018, POST.6 X
+−69.254 Y +103.848, POST.7 X +43.206 Y −121.262, POST.8 X −43.504 Y
+−120.992. The NC's tool-change banner lists them. The clamps stay on, so
+the waste frame stays held after the contour frees it, and the screws
+carry the finished part.</li>
+<li><strong>Plate 1:</strong> the four holes are the Ø3.175 pilots OP1
+just drilled; M3 × 15 SHCS self-tapping into the spoilboard.</li>
+<li><strong>Plate 2: screw only through holes verified on the
+sheet.</strong> Each of POST.5 to POST.8 is either drilled by this run
+or listed in the skip list because the operator checked it against the
+template; the NC banner tags each one "drilled by OP1" or "existing,
+verified". Never put a screw through an existing hole that was not
+checked. A verified old hole may already be Ø4.5, which leaves a thin
+bearing ring under an M3 head: use an M3 screw with an OD 7 washer, or
+an M4 × 16 SHCS.</li>
+</ul>
+<h2 id="sequence-per-plate">Sequence per plate</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What</th>
+<th>Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PRE</td>
+<td>Sheet on the spoilboard MOUNT FACE UP, toe clamps on the long sides,
+cutting fluid or air blast ready. T1 in the 1/8" collet. X/Y zero =
+stock centre, Z zero = sheet top face.</td>
+<td>~10 min</td>
+</tr>
+<tr>
+<td>M0 #0</td>
+<td>Setup banner. Confirm the list, Cycle Start.</td>
+<td></td>
+</tr>
+<tr>
+<td>OP1</td>
+<td>T1 drills the holes (~2 min for 14).</td>
+<td>2 min</td>
+</tr>
+<tr>
+<td>M0</td>
+<td>Swap T1 to T2 (collet 1/8" to 1/4"), screw the plate down through
+POST.5–8, re-touch Z on T2.</td>
+<td>~10 min</td>
+</tr>
+<tr>
+<td>OP2</td>
+<td>Engrave "LumiAI" 0.75 mm.</td>
+<td></td>
+</tr>
+<tr>
+<td>OP3</td>
+<td>Fence outline cut completely through. Watch the last pass. Parks X0
+Y−170.</td>
+<td></td>
+</tr>
+<tr>
+<td>POST</td>
+<td>Remove the waste frame, unscrew, de-burr all edges and holes,
+hand-drill to spec Ø. Inspect the flute.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Feed-limited estimate from the NC, about 35 min of machine time per
+plate (OP1 ~2, engrave ~24 including plunges, contour ~9), excluding
+setup and the M0. SHARPRO is cutting about 33 of those minutes.</p>
+<h2 id="verifier">Verifier</h2>
+<p>Run the 8-check audit from <a
+href="CNC_CameraPlate_Single.html"><code>CNC_CameraPlate_Single.md</code></a>
+against the chosen file. Last pass: 2026-11-02, total 0 on the NC and on
+a skip build.</p>
+<p>Generator guards: the reference STEP's own plate solid fixes the
+STEP-to-model offset for the carriage holes (0.000 on the canonical
+STEP, so the full 22-hole NC is motion-identical to the 2026-10-20
+original; a shifted export is corrected, a different plate size stops
+the run), and every hole must sit inside the outline with ≥ 0.5 mm web.
+The STEP's PSU and strap circle annotations fall back to the model
+constants today.</p>
+<h2 id="still-open">Still open</h2>
+<ul>
+<li>Operator: for plate 2, which target holes are right (skip list),
+missing, or in conflict, from the template check.</li>
+<li>Spare SHARPRO: operator decided 2026-11-12 not to order one. There
+is one SHARPRO.</li>
+<li>Dreanique single-flute bits: en route, not arrived. Scrap run
+decides whether they ever touch a plate.</li>
+</ul></body></html>

@@ -1,0 +1,2144 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wand_and_Wand_Extension_Build_Plan</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="wand--wand-extension-build-plan">Wand &amp; Wand Extension Build
+Plan</h1>
+<blockquote>
+<p>✅ <strong>The live wand design, and this document is built to
+it.</strong> The wand has <strong>three identical rails — 6 strips × 20
+columns, 17 × 50 mm as cut — at 30/150/270°</strong>, a single
+<strong>6-pin inlet in the end plate</strong>, <strong>no sidewall
+connectors</strong> and <strong>no inter-rail jumpers</strong>. One net
+per strip means <strong>ZERO track cuts and ZERO link wires</strong>;
+the two M2 holes sit between strips 3 and 4. ✅ Source of truth: <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times"><strong>the
+rail layout</strong></a> · <a
+href="Lumi_Wand_Integration.html#-wand-topology--three-rails-one-inlet">topology</a>.</p>
+</blockquote>
+<p><strong>Created:</strong> 2026-08-18 (as the India Wand Build Plan) ·
+<strong>Last updated:</strong> 2026-09-23 · <strong>Location:</strong>
+<strong>USA bench</strong> · <strong>India window closed
+2026-09-14</strong> <strong>Goal:</strong> a working <strong>standalone
+Lumi Wand spotlight</strong> — wand + battery extension,
+<strong>ESP32-S3 as I²C master</strong> (bench = LiLyGO T-Display-S3
+non-touch; shell = Waveshare ESP32-S3-LCD-1.9 — see §0 and §5.0a). The
+same wand also runs as the <strong>Ultra SKU</strong> on the robot's
+power-bay tether; both SKUs share every printed part and every rail.</p>
+<blockquote>
+<h2 id="round_pushpin-where-the-build-stands--2026-09-23-usa-bench">📍
+Where the build stands — 2026-09-23, USA bench</h2>
+<p>⚠️ <strong>Renamed from <code>India_Wand_Build_Plan.md</code> on
+2026-09-23.</strong> The India window is closed and the trip-specific
+framing below (§2–§5, "Week 1–4", Aug–Sep dates) is now a
+<strong>historical record of what was completed there</strong> — read it
+for the as-built, not as a schedule. Everything still open is USA
+work.</p>
+<h3 id="what-changed-since-the-india-plan-was-written">What changed
+since the India plan was written</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Change</th>
+<th>Where</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Wand Ø64 → Ø70</strong></td>
+<td>v9.8. Threads <strong>M70×3 top / M72×3 bottom</strong>, heatsink
+Ø54, end-cap Ø78. Driven by four Ø26 cells not fitting the extension,
+and by the 3-pin <code>SIG OUT</code> body not clearing the inter-driver
+wall at Ø64.</td>
+<td><a
+href="Lumi_Wand_Integration.html#44-v9-threaded-modular-revision-landed-in-cad-2026-05-28">Integration
+§4.4</a></td>
+</tr>
+<tr>
+<td><strong>The head cap is TWO parts</strong></td>
+<td>v9.9. A <strong>head ring</strong> that threads on, and a
+<strong>lens plate</strong> it clamps down, keyed by 3 pegs. The
+one-piece cap rotated the lens assembly on the LED stars while
+tightening.</td>
+<td><a
+href="Lumi_Wand_Integration.html#91-head-ring--lens-plate-v99-active-3d-printed">Integration
+§9.1</a></td>
+</tr>
+<tr>
+<td><strong>No lens alignment tool</strong></td>
+<td>The printed alignment fixture is <strong>retired</strong> — the
+keyed lens plate does its job.</td>
+<td><a href="3D_Printing_Guide.html">3D Printing §3.1a</a></td>
+</tr>
+<tr>
+<td><strong>Solder-free cell cartridge</strong></td>
+<td>Keystone spring + button contacts in printed <strong>flat</strong>
+end caps, a <strong>solid Ø8 rod, M8×1.25 at the ends</strong>,
+<strong>2× M8 hex nuts</strong> that clamp the caps, plus <strong>2×
+clover spacers</strong> screwed to the caps that locate the cells. No
+iron on a cell, no spot welder.</td>
+<td><a href="Lumi_Wand_Flashlight_Variant.html">Flashlight
+§3.6.1.2</a></td>
+</tr>
+<tr>
+<td><strong>The wand has a LOGIC GROUND</strong></td>
+<td><code>GND-power</code> for the 12 drivers + fan,
+<code>GND-logic</code> for the PCA9685 + TMP102. ✅ <strong>The split is
+STRUCTURAL</strong> — they are separate strips (4 and 5), so there is no
+star-ground cut to get wrong. <code>PWR OUT</code> <strong>2-pin →
+3-pin</strong>; the +Y joint connector <strong>5-pin →
+6-pin</strong>.</td>
+<td><a
+href="Lumi_Wand_Integration.html#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand">Integration
+§10.5.2</a></td>
+</tr>
+<tr>
+<td><strong>India stopgap rails DROPPED</strong></td>
+<td>Boards thrown away 2026-09-23. <strong>No rail is built in
+India.</strong> All <strong>three</strong> rails are BusBoard ST1, built
+here.</td>
+<td><a
+href="#32-the-wand-power-rails--not-built-here-dropped-2026-09-23">§3.2</a></td>
+</tr>
+<tr>
+<td><strong>Crimp berg, not XH</strong></td>
+<td><strong>EVERY rail connector is berg.</strong> The tether lands on a
+6-pin in the end plate. Crimping to an all-XH rule builds <strong>17
+crimps that get cut off</strong>.</td>
+<td><a
+href="#31-crimp-batch--every-jst-xh-cable-in-one-session">§3.1</a></td>
+</tr>
+<tr>
+<td><strong>Ferrules are the plan of record</strong></td>
+<td>E0208 (26 AWG) / E0308 (24 AWG), crimp gate passed. <strong>One
+ferrule per terminal</strong> everywhere — 4× 26 AWG crimp into one and
+nothing needs four.</td>
+<td><a href="Electronics_Assembly_Guide.html#12-consumables">Assembly
+§1.2</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="what-is-still-open">What is still open</h3>
+<ol type="1">
+<li>🔴 <strong>Regenerate the CAD in real FreeCAD before
+slicing.</strong> The committed exports are <strong>STALE</strong> —
+<code>check_exports_fresh.py</code> says so, and as of 2026-09-23 it
+also watches the sidewall-window pin counts, which is what it missed
+when <code>PWR OUT</code> went 3-pin.</li>
+<li>🔴 <strong>Reprint the shell halves.</strong> Three separate
+features, none of which exists on anything printed earlier: the 3
+lens-plate key pegs and the sidewall windows — which in v9.11 are
+<strong>DELETED</strong>, so a half printed before 2026-10-01 has holes
+in its wall that must not be there — and the <strong>one-inch gripper
+ear</strong> (<code>EAR_TANG</code> 16 → <strong>25.4</strong>,
+2026-09-28) — the BigClaw had visible play closing on the 16 mm tab. A
+half printed before that has a tab that still fits the claw,
+<strong>badly</strong>, and nothing looks wrong until the wand rocks in
+the jaws. 2b. 🔴 <strong>Reprint the lens plate</strong> (only the
+plate). 2026-09-30 the head was re-cut for <strong>both</strong> optic
+families: <code>LENS_CUP_OD</code> 21.0 → <strong>22.0</strong>,
+<code>LENS_CUP_H</code> 12.82 → <strong>14.0</strong>, so the plate
+aperture and tower bore go Ø21.4/Ø21.3 → <strong>Ø22.5</strong>, the
+tower OD Ø24.0 → <strong>Ø24.9</strong> and the tower height 11.42 →
+<strong>12.6</strong>. One printed head then takes the uxcell (Ø22.0 ×
+14.0) <em>or</em> the AliExpress (Ø21.6 × 12.8, shimmed 1.2 mm). The
+exports are <strong>current</strong> — regenerated in real FreeCAD the
+same day, fit gate 161/0. The head ring and shell halves came out
+<strong>byte-identical</strong> to the 09-28 build, so they do not need
+reprinting for this. ✅ <strong>The OD is settled: Ø22.0 across the
+ribs</strong>, from the vendor drawing — its arrow spans the coarse
+axial flutes at their widest, which is exactly what the Ø22.5 bore has
+to clear. ⬜ <strong>The floor pip height is the one number still
+missing</strong> — the drawing dimensions only the outside silhouette
+and gives nothing for the two moulded pips on the inside floor. If they
+stand on the star's face rather than dropping into it, the installed
+stack is 14 + pip. ⚠️ <strong>Margin note, not an action:</strong> Ø22.5
+leaves 0.25 mm per side over a Ø22.0 nominal, so the moulding can run a
+couple of tenths <strong>small</strong> and still seat, but not
+<strong>large</strong>. <a
+href="Lumi_Wand_Integration.html#-two-optic-families-are-supported--uxcell-ø22--14-and-aliexpress-ø216--128">The
+table</a></li>
+<li>🔴 <strong>Build the THREE ST1 rails</strong> — <strong>no track
+cuts, no link wire.</strong> One net per strip; the star ground is
+structural now, not a cut.</li>
+<li>⚠️ <strong>§5.0a Waveshare firmware port</strong> — still unwritten,
+still gates the shell stage.</li>
+</ol>
+</blockquote>
+<p>Authoritative references (every task below links straight to its
+owning section):</p>
+<ul>
+<li><a href="Lumi_Wand_Integration.html">Lumi_Wand_Integration.md</a> —
+design source of truth: <a
+href="Lumi_Wand_Integration.html#44-v9-threaded-modular-revision-landed-in-cad-2026-05-28">§4.4
+current dimensions</a>, <a
+href="Lumi_Wand_Integration.html#62-driver-module-spec--keshy-3w-the-only-driver-in-the-wand">§6.2
+drivers</a>, <a href="Lumi_Wand_Integration.html#63-pca9685-breakout">§6.3
+PCA9685</a>, <a
+href="Lumi_Wand_Integration.html#73-bench-verify-on-first-sample">§7.3
+bench-verify</a>, <a
+href="Lumi_Wand_Integration.html#105-internal-power-rail-distribution-v9-active">§10.5
+rails</a>, <a href="Lumi_Wand_Integration.html#13-assembly-sequence">§13
+assembly</a></li>
+<li><a
+href="Lumi_Wand_Flashlight_Variant.html">Lumi_Wand_Flashlight_Variant.md</a>
+— extension: <a
+href="Lumi_Wand_Flashlight_Variant.html#33-rocker-switch-cutout-locked-2026-05-28">§3.3
+rocker</a>, <a
+href="Lumi_Wand_Flashlight_Variant.html#38-usb-c-pd-charge-port-locked-2026-05-28">§3.8
+PD charge port</a>, <a
+href="Lumi_Wand_Flashlight_Variant.html#50-received-electronics--2026-06-20">§5.0
+received electronics</a></li>
+<li><a
+href="Electronics_Assembly_Guide.html">Electronics_Assembly_Guide.md</a> +
+<a href="Power_Bay_Design.html">Power_Bay_Design.md</a> — bench ops: <a
+href="Electronics_Assembly_Guide.html#3-jst-xh-254-mm-crimping-the-fleet-standard-connector">§3
+crimping</a>, <a
+href="Lumi_Wand_Integration.html#20-tmp102-wand-local--address-mod--thermal-bond--wiring-bench">§7
+TMP102-wand</a>, <a
+href="Lumi_Wand_Integration.html#21-pca9685-wand--verify-defaults--cable-bench">§8
+PCA9685</a>, <a
+href="Electronics_Soldering_Guide.html#94--the-st1-rail--what-you-actually-build-v911-three-of-them-and-nothing-to-cut">§9.4
+rails</a>, <a
+href="Lumi_Wand_Integration.html#24-wand-fan--noctua-nf-a4x10-pwm-40--40--10-mm-connector-re-crimp-bench">§11.1
+wand fan</a>, <a
+href="Electronics_Assembly_Guide.html#12-led-mcpcb--wire-solder--heatsink-bonding">§12
+LED/epoxy</a>, <a
+href="Power_Bay_Design.html#16-power-up-verification-the-smoke-test-checklist">§16
+power-up</a></li>
+<li><a
+href="Electronics_Soldering_Guide.html">Electronics_Soldering_Guide.md</a>
+— heat + filler: <a
+href="Electronics_Soldering_Guide.html#4-technique-reference">§4
+techniques</a>, <a
+href="Electronics_Soldering_Guide.html#7-part-3-tmp102-wand--address-mod-0x48--0x49--header-solder">§7
+TMP102 mod</a>, <a
+href="Electronics_Soldering_Guide.html#9-part-5-internal-power-rail-pcbs-wand-v911--the-marathon-solder-session">§9
+rail marathon</a>, <a
+href="Electronics_Soldering_Guide.html#10-part-6-led-mcpcb--wire-to-pad-solder-technique-46">§10
+MCPCB</a></li>
+<li><a
+href="Electronics_BringUp_Plan.html">Electronics_BringUp_Plan.md</a> —
+gated bring-up: <a
+href="Electronics_BringUp_Plan.html#phase-4--tmp102-thermal-telemetry-bay--wand">Phase
+4</a>, <a
+href="Electronics_BringUp_Plan.html#phase-5--pca9685-wand--led-bring-up">Phase
+5</a> (adapted for ESP32 master)</li>
+<li><a
+href="../firmware/wand_extension/">../firmware/wand_extension/</a> —
+PlatformIO project, ESP32 firmware + web UI (compiles clean; bench rig
+in its <a href="../firmware/wand_extension/README.html">README</a>)</li>
+</ul>
+<p><strong>Driver rule (final):</strong> KESHY-family 3W 700 mA only.
+<strong>VEEKET/PT4115 is NOT USED — period</strong> (<a
+href="Lumi_Wand_Integration.html#62-driver-module-spec--keshy-3w-the-only-driver-in-the-wand">Integration
+§6.2</a>).</p>
+<hr />
+<blockquote>
+<h3 id="clock5-historical--written-2026-09-06-12-days-left-in-india">🕔
+HISTORICAL — written 2026-09-06, ~12 days left in India</h3>
+<p><em>Kept because it records which decisions were deferred and why.
+<strong>The trip is over; everything here is USA work now.</strong> The
+live status is the "Where the build stands" box at the top.</em></p>
+<p><strong>Operator directive.</strong> Everything planned from here
+targets the <strong>USA bench</strong>, not this trip. Consequences:</p>
+<ul>
+<li><strong>The India substitutions stop binding.</strong> 22 AWG
+standing in for 20 AWG, 26 for 28 — those were sourcing workarounds (<a
+href="#0-session-locked-decisions">§0</a>). ⚠️ <em>They are still what
+the wand currently being built uses, so do not retro-edit the as-built;
+they simply do not constrain anything new.</em></li>
+<li><strong>India lead times stop mattering.</strong> No more 3-week
+Robu / next-day Amazon India arithmetic. Anything not already ordered
+gets sourced in the USA.</li>
+<li><strong>Nothing new gets scoped into this trip.</strong> The
+remaining India scope is what is already listed below. New work — the <a
+href="Lumi_Wand_Integration.html#54-60-w-variant--concept-direction-2026-09-06">60
+W variant</a>, stripboard, custom PCBs, the parked CAD — is USA
+work.</li>
+<li><strong>Parked for the USA bench, explicitly:</strong> the sidewall
+cut-out re-cut (two windows, not one), the rail mounting-post collision,
+and the +Y cradle changes (5-pin housing length, and the cradle now has
+to take a perfboard). All three cut shell, so they belong in one CAD
+pass.</li>
+</ul>
+<p><strong>What still has to finish in India: the crimp batch.</strong>
+✅ <em>Star solders and the 12 PWM pull-downs both CLOSED
+2026-09-07.</em></p>
+<p>✅ <strong>Phase 1 is CLOSED (2026-09-06)</strong> — BTN2 sweep
+passed, every step green (<a
+href="Wand_Bench_Test_Phases.html#phase-1--minimal-breadboard-rig-1-star-4-drivers-pca9685-tmp102-heatsink">Bench
+Phases</a>).</p>
+<p><strong>The 4S pack has MOVED to the USA, and the method
+changed.</strong> Solder would not wet the cell caps by hand — diagnosed
+as thermal mass, not chemistry (<a
+href="Electronics_Soldering_Guide.html#163a--when-it-will-not-wet-at-all--bench-finding-2026-09-06">Soldering
+Guide §16.3a</a>). That finding killed soldering outright: the pack is
+now the <strong><a
+href="Lumi_Wand_Flashlight_Variant.html#-decided--user-replaceable-cells-in-a-contact-cartridge-proposed-2026-09-06-adopted-2026-09-11">solder-free
+cell cartridge</a></strong> — Keystone spring + button contacts in
+printed end caps, <strong>no iron on a cell, and no spot welder
+either.</strong> <strong>Nothing is blocked</strong>: the measured 2.4 A
+draw means the bench PSU runs all 12 channels, so every remaining phase
+proceeds without a pack. <strong>Do not attempt any cell soldering in
+India.</strong></p>
+</blockquote>
+<h2 id="0-session-locked-decisions">0. Session-locked decisions</h2>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Control platform</td>
+<td><strong>TWO-STAGE (locked 2026-08-28).</strong> <strong>Bench stage
+(weeks 1–3) = LiLyGO T-Display-S3, NON-TOUCH unit</strong> — the touch
+unit is <strong>FAULTY</strong> (panel never draws, board runs hot,
+suspected shorted panel/flex; labeled and retired). The non-touch unit
+is bench-proven: factory demo + our firmware both verified on it.
+Consequences: <strong>no CST816 on the bus</strong> — I²C is exclusively
+ours, and a bus scan shows <strong>only</strong> our devices; the
+touch-UI goal is parked for the whole India window. Display driver:
+<strong>LovyanGFX</strong> (TFT_eSPI never drew on this hardware).
+<strong>Shell stage (week 4) = Waveshare ESP32-S3-LCD-1.9 (With
+Touch)</strong> — in hand in India; it is the board that goes into the
+printed extension (SCREW mount, <code>LCD_TYPE="waveshare"</code>, <a
+href="Lumi_Wand_Flashlight_Variant.html#322-waveshare-esp32-s3-lcd-19-with-touch--full-spec-card">Flashlight
+§3.2.2</a>). ⚠️ <strong>Gated on the §5.0a firmware port</strong> — the
+Waveshare GPIO map differs from the LiLyGO and is not yet written.</td>
+</tr>
+<tr>
+<td>Firmware stack</td>
+<td><strong>PlatformIO + Arduino framework</strong> (ESP32 Arduino
+core), built from Cursor/VS Code. PlatformIO Core 6.1.19 + espressif32
+7.0.1 installed and building on the India laptop.</td>
+</tr>
+<tr>
+<td>v1 control surface</td>
+<td><strong>ESP32-hosted web app</strong> over the wand's own Wi-Fi AP
+(<code>LumiWand</code>/<code>spotlight</code>, 192.168.4.1); onboard
+<strong>touch UI now feasible</strong> as a v1.5 addition; native BLE
+app deferred.</td>
+</tr>
+<tr>
+<td>BMS</td>
+<td><strong>5 A Lisolec</strong> — ⚠️ <strong>corrected 2026-09-03, both
+units physically checked; there is no 10 A part in stock.</strong>
+Adequate: the pack draws <strong>~2.9 A</strong> all-12-full-white (2.58
+A LEDs + ~0.25 A buck + ~0.05 A fan), giving **~1.7× margin**. No PWM
+cap needed. Charge is capped at <strong>2 A</strong> by this variant
+(0.5 C on the 4 Ah pack ≈ 2 h). <a
+href="Lumi_Wand_Flashlight_Variant.html#36-lisolec-4s-lifepo4-bms--5-a-is-the-build-part-physically-verified-2026-09-01">Flashlight
+§3.6</a></td>
+</tr>
+<tr>
+<td>Master cutoff</td>
+<td>✅ <strong>KCD1 rockers DELIVERED 2026-08-21</strong> (R&amp;D
+3-pin, 6 A 250 V AC, LED-illuminated — lights fine at 12 V). Wiring:
+pack+ → LINE, LOAD → rail/buck, 3rd pin (lamp return) → pack−. Panel
+cutout 19.4 × 13 mm (<a
+href="Lumi_Wand_Flashlight_Variant.html#33-rocker-switch-cutout-locked-2026-05-28">Flashlight
+§3.3</a>).</td>
+</tr>
+<tr>
+<td>Breadboard rig</td>
+<td>✅ <strong>400-tie breadboard + jumper set DELIVERED
+2026-08-21</strong>; M/F/F-F jumpers + male headers already in kit.</td>
+</tr>
+<tr>
+<td>Soldering</td>
+<td>✅ <strong>Serplex 80 W/220 V digital iron (200–500 °C) DELIVERED
+2026-08-21</strong> — primary iron, plugs into hotel mains. Packed
+Yanecty (110 V) survived its brief 220 V exposure (element 50 Ω =
+healthy) but its triac is unverified — backup only, test on the 5 kW
+brick at the house. BESTEK 250 W travel converter runs the PSU and the
+300 W heat gun (short bursts, solo load) but cannot drive digital
+irons.</td>
+</tr>
+<tr>
+<td>Wire substitutions</td>
+<td>22 AWG in place of 20 (rail buses / power link), 26 AWG in place of
+28 (LED star bundle).</td>
+</tr>
+<tr>
+<td>Skipped consumables</td>
+<td>IPA, sandpaper, Kapton, super glue — managing without; WD-40/zip
+ties optional local buys.</td>
+</tr>
+<tr>
+<td>Cell interconnect</td>
+<td>✅ <strong>IN HAND 2026-09-01 — 10× 0.15 × 8 × 100 mm 99.96 % pure
+nickel strip, <a
+href="https://robu.in/product/battery-connection-welding-strip-with-99-96-pure-nickel-10pcs/">Robu.in</a></strong>
+(ordered 2026-08-28, arrived ahead of the ~Sep 2 ETA). <strong>1000 mm
+supplied vs ~160 mm needed — no longer a schedule risk, and the pack
+build is off the blocked list.</strong> The cells are bare flat-tops
+with no tabs and there is no spot welder here; strip makes the solder
+joint <em>on the cell</em> far shorter than bare wire does (<a
+href="Lumi_Wand_Flashlight_Variant.html#3612--how-the-cells-actually-get-connected--resolved-2026-09-01">Flashlight
+§3.6.1.2</a>). Quantity is generous: the pack needs ~160 mm (3 series
+links + 2 pack-lead tabs), so 1000 mm leaves **~8 strips spare for
+practice joints and rework**. A spring-contact 26700 holder is
+<strong>not a thing</strong> — don't spend the window looking.</td>
+</tr>
+<tr>
+<td>3D-printed fit</td>
+<td>✅ <strong>VALIDATED (~July 2026)</strong> for the M72×3
+ring/flange/end-cap threads and the printed parts as a stack. ⚠️
+<strong>One exception (2026-08-28): the +Y LCD facet.</strong> That
+validation predates the Waveshare board choice, so it proves nothing
+about the facet the Waveshare needs — <strong>§2.5 dry-fit in week
+1</strong> decides whether the extension halves get reprinted.</td>
+</tr>
+<tr>
+<td>Firmware status</td>
+<td>Written 2026-08-18; <strong>first hardware bring-up 2026-08-27 on
+the non-touch LiLyGO</strong> — LovyanGFX panel + fail-loud FAULT screen
+verified. <strong>I²C is SDA = GPIO 17 / SCL = GPIO 18</strong>
+(<code>src/config.h</code>; the pre-bench 18/17 assignment was a swap
+and is fixed — every wiring step in this plan uses the corrected pins).
+No mobile-app code exists — web UI ships embedded in firmware. The
+<strong>Waveshare port is not written</strong> (§5.0a).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-standing-constraints--one-way-gates">1. Standing constraints
+&amp; one-way gates</h2>
+<ol type="1">
+<li><strong><code>INVRT=0</code> is mandatory</strong> — ⚠️
+<strong>reversed 2026-09-01 by bench measurement.</strong> KESHY drivers
+are <strong>active-HIGH</strong>, not active-LOW: the PWM pin floats at
+5.28 V with the LED lit, and tying it to <code>IN−</code> extinguishes.
+<code>INVRT=1</code> would make a commanded 0 % drive the output HIGH =
+<strong>all 12 channels full-on</strong> — i.e. the old "INVRT=1 is
+mandatory" rule <em>caused</em> the failure it claimed to prevent.
+Firmware now <strong>clears</strong> the bit and read-back-verifies,
+halting loudly on failure, and sets <code>OUTDRV=0</code> (open-drain)
+so the drivers' own 5.28 V pull-up supplies the high level (<a
+href="Lumi_Wand_Integration.html#62a-pwm-polarity--bench-resolution-2026-09-01">Integration
+§6.2a</a>).</li>
+<li><strong>Bench-test before epoxy</strong> — the 8329TCM bonds (3 LED
+stars → heatsink, TMP102 → heatsink underside) are irreversible. Every
+star channel must pass a powered bench test and the TMP102 must answer
+at <strong>0x49</strong> on a bus scan <strong>before</strong> mixing
+epoxy. 24 h cure, no power during cure (<a
+href="Electronics_Assembly_Guide.html#124-heatsink-bonding--mg-8329tcm-thermal-epoxy">Assembly
+Guide §12.4</a>).</li>
+<li><strong>Full-bright ≤30 s</strong> without airflow + telemetry
+running.</li>
+<li><strong>Thermal policy</strong> (firmware-enforced): fan &lt;45
+°C→20 %, 45–65 °C linear→100 %; LED hard cutoff &gt;80 °C, restore
+&lt;70 °C; sensor loss → fan 100 %.</li>
+<li><strong>Bench PSU limit — ✅ NOT a limit (corrected 2026-09-01 by
+measurement).</strong> All 12 channels at full brightness draw
+<strong>~2.4 A / 33 W</strong> at 13.8 V, not the ~6.7 A this line used
+to claim, so the 0–30 V/5 A bench PSU runs <strong>the whole
+wand</strong> with 2.6 A of headroom. No sequential sweeps, no partial
+coverage, <strong>no dependency on the battery pack for electrical
+bring-up.</strong> The old figure came from multiplying LED-side current
+(12 × 700 mA) by the input rail voltage — linear-driver arithmetic on a
+buck (§2.1 step 4a; <a
+href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
+§5.3</a>).</li>
+</ol>
+<blockquote>
+<p><strong>Parallel-track restructure (2026-08-21):</strong> the
+extension is not a week-4 afterthought — <strong>it is the test
+instrument.</strong> The LiLyGO is the I²C master for every bring-up
+step. ⚠️ <strong>The second reason this box used to give — "the battery
+pack is the only supply that can run all 12 channels (~6.7 A &gt; bench
+PSU's 5 A)" — was WRONG and is withdrawn</strong> (measured 2026-09-01:
+all-12 is ~2.4 A, well inside the 5 A PSU). <strong>The restructure
+still stands on the first reason alone</strong> — the LiLyGO is the I²C
+master, so the extension electronics must come up in <strong>week 1, in
+parallel with wand bench work</strong>, and Week 4 stays mechanical
+integration + soak rather than first power. <strong>What changes is the
+scheduling risk:</strong> the battery pack is no longer on the critical
+path for any electrical gate, so a delay in the pack build no longer
+blocks LED bring-up. Gates that specified "on battery" for current
+reasons can run on the bench PSU; only genuinely pack-specific checks
+(BMS trip, buck brownout, runtime) still need it.</p>
+</blockquote>
+<h2
+id="2-india-record--week-1-aug-1824-bench-verification--firmware-first-light--extension-power-up">2.
+India record — Week 1 (Aug 18–24): bench verification + firmware first
+light + extension power-up</h2>
+<p><em>Everything this week is reversible bench work — nothing gets
+soldered into the wand.</em></p>
+<blockquote>
+<p><strong>The bench work in §2–§3 executes as a 3-phase incremental
+rig</strong> — breadboard first, then <strong>one rail</strong> replaces
+the power side, then <strong>the other two rails</strong> + the full
+cable set, so every connector is proven before the clamshell. v9.11
+builds three identical rails and the only JST-XH left in the wand is the
+6-pin end-plate inlet. Step-by-step wiring, crimp batches, and pass
+gates: <strong><a
+href="Wand_Bench_Test_Phases.html">Wand_Bench_Test_Phases.md</a></strong>.</p>
+</blockquote>
+<h3 id="21-driver-bench-verify--all-123-keshy-modules">2.1 Driver
+bench-verify — all 12+3 KESHY modules</h3>
+<p><em>Refs: <a
+href="Lumi_Wand_Integration.html#73-bench-verify-on-first-sample">Integration
+§7.3</a>, <a
+href="Lumi_Wand_Integration.html#step-2-module-bench-verification-12-modules">§13
+Step 2</a></em></p>
+<ol type="1">
+<li><p>Number each module 1–15 with a marker; make a checklist (module
+#, mA reading, pass/fail).</p></li>
+<li><p><strong>Loupe each board:</strong> IC silk =
+XL4001E/XL400-family; sense network = <code>1R00 ‖ 1R00 ‖ R400</code>.
+Anything else (e.g. <code>R500‖R400‖R400</code> ≈ 1 A drive-hard SKU, or
+a PT4115) → set aside, NOT a build part (<a
+href="Lumi_Wand_Integration.html#71-sourcing--driver-variants">Integration
+§7.1 off-spec table</a>).</p></li>
+<li><p><strong>Prerequisite — the BENCH-TEST STAR (do this before step
+4).</strong> Stars ship with bare pads, so nothing can be tested until
+one has wires on it. Pick <strong>one non-build star</strong> from the
+spares, solder pigtails to a single channel (or all four — see <a
+href="Electronics_Soldering_Guide.html#10-part-6-led-mcpcb--wire-to-pad-solder-technique-46">Soldering
+Guide §10</a>), and mark it <strong>"BENCH TEST — not for
+build."</strong> This one star is the load for all 15 driver checks; the
+three build stars stay pristine until Phase 1/Phase 3.
+Alligator-clipping bare pads is not a substitute — the pads are small,
+the contact is unreliable, and a slip shorts the die.</p>
+<ul>
+<li><strong>No heatsink needed</strong> for this check. Each module is
+on for a few seconds at a time. Rest the star on a scrap of aluminium or
+ceramic tile if you like, but do not leave it lit while you write down
+readings — kill the PSU between modules.</li>
+</ul></li>
+<li><p><strong>Current test per module:</strong> bench PSU 12–13.8 V →
+<strong><code>VIN+</code> pin 1 / <code>VIN−</code> pin 3</strong>
+<em>(the KESHY has <strong>no screw terminals</strong>, everything is on
+the 7-pin header:
+<code>1 VIN+ · 2 VIN+ · 3 VIN− · 4 VIN− · 5 PWM · 6 LED+ · 7 LED−</code>)</em>;
+<strong>one channel of the bench-test star</strong> on
+<strong><code>LED+</code> pin 6 / <code>LED−</code> pin 7</strong> — ⚠️
+<em>in that order; backwards reverse-biases the channel</em>;
+<strong>DMM in series on the 10 A range</strong>. Expect <strong>600–700
+mA</strong>.</p>
+<ul>
+<li><strong>"DMM in series"</strong> = the meter becomes part of the LED
+loop, not a probe across it. Break the circuit at one point (easiest:
+driver LED+ → meter red lead in the <strong>10 A jack</strong>, meter
+black lead → star +), so all the LED current flows <em>through</em> the
+meter. Dial to <strong>DC A / 10 A range</strong>. Never put a meter in
+the 10 A range <em>across</em> a supply — that's a dead short.</li>
+<li><strong>"PWM pin untouched"</strong> = leave it <strong>floating,
+nothing connected</strong>. With nothing on the pin the module's default
+state is <strong>LED ON at full current</strong> — that is the intended
+state for the current reading. <strong>Mechanism (measured 2026-09-01):
+the pin is held at 5.28 V by an internal pull-up, and the driver is
+active-HIGH, so floating = full brightness.</strong> <em>(A 2026-08-28
+edit deleted the original "an unconnected pin sits high internally" note
+as contradicting the active-LOW spec. The note was right and the spec
+was wrong — restored. See <a
+href="Lumi_Wand_Integration.html#62a-pwm-polarity--bench-resolution-2026-09-01">Integration
+§6.2a</a>.)</em> 4a. ### ✅ INPUT current measured 2026-09-01 — the 2.8×
+design error is confirmed and resolved</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Supply</th>
+<th>Input current</th>
+<th>Input power</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>12.3 V</td>
+<td><strong>0.22 A</strong></td>
+<td>2.71 W</td>
+</tr>
+<tr>
+<td>13.8 V</td>
+<td><strong>0.20 A</strong></td>
+<td>2.76 W</td>
+</tr>
+</tbody>
+</table>
+<p><em>(One KESHY, one white/blue channel, 0.7 A measured on the output
+side. Predicted 0.19 A — measured 0.20–0.22 A.)</em></p>
+<ul>
+<li><strong>Constant input power within 2 %</strong> across a 12 %
+supply change. That is the constant-current buck signature: output is
+regulated at 0.7 A × Vf, so input power is fixed and input current
+scales <em>inversely</em> with input voltage. Back-solves to Vf ≈
+3.1–3.3 V at 80–85 % efficiency.</li>
+<li><strong>12 channels at 13.8 V = 2.4 A / 33 W</strong>, not the
+documented 8 A / 84 W. <a
+href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
+§5.3</a> independently said 34 W and was right; the 84 W came from
+multiplying <strong>LED-side</strong> current (12 × 700 mA) by the
+<strong>input</strong> rail voltage — linear-driver arithmetic on a
+buck.</li>
+<li><strong>What this unblocks: the 5 A bench PSU can run all 12
+channels.</strong> <a href="#1-standing-constraints--one-way-gates">§1
+constraint 5</a>, <a href="#42-gated-bring-up--on-extension-power">Gate
+E</a>, <a
+href="Wand_Bench_Test_Phases.html#phase-3--the-other-two-rails--full-cable-set-everything-still-on-the-bench">Phase
+3 step 4</a> and <a
+href="Power_Bay_Design.html#164-led-full-bright-bench-check-variant-c--variant-b">Assembly
+§16.4</a> were all gated on a number ~3× too large. <strong>The battery
+pack comes off the critical path</strong> for most of bring-up — which
+matters while the nickel strip is still in transit.</li>
+<li>⚠️ <strong>Change no working hardware over this.</strong> Tether and
+rail gauges are over-provisioned, not wrong; the 13.8 V split-rails
+topology stands. It is the <em>reasoning</em> that was bad, and it must
+not be reused to size a fuse, a BMS or a new cable. Full write-up + the
+list of superseded figures: <a
+href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
+§5.3</a>.</li>
+<li><strong>Still owed:</strong> the all-12 total measured at once, as
+confirmation.</li>
+</ul></li>
+<li><p><strong>Polarity spot-check on ~3 modules</strong> (confirms
+<strong>active-HIGH</strong> — resolved on the first module 2026-09-01,
+<a
+href="Lumi_Wand_Integration.html#62a-pwm-polarity--bench-resolution-2026-09-01">Integration
+§6.2a</a>; repeat on 2 more only to confirm the batch is
+consistent):</p>
+<ol type="1">
+<li>Module wired and lit as in step 4 (PWM floating → LED on).</li>
+<li><strong>Jumper the PWM pin (5) to <code>VIN−</code> (4). The LED
+must go OUT.</strong> That is the whole test — no 3.3 V source needed.
+⚠️ Ground the signal to <strong><code>VIN−</code>, never
+<code>LED−</code></strong>: <code>LED−</code> is the low side of the
+string and switches at the buck frequency; it is not a ground. Header
+map:
+<code>1 VIN+ · 2 VIN+ · 3 VIN− · 4 VIN− · 5 PWM · 6 LED+ · 7 LED−</code>.</li>
+<li><em>(Superseded step — kept for context: this used to say "jumper a
+3.3 V source to PWM", expecting the LED to switch off. It does not. 3.28
+V is above the driver's ~2.5 V full-brightness threshold, so it commands
+100 %. Only a pull below ~0.3 V shuts it down.)</em></li>
+<li>LED must go <strong>OFF</strong> while the jumper is held, and come
+back <strong>ON</strong> when it's removed. That's the
+confirmation.</li>
+<li>3.3 V only. Do not poke 12 V at a PWM pin. Never leave the jumper
+attached as a permanent state during the current test.</li>
+</ol>
+<blockquote>
+<p><strong>Where the 3.3 V comes from (answered
+2026-08-28).</strong></p>
+<ul>
+<li>✅ <strong>LiLyGO <code>3V3</code> pin — use this.</strong>
+Regulated, current-limited by the board's own LDO, and it's on the bench
+anyway for §2.3. Two jumpers: LiLyGO <code>GND</code> → driver GND,
+LiLyGO <code>3V3</code> → driver PWM. The DIM input draws microamps, so
+the LDO doesn't care.</li>
+<li>⚠️ <strong>A single loose 26700 LiFePO4 cell — works, but put ~1 kΩ
+in series.</strong> Resting 3.2–3.3 V (up to ~3.4 V fresh off a charge)
+is a fine logic level here. The hazard isn't the voltage, it's that at
+§2.1 the cell has <strong>no BMS in circuit</strong> (the pack isn't
+built until §2.6) — a bare LiFePO4 cell will dump tens of amps into a
+slipped lead. A 1 kΩ resistor in the jumper caps a dead short at ~3 mA
+and shifts the logic level not at all. <strong>Loose cells only — never
+tap one out of an assembled pack.</strong></li>
+<li><strong>USB charger — no.</strong> It's <strong>5 V, not 3.3
+V</strong>. Likely inside the DIM pin's absolute max for this chip
+family, but nothing in these docs establishes that, and a build part is
+the wrong place to find out. You'd also have to cut a cable to reach the
+rails and bond a mains SMPS secondary to bench ground for zero
+benefit.</li>
+<li><strong>"The bench PSU's second channel" — there isn't one.</strong>
+The Nice-Power is a <strong>single</strong> 0–30 V / 0–5 A output (<a
+href="Electronics_Assembly_Guide.html#11-tools--in-hand-inventory-non-soldering">Assembly
+Guide §1.1</a>), and it is already occupied at 12–13.8 V feeding the
+module under test. If you ever need 3.3 V off that one rail, a divider
+works (10 kΩ / 3.6 kΩ from 13.8 V ≈ 3.7 V into a high-impedance pin) —
+but the LiLyGO is simpler.</li>
+</ul>
+</blockquote></li>
+<li><p><strong>Do steps 1–5 on the full-length header pins, BEFORE
+clipping</strong> (they are the probe points). Then clip every pin to a
+<strong>≤ 2.0 mm stub</strong> and solder the leads to the stubs per <a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">Integration
+§10.5.9</a> build card: <code>VIN+</code> on 1 or 2, <code>VIN−</code>
+on 3 or 4, <code>PWM</code> 5, <code>LED+</code> 6, <code>LED−</code>
+7.</p></li>
+</ol>
+<h3 id="22-pca9685-receipt-inspection">2.2 PCA9685 receipt
+inspection</h3>
+<p><em>Refs: <a
+href="Lumi_Wand_Integration.html#21-pca9685-wand--verify-defaults--cable-bench">Assembly
+Guide §8</a>, <a
+href="Lumi_Wand_Integration.html#63-pca9685-breakout">Integration
+§6.3</a></em></p>
+<ul>
+<li>Loupe: all <strong>6 address pads OPEN</strong> → 0x40. <strong>No
+pad mods, no pull-up removal</strong> on this board. OE gets tied to GND
+later via the rail #2 cable, not on the board.</li>
+</ul>
+<h3 id="23-firmware-first-light--breadboard-rig">2.3 Firmware first
+light — breadboard rig</h3>
+<p><em>Refs: <a href="../firmware/wand_extension/README.html">firmware
+README</a>; full phased rig: <a
+href="Wand_Bench_Test_Phases.html">Wand_Bench_Test_Phases.md</a></em> 0.
+<strong>⚠️ PREREQUISITE — the LiLyGO shipped with no headers
+fitted</strong> (bench finding 2026-08-28): bare 2.54 mm pads on the
+<strong>back</strong>, display on the front. 🔴 <strong>A header is NOT
+possible — the display glass overhangs the hole rows</strong> (checked
+on the board 2026-08-28), so the plastic body cannot seat on the front.
+<strong>Solder 4 wires to the back-side rings</strong> instead:
+<code>3V</code> · <code>GND</code> · <code>17</code> · <code>18</code>,
+the whole bench requirement. The wire only enters the barrel — it must
+NOT pass through to the display side. Procedure + heat discipline: <a
+href="Electronics_Soldering_Guide.html#15-part-11-lilygo-t-display-s3-bench-board--wires-to-the-back-side-rings">Soldering
+Guide §15</a>. <strong>Back view is mirrored and both rows carry NC pads
+— ID by meter, never by counting.</strong> Do not attempt to lift the
+display. <em>(The board's Qwiic connector also carries 3V3/GND/43/44,
+but JST-SH is 1.0 mm pitch and mates with nothing in the kit — ignore it
+unless such a cable is already on the bench.)</em></p>
+<ol type="1">
+<li>Flash the LiLyGO over USB-C (PlatformIO <strong>→</strong> button,
+or <code>pio run -t upload</code>).</li>
+<li>Breadboard: LiLyGO <strong>GPIO17→SDA, GPIO18→SCL, 3V3→PCA9685 VCC,
+GND common</strong> (⚠️ these are the corrected pins per <a
+href="../firmware/wand_extension/src/config.h"><code>config.h</code></a>
+— pre-2026-08-27 drafts had SDA/SCL swapped); bench PSU 13.8 V → one
+driver + star; PCA9685 CH0 → driver PWM. PCA V+ rail stays unpowered
+(signal-only design, <a
+href="Lumi_Wand_Integration.html#63-pca9685-breakout">Integration
+§6.3</a>).</li>
+<li>Boot → LCD status screen shows <code>PCA9685 OK 0x40</code>. <em>(⚠️
+<strong>3V3 on the header reads 0 V until the board boots</strong> —
+GPIO 15 <code>PWR_ON</code> gates that rail and the firmware asserts it
+in <code>setup()</code>. Measure a running board, not a bare one.)</em>
+<strong>Note every address the bus scan reports.</strong> On the
+non-touch LiLyGO the bus is exclusively ours: expect <strong>0x40
+only</strong> at this point (0x49 joins after §2.4). <strong>Any other
+address = a wiring or board problem, not a touch controller</strong> —
+there is no CST816 on this unit.</li>
+<li>Phone → Wi-Fi <code>LumiWand</code> →
+<code>http://192.168.4.1</code> → slider dims the real star.
+<strong>Button 2 = full channel sweep.</strong></li>
+<li>Firmware tasks this week: battery-ADC divider decision;
+deep-sleep/soft-off; <strong>start the §5.0a Waveshare port</strong>
+(pin map from the in-hand board + a LovyanGFX panel config) so week 4
+isn't the first time that board is flashed. Touch UI stays parked.</li>
+</ol>
+<h3 id="24-tmp102-address-mod-0x48--0x49">2.4 TMP102 address mod 0x48 →
+0x49</h3>
+<p><em>Refs: <a
+href="Electronics_Soldering_Guide.html#7-part-3-tmp102-wand--address-mod-0x48--0x49--header-solder">Soldering
+Guide §7</a>, technique <a
+href="Electronics_Soldering_Guide.html#45-trace-cut--bridge-tmp102-add0-style-relocation">§4.5</a>;
+<a
+href="Lumi_Wand_Integration.html#201-address-mod--relocate-addr-from-gnd-to-v--0x49">Assembly
+Guide §7.1</a></em></p>
+<ol type="1">
+<li>Solder the 4-pin header first (350 °C, fine chisel tip — <a
+href="Electronics_Soldering_Guide.html#72-4-pin-berg-header-solder-wand-tmp102">Soldering
+Guide §7.2</a>).</li>
+<li><strong>Cut the ADD0 trace</strong>: fresh #11 blade, 3–5 light
+strokes; continuity-verify the cut is OPEN before proceeding.</li>
+<li><strong>Bridge ADD0 → V+</strong>: one solder bridge, fine conical
+tip; continuity-verify the bridge, and verify no short to GND.</li>
+<li>On the breadboard rig: bus scan must now show <strong>0x49</strong>
+(0x48 gone). Record it. <strong>Do not epoxy — that's week 2, after the
+stars pass.</strong></li>
+</ol>
+<h3 id="25-rocker--extension-dry-fits">2.5 Rocker + extension
+dry-fits</h3>
+<ul>
+<li>Rocker into the extension's −Y facet cutout (19.4 × 13 mm, <a
+href="Lumi_Wand_Flashlight_Variant.html#33-rocker-switch-cutout-locked-2026-05-28">Flashlight
+§3.3</a>); continuity-ID LINE/LOAD/lamp pins while it's out.</li>
+<li><strong>⚠️ Do this in week 1, not week 4 — <a
+href="Lumi_Wand_Flashlight_Variant.html#322-waveshare-esp32-s3-lcd-19-with-touch--full-spec-card">Waveshare</a>
+into the +Y LCD facet.</strong> The printed halves were fit-validated
+~2026-07; confirm which <code>LCD_TYPE</code> they were printed with. If
+they carry the <strong>LiLyGO glue-seat</strong> (63 × 25 mm slot + 3.5
+mm flat glue strips for a 32 mm glass), the Waveshare <strong>will not
+fit</strong> — it needs the 52.6 × 29 mm slot + 4× M2 standoff straps. A
+reprint of the two extension halves is a multi-hour job; finding out in
+week 4 costs the schedule, finding out in week 1 costs nothing.</li>
+<li>Buck + PD trigger onto their raised pads (<a
+href="Lumi_Wand_Flashlight_Variant.html#37-axial-section-layout-locked-2026-05-28">Flashlight
+§3.7</a>, <a
+href="Lumi_Wand_Flashlight_Variant.html#382-pd-trigger-placement-on-extension-side-wall">§3.8.2</a>).</li>
+<li><strong>Cut BOTH joint stripboards in week 1, not week 4.</strong>
+The internal +Y board-to-board JST-XH — <strong>6-pin, housing 17.4
+mm</strong> (<a
+href="Lumi_Wand_Flashlight_Variant.html#39a-internal-y-board-to-board-jst-xh-at-the-joint-v96">Flashlight
+§3.9a</a>) — is <strong>not bench-testable</strong> (<a
+href="Wand_Bench_Test_Phases.html#after-phase-3--the-one-way-steps-in-order">Bench
+Phases</a>) and first happens at week-4 integration, inside a closed
+shell. Each half needs a <strong>3 × 12 stripboard, 6.85 × 30.48 mm,
+with its two outer corners chamfered</strong> (≈3 × 7 mm off each) or it
+will not enter the wand's Ø64 bore; the <strong>wand</strong> carries a
+pin header soldered to it (no glue), the <strong>extension</strong> six
+<code>SXH</code> crimps into an <code>XHP-6</code> shell bonded to its
+board's top face. Full procedure: <a
+href="Electronics_Soldering_Guide.html#95-the-two-y-joint-boards--6-pin-one-on-each-side-of-the-seam">Soldering
+§9.5</a>. Cut, populate, continuity-check and bag both in week 1 —
+discovering a mis-cut board on integration day costs a cycle you will
+not have. <strong>Also print the proto-board mount fallback</strong> and
+put it in the same bag.</li>
+</ul>
+<h3 id="26-parallel-track--extension-electronics-bench-bring-up">2.6
+PARALLEL TRACK — extension electronics bench bring-up</h3>
+<p><em>Refs: <a
+href="Lumi_Wand_Flashlight_Variant.html#50-received-electronics--2026-06-20">Flashlight
+§5.0 parts</a></em> <em>📖 <strong>Pack + BMS build detail: <a
+href="Lumi_Wand_Flashlight_Variant.html#361-pack-assembly--bms-install--the-actual-bench-procedure">Flashlight
+§3.6.1</a>.</strong></em> Step 1 below is the summary; §3.6.1 is the
+procedure — cell matching, how the bare flat-top cells actually get
+connected with no spot welder on site, series topology + orientation,
+positive-end insulation, the sampling-lead order that kills BMS boards
+when you get it wrong, and the measure-before-you-plug check.
+<strong>Read it before you touch a cell.</strong> <em>Runs alongside
+2.1–2.5; the goal is battery power + ESP32 master proven on the bench
+early, not week 4. Parts inventory: <a
+href="Lumi_Wand_Flashlight_Variant.html#50-received-electronics--2026-06-20">Flashlight
+§5.0</a>.</em></p>
+<blockquote>
+<p><strong>✅ Nickel strip IN HAND 2026-09-01 — the pack is no longer
+gated on shipping.</strong> 10× 0.15 × 8 × 100 mm arrived ahead of ETA;
+~160 mm needed against 1000 mm supplied. The three items that used to
+wait on it — this section's step 5 (master-on-battery), <a
+href="Wand_Bench_Test_Phases.html#phase-2--one-rail-replaces-the-power-side-first-real-connectors">Bench
+Phase 2</a> step 3 ("pack in") and <a
+href="Wand_Bench_Test_Phases.html#phase-3--the-other-two-rails--full-cable-set-everything-still-on-the-bench">Phase
+3</a> step 4, and <a href="#42-gated-bring-up--on-extension-power">§4.2
+Gates E–F</a> — <strong>can now run whenever you choose to build the
+pack.</strong></p>
+<p>⚠️ <strong>They are also no longer <em>required</em> to run on the
+pack.</strong> The 2026-09-01 current measurement (~2.4 A all-12, not
+6.7 A) means <strong>the 5 A bench PSU drives the whole wand</strong>,
+so every electrical gate can be done on the PSU. Reserve the pack for
+the checks that are genuinely pack-specific: <strong>BMS trip,
+buck/ESP32 brownout under load, and runtime.</strong></p>
+<p><strong>Step 1's cell check is still the one to do early</strong> —
+it needs no strip and no BMS, and a wide spread is the only pack task
+that can still cost days.</p>
+<p><strong>Do step 1's cell check TODAY, before the strip
+arrives</strong> — it's the one pack task that needs no strip, and it's
+the one that can cost you days. If the four cells are spread by more
+than ~50 mV, fixing that is hours-to-days of individual charging, and
+the Lisolec's 36 mA balancer will not rescue a wide spread (<a
+href="Lumi_Wand_Flashlight_Variant.html#3611-incoming-cell-check--matching">Flashlight
+§3.6.1.1</a>). Find out now so the fix runs in parallel with the
+shipping, not after it.</p>
+</blockquote>
+<ol type="1">
+<li><strong>Cells + pack:</strong> DMM each 26700 (healthy LiFePO4
+resting ≈ 3.2–3.3 V; reject &lt;2.5 V, and match all four to within ~50
+mV); <strong>STOP after the DMM check — the 4S string is not built in
+India any more.</strong> The cartridge replaces the soldered pack (<a
+href="Lumi_Wand_Flashlight_Variant.html#-decided--user-replaceable-cells-in-a-contact-cartridge-proposed-2026-09-06-adopted-2026-09-11">Flashlight,
+cartridge decision</a>) and is assembled in the USA with printed end
+caps and Keystone contacts. <em>(Was: build the string per the
+nickel-strip technique in Soldering Guide §16 — superseded
+2026-09-11.)</em> The BMS notes below still apply when the cartridge is
+built: then land the <strong>5 A Lisolec BMS</strong> <em>(⚠️ corrected
+2026-09-03 — this said 10 A; both units in hand are 5 A, and 5 A is
+adequate for the measured ~2.9 A pack draw)</em> — <strong>B− first,
+then sampling leads B1 → B2 → B3 → B4 ascending, balance connector
+plugged in LAST</strong>, after measuring every tap. Pack open-circuit ≈
+12.8–13.2 V. ⚠️ <strong>Two things §3.6.1 settles that aren't
+obvious:</strong> the bare flat-top cells have <strong>no factory tabs
+and there's no spot welder here</strong> (§3.6.1.2 gives the
+direct-solder technique and its limits), and this common-port BMS
+<strong>switches the negative leg</strong> — B+ passes straight through,
+which is why the rocker sits in the positive leg and system ground comes
+off <strong>P−</strong> (§3.6.1.4). If P+/P− reads 0 V after assembly
+the board is asleep, not dead — wake it with a charge pulse.</li>
+<li><strong>Rocker in circuit on the bench:</strong> pack+ → LINE, LOAD
+→ downstream, lamp pin → pack− (verify the lamp lights at 12.8 V —
+settles the LED-vs-neon question for good).</li>
+<li><strong>Buck:</strong> feed 12.8 V from the pack, verify <strong>5.0
+V ± 0.1</strong> unloaded, then loaded (phone-charge a USB load or
+resistor); only then wire its output to the ESP32 board. <strong>This is
+the gate — a buck presenting 12.8 V kills the board instantly, and it's
+the only unrecoverable mistake on this bench.</strong> Where the 5 V
+lands (<strong>VSYS, not VBUS, not 3V3</strong>) and the full harness
+table: <a
+href="Lumi_Wand_Flashlight_Variant.html#411-extension-harness--rocker-buck-and-pd-trigger-wiring">Flashlight
+§4.1.1</a>.</li>
+<li><strong>PD trigger:</strong> DIP <strong>1-0-0 → 15 V</strong> (<a
+href="Lumi_Wand_Flashlight_Variant.html#381-pd-trigger-dip-switch-voltage-config">Flashlight
+§3.8.1</a>); verify 15 V out with a PD supply/power bank BEFORE landing
+it on BMS P+/P− (charging bypasses the rocker, <a
+href="Lumi_Wand_Flashlight_Variant.html#38-usb-c-pd-charge-port-locked-2026-05-28">§3.8</a>);
+confirm pack accepts charge (current flows, cell voltages rise evenly).
+⚠️ <strong>Use a modest 15 V / 3 A (45 W) brick, not a 100 W
+one</strong> — there is no charge controller in this loop, current is
+set by the source's own limit, and the charge path's wiring and the
+6-pin jack are the constraint (<a
+href="Lumi_Wand_Flashlight_Variant.html#-3831-the-charge-runs-vbusgnd-were-undersized--corrected-2026-08-28">Flashlight
+§3.8.3.1</a>).</li>
+<li><strong>Master-on-battery:</strong> run the §2.3 breadboard rig with
+the LiLyGO powered from the buck (not USB) — the full standalone power
+chain (pack → BMS → rocker → buck → ESP32 → I²C → PCA9685 → driver →
+star) working end-to-end on the bench.</li>
+<li>Firmware: battery-voltage ADC divider goes from "decision" to
+implemented — it now has a real pack to measure.</li>
+</ol>
+<p><strong>Exit gate W1:</strong> 12 drivers pass current test · bus
+scan shows <strong>exactly 0x41 + 0x49, nothing else</strong> · phone
+web UI dims a real star · <strong>extension chain powers the whole rig
+from the pack, and the pack charges via PD</strong> · LCD facet dry-fit
+answers the Waveshare-vs-LiLyGO print question (§2.5).</p>
+<h2
+id="2a-print-run--every-printed-part-in-order-usa-gates-34-onward">2A.
+PRINT RUN — every printed part, in order <em>(USA; gates §3.4
+onward)</em></h2>
+<blockquote>
+<p>🖨️ <strong>Do this before any remaining USA step.</strong> §3.4
+cannot start without the lens plate and both shell halves (the plate is
+the LED-star gauge and the halves clock the puck), §3.6 needs the
+cartridge parts, §3.7 drills into the shell halves' printed Ø7 posts,
+and §5.1 needs the lot. It is <strong>~22–25 h of printer time</strong>
+— start it first and it runs while bench work continues.</p>
+<p><strong>Full settings live in the print guide — this section is the
+ORDER, not the settings.</strong> Profiles: <a
+href="3D_Printing_Guide.html#31-v9-cylindrical-wand--print-settings">§3.1
+v9 Cylindrical Wand — Print Settings</a>, <a
+href="3D_Printing_Guide.html#33-lumi-wand-flashlight-battery-extension">§3.3
+Extension</a>, <a
+href="3D_Printing_Guide.html#33a-cell-cartridge-solder-free-user-replaceable-pack">§3.3a
+Cell Cartridge</a>.</p>
+</blockquote>
+<h3 id="2a1-pre-flight--60-seconds-before-the-first-slice">2A.1
+Pre-flight — 60 seconds, before the first slice</h3>
+<ol type="1">
+<li><strong>Confirm the exports are production geometry</strong>, not
+shim output: <code>cad/exports/BUILD_STAMP.json</code> must read
+<code>"builder": "freecad"</code>. Run
+<code>python3 cad/freecad/check_exports_fresh.py</code> (bare) — it must
+exit 0. <code>builder: occ_shim</code> means faceted threads —
+<strong>do not print</strong>; regenerate per <a
+href="../cad/freecad/REGENERATE.html"><code>cad/freecad/REGENERATE.md</code></a>.</li>
+<li>✅ <strong>Open <code>cad/print/lumiAi_Complete.3mf</code></strong>
+— rebuilt <strong>2026-10-02</strong> against the current exports
+(renamed from <code>lumi_wand.3mf</code>), so the "build a fresh
+project" instruction that stood here is retired. <strong>14
+plates</strong>, consolidated 2026-10-05 — parts sharing a filament
+<em>and</em> a layer height print together, so the run costs 14
+bed-levelling/heat/scan cycles instead of 26. The four ~5–6 h halves
+deliberately stay one per plate. Each plate is <em>named</em> with the
+orientation its parts require. ⚠️ <strong>Plates no longer map 1:1 to
+the §2A.3 rows below</strong> — §2A.3 remains the ORDER and the per-part
+requirements; the plate list is how they are grouped. Regenerate with <a
+href="../cad/print/build_lumiai_complete_3mf.py"><code>cad/print/build_lumiai_complete_3mf.py</code></a>,
+check with <a
+href="../cad/print/verify_3mf.py"><code>cad/print/verify_3mf.py</code></a>.
+<strong>Filaments and settings are already set</strong> — the global
+profile is §3.1's common PLA profile (0.20 mm / 15 % gyroid / 3 walls)
+and every per-part value in the <a
+href="3D_Printing_Guide.html#3-parts-summary">print guide</a> is written
+in as a per-object override. Colour-coded by subassembly, all PLA:
+<strong>1 yellow wand · 2 red extension · 3 translucent base · 4 white
+cartridge/carriers/jigs</strong>. ⚠️ Rows 11–14 print in PLA as a
+<strong>FIT-CHECK</strong> — §3.3a specifies PETG, so chase the M8 and
+check fit, but reprint before cells go in under load. Still do not print
+from <code>cad/exports/3mf/Lumi_Wand_Assembly.3mf</code> (Ø64,
+April).</li>
+<li><strong>Dry the filament</strong> — 55 °C, 3–4 h for PLA (a loaded
+multi-spool dryer earns the long end). <a
+href="3D_Printing_Guide.html#21-stock-take--what-to-print-the-wand--extension-with">§2.1
+stock-take</a>.</li>
+</ol>
+<h3 id="2a2-decide-the-sku-before-you-slice-the-bottom">2A.2 Decide the
+SKU before you slice the bottom</h3>
+<p>🔴 <strong>The retaining ring and the end ring both clamp the Ø72
+bottom thread and interfere by 5073 mm³ — a wand carries one or the
+other, never both.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Building</th>
+<th>Wand bottom</th>
+<th>Extension bottom</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Flashlight</strong> (wand + extension)</td>
+<td>retaining ring</td>
+<td><strong>BLANK</strong> end plate (<code>_blank</code> STL) + end
+ring</td>
+</tr>
+<tr>
+<td><strong>Standalone wand</strong></td>
+<td>end plate + end ring</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Both configurations</strong></td>
+<td>print the retaining ring, a second end ring <strong>and the BLANK
+end plate</strong> (the second plate is the blank — the extension tail
+gets no 6-pin opening)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>The flashlight extension tail takes the BLANK plate</strong>
+(<code>lumi_wand_cyl_endcap_plate_blank</code>) — on this SKU nothing
+plugs into the tail, and the 6-pin opening (r 21.55–30) sits inside the
+end ring's Ø64.6 lip, so the holed plate leaves an open window into the
+battery bay at the butt of the flashlight. The holed plate
+(<code>lumi_wand_cyl_endcap_plate</code>) is for the standalone wand /
+Ultra, where the bay tether lands in it. Grill slots are on BOTH plates.
+Bambu project: the blank is on plate 03 with the rings.</p>
+<h3 id="2a3-print-order">2A.3 Print order</h3>
+<p>Run top to bottom. The early rows are short and prove the filament
+and the slice before the long jobs commit 5 h apiece.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Part</th>
+<th>STL (<code>cad/exports/stl/</code>)</th>
+<th>Orientation + supports</th>
+<th>~Model vol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><strong>Cartridge test coupon</strong> — pocket block (Keystone
+pocket, M1.2 pilots, wire slot, spacer pilot), M8 nut, 13 mm rod stub,
+centre-hole piece; cut from the live parts</td>
+<td><code>lumi_cartridge_test_coupon</code></td>
+<td>as laid out in the STL (print orientation, bases at Z=0), no
+supports</td>
+<td>~5 min</td>
+</tr>
+<tr>
+<td>1</td>
+<td><strong>Canary</strong> — cell spacer ×1</td>
+<td><code>lumi_cartridge_cell_spacer</code></td>
+<td>flat, no supports, no brim</td>
+<td>2 g · ~10 min</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Head ring</td>
+<td><code>lumi_wand_cyl_head_ring</code></td>
+<td><strong>lip DOWN</strong>, thread axis vertical, <strong>supports
+OFF</strong></td>
+<td>13 g</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Lens plate</td>
+<td><code>lumi_wand_cyl_lens_plate</code></td>
+<td><strong>disc on bed, towers UP</strong>, supports OFF</td>
+<td>11 g</td>
+</tr>
+<tr>
+<td>4</td>
+<td>End plate <em>(standalone wand / Ultra)</em></td>
+<td><code>lumi_wand_cyl_endcap_plate</code></td>
+<td><strong>slot-face down</strong>, flat disc, no supports</td>
+<td>13 g</td>
+</tr>
+<tr>
+<td>4b</td>
+<td>End plate, <strong>BLANK</strong> <em>(flashlight extension
+tail)</em></td>
+<td><code>lumi_wand_cyl_endcap_plate_blank</code></td>
+<td>same — <strong>slot-face down</strong>, flat disc, no supports</td>
+<td>11 g</td>
+</tr>
+<tr>
+<td>5</td>
+<td>End ring</td>
+<td><code>lumi_wand_cyl_endcap_ring</code></td>
+<td><strong>lip-end DOWN</strong>, thread end up</td>
+<td>16 g</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Retaining ring <em>(flashlight SKU)</em></td>
+<td><code>lumi_wand_cyl_retaining_ring</code></td>
+<td>thread axis vertical</td>
+<td>21 g</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Shell half <strong>+Y</strong></td>
+<td><code>lumi_wand_cyl_half_plus</code></td>
+<td><strong>vertical on one thread end, CHAMBER DOOR OPEN</strong>,
+trimmed supports</td>
+<td>83 g · ~5 h</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Shell half <strong>−Y</strong></td>
+<td><code>lumi_wand_cyl_half_minus</code></td>
+<td>same</td>
+<td>53 g · ~5 h</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Extension half +Y</td>
+<td><code>lumi_wand_ext_half_plus_lilygo</code></td>
+<td>vertical, <strong>flange end DOWN</strong> (776.6 mm² bed)</td>
+<td>73 g · ~5–6 h</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Extension half −Y</td>
+<td><code>lumi_wand_ext_half_minus_lilygo</code></td>
+<td>vertical, <strong>PEG end DOWN</strong> ⚠️ <em>opposite to +Y —
+flange-down balances it on the 2.5 mm clocking tab, 3.0 mm² of
+bed</em></td>
+<td>79 g · ~5–6 h</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Cartridge cap <strong>rigid</strong></td>
+<td><code>lumi_cartridge_cap_rigid</code></td>
+<td><strong>outboard face DOWN, pocket face UP — no supports</strong>
+(flat disc since 2026-10-07)</td>
+<td>13 g</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Cartridge cap <strong>sprung</strong></td>
+<td><code>lumi_cartridge_cap_sprung</code></td>
+<td>same (byte-identical to 11)</td>
+<td>13 g</td>
+</tr>
+<tr>
+<td>12a</td>
+<td>Cartridge <strong>hex nut ×2</strong></td>
+<td><code>lumi_cartridge_nut</code></td>
+<td>upright, no supports</td>
+<td>1 g each</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Cartridge tube</td>
+<td><code>lumi_cartridge_tube</code></td>
+<td><strong>standing on end, BRIM MANDATORY</strong></td>
+<td>4 g</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Cell spacer ×2 <em>(incl. the canary)</em></td>
+<td><code>lumi_cartridge_cell_spacer</code></td>
+<td>flat</td>
+<td>6 g</td>
+</tr>
+</tbody>
+</table>
+<p><strong>≈ 396 g of model volume</strong> for the full set (15 %
+infill slices well under that). After row 5 you can check the head ring
+actually threads onto a shell half before committing to rows 7–10.</p>
+<p><strong>Read before slicing each group:</strong> <a
+href="3D_Printing_Guide.html#bed-adhesion--supports--shell-halves-read-before-printing">shell
+halves</a> · <a
+href="3D_Printing_Guide.html#bed-adhesion--supports--end-plate--end-ring-read-before-printing">end
+plate + end ring</a> · <a
+href="3D_Printing_Guide.html#bed-adhesion--head-ring--lens-plate-read-before-printing">head
+ring + lens plate</a> and <a
+href="3D_Printing_Guide.html#supports---not-needed-since-v99-read-before-printing">why
+their supports are OFF</a> · <a
+href="3D_Printing_Guide.html#orientation--read-this-before-slicing">cartridge
+orientation</a>.</p>
+<h3 id="2a4-traps-that-have-already-cost-a-print">2A.4 Traps that have
+already cost a print</h3>
+<ul>
+<li>✅ <strong>The two cartridge caps ARE now the same geometry</strong>
+(2026-10-06): both carry their plate in an INBOARD pocket. Either STL
+prints either cap; which one is "sprung" is decided by the contact you
+screw in (5222 spring vs 5221 button).</li>
+<li>⚠️ <strong>Chamber door OPEN for the shell halves.</strong> Closed,
+chamber heat softens the bottom-most groove of the plate-side thread and
+it slumps.</li>
+<li>⚠️ <strong>The +Y shell half carries the 25.4 mm gripper
+ear</strong> — a flat horizontal overhang 42 mm off the wall, ~1070 mm².
+Budget the support and check the underside for sag; a drooping overhang
+moves the jaw cradles.</li>
+<li>⚠️ <strong>Lens plate: do not print it in translucent
+filament.</strong> It sits directly over three separately-driven RGBW
+stars and clear material pipes light between the towers, so you cannot
+judge the beams. Production material is <strong>NylonX for the lens
+plate</strong> — <a
+href="3D_Printing_Guide.html#why-nylonx-for-the-lens-plate">why</a>.
+<strong>The head ring is ASA</strong> (operator 2026-10-17), not
+NylonX.</li>
+<li>⚠️ <strong>A PLA wand is a fit-and-wiring build.</strong> The shell
+top wraps the LED heatsink at 50–60 °C, where PLA softens. Assemble,
+wire and fit-check — do not run the LEDs at sustained power behind
+it.</li>
+<li>🚨 <strong>Any head ring printed from a 2026-09-23 → 09-30 export
+has NO THREAD</strong> (plain Ø68.2 bore) — <a
+href="3D_Printing_Guide.html#-head-ring--the-2026-09-23--09-30-export-had-no-thread-reprint-it-2026-10-01">reprint
+notice</a>.</li>
+</ul>
+<h3 id="2a5-post-print--before-anything-is-assembled">2A.5 Post-print —
+before anything is assembled</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" /><strong>Head ring threads onto a
+shell half</strong> by hand, and the lens plate drops onto the three key
+pegs <strong>without turning</strong>.</label></li>
+<li><label><input type="checkbox" /><strong>+Y ear: caliper 25.4
+mm</strong> across the two tangential faces and <strong>17.4 mm</strong>
+across the two cradle floors. 16 mm / 8 mm is a pre-2026-09-28
+print.</label></li>
+<li><label><input type="checkbox" /><strong>Lens holder fits the tower
+bore</strong> — caliper a real uxcell holder <strong>across the ribs
+(the max, not a valley)</strong>: the Ø22.5 bore tolerates the vendor
+Ø22.0 being under, <strong>not over</strong>.</label></li>
+<li><label><input type="checkbox" />Tower-top rim not rounded over by
+top-layer ironing (0.3 mm/side is load-bearing for the AliExpress
+optic).</label></li>
+<li><label><input type="checkbox" /><strong>Cartridge:</strong> M8
+printed thread <strong>chased by hand</strong> on both nuts (0.3 mm
+clearance — run the nut on gently, never force a cross-thread); each
+cap's plain Ø8.6 centre hole slides over the rod; every pocket's
+<strong>5.0 × 4.0 wire slot</strong> is open right through and passes an
+18 AWG silicone lead. The two caps are <strong>identical</strong> —
+which is sprung is set by the contact you fit.</label></li>
+<li><label><input type="checkbox" /><strong>Extension −Y half:</strong>
+4× Ø5 ground-bus posts present, unbridged, and an M2 starts cleanly in
+each pilot. They sit at 40° on a 7.62 × 20.32 mm rectangle and carry the
+P− ground-bus board — <code>GBUS_POST_DIA</code> in <a
+href="../cad/freecad/lumi_wand_flashlight_extension.py"><code>lumi_wand_flashlight_extension.py</code></a>.</label></li>
+</ul>
+<hr />
+<h2
+id="3-week-2-aug-2531--the-soldering-marathon-3133-india-record--34-onward-usa">3.
+Week 2 (Aug 25–31) — the soldering marathon <em>(§3.1–3.3 India record ·
+§3.4 onward USA)</em></h2>
+<p><em>Batch same-type operations (<a
+href="Power_Bay_Design.html#2-operations-summary">Assembly Guide §2</a>
+rule). Serplex temps: 350 °C headers/bridges · 380 °C 22 AWG power buses
+· 380–400 °C MCPCB pads. The hottest remaining operation is the 380–400
+°C MCPCB pad.</em></p>
+<h3 id="31-crimp-batch--every-jst-xh-cable-in-one-session">3.1 Crimp
+batch — every JST-XH cable in one session</h3>
+<p><em>Refs: <a
+href="Electronics_Assembly_Guide.html#3-jst-xh-254-mm-crimping-the-fleet-standard-connector">Assembly
+Guide §3</a>; pin maps <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">Integration
+— the v9.11 rail layout</a>/<a
+href="Lumi_Wand_Integration.html#1054-neither-the-pca-nor-the-tmp102-cable-is-11--build-to-this-table">§10.5.4
+— the PCA and TMP102 cables</a>, cable specs <a
+href="Lumi_Wand_Integration.html#1055-cable-specs">§10.5.5</a></em> PEBA
+crimper + TAREA 600-pc kit.</p>
+<blockquote>
+<h3 id="white_check_mark-wand-prep-build-card">✅ Wand-prep build
+card</h3>
+<p>Source of truth: <a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">Integration
+§10.5.9</a>. The rail-side connectors are all <strong>0.1″ berg
+male</strong>, so every crimped end that lands on a rail is a
+<strong>Dupont / berg female</strong>. The <strong>bay tether's XH-6 at
+the end plate is the only JST-XH</strong> on the wand side.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Cable</th>
+<th>Qty</th>
+<th>Gauge</th>
+<th>Driver / module end</th>
+<th>Rail / far end</th>
+<th>Crimps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W1</td>
+<td>Driver power (DP)</td>
+<td>12</td>
+<td>2 × 22</td>
+<td><strong>soldered</strong> to the driver <code>VIN+</code> /
+<code>VIN−</code> pads (KESHY header stubs, pins clipped to ≤ 2.0
+mm)</td>
+<td><strong>rails 30 / 150: 2-pin Dupont F</strong> on the driver berg,
+cols 7–10 (8 cables). <strong>Rail 270: soldered straight into the strip
+holes, no berg</strong> (4 cables)</td>
+<td>8 × 2-pin</td>
+</tr>
+<tr>
+<td>W2</td>
+<td>Driver LED out (DL)</td>
+<td>12</td>
+<td>2 × 26</td>
+<td><strong>soldered</strong> to <code>LED+</code> /
+<code>LED−</code></td>
+<td><strong>soldered</strong> to the star's channel pads</td>
+<td>none</td>
+</tr>
+<tr>
+<td>W3</td>
+<td>Driver PWM (DW)</td>
+<td>12</td>
+<td><strong>1 × 26</strong>, no GND wire</td>
+<td><strong>soldered</strong> to the <code>PWM</code> pad (1 k pull-down
+stays on the driver)</td>
+<td><strong>one 4-pin Dupont F per LED star</strong> on the PCA PWM row:
+CH0–3, CH4–7, CH8–11. <strong>Seat fully.</strong></td>
+<td>3 × 4-pin</td>
+</tr>
+<tr>
+<td>W4</td>
+<td>Power pigtail, cradle → rail</td>
+<td>3</td>
+<td>2 × 22</td>
+<td><strong>lap-jointed on the TOP face</strong> of the cradle board's
+13.8 V / GND-power strips</td>
+<td><strong>P30, P150: 2-pin Dupont F</strong> → <code>PWR IN</code> col
+12. <strong>P270: soldered into rail 270</strong></td>
+<td>2 × 2-pin</td>
+</tr>
+<tr>
+<td>W5</td>
+<td>Signal pigtail, cradle → rail</td>
+<td><strong>1 (rail 30 only)</strong></td>
+<td>4 × 26</td>
+<td>soldered in the cradle board's SDA / SCL / 3V3 / GND-logic
+holes</td>
+<td>4-pin Dupont F → rail 30 <code>SIG IN</code> col 7</td>
+<td>1 × 4-pin</td>
+</tr>
+<tr>
+<td>W6</td>
+<td>Fan power</td>
+<td>1</td>
+<td>Noctua stock</td>
+<td>yellow / black, stock lead cut to length</td>
+<td>2-pin Dupont F → rail 30 <code>FAN</code> col 14</td>
+<td>1 × 2-pin</td>
+</tr>
+<tr>
+<td>W7</td>
+<td>Fan PWM</td>
+<td>1</td>
+<td>Noctua stock</td>
+<td><strong>blue ONLY</strong>; TACH clipped + insulated</td>
+<td>1-pin Dupont F → PCA <strong>CH13 PWM pin</strong></td>
+<td>1 × 1-pin</td>
+</tr>
+<tr>
+<td>W8</td>
+<td>PCA9685</td>
+<td>1</td>
+<td>4 × 26</td>
+<td><strong>soldered to the PCA's TOP-end I/O pads, that end header
+trimmed; <code>OE</code> linked to <code>GND</code> at the pads</strong>
+(before the PCA goes on its forks)</td>
+<td>4-pin Dupont F → rail 30 <code>PCA</code> col 11</td>
+<td>1 × 4-pin</td>
+</tr>
+<tr>
+<td>W9</td>
+<td>TMP102-wand (0x49)</td>
+<td>1</td>
+<td>4 × 26</td>
+<td>4-pin Dupont F onto the module's soldered 4-pin male</td>
+<td>4-pin Dupont F → rail 30 <code>TMP</code> col 13</td>
+<td>2 × 4-pin</td>
+</tr>
+<tr>
+<td>W10</td>
+<td>Cradle board (+Y, the star)</td>
+<td>1</td>
+<td>—</td>
+<td>3 rows × 12 cols stripboard: B6B-XH-A in the outer row, one pin per
+net column; each net's pigtail(s) land as <strong>lap joints on the TOP
+face of that net's strip</strong></td>
+<td>—</td>
+<td>none</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Totals:</strong> 19 Dupont housings (11 × 2-pin, 7 × 4-pin,
+1 × 1-pin), 51 crimp pins. The bay tether's 6-pin XH female is a
+separate cable (<a href="Power_Bay_Design.html">Power_Bay §16c</a> rows
+14/15), not on this card.</li>
+<li><strong>Cut lengths:</strong> <a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">Integration
+§10.5.9</a> per-seat table (DP 60–80, DW 70–130, DL 70 / 110; P 100 /
+100 / 160; S30 120; PCA 70; TMP 60; FAN 100).</li>
+<li><strong>Drivers:</strong> KESHY (B) at all 12 seats; header pins
+clipped to ≤ 2.0 mm stubs, leads soldered to the stubs.</li>
+<li><strong>Pull-downs:</strong> the 12 KESHYs carry their 0805 across
+pads 4–5 (§3.1a); meter <code>PWM</code>↔︎<code>VIN−</code> = 1 kΩ after
+clipping and soldering.</li>
+<li><strong>Parts:</strong> Dupont housings and pins come from the PEBA
+kit; stock is plentiful (operator).</li>
+<li>Not on this card:
+<ul>
+<li><strong>Rails:</strong> §3.7.</li>
+<li><strong>Extension harness:</strong> §3.5, E1–E14; solder E14 star
+ground last.</li>
+<li><strong>Cartridge plates:</strong> §3.6, plus the slot-exit
+soldering in <a
+href="Electronics_Soldering_Guide.html"><code>Electronics_Soldering_Guide.md</code>
+§16.5</a>.</li>
+</ul></li>
+</ul>
+</blockquote>
+<h3
+id="31a-pwm-pull-downs--12-0805-across-the-driver-boards-white_check_mark-complete-2026-09-07">3.1a
+PWM pull-downs — 12× 0805 across the driver boards ✅ <strong>COMPLETE
+2026-09-07</strong></h3>
+<blockquote>
+<p>✅ <strong>All 12 driver boards done (2026-09-07)</strong>, same day
+the step was added to this plan. Meter <code>PWM</code> ↔︎
+<code>VIN−</code> = 1 kΩ on each before it goes in the shell.</p>
+</blockquote>
+<p><em>Refs: <a
+href="Lumi_Wand_Integration.html#62a-pwm-polarity--bench-resolution-2026-09-01">Integration
+§6.2a</a> (why), <a href="Wand_Bench_Test_Phases.html">Bench Phases step
+3</a> (the null test that proved it)</em></p>
+<p><strong>Why:</strong> every KESHY <code>PWM</code> pin floats to
+<strong>5.28 V</strong> on an internal pull-up and the driver is
+<strong>active-HIGH</strong>. An unconnected or not-yet-driven PWM pin
+means that channel sits at <strong>full brightness</strong> the moment
+the 13.8 V rail comes up — 12 channels of that is ~33 W with no thermal
+loop running.</p>
+<table>
+<tbody>
+<tr>
+<td>Part</td>
+<td><strong>1 kΩ, 0805 SMD</strong> (2.0 × 1.25 mm) — from the Amazon
+India order, delivered 2026-09-07</td>
+</tr>
+<tr>
+<td>Qty</td>
+<td><strong>12</strong>, one per driver</td>
+</tr>
+<tr>
+<td>Where</td>
+<td>Flush <strong>across the duplicate <code>PWM</code> /
+<code>VIN−</code> pads — pins 4–5</strong> on the 7-pin header. Pins 3≡4
+are common <code>VIN−</code> (<a
+href="#31-crimp-batch--every-jst-xh-cable-in-one-session">§3.1</a>), so
+pin 4 is a free ground landing right next to <code>PWM</code></td>
+</tr>
+<tr>
+<td>Dissipation</td>
+<td><strong>6.9 mW</strong> — every wattage is electrically fine, so
+<strong>package is the only real constraint</strong>. That is why "any
+1/8 W+" was wrong guidance: a generic 1 kΩ order yields a 1–2 W
+metal-oxide axial physically wider than the driver board</td>
+</tr>
+<tr>
+<td>Fallback</td>
+<td>1/8 W axial (3.2 × 1.8 mm), legs trimmed to a hairpin. Anything
+larger is bench-rig only</td>
+</tr>
+<tr>
+<td>Sequence</td>
+<td><strong>Last thing to fit on a driver, not the first</strong> — do
+it after the board is otherwise finished</td>
+</tr>
+<tr>
+<td>Verify</td>
+<td>Meter <code>PWM</code> ↔︎ <code>VIN−</code> on each board: <strong>1
+kΩ</strong>. Do all 12 before any goes into the shell</td>
+</tr>
+</tbody>
+</table>
+<h3 id="32-the-wand-power-rails--not-built-here-dropped-2026-09-23">3.2
+The wand power rails — NOT BUILT HERE (dropped 2026-09-23)</h3>
+<blockquote>
+<h2
+id="the-india-stopgap-rails-are-cancelled-the-boards-were-thrown-away">The
+India stopgap rails are cancelled. The boards were thrown away.</h2>
+<p>This step used to build an all-JST-XH, paired-header, 31-column
+stopgap rail on the perfboard already in hand, because neither the ST1
+stripboard nor the berg strips could reach Chail inside the stay.
+<strong>That whole approach is withdrawn</strong> — <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">Integration
+§10.5.3.8</a>.</p>
+<p><strong>All three rails are now built in the USA, on <a
+href="Lumi_Wand_Integration.html#541-stripboard--busboard-st1-usa-and-its-ampacity">BusBoard
+ST1 stripboard</a>, to the permanent design of record — now the <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">v9.11
+three-rail layout</a>.</strong> No rail work happens in India.
+<strong>The USA rail build is <a
+href="#37-build-the-three-st1-rails-usa-the-work-32-no-longer-does-in-india">§3.7</a></strong>
+— and as of v9.11 it has <strong>no track cuts at all</strong>.</p>
+<p>⚡ <strong>Why it matters that this went away rather than
+shipping:</strong> the stopgap carried a <strong>single GND
+bus</strong>, which is the topology that left the wand with no logic
+ground at all — the wand's I²C reference floating up to <strong>102
+mV</strong> above the Pi's at full LED draw (<a
+href="Lumi_Wand_Integration.html#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand">§10.5.2</a>).
+The ST1 rail <strong>splits</strong> that bus — <code>GND-power</code>
+for the drivers and fan, <code>GND-logic</code> for the PCA9685 and
+TMP102 — and there is no clean way to retrofit a bus cut into bare-wire
+perfboard. Dropping the stopgap removes the only planned hardware that
+would have shipped the pre-fix grounding.</p>
+<p>✅ <strong>The one finding worth keeping from the stopgap
+work:</strong> headers seat in <strong>mirrored pairs</strong> at ≤ 5.08
+mm across the body only on clone connectors — <strong>genuine JST-XH is
+5.75 mm and will not pair.</strong> Caliper the body before ever
+crowding two connectors onto adjacent columns.</p>
+</blockquote>
+<h3
+id="33-led-star-wiring--the-24-wire-bundle-white_check_mark-complete-2026-09-07">3.3
+LED star wiring — the 24-wire bundle ✅ <strong>COMPLETE
+2026-09-07</strong></h3>
+<blockquote>
+<p>✅ <strong>All three wand stars made and soldered
+(2026-09-07)</strong> — the full 24-wire set, 8 pads per star.
+<strong>The Phase-1 bench-rig star was deliberately left
+untouched</strong>, so the rig stays intact and testable rather than
+being cannibalised into the build. Good call: it keeps a known-good
+reference channel available for comparison if a wand star misbehaves
+later.</p>
+</blockquote>
+<p><em>Refs: <a
+href="Electronics_Soldering_Guide.html#10-part-6-led-mcpcb--wire-to-pad-solder-technique-46">Soldering
+Guide §10</a>, technique <a
+href="Electronics_Soldering_Guide.html#46-wire-to-pad-on-led-mcpcb-high-thermal-mass">§4.6</a>;
+wire map <a
+href="Lumi_Wand_Integration.html#10552-led-driver--led-pcb-wiring-the-24-wire-bundle">Integration
+§10.5.5.2</a></em></p>
+<ol type="1">
+<li>Cut 24× <strong>26 AWG</strong> leads; strip with the 30 AWG
+T-stripper's 26 notch; pre-tin wire ends and MCPCB pads (flux dot per
+pad — <a href="Electronics_Soldering_Guide.html#101-wire-prep">Soldering
+Guide §10.1</a>).</li>
+<li>Solder at <strong>380–400 °C</strong> — the aluminum core steals
+heat; if a joint won't wet in ~3 s, bump temperature/preheat the star
+(heat gun on low from below works as an improvised preheater). What a
+good joint looks like: <a
+href="Electronics_Soldering_Guide.html#103-what-right-looks-like">Soldering
+Guide §10.3</a>.</li>
+<li><strong>Bench-test EVERY channel of EVERY star before
+bonding</strong> (<a
+href="Electronics_Assembly_Guide.html#12-led-mcpcb--wire-solder--heatsink-bonding">Assembly
+Guide §12</a>): drive each channel at 700 mA (through a verified
+driver), confirm color + brightness. An epoxied dead star is a dead
+wand.</li>
+</ol>
+<hr />
+<blockquote>
+<h1 id="us-everything-from-here-on-is-usa-work">🇺🇸 EVERYTHING FROM HERE
+ON IS USA WORK</h1>
+<p><strong>Operator, 2026-09-23.</strong> §3.1–3.3 above are the
+<strong>India record</strong> — what was actually completed on the trip,
+kept for reading the as-built. <strong>§3.4 to the end of this document
+has not been done yet and will be done on the USA bench.</strong> The
+week numbering below is the original India schedule and is
+<strong>historical labelling only</strong> — there is no Sep 1–7 / Sep
+8–14 deadline any more.</p>
+<p>⚠️ <strong>Two things must happen before §3.4 can start</strong>, and
+neither existed when the steps below were written:</p>
+<ol type="1">
+<li><strong>Regenerate the CAD in real FreeCAD and reprint the shell
+halves.</strong> They now carry the <strong>three lens-plate key
+pegs</strong> (v9.9 two-piece head) and the sidewall windows —
+<strong>DELETED in v9.11</strong>, so a half printed before 2026-10-01
+has holes in its wall that must not be there. Nothing printed before
+2026-09-23 has either. <code>check_exports_fresh.py</code> will refuse
+to call the committed exports current.</li>
+<li><strong>Build the THREE ST1 rails — <a
+href="#37-build-the-three-st1-rails-usa-the-work-32-no-longer-does-in-india">§3.7</a>.</strong>
+<strong>No track cuts and no link wire.</strong> One net per strip, so
+the star ground is structural — <code>GND-logic</code> on strip 4 and
+<code>GND-power</code> on strip 5 are never joined. Still meter
+<strong><code>GND-power ↔︎ GND-logic</code> OPEN</strong> before anything
+is landed on them; the check now catches a solder bridge rather than a
+cut that did not take.</li>
+</ol>
+<p><strong>Suggested order:</strong> §3.7 rails → §3.6 cartridge → §3.5
+extension harness → §3.4 epoxy → §4 assembly. §3.4 is numbered first but
+is the <strong>one-way</strong> step — do it last of the four, once the
+shells are in hand and all three rails have passed their pair
+checks.</p>
+<p>§3.4's epoxy day is still <strong>ONE-WAY</strong> — do not mix
+8329TCM until the shells are in hand and all three rails have passed
+their pair checks.</p>
+</blockquote>
+<h3 id="34-epoxy-day--one-way">3.4 Epoxy day — ONE-WAY</h3>
+<blockquote>
+<p><strong>Gated TWICE before mixing anything:</strong> (a) <a
+href="Wand_Bench_Test_Phases.html#phase-3--the-other-two-rails--full-cable-set-everything-still-on-the-bench"><strong>Bench
+Phase 3</strong> must pass</a> — the bench doc's standing rule is that
+the epoxy bond happens ONLY after Phase 3; and (b) the <a
+href="Wand_Bench_Test_Phases.html#usa-bench--emitter--optic-evaluation-e2-optics-in-hand-2026-09-21--meter-in-hand-2026-09-30--ready-to-run"><strong>USA
+Emitter &amp; Optic Evaluation (E1/E2)</strong></a> must be complete —
+bonding is one-way, and E1/E2 is what picks the emitter + optic family
+that gets bonded.</p>
+</blockquote>
+<blockquote>
+<p>🖨️ <strong>Needs printed parts: the lens plate (the star gauge) and
+BOTH shell halves</strong> (the bare puck closes into them so its rim
+keyway clocks on the 30° L-tab nub). Print them first — <a
+href="#2a3-print-order">§2A.3</a>. <em>Refs: <a
+href="Electronics_Assembly_Guide.html#124-heatsink-bonding--mg-8329tcm-thermal-epoxy">Assembly
+Guide §12.4</a>; TMP102 bond <a
+href="Lumi_Wand_Integration.html#203-thermal-bond-to-heatsink-underside">§7.3</a></em></p>
+</blockquote>
+<ol type="1">
+<li>Heatsink prep without the skipped consumables: scrape-clean +
+dry-wipe the bond area (no IPA/sandpaper on hand — acceptable; 8329TCM
+tolerates a clean dry surface).</li>
+<li>Position the stars <strong>through the v9.9 lens plate's three Ø22.5
+apertures</strong>, coplanar on the Ø30 BCD at 90° / 210° / 330°. Close
+the bare puck into the two shell halves first (its rim keyway lands on
+the 30° L-tab nub, so the puck is clocked), drop the plate on, and aim
+for an <strong>even 0.7 mm crescent</strong> round each star. Lift the
+plate, then hold the cure with <strong>M3 screws + Ø12 washers in the
+puck's own 3 holes at r = 8</strong>. Full procedure: <a
+href="Lumi_Wand_Integration.html#step-3-led-cluster-thermal-adhesive-bond-gauged-through-the-lens-plate">Integration
+§13 Step 3</a>.</li>
+<li>Mix 8329TCM 1:1 — <strong>45 min pot life, 1.36 W/m·K</strong> (<a
+href="Electronics_Assembly_Guide.html#151-thermal-epoxy--mg-chemicals-8329tcm">Assembly
+Guide §15.1</a>); bond 3 stars <strong>and</strong> the TMP102
+(<strong>BACK of the board</strong> to the heatsink underside — IC faces
+away, heat path is heatsink → PCB thermal vias → die, <a
+href="Lumi_Wand_Integration.html#203-thermal-bond-to-heatsink-underside">Assembly
+Guide §7.3</a>) in the same batch. The 45 min is real working time —
+position deliberately, don't rush.</li>
+<li><strong>24 h cure, zero power.</strong> Post-cure: re-run every
+channel + confirm 0x49 still answers.</li>
+</ol>
+<h3
+id="35-parallel-track--extension-harness-during-the-24-h-epoxy-cure">3.5
+PARALLEL TRACK — extension harness during the 24 h epoxy cure</h3>
+<p>The cure day is otherwise dead time. Use it to make the extension
+permanent:</p>
+<ol type="1">
+<li><p>⚡ <strong>Build the ground-bus board FIRST, and cut it.</strong>
+Strip 3 is <strong>two buses now</strong>, not one:
+<strong>P−power</strong> (holes 1–2) takes the wand's
+<code>GND-power</code> and the rocker lamp; <strong>P−logic</strong>
+(holes 4–8) takes the buck GND, <strong>the LCD board's GND</strong>,
+the wand's <code>GND-logic</code>, and the ADC divider. <strong>One
+track cut at hole 3.</strong> <code>E10</code> does <strong>not</strong>
+land here any more — it goes straight to the <code>BMS P−</code> pad.
+Hole 9 stays empty (the Ø5 post reaches within 0.04 mm). <a
+href="Lumi_Wand_Flashlight_Variant.html#384-p-ground-bus-board-40--locked-2026-09-19">Flashlight
+§3.8.4</a></p>
+<p>🔴 <strong>Meter <code>P−power ↔︎ P−logic</code> OPEN, then solder
+<code>E14</code> ACROSS the cut.</strong> That 18 AWG feed is the
+flashlight SKU's entire star ground. It is surface- soldered (it never
+fitted a hole anyway), it lands on both segments, and it goes on
+<strong>last</strong> — once it is on, the two buses read continuous by
+design and the cut can never be verified again.</p>
+<p><strong>Why this is not optional:</strong> the ESP32 is the
+<strong>I²C master</strong> in this SKU. On one undivided P− bus its
+SDA/SCL reference sits on the same copper as <strong>2.4 A</strong> of
+LED return, and the wand-side split ground becomes decoration.</p></li>
+<li><p>Crimp/solder the extension's internal harness in final enclosure
+lengths — <strong>the E1–E14 table and its CAD cut lengths in <a
+href="Lumi_Wand_Flashlight_Variant.html#411-extension-harness--rocker-buck-and-pd-trigger-wiring">Flashlight
+§4.1.1</a></strong> (2026-10-24, CAD 18d3f78; measure the ⏳ list there
+first) is the build list. (nets, gauges, terminations, assembly order).
+Layout: <a
+href="Lumi_Wand_Flashlight_Variant.html#37-axial-section-layout-locked-2026-05-28">Flashlight
+§3.7</a>.</p></li>
+<li><p><strong>Dual USB-C panel:</strong> solder both jacks to the
+perfboard scrap and their flying leads — <a
+href="Electronics_Soldering_Guide.html#13-part-9-dual-usb-c-bulkhead-panel-flashlight-extension--jack-solder--flying-leads">Soldering
+Guide §13</a> (pitch check first, shield legs are the mechanical anchor,
+no CC resistors), then wire per <a
+href="Lumi_Wand_Flashlight_Variant.html#383-usb-c-jack-selection--perfboard-mount-locked-2026-06-26">Flashlight
+§3.8.3</a>. ⚠️ <strong>Charge-jack VBUS/GND are 22 AWG, not
+28.</strong></p></li>
+<li><p>Crimp the <strong>male 6-pin JST-XH board-to-board
+pigtail</strong> (extension side, V+ / GND-power / SDA / SCL / 3V3 /
+<strong>GND-logic</strong>) and the wand-side female pigtail for rail
+#1's extension socket. ⚡ <strong>The 6th conductor keeps the two
+grounds separate all the way up</strong> — they tie
+<strong>only</strong> at the <code>E14</code> landing on the ground-bus
+board (step 1), not at the pack negative and not anywhere in the wand,
+and come up separately, exactly as they arrive separately from the bay
+in the Ultra SKU (<a
+href="Lumi_Wand_Integration.html#93a-internal-y-jst-xh-female-cradle--gripper-jaw-ear-v96">Integration
+§9.3a</a>).</p></li>
+<li><p>Mount rocker, PD trigger, buck, USB panel into the enclosure;
+route + strain-relieve. <strong>The enclosure board is the headered
+LiLyGO T-Display-S3 (DEFAULT, operator 2026-10-24)</strong>: it runs the
+bench-proven firmware, so it can go in once §2.6 passes. The Waveshare
+is the alternate and waits for the §5.0a port.</p></li>
+</ol>
+<p><strong>Exit gate W2:</strong> all three rails pass smoke test · all
+24 star channels verified post-cure · TMP102 bonded and alive at 0x49 ·
+<strong>extension fully assembled in its enclosure and still passing the
+§2.6 end-to-end check</strong>.</p>
+<h3
+id="36-cell-cartridge--the-4s-pack-solder-free-usa-added-to-this-plan-2026-09-23">3.6
+Cell cartridge — the 4S pack, solder-free <em>(USA; added to this plan
+2026-09-23)</em></h3>
+<blockquote>
+<p>🖨️ <strong>Needs printed parts: 2× cap, 2× M8 hex nut, solid Ø8 rod
+and 2× cell spacer</strong> — <a href="#2a3-print-order">§2A.3</a> rows
+11–14. <strong>Print the test coupon
+(<code>lumi_cartridge_test_coupon.stl</code>) first</strong> — it is cut
+from the live parts and shows pocket, screw, wire-slot and thread fit in
+minutes. ✅ The two caps are <strong>identical</strong>; which is
+"sprung" is set by the contact you fit.</p>
+<p>🔩 <strong>Hardware:</strong> 16× M1.2 × 2.5 self-tapping (2 per
+contact plate), 8× M1.2 × 3 countersunk self-tapping (4 per spacer), and
+<strong>Permatex 81158 RTV</strong> (in stock) for the lead strain
+relief — tacked service loop + potted slot, <strong>24 h cure before the
+cartridge goes in</strong> (<a
+href="Electronics_Soldering_Guide.html#165-bms-wires--gauge-where-each-lands-and-how-to-solder-them">Soldering
+§16.5</a>).</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>This step did not exist in the India plan and has no India
+record.</strong> The pack was going to be nickel-strip soldered; solder
+would not wet the cell caps (thermal mass, not chemistry — <a
+href="Electronics_Soldering_Guide.html#163a--when-it-will-not-wet-at-all--bench-finding-2026-09-06">Soldering
+§16.3a</a>), which killed hand-soldering outright and produced the <a
+href="Lumi_Wand_Flashlight_Variant.html#-decided--user-replaceable-cells-in-a-contact-cartridge-proposed-2026-09-06-adopted-2026-09-11">contact
+cartridge</a> instead.</p>
+<p>🔴 <strong>NO IRON TOUCHES A CELL. NO SPOT WELDER.</strong> If a step
+here seems to need one, stop — it is the wrong step.</p>
+<p>ℹ️ The 1000 mm of 99.96 % nickel strip bought in India (<a
+href="#0-session-locked-decisions">§0</a>) is now <strong>unused
+stock</strong>. Keep it; do not let its presence argue for
+soldering.</p>
+</blockquote>
+<p><strong>Print first</strong> — the test coupon, then from <a
+href="../cad/freecad/lumi_cell_cartridge.py"><code>lumi_cell_cartridge.py</code></a>:
+the two caps (flat discs, outboard face down), the <strong>M8 hex nut ×
+2</strong>, the solid Ø8 rod, and the <strong>clover spacer ×
+2</strong>.</p>
+<ol type="1">
+<li><strong>Rod, caps, nuts.</strong> The solid Ø8 rod runs the central
+void between the four cells (Ø10.8 available, so 1.4 mm all round) and
+is threaded <strong>M8×1.25 at the ends only</strong>. Each cap is a
+flat disc that slides over a rod end (plain Ø8.6 hole); an <strong>M8
+hex nut</strong> screws on outside it and clamps it. The cells sit
+between the caps in compression, pushing each cap onto its nut.</li>
+<li><strong>Contacts.</strong> <strong>Keystone 5222 (−) spring</strong>
+in one cap, <strong>5221 (+) button</strong> in the other — molded-case
+family, 10.8 × 12.7 × 0.51 mm nickel-plated steel plates, each in a 0.9
+mm INBOARD pocket held by <strong>2× M1.2 × 2.5</strong> through its own
+holes. Bring each lead (18 AWG silicone) up the <strong>5.0 × 4.0 wire
+slot through the pocket centre</strong> from the outboard face and
+solder it to the <strong>back of the plate</strong>, plate lifted clear
+and cells out, before seating the plate. <strong>Strain relief is off
+the part and load-bearing — follow <a
+href="Electronics_Soldering_Guide.html#165-bms-wires--gauge-where-each-lands-and-how-to-solder-them">Soldering
+§16.5</a> exactly</strong> (it includes a 24 h RTV cure before the
+cartridge goes in). On the base cap, keep links A/C, taps, loops and
+slack <strong>out of the nut's sweep</strong> (r ≥ 9.5, the measured 13
+mm-socket sweep) — a run between two adjacent slots lies at r ≥ 13.</li>
+<li><strong>The two clover spacers are not optional, and they are
+SCREWED DOWN.</strong> They locate the cells (3.61 mm of slop in the
+bore → <strong>0.25 mm</strong>) and, screwed to their caps with
+<strong>4× M1.2 × 3 countersunk</strong> each, stop the whole pack
+sliding along the rod (bench, 2026-10-06: mandatory). Screw each to its
+cap before the cells go in; the upper one goes
+floor-toward-the-cap.</li>
+<li><strong>Load four 26700s</strong> (71 mm, not 70). DMM each first:
+healthy LiFePO4 rests at <strong>3.2–3.3 V</strong>; reject anything
+under 2.5 V and match all four to within <strong>~50 mV</strong>.
+Assembled stack is <strong>83.42 mm</strong> — that number is derived in
+CAD, not hand-summed (the hand-sum said 80.5 and was wrong by 0.61
+mm).</li>
+<li><strong>Output is 5 nets</strong> — <code>pack+</code>,
+<code>pack−</code>, <code>B1</code>, <code>B2</code>, <code>B3</code> —
+on a <strong>5-pin JST-XH</strong>, into the BMS. <em>(Unrelated to the
+6-pin joint connector; this one did not change.)</em></li>
+<li><strong>Fit it in the extension.</strong> The cartridge goes into
+one OPEN clamshell half and the other closes over it — it cannot slide
+in or out axially (the Ø66 caps will not pass the Ø64 neck or the Ø56
+stop ring). Cell changes mean opening the clamshell.</li>
+</ol>
+<h3
+id="37-build-the-three-st1-rails-usa-the-work-32-no-longer-does-in-india">3.7
+Build the THREE ST1 rails <em>(USA; the work §3.2 no longer does in
+India)</em></h3>
+<blockquote>
+<p>🧪 <strong>Acceptance = the bench rig, not inspection:</strong> the
+first rail built here is proven by <a
+href="Wand_Bench_Test_Phases.html#phase-2--one-rail-replaces-the-power-side-first-real-connectors">Bench
+Phase 2 — one rail replaces the power side</a>; the other two by <a
+href="Wand_Bench_Test_Phases.html#phase-3--the-other-two-rails--full-cable-set-everything-still-on-the-bench">Bench
+Phase 3 — full cable set</a>. No rail goes toward the clamshell without
+its phase passing.</p>
+</blockquote>
+<p>✅ <strong>All three rails are the SAME BOARD</strong> — same copper,
+same holes, and <strong>no track cuts at all</strong>. Only the
+connector population differs. Full layout and figure: <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">Integration
+— the rail layout</a>.</p>
+<p><strong>Cutting the rails.</strong> One BusBoard ST1 makes
+<strong>all three</strong> rails, <strong>6 strips × 20 holes each, 17 ×
+50 mm as cut</strong> (1 strip waste). <strong>Cut on the scroll
+saw</strong>, just outside the hole row, then file back square: fine
+skip-tooth blade, tape the cut line, dust mask (<a
+href="rules/electrical.html"><code>rules/electrical.md</code></a>,
+operator safety call 2026-10-06). Push-scoring stripboard with a scalpel
+is banned.</p>
+<p><strong>Copper is on ONE face.</strong> Connector bodies on the bare
+<strong>INNER</strong> face, solder on the copper <strong>OUTER</strong>
+(wall-facing) face.</p>
+<h4 id="white_check_mark-there-are-no-track-cuts-and-no-link-wire">✅
+There are NO track cuts and NO link wire</h4>
+<p>One net per strip, end to end:</p>
+<table>
+<thead>
+<tr>
+<th>Strip</th>
+<th>Net</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>SDA</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>SCL</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>3V3</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>GND-logic</code></td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>GND-power</code></td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>13.8 V</code></td>
+</tr>
+</tbody>
+</table>
+<p>⚠️ <strong>The star ground is structural:</strong>
+<code>GND-logic</code> (strip 4) and <code>GND-power</code> (strip 5)
+are <strong>separate strips</strong>, never joined, so there is nothing
+to cut apart.</p>
+<p>🔴 <strong>Run the pair checks — they catch a solder bridge between
+strips.</strong> All OPEN:</p>
+<ol type="1">
+<li><strong><code>GND-logic ↔︎ GND-power</code></strong> — strips 4 and 5
+(the star ground)</li>
+<li><code>3V3 ↔︎ GND-logic</code> (strips 3 and 4, either side of the M2
+holes) · 3. <code>SCL ↔︎ 3V3</code> · 4. <code>SDA ↔︎ SCL</code> · 5.
+<code>GND-power ↔︎ 13.8 V</code></li>
+</ol>
+<h4 id="connectors--every-one-is-01-berg-body-in">Connectors — every one
+is 0.1″ berg, body-IN</h4>
+<p>There is <strong>no JST-XH on the rail</strong>. The tether lands on
+a 6-pin in the <strong>end plate</strong>.</p>
+<table>
+<thead>
+<tr>
+<th>Landing</th>
+<th>Col</th>
+<th>Strips</th>
+<th>Fitted on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SIG IN</code> 4-pin ← cradle-board pigtail</td>
+<td>7</td>
+<td>1-4</td>
+<td>rail 30</td>
+</tr>
+<tr>
+<td>4× LED driver, two 4-pin berg strips</td>
+<td>7-10</td>
+<td>5-6</td>
+<td>rails 30 and 150</td>
+</tr>
+<tr>
+<td><code>PCA</code> 4-pin</td>
+<td>11</td>
+<td>1-4</td>
+<td>rail 30</td>
+</tr>
+<tr>
+<td><code>PWR IN</code> 2-pin ← cradle-board pigtail</td>
+<td>12</td>
+<td>5-6</td>
+<td>rails 30 and 150</td>
+</tr>
+<tr>
+<td><code>TMP</code> 4-pin</td>
+<td>13</td>
+<td>1-4</td>
+<td>rail 30</td>
+</tr>
+<tr>
+<td><code>FAN</code> 2-pin</td>
+<td>14</td>
+<td>5-6</td>
+<td>rail 30</td>
+</tr>
+</tbody>
+</table>
+<p>Rail 270 carries no berg strips: its plugs would foul the PCA's −Y
+edge. The four 240° / 300° DP leads and P270 solder straight into its
+holes (strip 6 = 13.8 V, strip 5 = GND-power; cols 7–10 and 12).</p>
+<p><strong>Mounting:</strong> two M2 holes centred <strong>between
+strips 3 and 4, at cols 4 and 17</strong> (13 columns = 33.02 mm), into
+the printed Ø7 posts at <strong>Z = 36.99 / 70.01</strong>, which sit on
+the inter-driver gap centreline. Drill Ø2.2: each hole trims both
+strips' edges but cuts neither. <strong>No solder in cols 3–5 or
+16–18</strong> (the post face).</p>
+<p>⬜ <strong>Try the first hole on a scrap</strong>, then on every rail
+meter <code>3V3 ↔︎ GND-logic</code> <strong>OPEN</strong> and strips 3
+and 4 each <strong>continuous end to end</strong> past both holes.</p>
+<h2 id="4-usa-build--wand-assembly--gated-bring-up-was-week-3-sep-17">4.
+USA BUILD — wand assembly + gated bring-up <em>(was “Week 3, Sep
+1–7”)</em></h2>
+<h3 id="41-handle-assembly">4.1 Handle assembly</h3>
+<p><em>Refs: <a
+href="Lumi_Wand_Integration.html#1058-hand-assembly-sequence">Integration
+§10.5.8 sequence</a>; <a
+href="Lumi_Wand_Integration.html#step-4-handle-assembly">§13 Step 4</a>
+(v9 mechanics — ignore its stale v8 text)</em></p>
+<ol type="1">
+<li><strong>VHB-mount the 12 drivers</strong> (<a
+href="Lumi_Wand_Integration.html#96-vhb-mounting-tape-spec-single-source-of-truth">Integration
+§9.6 VHB spec</a>; <a
+href="Electronics_Assembly_Guide.html#152-vhb-foam-tape--3m-vhb-5952-or-equivalent">Assembly
+Guide §15.2</a>): ~14 × 21 mm pads (packed VHB 5952 substitutes for 4910
+— same acrylic-foam class), press 5 s each, onto the 12 wall pockets.
+Terminals face the central cavity.</li>
+<li>Mount <strong>all three</strong> rails on their printed posts —
+<strong>2× M2 self-tap each</strong>, into the Ø7 posts at 30°/150°/270°
+(<a href="Lumi_Wand_Integration.html#1056-mounting-posts">Integration
+§10.5.6</a>) — <strong>before</strong> connecting cables.</li>
+<li>Seat the PCA9685 in its corner wedges; VHB strip per <a
+href="Lumi_Wand_Integration.html#96-vhb-mounting-tape-spec-single-source-of-truth">§9.6</a>
+if it needs help.</li>
+<li>Cable everything per <a
+href="Lumi_Wand_Integration.html#1053-the-three-rails--one-board-built-three-times">the
+rail layout</a> and the <a
+href="Lumi_Wand_Integration.html#1059-wand-harness-build-list--every-route-by-id-2026-10-24">§10.5.9
+build list</a>. ⚡ <strong>Two grounds, two strips:</strong> the 12
+drivers and the fan land on <code>GND-power</code> (strip 5), the
+PCA9685 and TMP102 on <code>GND-logic</code> (strip 4). Landing a driver
+on the logic side quietly puts 2.4 A through the wand's I²C reference.
+<strong>Every driver lead is soldered to the KESHY's clipped header
+stubs</strong> (<a
+href="Electronics_Assembly_Guide.html#122-driver-end--soldered-to-the-keshys-clipped-header-stubs">Assembly
+Guide §12.2</a>). <em>(The cold-flow rule — never tin a wire into a
+screw terminal — still governs the PD trigger, buck and INA226
+landings.)</em></li>
+<li>Lay the fan into the ±X printed forks during clamshell closure (no
+screws — <a
+href="Lumi_Wand_Integration.html#44-v9-threaded-modular-revision-landed-in-cad-2026-05-28">Integration
+§4.4 change #2</a>); route the 24-wire bundle down the 5 mm heatsink
+annulus, zip-tie at the L-tab shelf.</li>
+<li><strong>Head: lens plate first, THEN the head ring.</strong> Drop
+the <strong>lens plate</strong> onto the wand's three key pegs (any of
+the 3 orientations — the keying is 3-fold), then thread the <strong>head
+ring</strong> (M70×3) down onto it; the ring's lip clamps the plate
+before the thread runs out. (<a
+href="Lumi_Wand_Integration.html#91-head-ring--lens-plate-v99-active-3d-printed">Integration
+§9.1</a>). Then the <strong>end-cap</strong> (M72×3). Threads validated;
+a drop of WD-40 eases fresh FDM threads.</li>
+</ol>
+<h3 id="42-gated-bring-up--on-extension-power">4.2 Gated bring-up —
+<strong>on extension power</strong></h3>
+<p><em>Basis: <a
+href="Electronics_BringUp_Plan.html#phase-4--tmp102-thermal-telemetry-bay--wand">Bring-Up
+Plan Phase 4</a> + <a
+href="Electronics_BringUp_Plan.html#phase-5--pca9685-wand--led-bring-up">Phase
+5</a>, adapted: no bay, so no 0x44/0x48. Same sequence from the bench
+side: <a
+href="Wand_Bench_Test_Phases.html#after-phase-3--the-one-way-steps-in-order">Bench
+Phases — "After Phase 3: the one-way steps, in order"</a>.</em> The
+assembled extension (done in §3.5) is the supply and master for every
+gate — bench PSU is the fallback only. Run in order; each gate must pass
+before the next:</p>
+<ol type="1">
+<li><strong>Gate A — bus:</strong> scan shows <strong>exactly 0x40 +
+0x49</strong> through the assembled rails, extension-powered through the
+<strong>6-pin joint connector at the +Y cradle</strong>, which feeds the
+three rails as a star. Nothing else should answer — no CST816 on the
+non-touch bench board.</li>
+<li><strong>Gate B — channels:</strong> per-channel 0→100→0 sweep of all
+12 (web UI slider or Button 2 sweep). Watch for wrong-channel mapping
+against the <a
+href="Lumi_Wand_Integration.html#103-led-driver--led-star-wiring-map-channel-assignments">Integration
+§10.3 channel map</a>.</li>
+<li><strong>Gate C — fan:</strong> ch13 at 20 % spins; 100 % roars;
+firmware curve responds to a warm TMP102 (touch it with a finger).</li>
+<li><strong>Gate D — thermal bond proof:</strong> ≤30 s full-bright must
+raise TMP102-wand <strong>≥5 °C</strong> (<a
+href="Electronics_BringUp_Plan.html#phase-5--pca9685-wand--led-bring-up">Phase
+5 criterion</a>); flat reading = bad bond or wrong sensor.</li>
+<li><strong>Gate E — ALL-12 full-power.</strong> ⚠️ <strong>Corrected
+2026-09-01:</strong> all-12 draws <strong>~2.4 A</strong>, not ~6.7 A,
+so this gate <strong>no longer requires the pack</strong> — run it on
+the bench PSU as soon as the wand is cabled. Run all 12 channels at 100
+% (≤30 s bursts until Gate F) and verify no brownout. <strong>Then
+repeat it on the pack</strong> for the checks that are genuinely
+pack-specific: no BMS trip, no buck/ESP32 brownout under load, and
+observed runtime.</li>
+<li><strong>Gate F — soak:</strong> 1 h thermal soak on battery;
+heatsink &lt;70 °C with the fan curve doing the work; note battery drain
+rate for the runtime spec.</li>
+</ol>
+<p><strong>Exit gate W3:</strong> assembled wand passes all six gates
+<strong>on battery power</strong> — the standalone spotlight is
+functionally DONE at the end of week 3, unenclosed.</p>
+<h2
+id="5-usa-build--mechanical-integration-soak-polish-was-week-4-sep-814">5.
+USA BUILD — mechanical integration, soak, polish <em>(was “Week 4, Sep
+8–14”)</em></h2>
+<h3
+id="50a-waveshare-lcd-board-port--prerequisite-for-everything-below">5.0a
+Waveshare LCD board port — <strong>prerequisite for everything
+below</strong></h3>
+<p><em>Refs: <a
+href="Lumi_Wand_Flashlight_Variant.html#322-waveshare-esp32-s3-lcd-19-with-touch--full-spec-card">Flashlight
+§3.2.2</a> (mount), <a
+href="Lumi_Wand_Flashlight_Variant.html#421-esp32-waveshare-esp32-s3-touch-lcd-19-pin-assignments--build-board-mapped-2026-08-28">§4.2.1</a>
+(pin map)</em></p>
+<p>The board that goes <strong>into the shell</strong> is the
+<strong>Waveshare ESP32-S3-LCD-1.9 (With Touch)</strong>, in hand in
+India. The bench LiLyGO stays on the bench. Same ESP32-S3, same 1.9″
+170×320 ST7789-family panel, same CST816 touch — but <strong>different
+GPIO numbers</strong>, so <code>src/config.h</code> and
+<code>src/lgfx_tdisplay_s3.h</code> are LiLyGO-specific and do not carry
+over. Do this work in week 1–2 evenings; do not let it start in week
+4.</p>
+<ol type="1">
+<li>✅ <strong>Pin map harvested 2026-08-28</strong> — the full map is
+in <a
+href="Lumi_Wand_Flashlight_Variant.html#421-esp32-waveshare-esp32-s3-touch-lcd-19-pin-assignments--build-board-mapped-2026-08-28">Flashlight
+§4.2.1</a>. Beep it against your own unit before flashing; Waveshare
+revises boards quietly.</li>
+<li><strong>Wand I²C → GPIO 15 (SDA) / GPIO 16 (SCL)</strong> — a
+<strong>dedicated second bus</strong>. The board's broken-out "I2C" is
+GPIO 47/48, which is <strong>shared by the CST816 touch AND the QMI8658
+IMU</strong>; keeping the wand harness off it protects the touch panel
+and keeps the Gate-A criterion ("exactly 0x40 + 0x49") unchanged from
+the LiLyGO rig. Record it in <code>config.h</code>.</li>
+<li><strong>New LovyanGFX panel config</strong>
+(<code>lgfx_waveshare_s3.h</code>) — 🔴 <strong>the panel is SPI, not
+parallel-8</strong> (LCD_CLK 10 / DIN 13 / DC 11 / CS 12 / RST 9 / BL
+14). The LiLyGO's <code>Bus_Parallel8</code> config will not drive it;
+use <code>lgfx::Bus_SPI</code>, ST7789-family, 170 × 320.</li>
+<li>🔴 <strong>Move Button 2 off GPIO 14 — that's LCD_BL on this
+board.</strong> The channel-sweep self-test is currently
+<code>PIN_BTN_USER 14</code>. Reassign to <strong>GPIO 0
+(BOOT)</strong>, the board's only other button, or drop the physical
+button on this SKU and drive the sweep from the web UI.</li>
+<li>🔴 <strong>The on-board BAT_ADC (GPIO 4) cannot read our
+pack</strong> — it's wired to the board's 1S LiPo connector and tops out
+~4.2 V. Add an <strong>external divider across the rocker-switched 12 V
+rail</strong> into <strong>GPIO 3</strong> (ADC1): 100 kΩ / 20 kΩ puts
+14.6 V at 2.43 V, draws 122 µA only while the wand is on. Calibrate
+against a DMM.</li>
+<li><strong>Bench-prove the ported firmware on the breadboard
+rig</strong> (Phase 1, <a
+href="Wand_Bench_Test_Phases.html#phase-1--minimal-breadboard-rig-1-star-4-drivers-pca9685-tmp102-heatsink">Bench
+Phases</a>) before the board goes anywhere near the shell: bus scan →
+<strong>exactly 0x40 + 0x49</strong> on the dedicated bus → web UI dims
+a real star. <em>(Only if you ignore step 2 and share GPIO 47/48 does
+the scan also show CST816 ~0x15 and QMI8658 0x6A/0x6B — no address
+clash, but the gate wording would have to change.)</em></li>
+<li>⚠️ <strong>Fallback if the port slips:</strong> ship the India unit
+on the bench LiLyGO (accepting the facet mismatch or a temporary
+external mount) and treat the Waveshare shell as Rev 2. A working
+spotlight on the wrong board beats a dead one on the right board.</li>
+</ol>
+<h3 id="51-mechanical-integration">5.1 Mechanical integration</h3>
+<blockquote>
+<p>🖨️ <strong>Needs the complete printed set</strong> — <a
+href="#2a3-print-order">§2A.3</a>, and the post-print checks in <a
+href="#2a5-post-print--before-anything-is-assembled">§2A.5</a> should
+already be signed off. Step 2's ear calipering is one of them.</p>
+</blockquote>
+<ol type="1">
+<li><strong>Mate the halves for real:</strong> board-to-board
+<strong>6-pin</strong> JST-XH via the glue cradles — ✅
+<em><code>JST_CONN_L</code> / <code>JST_M_L</code> are <strong>17.4
+mm</strong> (6-pin), and the seating perfboard is <strong>8 columns
+(20.32 mm)</strong>.</em> — clock the 225° tab, ring-thread wand ↔︎
+extension (threads validated), end-cap on the bottom peg (<a
+href="Lumi_Wand_Flashlight_Variant.html#383-usb-c-jack-selection--perfboard-mount-locked-2026-06-26">§3.8.3
+dev-port USB-C</a> accessible).</li>
+<li><strong>Gripper fit — do this before the enclosed soak, not
+after.</strong> Close the BigClaw on the <strong>+Y ear</strong> (not
+the barrel) and check three things: the jaw blades seat in the
+<strong>32 × 22 × 4 mm cradle</strong> in each tangential face; the wand
+does <strong>not rock</strong> when you push on the head end; and the
+jaws stop with travel left, rather than bottoming out. The ear is
+<strong>25.4 mm</strong>. If it still rocks, the shell is a
+pre-2026-09-28 print — measure across the two cradle floors:
+<strong>17.4 mm</strong> is current, 8 mm is the old tab.</li>
+<li><strong>Enclosed re-run of gates A–F</strong> — same criteria, now
+fully assembled (thermals change once enclosed; the fan curve earns its
+keep here).</li>
+<li>Multi-hour standalone soak + charge-cycle test (PD in, full-bright
+out).</li>
+<li>Firmware/UI polish: battery readout calibration,
+soft-off/deep-sleep, presets/effects. Touch UI is now <strong>feasible
+again on the Waveshare</strong> (its CST816 is live and on a bus we can
+reach) — but it stays a stretch goal behind §5.0a and the soak. Buffer
+days for slips.</li>
+</ol>
+<p><strong>Done =</strong> wand + extension, phone-controlled (touch UI
+stretch), battery-powered, thermally stable at full brightness — proven
+unenclosed in week 3, enclosed in week 4.</p>
+<h2 id="6-risk-register">6. Risk register</h2>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Mitigation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Firmware never ran on hardware</td>
+<td>First-light rig in week 1, before any irreversible assembly</td>
+</tr>
+<tr>
+<td>Waveshare firmware port not written (§5.0a)</td>
+<td>Start it week 1, not week 4; bench-prove the ported firmware on the
+breadboard rig with the Waveshare BEFORE it goes in the shell. Fallback:
+ship the India unit on the bench LiLyGO and defer the Waveshare to a
+Rev-2 shell</td>
+</tr>
+<tr>
+<td>Printed extension facet may be LiLyGO-geometry, not Waveshare</td>
+<td>Dry-fit moved to week 1 (§2.5). Reprint of the 2 halves is ~a day of
+print time — recoverable if caught early, schedule-breaking if caught in
+week 4</td>
+</tr>
+<tr>
+<td>Doc-vs-firmware pin drift (bit us once already on SDA/SCL)</td>
+<td><code>firmware/wand_extension/src/config.h</code> is the single
+source of truth for every ESP32 pin; docs quote it, never restate it
+from memory</td>
+</tr>
+<tr>
+<td>Epoxy bond is one-way</td>
+<td>Hard gate: every channel + 0x49 verified before mixing; re-verified
+post-cure</td>
+</tr>
+<tr>
+<td>LiFePO4 pack on the bench from week 1</td>
+<td>BMS-protected, rocker cutoff wired in from the first bench-up;
+disconnect a pack lead for storage; charge in shade/AC (Punjab August
+heat — low-temp cutoff irrelevant this season)</td>
+</tr>
+<tr>
+<td>JST-XH glue-cradle failure</td>
+<td>Proto-board fallback mount (docs contingency)</td>
+</tr>
+<tr>
+<td>No IPA/sandpaper for bond prep</td>
+<td>Scrape + dry-wipe; accept slightly lower bond margin — bond area is
+generous</td>
+</tr>
+</tbody>
+</table></body></html>

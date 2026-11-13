@@ -1,0 +1,201 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CNC_CameraPlate_Single</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="cameramount-oak-d-bench-prep--halo-copy">CameraMount Oak-D bench
+prep — Halo copy</h1>
+<p><strong>Program:</strong> <a
+href="../cad/exports/cnc/CameraMount_Oak-D.nc"><code>cad/exports/cnc/CameraMount_Oak-D.nc</code></a>
+(unchanged geometry since the Ultra plate; readiness-pass fixes
+2026-10-11) <strong>Machine:</strong> Stepcraft 840 D3 / UCCNC
+<strong>Reference STEP:</strong> <a
+href="../cad/plasticity/CameraMount_Oak-D.step"><code>cad/plasticity/CameraMount_Oak-D.step</code></a>
+<em>(same part cut on Ultra)</em> <strong>Rules of engagement:</strong>
+<a href="rules/cnc.html"><code>docs/rules/cnc.md</code></a></p>
+<h2 id="pre-cut-shopping-list-all-in-kit--nothing-to-order">Pre-cut
+shopping list (all in-kit — nothing to order)</h2>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Spec</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Stock</strong></td>
+<td>~100 × 60 × 2.04 mm aluminum blank</td>
+<td>Oversize of the 91.3 × 51 mm finished plate; edges available for
+clamping outside the cutter path. Any blank ≥95 × 56 works. The plate's
+camera end was lifted +6 mm Y 2026-10-29 (BigClaw-ear clearance);
+tail-tab pair unchanged, so the plate is asymmetric about the NC zero —
+physical centre is 3 mm north of X0 Y0.</td>
+</tr>
+<tr>
+<td><strong>T2 SHARPRO 1/8" O-Flute</strong></td>
+<td>Ø3.175 cutter, 1/4" shank</td>
+<td>Only tool used — holes, slot, and outside contour all cut with it.
+Kodiak 1/8" is retired, SHARPRO is the only 1/8" endmill on hand.</td>
+</tr>
+<tr>
+<td><strong>Collet</strong></td>
+<td>1/4" OZ8</td>
+<td>Pre-installed before OP1</td>
+</tr>
+<tr>
+<td><strong>Hold-down A</strong></td>
+<td>Edge clamps or ~4 toe clamps on the stock perimeter</td>
+<td>Carries OP1 + OP2 (low-force hole/slot cuts)</td>
+</tr>
+<tr>
+<td><strong>Hold-down B</strong></td>
+<td>4× M3 × ~15 mm SHCS + hex key</td>
+<td>At M0: operator screws the part down through the 4 OAK-D M4
+clearance holes it just cut, into the spoilboard. Carries OP3
+(part-separating contour).</td>
+</tr>
+<tr>
+<td><strong>Spoilboard</strong></td>
+<td>Sacrificial 2 mm+ MDF/HDPE/ply</td>
+<td>Cuts go to Z=−3.0 = 1 mm into the spoilboard; required for clean
+breakthrough</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sequence-at-the-machine">Sequence at the machine</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>What happens</th>
+<th>Operator action</th>
+<th>Est. time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PRE</strong></td>
+<td>Stock edge-clamped to spoilboard with its scribed NC-zero point at
+X0 Y0 (the plate's physical centre lands 3 mm north of X0 Y0 — see Stock
+note). T2 SHARPRO in 1/4" OZ8 collet, installed. Z zero on stock top
+face via SHARPRO tip. X/Y zero at the scribe.</td>
+<td>Set up. Press Cycle Start.</td>
+<td>5 min</td>
+</tr>
+<tr>
+<td><strong>M0 #0</strong></td>
+<td>Setup banner — re-reads this checklist</td>
+<td>Confirm PRE items. Press Cycle Start.</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>OP1 — Camera Holes &amp; Slot</strong></td>
+<td>T2 cuts the OAK-D camera clearance slot + 4× M4 clearance holes.
+<strong>S18000, F600 XY, F100 plunge, Z=−3.0.</strong></td>
+<td>Watch.</td>
+<td>~2 min</td>
+</tr>
+<tr>
+<td><strong>OP2 — Robot Mount Holes</strong></td>
+<td>T2 cuts the 2× M3 tail-tab mounting holes at 17.17 c-c (these are
+what bolt to the printed PETG+ L-adapter). Same spindle, no tool change.
+Spindle parks <code>X=120, Y=−60, Z=25</code>, M5.</td>
+<td>Watch.</td>
+<td>~30 sec</td>
+</tr>
+<tr>
+<td><strong>M0 (mid-program)</strong></td>
+<td>—</td>
+<td><strong>Screw the part down through the 4 OAK-D M4 holes</strong>
+that OP1 just cut, into the spoilboard. 4× M3 × ~15 mm SHCS,
+finger-snug. <strong>This hold-down is what carries OP3 — the outside
+contour severs the plate from the stock, and these 4 bolts are what keep
+the finished part in place.</strong> Press Cycle Start.</td>
+<td>~2 min</td>
+</tr>
+<tr>
+<td><strong>OP3 — Outside Contour</strong></td>
+<td>T2 cuts the outside perimeter of the plate (91.3 × 51 with tail
+tabs), tool-radius compensated outward 1.588 mm. Final pass at Z=−3.0
+severs the part. Spindle parks <code>X=120, Y=−60, Z=25</code>, M5,
+M30.</td>
+<td><strong>Watch the final pass — breakthrough.</strong> The
+surrounding stock comes free; the finished part stays bolted.</td>
+<td>~1 min</td>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td>De-burr edges + any flash from the slot. The 4 M4 holes are the
+camera mount; the 2 M3 holes are the adapter mount.</td>
+<td>Unscrew the 4 M3 bolt-downs, lift the plate off. Clean the OAK-D M4
+holes of any clinging swarf.</td>
+<td>~3 min</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Total runtime:</strong> ~4 min cutting + ~10 min operator
+time. Allow 20-30 min bench time per plate.</p>
+<h2
+id="v910-heatsink-vs-this-program--differences-to-keep-in-mind">v9.10
+heatsink vs this program — differences to keep in mind</h2>
+<ul>
+<li><strong>One tool, not two.</strong> No OP1 drill phase. The 1-flute
+endmill cuts everything — holes, slot, perimeter.</li>
+<li><strong>One M0, not three.</strong> Only the mid-program bolt-down
+pause; no T1→T2 collet change, no OP2→OP3 waste-removal.</li>
+<li><strong>No special waste behaviour.</strong> OP3 severs cleanly —
+surrounding stock comes free as one surrounding frame, not 4 corner
+offcuts. Puck-style corner-offcut hazard does NOT apply here.</li>
+<li><strong>Plate is thin (2.04 mm) and small.</strong> Edge clamps
+alone will drift under lateral load if the stock isn't a snug clamp —
+don't skimp on the clamp plan.</li>
+</ul>
+<h2
+id="readiness-pass-fixes-applied-to-the-nc-2026-10-11">Readiness-pass
+fixes applied to the NC 2026-10-11</h2>
+<p>The underlying NC had been sitting unchanged since the Ultra plate
+was cut in March 2026 and failed the current
+<code>docs/rules/cnc.md</code> audit on four of six counts. Fixes,
+content-identical in G-code motion:</p>
+<ul>
+<li><strong>LF → CRLF</strong> line endings. UCCNC on LF-only reads the
+whole file as one line.</li>
+<li><strong><code>M6 T2</code> deleted.</strong> Replaced with a dated
+removal note. On this manual-tool-change UCCNC install the M6 macro
+consumes the following <code>S..M3</code> and the spindle never
+starts.</li>
+<li><strong>Explicit <code>G21</code></strong> added to the preamble.
+File header comment said "mm" but UCCNC needs the actual mode word.</li>
+<li><strong>M0 #0 setup banner</strong> added at program start — gives
+the operator a confirm-setup pause before any cutting, matching the
+heatsink and base plate NCs in this repo.</li>
+</ul>
+<p>Motion delta vs the Ultra-cut version: <code>+G21</code>,
+<code>−M6 T2</code>. No X/Y/Z/F coordinates changed. Finished part
+geometry is unchanged.</p>
+<h2 id="known-deviation-from-rulescncmd-not-blocking">Known deviation
+from rules.cnc.md, not blocking</h2>
+<p>Zero. All eight safety checks pass. First NC in this repo that comes
+clean on the full audit — because the readiness-pass fixes are fresh and
+I wrote the banner knowing the rule.</p>
+<h2 id="verifier-that-must-pass-before-loading-on-uccnc">Verifier that
+must pass before loading on UCCNC</h2>
+<p>Zero on every count:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> <span class="at">-</span> <span class="op">&lt;&lt;&#39;PY&#39;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">import re</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">p = &#39;cad/exports/cnc/CameraMount_Oak-D.nc&#39;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">raw = open(p,&#39;rb&#39;).read()</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">lines = raw.decode(&#39;ascii&#39;).split(&#39;\r\n&#39;)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">checks = {</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;non-ASCII&#39;:      sum(b&gt;127 for b in raw),</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;;-comments&#39;:     sum(1 for L in lines if L.lstrip().startswith(&#39;;&#39;)),</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;unclosed (&#39;:     sum(1 for L in lines if L.strip().startswith(&#39;(&#39;) and not L.strip().endswith(&#39;)&#39;)),</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;[]-in-()&#39;:       sum(1 for L in lines if L.strip().startswith(&#39;(&#39;) and (&#39;[&#39; in L or &#39;]&#39; in L)),</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;nested ( in ()&#39;: sum(1 for L in lines if L.strip().startswith(&#39;(&#39;) and L.count(&#39;(&#39;) &gt; 1),</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;lone-LF&#39;:        raw.count(b&#39;\n&#39;) - raw.count(b&#39;\r\n&#39;),</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;T# M6&#39;:          sum(1 for L in lines if re.match(r&#39;^T\d+\s+M6\s*$&#39;, L.strip())),</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="st">    &#39;M6 T#&#39;:          sum(1 for L in lines if re.match(r&#39;^M6\s+T\d+\s*$&#39;, L.strip())),</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="st">}</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="st">for k, v in checks.items(): print(f&#39;  {k:16s} {v}&#39;)</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="op">PY</span></span></code></pre></div>
+<p><strong>Last-known-good verifier pass:</strong> 2026-10-29 (post +6
+mm camera lift; 8/8 clean).</p></body></html>
