@@ -1603,20 +1603,27 @@ the G469 instead. Every other Pi 5 uses its onboard fan header (added
 <td>4</td>
 <td>5V</td>
 <td>Pi5 cooler (Ultra only)</td>
-<td>red, via a JST-SH 1.0 4-pin pigtail → 26 AWG</td>
+<td>red, cooler lead cut and solder-spliced to a 26 AWG extension</td>
 <td><strong>3rd conductor in pin 4's ferrule</strong>, with SPS30 VDD +
 ZE15-CO VCC (pin 2 is full with the 4 PIRs). All three must be 26 AWG:
 the cooler's own ~30 AWG lead is too short to reach and would not hold
 beside 26 AWG in one ferrule. Ultra's Pi 5 fan connector is broken, so
 the cooler lands here (operator order 2026-11-04). Not on Halo, Nova or
-any product build. Pigtail confirmed by the operator 2026-11-11.</td>
+any product build. <strong>Splice, not a connector:</strong> the
+cooler's JST-SH plug is cut off, and each of its four wires is soldered
+colour-to-colour onto its own 26 AWG wire, about 600 mm to the G469, cut
+to fit along the FFC route. The joints are staggered so they don't sit
+side by side, each one gets its own heat-shrink, and one larger sleeve
+goes over the group. Before power: meter 5 V ↔︎ GND for no short at the
+G469 end, and check each colour for continuity end to end. A replacement
+cooler means cutting and splicing again.</td>
 </tr>
 <tr>
 <td>Cooler GND</td>
 <td>14</td>
 <td>GND</td>
 <td>Pi5 cooler (Ultra only)</td>
-<td>black, via the pigtail</td>
+<td>black, via the splice</td>
 <td>Own GND terminal. (Halo v1 as-built uses 14 for its TMP102-bay GND;
 Halo has no cooler here, so no clash.)</td>
 </tr>
@@ -1625,7 +1632,7 @@ Halo has no cooler here, so no clash.)</td>
 <td>12</td>
 <td>GPIO18</td>
 <td>Pi5 cooler (Ultra only)</td>
-<td>blue, via the pigtail</td>
+<td>blue, via the splice</td>
 <td>Pi 5 PWM0 channel 2; GPIO12 (bay fans) is channel 0 of the same
 block. GPIO18 is also PCM/I²S CLK: fine while Ultra's audio stays USB
 (WonderEcho / iFLYTEK).</td>
@@ -1635,7 +1642,7 @@ block. GPIO18 is also PCM/I²S CLK: fine while Ultra's audio stays USB
 <td>18</td>
 <td>GPIO24</td>
 <td>Pi5 cooler (Ultra only)</td>
-<td>yellow, via the pigtail</td>
+<td>yellow, via the splice</td>
 <td>Pi <strong>internal</strong> pull-up, no resistor. <strong>Never
 pull to 5 V</strong> — GPIO is 3.3 V only.</td>
 </tr>
