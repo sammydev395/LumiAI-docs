@@ -159,21 +159,20 @@ book rebuild (X1C 27 / H2S 31 / 32 + the 4th arm), Karma gates.</td>
 the rear cap or the SPS30 carrier plate until the operator says
 <strong>"print it" on a render</strong> (CTO). CAD fixed them on the
 operator's calipers while fitting the Ultra: <strong>AC inlet</strong>
-cut to the WPF-1 body 17.6 × 26 (+0.3; ⛔ <em>was the drawing's 15.9 ×
-24.7 C13 face</em>), the AC frame face 26.2 proud, 0.5 past the fan
-towers, so the 30 mm flange + spring cover sits and opens outside the
-tower channel; <strong>rear posts #5 / #6</strong> stop at plate Z 46 (2
-over the strap bars) so the battery slides under; <strong>DROK upper
-bosses</strong> plain (keel + gusset web removed: they blocked the
-board; book paints a support enforcer under each, operator-approved);
-<strong>rear cap</strong> 6 snaps (the 2 channel-side face fingers sat
-where the C14 hinge goes); <strong>SPS30 carrier</strong> chamfers 7 →
-11.5 (clears the base cover's brass-post sleeve 1.6). Fence OVERALL_OK
-incl. strength rows (ASA yield / 3); 3dPrint PASS; CTO approved. Book
-actions at the rebuild: DROK enforcers, place the rear cap (ASA, H2S
-slot 2). <strong>Hardware for the battery +5 mm:</strong> the plate-side
-brass standoffs under posts #5 / #6 must stop at Z ≥ 40 or the battery's
-back corners hit them.</td>
+cut to the WPF-1 body 17.6 × 26 (+0.3), the AC frame face 26.2 proud,
+0.5 past the fan towers, so the 30 mm flange + spring cover sits and
+opens outside the tower channel; <strong>rear posts #5 / #6</strong>
+stop at plate Z 46 (2 over the strap bars) so the battery slides under;
+<strong>DROK upper bosses</strong> plain (keel + gusset web removed:
+they blocked the board; book paints a support enforcer under each,
+operator-approved); <strong>rear cap</strong> 6 snaps (the 2
+channel-side face fingers sat where the C14 hinge goes); <strong>SPS30
+carrier</strong> chamfers 7 → 11.5 (clears the base cover's brass-post
+sleeve 1.6). Fence OVERALL_OK incl. strength rows (ASA yield / 3);
+3dPrint PASS; CTO approved. Book actions at the rebuild: DROK enforcers,
+place the rear cap (ASA, H2S slot 2). <strong>Hardware for the battery
++5 mm:</strong> the plate-side brass standoffs under posts #5 / #6 must
+stop at Z ≥ 40 or the battery's back corners hit them.</td>
 <td>the reprint the operator ordered; printing an old plate wastes
 ASA</td>
 </tr>
@@ -1475,27 +1474,25 @@ PASS on 11 and 12. Slices (CAD <code>454f75e8</code>):
 / 67.9 g.</td>
 </tr>
 <tr>
-<td>Full assembly regenerated (CAD 2026-11-11):
+<td>Full assembly regenerated (CAD 2026-11-13, on <code>dfae8226</code>
++ <code>c6bdc90a</code>):
 <code>cad/Assemblies/Full Assembly - BigClaw - Camera - Arm.step</code></td>
 <td>One STEP file, merged at the STEP text level on the operator's
 export: his products, colours and every other entity byte-identical. It
-carries the current parts: cradles on 3dPrint's <code>84372dfe</code>
-exports (7 phone groups, read-only), the Ø86 wand and its wired twin,
-the EBC covers with the point D fix (<code>c3bc7ab4</code>), the 90 mm
-fence with keel stems (<code>454f75e8</code>), the base covers, and a
-new product group <strong>HELD - Wand Extension - Waveshare</strong> (37
-parts, from
-<code>lumi_wand_extension_WAVESHARE_REFERENCE_not_printable_WANDFRAME.step</code>,
-placed on the wired wand by the same registration). The extension
-replaces the wand's endcap ring + plate (flashlight SKU), so the two
-overlap by design; hide one or the other.
-<code>Power Bay - Wired.step</code> was regenerated with it (the bay
-stage checks the fence against it). Stages plan / bay / cradles / text /
-verify all PASS (310 products, 3061 styled items, 2208 solids; re-import
-puts all 39 extension solids where planned). The bay stage's as-found
-rule now also accepts a contact no deeper than the operator's own body:
-the regenerated base cover top meets arm plates COMPOUND004 / COMPOUND
-by 129.3 / 126.7 mm³, his top by 134.0 / 132.0.</td>
+carries the fence of <code>dfae8226</code> (WPF-1 C14 inlet cut to its
+body, rear posts #5 / #6 stopped above the strap bars, no DROK gussets),
+the ZE15 / SPS30 carriers on their studs, the cradles as exported at
+<code>c6bdc90a</code> (<strong>cradle review pending 3dPrint's fix: see
+the HOLD row</strong>), the Ø86 wand, its wired twin and the HELD
+Waveshare extension. <code>Power Bay - Wired.step</code> was regenerated
+with it: straight fully insulated 4.8 Fastons on the three C14 blades
+(flags stay on the rockers); E / N join the raised span at Y 100 past
+tower 1 and cross the BATT leads 10.0 apart (rule 8); A3 runs the floor
+lane 13.4 from the battery; strain relief 36–48.6 from each end (47
+checks). Stages plan / bay / cradles / text / verify all PASS (styled
+items 3251, solids 2398; re-import puts every planned solid where
+planned). Battery shift held at 0 until the back-PIR gap is
+measured.</td>
 </tr>
 <tr>
 <td>EBC covers (H2S plate 6): vents up the slope, head-pocket membrane;
