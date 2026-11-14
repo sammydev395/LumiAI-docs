@@ -40,11 +40,13 @@ STM32 Controller Card — Hiwonder ArmPi Ultra High-Performance Robotic
 Arm Controller</h2>
 <p>Modular design with a high-performance STM32 processor + 2 bus servo
 ports + buzzer + customizable keys + I²C and GPIO breakouts. Acts as the
-bay's <strong>power hub</strong> — takes 7.4-8.4 V in (<strong>7.5
-V</strong>, Hiwonder's own adapter voltage; until the HV servo swap the
-same input feeds the servo bus, after it the servos get their own 11.1 V
-rail, see <em>Servo and board power</em> below), and provides regulated
-5 V @ 5 A out to feed the RPi5 and downstream USB peripherals.</p>
+bay's <strong>power hub</strong> — takes up to 12 V in (Hiwonder's
+rating, which also binds every peripheral on the board's input rail; run
+at <strong>7.5 V</strong>, Hiwonder's own adapter voltage; until the HV
+servo swap the same input feeds the servo bus, after it the servos get
+their own 11.1 V rail, see <em>Servo and board power</em> below), and
+provides regulated 5 V @ 5 A out to feed the RPi5 and downstream USB
+peripherals.</p>
 <blockquote>
 <p><em>STM32 controller card photo — drop at
 <code>docs/images/electronics_bay/armpi_ultra_stm32_controller.png</code>
@@ -63,9 +65,9 @@ when captured.</em></p>
 <tbody>
 <tr>
 <td>Power input</td>
-<td><strong>7.4-8.4 V</strong> (vendor spec; held at <strong>7.5
-V</strong> on every build, see <em>Servo and board power</em>
-below)</td>
+<td><strong>up to 12 V</strong> (Hiwonder; also binds every peripheral
+on the input rail; held at <strong>7.5 V</strong> on every build, see
+<em>Servo and board power</em> below)</td>
 <td>LED</td>
 <td>2</td>
 </tr>
@@ -171,13 +173,18 @@ under the same load with no current, so the servo chain always goes on
 port 1. The same 12 V test ran the board, Pi and 5 V converter clean
 (<code>get_throttled</code> 0x0, EXT5V 5.16–5.19 V, 7 power-ups under
 load incl. 5 back-to-back; nothing warm); it was 2.8 A, so nothing above
-3 A is proven. The board's own rating is <strong>7.4–8.4 V</strong>; its
-16 V input tantalums (under the child board) and the unidentified CUR6UA
-regulator are why it is never run higher: at 11.1 V the tantalums sit at
-69 % of rating, past the common 50 % tantalum derating, and surviving
-seven inrushes does not prove long-term life. <strong>Every build holds
-the board at 7.5 V</strong>, Hiwonder's own adapter voltage (7.5 V 6 A,
-read off the stock adapter's label).</p>
+3 A is proven. Hiwonder rates the board's input at <strong>up to 12
+V</strong>, and that ceiling also binds every peripheral on the board's
+input rail; there is no regulation between the input and the servo
+ports. Hiwonder has <strong>not tested</strong> the board with six HV
+servos at 11.1 V and cannot confirm it handles their combined peak
+current, so Halo's port-1 load test decides that. Still open: its 16 V
+input tantalums (under the child board) sit at 69 % of rating at 11.1 V,
+past the common 50 % derating for MnO2 tantalums (polymer parts allow
+~80 %); their marking decides it, and surviving seven inrushes does not
+prove long-term life. The CUR6UA regulator is unidentified.
+<strong>Every build holds the board at 7.5 V</strong>, Hiwonder's own
+adapter voltage (7.5 V 6 A, read off the stock adapter's label).</p>
 <ul>
 <li><strong>Shipping configuration (LV servos: LX-15D, HTS-25L, LX-225,
 HX-06L, all 6–8.4 V):</strong> one rail. The DROK sets <strong>7.5
@@ -192,8 +199,10 @@ measured 9.11 V on 2026-11-02, re-set per <a
 href="Power_Bay_Design.html">Power_Bay §4 power-up</a>;
 <strong>Nova</strong> sets 7.5 V at first power-up.</li>
 <li><strong>Future upgrade, not the shipping configuration: the HV servo
-swap (all six HV, 9–12.6 V; all six together or none; deferred, the
-product releases with the LV servos).</strong> Everything below this
+swap (all six HV, 9–12.6 V; all six together or none; the product
+releases with the LV servos. <strong>Halo converts first:</strong> one
+HV arm set (servos, bracket packs, metal horn packs) is on order,
+install window the week of 2026-11-24).</strong> Everything below this
 bullet applies only after the swap. Two independent rails, both behind
 the DC rocker so one switch kills servos and board together.
 <ul>
@@ -227,8 +236,9 @@ board modification, no stock cable cut. The injector goes on
 <strong>port 1</strong> (the port proven to carry load); port 2 stays
 empty. With the injector, the servo current no longer crosses the
 board's ~0.24 Ω path and the input tantalums stay at 7.5 V (47 % of
-rating); the injector's reason is the board's 7.4–8.4 V rating and those
-tantalums, not the drop (the HV arm draws ~0.68× the LV current, so
+rating); the injector's reason is the tantalum margin and the board's
+untested peak current with six HV servos (11.1 V is inside the 12 V
+rating), not the drop (the HV arm draws ~0.68× the LV current, so
 through the board it would lose less than today's 7.5 V arm does).</li>
 <li><strong>Ground:</strong> the servo signal is referenced to board
 GND, so GND stays through the injector. The 11.1 V return gets its own

@@ -679,8 +679,8 @@ href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alt
                                               ├─► pin 5 = 3V3 (PCA9685 / TMP102 VCC, from the
                                               │            Pi5 GPIO 3V3 rail via the G469)
                                               └─► pin 6 = GND-logic (to G469 pin 9)</code></pre>
-<p><strong>Note on the STM32 board:</strong> the vendor spec sheet cites
-Vin 7.4–8.4 V, and the DROK sets <strong>7.5 V</strong>, Hiwonder's own
+<p><strong>Note on the STM32 board:</strong> Hiwonder rates its input at
+up to 12 V, and the DROK sets <strong>7.5 V</strong>, Hiwonder's own
 adapter voltage (operator 2026-11-02). The board passes that input
 straight to the arm's servo bus, and the LX-15D / HTS-25L are rated
 6–8.4 V, so the setpoint never goes above 8.4 V (<a

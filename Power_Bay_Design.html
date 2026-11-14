@@ -3407,11 +3407,16 @@ day one.</p>
 note"):</strong> <strong>C14 inlet, AC rocker and DC rocker blades are
 all 4.8 × 0.8 mm</strong> (rockers operator-measured 2026-11-05; C14 per
 the QTEATAK WPF-1 datasheet; the same Faston fittings fit all three).
-Every blade takes a <strong>fully insulated right-angle (flag) 4.8 × 0.8
-mm female Faston</strong> (operator 2026-11-06). A straight receptacle
-plus its straight lead leg does not fit: the AC rocker blades point at
-the battery and the DC rocker blades at the PSU. All Faston leads are
-<strong>18 AWG</strong>, the standard gauge.</p>
+<strong>Rocker blades</strong> take a <strong>fully insulated
+right-angle (flag) 4.8 × 0.8 mm female Faston</strong>: a straight
+receptacle plus its straight lead leg does not fit, because the AC
+rocker blades point at the battery and the DC rocker blades at the PSU.
+<strong>The three C14 blades take STRAIGHT fully insulated 4.8 × 0.8 mm
+female Fastons (FDFNY class):</strong> red 22–18 on L and E, blue 16–14
+for the N double crimp (A4 + A4a). The inlet stands 26.2 mm proud of the
+fence, so a flag's barrel would sit inside the 4 mm wall with no room to
+turn. All Faston leads are <strong>18 AWG</strong>, the standard
+gauge.</p>
 <table>
 <thead>
 <tr>
@@ -3429,8 +3434,7 @@ the battery and the DC rocker blades at the PSU. All Faston leads are
 <tbody>
 <tr>
 <td>22–18 AWG (red)</td>
-<td>every single-wire blade: AC + DC rocker LINE / LOAD / LAMP, C14 L,
-C14 E</td>
+<td>AC + DC rocker LINE / LOAD / LAMP (6)</td>
 <td>14.7</td>
 <td>16.2</td>
 <td>10.8</td>
@@ -3441,7 +3445,7 @@ C14 E</td>
 </tr>
 <tr>
 <td>16–14 AWG (blue)</td>
-<td>C14 N only: A4 + A4a, 2 × 18 AWG = 1.64 mm², double-crimped</td>
+<td>none now (the C14 N double crimp takes a straight blue)</td>
 <td>15</td>
 <td>15.8</td>
 <td>9.8</td>
@@ -3452,12 +3456,18 @@ C14 E</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Stock (operator 2026-11-06): both sizes TO BUY</strong> (8
-red + 1 blue per build). The flag kit and the TICONN straight kit
-already in stock are the <strong>6.3 mm (.250)</strong> size. They are
-loose on these 4.8 mm blades, so they are <strong>not for mains use
-here</strong>. Buy only parts marked 4.8 / .187 / "187 series". The
-22–18 / 16–14 flag crimper in stock fits them.</p>
+<p><strong>Stock:</strong> 4.8 flags are <strong>on order</strong>
+(FLDNY 50 red + 20 blue, est. Nov 19): each build now uses 6 red on the
+rockers and no blue. <strong>Straight 4.8 fully insulated FDFNY: 2 red +
+1 blue per build</strong> (C14 L, E and the N double crimp). The Kuject
+kit's straight 4.8 Fastons are heat-shrink type; ⏳ they're only usable
+on the C14 if the receptacle is fully covered, otherwise buy FDFNY. The
+flag kit and the TICONN straight kit already in stock are the
+<strong>6.3 mm (.250)</strong> size. They are loose on these 4.8 mm
+blades, so they are <strong>not for mains use here</strong>. Buy only
+parts marked 4.8 / .187 / "187 series". The 22–18 / 16–14 flag crimper
+in stock fits the flags. The straight FDFNYs crimp on the Haisstronica
+ratchet (insulated barrels, 22–10 AWG) already in stock.</p>
 <p>The table is from the seller's datasheet for the nylon fully
 insulated flag-shaped right-angle spade (sent by the operator
 2026-11-06). How to read the columns:</p>
@@ -6621,20 +6631,25 @@ table.</p>
 <td><strong>MAINS</strong></td>
 <td>3 × 18 AWG silicone, 600 V-rated (spool marked 600 V / 6 A; operator
 2026-11-06), each sleeved</td>
-<td>54 on-carrier + floor run</td>
-<td><strong>measure</strong> (C14 and AC rocker on the BACK wall → along
-the back wall behind the battery, ≥ 8 mm off its back face → climb at
-the back-right corner onto the carrier's +X-edge mains forks → along
-that edge to the PSU L / N / ⏚ end). The battery-to-fence gaps at its
+<td>54 on-carrier + entry</td>
+<td><strong>measure</strong> (C14 and AC rocker on the BACK wall; the
+C14 stands 26.2 mm proud. <strong>E and N run straight into the bay over
+the carrier's back edge onto the raised span, joining just past tower
+1</strong>, then on the carrier's +X-edge mains forks to the PSU ⏚ / N
+end. <strong>A2 and A4a loop back from the C14 to the AC
+rocker</strong>; ⏳ A3 (rocker LOAD → PSU L) path per CAD). No mains
+along the back wall behind the battery; the battery-to-fence gaps at its
 ends are 3–7 mm, too narrow for mains. <strong>The run crosses the BATT
 pack lead once</strong> (the lead comes onto the carrier's +X edge at Y
 ≈ 66–70): <strong>cross at 90°, mains ABOVE in its own raised clip, ≥ 8
 mm clear of the lead, with each mains wire sleeved (double insulation)
 and the pack lead sleeved at the crossing.</strong> Never along or over
-the battery itself. ⏳ CAD models and gates the crossing</td>
-<td>C14 + AC rocker: <strong>right-angle (flag) 4.8 mm insulated
-Fastons</strong>, red 22–18; the C14 N double crimp (A4 + A4a) takes the
-one blue 16–14</td>
+the battery itself. ⏳ CAD re-checks whether the straight-in route still
+crosses the lead, and gates it</td>
+<td>C14: <strong>straight fully insulated 4.8 mm Fastons
+(FDFNY)</strong>, red 22–18 on L and E, blue 16–14 for the N double
+crimp (A4 + A4a); AC rocker: <strong>right-angle (flag) 4.8 mm insulated
+Fastons</strong>, red 22–18</td>
 <td>PSU L / N: <strong>red fork lugs</strong>; earth → PSU ⏚:
 <strong>ring lug</strong> (A5)</td>
 <td>Own right-edge forks, ≥ 8 mm from all LV; earth longest; strain

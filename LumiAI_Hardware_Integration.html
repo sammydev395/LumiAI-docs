@@ -875,16 +875,16 @@ CW) or the DROK is thermally folding back (check bay
 ventilation).</p></li>
 <li><p><strong>Why 7.5 V:</strong> the STM32 board passes its input
 straight to its bus-servo ports, so with today's LV servos (6–8.4 V) the
-DROK setpoint is the arm's servo voltage; the board itself (7.4–8.4 V)
-is held at 7.5 V on every build, Hiwonder's stock adapter voltage (7.5 V
-6 A). Never set the DROK above 8.4 V while LV servos are fitted. At the
-HV servo swap (a future upgrade, not the shipping configuration; the
-product releases with the LV servos) the DROK becomes an 11.1 V
-servo-only rail (10 A 6 × 30 glass fuse, injector pigtail) and a
-separate 7.5 V buck (part TBD) feeds the board from the 13.8 V block,
-unfused. The shipping configuration carries one fuse, F1 (battery →
-PSU); after the swap, two only: the servo fuse and F1. Full design:
-<code>Electronics_Bay_Design.md</code> §1 <em>Servo and board
+DROK setpoint is the arm's servo voltage; the board itself (Hiwonder:
+input up to 12 V) is held at 7.5 V on every build, Hiwonder's stock
+adapter voltage (7.5 V 6 A). Never set the DROK above 8.4 V while LV
+servos are fitted. At the HV servo swap (a future upgrade, not the
+shipping configuration; the product releases with the LV servos) the
+DROK becomes an 11.1 V servo-only rail (10 A 6 × 30 glass fuse, injector
+pigtail) and a separate 7.5 V buck (part TBD) feeds the board from the
+13.8 V block, unfused. The shipping configuration carries one fuse, F1
+(battery → PSU); after the swap, two only: the servo fuse and F1. Full
+design: <code>Electronics_Bay_Design.md</code> §1 <em>Servo and board
 power</em>.</p></li>
 <li><p><strong>Do NOT feed non-STM32 loads from the DROK</strong> — the
 split-rails topology (locked 2026-06-28) sized the DROK for STM32-only.
