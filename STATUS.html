@@ -174,26 +174,32 @@ re-exports → the cradle book rebuild (X1C 27 / H2S plates + the 4th
 arm), Karma gates.</td>
 </tr>
 <tr>
-<td><strong>⛔ HOLD — fence + rear cap + SPS30 carrier
-(2026-11-13)</strong></td>
-<td><strong>DO NOT PRINT</strong> the fence halves (H2S plates 11 / 12),
-the rear cap or the SPS30 carrier plate until the operator says
-<strong>"print it" on a render</strong> (CTO). CAD fixed them on the
-operator's calipers while fitting the Ultra: <strong>AC inlet</strong>
-cut to the WPF-1 body 17.6 × 26 (+0.3), the AC frame face 26.2 proud,
-0.5 past the fan towers, so the 30 mm flange + spring cover sits and
-opens outside the tower channel; <strong>rear posts #5 / #6</strong>
-stop at plate Z 46 (2 over the strap bars) so the battery slides under;
-<strong>DROK upper bosses</strong> plain (keel + gusset web removed:
-they blocked the board; book paints a support enforcer under each,
-operator-approved); <strong>rear cap</strong> 6 snaps (the 2
-channel-side face fingers sat where the C14 hinge goes); <strong>SPS30
-carrier</strong> chamfers 7 → 11.5 (clears the base cover's brass-post
-sleeve 1.6). Fence OVERALL_OK incl. strength rows (ASA yield / 3);
-3dPrint PASS; CTO approved. Book actions at the rebuild: DROK enforcers,
-place the rear cap (ASA, H2S slot 2). <strong>Hardware for the battery
-+5 mm:</strong> the plate-side brass standoffs under posts #5 / #6 must
-stop at Z ≥ 40 or the battery's back corners hit them.</td>
+<td><strong>Fence + SPS30 carrier RELEASED; ⛔ rear cap HOLD (operator
+2026-11-14)</strong></td>
+<td><strong>Released on the operator's word 2026-11-14</strong>, each
+plate printing once Karma passes it: the <strong>fence back
+half</strong> (X1C / H2S 11) and the <strong>SPS30 carriers</strong>
+(X1C 14 / H2S 15) ("everything else that is ready. print it."), and the
+<strong>fence front half ALONE on plate 12</strong> at 0.32 ("Let's put
+the fence front on its own plate"). <strong>⛔ DO NOT PRINT the rear
+cap</strong> (alone at 0.16, X1C 29 / H2S 32) until his word on it. He
+did not see a fence render; the fixes are his own caliper calls. CAD
+fixed them on the operator's calipers while fitting the Ultra:
+<strong>AC inlet</strong> cut to the WPF-1 body 17.6 × 26 (+0.3), the AC
+frame face 26.2 proud, 0.5 past the fan towers, so the 30 mm flange +
+spring cover sits and opens outside the tower channel; <strong>rear
+posts #5 / #6</strong> stop at plate Z 46 (2 over the strap bars) so the
+battery slides under; <strong>DROK upper bosses</strong> plain (keel +
+gusset web removed: they blocked the board; book paints a support
+enforcer under each, operator-approved); <strong>rear cap</strong> 6
+snaps (the 2 channel-side face fingers sat where the C14 hinge goes);
+<strong>SPS30 carrier</strong> chamfers 7 → 11.5 (clears the base
+cover's brass-post sleeve 1.6). Fence OVERALL_OK incl. strength rows
+(ASA yield / 3); 3dPrint PASS; CTO approved. Book actions at the
+rebuild: DROK enforcers, place the rear cap (ASA, H2S slot 2).
+<strong>Hardware for the battery +5 mm:</strong> the plate-side brass
+standoffs under posts #5 / #6 must stop at Z ≥ 40 or the battery's back
+corners hit them.</td>
 <td>the reprint the operator ordered; printing an old plate wastes
 ASA</td>
 </tr>
@@ -636,7 +642,19 @@ cradle bases and gap coupon: break-away prints, as the operator saved
 them; wand catch bracket: ~1200 mm² on the bed; ZE15-CO + SPS30 plate +
 strap: the operator's pins sit 20 mm apart for no brims, so a brim needs
 the pins moved). The ZE15-CO pin moved +5 mm in X to clear the SPS30
-strap. Slot-3 PETG+ filament z-hop 0.4 in both books. <strong>Per
+strap. Slot-3 PETG+ filament z-hop 0.4 in both books.
+<strong>Avoid-crossing-walls ON book-wide in both books</strong> (PETG+
+oozes on every open-air crossing; gate_slots' PETG warning clears: H2S
+17 → 0). <strong>Released 2026-11-14 (operator), each once Karma passes
+it:</strong> plate 11 fence back, the sensor carriers X1C 14 / H2S 15,
+plate 12 fence front ALONE (0.32), both books; <strong>HOLD until his
+word:</strong> the rear cap's own plate X1C 29 / H2S 32 (0.16); the
+front half's four DROK boss undersides painted (1076 triangles), manual
+tree_strong, top-z 0.32, as the back half's PSU pads; the rear cap at
+0.16 (its snaps engage 0.6), top face down, ASA black H2S slot 2, no
+supports, 10 mm brim. <strong>One layer height per plate</strong>
+(verify FAILS a mixed plate: the H2S slicer refuses it with a prime
+tower, CLI -51, and the X1C slices fractional z-steps). <strong>Per
 part:</strong> fence halves 0.32 / 3 walls / 15 % gyroid / outer 60,
 inner 250 (ASA black, H2S slot 2, chamber door closed); the back half
 carries painted enforcers under the two PSU-strap pad tops
@@ -673,7 +691,9 @@ Studio resets it on the next save; verify FAILS a
 <code>filament_self_index</code> that is not 1..N.
 <code>carry_operator_edits.py</code> carries the operator's Studio paint
 and per-object edits across a rebuild (<code>--fresh</code> for parts
-the rebuild owns, <code>--skip</code> for keys it owns). REF plates
+the rebuild owns, <code>--skip</code> for keys it owns); on a part whose
+mesh changed it keeps the rebuild's value for every key the builder
+writes and prints a SKIP / CARRY line per key. REF plates
 (<code>REF-…</code> objects, <code>cad/print/ref_paint/</code>) hold
 painted-support references — DO NOT PRINT. Plate names are short
 (<code>NN part - printer Sslot material</code>), the number derived from
