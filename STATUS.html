@@ -4,7 +4,7 @@ id="lumiai--live-status-board">LumiAI — live status board</h1>
 last.</strong> Keep it short: if it grows past two screens it stops
 being read. Detail lives in the design docs; this is the board.</p>
 <blockquote>
-<p>Updated <strong>2026-11-11</strong> · <strong>branch
+<p>Updated <strong>2026-11-13</strong> · <strong>branch
 <code>main</code></strong> — all work commits straight to main
 (operator, 2026-10-02; confirmed again 2026-10-03).
 <code>claude/*</code> branches are leftovers.
@@ -113,6 +113,45 @@ operator's hardware</h2>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>🔶 <strong>BigClaw cradle — POST ON THE L + 4th ARM (operator "print
+it", 2026-11-13; books rebuild next)</strong></td>
+<td><strong>Cameras at the top, near the post.</strong> The post sits on
+the L crossbar's leg corner (its base end 10 mm onto the crossbar's
+front face, foot + dovetail channel + 2 × M3 × 16 pan self-taps); a new
+<strong>4th arm</strong> (<code>fourth_arm</code>) closes the rectangle:
+its head slides on a dovetail rail on the crossbar (phone width), its 10
+× 10 run passes over the fixed side T (which still lifts out), and its
+serrated foot plate (1 mm pitch) is held to the fixed jaw's serrated
+outer face by a <strong>4th knob</strong> (the T's M2 × 8 thumb screw +
+an M2 insert) through a U-slot open at the bottom (the 8 mm loading lift
+slides it off the loosened screw). The portrait base has no foot. ⛔ The
+outer frame (+33 mm over the tallest phone, +13 wide) and the spine +
+bridge were rejected the same day.</td>
+<td><strong>Envelope:</strong> 215.2 tall incl. the post with the cased
+S23 Ultra (last design 229.8), width unchanged (x −19..113.3).
+<strong>Gates PASS</strong> (portrait-only, landscape-only, combined):
+the arm clear on all 79 variants clamped and lifted; rail ≥ 16 engaged;
+the 4th knob 5.1 from the U-slot's open end at the longest phone;
+serrations lock (bites on each); the fixed T lifts out under the arm;
+USB-C plug zone clear of everything incl. the arm (operator: <strong>the
+port stays accessible, always</strong>); rear cameras +8.0°.
+<strong>Strength (info, hand 10 N / 2 g, MPa):</strong> post foot 20.0 /
+10.2, foot into the crossbar 11.6 / 5.9, arm run 14.2 / 6.6, crossbar
+14.2 / 6.7, L leg 16.0 / 5.9 (after the operator's two fixes: the foot +
+socket 5 → 8, the run routed high and 10 wide). <strong>Named MIN_WALL
+exception:</strong> the post window's floor 1.5 over the 8 socket (not
+load-bearing; the window block's 50° underside). <strong>Open:</strong>
+the L's top-to-bottom hold in the jaws (the operator, separately; under
+this design the cradle hangs through it + the 4th knob — loosening the
+main knob to load drops the base unless the 4th knob is tight).
+<strong>Notes (CTO):</strong> the cradle printables at layer 0.2 in both
+books; SOCKET_CLR 0.2 justified by T_CLR 0.2 printed on X1C 27,
+<strong>no H2S 0.2 slide-fit measured yet</strong>; the dovetail's 0.67
+axial play is taken by the two screws. <strong>Next:</strong> LumiAi CAD
+reruns the full assembly; the catch bracket re-run (3dPrint); the second
+book rebuild (X1C 27 / H2S 31 / 32 + the 4th arm), Karma gates.</td>
+</tr>
 <tr>
 <td><strong>⛔ HOLD — fence + rear cap + SPS30 carrier
 (2026-11-13)</strong></td>
@@ -2377,7 +2416,8 @@ holes still centred (⏳ caliper). Never printed before (operator). Plate
 </tr>
 <tr>
 <td>🔶 BigClaw phone cradle (A-back): plates, books and hardware on CAD
-<code>84372dfe</code></td>
+<code>84372dfe</code> ⛔ <strong>(the books still carry the pre-11-13
+cradle: superseded by the POST ON THE L row, rebuild next)</strong></td>
 <td><strong>Approved on the REFERENCE and HUNG review (operator: "they
 look good"); every cradle plate is released and gated PASS; the operator
 starts each.</strong> verify_3mf and gate_floating PASS on X1C 27 and
