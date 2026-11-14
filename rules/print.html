@@ -138,8 +138,11 @@ Left at <code>-1</code>/auto for now.</p>
 <code>filament_colour</code> read the same). Slots are named by material
 and colour, not by assembly. Every plate name states its printer, slot
 and material; <code>gate_slots.py</code> checks each slot against the
-printer's live AMS. <code>gate_slots.py --list</code> prints the values
-each material must carry.</p>
+printer's live AMS. The values each material must carry are the tables
+at the top of <code>gate_slots.py</code> (<code>INLAND_PETG</code>,
+<code>X1C_PETG_MOTION</code>, <code>PRESET_ROWS</code>,
+<code>TEMP_BAND</code>, <code>PETG_TREES</code>); there is no
+<code>--list</code> flag.</p>
 <p>H2S book (<code>lumiAi_Complete_PROD_H2S.3mf</code>, 33 plates, 55
 objects), current trays:</p>
 <table>
@@ -350,14 +353,17 @@ trees, preset overrides) only warn</td>
 <td><code>gate_slots.py</code></td>
 <td><code>python cad/print/gate_slots.py &lt;book.3mf&gt; --printer h2s|x1c</code></td>
 <td><strong>A</strong> each slot against the printer's live AMS
-(filament id, type, colour); <strong>B</strong> each slot's filament
-values against <code>STANDARD</code> for its material;
-<strong>C</strong> each printed object's process against
-<code>STANDARD</code> for its slot's material</td>
+(filament id, type, colour); <strong>B</strong> each PETG slot's
+filament values against the Inland PETG+ table, or against its own
+<code>PRESET_ROWS</code> row when the slot's vendor names another spool
+(today: AliExpress HS PETG red); <strong>C</strong> each printed
+object's process against its slot's material rules (temperature inside
+the material's band, PETG outer wall at most 70 mm/s and the
+<code>tree_strong</code> support set, ASA with a brim)</td>
 <td>any A, B or C mismatch. Warnings only: an empty AMS tray, clear
-filament reported as white, a value on a non-Standard nozzle variant, a
-material missing from <code>STANDARD</code>, a PAHT-CF plate with no
-brim</td>
+filament reported as white, a PETG value that differs only on another
+nozzle variant, PETG with avoid-crossing-walls off while the outer wall
+is within the limit</td>
 </tr>
 <tr>
 <td><code>gate_floating.py</code></td>
@@ -402,25 +408,32 @@ gate's bed placement is calibrated per block on the block's printed top
 surface (Bambu <code>; FEATURE: Top surface</code>, matched to the mesh
 box within 3 mm, otherwise offset 0); the output prints the offset for
 each block.</p>
-<p><strong><code>gate_slots.py</code> STANDARD</strong> (the same on
-both printers; <code>--list</code> prints the live table;
-<code>--no-ams</code> skips A and runs B and C only;
+<p><strong><code>gate_slots.py</code> values</strong> (the same on both
+printers; <code>--no-ams</code> skips A and runs B and C only;
 <code>--ams &lt;json&gt;</code> reads a saved AMS read instead of a live
-one):</p>
+one; the tables are at the top of the file, there is no
+<code>--list</code>):</p>
 <ul>
-<li>PETG (Inland PETG+, any colour): nozzle 240 (235 allowed above the
-first layer on the H2S), <strong>first layer 240</strong>, flow 0.94,
-max volumetric speed 10 (15 allowed on the H2S), <strong>retraction 1 mm
-/ 40 / 70 % on both printers</strong>, textured plate 85. Process: outer
-wall at most 70 mm/s; avoid-crossing-walls on (a warning, unless the
-outer wall is over the limit); supports only as <code>tree_strong</code>
+<li>PETG, Inland PETG+ (any colour, the default row): nozzle 235 or 240,
+flow 0.94, max volumetric speed 10 or 15 (another nozzle variant that
+differs only warns), <strong>retraction 1 mm / 40 / 70 % on both
+printers</strong>. Process: outer wall at most 70 mm/s;
+avoid-crossing-walls on (a warning when off, a failure when the outer
+wall is also over the limit); supports only as <code>tree_strong</code>
 with branch Ø5, 2 walls, support speed 50 (the wand flange coupons are
-sanctioned slim); a brim, when on, of 10 mm or more.</li>
-<li>ASA (black): nozzle and first layer 260; a brim of 10 mm or more is
-required.</li>
-<li>PLA: 220. PA-CF (NylonX): 260, textured plate 65, brim required.
-PAHT-CF: 290, flow 0.96, max volumetric speed 8, textured plate 100,
-chamber 60. TPU (Generic): 230. TPU 85A: 225.</li>
+sanctioned slim).</li>
+<li>PETG, a named spool: its <code>PRESET_ROWS</code> row, keyed by type
+and the slot's <code>filament_vendor</code>, carries its own values and
+temperature band and falls back to the Inland PETG+ checks for anything
+it does not list. Today's row: AliExpress HS PETG red (X1C slot 2 from
+2026-11-14), 240 / 0.94 / 10, band 230-260, qualified on the X1C 27 seat
+coupon.</li>
+<li>Temperature bands (<code>TEMP_BAND</code>, nozzle temperature of
+every printed object against its slot's material): PLA 195-230, PETG
+225-250, ASA 245-275, PA-CF 250-300, TPU 210-240. A material without a
+band (PAHT-CF) is not temperature-checked by this gate.</li>
+<li>ASA: a brim is required (<code>brim_type</code> other than
+<code>no_brim</code>).</li>
 <li>Slots fed from outside the AMS (H2S 5 and 6, and a one-slot book for
 an external spool) have no tray, so A skips them.</li>
 </ul>
