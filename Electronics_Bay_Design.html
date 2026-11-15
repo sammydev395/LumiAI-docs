@@ -27,8 +27,8 @@ href="Lumi_Wand_Integration.html#102-end-to-end-diagram-power-bay--arm--gripper-
 §10.2</a> — end-to-end power bay wiring diagram</li>
 <li><a
 href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
-§11.3</a> — bay 13.8 V distribution-block assembly (D-1459 of record;
-Halo v1 / Ultra-retrofit APIELE as-built §11.3.7)</li>
+§11.3</a> — bay 13.8 V distribution-block assembly (HL-PBB block of
+record, D-1459 alternate; Halo v1 as-built APIELE §11.3.7, retired)</li>
 <li><a
 href="Power/Compact_UPS_Power_System_HiWonder_RPi5.html"><code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code></a>
 — PSU, DROK, battery, fuse specs</li>
@@ -117,8 +117,8 @@ HTS-16L, HTS-25L, etc.)</li>
 I²C is on the G469 chain, not these)</li>
 <li><strong>2× Custom keys</strong> — assignable</li>
 <li><strong>Power port</strong> (screw-terminal) — input +V / GND,
-<strong>7.5 V</strong> (from the DROK today; from the 7.5 V board buck
-after the HV servo swap)</li>
+<strong>7.5 V</strong> from the DROK on LV builds; the HV setpoint (11.1
+V) from the same DROK after the HV servo swap</li>
 <li><strong>5 V 5 A external power port</strong> — USB-C
 <strong>OUTPUT</strong> that powers the RPi5 (see §3.2 below)</li>
 <li><strong>Buzzer</strong></li>
@@ -150,8 +150,9 @@ context):</strong></p>
 HL-PBB-2-6-MINI</strong> dual-bus distribution module, ferrule-based,
 zero modification — <strong>from the NOVA build on</strong> (next build,
 Ultra-compatible kit in stock). <strong>Halo v1 keeps its as-built
-modified APIELE, and the pending Ultra bay retrofit uses the 4 in-stock
-APIELE spares</strong> (spec + port map: <a
+modified APIELE. The APIELE is retired (operator): no new APIELE
+installs, and the Ultra bay uses an HL-PBB-2-6-MINI</strong> (spec +
+port map: <a
 href="Power_Bay_Design.html#1137-apiele-barrier-strip--physical-spec"><code>Power_Bay_Design.md</code>
 §11.3.7</a>). Wiring + port map: <a
 href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
@@ -183,8 +184,10 @@ input tantalums (under the child board) sit at 69 % of rating at 11.1 V,
 past the common 50 % derating for MnO2 tantalums (polymer parts allow
 ~80 %); their marking decides it, and surviving seven inrushes does not
 prove long-term life. The CUR6UA regulator is unidentified.
-<strong>Every build holds the board at 7.5 V</strong>, Hiwonder's own
-adapter voltage (7.5 V 6 A, read off the stock adapter's label).</p>
+<strong>Every LV build holds the board at 7.5 V</strong>, Hiwonder's own
+adapter voltage (7.5 V 6 A, read off the stock adapter's label). After
+the HV swap the board runs at the HV setpoint, because the servos are
+fed through it.</p>
 <ul>
 <li><strong>Shipping configuration (LV servos: LX-15D, HTS-25L, LX-225,
 HX-06L, all 6–8.4 V):</strong> one rail. The DROK sets <strong>7.5
@@ -203,128 +206,83 @@ swap (all six HV, 9–12.6 V; all six together or none; the product
 releases with the LV servos. <strong>Halo converts first:</strong> one
 HV arm set (servos, bracket packs, metal horn packs) is on order,
 install window the week of 2026-11-24).</strong> Everything below this
-bullet applies only after the swap. Two independent rails, both behind
-the DC rocker so one switch kills servos and board together.
+bullet applies only after the swap. <strong>One rail, as on LV:</strong>
+the existing DROK feeds the board, and the board feeds the servos
+through its bus port.
 <ul>
-<li><strong>Servo rail 11.1 V:</strong> the existing DROK, re-set to
-11.1 V → <strong>10 A 6 × 30 glass fuse</strong> (F1's type, fast-blow,
-in a spare 6 × 30 inline holder) <strong>in the base's second opening,
-under the SOLID cover</strong> (the servo opening, under the GRILLE
-cover, keeps the ZE15-CO and SPS30 on the ceiling-mount version). After
-the swap the robot carries <strong>two fuses only: this servo fuse and
-F1</strong> (10 A glass, battery + → PSU CH2 BAT+). Consequence: the
-Deans DROK-out run to this fuse is unfused, protected only through the
-converter by the PSU's own output limit (on AC) or F1 (on battery).
+<li><strong>Setpoint 11.1 V</strong> on the existing DROK (bench-proven:
+11.5 A sustained at 11.1 V, heatsink ~28.5 °C; reaches ~11.6–11.8 A). It
+may go higher for margin on AC, but <strong>the board's 12 V maximum
+binds</strong> (Hiwonder; it covers every peripheral on the board's
+input rail), so keep it ≤ ~11.6 V. A higher setpoint does not raise the
+on-battery floor (below).</li>
+<li><strong>Servo fuse:</strong> DROK OUT → <strong>10 A 6 × 30 glass
+fuse</strong> (F1's type, fast-blow, in a spare 6 × 30 inline holder)
+<strong>in the base's second opening, under the SOLID cover</strong> →
+board power terminal. After the swap the robot carries <strong>two fuses
+only: this fuse and F1</strong> (10 A glass, battery + → PSU CH2 BAT+).
+The fuse now protects the board and the servos together. The Deans
+DROK-out run up to it is unfused, protected only through the converter
+by the PSU's own output limit (on AC) or F1 (on battery).
 <strong>Fast-blow against servo peaks:</strong> an ~8 A stall is 80 % of
 rating and never opens it; a fast-blow 6 × 30 opens at 135 % only within
 about an hour and at 200 % within seconds, so multi-joint start bursts
 of tens of milliseconds pass. ⏳ Operator question, not a change: if it
 ever opens at power-up or on a hard stall with no fault, swap in a 10 A
-slow-blow 6 × 30 of the same size. From the fuse → <strong>injector
-pigtail</strong> between the board's bus port and servo 6 (first on the
-chain). <strong>No DROK current limit:</strong> its CC mode and current
-display are invalid once IN− and OUT− are tied (DROK manual, Attention
-#1), and the injector's common ground ties them, so neither is relied
-on.</li>
-<li><strong>Injector pigtail (PROPOSED, awaiting operator
-acceptance):</strong> board-side plug carries <strong>SIGNAL + GND
-only</strong> (V+ contact pulled from the housing and insulated);
-servo-side receptacle takes SIGNAL straight through, V+ from the fused
-11.1 V lead, and GND joined to the board GND and to the 11.1 V return.
-Identify the V+ pin by meter with the board at 7.5 V before building. No
-board modification, no stock cable cut. The injector goes on
-<strong>port 1</strong> (the port proven to carry load); port 2 stays
-empty. With the injector, the servo current no longer crosses the
-board's ~0.24 Ω path and the input tantalums stay at 7.5 V (47 % of
-rating); the injector's reason is the tantalum margin and the board's
-untested peak current with six HV servos (11.1 V is inside the 12 V
-rating), not the drop (the HV arm draws ~0.68× the LV current, so
-through the board it would lose less than today's 7.5 V arm does).</li>
-<li><strong>Ground:</strong> the servo signal is referenced to board
-GND, so GND stays through the injector. The 11.1 V return gets its own
-18 AWG conductor back to the <strong>DROK OUT−</strong> terminal. Both
-bucks are non-isolated with common negatives (check IN− to OUT−
-continuity on the board buck before fitting).</li>
-<li><strong>Board rail 7.5 V:</strong> <strong>7.5 V buck (part
-TBD)</strong> mounted <strong>in the base's second opening (solid
-cover)</strong> beside the fuse (no free carrier footprint), fed
-<strong>13.8 V from the distribution block input at the DC rocker
-LOAD</strong> (11.5–13.8 V on battery; ~4 V of buck headroom) with
-<strong>no fuse of its own</strong>; consequence: a short in the buck
-branch is cleared only by the PSU's own output limit (on AC) or F1 (on
-battery), and takes the whole bay down. Return to the block's B input, a
-new 18 AWG pair from the block tap down to the base's second opening,
-and an 18 AWG 7.5 V pair from the buck to the STM32 power terminal
-(lengths and paths: CAD). <strong>Why not the servo rail:</strong> one
-gripper stall pulled Halo's bus from 7.4 to 6.58 V (11 %, 2026-11-11);
-the same dip on 11.1 V lands near 9.9 V, at an adjustable buck's ~9.5 V
-brownout floor, and heavier HV servos dip deeper. A board brownout
-resets the STM32, which drives every servo to the startup pose at full
-speed with the Pi down and nothing logging it. The arbiter's undervolt
-rest reads servo telemetry and cannot catch a stall transient, so no
-software or capacitance mitigation is defended; the separate feed
-removes the cascade. Load: ~0.7 A measured on Halo, 2.5–3 A estimated
-worst case (the board's 5 V Pi output). Whatever part is picked:
-non-isolated common negative, rated ≥ 5 A, output set to 7.5 V and the
-trim locked (glued) if it is adjustable, then the <strong>buck
-gate</strong> (multimeter, inline USB-C meter, and the electronic load's
-NTC sensor for temperature only): (1) <strong>before it touches the
-board:</strong> 13.8 V in, no load, output 7.4–7.6 V on the multimeter,
-trim glued, re-read after the glue cures; (2) <strong>30 min soak on the
-real load:</strong> board + Pi running with the Pi under load
-(<code>stress-ng --cpu 4</code> plus its normal USB devices), output
-7.4–7.6 V at the board power terminal throughout, Pi
-<code>get_throttled</code> 0x0 and
-<code>vcgencmd pmic_read_adc EXT5V_V</code> ≥ 4.9 V at the end, board→Pi
-current logged off the inline USB-C meter; regulator IC below 85 °C,
-read on the electronic load's screen from its NTC sensor taped to the IC
-with Kapton (check the sensor reads past 85 °C before relying on it).
-The soak proves the buck only up to the Pi's load during the run (well
-under the 3 A estimate); the inline meter's reading is recorded as that
-ceiling, and acceptance (d) is the full-load check. Switching ripple is
-not measured; it is judged after the board's 5 V regulator, through
-<code>get_throttled</code> and EXT5V.</li>
-<li><strong>On battery the servo rail falls out of regulation at
-peaks.</strong> The DROK needs IN ≥ OUT + 0.8 V (manual), so 11.1 V
-needs ≥ 11.9 V in. Nova's 10 Ah pack measured 13.1 V at rest and 12.0 V
-at 5 A on its own terminals (apparent ~0.22 Ω, from a single 5 A step,
-not yet checked for linearity); by extrapolation that is ~11.3 V at 8 A,
-before the PSU's battery-path drop. During a mains cut the HV rail
-therefore sags with the pack at servo peaks. It stays above the proposed
-~10.0 V undervolt, but the arm runs below 11.1 V. The LV configuration
-(7.5 V) keeps over 3 V of headroom on battery. The 7.5 V board buck
-keeps ~3.5 V of headroom at the same pack voltages.</li>
+slow-blow 6 × 30 of the same size. <strong>No DROK current
+limit:</strong> its CC mode and current display are invalid once IN− and
+OUT− are tied through the bay ground (DROK manual, Attention #1).</li>
+<li><strong>What the board carries (facts, not changes):</strong> all
+servo current crosses its ~0.24 Ω input-to-port path (the HV arm draws
+~0.68× the LV current for the same work, so it loses less than today's
+7.5 V arm); its 16 V input tantalums sit at 69 % of rating at 11.1 V
+(polymer parts are fine; MnO2 parts are past the usual 50 % derating;
+the marking decides); Hiwonder has not tested six HV servos on it.
+Ultra's two-port plug test (ports 1 and 2 in parallel, 4/6/8 A at 11.1
+V) measures the board path and the plugs. A servo stall dips the board's
+input along with the servo bus (Halo LV: 7.4 → 6.58 V, 11 %; the same
+dip at 11.1 V is ~9.9 V), so acceptance (d) checks the board and Pi
+under the heaviest load.</li>
+<li><strong>On battery the rail falls out of regulation at heavy
+load.</strong> The DROK needs IN ≥ OUT + 0.8 V (manual), so 11.1 V needs
+≥ 11.9 V in. Nova's 10 Ah pack measured 13.1 V at rest and 12.0 V at 5 A
+on its own terminals (apparent ~0.22 Ω). <strong>Bench, DROK at 11.1 V
+with 11.5 A out from the PSC-100-12:</strong> ~10.97 V on AC; pulling AC
+switched to battery instantly (no dropout) and the output fell to
+**~9.85 V**, coming back to ~10.97 V when AC returned. Re-run with the
+setpoint at ~11.8 V and the pack partly discharged (13.2 V at rest): the
+same **~9.6 V**, only 0.1 V above the 9.5 V undervolt. The setpoint does
+not move the battery floor; the floor follows the pack (~0.22 Ω at ~12 A
+input), and a fuller pack raises it. Real arm draw is short peaks on one
+or two servos, not 11.5 A continuous. The LV configuration (7.5 V) keeps
+over 3 V of headroom on battery.</li>
 <li><strong>Overload:</strong> a servo overload opens the 10 A servo
-fuse, or on battery F1, and the arm goes limp. The thin servo chain
-cable is protected as in Hiwonder's stock arm (it carries the arm's
-total servo current, with no fuse of its own); the stall guard and the
-servos' own stall/over-temperature protection cover a stalled
+fuse, or on battery F1, and the arm and board go dark. The thin servo
+chain cable is protected as in Hiwonder's stock arm (it carries the
+arm's total servo current, with no fuse of its own); the stall guard and
+the servos' own stall/over-temperature protection cover a stalled
 joint.</li>
-<li><strong>Rules:</strong> never power the 11.1 V rail with the board
-off (with both rails behind the rocker this only happens if the
-board-buck pair is disconnected; never run the arm with the board dark).
-The board's controller switch no longer cuts servo power. In the same
-change, set the arm arbiter's servo-voltage limits per robot in its
-launch params (the 8.4 V overvolt rests the arm the moment it starts at
-11.1 V). <strong>PROPOSED, awaiting operator confirmation:</strong>
-overvolt ~12.0 V and a new undervolt ~10.0 V.</li>
-<li><strong>Acceptance:</strong> (a) board-buck input lead disconnected,
-11.1 V live → board power terminal ~0 V (proves the injector blocks
-backfeed); (b) injector unplugged from the servo chain → its servo-side
-V+ live, its board-side V+ contact absent; (c) servo VIN reads (cmd 27)
-~11.1 V, board input 7.5 V; (d) arm at its heaviest load (full-reach
-hold, then fast moves on all joints), Pi running: board input stays ≥
-7.4 V on the multimeter and Pi <code>get_throttled</code> stays 0x0.
-Instruments: multimeter + inline USB-C meter only; the servo-rail
-current is not read at acceptance.</li>
+<li><strong>Rules:</strong> set the arm arbiter's servo-voltage limits
+per robot in its launch params (the 8.4 V overvolt rests the arm the
+moment it starts at 11.1 V). <strong>Undervolt: 9.5 V
+(operator).</strong> <strong>PROPOSED, awaiting operator
+confirmation:</strong> overvolt ~12.0 V; it moves with the setpoint and
+must stay under the board's 12 V maximum plus the servos' 12.6 V
+(line-wide figure; check each model's listing before going past 11.1
+V).</li>
+<li><strong>Acceptance:</strong> (a) DROK output on the multimeter at
+the setpoint before the board is connected; (b) servo VIN reads (cmd 27)
+within ~0.3 V of the board input; (c) arm at its heaviest load
+(full-reach hold, then fast moves on all joints), Pi running: Pi
+<code>get_throttled</code> stays 0x0,
+<code>vcgencmd pmic_read_adc EXT5V_V</code> stays ≥ 4.9 V, and the STM32
+does not reset; (d) the same on battery (AC pulled). Instruments:
+multimeter + inline USB-C meter only.</li>
 <li>⏳ <strong>Power budget:</strong> PSU CH1 is labelled 13.8 V / 5.0
 A. Heavy HV arm motion plus the rest of the bay can exceed it, with the
 battery covering peaks. Read INA226-MAIN and INA226-BATT during
 acceptance (d): CH1 sustained above 5 A, or battery discharge during
 normal arm motion, goes back to the operator.</li>
-<li>⏳ Bench check before building: continuity/diode mode from the board
-power-terminal + to a bus-port V+ pin, both directions, controller
-switch ON and OFF.</li>
 </ul></li>
 </ul>
 <hr />

@@ -3181,6 +3181,13 @@ session already made it.</p>
 </blockquote>
 <h2 id="recently-decided">Recently decided</h2>
 <ul>
+<li>2026-11-14 (operator): <strong>HV version = one rail.</strong> The
+existing DROK at 11.1 V (≤ ~11.6 V, board max 12 V) feeds the STM32
+board, which feeds the servos. Servo fuse + F1 (two fuses). Bench: DROK
+11.5 A sustained at 11.1 V, heatsink ~28.5 °C; on battery the rail sags
+to ~9.6–9.85 V at that load; HV undervolt 9.5 V. APIELE retired; Ultra
+uses the HL-PBB. LV builds stay on the PSC-100-12; the PSC-150-12
+(ordered) is for the HV version. EBD §1 rewritten.</li>
 <li>2026-11-12 (operator, Electronics dec7ecb8): <strong>fuses: the
 shipping LV configuration carries F1 only</strong> (10 A glass, battery
 + → PSU CH2 BAT+). F2/F3/F4 are gone, which supersedes the older

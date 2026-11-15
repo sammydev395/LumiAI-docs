@@ -584,8 +584,9 @@ The fence grows 60 → 90 mm for it.</li>
 HL-PBB-2-6-MINI</strong> dual-bus distribution module, ferrule-based,
 zero modification — <strong>from the NOVA build on</strong> (next build,
 Ultra-compatible kit in stock). <strong>Halo v1 keeps its as-built
-modified APIELE, and the pending Ultra bay retrofit uses the 4 in-stock
-APIELE spares</strong> (spec + port map: <a
+modified APIELE. The APIELE is retired (operator): no new APIELE
+installs, and the Ultra bay uses an HL-PBB-2-6-MINI</strong> (spec +
+port map: <a
 href="Power_Bay_Design.html#1137-apiele-barrier-strip--physical-spec"><code>Power_Bay_Design.md</code>
 §11.3.1</a>). Wiring + port map: <a
 href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
@@ -875,8 +876,12 @@ battery connected, so the pack supplied the input above the PSU's ~7.7
 A; the DROK display reads ~1.5 % high). With the pot at its clockwise
 end it goes to <strong>about 11.6–11.8 A</strong> (the operator's
 reading). The earlier "CC at ~9 A" was the pot setting, not the DROK's
-limit. The CC pot is the only current setting (no menu override). A
-sustained 11 A hold has not been run.</li>
+limit. The CC pot is the only current setting (no menu override).
+<strong>Sustained hold at 11.5 A for 5–6 min or more, 11.1 V setpoint
+(bench, fan on, PSU battery connected): the DROK heatsink stayed at
+~28.5 °C</strong>, the PSC-100-12 case reached ~33 °C (with its fan),
+and the output held ~10.97–10.98 V at the load. The stock heatsink and
+fan are enough.</li>
 <li><strong>DC rocker OFF</strong> → DROK output drops to ~0 V (LCD
 <code>Vout</code> may show ~0.1 V residual from its own draw). This
 confirms the DC rocker is actually in the DROK power path and gives you
@@ -897,15 +902,16 @@ the DROK is thermally folding back (check bay ventilation).</p></li>
 <li><p><strong>Why 7.5 V:</strong> the STM32 board passes its input
 straight to its bus-servo ports, so with today's LV servos (6–8.4 V) the
 DROK setpoint is the arm's servo voltage; the board itself (Hiwonder:
-input up to 12 V) is held at 7.5 V on every build, Hiwonder's stock
+input up to 12 V) is held at 7.5 V on every LV build, Hiwonder's stock
 adapter voltage (7.5 V 6 A). Never set the DROK above 8.4 V while LV
 servos are fitted. At the HV servo swap (a future upgrade, not the
 shipping configuration; the product releases with the LV servos) the
-DROK becomes an 11.1 V servo-only rail (10 A 6 × 30 glass fuse, injector
-pigtail) and a separate 7.5 V buck (part TBD) feeds the board from the
-13.8 V block, unfused. The shipping configuration carries one fuse, F1
-(battery → PSU); after the swap, two only: the servo fuse and F1. Full
-design: <code>Electronics_Bay_Design.md</code> §1 <em>Servo and board
+same DROK is re-set to 11.1 V (≤ ~11.6 V: the board's 12 V maximum
+binds) and still feeds the board, which feeds the servos, with a 10 A 6
+× 30 glass fuse between the DROK and the board. The shipping
+configuration carries one fuse, F1 (battery → PSU); after the swap, two
+only: the servo fuse and F1. Full design:
+<code>Electronics_Bay_Design.md</code> §1 <em>Servo and board
 power</em>.</p></li>
 <li><p><strong>Do NOT feed non-STM32 loads from the DROK</strong> — the
 split-rails topology (locked 2026-06-28) sized the DROK for STM32-only.

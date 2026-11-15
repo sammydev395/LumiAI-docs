@@ -2638,9 +2638,9 @@ is the HL-PBB, the bay block of record from Nova.</p>
 <p><strong><a
 href="#1137-apiele-barrier-strip--physical-spec">§11.3.7</a> and <a
 href="#1138-apiele-block-modification--full-teardown-m4-drill-out-m4-hardware-install-as-built-2026-08-02">§11.3.8</a>
-are the modified APIELE strip</strong> — what is physically in Halo v1
-<strong>and the Ultra retrofit</strong>; new builds from Nova use a
-dual-bus module.</p>
+are the modified APIELE strip</strong> — what is physically in Halo v1.
+The APIELE is retired (operator): no new installs. Ultra and every new
+build use a dual-bus module (HL-PBB-2-6-MINI preferred).</p>
 </blockquote>
 <blockquote>
 <h3
@@ -2669,8 +2669,8 @@ stock</strong> — spec, port map and modification procedure in
 <thead>
 <tr>
 <th></th>
-<th>Modified APIELE (Halo v1 as built + Ultra retrofit; not for new
-builds)</th>
+<th>Modified APIELE (Halo v1 as built only; retired, no new
+installs)</th>
 <th><strong>D-1459 (alternate)</strong></th>
 <th><strong>HL-PBB-2-6-MINI (block of record from Nova)</strong></th>
 </tr>
@@ -3470,10 +3470,17 @@ kit's straight 4.8 Fastons are heat-shrink type; ⏳ they're only usable
 on the C14 if the receptacle is fully covered, otherwise buy FDFNY. The
 flag kit and the TICONN straight kit already in stock are the
 <strong>6.3 mm (.250)</strong> size. They are loose on these 4.8 mm
-blades, so they are <strong>not for mains use here</strong>. Buy only
-parts marked 4.8 / .187 / "187 series". The 22–18 / 16–14 flag crimper
-in stock fits the flags. The straight FDFNYs crimp on the Haisstronica
-ratchet (insulated barrels, 22–10 AWG) already in stock.</p>
+blades, so they are <strong>not for mains use here</strong>.
+<strong>Temporary exception (operator):</strong> until the 4.8 mm flags
+arrive, the on-hand 6.3 mm flags (smseace kit) go on the rocker blades.
+The blades measure 4.8 × 0.8 mm, so a 6.3 mm receptacle has no designed
+grip on them. It only holds after its rolled edges are squeezed in, and
+even then it is not a rated contact. Tug-test each one, check the AC
+rocker terminals for warmth after the first hour powered, and swap every
+one for a 4.8 mm flag when they arrive. Buy only parts marked 4.8 / .187
+/ "187 series". The 22–18 / 16–14 flag crimper in stock fits the flags.
+The straight FDFNYs crimp on the Haisstronica ratchet (insulated
+barrels, 22–10 AWG) already in stock.</p>
 <p>The table is from the seller's datasheet for the nylon fully
 insulated flag-shaped right-angle spade (sent by the operator
 2026-11-06). How to read the columns:</p>
@@ -3904,11 +3911,10 @@ fuses, nothing else. No CH1 master, DROK-branch or HAT-feed fuse.</p>
                                      │
                                      ▼
                           HL-PBB-2-6-MINI IN-A (fed end)
-   branches (all unfused):  A1 ──► DROK IN (servo rail after the HV swap; STM32 branch until then)
+   branches (all unfused):  A1 ──► DROK IN (the STM32 board + servo rail: 7.5 V LV, 11.1 V after the HV swap)
                             A5 ──► Mus-14 dual-USB-C buck ──► HAT POWER
                             tether / fans / LAMP / creator-edition PHONE CHARGER (IP6518, on the tether&#39;s A / B position)
-                            block input ──► 7.5 V board buck (after the HV swap; Electronics_Bay_Design §1)
-   servo rail (after the HV swap, a future upgrade): DROK OUT ──► SERVO FUSE: 10 A glass 6×30 (base 2nd opening) ──► injector ──► servo 6
+   after the HV swap (a future upgrade): DROK OUT ──► SERVO FUSE: 10 A glass 6×30 (base 2nd opening) ──► STM32 board ──► servos (one rail)
 
 Battery: BAT+ ──► F1: 10 A fast-blow glass 6×30 (uxcell holder, 16 AWG red) ──► PSU CH2 BAT+   (unchanged, per the UPS doc)</code></pre>
 <ul>
@@ -4162,8 +4168,8 @@ agent).</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>APIELE distribution strip</strong> (current-gen: Halo
-as-built + Ultra retrofit)</td>
+<td><strong>APIELE distribution strip</strong> (Halo as-built only;
+retired)</td>
 <td><strong>(1, 3) + (1, 11)</strong> — col 1, 8 row-steps</td>
 <td>38.11 or 44.00 mm</td>
 <td>M3 × 8 brass studs per §11.3.8</td>
@@ -4329,8 +4335,8 @@ them.</em></p>
 </blockquote>
 <p><img src="images/power_bay/powerbay_asbuilt_20260930.png"
 alt="Power bay as-built, 2026-09-30 — straight down onto the PSU cover between the blue printed fence arms. Centre: the modified APIELE barrier strip (clear cover marked TB-1505L · 600 V 15 A, positions numbered 1–5) with Kuject heat-shrink fork lugs landed on both rows (red-band and blue-band forks, purple/maroon heat-shrunk crimps) and a jumper-strip comb visible along one edge. Left of it on the hex-vent grating: the SparkFun Qwiic TMP102-bay on its brass standoffs, with the white JST-XH pair and the yellow/green/blue/white signal wiring dressed across. Right: the INA226 (red board, R002 shunt visible) with its orange + green screw terminals on nylon posts. Bottom: the G469&#39;s green screw-terminal rows with the multi-colour signal landings. PSU side label (2.2 A · 60 Hz) visible behind." /></p>
-<p><strong>APIELE mount (current generation — Halo as-built 2026-08-02;
-repeat for the Ultra retrofit):</strong></p>
+<p><strong>APIELE mount (Halo as-built 2026-08-02 only; the APIELE is
+retired, not for Ultra or new builds):</strong></p>
 <p><strong>Prerequisite:</strong> the block has been fully modified per
 §11.3.8 (all stock screws + clamp strips + internal copper conductors
 removed, all 10 holes drilled to M4, M4 × 10 mm screws + M4 nuts
@@ -4433,7 +4439,7 @@ href="Lumi_Wand_Integration.html#25-verify-wand-led-rail-behavior-at-138-v--benc
 §25</a>. Run it before installing the wand into the arm.</p>
 <h4 id="1137-apiele-barrier-strip--physical-spec">11.3.7 APIELE barrier
 strip — physical spec</h4>
-<details><summary>📦 <b>APIELE physical spec + port map — collapsed</b> (CURRENT-GENERATION hardware: Halo v1 as-built + the pending Ultra bay retrofit from the 4 in-stock spare blocks; NOVA onward uses the dual-bus module — 🎯 box at the top of §11.3). Expand for the full spec.</summary>
+<details><summary>📦 <b>APIELE physical spec + port map — collapsed</b> (Halo v1 as-built only; the APIELE is retired. Ultra and every new build use the dual-bus module — 🎯 box at the top of §11.3). Expand for the full spec.</summary>
 
 <blockquote>
 <p><strong>Part:</strong> APIELE 15A Screw Terminal Block 5-Position
@@ -4510,12 +4516,12 @@ thick. Dielectric strength of ABS is ~350 V/mm — vastly over-spec for
 </table>
 <p><strong>Package includes (per 5-pack — in hand):</strong> 5× terminal
 blocks + 2× red jumper strips + 3× black jumper strips. <strong>1 block
-is built into Halo v1; the 4 spares (+ 1 red + 2 black jumper strips)
-cover the Ultra bay retrofit</strong> with blocks left over.</p>
-<p><strong>APIELE port map (Halo as-built; use the same for the Ultra
-retrofit)</strong> — top row = V+ (red jumper strip), bottom row = GND
-(black), 15 A/position, Kuject fork lugs + bend-up (palette gauges for
-the retrofit: 18 AWG power / 22 AWG taps; v1 as-built ran 16 AWG):</p>
+is built into Halo v1; the 4 spares are retired, unused</strong> (the
+APIELE is not installed in Ultra or any new build).</p>
+<p><strong>APIELE port map (Halo as-built)</strong> — top row = V+ (red
+jumper strip), bottom row = GND (black), 15 A/position, Kuject fork lugs
++ bend-up (palette gauges for the retrofit: 18 AWG power / 22 AWG taps;
+v1 as-built ran 16 AWG):</p>
 <table>
 <thead>
 <tr>
@@ -4561,7 +4567,7 @@ goes to G469 pin 9, never here</td>
 id="1138-apiele-block-modification--full-teardown-m4-drill-out-m4-hardware-install-as-built-2026-08-02">11.3.8
 APIELE block modification — full teardown, M4 drill-out, M4 hardware
 install (as-built 2026-08-02)</h4>
-<details><summary>📦 <b>APIELE modification procedure — collapsed</b> (needed whenever another APIELE bay is built: Halo v1 as-built 2026-08-02, and the pending Ultra retrofit from the in-stock spares. The dual-bus module from Nova on needs NO modification.) Expand for the full teardown.</summary>
+<details><summary>📦 <b>APIELE modification procedure — collapsed</b> (record of Halo v1 as-built 2026-08-02; the APIELE is retired, so no new APIELE bay is built. The dual-bus module needs NO modification.) Expand for the full teardown.</summary>
 
 <p><strong>Purpose:</strong> two things done at once, as a single
 teardown-and-rebuild — (a) sever each column's top-row screw from its
