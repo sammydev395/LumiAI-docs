@@ -114,13 +114,14 @@ operator's hardware</h2>
 </thead>
 <tbody>
 <tr>
-<td>🔶 <strong>Cradle parts RELEASED (operator 2026-11-14): top lock L +
-4th arm X1C 30, portrait base X1C 31, GRIP POST X1C 32 (red) / H2S 34
-(yellow), LANDSCAPE BASE H2S 33 (finger relief) — claw cradles 30.2 ×
-21.2, the SEAT-FIT COUPON's notch 1 (X1C red: "1 fits perfectly", 3
-loose; H2S: "#1 ... the best fit").</strong> Operator: "the cradle
-parts, except for the post, are all ready for printing". BigClaw cradle
-— POST ON THE L + 4th ARM (operator "print it", 2026-11-13)</td>
+<td>🔶 <strong>Cradle parts RELEASED (operator 2026-11-14): top lock L
+X1C 30 (the 4th arm RETIRED on Halo: dovetail play at its head),
+portrait base X1C 31, GRIP POST X1C 32 (red) / H2S 34 (yellow),
+LANDSCAPE BASE H2S 33 (finger relief) — claw cradles 30.2 × 21.2, the
+SEAT-FIT COUPON's notch 1 (X1C red: "1 fits perfectly", 3 loose; H2S:
+"#1 ... the best fit").</strong> Operator: "the cradle parts, except for
+the post, are all ready for printing". BigClaw cradle — POST ON THE L +
+4th ARM (operator "print it", 2026-11-13)</td>
 <td><strong>Cameras at the top, near the post.</strong> The post sits on
 the L crossbar's leg corner (its base end 10 mm onto the crossbar's
 front face, foot + dovetail channel + 2 × M3 × 16 pan self-taps); a new
@@ -184,10 +185,22 @@ knurl's free outer edge at 30 / 45° as the cradle's own gate does: 190°
 (CTO):</strong> the cradle printables at layer 0.2 in both books;
 SOCKET_CLR 0.2 justified by T_CLR 0.2 printed on X1C 27, <strong>no H2S
 0.2 slide-fit measured yet</strong>; the dovetail's 0.67 axial play is
-taken by the two screws. <strong>Next:</strong> the 4th arm's break-away
-block under its shoe (X1C 30: the strong trees left strings on that
-face, operator 2026-11-14) as <code>fourth_arm_print</code>, its own
-commit; Karma gates H2S 33.</td>
+taken by the two screws. <strong>4th arm RETIRED (operator on Halo,
+2026-11-14):</strong> "the Dove channel is too sloppy. There's too much
+play in it on top"; the L alone holds, printed in the new PETG. Design
+clearance 0.2 a side on the 18° rail (5 → 7 wide, 3 tall), 12 engaged: ≈
+0.42 of side play (2 × 0.2 / cos 18°) and ≈ 0.65 of lift before a flank
+bears (0.2 / sin 18°), in 0.2 layers. Out of both books
+(<code>CRADLE_ARM4_RELEASED</code> False); the crossbar keeps its rail
+(the printed L has it). Rule: a sliding dovetail that must hold a part
+rigid needs a clamp across it; clearance alone gives ≈ 2c / cos θ of
+play; still in the REFERENCE hung set until the latch chain.
+<strong>Next:</strong> the hung phone's side-to-side swing on left/right
+arm moves. The operator: the cradle latch runs down to the phone's
+bottom, closes the rectangle as the 4th arm did, and ties the cradle to
+the BigClaw there, so the cradle is tied at the top (post) and the
+bottom (latch); a T in a pocket + thumb screw, no sliding dovetail.
+Concept to the operator first, then CAD.</td>
 </tr>
 <tr>
 <td><strong>Fence + rear cap + SPS30 carrier RELEASED (operator
@@ -2488,10 +2501,10 @@ holes still centred (⏳ caliper). Never printed before (operator). Plate
 </tr>
 <tr>
 <td>🔶 BigClaw phone cradle (A-back): plates and books — <strong>cradle
-parts in on a6afc45e: X1C 30 top lock L + 4th arm and X1C 31 portrait
-base RELEASED (operator 2026-11-14); H2S 33 landscape base HOLD (catch9:
-the finger clips it at the post foot); the grip post out until the
-seat-fit coupon picks its cradle size</strong></td>
+parts in on a6afc45e: X1C 30 top lock L and X1C 31 portrait base
+RELEASED (operator 2026-11-14); H2S 33 landscape base HOLD (catch9: the
+finger clips it at the post foot); the grip post out until the seat-fit
+coupon picks its cradle size</strong></td>
 <td><strong>Coupons and cradle plates released</strong> (operator
 2026-11-14); Karma gates them (gate_slots live, gate_slice,
 gate_gcode_floating with arcs, gate_breakaway, verify), then the
