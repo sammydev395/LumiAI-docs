@@ -1969,11 +1969,29 @@ chain</h3>
 <p>G469 → INA226-MAIN → <strong>INA226-DROK</strong> → INA226-BATT →
 TMP102-bay, double-crimped 4-way housing, crimped by net (§16c row 13).
 Still one conductor per net at the G469.</p>
-<h3 id="5b6-position--hourglass_flowing_sand-operators-choice">5b.6
-Position — ⏳ operator's choice</h3>
-<p>Stacked on INA226-MAIN (recommended) or on its own posts on the
-DROK-OUT route a few cm before the riser; CAD adds the posts with the
-HL-PBB carrier change (§16c row 6).</p>
+<h3 id="5b6-position--stacked-on-ina226-batt-operator-2026-11-15">5b.6
+Position — stacked on INA226-BATT (operator, 2026-11-15)</h3>
+<p><strong>Full-overlap stack on INA226-BATT's posts.</strong> The
+carrier has no clean spot of its own: an offset stack would cantilever
+its terminal end off two posts, and every side-by-side spot is within 3
+mm of the mains bundle or blocked by the I²C / fan / PIR bundles and
+F1.</p>
+<ul>
+<li><strong>DROK-OUT detour:</strong> OUT+ runs out to the stack and
+back, ~2 × 180 mm of extra 18 AWG (the figure measured to MAIN; BATT is
+the shorter of the two, ⏳ CAD's route length). Worst case ~0.09 V at
+the DROK's 11 A peak, harmless on the 7.5 V rail.</li>
+<li><strong>The twisted pair breaks for the detour:</strong> OUT+ leaves
+OUT− at the DROK and rejoins it after IN−. Re-twist from IN− to the
+Deans, and dress the detour leg tight against its lane, away from the
+I²C and PIR bundles.</li>
+<li><strong>Build order:</strong> wire INA226-BATT's terminals first
+(row 7, tug-tested), then fit INA226-DROK on top (§16c build
+order).</li>
+<li><strong>Service:</strong> INA226-BATT's terminals can't be reached
+with INA226-DROK in place. Lift INA226-DROK first to re-torque or rewire
+them.</li>
+</ul>
 <h2 id="6-tmp102-power-bay--header-solder--mount--wiring">6. TMP102
 (Power-Bay) — Header Solder + Mount + Wiring</h2>
 <p><strong>Goal:</strong> install the bay-thermal TMP102 in the
@@ -4833,11 +4851,12 @@ normal spacing between boards). Logic headers face the signal side.</td>
 <td>4 on a ~20.3 × 20.3 grid (0.1" inset), Qwiic-standard ~Ø3.3 ⏳</td>
 <td>1.6 mm; header pins below</td>
 <td>Yes</td>
-<td><strong>10 mm posts (v18c), header UP, OVER THE PSU, in its plume,
-on the exhaust (back-wall-fan) half — NOT in the I²C cluster over the
-battery.</strong> Not directly downstream of the Mus-14 heatsink: keep ≥
-20 mm lateral offset so it reads PSU air, not the buck's exhaust.
-Rationale + positions: "TMP102 intent" below</td>
+<td><strong>8 mm posts, chain end soldered to the 0.1" row (no header),
+OVER THE PSU, in its plume, on the exhaust (back-wall-fan) half — NOT in
+the I²C cluster over the battery.</strong> Not directly downstream of
+the Mus-14 heatsink: keep ≥ 20 mm lateral offset so it reads PSU air,
+not the buck's exhaust. Rationale + positions: "TMP102 intent"
+below</td>
 </tr>
 <tr>
 <td><strong>MECCANIXITY breakout (male 2×20) + G469 STACKED on
@@ -5029,24 +5048,23 @@ twisted 3 × 26 lead. Front PIRs: jumper up, header away from the PSU, ≤
 12.5 mm behind the board. Back PIRs: header toward the back wall,
 straight Dupont. Battery straps trimmed ≥ 1 mm clear of the back PIRs
 (reprint). New cut lengths are in §16c row 16.</li>
-<li><strong>TMP102 header on carrier builds: STRAIGHT 0.1" pin header on
-the COMPONENT side, pointing UP. The chain's Dupont 4-way plugs in from
-ABOVE.</strong> So CAD's 6 mm plan keep-out holds. Reasons:
+<li><strong>TMP102 on carrier builds: the I²C chain end is SOLDERED to
+the board's 0.1" row. No header, no plug.</strong> The board sits on
+<strong>8 mm posts</strong> (CAD option F + placement C, 2026-11-15).
+Reasons:
 <ul>
-<li>The as-built recipe (Soldering Guide §6.1) puts a straight JST-XH
-body BELOW the PCB with the cable exiting downward. On the 15 mm plume
-posts, the plug plus its wire bend needs ~20 mm under the board and
-would hit the carrier.</li>
-<li>A right-angle header lying flat would need a 15 mm keep-out that
-blocks the fence waist.</li>
-<li>We solder this header ourselves (bare 0.1" row on both the SparkFun
-and the generic boards), so the type is our choice, not the vendor's.
-Confirm at arrival only that no header is pre-fitted.</li>
-<li>✅ <strong>Vertical stack vs the lid:</strong> carrier top → 10 mm
-post → 1.6 PCB → ~8.5 header → ~14 Dupont housing → ~6 wire bend. v18c
-TMP_POST_H = 10; the operator's assembly confirmed the fit.</li>
-<li>Plain 0.1" pins + Dupont are unkeyed, so put a <strong>pin-1 paint
-dot</strong> on board and housing, and crimp by net.</li>
+<li>The HL-PBB's −X feed zone leaves no room for a plug stack above the
+board. Shifting the block −Y failed on the tall lane forks, and rotating
+the TMP102 failed on the fence waist (2.7 mm room).</li>
+<li><strong>Leads:</strong> the solder joints sit on the −Y row, each
+heat-shrunk before the wrap. The leads wrap the −Y edge down to the
+CORR_L band, where the I²C route already arrives, and are zip-tied to
+the −Y post (204.3, −11.2).</li>
+<li><strong>Hard plan check (CAD gate):</strong> no HL-PBB under-PCB pin
+over the TMP102, ≥ 0.5 mm clear in plan. PASS: the feed tower's pins sit
+~1.0 mm off, the +Y cage row ~4.3 mm.</li>
+<li>Solder by NET (the INA226 header and TMP102 orders differ), and
+meter each net to the G469 before first power.</li>
 <li>Halo v1 as-built keeps its downward JST-XH on the cover studs.</li>
 </ul></li>
 <li><strong>Battery-strap-tab screw 6.2 mm from L, on the mains side of
@@ -5138,10 +5156,10 @@ heats up. The loop would under-respond: a false negative on its one
 job.</li>
 <li><strong>Required position: over the PSU, in its plume, on the
 exhaust half</strong> (between the PSU's hot zone and the back-wall
-NF-A4x20s), on <strong>10 mm posts</strong> (v18c, so the header-UP +
-Dupont stack clears the lid), so it reads moving air, not the carrier.
-Keep ≥ 20 mm lateral offset from the Mus-14 heatsink (it sits over the
-PSU too).</li>
+NF-A4x20s), on <strong>8 mm posts</strong> (the chain end is soldered,
+so nothing stacks above the board), so it reads moving air, not the
+carrier. Keep ≥ 20 mm lateral offset from the Mus-14 heatsink (it sits
+over the PSU too).</li>
 <li><strong>Short bus runs don't argue for the cluster:</strong> the bus
 already spans the 500 mm FFC + a 600 mm tether. The TMP102's own 4-pin
 cable to the G469 is the same few-cm job wherever it sits, and an extra
@@ -5164,13 +5182,13 @@ steady bay load, both fans on the same fixed duty (loop off), ≥ 30 min
 settle per position, ambient recorded.</li>
 <li><strong>Mus-14 clearance is locked by a CAD hard gate check</strong>
 (edge-to-edge plan rectangles; the RESULT fails if &lt; 20.0).</li>
-<li><strong>TMP102 keep-outs</strong> use the 0.1" header edge (15 deep
-× 17, ⏳ unconfirmed for the generic boards on order); the header edge
-faces −X.</li>
+<li><strong>TMP102 keep-outs:</strong> the 0.1" row faces −Y, and the
+soldered leads wrap that edge down to the CORR_L band. With no header or
+plug, nothing stands above the board.</li>
 <li><strong>We don't use the Qwiic plug.</strong> The bay TMP102 is
 wired through its <strong>0.1" header row</strong> (§6), and the generic
 boards on order (§16b.3) may have no Qwiic socket at all. Route the
-4-pin cable from the header edge.</li>
+4-pin cable from the 0.1" row.</li>
 </ul></li>
 <li>✅ <strong>Mains layout, CAD v12 (559eaf4) — VERIFIED, file X, PSU
 case 183–280:</strong> strip L→R <strong>+V 233.80 · −V 242.35 · ⏚
@@ -5480,8 +5498,8 @@ route → phone in the BigClaw cradle</td>
 <td>4</td>
 <td>26</td>
 <td>G469 <strong>3 / 5 / 1 / 9</strong> → INA226-MAIN → INA226-DROK →
-INA226-BATT → TMP102-bay (double-crimped housings; end board
-single)</td>
+INA226-BATT → TMP102-bay (double-crimped housings; TMP102 end soldered;
+INA226-DROK stacked on INA226-BATT)</td>
 </tr>
 <tr>
 <td>BATT</td>
@@ -6855,13 +6873,11 @@ stacked)</td>
 IN+</strong> fork lug, IN− fork lug → on (OUT− goes direct)</td>
 <td><strong>Deans (T-plug)</strong> solder joint → STM32 blue terminal
 <strong>E1008</strong></td>
-<td>Twisted pair; rises beside the tether, FFC kept on the far side. ⏳
-<strong>INA226-DROK position, operator's choice:</strong> stacked on
-INA226-MAIN (recommended; CAD checks driver reach to MAIN's screw
-terminals and offsets the stack if not; costs ~2 × 180 mm of extra 18
-AWG on the + lead, ~0.09 V at 11 A), or its own posts on the DROK-OUT
-route a few cm before the riser (CAD finds a clear spot). Cut lengths
-follow the choice</td>
+<td>Twisted pair; rises beside the tether, FFC kept on the far side.
+<strong>INA226-DROK is stacked on INA226-BATT</strong> (§5b.6): OUT+
+detours ~2 × 180 mm through it (⏳ CAD's route length; add it to the +
+lead's cut), worst case ~0.09 V at 11 A. The pair is untwisted on the
+detour; re-twist from IN− to the Deans</td>
 </tr>
 <tr>
 <td>7</td>
@@ -6918,12 +6934,14 @@ earlier; the extension just gets longer</td>
 <td>11</td>
 <td><strong>FAN1-P / FAN2-P</strong></td>
 <td>2 × 22 each</td>
-<td>88 / 50</td>
+<td>88 / 48</td>
 <td>200 / 160</td>
 <td>Splice joints (from row 10)</td>
 <td>Block <strong>A3 / B3</strong> (FAN1-P), <strong>A4 / B4</strong>
 (FAN2-P): <strong>E0508</strong></td>
-<td>Two opposite block edges (+Y row / −Y row)</td>
+<td>Two opposite block edges (+Y row / −Y row). FAN2-P leaves the fan
+splice on the trunk lane (X_TRUNK, CORR_L): a turn at X_T2 would sit
+under the HL-PBB's −Y cage pins, where no fork fits</td>
 </tr>
 <tr>
 <td>12</td>
@@ -6944,15 +6962,19 @@ lead; pull-ups' other ends → <strong>17</strong></td>
 <td>4 × 26 per hop</td>
 <td>229 + 47 + 214 (3 hops)</td>
 <td><strong>400</strong> (+ row 60: climbs at −X, pins 1/3/5/9 are at
-the +X end) / 160 / <strong>330</strong> (TMP102 now on <strong>10 mm
-posts, header UP</strong>, Dupont plugged from above)</td>
+the +X end) / 160 / <strong>330</strong> (TMP102 on <strong>8 mm
+posts</strong>, chain end soldered to its 0.1" row)</td>
 <td>G469 <strong>3 SDA / 5 SCL / 1 3V3 / 9 GND</strong> (shared ferrules
 per the landing map)</td>
 <td>Each board: <strong>female 2.54 mm 4-way (Dupont) housing, each
 contact DOUBLE-CRIMPED</strong> (in + out) at INA226-MAIN, INA226-DROK
-and INA226-BATT (chain order G469 → MAIN → DROK → BATT → TMP102; ⏳ the
-MAIN → DROK hop length waits on CAD); <strong>single-wire contacts at
-the TMP102 (end)</strong></td>
+and INA226-BATT (chain order G469 → MAIN → DROK → BATT → TMP102;
+INA226-DROK is stacked on INA226-BATT, so the MAIN → DROK hop follows
+the old MAIN → BATT route and DROK → BATT is a short stack hop, ⏳ both
+lengths from CAD); at the TMP102 (end) the four conductors are
+<strong>soldered into the 0.1" row</strong>, each joint heat-shrunk, the
+leads wrapped round the −Y edge to the CORR_L band and zip-tied to the
+−Y post (204.3, −11.2)</td>
 <td><strong>Crimp by NET, not pin number:</strong> the INA226 header and
 TMP102 orders differ. Tug-test every double crimp</td>
 </tr>
@@ -7093,6 +7115,24 @@ fitted</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Ultra (HL-PBB) length corrections, ⏳ ±10 mm (CAD estimate,
+2026-11-15; cut long and trim).</strong> The Plan column lands on the
+D-1459 terminals. On the HL-PBB (cx 238.1 / cy −20.5; board X
+203.1–273.1, Y −31.5..−9.5; cages at 5.0 pitch along both long edges;
+feed tower at the −X end, entries facing −X), adjust the cut:</p>
+<ul>
+<li><strong>BLK-IN (row 4): +37 mm.</strong> It comes out from under the
+board's −X end and turns back +X into the tower.</li>
+<li><strong>+Y-edge outputs, A1 B1 A2 B2 A3 B3 (DROK-IN, TETHER-P,
+FAN1-P): −5 mm each.</strong> About 18 mm shorter along the band, 12.5
+mm longer on the drop to the board edge.</li>
+<li><strong>−Y-edge outputs, A4 B4 A5 B5 B6 (FAN2-P, MUS-IN, LAMP): −21
+mm each.</strong> About 18 mm shorter along the band, 3.5 mm shorter on
+the drop. PHONE-IN (A6 / B6) keeps its own ⏳ in row 15a: its plan is
+from A1/B1.</li>
+<li>Before fitting the HL-PBB, <strong>trim its 4 long edge pins (6–7
+mm) to ≤ 5 mm</strong> (operator).</li>
+</ul>
 <p><strong>Build order</strong> (the Order column, grouped):</p>
 <ol type="1">
 <li><strong>Off-carrier mains first</strong> (row 1), with the earth
@@ -7103,7 +7143,10 @@ the bay:</strong> the power hub (rows 2–5, 8, 11), the I²C chain (row
 <li><strong>Fit the carrier</strong> (strap fasteners), then make the
 <strong>cross-boundary</strong> connections: CH1 at the PSU, BATT (row
 7, polarity metered first), DROK-IN/OUT, USB-C, the tether legs, the
-FFC.</li>
+FFC. <strong>Wire INA226-BATT's terminals (row 7) and tug-test them
+BEFORE INA226-DROK goes on top of it</strong>, then fit INA226-DROK and
+land DROK-OUT (row 6). Servicing BATT's terminals later means lifting
+INA226-DROK first.</li>
 <li><strong>§16.1 pre-power checks</strong> (incl. the AC input-side
 termination tug-test), then the §16.2 power-up. INA226-BATT must read
 <strong>positive</strong> on first charge; INA226-DROK must read

@@ -3256,20 +3256,24 @@ of December by Nova's progress, arrival ~Jan 10); Halo and Nova stay LV.
 Fleet order: Ultra (Creator, now) → Halo → Nova (Dec) → Halo HV (Jan).
 <strong>Ultra's bay = HL-PBB on the carrier</strong> (operator
 2026-11-15; calipered: 2 × Ø4 at 64 c/c, 23 mm tall, outputs alternate
-A/B on both long edges; carrier reprint with HL-PBB posts first, bay
-TMP102 rotated 90° so its header exits −X). <strong>Third INA226
-(INA226-DROK, 0x47)</strong> on the DROK output = design of record:
-reads the STM32 board's total draw (servos + motors + Pi), GND screw
-empty, chained MAIN → DROK → BATT (Power_Bay §5b); ⏳ position (stacked
-on MAIN vs own posts) is the operator's choice. <strong>Block terminals
-may double up</strong> (≤ 3 conductors in one ferrule sized by total
-cross-section): <strong>Ultra Creator runs the wand tether (rows 14–15)
-AND the phone charger (15a/15b)</strong>, PHONE-IN on A6 + B6 (B6 shared
-with LAMP in one E1508); far-end input block = alternative (block moves
-15–20 mm −X). Caps sum ~12.6 A vs the PSC-100's ~7.7 A with wand +
-phone: the pack carries the excess, measure at bring-up. §11.3.5 step 7
-fixed for the v2 rocker. Ultra's Pi 5 cooler: 5 V from header pin 4
-only.</li>
+A/B on both long edges; carrier reprint with HL-PBB posts first at cy
+−20.5; the bay TMP102 drops to 8 mm posts with the I²C chain end
+soldered to its 0.1" row, no header or plug; CAD plan check PASS: no
+HL-PBB pin within 0.5 mm of the TMP102 in plan, nearest ~1.0).
+<strong>Third INA226 (INA226-DROK, 0x47)</strong> on the DROK output =
+design of record: reads the STM32 board's total draw (servos + motors +
+Pi), GND screw empty, chained MAIN → DROK → BATT (Power_Bay §5b);
+position: <strong>full-overlap stack on INA226-BATT</strong> (operator,
+to CAD): OUT+ detours ~2 × 180 mm through it (~0.09 V at 11 A); wire
+BATT's terminals first, then fit INA3; BATT service means lifting INA3.
+<strong>Block terminals may double up</strong> (≤ 3 conductors in one
+ferrule sized by total cross-section): <strong>Ultra Creator runs the
+wand tether (rows 14–15) AND the phone charger (15a/15b)</strong>,
+PHONE-IN on A6 + B6 (B6 shared with LAMP in one E1508); far-end input
+block = alternative (block moves 15–20 mm −X). Caps sum ~12.6 A vs the
+PSC-100's ~7.7 A with wand + phone: the pack carries the excess, measure
+at bring-up. §11.3.5 step 7 fixed for the v2 rocker. Ultra's Pi 5
+cooler: 5 V from header pin 4 only.</li>
 <li>2026-11-14 (operator): <strong>HV version = one rail.</strong> The
 existing DROK at 11.1 V (≤ ~11.6 V, board max 12 V) feeds the STM32
 board, which feeds the servos. F1 stays; a servo fuse is undecided
