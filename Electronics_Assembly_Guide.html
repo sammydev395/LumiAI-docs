@@ -1764,10 +1764,11 @@ Electronics 6372c3c makes it the block of record; the D-1459 becomes a
 bench spare.
 <ul>
 <li>The §11.3.3 port map carries over 1:1.</li>
-<li>Mount: self-taps onto the power-bay carrier (M2.5 × 8, §17.8
-carrier-screw row). ⚠️ The ~60 mm hole spacing is an eyeball:
-<strong>caliper it</strong> and re-check the footprint before landing
-anything. The board is 70 × 22 mm against the D-1459's 57 × 38.</li>
+<li>Mount: <strong>M3 × 8 pan self-tap ×2</strong> onto the power-bay
+carrier's two Ø7 posts (Ø2.5 pilots, §17.8 carrier-screw row), through
+its 2 × Ø4 holes at <strong>64 mm c/c</strong> (calipered; one per short
+end, centred, 1.5 mm from the edge). The board is 70 × 22 mm, 23 mm
+tall, against the D-1459's 57 × 38.</li>
 <li>Loads: bay peak ~8 A = 50 % of 16 A; busiest branch DROK ~5.5 A = 34
 %.</li>
 </ul></li>
@@ -2613,25 +2614,23 @@ BUY</strong>: 18 for Halo, Ultra and Nova (+ spares)</td>
 fence front wall's standoffs, Mus-14 × 4; Ø1.3 pilots; <strong>dry-fit
 one screw per board</strong>: if the washer flange sits on the INA226
 header plastic, use a plain M1.7 pan head or a nylon washer instead);
-<strong>M2.5 × 8 pan self-tap ×4</strong> for the one TMP102 (+
-<strong>×2</strong> more only if the robot carries the HL-PBB);
-<strong>M2 × 8 pan self-tap ×6</strong>: 2 for the G469's 2 support
-posts (Ø1.6 pilots; posts stop 0.1–0.5 under the seated board, shim at
-fit) + <strong>4 for the raised IP6518 phone charger</strong>
-(2026-10-27); <strong>M3 × 8 pan self-tap ×14</strong> (D-1459 ×4 if
-fitted, breakout ×2, 6 strap screws = 2 PSU strap + 4 battery-strap
-tabs, PSU strap → fence pads). Plus <strong>1 printed TAB_CAP</strong>
-(insulating) on the strap-tab screw by the L terminal, <strong>retained
-with a dot of RTV 81158</strong>. G469 stacked on the breakout header
-<strong>plus 2 carrier posts</strong> (operator: header-only was
-wobbly).</td>
+<strong>M2.5 × 8 pan self-tap ×4</strong> for the one TMP102; <strong>M2
+× 8 pan self-tap ×6</strong>: 2 for the G469's 2 support posts (Ø1.6
+pilots; posts stop 0.1–0.5 under the seated board, shim at fit) +
+<strong>4 for the raised IP6518 phone charger</strong> (2026-10-27);
+<strong>M3 × 8 pan self-tap ×14 with the D-1459, ×12 with the
+HL-PBB</strong> (the block: D-1459 ×4 or HL-PBB ×2, breakout ×2, 6 strap
+screws = 2 PSU strap + 4 battery-strap tabs, PSU strap → fence pads).
+Plus <strong>1 printed TAB_CAP</strong> (insulating) on the strap-tab
+screw by the L terminal, <strong>retained with a dot of RTV
+81158</strong>. G469 stacked on the breakout header <strong>plus 2
+carrier posts</strong> (operator: header-only was wobbly).</td>
 <td>per robot</td>
 <td>Power-bay carrier</td>
 <td>M1.7 × 6 (XunLiu stainless, button head with washer, 100 pcs) and
 M2.5 × 8 (CLAHJQX 304 stainless, Phillips pan, 100 pcs): 🟡
-<strong>ORDERED</strong>, arriving 2026-10-29 (Amazon
-111-5664886-5186639). <strong>M2 × 8 and M3 × 8 pan self-taps:
-Stock</strong> (HanTof kit, §1.2)</td>
+<strong>ORDERED</strong>, arriving 2026-10-29. <strong>M2 × 8 and M3 × 8
+pan self-taps: Stock</strong> (HanTof kit, §1.2)</td>
 </tr>
 <tr>
 <td>3/4″ M4 F standoff + M4 SHCS + M4 fender washer ≥ Ø15</td>
@@ -2801,10 +2800,10 @@ Halo. Production replacement not chosen.</strong></li>
 <ul>
 <li>🔴 MZMW PSC-100-12</li>
 <li>🔴 HL-PBB-2-6-MINI ×3</li>
-<li>🟡 Power-bay carrier self-taps <strong>M1.7 × 6</strong> (8; XunLiu
-button head with washer) and <strong>M2.5 × 8</strong> (4, +2 with an
-HL-PBB; CLAHJQX pan): <strong>ORDERED</strong>, arriving 2026-10-29
-(Amazon 111-5664886-5186639).</li>
+<li>🟡 Power-bay carrier self-taps <strong>M1.7 × 6</strong> (10; XunLiu
+button head with washer) and <strong>M2.5 × 8</strong> (4; CLAHJQX pan):
+<strong>ORDERED</strong>, arriving 2026-10-29. The HL-PBB's 2 × M3 × 8
+come from stock.</li>
 <li>🟢 PIR leads built from scratch (Electronics 40e356f): ~4.5 m of 26
 AWG Fermerry silicone per robot (carrier v18d cuts 460/510/240/280) + 4
 Dupont 3-way housings + 12 female pins (PEBA kit), all in stock</li>
@@ -2992,10 +2991,9 @@ front fence half</strong>; the rocker cutouts are CAD's proven design
 <li><strong>Fusing — closed.</strong> The shipping configuration carries
 one fuse, F1 on the battery lead; the future HV-servo upgrade adds the
 servo-rail fuse. Both 10 A 6 × 30 glass, in stock.</li>
-<li><strong>HL-PBB mount:</strong> when the boards arrive, caliper the
-centre-to-centre spacing of the two mounting holes (planned ~60 mm,
-eyeballed). It self-taps onto the carrier's posts (M2.5 × 8), so check
-the spacing against them.</li>
+<li><strong>HL-PBB mount:</strong> 2 × Ø4 holes at <strong>64 mm
+c/c</strong> (calipered). It self-taps onto the carrier's two posts with
+<strong>M3 × 8 pan self-taps</strong>.</li>
 <li><strong>Rail — closed.</strong> Nova gets its own rail (one spare in
 stock); 4 PA-CF rail stops to print.</li>
 <li><strong>Hazard sensors — closed.</strong> Nova gets the SPS30 +

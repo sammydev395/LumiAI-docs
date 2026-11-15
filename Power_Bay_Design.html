@@ -1987,10 +1987,17 @@ slots.</li>
 lid. The screw terminals are on the bottom edge, facing down to the
 DROK's OUT terminals.</li>
 <li><strong>DROK-OUT:</strong> OUT+ goes up into IN+ and IN− comes back
-down to the Deans, a short loop with each leg under ~60 mm (CAD's
-estimate, ⏳ string-measure at the first build). OUT− goes straight to
-the Deans and stays twisted with the + lead everywhere except that
-loop.</li>
+down to the Deans, a short loop of <strong>~30–50 mm a leg (plan 40, cut
+~80 each)</strong>, ⏳ string-measure at the first build. The basis: the
+DROK's OUT block sits in the top ~10 mm of the board's 50 mm edge
+(vendor photo
+<code>images/hardware/drok_dcdc_buck_12a_160w_view2.png</code>, with the
+board mounted upright as the fence cutouts show: heatsink under the
+vents, LCD/buttons/pots below), so its entries are at Z ~50–55 against
+the INA226-DROK terminals at Z ~64–66. That gives ~10–18 mm up, plus
+~5–15 mm along X and ~15 mm for the fork-lug bends. Not calipered on the
+board. OUT− goes straight to the Deans and stays twisted with the + lead
+everywhere except that loop.</li>
 <li><strong>I²C:</strong> the chain hops MAIN → INA226-DROK → BATT climb
 the front wall to the header (§16c row 13, ⏳ CAD's hop lengths).</li>
 <li><strong>Service:</strong> the terminals face down at the DROK and
@@ -6690,9 +6697,10 @@ the order — standard checks</h3>
 strip reads L · N · ⏚ · −V · +V; case 129 × 97 × 30 (~38 at the terminal
 end); CH1 trim to 13.8 ± 0.1 V on the <code>+V ADJ</code> pot; record
 the battery-lead fuse (16b.1).</li>
-<li><strong>HL-PBB ×2:</strong> caliper the ~60 mm mount pair + Ø; mount
-holes isolated from both buses; which end is the fed input; pitches
-(listing says 7.62 / 5.08; our record says 7.5).</li>
+<li><strong>HL-PBB ×2:</strong> mount pair calipered (2 × Ø4 at 64 c/c,
+§11.3.2); still check: mount holes isolated from both buses; which end
+is the fed input; pitches (listing says 7.62 / 5.08; our record says
+7.5).</li>
 <li><strong>G469 ×2:</strong> blank silk is expected (operator labels);
 2.54 mm pitch; the crimp-fit gate already passed on this part.</li>
 <li><strong>40P FFC adapter ×4 + FFC connector ×4:</strong> confirm the
@@ -6880,9 +6888,10 @@ IN+</strong> fork lug, IN− fork lug → on (OUT− goes direct)</td>
 <strong>E1008</strong></td>
 <td>Twisted pair; rises beside the tether, FFC kept on the far side.
 <strong>INA226-DROK is on the fence front wall directly above the DROK's
-OUT end</strong> (§5b.6): OUT+ → IN+ up and IN− → Deans back down, each
-leg &lt; ~60 mm (CAD estimate, ⏳ string-measure; cut ~120 each). OUT+ /
-OUT− stay twisted except over that loop</td>
+OUT end</strong> (§5b.6): OUT+ → IN+ up and IN− → Deans back down,
+~30–50 mm a leg (plan 40, <strong>cut ~80 each</strong>, ⏳
+string-measure; §5b.6). The 139 on-carrier is unchanged. OUT+ / OUT−
+stay twisted except over that loop</td>
 </tr>
 <tr>
 <td>7</td>
@@ -6965,21 +6974,25 @@ lead; pull-ups' other ends → <strong>17</strong></td>
 <td>13</td>
 <td><strong>I2C</strong> (chain)</td>
 <td>4 × 26 per hop</td>
-<td>229 + 47 + 214 (3 hops)</td>
+<td>229 + ~255 + ~255 + 214 (4 hops)</td>
 <td><strong>400</strong> (+ row 60: climbs at −X, pins 1/3/5/9 are at
-the +X end) / 160 / <strong>330</strong> (TMP102 on <strong>8 mm
-posts</strong>, chain end soldered to its 0.1" row)</td>
+the +X end) / <strong>~340</strong> / <strong>~340</strong> /
+<strong>330</strong> (TMP102 on <strong>8 mm posts</strong>, chain end
+soldered to its 0.1" row)</td>
 <td>G469 <strong>3 SDA / 5 SCL / 1 3V3 / 9 GND</strong> (shared ferrules
 per the landing map)</td>
 <td>Each board: <strong>female 2.54 mm 4-way (Dupont) housing, each
 contact DOUBLE-CRIMPED</strong> (in + out) at INA226-MAIN, INA226-DROK
 and INA226-BATT (chain order G469 → MAIN → DROK → BATT → TMP102;
 INA226-DROK is on the fence front wall above the DROK, so the MAIN →
-DROK and DROK → BATT hops climb the front wall to its header, ⏳ both
-lengths from CAD); at the TMP102 (end) the four conductors are
-<strong>soldered into the 0.1" row</strong>, each joint heat-shrunk, the
-leads wrapped round the −Y edge to the CORR_L band and zip-tied to the
-−Y post (204.3, −11.2)</td>
+DROK and DROK → BATT hops each run ~175 mm forward along the plate and
+climb ~80 mm up the wall beside the DROK's OUT end to its header (CAD
+estimate from fence 03990a13, ⏳ string-measure). Their cut is plan + 85
+(25 vertical at the carrier end only, + 2 × 30 slack). The two hops run
+side by side on the same path); at the TMP102 (end) the four conductors
+are <strong>soldered into the 0.1" row</strong>, each joint heat-shrunk,
+the leads wrapped round the −Y edge to the CORR_L band and zip-tied to
+the −Y post (204.3, −11.2)</td>
 <td><strong>Crimp by NET, not pin number:</strong> the INA226 header and
 TMP102 orders differ. Tug-test every double crimp</td>
 </tr>
