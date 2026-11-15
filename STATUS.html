@@ -210,7 +210,15 @@ sleeve 1.6). Fence OVERALL_OK incl. strength rows (ASA yield / 3);
 3dPrint PASS; CTO approved. Book actions at the rebuild: DROK enforcers,
 place the rear cap (ASA, H2S slot 2). <strong>Hardware for the battery
 +5 mm:</strong> the plate-side brass standoffs under posts #5 / #6 must
-stop at Z ≥ 40 or the battery's back corners hit them.</td>
+stop at Z ≥ 40 or the battery's back corners hit them. <strong>Known
+printgate false positive (3dPrint 2026-11-15):</strong>
+<code>lumi_printgate.floating_islands</code> reports two islands on the
+front half's INA3 slab, h 11.90 (227 mm²) and h 56.30 (214 mm²), on
+<code>03990a13</code> and on the solid before it alike. They are not
+real: every sample point of each face (143 of 143, 144 of 144) has solid
+0.25 under it; the function misreads a layer whose section is
+near-identical to the one below. Do not chase them; the plate's island
+gate is <code>gate_floating.py</code>.</td>
 <td>the reprint the operator ordered; printing an old plate wastes
 ASA</td>
 </tr>
@@ -2577,17 +2585,17 @@ holes still centred (⏳ caliper). Never printed before (operator). Plate
 9 prints ASA black on the H2S (time ⏳). LiLyGO halves unchanged.</td>
 </tr>
 <tr>
-<td>🔶 BigClaw phone cradle (A-back): plates and books — <strong>cradle
-parts in on a6afc45e: X1C 30 top lock L and X1C 31 portrait base
-RELEASED (operator 2026-11-14); H2S 33 landscape base HOLD (catch9: the
-finger clips it at the post foot); the grip post out until the seat-fit
-coupon picks its cradle size</strong></td>
+<td>🔶 BigClaw phone cradle (A-back): plates and books — <strong>X1C 30
+= the redesigned L + the boss block on ef343871 (operator 2026-11-15;
+print both, the lock's ridges mesh with this L's grooves); X1C 31
+portrait base on a6afc45e; H2S 33 landscape base with the finger relief;
+the grip post on X1C 32 / H2S 34</strong></td>
 <td><strong>Coupons and cradle plates released</strong> (operator
 2026-11-14); Karma gates them (gate_slots live, gate_slice,
 gate_gcode_floating with arcs, gate_breakaway, verify), then the
 operator starts it himself. verify_3mf PASS both books; gate_slots
---no-ams 0 / 0; gate_floating 0 regions on X1C 27 / 30 / 31 and H2S 31 /
-33.</td>
+--no-ams 0 / 0; gate_floating 0 regions on X1C 27 / 30 (both parts) / 31
+and H2S 31 / 33.</td>
 </tr>
 <tr>
 <td>BigClaw phone cradle — design (CAD <code>2908d720</code>,
