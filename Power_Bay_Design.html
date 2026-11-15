@@ -2832,22 +2832,23 @@ return puts the lamp across LOAD ↔︎ LAMP whenever the switch is closed,
 which is exactly what illuminates it.</p>
 <p><strong>LAMP-tap hardware — double crimp, no piggyback (operator
 2026-11-05):</strong> the AC lamp tap shares the C14 N blade's Faston
-with A4. A4 (16 AWG) and A4a (18 AWG) go into ONE blue-band (16–14)
-straight 4.8 × 0.8 mm insulated female Faston: 1.31 + 0.82 = 2.13 mm²,
-inside the blue band's 1.5–2.5 mm². No piggyback, no extra part, no
+with A4. A4 and A4a (both 18 AWG) go into ONE blue-band (16–14) straight
+fully insulated 4.8 × 0.8 mm female Faston (FDFNY): 0.82 + 0.82 = 1.64
+mm², inside the blue band's 1.5–2.5 mm². No piggyback, no extra part, no
 extra depth behind the inlet.</p>
 <ul>
 <li><p><strong>AC rocker (mains) — double crimp at the C14 N
 blade:</strong></p>
 <ol type="1">
-<li>Strip A4 and the A4a LAMP jumper (18 AWG mains-rated) to the same
-length; twist the strands together.</li>
+<li>Strip A4 and the A4a LAMP jumper (both 18 AWG, 600 V-rated) to the
+same length; twist the strands together.</li>
 <li>Crimp both into one blue-band straight 4.8 × 0.8 mm insulated female
 Faston.</li>
 <li>Tug-test EACH wire separately; re-crimp if either moves.</li>
 <li>Plug the Faston onto the C14 N blade. Route A4a in the mains channel
-to the rocker's LAMP blade, ending in a plain straight 4.8 × 0.8 mm
-insulated female Faston.</li>
+to the rocker's LAMP blade, ending in a fully insulated
+<strong>flag</strong> (right-angle) 4.8 × 0.8 mm female Faston, red
+22–18.</li>
 </ol>
 <p>Lamp lights when switch is ON because LOAD is now at ~120 V vs the
 neutral-referenced LAMP pin. <strong>The LAMP tap counts as a live mains
@@ -2859,10 +2860,10 @@ cage, not a blade), so there's no existing Faston connection to share.
 The DC LAMP jumper is a plain wire: crimp an <strong>E0508 ferrule at
 the D-1459 end</strong> and land it at <strong>B6</strong> (every B
 screw is the same GND net — B6 gives the tap its own cage instead of
-sharing D9's), and a plain <strong>4.8 × 0.8 mm insulated female Faston
-at the rocker LAMP blade end</strong>. Lamp lights when switch is ON
-because LOAD is at +13.8 V vs the GND-referenced LAMP pin. 20 AWG
-silicone hookup.</p></li>
+sharing D9's), and a <strong>fully insulated <strong>flag</strong>
+(right-angle) 4.8 × 0.8 mm female Faston, red 22–18 at the rocker LAMP
+blade end</strong>. Lamp lights when switch is ON because LOAD is at
++13.8 V vs the GND-referenced LAMP pin. 20 AWG silicone hookup.</p></li>
 </ul>
 <p><strong>AC inlet socket part spec:</strong> QTEATAK WPF-1 (IEC 320
 C14 panel-mount inlet with spring cover, 10 A 250 V AC, CE certified, 40
@@ -3114,55 +3115,58 @@ bring-up; every segment is one row.</p>
 <td><strong>A2</strong></td>
 <td>C14 inlet <strong>L blade</strong> (Hot) → AC rocker
 <strong>LINE</strong> blade</td>
-<td><strong>16 AWG</strong> (carrier builds; Halo v1 as-built 18 AWG)
-mains-rated (NOT silicone hookup)</td>
-<td>4.8 × 0.8 mm insulated female Faston (straight) at C14 end + 4.8 ×
-0.8 mm insulated female Faston (straight) at rocker end (see blade-size
-note below the table)</td>
+<td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
+V / 6 A), as-is, no sleeve on Ultra</td>
+<td>Straight fully insulated 4.8 × 0.8 mm female Faston (FDFNY, red) at
+C14 end + fully insulated <strong>flag</strong> (right-angle) 4.8 × 0.8
+mm female Faston, red 22–18, at rocker end (see blade-size note below
+the table)</td>
 </tr>
 <tr>
 <td><strong>A3</strong></td>
 <td>AC rocker <strong>LOAD</strong> blade → PSU <strong>L</strong> screw
 terminal</td>
-<td><strong>16 AWG</strong> (carrier builds; Halo v1 as-built 18 AWG)
-mains</td>
-<td>4.8 × 0.8 mm insulated female Faston (straight) at rocker end (see
-note) + <strong>Kuject fork lug + bend-up</strong> at PSU L screw</td>
+<td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
+V / 6 A), as-is, no sleeve on Ultra</td>
+<td>fully insulated <strong>flag</strong> (right-angle) 4.8 × 0.8 mm
+female Faston, red 22–18, at rocker end (see note) + <strong>Kuject fork
+lug + bend-up</strong> at PSU L screw</td>
 </tr>
 <tr>
 <td><strong>A4</strong></td>
 <td>C14 inlet <strong>N blade</strong> (Neutral) → PSU
 <strong>N</strong> screw terminal</td>
-<td><strong>16 AWG</strong> (carrier builds; Halo v1 as-built 18 AWG)
-mains</td>
-<td>4.8 × 0.8 mm insulated female Faston (straight) at C14 end +
-<strong>Kuject fork lug + bend-up</strong> at PSU N screw.
-<strong>NEUTRAL IS NOT SWITCHED — straight through, unlike
-Hot.</strong></td>
+<td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
+V / 6 A), as-is, no sleeve on Ultra</td>
+<td>Straight fully insulated 4.8 × 0.8 mm female Faston (FDFNY, blue,
+the double crimp with A4a) at C14 end + <strong>Kuject fork lug +
+bend-up</strong> at PSU N screw. <strong>NEUTRAL IS NOT SWITCHED —
+straight through, unlike Hot.</strong></td>
 </tr>
 <tr>
 <td><strong>A4a</strong></td>
 <td>C14 inlet <strong>N blade</strong> (double-crimped with A4) → AC
 rocker <strong>LAMP</strong> blade — the branch that makes the rocker
 light when ON</td>
-<td>18 AWG mains</td>
-<td><strong>Double crimp at C14 N:</strong> A4 (16 AWG) + A4a (18 AWG)
-share ONE blue-band (16–14) 4.8 × 0.8 mm insulated female Faston
-(straight) — 1.31 + 0.82 = 2.13 mm², inside the blue band's 1.5–2.5 mm²;
-strip both to the same length, crimp together, tug-test each wire
-separately. + 4.8 × 0.8 mm insulated female Faston (straight) at rocker
-LAMP end (see note)</td>
+<td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
+V / 6 A), as-is, no sleeve on Ultra</td>
+<td><strong>Double crimp at C14 N:</strong> A4 + A4a (both 18 AWG) share
+ONE blue-band (16–14) straight fully insulated 4.8 × 0.8 mm female
+Faston (FDFNY) — 0.82 + 0.82 = 1.64 mm², inside the blue band's 1.5–2.5
+mm²; strip both to the same length, crimp together, tug-test each wire
+separately. + fully insulated <strong>flag</strong> (right-angle) 4.8 ×
+0.8 mm female Faston, red 22–18, at rocker LAMP end (see note)</td>
 </tr>
 <tr>
 <td><strong>A5</strong></td>
 <td>C14 inlet <strong>E blade</strong> (Ground) → <strong>PSU ⏚ screw
 terminal</strong></td>
-<td><strong>16 AWG</strong> (carrier builds; Halo v1 as-built 18 AWG)
-green mains</td>
-<td>4.8 × 0.8 mm insulated female Faston (straight) at C14 end +
-<strong>ring lug</strong> at the PSU ⏚ screw, screw taken fully out to
-fit it (ring, not fork, for safety earth). Only if the ⏚ screw is
-captive: a fork lug with the screw torqued and tug-tested</td>
+<td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
+V / 6 A), as-is, no sleeve on Ultra, green</td>
+<td>Straight fully insulated 4.8 × 0.8 mm female Faston (FDFNY, red) at
+C14 end + <strong>ring lug</strong> at the PSU ⏚ screw, screw taken
+fully out to fit it (ring, not fork, for safety earth). Only if the ⏚
+screw is captive: a fork lug with the screw torqued and tug-tested</td>
 </tr>
 <tr>
 <td><strong>D1</strong></td>
@@ -3239,17 +3243,18 @@ bulkhead</td>
 <td>D-1459 <strong>A2</strong> → DC rocker <strong>LINE</strong>
 blade</td>
 <td>18 AWG silicone</td>
-<td><strong>E1008 ferrule</strong> at A2 + 4.8 × 0.8 mm insulated female
-Faston (straight) at rocker end (see note)</td>
+<td><strong>E1008 ferrule</strong> at A2 + fully insulated
+<strong>flag</strong> (right-angle) 4.8 × 0.8 mm female Faston, red
+22–18, at rocker end (see note)</td>
 </tr>
 <tr>
 <td><strong>D8</strong></td>
 <td>DC rocker <strong>LOAD</strong> blade → <strong>DROK input
 +V</strong> screw terminal</td>
 <td>18 AWG silicone</td>
-<td>4.8 × 0.8 mm insulated female Faston (straight) at rocker end (see
-note) + <strong>Kuject fork lug + bend-up</strong> at DROK input +V
-screw</td>
+<td>fully insulated <strong>flag</strong> (right-angle) 4.8 × 0.8 mm
+female Faston, red 22–18, at rocker end (see note) + <strong>Kuject fork
+lug + bend-up</strong> at DROK input +V screw</td>
 </tr>
 <tr>
 <td><strong>D8a</strong></td>
@@ -3257,8 +3262,9 @@ screw</td>
 (the tap that makes the rocker light when ON; every B screw is the GND
 net, so the tap gets its own cage)</td>
 <td>20 AWG silicone</td>
-<td><strong>E0508 ferrule</strong> at B6 + 4.8 × 0.8 mm insulated female
-Faston (straight) at rocker LAMP end (see note)</td>
+<td><strong>E0508 ferrule</strong> at B6 + fully insulated
+<strong>flag</strong> (right-angle) 4.8 × 0.8 mm female Faston, red
+22–18, at rocker LAMP end (see note)</td>
 </tr>
 <tr>
 <td><strong>D9</strong></td>
@@ -5165,11 +5171,13 @@ else is on the AC side. The 6 A rating is far below the 15–20 A wall
 breaker, though, which is one more reason for the <strong>slow-blow
 inlet fuse (T3.15A or T5A) while the PSU is an uncertified
 clone</strong>.</li>
-<li><strong>Double insulation along the whole carrier stretch:</strong>
-a <strong>jacketed 3-core cable</strong> (SJT/H05VV-style) is preferred.
-With single wires, put each in an <strong>outer sleeve</strong> (braided
-PET or heat-shrink) for the full carrier length. The insulation is the
-barrier; the printed fork is only the support.</li>
+<li><strong>Single insulation, no sleeve, on Ultra (operator):</strong>
+every mains wire runs as-is in its 600 V silicone jacket, over the
+carrier and at the BATT crossing. The separation from LV is that jacket
+plus the ≥ 8 mm spacing and the printed rib (item 3); the printed fork
+is only the support. Halo revisits sleeving if Ultra shows a safety
+issue; a sleeved wire (~4–5 mm OD) needs the carrier's mains forks
+resized.</li>
 <li><strong>Its own forks, outer edge only.</strong> <strong>Never share
 a fork, tie or bundle with ANY LV conductor.</strong> <strong>≥ 8 mm
 from every LV route, board, screw, ferrule and fork</strong>, with a
@@ -5194,9 +5202,10 @@ lug (A5).</li>
 terminations:</strong> <strong>snap-in/open forks</strong> the cable
 lifts out of, plus a service loop near the inlet, so the carrier lifts
 off without un-terminating anything.</li>
-<li><strong>Terminations:</strong> 16 AWG takes the <strong>blue-band
-(16–14) insulated Fastons/forks</strong>, not the red (22–16) band.
-Booted Fastons at the C14 and the rocker.</li>
+<li><strong>Terminations:</strong> 18 AWG takes the <strong>red-band
+(22–18)</strong> fully insulated Fastons and forks; only the C14 N
+double crimp (2 × 18 AWG) takes a blue-band (16–14) one. Straight fully
+insulated Fastons (FDFNY) at the C14, flag Fastons at the rocker.</li>
 <li>⚠️ <strong>The DC rocker sits on the same +X wall</strong> (CAD
 v15). Its 13.8 V LINE/LOAD/LAMP forks count as LV and must clear the
 mains route by ≥ 8 mm, in separate forks.</li>
@@ -6649,7 +6658,8 @@ table.</p>
 <td>1</td>
 <td><strong>MAINS</strong></td>
 <td>3 × 18 AWG silicone, 600 V-rated (spool marked 600 V / 6 A; operator
-2026-11-06), each sleeved</td>
+2026-11-06), used as-is, no sleeve on Ultra (operator; Halo revisits
+sleeving if a safety issue shows up)</td>
 <td>54 on-carrier + entry</td>
 <td><strong>measure</strong> (C14 and AC rocker on the BACK wall; the
 C14 stands 26.2 mm proud. <strong>E and N run straight into the bay over
@@ -6669,13 +6679,13 @@ PSU end L 38.2 / N 43.4 / E 48.6 mm (earth longest at both ends). The
 battery-to-fence gaps at its ends are 3–7 mm, too narrow for mains.
 <strong>The run crosses the BATT pack lead once</strong> (the lead comes
 onto the carrier's +X edge at Y ≈ 66–70): <strong>cross at 90°, mains
-ABOVE in its own raised clip, ≥ 8 mm clear of the lead, with each mains
-wire sleeved (double insulation) and the pack lead sleeved at the
-crossing.</strong> Never along or over the battery itself. The
-straight-in E/N still cross the lead once, inside the raised span
-between tower 1 (Y 108.9) and tower 2 (Y 61.4); the battery-after-F1 and
-pack-lead crossings (Y ≈ 66–90) all sit under it, 10.0 mm clear in 3D
-(gate ≥ 8 mm)</td>
+ABOVE in its own raised clip, ≥ 8 mm clear of the lead. On Ultra both
+run as-is, unsleeved (operator): the 600 V silicone jacket plus the ≥ 8
+mm gap is the separation.</strong> Never along or over the battery
+itself. The straight-in E/N still cross the lead once, inside the raised
+span between tower 1 (Y 108.9) and tower 2 (Y 61.4); the
+battery-after-F1 and pack-lead crossings (Y ≈ 66–90) all sit under it,
+10.0 mm clear in 3D (gate ≥ 8 mm)</td>
 <td>C14: <strong>straight fully insulated 4.8 mm Fastons
 (FDFNY)</strong>, red 22–18 on L and E, blue 16–14 for the N double
 crimp (A4 + A4a); AC rocker: <strong>right-angle (flag) 4.8 mm insulated
@@ -6705,8 +6715,8 @@ screw</strong> fork lug</td>
 <td>182</td>
 <td>300</td>
 <td>INA226-MAIN ISENSE− fork lug (LINE wire)</td>
-<td>KCD1 LINE / LOAD: <strong>straight 4.8 mm Fastons (red
-band)</strong>; LAMP (22): 4.8 mm Faston → <strong>B6
+<td>KCD1 LINE / LOAD: <strong>flag (right-angle) fully insulated 4.8 mm
+Fastons, red band</strong>; LAMP (22): flag 4.8 mm Faston → <strong>B6
 E0508</strong></td>
 <td>v2: rocker upstream of the whole bus. LOAD continues as BLK-IN.
 Fence-mounted, so leave a service loop for lifting the carrier</td>

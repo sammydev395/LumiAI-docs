@@ -399,9 +399,10 @@ debris out of the socket. Do not remove the cover.</li>
 <li><strong>Quick-connect blades vs solder terminals:</strong> the 4.8 ×
 0.8 mm blades accept standard 4.8 mm Faston / spade female crimps.
 Prefer <strong>fully insulated female disconnects</strong> (Panduit / TE
-/ uxcell — 22–16 AWG for our 16 AWG mains wire) over uninsulated crimps
-+ separate heat-shrink, so the crimps meet the same 6 mm creepage /
-clearance rule as the rest of the mains wiring.</li>
+/ uxcell; red 22–18 AWG for our 18 AWG mains wire, blue 16–14 for the
+C14 N double crimp; straight at the C14, flag at the rockers) over
+uninsulated crimps + separate heat-shrink, so the crimps meet the same 6
+mm creepage / clearance rule as the rest of the mains wiring.</li>
 </ul>
 <hr />
 <h2
@@ -867,9 +868,15 @@ block through the HAT's Mus-14 feed. A high CC setting also keeps the CC
 limit from throttling the servos at their peaks. Bench check (Ultra's
 DROK, out of the bay, wired straight to an e-load with its IN− and OUT−
 kept apart): 8 A continuous at 11.5 V out, the heatsink barely warm with
-the fan on, and the CC limit at about 9 A with the pot fully clockwise
-(the listing's "12 A" is a cooling rating; the CC pot is the only
-current setting, with no override).</li>
+the fan on; then, after the CC pot was run from fully counter-clockwise
+up to its clockwise end, <strong>11.0 A at 11.1 V (~122 W) with the CC
+light off</strong> (held ~30 s, fan on, fed from the PSC-100-12 with its
+battery connected, so the pack supplied the input above the PSU's ~7.7
+A; the DROK display reads ~1.5 % high). With the pot at its clockwise
+end it goes to <strong>about 11.6–11.8 A</strong> (the operator's
+reading). The earlier "CC at ~9 A" was the pot setting, not the DROK's
+limit. The CC pot is the only current setting (no menu override). A
+sustained 11 A hold has not been run.</li>
 <li><strong>DC rocker OFF</strong> → DROK output drops to ~0 V (LCD
 <code>Vout</code> may show ~0.1 V residual from its own draw). This
 confirms the DC rocker is actually in the DROK power path and gives you
