@@ -284,6 +284,16 @@ under the 3 A estimate); the inline meter's reading is recorded as that
 ceiling, and acceptance (d) is the full-load check. Switching ripple is
 not measured; it is judged after the board's 5 V regulator, through
 <code>get_throttled</code> and EXT5V.</li>
+<li><strong>On battery the servo rail falls out of regulation at
+peaks.</strong> The DROK needs IN ≥ OUT + 0.8 V (manual), so 11.1 V
+needs ≥ 11.9 V in. Nova's 10 Ah pack measured 13.1 V at rest and 12.0 V
+at 5 A on its own terminals (apparent ~0.22 Ω, from a single 5 A step,
+not yet checked for linearity); by extrapolation that is ~11.3 V at 8 A,
+before the PSU's battery-path drop. During a mains cut the HV rail
+therefore sags with the pack at servo peaks. It stays above the proposed
+~10.0 V undervolt, but the arm runs below 11.1 V. The LV configuration
+(7.5 V) keeps over 3 V of headroom on battery. The 7.5 V board buck
+keeps ~3.5 V of headroom at the same pack voltages.</li>
 <li><strong>Overload:</strong> a servo overload opens the 10 A servo
 fuse, or on battery F1, and the arm goes limp. The thin servo chain
 cable is protected as in Hiwonder's stock arm (it carries the arm's

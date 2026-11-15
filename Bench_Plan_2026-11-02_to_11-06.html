@@ -107,7 +107,29 @@ NVMe) measured mean 1.36 A, max 2.11 A.</li>
 twisted pair. Cut length = string-measure on Halo + 30 mm. <strong>No F4
 fuse on Halo</strong> (operator 2026-11-04: no room for the holder in
 the bay): the pair taps the DROK input screws, so it sits behind the DC
-rocker and is protected only by <strong>F2 (10 A master)</strong>.</p>
+rocker. <strong>No fuse of its own (no F2, no F4):</strong> on AC it is
+limited only by the PSC-100-12's output limit (holds ~7.7 A, cuts out at
+8 A with the battery disconnected); with the battery connected the pack
+supplies current beyond that limit (no trip seen at 10 A), and on
+battery it sits behind <strong>F1 (10 A)</strong>. <strong>That is not
+adequate protection for the 22 AWG pair:</strong> a hard short is
+cleared (PSU hiccup or F1), but an overload up to ~21 A (PSU ~7.7 A +
+the pack through F1, a fast-blow that carries up to ~13.5 A for about an
+hour) opens nothing and is above 22 AWG's ~7 A chassis rating. The
+Mus-14 itself draws ≤ ~1.3 A at 13.8 V. The same gap applies to the
+bay's 18 AWG trunk (CH1 / D7 / D8, ~16 A chassis), which carries the
+same fault current.</p>
+<p><strong>Options that add no part (operator's call):</strong></p>
+<ul>
+<li>(a) Upsize the tap pair to <strong>16 AWG</strong> (~22 A chassis,
+covers the ~21 A worst case). 18 AWG (~16 A) does not. Fit unchecked:
+the Mus-14 solder pads and the fork stacked on D8 at the DROK input
+screw. Then the 22 AWG tap is no longer the weakest wire, but the 18 AWG
+trunk still is.</li>
+<li>(b) Tap a point behind F1 on both sources: <strong>not
+possible.</strong> F1 sits only in the battery lead, so on AC no point
+in the bay is behind it.</li>
+</ul>
 <table>
 <thead>
 <tr>
@@ -126,7 +148,7 @@ rocker and is protected only by <strong>F2 (10 A master)</strong>.</p>
 <td>22 red</td>
 <td>Kuject fork, stacked on D8's fork</td>
 <td>solder + heat-shrink at the pad</td>
-<td>none (F2 only)</td>
+<td>none (PSU limit on AC, F1 on battery)</td>
 </tr>
 <tr>
 <td>H2 (black)</td>

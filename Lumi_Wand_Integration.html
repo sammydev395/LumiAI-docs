@@ -868,9 +868,13 @@ goes 2.4 A → <strong>~4.35 A</strong> at 13.8 V, taking the bay peak
 from <strong>8.0 A</strong> (<a
 href="Power_Bay_Design.html#1133-distribution-module-port-assignments-a-bus--v-b-bus--gnd">Assembly
 §11.3</a>) to <strong>~9.9 A</strong>. That is past the 100 W PSU's 7.25
-A nameplate but inside CH1's 10-12 A field-sustain band — a peak-only
-condition, at simultaneous wand-full-white <strong>and</strong>
-arm-heavy-load.</p>
+A nameplate and past its bench limit (holds ~7.7 A, ~104 W; cuts out at
+8 A), so <strong>the PSC-100-12 cannot carry this variant</strong>, even
+as a peak at simultaneous wand-full-white <strong>and</strong>
+arm-heavy-load. The HV version's PSC-150-12 (150 W total, shared with
+charging) carries it only while the battery isn't charging hard: check
+the peak against the load-plus-charge total before this variant ships on
+either PSU.</p>
 <p><strong>Thermal is the real constraint, not amps.</strong> Driver
 dissipation in the handle roughly doubles, ~4.2 W → **~7.6 W**, on top
 of double the LED heat. Diameter growth buys heatsink area <em>and</em>

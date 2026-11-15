@@ -4097,11 +4097,27 @@ peak-only condition; sustained running is much lower (typical wand duty
 ~30-50 %, arm not always at peak, RPi5 not always at 5 A).</li>
 <li>A3 / A4 (fan branches): each 0.04 A — ~0.3 % of the 16 A position
 rating (direct 13.8 V, no diodes)</li>
-<li>PSU CH1 (rated 5 A, field-sustains 10-12 A per Power doc
-§Components): <strong>9.2 A peak</strong> is still past nameplate but
-sits mid-band in the field-sustain range. <strong>Note the headroom this
-frees is the budget any higher-power wand variant would spend</strong> —
-see <a href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
+<li>PSU CH1 (rated 5 A; bench, battery disconnected: 95 W at 7 A with no
+sag, holds to ~7.7 A (~104 W), cuts out at 8 A): <strong>the 9.2 A cap
+sum is past the PSU's limit.</strong> With the pack connected after
+draining it to ~12.8 V at rest, the charger active, it did not trip up
+to 10 A: the output held ~13 V, the yellow CHARGE LED stayed on through
+the lower steps and went out at ~10 A while the power LED stayed on,
+most likely with the pack covering the excess (battery current direction
+and PSU case heat not yet measured). If confirmed, the battery carries
+peaks above the PSU's limit, and sustained load above ~7.7 A drains the
+pack. The measured LV peak is ~76 W (~5.5 A: robot ~43 W on Halo + wand
+~33 W). It fits on its own, but not with battery charging (~28 W) on
+top. <strong>The PSC-100-12 has no headroom for a higher-power wand or
+the HV servos.</strong> <strong>The LV builds, Nova included, stay on
+the PSC-100-12:</strong> the measured LV peak fits, and the pack carries
+peaks above the PSU's limit. <strong>The HV version gets the MZMW
+PSC-150-12, ordered (due ~Nov 20)</strong> (150 W total, CH1 7.5 A + CH2
+3 A charge, 159 × 97 × 30 mm: the PSC-100's width and height, 30 mm
+longer). Its limit is total power shared with charging: hiccup at
+105–115 % of 150 W is ~11.4–12.5 A with the battery full, ~8–9.5 A on
+the load while the charger draws its 3 A. See <a
+href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
 §5.3</a>.</li>
 <li><strong>Wire gauge for the input feed:</strong> <strong>18
 AWG</strong> per segments D2/D4 (chassis rating ~16 A, ~1.7× the 9.2 A
@@ -6373,9 +6389,12 @@ factory pigtail first. If it eats most of the budget, F1 goes
 <strong>immediately after the XT30 mate</strong>.</li>
 <li>XT30 solder cups, 18 AWG (palette; the 8 A peak on a short run is
 fine), heat-shrink over each cup. Soldered, never a screw terminal.</li>
-<li><strong>PSU side:</strong> the PSC-100-12's own battery lead pair
-ships with an <strong>inline fuse holder</strong>. On the new unit,
-record that fuse's rating. F1 at the pack is still REQUIRED, because it
+<li><strong>PSU side:</strong> the PSC-100-12's and PSC-150-12's own
+battery lead pairs ship with an <strong>inline fuse</strong> (blade on
+the PSC-150-12). On each new unit, record that fuse's rating. It carries
+the pack's discharge current whenever the load runs above the PSU's
+limit, as well as on battery, so a rating under 10 A can open on arm
+peaks with mains present. F1 at the pack is still REQUIRED, because it
 protects the stub from the pack's fault energy. The PSU-side fuse just
 becomes a second, downstream fuse (no conflict as long as its rating ≥
 10 A, or it's the weak link; record it).</li>

@@ -46,7 +46,7 @@ within the bay envelope.</p>
 ┌──────────────────────────────┐
 │  MZMW PSC-100-12 Power-UPS   │
 │  CH1: 13.8 V @ 5 A rated      │
-│        (10–12 A field-tested) │
+│  bench: holds 7.7 A, trips 8 A│
 │  CH2: 13.8 V @ 2 A             │
 │    (battery charge)            │
 │  Instant AC↔battery switch     │
@@ -135,9 +135,18 @@ mount hardware.)</strong></p>
 <tr>
 <td><strong>UPS Power Supply</strong></td>
 <td>MZMW PSC-100-12</td>
-<td>CH1: 13.8 V @ 5 A rated (69 W) — <strong>field-sustains 10–12 A
-(~138–165 W) without thermal foldback</strong>, CH2: 13.8 V @ 2 A
-(battery charge), Rated capacity: 100 W, Efficiency: ~84%</td>
+<td>CH1: 13.8 V @ 5 A rated (69 W). <strong>Bench, battery disconnected:
+95 W at 7 A (~13.6 V, no sag), holds ~13.5 V to ~7.7 A (~104 W), cuts
+out at 8 A.</strong> With the pack connected after draining it to ~12.8
+V at rest, the charger active, it did not trip up to 10 A: the output
+held ~13 V, the yellow CHARGE LED stayed on through the lower steps and
+went out at ~10 A while the power LED stayed on, most likely with the
+pack covering the excess (battery current direction and PSU case heat
+not yet measured). If confirmed, the battery carries peaks above the
+PSU's limit, and sustained load above ~7.7 A drains the pack. The 100 W
+total is the real limit, and CH2 charging comes out of the same budget.
+CH2: 13.8 V @ 2 A (battery charge), Rated capacity: 100 W, Efficiency:
+~84%</td>
 <td>UPS/Charge Function Switching Power Supply, <strong>129 × 97 × 30
 mm</strong> (≈ 5.1 × 3.8 × 1.2 in). AC input: 100–240 VAC (47–63 Hz).
 CH1 provides 13.8 V on AC and switches to battery voltage (≈12.0–12.8 V

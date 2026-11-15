@@ -524,8 +524,16 @@ alt="PSC-100-12 — dimension + label view. Silkscreen shows the model number, r
 </tr>
 <tr>
 <td>CH1 output</td>
-<td>13.8 V DC, 5.0 A nominal (field-sustains 10–12 A per empirical data
-in <code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code>)</td>
+<td>13.8 V DC, 5.0 A nominal. Bench, battery disconnected: 95 W at 7 A
+(~13.6 V, no sag), holds ~13.5 V to ~7.7 A (~104 W), cuts out at 8 A.
+The 100 W total is the real limit, and CH2 charging comes out of the
+same budget With the pack connected after draining it to ~12.8 V at
+rest, the charger active, it did not trip up to 10 A: the output held
+~13 V, the yellow CHARGE LED stayed on through the lower steps and went
+out at ~10 A while the power LED stayed on, most likely with the pack
+covering the excess (battery current direction and PSU case heat not yet
+measured). If confirmed, the battery carries peaks above the PSU's
+limit, and sustained load above ~7.7 A drains the pack.</td>
 </tr>
 <tr>
 <td>CH2 output</td>
@@ -849,14 +857,19 @@ seconds getting it exact). <strong>Multimeter on the DROK output
 terminals is more accurate than the LCD for the final trim</strong> —
 LCD typically lags actual by 20-50 mV. Final adjustment with the
 multimeter reading.</li>
-<li><strong>I-set pot (CC)</strong> — needs a load to precisely
-calibrate the trip point, but you don't need precision here: the current
-limit is a <strong>fault backstop</strong>, not a load-shaping tool.
-<strong>Recommended: set to ~6-8 A</strong> (turn CW past mid-rotation;
-exact value doesn't matter as long as it's above the STM32+Pi5 stack's
-~4-5 A worst-case draw and below the DROK's 12 A absolute max). This
-gives ~2× headroom over normal draw and folds back before the DROK's
-thermal limit kicks in on a downstream short.</li>
+<li><strong>I-set pot (CC)</strong> — turn it fully CW and leave it
+there. <strong>In the bay the DROK's CC does not work, so it is not a
+fault backstop.</strong> The DROK manual: IN− must not be tied to OUT−,
+or the CC function is invalid. In the bay they are tied outside the
+DROK: OUT− runs to the STM32 ground, which the Pi shares through the
+STM32's 5 V port, and the Pi's ground runs back to the distribution
+block through the HAT's Mus-14 feed. A high CC setting also keeps the CC
+limit from throttling the servos at their peaks. Bench check (Ultra's
+DROK, out of the bay, wired straight to an e-load with its IN− and OUT−
+kept apart): 8 A continuous at 11.5 V out, the heatsink barely warm with
+the fan on, and the CC limit at about 9 A with the pot fully clockwise
+(the listing's "12 A" is a cooling rating; the CC pot is the only
+current setting, with no override).</li>
 <li><strong>DC rocker OFF</strong> → DROK output drops to ~0 V (LCD
 <code>Vout</code> may show ~0.1 V residual from its own draw). This
 confirms the DC rocker is actually in the DROK power path and gives you
@@ -867,12 +880,13 @@ DROK output end).</li>
 <li><strong>DC rocker ON</strong> → STM32 boots, Pi5 boots off the
 STM32's 5 V/5 A external port.</li>
 </ol>
-<p>Post-calibration under normal load: LCD reads <code>Vin ~13.8</code>,
-<code>Vout ~7.5</code>, <code>Iout ~4-5 A</code> (typical STM32+Pi5
-stack draw), <code>Pout ~30-38 W</code>. If <code>Vout</code> sags
-noticeably below 7.5 V under load, either the I-set is throttling (turn
-CW) or the DROK is thermally folding back (check bay
-ventilation).</p></li>
+<p>Post-calibration under normal load: LCD reads <code>Vin ~13.8</code>
+and <code>Vout ~7.5</code>. <strong>The LCD <code>Iout</code> and
+<code>Pout</code> fields read low in the bay:</strong> the DROK senses
+current on the same IN−/OUT− path, and part of the return current goes
+around it through the shared ground, so never use them as the rail's
+current. If <code>Vout</code> sags noticeably below 7.5 V under load,
+the DROK is thermally folding back (check bay ventilation).</p></li>
 <li><p><strong>Why 7.5 V:</strong> the STM32 board passes its input
 straight to its bus-servo ports, so with today's LV servos (6–8.4 V) the
 DROK setpoint is the arm's servo voltage; the board itself (Hiwonder:
