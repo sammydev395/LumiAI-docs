@@ -436,6 +436,20 @@ href="Power_Bay_Design.html#5a-ina226-batt--second-ina226-on-the-ups-battery-lea
 §5a</a>.</td>
 </tr>
 <tr>
+<td><strong>0x47</strong></td>
+<td><strong>INA226-DROK — DROK output (STM32 board) monitor</strong>
+(3rd GODIYMODULES INA226, operator yes 2026-11-15)</td>
+<td><strong>Selected:</strong> A1 = VS (bottom-row <strong>U</strong>),
+A0 = SCL (top-row <strong>L</strong>): one pad off INA226-BATT's 0x45.
+One bridge per row; continuity-check first. Both 01C pull-ups lifted.
+Shunt in series in DROK OUT+ (IN+ DROK side, IN− toward the Deans); GND
+screw EMPTY. <strong>Reads the STM32 board's TOTAL draw, not the servos
+alone:</strong> servos, Ultra's mecanum motors and the board's 5 V
+converter (which powers the Pi) all sit behind the DROK. When the DROK
+trips (OCP latch) the Pi goes dark with the board, so INA226-DROK logs
+up to a trip, not after it.</td>
+</tr>
+<tr>
 <td><strong>0x48</strong></td>
 <td><strong>TMP102 (bay)</strong> bay-thermal sensor (SparkFun
 Qwiic)</td>
@@ -1244,7 +1258,22 @@ pad-mod</a>.</td>
 4-way housing on its 4-pin hdr</td>
 <td>Carrier builds (2026-10-23). <strong>Lift both <code>01C</code>
 pull-ups</strong>, as for INA226-MAIN. Chain order G469 → INA226 →
-INA226-BATT → TMP102-bay is ONE conductor per net at the G469.</td>
+INA226-DROK → INA226-BATT → TMP102-bay is ONE conductor per net at the
+G469.</td>
+</tr>
+<tr>
+<td>I²C SDA + SCL</td>
+<td>3 / 5</td>
+<td>GPIO2 / GPIO3</td>
+<td>INA226-DROK (0x47)</td>
+<td>on the <strong>bay I²C chain</strong> (between INA226-MAIN and
+INA226-BATT): double-crimped 4-way housing on its 4-pin hdr</td>
+<td>Operator yes 2026-11-15. Shunt in series in the DROK output + lead
+(Power_Bay §16c row 6, segment D14a). <strong>Reads the STM32 board's
+TOTAL draw, not the servos alone:</strong> servos, Ultra's mecanum
+motors and the board's 5 V converter (which powers the Pi) all sit
+behind the DROK. <strong>Lift both <code>01C</code>
+pull-ups.</strong></td>
 </tr>
 <tr>
 <td>I²C SDA + SCL</td>
@@ -1306,6 +1335,14 @@ TMP102-bay VCC)</td>
 <td>Same chain conductor as the row above; no extra G469 wire.</td>
 </tr>
 <tr>
+<td>3V3</td>
+<td>1</td>
+<td>3V3</td>
+<td>INA226-DROK</td>
+<td><code>VCC</code>, via the bay I²C chain</td>
+<td>Same chain conductor; no extra G469 wire.</td>
+</tr>
+<tr>
 <td>GND</td>
 <td>9</td>
 <td>GND</td>
@@ -1316,6 +1353,17 @@ chain</strong></td>
 logic-to-power ground tie</strong> (its GND screw also carries the CH1
 return, D3/D4). <strong>Shares pin 9 with the wand's
 <code>GND-logic</code></strong>: 2 conductors.</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>9</td>
+<td>GND</td>
+<td>INA226-DROK</td>
+<td><code>GND</code>, via the bay I²C chain</td>
+<td>⚡ <strong>Its GND SCREW stays EMPTY</strong>, as on INA226-BATT:
+the DROK is non-isolated, so its OUT− is already common with logic GND
+through the board and Pi; a power ground on this screw would make a
+second logic-to-power tie.</td>
 </tr>
 <tr>
 <td>GND</td>
@@ -1616,7 +1664,13 @@ to fit along the FFC route. The joints are staggered so they don't sit
 side by side, each one gets its own heat-shrink, and one larger sleeve
 goes over the group. Before power: meter 5 V ↔︎ GND for no short at the
 G469 end, and check each colour for continuity end to end. A replacement
-cooler means cutting and splicing again.</td>
+cooler means cutting and splicing again. ⚡ <strong>Cooler 5 V comes
+from header pin 4 only — never from the HAT's 5 V (the MusRock rail into
+HAT POWER) or the RasAdapter Mini's 5 V headers.</strong> On 2026-09-26
+a stalling cooler on the RasAdapter's 3-pin 5 V header browned out the
+rail that also feeds the USB hub carrying the STM32 CH340 and the OAK
+(wheel lapses, OAK drop-outs); a new cooler moved to the header 5 V
+cleared it.</td>
 </tr>
 <tr>
 <td>Cooler GND</td>
@@ -1805,9 +1859,9 @@ of servo power.</li>
 <strong>optional</strong> and unassigned until the hardware-latch is
 implemented; reserve the pin, don't wire it speculatively.</li>
 <li>I²C bus is shared: <strong>PCA9685 wand @0x41, HAT INA219 @0x40
-(from Phase 7.6), INA226 @0x44, TMP102 bay-thermal @0x48</strong> (the
-TMP102 takes the slot once reserved for an ADS1115 — digital, no
-ADC).</li>
+(from Phase 7.6), INA226 @0x44, INA226-BATT @0x45, INA226-DROK @0x47,
+TMP102 bay-thermal @0x48, TMP102-wand @0x49</strong> (the TMP102 takes
+the slot once reserved for an ADS1115 — digital, no ADC).</li>
 <li><strong>Bay-fan control temperature = the TMP102 (I²C 0x48)</strong>
 — read by <code>bay_thermal_node</code> to drive the GPIO12 fan PWM. The
 <strong>INA226 provides no temperature</strong> (V/I/P only). Mount the

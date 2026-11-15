@@ -26,10 +26,10 @@
 <text x="647.0" y="869.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
 <text x="647.0" y="869.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
 <line x1="626.0" y1="865.5" x2="484.0" y2="865.5" stroke="#c0392b" stroke-width="1.6"/>
-<text x="476.0" y="862.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">chain VCC (INA226 . INA226-BATT . TMP102-bay) + wand 3V3</text>
-<text x="476.0" y="862.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#c0392b">chain VCC (INA226 . INA226-BATT . TMP102-bay) + wand 3V3</text>
-<text x="476.0" y="876.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">wand signal leg lands 1 . 3 . 5, return at 9</text>
-<text x="476.0" y="876.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">wand signal leg lands 1 . 3 . 5, return at 9</text>
+<text x="476.0" y="862.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">I2C chain VCC + wand 3V3 (leg 1.3.5, return 9)</text>
+<text x="476.0" y="862.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#c0392b">I2C chain VCC + wand 3V3 (leg 1.3.5, return 9)</text>
+<text x="476.0" y="876.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">chain: INA226 . INA226-DROK . INA226-BATT . TMP102-bay</text>
+<text x="476.0" y="876.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">chain: INA226 . INA226-DROK . INA226-BATT . TMP102-bay</text>
 <text x="622.0" y="861.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">3V3</text>
 <text x="622.0" y="861.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">3V3</text>
 <rect x="733.0" y="826.5" width="8" height="15" rx="2" fill="#1f6fd0" stroke="#1f6fd0" stroke-width="1.8"/>
@@ -39,10 +39,10 @@
 <text x="647.0" y="838.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
 <text x="647.0" y="838.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
 <line x1="626.0" y1="834.5" x2="484.0" y2="834.5" stroke="#1f6fd0" stroke-width="1.6"/>
-<text x="476.0" y="831.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">bay I2C chain SDA (INA226 . INA226-BATT . TMP102-bay)</text>
-<text x="476.0" y="831.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#1f6fd0">bay I2C chain SDA (INA226 . INA226-BATT . TMP102-bay)</text>
-<text x="476.0" y="845.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">-&gt; wand SIG OUT SDA</text>
-<text x="476.0" y="845.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">-&gt; wand SIG OUT SDA</text>
+<text x="476.0" y="831.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">I2C chain SDA + wand SIG OUT SDA</text>
+<text x="476.0" y="831.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#1f6fd0">I2C chain SDA + wand SIG OUT SDA</text>
+<text x="476.0" y="845.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">chain: INA226 . INA226-DROK . INA226-BATT . TMP102-bay</text>
+<text x="476.0" y="845.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">chain: INA226 . INA226-DROK . INA226-BATT . TMP102-bay</text>
 <text x="622.0" y="830.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO2</text>
 <text x="622.0" y="830.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GPIO2</text>
 <rect x="733.0" y="795.5" width="8" height="15" rx="2" fill="#1f6fd0" stroke="#1f6fd0" stroke-width="1.8"/>
@@ -52,10 +52,10 @@
 <text x="647.0" y="807.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
 <text x="647.0" y="807.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
 <line x1="626.0" y1="803.5" x2="484.0" y2="803.5" stroke="#1f6fd0" stroke-width="1.6"/>
-<text x="476.0" y="800.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">bay I2C chain SCL (INA226 . INA226-BATT . TMP102-bay)</text>
-<text x="476.0" y="800.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#1f6fd0">bay I2C chain SCL (INA226 . INA226-BATT . TMP102-bay)</text>
-<text x="476.0" y="814.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">-&gt; wand SIG OUT SCL</text>
-<text x="476.0" y="814.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">-&gt; wand SIG OUT SCL</text>
+<text x="476.0" y="800.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">I2C chain SCL + wand SIG OUT SCL</text>
+<text x="476.0" y="800.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#1f6fd0">I2C chain SCL + wand SIG OUT SCL</text>
+<text x="476.0" y="814.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">chain: INA226 . INA226-DROK . INA226-BATT . TMP102-bay</text>
+<text x="476.0" y="814.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">chain: INA226 . INA226-DROK . INA226-BATT . TMP102-bay</text>
 <text x="622.0" y="799.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GPIO3</text>
 <text x="622.0" y="799.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GPIO3</text>
 <rect x="733.0" y="764.5" width="8" height="15" rx="2" fill="#fff" stroke="#b8bec6" stroke-width="1.0"/>
@@ -68,10 +68,10 @@
 <text x="647.0" y="745.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" stroke="#fff" stroke-width="0.1" stroke-linejoin="round" fill="none">×2</text>
 <text x="647.0" y="745.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">×2</text>
 <line x1="626.0" y1="741.5" x2="484.0" y2="741.5" stroke="#1f6fd0" stroke-width="1.6"/>
-<text x="476.0" y="738.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">chain GND (INA226 . INA226-BATT . TMP102-bay) + wand GND</text>
-<text x="476.0" y="738.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#1f6fd0">chain GND (INA226 . INA226-BATT . TMP102-bay) + wand GND</text>
-<text x="476.0" y="752.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">STAR GROUND - never at the block; INA226-BATT GND screw EMPTY</text>
-<text x="476.0" y="752.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">STAR GROUND - never at the block; INA226-BATT GND screw EMPTY</text>
+<text x="476.0" y="738.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">chain GND + wand GND-logic (STAR GROUND)</text>
+<text x="476.0" y="738.5" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="end" font-weight="600" fill="#1f6fd0">chain GND + wand GND-logic (STAR GROUND)</text>
+<text x="476.0" y="752.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">INA226 . INA226-DROK . INA226-BATT . TMP102-bay; -DROK/-BATT GND screws EMPTY</text>
+<text x="476.0" y="752.5" font-family="DejaVu Sans, Arial" font-size="10.5" text-anchor="end" font-weight="400" fill="#666">INA226 . INA226-DROK . INA226-BATT . TMP102-bay; -DROK/-BATT GND screws EMPTY</text>
 <text x="622.0" y="737.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">GND</text>
 <text x="622.0" y="737.5" font-family="DejaVu Sans Mono, monospace" font-size="9.5" text-anchor="end" font-weight="400" fill="#9aa0a6">GND</text>
 <rect x="733.0" y="702.5" width="8" height="15" rx="2" fill="#2f8f4e" stroke="#2f8f4e" stroke-width="1.8"/>
@@ -359,8 +359,8 @@
 <text x="40.0" y="96.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#666">21 of the 40 terminals carry wire (24 on Ultra; 2 more are drawn, labelled and deliberately UNWIRED). THE BOARD SHIPS BLANK — the names below are the labels you apply (S4 step 3), and they are Pi FUNCTION names, not GPIO numbers.</text>
 <text x="40.0" y="114.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">Drawn in the BAY'S orientation, matching the label sheet: pin 1 bottom, odd row left. The vendor product photo is mirrored from this — do not read the two together.</text>
 <text x="40.0" y="114.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#b3261e">Drawn in the BAY'S orientation, matching the label sheet: pin 1 bottom, odd row left. The vendor product photo is mirrored from this — do not read the two together.</text>
-<text x="40.0" y="132.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">CARRIER BUILD (2026-10-23): the bay I²C devices DAISY-CHAIN (INA226 → INA226-BATT → TMP102-bay), one conductor per net here. Halo v1 AS-BUILT differs until its carrier: TMP102-bay on its own run to 3V3 17 / GND 14.</text>
-<text x="40.0" y="132.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#1f5fbf">CARRIER BUILD (2026-10-23): the bay I²C devices DAISY-CHAIN (INA226 → INA226-BATT → TMP102-bay), one conductor per net here. Halo v1 AS-BUILT differs until its carrier: TMP102-bay on its own run to 3V3 17 / GND 14.</text>
+<text x="40.0" y="132.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">CARRIER BUILD (2026-10-23): the bay I²C devices DAISY-CHAIN (INA226 → INA226-DROK → INA226-BATT → TMP102-bay), one conductor per net here. Halo v1 AS-BUILT differs until its carrier: TMP102-bay on its own run to 3V3 17 / GND 14.</text>
+<text x="40.0" y="132.0" font-family="DejaVu Sans, Arial" font-size="12.5" text-anchor="start" font-weight="400" fill="#1f5fbf">CARRIER BUILD (2026-10-23): the bay I²C devices DAISY-CHAIN (INA226 → INA226-DROK → INA226-BATT → TMP102-bay), one conductor per net here. Halo v1 AS-BUILT differs until its carrier: TMP102-bay on its own run to 3V3 17 / GND 14.</text>
 <rect x="40" y="146" width="13" height="13" rx="2" fill="#1f6fd0"/>
 <text x="59.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">I²C — shared 100 kHz bus</text>
 <text x="59.0" y="157.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#444">I²C — shared 100 kHz bus</text>
@@ -443,8 +443,8 @@
 <text x="864.0" y="998.0" font-family="DejaVu Sans, Arial" font-size="14" text-anchor="start" font-weight="700" fill="#c0392b">3V3 — two screws, four loads, PINNED</text>
 <text x="864.0" y="1022.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">pin 1   ×2   I²C chain VCC · wand SIG OUT 3V3</text>
 <text x="864.0" y="1022.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">pin 1   ×2   I²C chain VCC · wand SIG OUT 3V3</text>
-<text x="864.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">        chain = INA226 + INA226-BATT + TMP102-bay</text>
-<text x="864.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">        chain = INA226 + INA226-BATT + TMP102-bay</text>
+<text x="864.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">        chain = INA226 + INA226-DROK + INA226-BATT + TMP102-bay</text>
+<text x="864.0" y="1040.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" fill="#666">        chain = INA226 + INA226-DROK + INA226-BATT + TMP102-bay</text>
 <text x="864.0" y="1058.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">pin 17  ×2   both 10k tach pull-ups</text>
 <text x="864.0" y="1058.0" font-family="DejaVu Sans, Arial" font-size="12" text-anchor="start" font-weight="700" fill="#333">pin 17  ×2   both 10k tach pull-ups</text>
 <text x="864.0" y="1076.0" font-family="DejaVu Sans, Arial" font-size="11.5" text-anchor="start" font-weight="400" stroke="#fff" stroke-width="3.2" stroke-linejoin="round" fill="none">        nearest 3V3 to the tach screws: 6 rows, not 14</text>

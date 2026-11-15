@@ -2366,7 +2366,9 @@ turn). Render:
 <td>Operator: the bay lid (the Hiwonder base plate on the fence top)
 must clear a carrier plane at 42 (PSU top 30 + 12 mm air gap over its
 only vent; battery 38 + 4) + 4 mm carrier + the tallest board (HL-PBB 26
-on 4 mm posts = 30) + 10 mm screwdriver/wire-bend margin = 86 →
+on 4 mm posts = 30, as budgeted; the HL-PBB measures 23 mm (calipered
+2026-11-15) and now sits on taller posts over the lanes, so CAD
+re-checks the lid margin) + 10 mm screwdriver/wire-bend margin = 86 →
 <strong>FENCE_HEIGHT 90</strong>, the budget kept in the macro as named
 <code>CARRIER_*</code> terms. Feature positions in the real frame: see
 the Fence v6 row; the extra 30 mm is wall reserved for the carrier and
@@ -3206,23 +3208,47 @@ session already made it.</p>
 </blockquote>
 <h2 id="recently-decided">Recently decided</h2>
 <ul>
+<li>2026-11-15 (operator, via Assembly/CTO): <strong>HV servos are for
+Halo HV</strong> (4th robot, built January 2027; kit order decided end
+of December by Nova's progress, arrival ~Jan 10); Halo and Nova stay LV.
+Fleet order: Ultra (Creator, now) → Halo → Nova (Dec) → Halo HV (Jan).
+<strong>Ultra's bay = HL-PBB on the carrier</strong> (operator
+2026-11-15; calipered: 2 × Ø4 at 64 c/c, 23 mm tall, outputs alternate
+A/B on both long edges; carrier reprint with HL-PBB posts first, bay
+TMP102 rotated 90° so its header exits −X). <strong>Third INA226
+(INA226-DROK, 0x47)</strong> on the DROK output = design of record:
+reads the STM32 board's total draw (servos + motors + Pi), GND screw
+empty, chained MAIN → DROK → BATT (Power_Bay §5b); ⏳ position (stacked
+on MAIN vs own posts) is the operator's choice. <strong>Block terminals
+may double up</strong> (≤ 3 conductors in one ferrule sized by total
+cross-section): <strong>Ultra Creator runs the wand tether (rows 14–15)
+AND the phone charger (15a/15b)</strong>, PHONE-IN on A6 + B6 (B6 shared
+with LAMP in one E1508); far-end input block = alternative (block moves
+15–20 mm −X). Caps sum ~12.6 A vs the PSC-100's ~7.7 A with wand +
+phone: the pack carries the excess, measure at bring-up. §11.3.5 step 7
+fixed for the v2 rocker. Ultra's Pi 5 cooler: 5 V from header pin 4
+only.</li>
 <li>2026-11-14 (operator): <strong>HV version = one rail.</strong> The
 existing DROK at 11.1 V (≤ ~11.6 V, board max 12 V) feeds the STM32
-board, which feeds the servos. Servo fuse + F1 (two fuses). Bench: DROK
-11.5 A sustained at 11.1 V, heatsink ~28.5 °C; on battery the rail sags
-to ~9.6–9.85 V at that load; HV undervolt 9.5 V. APIELE retired; Ultra
-uses the HL-PBB. LV builds stay on the PSC-100-12; the PSC-150-12
-(ordered) is for the HV version. EBD §1 rewritten.</li>
+board, which feeds the servos. F1 stays; a servo fuse is undecided
+(operator leans none, the DROK cuts out on overload). Bench: DROK 11.5 A
+sustained at 11.1 V, heatsink ~28.5 °C; on battery the rail sags to
+~9.6–9.85 V at that load; HV undervolt 9.5 V. APIELE retired; Ultra uses
+the HL-PBB. LV builds stay on the PSC-100-12; the PSC-150-12 (ordered)
+is for the HV version. EBD §1 rewritten.</li>
 <li>2026-11-12 (operator, Electronics dec7ecb8): <strong>fuses: the
 shipping LV configuration carries F1 only</strong> (10 A glass, battery
 + → PSU CH2 BAT+). F2/F3/F4 are gone, which supersedes the older
-F2/F3/F4 entries below. <strong>HV servos: Halo converts first.</strong>
-One HV arm set (servos, bracket packs, metal horn packs) is ordered
-express from Hiwonder, install window the week of 2026-11-24. The
-product still releases on the current servos at 7.5 V. Whether the
-XL4015 board buck is needed depends on Halo's port-1 e-load test. The
-11.1 V servo rail + servo fuse, injector pigtail and 7.5 V board buck
-(XL4015 on hold) are on file as a future upgrade in EBD §1.</li>
+F2/F3/F4 entries below. <strong>HV servos go on Halo HV, the 4th robot,
+built in January 2027 (Hiwonder kit order decided at the end of
+December, depending on Nova's progress; arrival ~January 10); Halo and
+Nova stay LV.</strong> One HV arm set (servos, bracket packs, metal horn
+packs) is ordered express from Hiwonder, on the bench for power and fit
+measurements until then. The product still releases on the current
+servos at 7.5 V. Whether the XL4015 board buck is needed depends on
+Halo's port-1 e-load test. The 11.1 V servo rail + servo fuse, injector
+pigtail and 7.5 V board buck (XL4015 on hold) are on file as a future
+upgrade in EBD §1.</li>
 <li>2026-11-07 (operator → Electronics): <strong>interactive wiring
 diagrams</strong> (open in a browser; GitHub shows HTML as source):
 carrier <a

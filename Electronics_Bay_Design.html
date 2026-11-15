@@ -179,15 +179,15 @@ V</strong>, and that ceiling also binds every peripheral on the board's
 input rail; there is no regulation between the input and the servo
 ports. Hiwonder has <strong>not tested</strong> the board with six HV
 servos at 11.1 V and cannot confirm it handles their combined peak
-current, so Halo's port-1 load test decides that. Still open: its 16 V
-input tantalums (under the child board) sit at 69 % of rating at 11.1 V,
-past the common 50 % derating for MnO2 tantalums (polymer parts allow
-~80 %); their marking decides it, and surviving seven inrushes does not
-prove long-term life. The CUR6UA regulator is unidentified.
-<strong>Every LV build holds the board at 7.5 V</strong>, Hiwonder's own
-adapter voltage (7.5 V 6 A, read off the stock adapter's label). After
-the HV swap the board runs at the HV setpoint, because the servos are
-fed through it.</p>
+current, so a port-1 load test on Halo HV's board decides that. Still
+open: its 16 V input tantalums (under the child board) sit at 69 % of
+rating at 11.1 V, past the common 50 % derating for MnO2 tantalums
+(polymer parts allow ~80 %); their marking decides it, and surviving
+seven inrushes does not prove long-term life. The CUR6UA regulator is
+unidentified. <strong>Every LV build holds the board at 7.5 V</strong>,
+Hiwonder's own adapter voltage (7.5 V 6 A, read off the stock adapter's
+label). After the HV swap the board runs at the HV setpoint, because the
+servos are fed through it.</p>
 <ul>
 <li><strong>Shipping configuration (LV servos: LX-15D, HTS-25L, LX-225,
 HX-06L, all 6–8.4 V):</strong> one rail. The DROK sets <strong>7.5
@@ -201,14 +201,18 @@ verified 2026-11-02 (servos 7.41–7.51 V, board input 7.56 V, Pi
 measured 9.11 V on 2026-11-02, re-set per <a
 href="Power_Bay_Design.html">Power_Bay §4 power-up</a>;
 <strong>Nova</strong> sets 7.5 V at first power-up.</li>
-<li><strong>Future upgrade, not the shipping configuration: the HV servo
+<li><strong>Halo HV only, not the shipping configuration: the HV servo
 swap (all six HV, 9–12.6 V; all six together or none; the product
-releases with the LV servos. <strong>Halo converts first:</strong> one
-HV arm set (servos, bracket packs, metal horn packs) is on order,
-install window the week of 2026-11-24).</strong> Everything below this
-bullet applies only after the swap. <strong>One rail, as on LV:</strong>
-the existing DROK feeds the board, and the board feeds the servos
-through its bus port.
+releases with the LV servos). <strong>Halo HV is the 4th robot, built in
+January 2027:</strong> the Hiwonder kit order is decided at the end of
+December, depending on how far Nova has got; ordered the last week of
+December, it arrives ~January 10; its arm gets the HV set (servos,
+bracket packs, metal horn packs, on the bench now for power and fit
+measurements), and its stock 7.4 V servos become the spares for Ultra,
+Halo and Nova. Halo and Nova stay LV (7.4 V servos, DROK 7.5
+V).</strong> Everything below this bullet applies only after the swap.
+<strong>One rail, as on LV:</strong> the existing DROK feeds the board,
+and the board feeds the servos through its bus port.
 <ul>
 <li><strong>Setpoint 11.1 V</strong> on the existing DROK (bench-proven:
 11.5 A sustained at 11.1 V, heatsink ~28.5 °C; reaches ~11.6–11.8 A). It
@@ -216,22 +220,23 @@ may go higher for margin on AC, but <strong>the board's 12 V maximum
 binds</strong> (Hiwonder; it covers every peripheral on the board's
 input rail), so keep it ≤ ~11.6 V. A higher setpoint does not raise the
 on-battery floor (below).</li>
-<li><strong>Servo fuse:</strong> DROK OUT → <strong>10 A 6 × 30 glass
-fuse</strong> (F1's type, fast-blow, in a spare 6 × 30 inline holder)
-<strong>in the base's second opening, under the SOLID cover</strong> →
-board power terminal. After the swap the robot carries <strong>two fuses
-only: this fuse and F1</strong> (10 A glass, battery + → PSU CH2 BAT+).
-The fuse now protects the board and the servos together. The Deans
-DROK-out run up to it is unfused, protected only through the converter
-by the PSU's own output limit (on AC) or F1 (on battery).
-<strong>Fast-blow against servo peaks:</strong> an ~8 A stall is 80 % of
-rating and never opens it; a fast-blow 6 × 30 opens at 135 % only within
-about an hour and at 200 % within seconds, so multi-joint start bursts
-of tens of milliseconds pass. ⏳ Operator question, not a change: if it
-ever opens at power-up or on a hard stall with no fault, swap in a 10 A
-slow-blow 6 × 30 of the same size. <strong>No DROK current
-limit:</strong> its CC mode and current display are invalid once IN− and
-OUT− are tied through the bay ground (DROK manual, Attention #1).</li>
+<li>⏳ <strong>Servo fuse: undecided (operator).</strong> The operator's
+view: the DROK's own protection is enough, so no fuse between the DROK
+and the board. On the bench, when the load asks for more than its limit
+it shows <strong>"OCP"</strong> and <strong>cuts its output and latches
+off</strong>; only its ON/OFF button restores it. ⏳ <strong>Open,
+operator to decide:</strong> on a ceiling mount nobody can reach that
+button, and the board, the servos and the Pi (powered from the board)
+stay dark after a trip. Still to check: whether OCP trips at all with
+IN− tied to OUT− as in the bay, whether short servo peaks can trip it,
+and whether a power cycle of its input clears the latch with its
+power-on default set to ON. Before deciding, repeat the DROK overload on
+the bench with its IN− tied to OUT−, as they are in the bay: the manual
+says its CC is invalid when they are tied, and today's cut-out was seen
+with them apart. If a fuse is added it is a 10 A 6 × 30 glass (F1's
+type) in the base's second opening; until then the robot carries F1
+only, and the DROK-to-board run is protected by the DROK and, upstream,
+the PSU's own output limit (on AC) or F1 (on battery).</li>
 <li><strong>What the board carries (facts, not changes):</strong> all
 servo current crosses its ~0.24 Ω input-to-port path (the HV arm draws
 ~0.68× the LV current for the same work, so it loses less than today's
@@ -256,20 +261,27 @@ not move the battery floor; the floor follows the pack (~0.22 Ω at ~12 A
 input), and a fuller pack raises it. Real arm draw is short peaks on one
 or two servos, not 11.5 A continuous. The LV configuration (7.5 V) keeps
 over 3 V of headroom on battery.</li>
-<li><strong>Overload:</strong> a servo overload opens the 10 A servo
-fuse, or on battery F1, and the arm and board go dark. The thin servo
-chain cable is protected as in Hiwonder's stock arm (it carries the
-arm's total servo current, with no fuse of its own); the stall guard and
-the servos' own stall/over-temperature protection cover a stalled
-joint.</li>
-<li><strong>Rules:</strong> set the arm arbiter's servo-voltage limits
-per robot in its launch params (the 8.4 V overvolt rests the arm the
-moment it starts at 11.1 V). <strong>Undervolt: 9.5 V
-(operator).</strong> <strong>PROPOSED, awaiting operator
-confirmation:</strong> overvolt ~12.0 V; it moves with the setpoint and
-must stay under the board's 12 V maximum plus the servos' 12.6 V
-(line-wide figure; check each model's listing before going past 11.1
-V).</li>
+<li><strong>Overload:</strong> a servo overload is cut by the DROK's own
+protection (bay behaviour still to be confirmed, see the servo-fuse
+item), upstream by the PSU's output limit, or on battery F1, and the arm
+and board go dark. The thin servo chain cable is protected as in
+Hiwonder's stock arm (it carries the arm's total servo current, with no
+fuse of its own); the stall guard and the servos' own
+stall/over-temperature protection cover a stalled joint.</li>
+<li><strong>Rules (arm arbiter, both launch params per robot):</strong>
+<ul>
+<li><strong>Overvolt: 12.0 V on HV, 8.4 V on LV.</strong> The code today
+has only <code>overvolt_v</code> = 8.4 V, which sends the arm to rest;
+at 11.1 V every servo reads overvolt, so the HV launch config must raise
+it to 12.0 V or the arm rests the moment HV is powered. It stays under
+the board's 12 V maximum only if the setpoint stays ≤ ~11.6 V.</li>
+<li><strong>Undervolt: 9.5 V (operator), a NEW rule</strong> (none
+exists in the code today), with a 2 s debounce. ⏳ Its action is the
+operator's call; proposal: alert + rest pose.</li>
+<li><strong>Swap day:</strong> read each HV servo's EEPROM vin min/max
+before first power-up (the HV servos' line-wide rating is 9–12.6 V;
+check each model's listing before going past 11.1 V).</li>
+</ul></li>
 <li><strong>Acceptance:</strong> (a) DROK output on the multimeter at
 the setpoint before the board is connected; (b) servo VIN reads (cmd 27)
 within ~0.3 V of the board input; (c) arm at its heaviest load

@@ -876,12 +876,16 @@ battery connected, so the pack supplied the input above the PSU's ~7.7
 A; the DROK display reads ~1.5 % high). With the pot at its clockwise
 end it goes to <strong>about 11.6–11.8 A</strong> (the operator's
 reading). The earlier "CC at ~9 A" was the pot setting, not the DROK's
-limit. The CC pot is the only current setting (no menu override).
-<strong>Sustained hold at 11.5 A for 5–6 min or more, 11.1 V setpoint
-(bench, fan on, PSU battery connected): the DROK heatsink stayed at
-~28.5 °C</strong>, the PSC-100-12 case reached ~33 °C (with its fan),
-and the output held ~10.97–10.98 V at the load. The stock heatsink and
-fan are enough.</li>
+limit. The CC pot is the only current setting (no menu override). On
+overload it shows <strong>OCP</strong>, cuts its output and latches off;
+only its ON/OFF button restores it (unreachable on a ceiling mount: open
+item, EBD §1). <strong>Sustained hold at 11.5 A for 5–6 min or more,
+11.1 V setpoint (bench, fan on, PSU battery connected): the DROK
+heatsink stayed at ~28.5 °C</strong>, the PSC-100-12 case reached ~33 °C
+(with its fan), and the output held ~10.97–10.98 V at the load. The
+bench leads were 18 AWG at about the bay's lengths, so that ~0.13 V lead
+drop at 11.5 A is what the bay will see. The stock heatsink and fan are
+enough.</li>
 <li><strong>DC rocker OFF</strong> → DROK output drops to ~0 V (LCD
 <code>Vout</code> may show ~0.1 V residual from its own draw). This
 confirms the DC rocker is actually in the DROK power path and gives you
@@ -907,12 +911,12 @@ adapter voltage (7.5 V 6 A). Never set the DROK above 8.4 V while LV
 servos are fitted. At the HV servo swap (a future upgrade, not the
 shipping configuration; the product releases with the LV servos) the
 same DROK is re-set to 11.1 V (≤ ~11.6 V: the board's 12 V maximum
-binds) and still feeds the board, which feeds the servos, with a 10 A 6
-× 30 glass fuse between the DROK and the board. The shipping
-configuration carries one fuse, F1 (battery → PSU); after the swap, two
-only: the servo fuse and F1. Full design:
-<code>Electronics_Bay_Design.md</code> §1 <em>Servo and board
-power</em>.</p></li>
+binds) and still feeds the board, which feeds the servos (a servo fuse
+between the DROK and the board is undecided; the operator leans none).
+The shipping configuration carries one fuse, F1 (battery → PSU); after
+the swap, F1 plus a servo fuse only if the operator decides one is
+needed. Full design: <code>Electronics_Bay_Design.md</code> §1 <em>Servo
+and board power</em>.</p></li>
 <li><p><strong>Do NOT feed non-STM32 loads from the DROK</strong> — the
 split-rails topology (locked 2026-06-28) sized the DROK for STM32-only.
 Any new bay load should go to a distribution-block spare position (A5/A6
