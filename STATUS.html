@@ -1583,6 +1583,31 @@ re-import puts every planned solid where planned). Battery shift held at
 0 until the back-PIR gap is measured.</td>
 </tr>
 <tr>
+<td>Phone Lift route check (CAD 2026-11-15, on the hung cradles of
+<code>0fe534d1</code> / <code>6080463c</code>):
+<code>lumi_bigclaw_arm_pose_cradles.py</code> route sweep</td>
+<td>Phone Lift = all-500 straight up, arm_controller [shoulder −1.5708,
+elbow 0, wrist −1.5708] (halo.urdf.xacro: shoulder / wrist zero at pulse
+125), base and wrist_rot held. Checked on the arm's own solids: every
+hung group (8 phones + S22, portrait and landscape), the BigClaw and the
+OAK-D, 20 steps per route, least clearance to the base / bay / fence,
+the arm's links and the desk plane, gate 2.0. <strong>Route A (straight
+joint line) is clean from a cradle-hung start</strong> (Halo's 11-14
+working pose [−2.589, 0.565, 0.151]: nothing within 40 of the base or
+the links, ≥ 145.6 above the desk, BigClaw / OAK-D ≥ 3.04 from the
+forearm). <strong>From vendor HOME it FAILS at steps 0–3</strong>: at
+HOME the hung phone is inside the base (bay front, base cover, the arm's
+base plate), so <strong>HOME is not a valid pose with a cradle
+hung</strong>; clear from step 4. <strong>Route B (shoulder first) is
+worse</strong>: FAILS steps 0–9 from HOME and 4–6 from the working pose
+(the shoulder alone swings the phone into the fence front). End pose:
+the hung cradle + phone 362–501 above the arm's mount face (the Hiwonder
+base plate's underside), out to Y −284 (S23 Ultra −290); BigClaw + OAK-D
+305–454. Desk-clamp and mecanum deck heights are still owed by the
+operator (add them to the mount-face numbers). Nothing commanded on Halo
+from this; Ultra holds the preset for the operator's go.</td>
+</tr>
+<tr>
 <td>EBC covers (H2S plate 6): vents up the slope, head-pocket membrane;
 plate 6 released, supports OFF</td>
 <td>Both covers print flipped (R_X180, canonical export pre-flipped,
@@ -2095,18 +2120,18 @@ inside the open terminal slot. Raised marker rings Ø6.2/Ø9.2 × 0.8 and
 through the +X edge; barrier ribs over L/N/⏚ only, the mains rib at X
 279.1 detouring round the strap-tab screw head by L; plastic ≥ 5 from
 L/N/⏚; every LV board, post, cage and ferrule ≥ 8 in 3D from every mains
-screw (gated); mains on its own 16 AWG forks in the outer right lane,
-printed rib between, side entry into the slot at the L end. Terminal
-cover (~Z 22 closed) flips up under the carrier (37 &lt; 44). The
-mains-side strap-tab head carries the printed INSULATING CAP (Ø7.7 ×
-2.6, press-on on the marker ring, a dot of RTV 81158 because it hangs;
-prints top-down); gate: cap ≥ 5 off the L/N/E heads, LV ≥ 8 from it
-(nearest 14.4). PSU status LEDs at X 197.5, 14.5 from the −X case edge,
-under a 16 × 12 viewing window gated open. Orientation lock (gate): L
-first and 12 from the side-rocker-end case edge, LEDs 14.5 from the
-opposite edge. In the +Z top view the terminal slot, mains, F1 cradle,
-barrel lead and INA226-BATT are on the RIGHT (+X), the LED window and
-TMP102 on the LEFT (<code>LAYOUT_HAND = +1</code>,
+screw (gated); mains on its own 18 AWG forks (seat 3.4 / mouth 2.45) in
+the outer right lane, printed rib between, side entry into the slot at
+the L end. Terminal cover (~Z 22 closed) flips up under the carrier (37
+&lt; 44). The mains-side strap-tab head carries the printed INSULATING
+CAP (Ø7.7 × 2.6, press-on on the marker ring, a dot of RTV 81158 because
+it hangs; prints top-down); gate: cap ≥ 5 off the L/N/E heads, LV ≥ 8
+from it (nearest 14.4). PSU status LEDs at X 197.5, 14.5 from the −X
+case edge, under a 16 × 12 viewing window gated open. Orientation lock
+(gate): L first and 12 from the side-rocker-end case edge, LEDs 14.5
+from the opposite edge. In the +Z top view the terminal slot, mains, F1
+cradle, barrel lead and INA226-BATT are on the RIGHT (+X), the LED
+window and TMP102 on the LEFT (<code>LAYOUT_HAND = +1</code>,
 <code>AS_BUILT_ROCKER_SIDE = +1</code>). <strong>Open area:</strong>
 vent slots across the width + windows under every board (no plastic
 under PCBs) → 50 % open over the PSU. <strong>Boards</strong> (moulded
