@@ -558,6 +558,29 @@ typo" note in EAG §17.7 can be struck.</td>
 <td></td>
 </tr>
 <tr>
+<td>🔶 <strong>ULTRA BASE PLATE — DRILL-ONLY NC on a HiWonder plate (CNC
+2026-11-15)</strong></td>
+<td>Operator: the Ultra's plate is a spare HiWonder base plate (same
+outline, 3.00 mm, mounting holes present), so only the 8 missing holes
+are drilled: PSU ×2, STRAP ×4, rear fence stud posts POST.5 / POST.6. No
+engraving, no contour (mecanum chassis).
+<code>cad/exports/cnc/LumiAI_Base_Plate_drill_only.nc</code>: T1 1/8"
+drill only, G83 Q1.0 Z-4.00 F60, one M0, 8-check audit 0. Generator:
+<code>BASEPLATE_DRILL_ONLY=1 BASEPLATE_SKIP="CARRIAGE,POST.1,POST.2,POST.3,POST.4,POST.7,POST.8"</code>
+through <code>gen_baseplate_nc.py</code>. <strong>Built with
+<code>BATTERY_SHIFT_Y</code> = 0.0</strong>; the banner prints the
+shift. ⏳ <strong>Regenerate and re-audit when the battery shift is
+final</strong> (CAD, pending the operator's back-PIR gap measurement);
+strap holes must not be cut before. <strong>Registration check before
+cutting:</strong> the plate is not rectangular, so zero at the centre of
+its extents, then drop the T1 shank into two or more existing POST holes
+at their NC coordinates (listed in the M0 #0 text). Procedure and
+hand-drill sizes in <a
+href="CNC_BasePlate_x2.html"><code>docs/CNC_BasePlate_x2.md</code></a>. No
+cut until the operator's go.</td>
+<td></td>
+</tr>
+<tr>
 <td>✅ <strong>CNC SESSION 2026-10-21 — 3 OAK-D PLATES + 2 HEATSINK
 PUCKS, stock-reality locked; camera plate re-dimensioned 2026-10-29 for
 the +6 mm lift</strong></td>
