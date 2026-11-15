@@ -406,7 +406,7 @@ Creator clamp slots, so the front half is reprinted once.</td>
 </tr>
 <tr>
 <td>🔶 <strong>FENCE: INA3 on the front wall + 4 Creator desk-clamp
-slots (CAD 2026-11-15, not yet printed)</strong></td>
+slots (CAD 2026-11-15; books rebuilt, not yet printed)</strong></td>
 <td><code>lumi_baseplate_fence.py</code> (gates PASS).
 <strong>INA3</strong> (INA226-DROK, operator): board 21 × 25 flat on the
 front wall's inner face above the DROK's OUT end, fence X 15.2–36.2,
@@ -421,25 +421,33 @@ wall; right x +78.09 / left x −77.06 at y 90, front x 0, <strong>rear x
 over the plate and a fan-tower foot sits on it; at −34.7 the lowest
 thing behind the wall is the raised tower at 8.36). Jaw path gated 25
 outside to 30 past the inner face. Slot roofs print on <strong>painted
-support enforcers</strong> (46 spans). Front half needs a reprint (the
-H2S fence is pre-INA3). <strong>Creator battery:</strong> 5 mm foam
-under the battery centre (carrier X 187–274) replaces the 3 mm
-carriage-bolt raise; battery top 40 under the unchanged strap bar; no
-CAD change. <strong>Phone Lift Route A sweeps PASS</strong> (Halo 11-14
-start → preset, gate 2.0, bite fires 177.97 mm³): OP1 screen 616.9 above
-floor −14°, elbow 80 / shoulder 9 mm; P2 485.0, +24°, elbow 169–187 /
-shoulder 95–108; OP2 667.9, −24°, elbow 87 / shoulder 83; least
-BigClaw+OAK-D↔︎forearm 3.04 at the start. <strong>Cradle-home
-legs</strong> (start b 0.35 / s −2.14 / e 0.03 / w 0.536, Ultra's
-real-phone run 11-15; → OP1, P2, OP2, C1 and back on the same joint
-line; base turn NOT modelled): phones clear of the base, bay and arm on
-steps 1–20 of all four (desk ≥ 141). Two model contacts at the start:
-the phone 0.02 off the base cover at cradle home itself (the docked
-pose, base turn missing), and BigClaw + OAK-D ≤ 0.00 to the forearm at
-steps 0–1 (wrist 0.54–0.35 rad), 2–8 by step 2–3. Halo ran these legs
-with a real phone 11-15, so the model and the robot disagree there:
-OPEN, check the OAK-D/claw-to-forearm gap at the cradle-home wrist angle
-on Halo (feeler or photo) before trusting either.</td>
+support enforcers</strong> (46 spans). <strong>Both halves
+reprint</strong> (the back half carries the rear, right and left slots,
+the front half the front slot and INA3); the <strong>rear cap does
+not</strong> (same mesh; 71.7 clear of the rear jaw path in the
+assembly). Books rebuilt on <code>0dc0842e</code>, X1C / H2S
+<strong>11</strong> back + <strong>12</strong> front, Karma gates: the
+only new overhangs are the four slot roofs (184 mm² each, 46 span at 3.5
+above the bed, painted enforcers on both halves); INA3 pilots open 4.90
+deep on the exported front half, 3.1 of wall behind; verify PASS,
+gate_slots 0 / 0, gate_floating 0 regions on 11 / 12. <strong>Creator
+battery:</strong> 5 mm foam under the battery centre (carrier X 187–274)
+replaces the 3 mm carriage-bolt raise; battery top 40 under the
+unchanged strap bar; no CAD change. <strong>Phone Lift Route A sweeps
+PASS</strong> (Halo 11-14 start → preset, gate 2.0, bite fires 177.97
+mm³): OP1 screen 616.9 above floor −14°, elbow 80 / shoulder 9 mm; P2
+485.0, +24°, elbow 169–187 / shoulder 95–108; OP2 667.9, −24°, elbow 87
+/ shoulder 83; least BigClaw+OAK-D↔︎forearm 3.04 at the start.
+<strong>Cradle-home legs</strong> (start b 0.35 / s −2.14 / e 0.03 / w
+0.536, Ultra's real-phone run 11-15; → OP1, P2, OP2, C1 and back on the
+same joint line; base turn NOT modelled): phones clear of the base, bay
+and arm on steps 1–20 of all four (desk ≥ 141). Two model contacts at
+the start: the phone 0.02 off the base cover at cradle home itself (the
+docked pose, base turn missing), and BigClaw + OAK-D ≤ 0.00 to the
+forearm at steps 0–1 (wrist 0.54–0.35 rad), 2–8 by step 2–3. Halo ran
+these legs with a real phone 11-15, so the model and the robot disagree
+there: OPEN, check the OAK-D/claw-to-forearm gap at the cradle-home
+wrist angle on Halo (feeler or photo) before trusting either.</td>
 <td></td>
 </tr>
 <tr>
@@ -732,7 +740,10 @@ where the part needs it. An unbrimmed part with under 1000 mm² of bed
 contact and height / √(bed contact) ≥ 0.3 FAILS unless it is listed in
 <code>NO_BRIM_OK</code> with a reason (currently the X1C lens-tower
 coupons and the cartridge test coupon). Parts on a plate must be ≥ 20 mm
-apart, brim edge to brim edge (packer <code>BASE_GAP</code> 20).
+apart, brim edge to brim edge (packer <code>BASE_GAP</code> 20; the
+packer reserves each part's brim as verify reads it, an auto brim at the
+profile's width: <code>pack_brim</code>, bite
+<code>LUMI_PACK_BRIM_OFF=1</code> fails verify on X1C 30 at 11.3).
 COLLISION and that gap are judged on the parts' footprint outlines (0.5
 mm shadow raster) wherever the bounding boxes flag, so a concave part's
 open corner is no longer a collision; the operator's waivers sit in
@@ -1400,9 +1411,9 @@ posts over the dongle bay, shroud translated) is in both plate books per
 operator ("put both on their own plate"): <strong>plate 19 = mic carrier
 v4</strong> (grey PETG+, flat, support-free, printable now),
 <strong>plate 20 = R818 shroud</strong> (LOAD Inland PETG+ Clear —
-arrives Thu, order #21783918; face DOWN so the visible face is the first
-layer; clarity set per-object: outer/top walls 40, outer bead 0.5; fan
-is filament-scope — cap in Studio for extra clarity). Separate plates
+arrives Thu; face DOWN so the visible face is the first layer; clarity
+set per-object: outer/top walls 40, outer bead 0.5; fan is
+filament-scope — cap in Studio for extra clarity). Separate plates
 because: different spools, different availability, and the shroud is the
 fit-iteration part (R818 component heights UNMEASURED — first fit
 decides). Plate 15 back to sensor carriers only, operator pins kept;
@@ -2612,12 +2623,17 @@ holes still centred (⏳ caliper). Never printed before (operator). Plate
 print both, the lock's ridges mesh with this L's grooves); X1C 31
 portrait base on a6afc45e; H2S 33 landscape base with the finger relief;
 the grip post on X1C 32 / H2S 34</strong></td>
-<td><strong>Coupons and cradle plates released</strong> (operator
-2026-11-14); Karma gates them (gate_slots live, gate_slice,
-gate_gcode_floating with arcs, gate_breakaway, verify), then the
-operator starts it himself. verify_3mf PASS both books; gate_slots
---no-ams 0 / 0; gate_floating 0 regions on X1C 27 / 30 (both parts) / 31
-and H2S 31 / 33.</td>
+<td><strong>The 20 phone assemblies of <code>ef343871</code> reviewed by
+the operator in FreeCAD (2026-11-15): good</strong> on the Samsung and
+the iPhone 12 Pro, portrait and landscape, buttons clear, serrations
+seen on the L and on the lock tongue. <strong>Next export:</strong> the
+non-C portrait assemblies must also show the landscape-side mount feet
+(the landscape ones show both mounts). <strong>Coupons and cradle plates
+released</strong> (operator 2026-11-14); Karma gates them (gate_slots
+live, gate_slice, gate_gcode_floating with arcs, gate_breakaway,
+verify), then the operator starts it himself. verify_3mf PASS both
+books; gate_slots --no-ams 0 / 0; gate_floating 0 regions on X1C 27 / 30
+(both parts) / 31 and H2S 31 / 33.</td>
 </tr>
 <tr>
 <td>BigClaw phone cradle — design (CAD <code>2908d720</code>,
@@ -2924,23 +2940,22 @@ does NOT fit: Ø22 OD over the Ø21.5 bore and ~51 % squeeze.</em></td>
 <td><del><strong>Inland PolyLite ASA, Black, 1 kg</strong></del></td>
 <td>1</td>
 <td>✅ <strong>PICKED UP 2026-10-17 — loaded in H2S AMS slot 2</strong>
-(not the reserved slot 4). Was: 📦 <strong>Tustin pickup order
-#21783918</strong> (placed 2026-10-14, operator's browser session) —
-$24.99, store limits 1/household; <strong>pay in store, ready Thu
-2026-10-15 10 AM, state ID required</strong>. THE production shell spool
-for the H2S slot-4 plan (guide §1.2 / §2 row 28); thread coupon before
-any ASA half, door CLOSED.</td>
+(not the reserved slot 4). Was: 📦 <strong>Tustin pickup order</strong>
+(placed 2026-10-14, operator's browser session) — $24.99, store limits
+1/household; <strong>pay in store, ready Thu 2026-10-15 10 AM, state ID
+required</strong>. THE production shell spool for the H2S slot-4 plan
+(guide §1.2 / §2 row 28); thread coupon before any ASA half, door
+CLOSED.</td>
 </tr>
 <tr>
 <td><del><strong>Inland PETG+, Clear, 1 kg</strong></del></td>
 <td>1</td>
 <td>✅ <strong>PICKED UP 2026-10-17</strong> (guide §2 row 27 on hand).
-Was: 📦 Same order <strong>#21783918</strong> — $15.99. NEW spool for
-the <strong>R818 mic-carrier shroud</strong> (translucent "glass look";
-DRAFT e321782). Dialled Inland PETG+ presets apply as-is; plastic spool,
-AMS-safe. Guide §2 row 27. <strong>Order total $44.16 w/ tax.</strong>
-⚠️ The free spare cable chain is NOT in this order — separate
-support-desk item, same trip.</td>
+Was: 📦 Same order — $15.99. NEW spool for the <strong>R818 mic-carrier
+shroud</strong> (translucent "glass look"; DRAFT e321782). Dialled
+Inland PETG+ presets apply as-is; plastic spool, AMS-safe. Guide §2 row
+27. <strong>Order total $44.16 w/ tax.</strong> ⚠️ The free spare cable
+chain is NOT in this order — separate support-desk item, same trip.</td>
 </tr>
 <tr>
 <td>LEDiL <strong>CP13938_RGBX2-M</strong></td>
@@ -3037,10 +3052,9 @@ now.</em></td>
 <td><del><strong>NylonX / PA-CF</strong></del></td>
 <td>—</td>
 <td>⛔ <em>Delisted 2026-10-05 — <strong>on hand since
-2024-01-30</strong>, full Matterhackers spool (order
-101-0000300-7857002), guide §2 row 16. Do not re-order. <strong>~33
-months old: dry 80 °C 6–8 h and print from the heated dryer</strong> —
-nylon re-absorbs within 1–2 hrs.</em></td>
+2024-01-30</strong>, full Matterhackers spool, guide §2 row 16. Do not
+re-order. <strong>~33 months old: dry 80 °C 6–8 h and print from the
+heated dryer</strong> — nylon re-absorbs within 1–2 hrs.</em></td>
 </tr>
 </tbody>
 </table>
