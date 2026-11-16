@@ -380,30 +380,42 @@ cap) are retired, HEAD exports are the only source.</td>
 </tr>
 <tr>
 <td>🔶 <strong>POWER-BAY CARRIER: HL-PBB posts for Ultra (CAD
-2026-11-15; X1C plate 21 rebuilt, not yet printed)</strong></td>
-<td><code>lumi_powerbay_carrier.py</code> (gates PASS): Ultra's block is
-the <strong>HL-PBB-2-6-MINI</strong> (operator). One carrier carries
-both footprints. The HL-PBB is a RAISED board: 2 × M3 posts on its O4
-holes 64 c/c (operator caliper) at (206.1, −20.5) / (270.1, −20.5), 13.5
-tall (board top Z 84.5, 5.2 under the lid), feed = the −X tower. The
-X_T2 / X_TRUNK lanes run under it. Forks under it stay below its pins (5
-mm, operator; <strong>trim the 4 long 6–7 mm edge pins to ≤ 5 before
-fitting</strong>) or below its bare PCB between the cage rows. Fan 2
-power leaves its splice on the trunk lane, so no turn sits under the
-pins. <strong>Bay TMP102: soldered chain-end leads (no header / plug),
-on 8 mm posts</strong> (Electronics), so no HL-PBB pin overhangs it in
-plan. <strong>X1C book plate 21 = <code>CARRIER 43d7befb</code> (rebuilt
-2026-11-15, the ONE reprint):</strong> 228.4 × 124.5 × 40.4, flat, posts
-up, long axis along X (<code>R_Z90</code>), grey PETG+ slot 3, 0.2
-layers, 3 walls, 25 % infill, no supports, outer brim 10 / gap 0, outer
-wall 50. verify PASS (0 failures), gate_slots PASS, gate_floating plate
-21 PASS (0 floating regions); print-gate read on the STEP: one valid
-solid, 0 cantilevers, 0 curved ceilings, 2 bridges of 2.0 mm. The
-carrier is the only mesh that differs from the previous book (46
-identical). The INA226-DROK (INA3) is on the fence front wall, not on
-this carrier; the fence-front plate (12) keeps its previous mesh
-(<code>LUMI_STL_PIN_DIR</code>) until CAD's fence revision with the
-Creator clamp slots, so the front half is reprinted once.</td>
+2026-11-15; ⛔ X1C plate 21 on HOLD, carrier <code>43d7befb</code>
+superseded)</strong></td>
+<td>⛔ <strong>HOLD X1C plate 21 (power-bay carrier
+<code>43d7befb</code>) (CTO 2026-11-15): do not print it.</strong> CAD:
+the carrier's <code>DROK_IN_X</code> / <code>DROK_OUT_X</code> (266 /
+193) are reversed. The "DROK out" route shrinks to 266 → 258.6 and its
+three YF-lane fork posts at X ≈ 199 / 225.8 / 252.6 go or move, "DROK
+in" needs a new YF path with new posts to ≈ 193, and the PHONE-IN
+landing moves to A6 / B6. Plate 21 rebuilds on CAD's regenerated
+carrier. The plate is titled "HOLD do not print" in the X1C book
+(<code>CARRIER_HOLD</code>); the H2S book has no carrier plate.
+<strong>Plate 22 (straps + tab cap) is unaffected and stays
+released.</strong> <code>lumi_powerbay_carrier.py</code> (gates PASS):
+Ultra's block is the <strong>HL-PBB-2-6-MINI</strong> (operator). One
+carrier carries both footprints. The HL-PBB is a RAISED board: 2 × M3
+posts on its O4 holes 64 c/c (operator caliper) at (206.1, −20.5) /
+(270.1, −20.5), 13.5 tall (board top Z 84.5, 5.2 under the lid), feed =
+the −X tower. The X_T2 / X_TRUNK lanes run under it. Forks under it stay
+below its pins (5 mm, operator; <strong>trim the 4 long 6–7 mm edge pins
+to ≤ 5 before fitting</strong>) or below its bare PCB between the cage
+rows. Fan 2 power leaves its splice on the trunk lane, so no turn sits
+under the pins. <strong>Bay TMP102: soldered chain-end leads (no header
+/ plug), on 8 mm posts</strong> (Electronics), so no HL-PBB pin
+overhangs it in plan. <strong>X1C book plate 21 =
+<code>CARRIER 43d7befb</code> (rebuilt 2026-11-15, the ONE
+reprint):</strong> 228.4 × 124.5 × 40.4, flat, posts up, long axis along
+X (<code>R_Z90</code>), grey PETG+ slot 3, 0.2 layers, 3 walls, 25 %
+infill, no supports, outer brim 10 / gap 0, outer wall 50. verify PASS
+(0 failures), gate_slots PASS, gate_floating plate 21 PASS (0 floating
+regions); print-gate read on the STEP: one valid solid, 0 cantilevers, 0
+curved ceilings, 2 bridges of 2.0 mm. The carrier is the only mesh that
+differs from the previous book (46 identical). The INA226-DROK (INA3) is
+on the fence front wall, not on this carrier; the fence-front plate (12)
+keeps its previous mesh (<code>LUMI_STL_PIN_DIR</code>) until CAD's
+fence revision with the Creator clamp slots, so the front half is
+reprinted once.</td>
 <td></td>
 </tr>
 <tr>
@@ -791,11 +803,13 @@ oozes on every open-air crossing; gate_slots' PETG warning clears: H2S
 it:</strong> plate 11 fence back, the sensor carriers X1C 14 / H2S 15
 and the rear cap's own plate X1C 29 / H2S 32 (0.16), both books. ⛔
 <strong>Plate 12, the fence front ALONE (0.32), is on HOLD in both
-books</strong> (CTO 2026-11-15: INA3 lug room, the FENCE row); the front
-half's four DROK boss undersides painted (1076 triangles), manual
-tree_strong, top-z 0.32, as the back half's PSU pads; the rear cap at
-0.16 (its snaps engage 0.6), top face down, ASA black H2S slot 2, no
-supports, 10 mm brim. <strong>One layer height per plate</strong>
+books</strong> (CTO 2026-11-15: INA3 lug room, the FENCE row); ⛔
+<strong>X1C plate 21, the power-bay carrier <code>43d7befb</code>, is on
+HOLD</strong> (CTO 2026-11-15: DROK in / out reversed, the CARRIER row);
+the front half's four DROK boss undersides painted (1076 triangles),
+manual tree_strong, top-z 0.32, as the back half's PSU pads; the rear
+cap at 0.16 (its snaps engage 0.6), top face down, ASA black H2S slot 2,
+no supports, 10 mm brim. <strong>One layer height per plate</strong>
 (verify FAILS a mixed plate: the H2S slicer refuses it with a prime
 tower, CLI -51, and the X1C slices fractional z-steps). <strong>Per
 part:</strong> fence halves 0.32 / 3 walls / 15 % gyroid / outer 60,
