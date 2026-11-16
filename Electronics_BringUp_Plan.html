@@ -236,15 +236,12 @@ checklist.</p>
 </ul>
 <blockquote>
 <p>🎯 <strong>Distribution block — design of record 2026-09-29:</strong>
-<strong>CZH-Labs D-1459</strong> or <strong>YRYAR
-HL-PBB-2-6-MINI</strong> dual-bus distribution module, ferrule-based,
-zero modification — <strong>from the NOVA build on</strong> (next build,
-Ultra-compatible kit in stock). <strong>Halo v1 keeps its as-built
-modified APIELE. The APIELE is retired (operator): no new APIELE
-installs, and the Ultra bay uses an HL-PBB-2-6-MINI</strong> (spec +
-port map: <a
-href="Power_Bay_Design.html#1137-apiele-barrier-strip--physical-spec"><code>Power_Bay_Design.md</code>
-§11.3.7</a>). Wiring + port map: <a
+<strong>YRYAR HL-PBB-2-6-MINI</strong> (block of record; Ultra's block)
+or <strong>CZH-Labs D-1459</strong> dual-bus distribution module,
+ferrule-based, zero modification, one per robot on the power-bay carrier
+(spec: <a
+href="Power_Bay_Design.html#1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova"><code>Power_Bay_Design.md</code>
+§11.3.2</a>). Wiring + port map: <a
 href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
 §11.3</a>; part spec: <a
 href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
@@ -747,7 +744,7 @@ landed at G469 (SDA/SCL/3V3/GND). Wand tether landed at G469
 (SDA/SCL/3V3 for TMP102-wand + PCA9685). Both TMP102 modules physically
 installed per <a
 href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §6.4
-(bay, on 15 mm brass studs at grating col 6/9 row 14) + <a
+(bay, on the carrier's 8 mm posts) + <a
 href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
 §20.3 (wand, thermal-bonded to heatsink underside). <strong>Carrier
 builds (2026-10-23):</strong> the TMP102-bay has no pigtail of its own.
@@ -1453,12 +1450,9 @@ blue-stripe-UP-both-ends apply as in EBD §4. ✅ <strong>Height CHECKED —
 FITS (operator, 2026-10-18)</strong>: lid clearance confirmed on
 hardware. Remaining at the swap: just the physical re-seat (breakout
 onto the HAT's header).</li>
-<li><strong>Halo as-built cover mount only</strong> (carrier builds skip
-this — the Mus-14 and G469 self-tap onto the power-bay carrier,
-Power_Bay §11.3.9). Board-map update at arrival: the G469 moves one hole
-toward the edge — record the new grating holes, re-check FFC reach +
-fence clearance, and update the §11.3.4 board map (its current breakout
-coordinates are flagged ⏳ stale-at-arrival).</li>
+<li><strong>Mounting:</strong> the Mus-14 and G469 self-tap onto the
+power-bay carrier (Power_Bay §11.3.9). Re-check FFC reach (≥ 30 mm slack
+each end) at the carrier fit.</li>
 </ol>
 <p><strong>Goal:</strong> X1001 → Waveshare PCIe TO M.2 USB HAT+ swap
 with the NVMe boot SSD on a bay-fed 5 V rail. Spec: <a

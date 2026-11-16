@@ -117,14 +117,9 @@ the GVLA/GULA correction recorded in the EXTERNAL doc). Function ID by
 multimeter against known rails on the header is deterministic and takes
 30 seconds.</li>
 </ul>
-<h3
-id="02-bay-physical-layout--as-built-positions-operator-confirmed-2026-09-30">0.2
-Bay physical layout — as-built positions (operator-confirmed
-2026-09-30)</h3>
-<p>Everything in this doc gives positions as PSU-cover <strong>grating
-(col, row)</strong> coordinates or as "the X end". Those only mean
-something against the actual furniture. Operator-confirmed from the
-hardware:</p>
+<h3 id="02-bay-physical-layout">0.2 Bay physical layout</h3>
+<p>Board positions are given in the carrier's CAD frame (§11.3.9). Where
+the furniture is, operator-confirmed from the hardware:</p>
 <table>
 <thead>
 <tr>
@@ -143,19 +138,18 @@ hardware:</p>
 end</td>
 </tr>
 <tr>
-<td><strong>Distribution module</strong> (APIELE v1 / D-1459)</td>
-<td><strong>Directly beside the PSU terminals</strong> — as-built
-<strong>(1, 3) + (1, 11)</strong>, i.e. the col-1 edge</td>
+<td><strong>Distribution block</strong> (HL-PBB / D-1459)</td>
+<td>On the carrier over the PSU, feed end toward INA226-MAIN
+(§11.3.9)</td>
 </tr>
 <tr>
 <td><strong>DROK buck</strong></td>
 <td><strong>Front end of the fence, mounted STANDING UP</strong> — not
-on the PSU cover</td>
+on the carrier</td>
 </tr>
 <tr>
 <td><strong>FPC breakout + G469 stack</strong></td>
-<td>PSU cover, as-built <strong>(14, 4) + (14, 12)</strong> — the col-14
-edge, opposite the distribution module</td>
+<td>On the carrier, at the edge nearest the FFC entry (§11.3.9)</td>
 </tr>
 <tr>
 <td><strong>FFC to the electronics bay</strong></td>
@@ -170,15 +164,11 @@ through a fence wall</td>
 L/N, CH1 DC and the D-1459's ferruled landings are all clustered at the
 battery/fan end. Worth a deliberate look at creepage and at
 mains-to-signal coupling before the layout is called final.</li>
-<li>⏳ <strong>Which PSU end runs hottest is unmeasured.</strong> On
-Halo's cover mount the bay TMP102 sits at grating (4, 1) + (6, 1), 16–28
-mm from the distribution block — beside the PSU terminals, the end <a
-href="#64-mount-on-psu-cover--on-15-mm-brass-studs-at-grating-4-1--6-1">§6.4</a>
-assumes is hottest. The PSU-top thermal survey (§11.3.9 "TMP102 intent")
-settles it.</li>
+<li>⏳ <strong>Which PSU end runs hottest is unmeasured.</strong> The
+bay TMP102 sits over the PSU's downstream (+Y) half, where the bay
+airflow says the warmest air is. The PSU-top thermal survey (§11.3.9
+"TMP102 intent") settles it.</li>
 </ol>
-<p>Any conclusion drawn in this doc from a (col, row) pair about what is
-near what must agree with this table.</p>
 <h3
 id="01-header-inventory--what-needs-soldering-vs-what-ships-pre-populated">0.1
 Header inventory — what needs soldering vs. what ships
@@ -450,14 +440,6 @@ changes on bay TMP102, 1 cut + 1 bridge on wand TMP102.</p>
 <hr />
 <h2 id="4-power-bay-g469-terminal-block--ffc-chain-mount">4. Power-Bay
 G469 Terminal Block + FFC Chain Mount</h2>
-<blockquote>
-<p>⏳ <strong>Carrier builds (2026-10-23):</strong> boards self-tap onto
-the power-bay carrier's moulded posts (§11.3.9), with no studs, no nylon
-and no grating. Wiring and build order: §16c; schematic:
-<code>images/power_bay/carrier_wiring.png</code>. The text below is
-<strong>Halo v1's as-built cover mount</strong>, valid until Halo gets
-its carrier.</p>
-</blockquote>
 <p><strong>Goal:</strong> extend the entire RPi5 40-pin header into the
 power bay as labeled screw terminals. This is the foundation for every
 external-sensor wire and the wand-tether I²C + 3.3 V tap (see
@@ -1075,7 +1057,7 @@ src="images/external_sensors/meccanixity_ffc_board_elec_bay_female.png"
 alt="Elec-bay MECCANIXITY breakout, female 2×20 variant. 40-pin 0.5 mm FFC connector along one edge, female 2×20 header on the opposite face for stacking onto Pi5 GPIO male pins (in the current build, onto the top of a single extra-tall header on the Pi5 GPIO — see Electronics_Bay_Design.md §4). Mount holes at the corners for optional M2.5 bracing." /></p>
 <p><img
 src="images/external_sensors/meccanixity_ffc_board_power_bay_male.png"
-alt="Power-bay MECCANIXITY breakout, male 2×20 variant. 40-pin 0.5 mm FFC connector along one edge (mirror of the elec-bay breakout), male 2×20 header on the opposite face for the G469 to plug down onto. Mount holes at the corners; in our build the board is held to the PSU cover by 2× M3 studs (see step 2), not by the corner holes." /></p>
+alt="Power-bay MECCANIXITY breakout, male 2×20 variant. 40-pin 0.5 mm FFC connector along one edge (mirror of the elec-bay breakout), male 2×20 header on the opposite face for the G469 to plug down onto. Mount holes at the corners; on the carrier the board self-taps onto 2 posts (see step 2), not by the corner holes." /></p>
 <p><strong>Procedure:</strong></p>
 <ol type="1">
 <li><p><strong>Elec bay — mount the elec-bay breakout on the Pi5 GPIO
@@ -1146,28 +1128,11 @@ below):</strong> if G469 pin 1 reads a floating GPIO level instead of
 AWAY from the STM32 instead of toward it). Power off, rotate the
 elec-bay breakout 180°, re-test.</p></li>
 </ul></li>
-<li><p><strong>Power bay</strong> — mount the power-bay breakout on the
-PSU cover top at grating hole positions <strong>(col 14, row 4)</strong>
-and <strong>(col 14, row 12)</strong> (both on grating col 14, 8
-row-steps apart on the PSU cover's hex-vent grating — Halo v1 as-built,
-§11.3.4). <em>These specific positions matter — they avoid collisions
-with the electronics-bay fence walls, the HiWonder base plate, and the
-other PSU-top components (the 13.8 V distribution block at the col-1
-edge, INA226 at (6, 12)+(8, 12), TMP102-bay at (4, 1)+(6, 1) — §11.3.4)
-— do NOT relocate without re-checking the bay-fence CAD
-envelope.</em></p>
+<li><p><strong>Power bay</strong> — the power-bay breakout self-taps
+onto the carrier's 2 posts with <strong>M3 × 8 pan self-taps</strong>
+through its holes at 48.8 mm c/c, at the carrier edge nearest the FFC
+entry (§11.3.9).</p>
 <ul>
-<li><strong>Studs to PSU cover:</strong> 2× M3 × 5+3 mm studs (M3
-threaded rod segment with 5 mm female thread + 3 mm male stud extension)
-— insert through the PSU cover grating holes. Hold each stud in place
-with <strong>M3 nut + M3 washer above the cover, M3 washer + M3 nut
-below the cover</strong>. Snug both nuts finger-tight, then torque with
-a small M3 nut driver.</li>
-<li><strong>Board on studs:</strong> the power-bay breakout with its
-2×20 male header mounts onto the two studs above the PSU cover using
-<strong>2× M3 × 5+3 mm studs used as screws</strong> (or plain M3 × 5–8
-mm cap-head screws — either works). The 3 mm male-stud extension threads
-into the top of the lower M3 stud.</li>
 <li><strong>Orientation:</strong> confirm the 0.5 mm FFC connector faces
 <em>toward the electronics-bay back-cover exit</em> so the incoming FFC
 lands cleanly. That fixes the board's rotation completely — and with it,
@@ -1314,14 +1279,6 @@ alt="INA226 board pinout — front view showing the four screw terminals along t
 alt="INA226 board back/silkscreen — confirms the header silk: &quot;GND IN+&quot; edge marks, &quot;VCC SDA SCL GND&quot; on the 4-pin header silk, &quot;ALERT&quot;, &quot;IN+&quot;, &quot;IN−&quot;, and the &quot;V−&quot;/&quot;V+&quot; pad markings on the screw-terminal side. ⚠️ The back silk says &quot;V−&quot; where the net is board GND — V− and GND are the same net (chip pin 4); do NOT treat &quot;V−&quot; as a separate shunt-path terminal (hard-won 2026-08-14, memory/project_halo_ina226_bringup.md)." /></p>
 <h3 id="51-mechanical-install--psu-top-in-series-on-ch1">5.1 Mechanical
 install — PSU-top, in series on CH1</h3>
-<blockquote>
-<p>⏳ <strong>Carrier builds (2026-10-23):</strong> boards self-tap onto
-the power-bay carrier's moulded posts (§11.3.9), with no studs, no nylon
-and no grating. Wiring and build order: §16c; schematic:
-<code>images/power_bay/carrier_wiring.png</code>. The text below is
-<strong>Halo v1's as-built cover mount</strong>, valid until Halo gets
-its carrier.</p>
-</blockquote>
 <p><strong>What this section does (in one line):</strong> put the INA226
 in the PSC-100-12 CH1 +V current path so all CH1 current flows through
 its on-board 2 mΩ shunt, and land its logic header at the G469.</p>
@@ -1376,32 +1333,11 @@ PSC-100-12 CH1 +V output and Master Power Switch input). Two ends now
 exist: the <em>source</em> end (still soldered to PSC-100-12 CH1 +V) and
 the <em>load</em> end (still going to Master Power Switch input). Never
 cut on the GND side, never cut between battery and BMS.</li>
-<li><strong>Mount the INA226 board on the PSU cover</strong> at grating
-hole positions <strong>(col 6, row 12)</strong> and <strong>(col 8, row
-12)</strong> (both on grating row 12, 2 col-steps apart — Halo v1
-as-built, §11.3.4). <em>These specific positions matter — they avoid
-collisions with the electronics-bay fence walls, the HiWonder base
-plate, and the other PSU-top components (the power-bay breakout at (14,
-4)+(14, 12), the 13.8 V distribution block at the col-1 edge, TMP102-bay
-at (4, 1)+(6, 1) — §11.3.4) — do NOT relocate without re-checking the
-bay-fence CAD envelope.</em>
-<ul>
-<li><strong>Studs to PSU cover — NYLON, not brass:</strong> 2×
-<strong>nylon</strong> M3 × 12 mm posts, held to the PSU cover using 2×
-<strong>nylon</strong> M3 × 5+3 mm posts + nylon M3 washers above and
-below the PSU cover. <strong>All mounting hardware for this board is
-NYLON</strong> because the INA226 mounts via its V+ / V− PCB holes (not
-dedicated mount holes) — brass hardware there would short V+ to V−. If
-nylon isn't available, do NOT substitute brass; find an alternate mount
-that doesn't use the V+/V− holes.</li>
-<li>On a carrier build (§11.3.9), INA226-MAIN and INA226-BATT each
-self-tap onto their own posts through the dead Ø2.0 @ 17.5 mm mounting
-pair. Halo's cover mount stacks INA226-BATT on this post pair
-(§5a.4).</li>
-<li><strong>Board to studs:</strong> the INA226 board is held onto the
-M3 × 12 mm nylon posts using <strong>2× nylon M3 × 5+3 mm studs</strong>
-threaded through the V+ and V− PCB holes.</li>
-</ul></li>
+<li><strong>Mount the INA226 on the carrier:</strong> 2 × <strong>M1.7 ×
+6</strong> self-taps into its moulded posts through the dedicated Ø2.0
+mounting pair at 17.5 mm c/c (dead holes on the header edge, not the
+live shunt pads; §11.3.9). INA226-MAIN and INA226-BATT sit side by side,
+each on its own posts.</li>
 <li><strong>Wire the 4 screw terminals</strong> (keep leads short — the
 2 mΩ shunt is on-board, no external shunt or long sense-lead runs):
 <ul>
@@ -1708,55 +1644,13 @@ at the INA226 screw terminals (same landing style as D1/D3); the uxcell
 F1 holder keeps its factory 16 AWG pigtail. 8 A peak on a short 18 AWG
 run is well inside palette ampacity. <strong>Keep the battery leads
 short (&lt; 20 cm)</strong> per the UPS doc.</li>
-<li><strong>Mounting — carrier builds (§11.3.9):</strong> each INA226
-self-taps onto moulded posts through its <strong>dedicated Ø2.0 mounting
-holes</strong> (operator caliper 2026-10-22; dead holes on the header
-edge, NOT the live Ø2.2 ISENSE± shunt pads), so there are no live screw
-heads and the nylon-only + ≥ 3 mm live-head rules don't apply to the
-mount; ✅ <strong>the two boards go SIDE BY SIDE, each on its own
-printed posts</strong> (operator, 2026-10-22).</li>
-<li><strong>Mounting — Halo cover mount (until Halo gets its carrier):
-STACKED on INA226-MAIN's post pair</strong> — no new grating position.
-<strong>Cover → short nylon M-F posts → lower INA226 → two short nylon
-M-F posts (male stud through the lower board's holes into the posts
-below) → upper INA226 → nylon nuts.</strong> <strong>ALL-NYLON, every
-piece, mandatory:</strong> both boards mount through their <strong>V+/V−
-PCB holes</strong>. Brass shorts each board's shunt, and a conductive
-post between the boards would also <strong>tie the CH1 path to the
-battery path</strong>. ⚠️ The nylon <strong>M3</strong> assortment is
-NOT in stock (the COMRUN kit is M4-only), so order it with this part.
-<ul>
-<li><strong>Order: INA226-MAIN LOWER, INA226-BATT UPPER.</strong> MAIN
-is validated and rarely touched. BATT is the new first-article board,
-the one most likely to need rework (address pads, 01C lift,
-orientation), so it sits where it comes off without disturbing
-MAIN.</li>
-<li><strong>Inter-board clearance — the one real hazard:</strong> the
-lower board's terminal screws and lugs are LIVE (CH1 13.8 V). The upper
-board's underside carries battery-path solder joints. <strong>Any
-contact = a short between the two circuits.</strong> Size the upper
-posts so the upper board's underside clears the lower board's tallest
-terminal + lug by <strong>≥ 3 mm</strong>. Measure the lower terminal
-stack, then pick the post length. Add a <strong>Kapton or fish-paper
-sheet</strong> on the upper board's underside as belt-and-braces.</li>
-<li><strong>Lug-bend exception to §11.4:</strong> on the LOWER board,
-bend the fork lugs <strong>outward (horizontal)</strong>, not 60–90° up,
-so they stay out of the inter-board gap. The upper board keeps the
-normal up-bend.</li>
-<li><strong>Assembly order:</strong> lower board fully wired and
-<strong>torqued first</strong>, then 01C/address verified with
-<code>i2cdetect</code> → 0x44 present, then upper posts → upper board →
-wire → <code>i2cdetect</code> → 0x44 + 0x45. <strong>Service = upper
-board off first</strong>: there is no screwdriver access to the lower
-terminals with the upper board fitted.</li>
-<li><strong>Label both:</strong> "MAIN 0x44 · CH1" and "BATT 0x45 · PSU
-← | → PACK". The boards are identical. <code>i2cdetect</code> catches an
-address mix-up but NOT swapped power leads; only the signed current does
-(BATT must read <strong>+</strong> while charging).</li>
-<li><strong>Bay height:</strong> confirm the stack (cover → lower posts
-→ board + terminals → ≥ 3 mm gap → upper board + terminals + up-bent
-lugs) clears the bay-fence lid envelope before cutting posts.</li>
-</ul></li>
+<li><strong>Mounting (§11.3.9):</strong> each INA226 self-taps onto
+moulded posts through its <strong>dedicated Ø2.0 mounting holes</strong>
+(operator caliper 2026-10-22; dead holes on the header edge, NOT the
+live Ø2.2 ISENSE± shunt pads), so there are no live screw heads and the
+nylon-only + ≥ 3 mm live-head rules don't apply to the mount; ✅
+<strong>the two boards go SIDE BY SIDE, each on its own printed
+posts</strong> (operator, 2026-10-22).</li>
 </ul>
 <h3 id="5a5-logic-landing-g469">5a.5 Logic landing (G469)</h3>
 <table>
@@ -2016,7 +1910,7 @@ alt="SparkFun Qwiic Temperature TMP102 — product photo, front. The 2× side Qw
 src="images/external_sensors/sparkfun_tmp102_qwiic_back_photo.png"
 alt="SparkFun Qwiic TMP102 — back side, FACTORY state, which is exactly how the BAY board stays: ADD0 jumper closed (ADDR→GND = 0x48, §6.2 — do NOT cut on this board) and the I²C pull-up jumper intact (the bus&#39;s primary 4.7 kΩ pair, §6.3 — do NOT cut). Only the WAND board (§7) gets modified." /></p>
 <p><img src="images/external_sensors/sparkfun_tmp102_qwiic_drawing.png"
-alt="SparkFun Qwiic TMP102 — dimensioned drawing: 1.00&quot; × 1.00&quot; (~25.4 × 25.4 mm) PCB, 4× corner mounting holes inset 0.10&quot; each side, i.e. holes on a ~20.3 × 20.3 mm grid — the numbers for the §6.4 stud mount." /></p>
+alt="SparkFun Qwiic TMP102 — dimensioned drawing: 1.00&quot; × 1.00&quot; (~25.4 × 25.4 mm) PCB, 4× corner mounting holes inset 0.10&quot; each side, i.e. holes on a ~20.3 × 20.3 mm grid — the numbers for the §6.4 carrier posts." /></p>
 <h3
 id="61-5-pin-jst-xh-pcb-mount-header-solder-replaces-qwiic-side-connectors">6.1
 5-pin JST-XH PCB-mount header solder (replaces Qwiic side
@@ -2045,58 +1939,13 @@ connector). The TMP102's 4.7 kΩ pair is the bus's primary pull-up on the
 power-bay node — <strong>do not cut this jumper</strong>. If cut
 accidentally, only the wand's PCA9685 10 kΩ remains as pull-up → bus
 signal margin gets thin.</p>
-<h3
-id="64-mount-on-psu-cover--on-15-mm-brass-studs-at-grating-4-1--6-1">6.4
-Mount on PSU cover — on 15 mm brass studs at grating (4, 1) + (6,
-1)</h3>
-<blockquote>
-<p>⏳ <strong>Carrier builds (2026-10-23):</strong> boards self-tap onto
-the power-bay carrier's moulded posts (§11.3.9), with no studs, no nylon
-and no grating. Wiring and build order: §16c; schematic:
-<code>images/power_bay/carrier_wiring.png</code>. The text below is
-<strong>Halo v1's as-built cover mount</strong>, valid until Halo gets
-its carrier.</p>
-</blockquote>
-<p><strong>Position on PSU cover (locked, as-built 2026-08-04):</strong>
-TMP102-bay mounts at grating hole positions <strong>(col 4, row
-1)</strong> and <strong>(col 6, row 1)</strong> — near the PSU's
-<strong>power-terminal end</strong> (the short face of the PSU carrying
-AC input + CH1/CH2 DC output terminals). <em>This position matters — it
-puts the sensor above the PSU's hottest active zone (switching +
-rectification stage near the terminal end) while staying clear of the
-other three PSU-top components (the 13.8 V distribution block at the
-col-1 edge, MECCANIXITY breakout at (14, 4)+(14, 12), INA226 at (6,
-12)+(8, 12) — §11.3.4). Do NOT relocate without re-checking the
-bay-fence CAD envelope.</em></p>
-<p><strong>Mount hardware (board to PSU cover) — same pattern as the
-other PSU-top components:</strong></p>
-<ul>
-<li>1× SparkFun (or clone) Qwiic TMP102 board, mounted via its M2.5
-corner mount holes (dedicated mount holes on the board — NOT the V+/V−
-trick used for INA226)</li>
-<li>2× <strong>M2.5 × 15 mm brass studs</strong> — insert through the
-PSU cover grating holes at (col 4, row 1) and (col 6, row 1)</li>
-<li>M2.5 nuts + M2.5 washers <strong>above and below</strong> the PSU
-cover (holds each stud in place — same style as MECCANIXITY breakout
-mount per §4 step 2)</li>
-<li><strong>Board on studs:</strong> 2× M2.5 × 5+3 mm studs used as
-screws through the TMP102 board's M2.5 mount holes</li>
-<li><strong>Sensor orientation: face UP</strong> — the SMD TMP102 chip
-on top of the PCB is exposed to bay air (not shadowed by the PCB).
-Airflow crosses the sensor freely.</li>
-</ul>
-<p><strong>Why 15 mm studs (not 25 mm):</strong> 15 mm keeps the sensor
-closer to the PSU-top heat plume (better thermal signal, faster response
-to changes), still clears the PSU cover vent slots for free airflow,
-uses standard 15 mm brass standoffs that are on hand, and stays well
-inside the electronics-bay fence lid clearance envelope.</p>
-<p><strong>Why "power-terminal end":</strong> the PSU's switching +
-rectification components generate the most bay heat and sit near the
-terminal-strip end of the PSC-100-12. Placing the sensor above this zone
-captures the hottest bay-air point that the fan control loop needs to
-regulate. The DROK adds its own heat plume (mounted separately on the
-fence front vertical wall per <code>§11.3 fence-wall layouts</code>),
-but the PSU + battery combined is the dominant bay heat source.</p>
+<h3 id="64-mount--on-the-power-bay-carrier">6.4 Mount — on the power-bay
+carrier</h3>
+<p>The board self-taps onto 4 moulded <strong>8 mm posts</strong> with
+<strong>M2.5 × 8 pan self-taps ×4</strong>, sensor face UP, over the
+PSU's downstream (+Y) half in its plume, ≥ 20 mm off the Mus-14 heatsink
+(§11.3.9 "TMP102 intent"). The I²C chain end is soldered into its 0.1"
+row (§11.3.9, §16c row 13).</p>
 <p><strong>Thermal caveat:</strong> the TMP102 die sits on the IC body
 (not at the edge). This mount reads AIR TEMPERATURE, not any specific
 heatsink surface. For direct DROK heatsink temp monitoring, a separate
@@ -2383,8 +2232,8 @@ lead length attached to the fan (~250 mm).</li>
 at the D-1459:</strong>
 <ul>
 <li>Solder each wire to an extension of 22 AWG silicone hookup wire,
-sized to reach from the fence back wall (fan) to the D-1459 on the PSU
-cover. Heat-shrink the solder joint (3 mm × 15 mm shrink,
+sized to reach from the fence back wall (fan) to the distribution block
+on the carrier. Heat-shrink the solder joint (3 mm × 15 mm shrink,
 centered).</li>
 <li>At the D-1459 end of each extension: crimp an <strong>E0508
 ferrule</strong>. Land in the assigned cage (§11.3 D10-D13: fan #1
@@ -2700,19 +2549,13 @@ href="#1131-czh-labs-d-1459-distribution-module--physical-spec">§11.3.1</a></st
 the board → <strong><a
 href="#1133-distribution-module-port-assignments-a-bus--v-b-bus--gnd">§11.3.3</a></strong>
 which net lands where → <strong><a
-href="#1134-mounting-on-the-psu-cover--the-psu-top-board-map">§11.3.4</a></strong>
-mount → <strong><a href="#1135-wiring-procedure">§11.3.5</a></strong>
-wire → <strong><a
+href="#1134-mounting--on-the-power-bay-carrier">§11.3.4</a></strong>
+mount (the carrier, §11.3.9) → <strong><a
+href="#1135-wiring-procedure">§11.3.5</a></strong> wire → <strong><a
 href="#1136-verify-wand-led-rail-behavior-at-138-v-new-voltage-vs-previous-106-v-drok-feed">§11.3.6</a></strong>
 verify. <strong><a
 href="#1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova">§11.3.2</a></strong>
 is the HL-PBB, the bay block of record from Nova.</p>
-<p><strong><a
-href="#1137-apiele-barrier-strip--physical-spec">§11.3.7</a> and <a
-href="#1138-apiele-block-modification--full-teardown-m4-drill-out-m4-hardware-install-as-built-2026-08-02">§11.3.8</a>
-are the modified APIELE strip</strong> — what is physically in Halo v1.
-The APIELE is retired (operator): no new installs. Ultra and every new
-build use a dual-bus module (HL-PBB-2-6-MINI preferred).</p>
 </blockquote>
 <blockquote>
 <h3
@@ -2731,18 +2574,12 @@ href="#1131-czh-labs-d-1459-distribution-module--physical-spec">§11.3.1</a>;
 photos + dimensions below; inventory row + sourcing in <a
 href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates">Assembly
 Guide §1.4</a>). The carrier takes either footprint, one block per robot
-(§11.3.9); the §11.3.3 port map applies 1:1 to both. <strong>The
-modified APIELE stays the CURRENT-GENERATION block (decided
-2026-09-30):</strong> Halo v1 keeps its installed strip untouched, and
-the pending <strong>Ultra bay retrofit uses the 4 spare APIELE blocks in
-stock</strong> — spec, port map and modification procedure in
-§11.3.7–§11.3.8:</p>
+(§11.3.9); the §11.3.3 port map applies 1:1 to both. The two blocks
+compared:</p>
 <table>
 <thead>
 <tr>
 <th></th>
-<th>Modified APIELE (Halo v1 as built only; retired, no new
-installs)</th>
 <th><strong>D-1459 (alternate)</strong></th>
 <th><strong>HL-PBB-2-6-MINI (block of record from Nova)</strong></th>
 </tr>
@@ -2750,7 +2587,6 @@ installs)</th>
 <tbody>
 <tr>
 <td>Feed</td>
-<td>fork/spade lugs onto barrier screws</td>
 <td>one 2-position input, 26–10 AWG, <strong>30 A</strong></td>
 <td>A/B input block at <strong>each end</strong>, 7.5 mm pitch, 26–12
 AWG, <strong>16 A</strong> (no dedicated high-current block; the second
@@ -2758,8 +2594,6 @@ block chains or sits spare)</td>
 </tr>
 <tr>
 <td>Distribution</td>
-<td>5+5 barrier positions after removing 5 internal conductors at
-receipt</td>
 <td><strong>A1–A6 + B1–B6</strong> cage-clamp screws, 26–12 AWG,
 <strong>16 A/position</strong></td>
 <td><strong>A1–A6 + B1–B6</strong> cage-clamp screws, 5.0 mm pitch,
@@ -2767,7 +2601,6 @@ receipt</td>
 </tr>
 <tr>
 <td>Wire prep</td>
-<td>fork lugs / bare bend-up technique</td>
 <td><strong>ferrules</strong> — the proven E-series parts drop straight
 into the 5.0 mm-pitch cages</td>
 <td>same <strong>ferrules</strong> — identical 5.0 mm cages, same
@@ -2775,18 +2608,16 @@ E-series map</td>
 </tr>
 <tr>
 <td>Modification</td>
-<td>required (conductor removal)</td>
 <td><strong>none</strong> — A bus and B bus are the two nets by
 design</td>
 <td><strong>none</strong> — same dual-bus-by-design layout</td>
 </tr>
 <tr>
 <td>Bulk</td>
-<td>long dual-row barrier strip + covers</td>
 <td>57 × 38 mm FR-4 board, 4× M3 on Ø3.2 holes, nylon spacers
 included</td>
 <td><strong>70 × 22 mm</strong> FR-4, 23 mm tall — longer, ~16 mm
-narrower; own mount-hole pattern (measure at install, §11.3.8)</td>
+narrower; 2 × Ø4 at 64 mm c/c (§11.3.2)</td>
 </tr>
 </tbody>
 </table>
@@ -3162,7 +2993,7 @@ Hot through the AC rocker per segments A2/A3 regardless.</p>
 <p><img src="images/electronics_bay/psc100_12_terminal_annotations.png"
 alt="MZMW PSC-100-12 — vendor terminal annotation view. The 5-position screw strip left to right: L and N (AC input, marked polarity-insensitive), ground, −V and +V (DC output electrodes). Separate BAT+/BAT− battery-charging leads below the label. Right-side call-out gives the LED legend: green = DC output, red = AC input, yellow = battery charging. Label shows DC OUTPUT +13.8 V 5.0 A / BAT.CHARGE +13.8 V 2 A and the dual-range AC input rating, with the +V ADJ trim pot at the PCB edge." /></p>
 <p><img src="images/electronics_bay/psc100_12_dimensions_photo.png"
-alt="PSC-60 / PSC-100 family case — dimensioned vendor photo: 129 × 97 mm footprint, 30 mm case height (≈38 mm at the terminal end), hex-vent perforated aluminum lid (the grating the §4/§5/§6/§11.3.4 boards mount over), red/black battery leads with the inline fuse holder exiting the short face." /></p>
+alt="PSC-60 / PSC-100 family case — dimensioned vendor photo: 129 × 97 mm footprint, 30 mm case height (≈38 mm at the terminal end), hex-vent perforated aluminum lid (the PSU&#39;s only vent; the carrier spans it, §11.3.9), red/black battery leads with the inline fuse holder exiting the short face." /></p>
 <p><strong>Wiring segment map:</strong></p>
 <p>Everything from wall AC to STM32 blue-terminal input, per-segment
 wire gauge + connector types. Follow this table for a first-power-up
@@ -3436,7 +3267,7 @@ unswitched — mirrors D9) (§11.3.3)</td>
 <td>22 AWG silicone</td>
 <td><strong>E0508 ferrule</strong> at B5 + MusRock end solder +
 heat-shrink (pads, per D16). <strong>Twist D16/D17 as a pair</strong>;
-dress opposite the APIELE↔︎G469 signal bundle, clear of PSU vents, TMP102
+dress opposite the block↔︎G469 signal bundle, clear of PSU vents, TMP102
 and INA226; no shared anchors with the signal bundle</td>
 </tr>
 <tr>
@@ -3464,8 +3295,9 @@ polarity before first power</td>
 LAMP</strong>) → IP6518 <strong>VIN−</strong> corner pad (Creator
 builds)</td>
 <td>18 AWG silicone</td>
-<td><strong>One E1508 ferrule holding D20 (18) + D8a (20)</strong>, 1.34
-mm² total; solder at the pad</td>
+<td><strong>One E1508 ferrule holding D20 (18) + the LAMP lead</strong>
+(22 AWG on carrier builds, §16c row 3: 1.15 mm² total); solder at the
+pad</td>
 </tr>
 <tr>
 <td><strong>D18</strong></td>
@@ -3736,9 +3568,9 @@ input block</td>
 </tr>
 <tr>
 <td>Mounting</td>
-<td><strong>4× Ø3.2 corner holes at 51.0 × 32.0 mm centres</strong>;
-ships with 4× nylon spacers (Ø7 × 4 mm) + 4× M3 × 16 mm screws — see
-§11.3.4</td>
+<td><strong>4× Ø3.2 corner holes at 51.0 × 32.0 mm centres</strong>; on
+the carrier it self-taps onto 4 posts with M3 × 8 (§11.3.9); the spacers
+and screws it ships with are not used</td>
 </tr>
 <tr>
 <td>Wire prep</td>
@@ -3961,8 +3793,9 @@ inlet (D5 / D6), 22 AWG, E0508</td>
 <td><strong>B6</strong></td>
 <td>GND</td>
 <td>DC rocker LAMP tap (D8a), 20 AWG, E0508. <strong>Creator
-builds:</strong> LAMP + PHONE-IN GND (D20, 18 AWG) <strong>doubled in
-one E1508 ferrule</strong> (0.52 + 0.82 = 1.34 mm²)</td>
+builds:</strong> LAMP (22 AWG on carrier builds, §16c row 3) + PHONE-IN
+GND (D20, 18 AWG) <strong>doubled in one E1508 ferrule</strong> (0.33 +
+0.82 = 1.15 mm²)</td>
 <td>mA (LAMP) + ≤ 3.4 A (phone)</td>
 </tr>
 <tr>
@@ -4142,8 +3975,7 @@ the base-servo hole → Waveshare HAT.</td>
 </table>
 <p>One ferruled conductor per cage, 16 A per position — the busiest
 distribution position is A2 at ~5.5 A (**~34 %** of rating); the wand's
-A1 carries <strong>~2.4 A</strong> (<strong>~15 %</strong>). <em>(Halo
-v1's APIELE runs the same loads at 15 A/position.)</em></p>
+A1 carries <strong>~2.4 A</strong> (<strong>~15 %</strong>).</p>
 <p><strong>Ampacity note — single V+ / single GND:</strong> the wand
 tether is a <strong>single V+ line + single GND line</strong> on the
 <strong>6-pin end-plate inlet</strong> (V+ pin 1, <code>GND-power</code>
@@ -4247,225 +4079,10 @@ href="Lumi_Wand_Integration.html#1052-tether-wire-schedule--one-6-pin-at-the-wan
 §10.5.2</a>). STM32-DROK feed is 18 AWG (D7/D8/D9; 5.5 A). Fan feeds are
 22 AWG (0.04 A, trivial).</li>
 </ul>
-<h4 id="1134-mounting-on-the-psu-cover--the-psu-top-board-map">11.3.4
-Mounting on the PSU cover — the PSU-top board map</h4>
-<blockquote>
-<p>⏳ <strong>Carrier builds</strong> mount every board on the printed
-power-bay carrier, strap-mounted to the base plate — <strong>the PSU
-cover grating is not used for mounting</strong> (layout requirements: <a
-href="#1139-power-bay-carrier--layout-requirements-in-design-2026-10-22">§11.3.9</a>).
-<strong>The grating positions below are Halo v1's as-built cover mount,
-valid until Halo gets its carrier.</strong></p>
-</blockquote>
-<p>On Halo v1, everything electrical in the power bay mounts on the
-PSC-100-12's hex-vent cover grating. <strong>These positions are
-as-built on Halo</strong> (operator-confirmed 2026-09-30) — they clear
-the electronics-bay fence walls, the HiWonder base plate, and each
-other. ⚠️ <strong>Do NOT relocate any board without re-checking the
-bay-fence CAD envelope</strong> (owned by the Electronics-bay
-agent).</p>
-<table>
-<thead>
-<tr>
-<th>Board</th>
-<th>Grating position (col, row)</th>
-<th>Span</th>
-<th>Standoffs / hardware</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>APIELE distribution strip</strong> (Halo as-built only;
-retired)</td>
-<td><strong>(1, 3) + (1, 11)</strong> — col 1, 8 row-steps</td>
-<td>38.11 or 44.00 mm</td>
-<td>M3 × 8 brass studs per §11.3.8</td>
-</tr>
-<tr>
-<td><strong>TMP102-bay</strong></td>
-<td><strong>(4, 1) + (6, 1)</strong> — row 1, 2 col-steps</td>
-<td>11.00 or 9.53 mm</td>
-<td>15 mm brass studs per §6.4</td>
-</tr>
-<tr>
-<td><strong>INA226</strong></td>
-<td><strong>(6, 12) + (8, 12)</strong> — row 12, 2 col-steps</td>
-<td>11.00 or 9.53 mm</td>
-<td>Nylon posts per §5.1</td>
-</tr>
-<tr>
-<td><strong>Power-bay breakout (MECCANIXITY FPC) + G469</strong></td>
-<td><strong>(14, 4) + (14, 12)</strong> — col 14, 8 row-steps. ⏳
-<strong>These coordinates go STALE at MusRock arrival</strong> — the
-G469 moves one hole toward the edge (operator, 2026-10-13); record the
-new holes + re-check FFC reach and fence clearance before landing
-anything (keyed in Phase 7.6)</td>
-<td>38.11 or 44.00 mm</td>
-<td>Brass studs per §4</td>
-</tr>
-<tr>
-<td><strong>MusRock HAT 5 V buck</strong></td>
-<td><strong>beside the G469 — with the G469 moved ONE hole toward the
-edge (operator)</strong>; exact studs TBD on arrival: the 30 × 24.8 mm
-board's hole pattern is unknown and may not land on the hex lattice —
-fallback VHB/thermal-tape mount. ⚠️ The G469 move + this addition must
-be re-checked against the bay-fence CAD envelope before drilling/moving
-anything.</td>
-<td>—</td>
-<td>copper heatsink 10×10×4 on the buck IC (pre-applied 3M 8810) before
-install</td>
-</tr>
-</tbody>
-</table>
-<blockquote>
-<p>✅ <strong>All four land on the hex lattice exactly (0.00 mm
-error).</strong> That is the check that says these coordinates are real:
-an arbitrary (col, row) pair almost never lands on an achievable
-<code>a·√(i²+ij+j²)</code> distance, and all four do.</p>
-<p>⚠️ <strong>One ambiguity left: which axis is which.</strong> Both
-readings are lattice-legal, so the coordinates alone cannot say:</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>col step</th>
-<th>row step</th>
-<th>APIELE / G469 span</th>
-<th>TMP102 / INA226 span</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>A</strong></td>
-<td>5.500 (along a hex row)</td>
-<td>4.763 (staggered)</td>
-<td><strong>38.11 mm</strong></td>
-<td><strong>11.00 mm</strong></td>
-</tr>
-<tr>
-<td><strong>B</strong></td>
-<td>4.763 (staggered)</td>
-<td>5.500 (along a hex row)</td>
-<td><strong>44.00 mm</strong></td>
-<td><strong>9.53 mm</strong></td>
-</tr>
-</tbody>
-</table>
-<p><strong>One caliper reading settles it for the whole grid: the centre
-distance between the G469's two studs — 38.1 mm or 44.0 mm?</strong></p>
-<p>🔑 <strong>The layout is a PERIMETER ring.</strong> APIELE on the
-col-1 edge, G469 on the col-14 edge opposite it, TMP102 on the row-1
-edge, INA226 on row 12. Power hub and signal hub are at <strong>opposite
-edges, ~62–72 mm apart</strong> — which is the routing problem in one
-line, and why the fix is bundling rather than relocation.</p>
-<p><strong>TMP102-bay sits 16–28 mm from the APIELE</strong>, i.e. right
-beside the PSU terminals, where <a
-href="#64-mount-on-psu-cover--on-15-mm-brass-studs-at-grating-4-1--6-1">§6.4</a>
-intends it.</p>
-</blockquote>
-<p><strong>As-built bay, wired state (operator photo,
-2026-09-30):</strong></p>
-<blockquote>
-<h3
-id="red_circle-the-grating-is-a-hex-lattice--stud-spacings-are-quantised-and-the-d-1459s-are-not-on-it">🔴
-The grating is a HEX lattice — stud spacings are quantised, and the
-D-1459's are not on it</h3>
-<p><strong>Measured on the hardware (operator, 2026-09-30):</strong>
-hole <strong>5.70 mm across corners</strong>, nearest-neighbour
-centre-to-centre <strong>5.50 mm</strong>. That gives across-flats 4.94
-mm and a <strong>0.56 mm web</strong> between holes — self-consistent,
-and it fixes the geometry:</p>
-<table>
-<tbody>
-<tr>
-<td>Lattice constant <code>a</code> (col step, along a hex row)</td>
-<td><strong>5.50 mm</strong></td>
-</tr>
-<tr>
-<td>Row step (staggered, perpendicular)</td>
-<td><strong>4.763 mm</strong> = <code>a</code>·√3/2</td>
-</tr>
-<tr>
-<td>Grid capacity on the 129 × 97 mm face</td>
-<td>roughly <strong>23 × 20</strong> positions</td>
-</tr>
-</tbody>
-</table>
-<p><strong>A stud pair can only sit at distances the lattice
-allows</strong> — <code>a</code>·√(i²+ij+j²): 5.50, 9.53, 11.00, 14.55,
-16.50, 19.05, 19.83, 22.00… Every as-built two-stud mount lands on one
-<strong>exactly</strong> (reading A / reading B):</p>
-<table>
-<thead>
-<tr>
-<th>Board</th>
-<th>Span</th>
-<th>Lattice</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>TMP102-bay (4,1)→(6,1)</td>
-<td>2 col = <strong>11.00 / 9.53 mm</strong></td>
-<td>11.00 / 9.53</td>
-<td>✅ 0.00 mm</td>
-</tr>
-<tr>
-<td>FPC + G469 (14,4)→(14,12)</td>
-<td>8 row = <strong>38.11 / 44.00 mm</strong></td>
-<td>38.11 / 44.00</td>
-<td>✅ 0.00 mm</td>
-</tr>
-<tr>
-<td>APIELE (1,3)→(1,11)</td>
-<td>8 row = <strong>38.11 / 44.00 mm</strong></td>
-<td>38.11 / 44.00</td>
-<td>✅ 0.00 mm</td>
-</tr>
-<tr>
-<td>INA226 (6,12)→(8,12)</td>
-<td>2 col = <strong>11.00 / 9.53 mm</strong></td>
-<td>11.00 / 9.53</td>
-<td>✅ 0.00 mm</td>
-</tr>
-</tbody>
-</table>
-<p>🔴 <strong>The D-1459's 51.0 × 32.0 mm hole rectangle does not land
-on this lattice</strong> (51.0 / 5.50 = 9.27, 32.0 / 9.526 = 3.36 —
-neither whole), which is one reason D-1459 / HL-PBB builds use the
-carrier (§11.3.9), not the grating.</p>
-<p>⚠️ <em>The 5.50 mm figure is a caliper reading on one cover. Confirm
-across 5 holes ÷ 4. Which end is row 1, and where the origin sits, are
-still unknown — the spans above are self-consistent without
-them.</em></p>
-</blockquote>
-<p><img src="images/power_bay/powerbay_asbuilt_20260930.png"
-alt="Power bay as-built, 2026-09-30 — straight down onto the PSU cover between the blue printed fence arms. Centre: the modified APIELE barrier strip (clear cover marked TB-1505L · 600 V 15 A, positions numbered 1–5) with Kuject heat-shrink fork lugs landed on both rows (red-band and blue-band forks, purple/maroon heat-shrunk crimps) and a jumper-strip comb visible along one edge. Left of it on the hex-vent grating: the SparkFun Qwiic TMP102-bay on its brass standoffs, with the white JST-XH pair and the yellow/green/blue/white signal wiring dressed across. Right: the INA226 (red board, R002 shunt visible) with its orange + green screw terminals on nylon posts. Bottom: the G469&#39;s green screw-terminal rows with the multi-colour signal landings. PSU side label (2.2 A · 60 Hz) visible behind." /></p>
-<p><strong>APIELE mount (Halo as-built 2026-08-02 only; the APIELE is
-retired, not for Ultra or new builds):</strong></p>
-<p><strong>Prerequisite:</strong> the block has been fully modified per
-§11.3.8 (all stock screws + clamp strips + internal copper conductors
-removed, all 10 holes drilled to M4, M4 × 10 mm screws + M4 nuts
-installed in all 10 positions).</p>
-<ul>
-<li>1× MODIFIED barrier strip (from the 5-pack, per §11.3.8 — 4 spares
-in stock for the retrofit)</li>
-<li>2× <strong>M3 × 8 mm brass studs</strong> — insert through the PSU
-cover grating holes at <strong>(1, 3)</strong> and <strong>(1,
-11)</strong></li>
-<li>2× <strong>M3 × 6 mm screws</strong> — thread into the bottom of
-each brass stud, on the underside of the PSU cover</li>
-<li>4× M3 washers total — one above the cover under each brass stud
-shoulder, and one below the cover between the underside of the cover and
-the M3 × 6 mm screw head</li>
-<li><strong>Layout note:</strong> single block, long axis parallel to
-the PSU top's long dimension (spans <strong>rows 3–11 on col
-1</strong>). Do NOT sit directly over any of the PSU top's largest
-ventilation slots.</li>
-</ul>
-<p><em>The 2026-09-30 as-built photo above is the visual
-reference.</em></p>
+<h4 id="1134-mounting--on-the-power-bay-carrier">11.3.4 Mounting — on
+the power-bay carrier</h4>
+<p>All bay boards mount on the power-bay carrier (§11.3.9); nothing
+mounts on the PSU cover.</p>
 <h4 id="1135-wiring-procedure">11.3.5 Wiring procedure</h4>
 <ol type="1">
 <li><strong>Power off + capacitor discharge.</strong> <strong>AC rocker
@@ -4550,246 +4167,6 @@ DROK feed)</h4>
 temps) lives in <a
 href="Lumi_Wand_Integration.html#25-verify-wand-led-rail-behavior-at-138-v--bench"><code>Lumi_Wand_Integration.md</code>
 §25</a>. Run it before installing the wand into the arm.</p>
-<h4 id="1137-apiele-barrier-strip--physical-spec">11.3.7 APIELE barrier
-strip — physical spec</h4>
-<details><summary>📦 <b>APIELE physical spec + port map — collapsed</b> (Halo v1 as-built only; the APIELE is retired. Ultra and every new build use the dual-bus module — 🎯 box at the top of §11.3). Expand for the full spec.</summary>
-
-<blockquote>
-<p><strong>Part:</strong> APIELE 15A Screw Terminal Block 5-Position
-Dual-Row Covered with Pre-Insulated Barrier Strips (5-pack — 5 blocks +
-2 red jumper strips + 3 black jumper strips). Amazon.</p>
-<p><img src="images/hardware/apiele_15a_barrier_strip_with_jumpers.png"
-alt="APIELE 15A 5-position dual-row covered barrier strip + jumper strips — vendor dimension view. Block dims 2.48&quot; × 0.87&quot; × 0.59&quot; (63 × 22 × 15 mm), 5 columns at 0.39&quot; (10 mm) pitch, 2 rows of screws (top and bottom) with a clear plastic cover snap on the top-row screws. Below the block: red 5-fork pre-insulated jumper strip (0.39&quot; fork pitch, 1.52&quot; total length) for bussing the top row (V+); black 5-fork strip (same fork body height 0.79&quot;) for bussing the bottom row (GND). Both jumper strips share the 10 mm column pitch to seat directly into the block&#39;s screws in adjacent columns." /></p>
-<table>
-<thead>
-<tr>
-<th>Spec</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Positions</td>
-<td><strong>5 columns × 2 rows = 10 screws per block.</strong> Stock
-config: each column's front + back screws are internally connected by a
-copper conductor plate → 5 electrical nodes. <strong>After the §11.3.8
-modification</strong> (remove all 5 internal copper conductors): 10
-electrically-independent screws in 2 electrically-independent rows.</td>
-</tr>
-<tr>
-<td>Current rating</td>
-<td><strong>15 A per position</strong> — 2.3× headroom over our ~6.6 A
-total block load</td>
-</tr>
-<tr>
-<td>Screw type</td>
-<td>Cross-recess (Phillips) screw with captive metal clamp plate</td>
-</tr>
-<tr>
-<td>Cover</td>
-<td>Clear removable plastic cover snaps over the top-row screws for
-shock protection</td>
-</tr>
-<tr>
-<td>Block dimensions</td>
-<td><strong>2.48" × 0.87" × 0.59" = 63 × 22 × 15 mm</strong> (L × W ×
-H)</td>
-</tr>
-<tr>
-<td>Column pitch</td>
-<td>0.39" = ~10 mm</td>
-</tr>
-<tr>
-<td>Mount ears</td>
-<td><strong>2× M4 through-holes</strong>, one on each short end of the
-base (position varies slightly by lot — measure before drilling PSU top
-or bracket)</td>
-</tr>
-<tr>
-<td>Jumper strip pitch</td>
-<td>0.39" (10 mm) — matches column pitch, drops into the top-row screws
-to bus adjacent columns</td>
-</tr>
-<tr>
-<td>Jumper strip size</td>
-<td>1.52" × 0.79" × ~0.04" thick = 39 × 20 × 1 mm</td>
-</tr>
-<tr>
-<td>Jumper strip material</td>
-<td>Nickel-plated brass fork terminals bonded to a pre-insulated polymer
-spine (red or black)</td>
-</tr>
-<tr>
-<td>Row-to-row insulation (after copper-conductor removal)</td>
-<td>ABS plastic barrier between top-row and bottom-row screws, ~4-5 mm
-thick. Dielectric strength of ABS is ~350 V/mm — vastly over-spec for
-13.8 V DC (~40 mm equivalent of margin).</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Package includes (per 5-pack — in hand):</strong> 5× terminal
-blocks + 2× red jumper strips + 3× black jumper strips. <strong>1 block
-is built into Halo v1; the 4 spares are retired, unused</strong> (the
-APIELE is not installed in Ultra or any new build).</p>
-<p><strong>APIELE port map (Halo as-built)</strong> — top row = V+ (red
-jumper strip), bottom row = GND (black), 15 A/position, Kuject fork lugs
-+ bend-up (palette gauges for the retrofit: 18 AWG power / 22 AWG taps;
-v1 as-built ran 16 AWG):</p>
-<table>
-<thead>
-<tr>
-<th>Col</th>
-<th>Top row (V+)</th>
-<th>Bottom row (GND)</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td><strong>IN</strong> — PSU CH1 +13.8 V via the INA226 shunt</td>
-<td><strong>IN</strong> — PSU CH1 GND</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Wand tether V+ (end-plate inlet pin 1)</td>
-<td>Wand tether <code>GND-power</code> (pin 2) — <code>GND-logic</code>
-goes to G469 pin 9, never here</td>
-</tr>
-<tr>
-<td>3</td>
-<td>DC rocker LINE → DROK input +V</td>
-<td>DROK input − (unswitched) + rocker LAMP tap (shared screw)</td>
-</tr>
-<tr>
-<td>4</td>
-<td>Bay fan #1 V+ (direct 13.8 V, no diodes)</td>
-<td>Bay fan #1 GND; the signal-GND jumper to G469 pin 34 lands beside it
-(when installed — currently on hold)</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Bay fan #2 V+</td>
-<td>Bay fan #2 GND</td>
-</tr>
-</tbody>
-</table>
-</blockquote>
-</details>
-
-<h4
-id="1138-apiele-block-modification--full-teardown-m4-drill-out-m4-hardware-install-as-built-2026-08-02">11.3.8
-APIELE block modification — full teardown, M4 drill-out, M4 hardware
-install (as-built 2026-08-02)</h4>
-<details><summary>📦 <b>APIELE modification procedure — collapsed</b> (record of Halo v1 as-built 2026-08-02; the APIELE is retired, so no new APIELE bay is built. The dual-bus module needs NO modification.) Expand for the full teardown.</summary>
-
-<p><strong>Purpose:</strong> two things done at once, as a single
-teardown-and-rebuild — (a) sever each column's top-row screw from its
-bottom-row screw so the two rows can serve as independent V+ and GND
-buses, and (b) upsize all 10 terminal-screw positions from the flimsy
-stock hardware to captive M4 × 10 mm screws + M4 nuts for a stronger
-clamp and lug-terminal compatibility.</p>
-<p><strong>Full disassembly + rebuild — do this on ONE block at receipt,
-before any mounting or wiring:</strong></p>
-<ol type="1">
-<li><strong>Remove the clear cover</strong> from the top row (snap
-off).</li>
-<li><strong>Remove all 10 stock terminal screws</strong> (5 top-row + 5
-bottom-row). Fully out — these will NOT be reused.
-<strong>Note:</strong> the stock terminal screws have their wire-clamp
-mechanism BUILT INTO each screw (integrated captive clamp plate);
-removing the screw removes the clamp. There are NO separate clamp strips
-to extract.</li>
-<li><strong>Remove all 5 internal copper conductor plates</strong> (~2 ×
-8 × 1 mm, one per column — the "internal jumper" strips that make each
-column's top and bottom screws electrically one node). With the stock
-screws gone, these should lift out of their column cavities with
-tweezers. Bag and label them ("APIELE removed internal conductors — 5
-pcs per block") in case a future block ever needs to be reverted to
-stock.</li>
-<li><strong>Drill out all 10 terminal holes to M4 clearance (Ø 4.2
-mm)</strong> using an M4 drill bit. Support the block on a scrap of wood
-so the drill doesn't punch through into the plastic housing base. Deburr
-the top and bottom of each drilled hole.</li>
-<li><strong>Drop 10× M4 × 10 mm screws in from ABOVE</strong> — one per
-drilled hole. Screw heads sit on the top face; threaded shaft protrudes
-out the underside.</li>
-<li><strong>Install the two jumper strips on the UNDERSIDE (M4-nut side)
-of the block — one per row.</strong> With the block flipped upside-down
-(or reached from beneath if already positioned):
-<ul>
-<li>Slide the <strong>red 5-fork jumper strip</strong> over the 5
-protruding screw shafts of one row (this becomes V+ bus after wiring,
-per §11.3.3).</li>
-<li>Slide the <strong>black 5-fork jumper strip</strong> over the 5
-protruding screw shafts of the other row (this becomes GND bus).</li>
-<li>Both jumpers sit flat against the underside of the block, forks
-under the M4-screw shafts.</li>
-</ul></li>
-<li><strong>Thread an M4 nut onto each of the 10 screw shafts</strong>
-(on the underside, over the jumper-strip fork). <strong>Tighten each
-nut</strong> — this clamps the jumper strip firmly against the block
-underside AND holds the M4 screw in place from below.</li>
-<li><strong>Glue each M4 nut to the block underside to prevent
-rotation</strong> (critical — do this BEFORE mounting the block on the
-PSU cover; after mounting, the underside is inaccessible). Once the
-block is mounted per §11.3.4, wiring in §11.3.5 requires backing off the
-M4 SCREW from above; if the underside M4 nut isn't fixed in place it
-will simply spin along with the screw and neither loosen nor tighten.
-<ul>
-<li><strong>Glue choice:</strong> small dab of <strong>non-conductive
-adhesive</strong> at each nut. Fleet-standard is a bead of <strong>RTV
-silicone</strong> or <strong>hot glue</strong> on the outer face of the
-nut where it meets the block underside — enough to bond the nut's hex
-flats to the plastic housing pocket. Both are removable with heat /
-cutting if the block ever needs to be reverted.</li>
-<li><strong>Do NOT use CA (superglue)</strong> — it wicks into the M4
-screw threads and seizes the screw permanently.</li>
-<li><strong>Do NOT use threadlocker (Loctite blue/red)</strong> — same
-reason. We WANT the screw to spin freely from above for wire
-landing.</li>
-<li><strong>Do NOT get glue on the jumper strip fork or between screw
-and nut</strong> — the glue is ONLY on the outside face of the nut where
-it meets the plastic housing. Keep the screw-nut mating threads
-clean.</li>
-<li>Let cure per adhesive spec before proceeding to §11.3.4 mount (RTV
-silicone: ~1 h skin, 24 h full cure; hot glue: ~2 min).</li>
-</ul></li>
-<li><strong>Multimeter verification after modification:</strong>
-<ul>
-<li><strong>Top-row col N → bottom-row col N</strong> should read
-<strong>OPEN</strong> for all N=1..5 (the 5 internal copper conductors
-are gone → no top-bottom continuity within any column). If any column
-reads short, one of the copper plates didn't come out — go back to step
-3.</li>
-<li><strong>Adjacent-column continuity WITHIN a single row</strong>
-(e.g. top col 1 → top col 2) should now read <strong>SHORT</strong> —
-the red / black jumper strip on the underside has bussed all 5 screws of
-that row into one electrical node.</li>
-<li><strong>Top-row bus ↔︎ bottom-row bus</strong> should read
-<strong>OPEN</strong> — V+ and GND buses fully isolated.</li>
-</ul></li>
-</ol>
-<p><strong>Total per block: 10× M4 × 10 mm screws + 10× M4 nuts + 1× red
-jumper strip + 1× black jumper strip.</strong> Discarded: all 10 stock
-screws (with their integrated clamps) + all 5 internal copper conductor
-plates (or bagged as reversion spares).</p>
-<p><strong>Why go to M4:</strong> the stock terminal screws are M3-ish
-with a small integrated captive clamp. Under 20–18 AWG silicone wire
-compression they can crack the ABS housing over time or slip under
-vibration. M4 screws + captive M4 nuts (with the jumper strip
-pre-clamped on the underside) distribute clamp force across a much
-larger area, hold silicone wire securely under the top screw head, and
-also allow direct M4 lug-terminal use if any downstream wiring changes
-from bare-wire to ring-lug termination.</p>
-<p><strong>Failure mode to watch for:</strong> if any removed copper
-conductor plate ends up loose in the workspace and accidentally bridges
-the top and bottom M4 screws externally (e.g., stuck to a wire, or
-dropped between rows on the mounted block), you get a hard V+ → GND
-short. Bag the removed conductors immediately per step 3 and verify the
-ABS pocket between top and bottom terminals is CLEAN and empty before
-mounting the block or landing wires.</p>
-</details>
-
 <h4
 id="1139-power-bay-carrier--layout-requirements-in-design-2026-10-22">11.3.9
 Power-bay carrier — layout requirements (in design, 2026-10-22)</h4>
@@ -4800,10 +4177,10 @@ moulded into it, boards self-tap onto them, no studs. The carrier is
 modified battery straps, the PSU end on a new strap over the PSU at 90°
 to them, held to the base plate like the battery straps (operator,
 2026-10-22; CAD designing). It lifts off by its strap fasteners without
-opening or moving the PSU. <strong>Nothing mounts on the PSU cover
-grating any more.</strong> Electronics owns this layout spec; CAD owns
-the part. ⏳ Hardware = the strap-foot fasteners, same as the battery
-straps, exact list from CAD.</p>
+opening or moving the PSU. <strong>Nothing mounts on the PSU
+cover.</strong> Electronics owns this layout spec; CAD owns the part. ⏳
+Hardware = the strap-foot fasteners, same as the battery straps, exact
+list from CAD.</p>
 <p><strong>Per board — what CAD needs</strong> (⏳ = caliper at the
 bench; never take it from a listing. Pilots follow CAD's proven self-tap
 convention: blind Ø2.5–2.7 for M3 as on the mic carrier and DROK bosses,
@@ -6186,10 +5563,10 @@ volume below the cover (§3.4 orientation note).</p>
 pair (D16/D17, added 2026-10-13)</h3>
 <p>Twisted pair, 22 AWG silicone, E0508 at A5/B5; lengths from dry-fit
 (D-1459 → MusRock position beside the G469). D16 is unfused. Dress
-opposite the APIELE↔︎G469 signal bundle. The D18 C-to-C is a factory
-cable — no build; HOTNOW 1.5 ft ≈ 0.46 m (on hand) for the interim gate;
-a 5 A cable only if it fails (EBD §3.6.2); route ≥ 0.46 m measured
-(operator 2026-10-30).</p>
+opposite the block↔︎G469 signal bundle. The D18 C-to-C is a factory cable
+— no build; HOTNOW 1.5 ft ≈ 0.46 m (on hand) for the interim gate; a 5 A
+cable only if it fails (EBD §3.6.2); route ≥ 0.46 m measured (operator
+2026-10-30).</p>
 <p>One card per cable still to build. Each card collects what the master
 map (<a
 href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html#master-connection-map-single-source-of-truth--every-pi-side-gpio--ic--uart"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>),
@@ -6280,8 +5657,8 @@ pull-ups</td>
 </tbody>
 </table>
 <ul>
-<li><strong>Length:</strong> measure the route from the board, at
-grating (4,1)/(6,1), to the G469, then add 30 mm of slack.</li>
+<li><strong>Length:</strong> measure the route from the board to the
+G469, then add 30 mm of slack.</li>
 <li>✅ <strong>3V3 = pin 17, GND = pin 14</strong> — operator-confirmed
 2026-10-11, per the master map.</li>
 <li><strong>Check:</strong> <code>i2cdetect -y 1</code> shows 0x48 next
@@ -6397,25 +5774,27 @@ That doc owns the wand-end connector and crimp-by-net order.</p>
 <tr>
 <th>Tether net (wand XH-6 pin)</th>
 <th>Conductor</th>
-<th>Bay landing (Halo v1, APIELE)</th>
+<th>Bay landing</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>1 · 13.8 V</td>
 <td>22 AWG</td>
-<td>APIELE <strong>col 2 top row</strong>, M4 fork lug</td>
+<td>Block tether pair <strong>A</strong> (HL-PBB A2 / D-1459 A1),
+E0508</td>
 </tr>
 <tr>
 <td>2 · GND-power</td>
 <td>22 AWG</td>
-<td>APIELE <strong>col 2 bottom row</strong>, M4 fork lug</td>
+<td>Block tether pair <strong>B</strong> (HL-PBB B2 / D-1459 B1),
+E0508</td>
 </tr>
 <tr>
 <td>6 · GND-logic</td>
 <td>22 AWG</td>
 <td>G469 <strong>pin 9</strong>, in the ×2 ferrule with INA226 GND.
-Never on the APIELE: pin 9 is the only star ground</td>
+Never on the block: pin 9 is the only star ground</td>
 </tr>
 <tr>
 <td>3 · SDA</td>
@@ -6747,17 +6126,15 @@ branch.</li>
 id="16c-carrier-harness-build-list--every-harness-by-cad-route-id-carrier-builds-2026-10-23">16c.
 Carrier harness build list — every harness, by CAD route ID (carrier
 builds, 2026-10-23)</h2>
-<p><strong>Scope:</strong> the power-bay CARRIER build (Nova, plus
-Halo/Ultra when carriered). <strong>Halo v1 as-built stays as documented
-in §11.3.4 / §16a until its carrier.</strong> IDs = CAD's embossed route
-labels (carrier v19b, 558378e8; routing map
+<p><strong>Scope:</strong> the power-bay CARRIER, every build. IDs =
+CAD's embossed route labels (carrier v19b, 558378e8; routing map
 <code>images/power_bay/carrier_routing.png</code>, interactive version
 <a href="images/power_bay/carrier_routing.html">carrier_routing.html</a>
 with every harness and the G469 pins toggleable); conductors and gauges
 = the §11.3.9 harness table (tripwire-checked against the wiring
 schematic). <strong>Plan lengths are measured from CAD's own route
-polylines: carrier v19b</strong> (558378e8;
-<code>cad/freecad/output/lumi_powerbay_carrier_DRAFT_layout.json</code>)
+polylines: carrier 43d7befb</strong>
+(<code>cad/freecad/output/lumi_powerbay_carrier_DRAFT_layout.json</code>)
 for every route, with the PIRs at centre Z 25. <strong>The along-row
 allowance:</strong> CAD's G469 routes end at a climb point at ONE end of
 the board (FL/FR/BL, FAN-SIG, SPS30/ZE15 and the I²C chain at the
@@ -6834,8 +6211,8 @@ spot, not paint) <strong>&lt; 0.1 Ω</strong></td>
 <td>2</td>
 <td><strong>CH1</strong></td>
 <td>2 × 18</td>
-<td>39</td>
-<td>150</td>
+<td>67</td>
+<td>180</td>
 <td>PSU +V / −V screws: <strong>Kuject fork lugs</strong>, bent up</td>
 <td>+V → INA226-MAIN ISENSE+ fork lug; −V → INA226-MAIN <strong>GND
 screw</strong> fork lug</td>
@@ -6845,8 +6222,8 @@ screw</strong> fork lug</td>
 <td>3</td>
 <td><strong>ROCKER</strong></td>
 <td>2 × 18 + 1 × 22</td>
-<td>182</td>
-<td>300</td>
+<td>210</td>
+<td>320</td>
 <td>INA226-MAIN ISENSE− fork lug (LINE wire)</td>
 <td>KCD1 LINE / LOAD: <strong>flag (right-angle) fully insulated 4.8 mm
 Fastons, red band</strong>; LAMP (22): flag 4.8 mm Faston → <strong>B6
@@ -6858,8 +6235,8 @@ Fence-mounted, so leave a service loop for lifting the carrier</td>
 <td>4</td>
 <td><strong>BLK-IN</strong></td>
 <td>2 × 18</td>
-<td>66</td>
-<td>180</td>
+<td>95</td>
+<td>210</td>
 <td>Rocker LOAD Faston; INA226-MAIN GND screw (2nd fork lug,
 stacked)</td>
 <td>Block <strong>IN-A / IN-B: E1008</strong></td>
@@ -6897,8 +6274,10 @@ stay twisted except over that loop</td>
 <td>7</td>
 <td><strong>BATT</strong></td>
 <td>2 × 18</td>
-<td>46 + 112 + 62 = 220 (3 legs)</td>
-<td>46 → 160 / 112 → 230 / 62 → 180</td>
+<td>46 + 73 + 31 = 150 (3 legs)</td>
+<td>46 → <strong>≤ 150 minus the pack's factory pigtail</strong> (the
+unfused stub: plan + ~50 vertical ≈ 100, no service slack) / 73 → 190 /
+31 → 150</td>
 <td>Pack <strong>XT30</strong> (mating XT30, soldered cups +
 heat-shrink)</td>
 <td>+ → <strong>F1 (uxcell 6×30 10 A, carrier cradle)</strong> →
@@ -6914,8 +6293,8 @@ PSU BAT-lead joint matches that lead's own connector (§16b.4)</td>
 <td>8</td>
 <td><strong>MUS-IN</strong></td>
 <td>2 × 22</td>
-<td>119</td>
-<td>230</td>
+<td>124</td>
+<td>240</td>
 <td>Block <strong>A5 / B5: E0508</strong></td>
 <td>A5 → Mus-14 IN+; B5 → IN− (Mus-14 end: <strong>solder pads</strong>
 + heat-shrink, operator 2026-11-03)</td>
@@ -6935,21 +6314,21 @@ PSU BAT-lead joint matches that lead's own connector (§16b.4)</td>
 <td>10</td>
 <td><strong>FAN1 / FAN2</strong></td>
 <td>4-wire stock leads</td>
-<td>158 / 218</td>
+<td>166 / 232</td>
 <td>stock <strong>~250</strong> (not cut)</td>
 <td>Fan</td>
 <td>4 solder + heat-shrink joints (3 × 15 shrink), <strong>between
 forks, staggered</strong></td>
-<td>✅ <strong>FAN2 is 218 mm against the ~250 mm stock lead</strong>
-(~32 mm spare). If it still falls short after the vertical drop, splice
+<td>✅ <strong>FAN2 is 232 mm against the ~250 mm stock lead</strong>
+(~18 mm spare). If it still falls short after the vertical drop, splice
 earlier; the extension just gets longer</td>
 </tr>
 <tr>
 <td>11</td>
 <td><strong>FAN1-P / FAN2-P</strong></td>
 <td>2 × 22 each</td>
-<td>88 / 48</td>
-<td>200 / 160</td>
+<td>90 / 51</td>
+<td>200 / 170</td>
 <td>Splice joints (from row 10)</td>
 <td>Block <strong>A3 / B3</strong> (FAN1-P), <strong>A4 / B4</strong>
 (FAN2-P): <strong>E0508</strong></td>
@@ -6961,7 +6340,7 @@ under the HL-PBB's −Y cage pins, where no fork fits</td>
 <td>12</td>
 <td><strong>FAN-SIG</strong></td>
 <td>4 × 26</td>
-<td>69</td>
+<td>71</td>
 <td><strong>210</strong> (+ row 25: climbs at −X, pins 29/31/32 sit ~25
 mm in)</td>
 <td>Splice joints</td>
@@ -6974,10 +6353,10 @@ lead; pull-ups' other ends → <strong>17</strong></td>
 <td>13</td>
 <td><strong>I2C</strong> (chain)</td>
 <td>4 × 26 per hop</td>
-<td>229 + ~255 + ~255 + 214 (4 hops)</td>
+<td>226 + ~255 + ~255 + 174 (4 hops)</td>
 <td><strong>400</strong> (+ row 60: climbs at −X, pins 1/3/5/9 are at
 the +X end) / <strong>~340</strong> / <strong>~340</strong> /
-<strong>330</strong> (TMP102 on <strong>8 mm posts</strong>, chain end
+<strong>290</strong> (TMP102 on <strong>8 mm posts</strong>, chain end
 soldered to its 0.1" row)</td>
 <td>G469 <strong>3 SDA / 5 SCL / 1 3V3 / 9 GND</strong> (shared ferrules
 per the landing map)</td>
@@ -7024,8 +6403,7 @@ B1): <strong>E0508</strong>; GND-logic → G469 <strong>pin 9</strong>
 <td><strong>PHONE-IN</strong> <em>(creator edition; with rows 14–15 when
 the robot also carries the wand, as Ultra does)</em></td>
 <td>2 × 18, twisted</td>
-<td><strong>133</strong> (v19c, from A1/B1; ⏳ re-measure from
-A6/B6)</td>
+<td><strong>132</strong> (from A1/B1; ⏳ re-measure from A6/B6)</td>
 <td><strong>250</strong> ⏳</td>
 <td>Block <strong>A6: E1008</strong> (V+); <strong>B6: one E1508 shared
 with the LAMP 20 AWG</strong> (GND)</td>
@@ -7060,9 +6438,8 @@ generous one at the wrist roll</td>
 <td><strong>PIR-FL / FR / BL / BR</strong></td>
 <td><strong>3 × 26 AWG silicone, BUILT FROM SCRATCH</strong> (Fermerry,
 in stock), lightly twisted</td>
-<td>265 / 323 / 53 / 93 (from the fence corner; <strong>v18d</strong>,
-cdebe39)</td>
-<td><strong>460 / 510 / 240 / 280</strong> (exact cuts, no stock-length
+<td>270 / 320 / 53 / 93 (from the fence corner)</td>
+<td><strong>470 / 510 / 240 / 280</strong> (exact cuts, no stock-length
 limit) = plan + 110 (rule above) <strong>+ 5</strong> (PIRs 5 mm lower:
 centre Z 25, board Z 9–41) <strong>+ 12</strong> (header on a SIDE edge,
 ~12 mm from the board centre; 6656f6f) + the along-row allowance (60; BR

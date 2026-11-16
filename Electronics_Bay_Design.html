@@ -28,7 +28,7 @@ href="Lumi_Wand_Integration.html#102-end-to-end-diagram-power-bay--arm--gripper-
 <li><a
 href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
 §11.3</a> — bay 13.8 V distribution-block assembly (HL-PBB block of
-record, D-1459 alternate; Halo v1 as-built APIELE §11.3.7, retired)</li>
+record, D-1459 alternate)</li>
 <li><a
 href="Power/Compact_UPS_Power_System_HiWonder_RPi5.html"><code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code></a>
 — PSU, DROK, battery, fuse specs</li>
@@ -146,15 +146,12 @@ context):</strong></p>
                                          - Wand tether +3.3 V (via G469)</code></pre>
 <blockquote>
 <p>🎯 <strong>Distribution block — design of record 2026-09-29:</strong>
-<strong>CZH-Labs D-1459</strong> or <strong>YRYAR
-HL-PBB-2-6-MINI</strong> dual-bus distribution module, ferrule-based,
-zero modification — <strong>from the NOVA build on</strong> (next build,
-Ultra-compatible kit in stock). <strong>Halo v1 keeps its as-built
-modified APIELE. The APIELE is retired (operator): no new APIELE
-installs, and the Ultra bay uses an HL-PBB-2-6-MINI</strong> (spec +
-port map: <a
-href="Power_Bay_Design.html#1137-apiele-barrier-strip--physical-spec"><code>Power_Bay_Design.md</code>
-§11.3.7</a>). Wiring + port map: <a
+<strong>YRYAR HL-PBB-2-6-MINI</strong> (block of record; Ultra's block)
+or <strong>CZH-Labs D-1459</strong> dual-bus distribution module,
+ferrule-based, zero modification, one per robot on the power-bay carrier
+(spec: <a
+href="Power_Bay_Design.html#1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova"><code>Power_Bay_Design.md</code>
+§11.3.2</a>). Wiring + port map: <a
 href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
 §11.3</a>; part spec: <a
 href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
@@ -244,10 +241,17 @@ servo current crosses its ~0.24 Ω input-to-port path (the HV arm draws
 (polymer parts are fine; MnO2 parts are past the usual 50 % derating;
 the marking decides); Hiwonder has not tested six HV servos on it.
 Ultra's two-port plug test (ports 1 and 2 in parallel, 4/6/8 A at 11.1
-V) measures the board path and the plugs. A servo stall dips the board's
-input along with the servo bus (Halo LV: 7.4 → 6.58 V, 11 %; the same
-dip at 11.1 V is ~9.9 V), so acceptance (d) checks the board and Pi
-under the heaviest load.</li>
+V, up to ~9 A) measures the board path and the plugs. <strong>Test
+pigtails:</strong> JST-PH 2.0 female housings and crimp contacts (fit on
+the board confirmed 2026-11-15). A PH contact is rated <strong>2
+A</strong> and takes 24–32 AWG, so at 8–9 A over two ports each V+ and
+GND contact carries ~4–4.5 A, about twice its rating. Use 24 AWG, keep
+the pigtails short, hold each step only as long as the reading needs
+(~30 s), and tape the e-load's NTC to a port housing: stop the step if
+the housing gets hot or the port-side drop jumps between readings. A
+servo stall dips the board's input along with the servo bus (Halo LV:
+7.4 → 6.58 V, 11 %; the same dip at 11.1 V is ~9.9 V), so acceptance (d)
+checks the board and Pi under the heaviest load.</li>
 <li><strong>On battery the rail falls out of regulation at heavy
 load.</strong> The DROK needs IN ≥ OUT + 0.8 V (manual), so 11.1 V needs
 ≥ 11.9 V in. Nova's 10 Ah pack measured 13.1 V at rest and 12.0 V at 5 A
