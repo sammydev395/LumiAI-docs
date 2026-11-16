@@ -8,6 +8,26 @@ operator instruction, or a defect that already cost time. -->
 <p>Back to <a href="../../CLAUDE.html"><code>../../CLAUDE.md</code></a> ·
 procedure: <a
 href="../../cad/freecad/REGENERATE.html"><code>../../cad/freecad/REGENERATE.md</code></a></p>
+<h2 id="freecad-on-the-gmktec-one-binary">FreeCAD on the GMKtec: one
+binary</h2>
+<ul>
+<li>🛑 <strong>Run FreeCAD only as
+<code>~/.local/bin/FreeCAD-weekly-2026.11.11</code></strong> (the 27.1
+dev weekly). <strong>The 1.1.1 binary,
+<code>~/.local/bin/FreeCAD</code>, is banned for every session</strong>
+(operator 2026-11-16: "you are everybody's banned from using the old
+FreeCAD version. Switch to the new FreeCAD version.").</li>
+<li><strong>Bare <code>FreeCAD</code> on the GMKtec's PATH is the banned
+binary.</strong> Wherever a doc or a script says
+<code>FreeCAD -c …</code>, call the weekly binary by its full path.</li>
+<li><strong>While a CAD build is running on the GMKtec, 3D Printing
+starts no FreeCAD run there</strong> (operator 2026-11-16).</li>
+<li><strong>Once CAD has built and gated a part, 3D Printing runs no
+FreeCAD on that part</strong> (operator 2026-11-16: "You should not be
+running FreeCAD builds after that on the same thing."). Its work on that
+part is the Python book rebuild and the 3MF and mesh gates; CAD's gate
+lines are quoted from CAD's push.</li>
+</ul>
 <h2 id="the-occ-shim-is-not-freecad">The OCC shim is not FreeCAD</h2>
 <ul>
 <li><code>cad/exports/BUILD_STAMP.json</code> must read
