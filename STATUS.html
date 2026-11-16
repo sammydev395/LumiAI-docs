@@ -604,7 +604,9 @@ outline, 3.00 mm, mounting holes present), so only the 8 missing holes
 are drilled: PSU ×2, STRAP ×4, rear fence stud posts POST.5 / POST.6. No
 engraving, no contour (mecanum chassis).
 <code>cad/exports/cnc/LumiAI_Base_Plate_drill_only.nc</code>: T1 1/8"
-drill only, G83 Q1.0 Z-4.00 F60, one M0, 8-check audit 0. Generator:
+drill only, G83 Q1.0 Z-4.00 F60, one M0, 8-check audit 0. Generator (run
+with <code>~/.local/bin/FreeCAD-weekly-2026.11.11 -c</code>, never the
+1.1.1 binary):
 <code>BASEPLATE_DRILL_ONLY=1 BASEPLATE_SKIP="CARRIAGE,POST.1,POST.2,POST.3,POST.4,POST.7,POST.8"</code>
 through <code>gen_baseplate_nc.py</code>. <strong>Built with
 <code>BATTERY_SHIFT_Y</code> = 0.0</strong>; the banner prints the

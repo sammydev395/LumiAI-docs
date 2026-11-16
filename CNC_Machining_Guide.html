@@ -2014,7 +2014,7 @@ from <a
 href="../cad/freecad/lumi_paths.py"><code>cad/freecad/lumi_paths.py</code></a>.
 Run headless from the repo root:</p>
 <div class="sourceCode" id="cb1"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">FreeCAD</span> <span class="at">-c</span> <span class="dt">\</span></span>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">~/.local/bin/FreeCAD-weekly-2026.11.11</span> <span class="at">-c</span> <span class="dt">\</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;exec(open(&#39;cad/freecad/gen_baseplate_nc.py&#39;).read()); import sys; sys.exit(0)&quot;</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="st">&quot;</span><span class="va">$(</span><span class="ex">python3</span> <span class="at">-c</span> <span class="st">&#39;import tempfile; print(tempfile.gettempdir())&#39;</span><span class="va">)</span><span class="st">/gen_baseplate_nc_report.txt&quot;</span></span></code></pre></div>
 <p>If the part changes, edit <code>lumi_base_plate.py</code>, re-run
