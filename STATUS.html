@@ -38,11 +38,11 @@ read 25.4. HEAD wins.</td>
 </tr>
 <tr>
 <td><strong>Do not run the FreeCAD 1.1.1 binary</strong></td>
-<td><code>~/.local/bin/FreeCAD</code> is banned for every session
-(operator 2026-11-16), and bare <code>FreeCAD</code> on the GMKtec's
-PATH is that binary. Run
-<code>~/.local/bin/FreeCAD-weekly-2026.11.11</code> by its full path.
-Rule: <a href="rules/cad.html">rules/cad.md</a>.</td>
+<td>Banned for every session (operator 2026-11-16). On the GMKtec it is
+<code>~/.local/bin/FreeCAD.1.1.1.bak</code>; the name
+<code>FreeCAD</code> is a link to
+<code>~/.local/bin/FreeCAD-weekly-2026.11.11</code>, the only build to
+run. Rule: <a href="rules/cad.html">rules/cad.md</a>.</td>
 </tr>
 <tr>
 <td><strong>Do not trust <code>exit 0</code></strong></td>
@@ -3136,13 +3136,15 @@ session already made it.</p>
 <ul>
 <li>2026-11-16 (operator): <strong>FreeCAD on the GMKtec =
 <code>~/.local/bin/FreeCAD-weekly-2026.11.11</code> only; the 1.1.1
-binary (<code>~/.local/bin/FreeCAD</code>) is banned for every
-session.</strong> While a CAD build runs there, 3D Printing starts no
-FreeCAD run, and it runs no FreeCAD on a part CAD has built and gated
-(<a href="rules/cad.html">rules/cad.md</a>). Via the CTO: one build at a
-time, split by agent in "Who is doing what". The A-back catch gate reads
-the same on both builds: 52 of 52 gate rows identical, RESULT PASS, 8 of
-8 REFERENCE files fresh (3D Printing, 2026-11-16).</li>
+binary is banned for every session.</strong> The name
+<code>FreeCAD</code> there is a link to the weekly binary and the 1.1.1
+file is <code>~/.local/bin/FreeCAD.1.1.1.bak</code>. While a CAD build
+runs there, 3D Printing starts no FreeCAD run, and it runs no FreeCAD on
+a part CAD has built and gated (<a
+href="rules/cad.html">rules/cad.md</a>). Via the CTO: one build at a time,
+split by agent in "Who is doing what". The A-back catch gate reads the
+same on both builds: 52 of 52 gate rows identical, RESULT PASS, 8 of 8
+REFERENCE files fresh (3D Printing, 2026-11-16).</li>
 <li>2026-11-15 (operator, via Assembly/CTO): <strong>HV servos are for
 Halo HV</strong> (4th robot, built January 2027; kit order decided end
 of December by Nova's progress, arrival ~Jan 10); Halo and Nova stay LV.
