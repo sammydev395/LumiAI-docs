@@ -1849,54 +1849,77 @@ TMP102s.</p>
 "01C" like §5.3</h3>
 <h3 id="5b4-power-wiring--in-the-drok-output--lead">5b.4 Power wiring —
 in the DROK output + lead</h3>
-<p>DROK OUT+ → <strong>IN+</strong> (fork lug) … <strong>IN−</strong>
-(fork lug) → on to the Deans (+) → STM32 (segment D14a, §16c row 6).
-DROK OUT− goes to the Deans <strong>direct</strong>. 18 AWG; the board's
-R002 shunt reads to ~40 A against the DROK's ~11.8 A maximum.
-<strong>GND screw stays EMPTY</strong> (as on INA226-BATT): its ground
-comes on the I²C chain, and the DROK is non-isolated, so OUT− is already
-common with logic GND through the board and Pi; a power ground here
-would make a second logic-to-power tie. VBUS jumpered as on the other
-two boards, so V reads the rail going to the board.</p>
+<p>DROK OUT+ → <strong>IN+</strong> … <strong>IN−</strong> → on to the
+Deans (+), every landing an <strong>E1008 ferrule</strong> (the corner
+has no room for forks, §5b.6), → STM32 (segment D14a, §16c row 6). DROK
+OUT− goes to the Deans <strong>direct</strong>. 18 AWG; the board's R002
+shunt reads to ~40 A against the DROK's ~11.8 A maximum. <strong>GND
+screw stays EMPTY</strong> (as on INA226-BATT): its ground comes on the
+I²C chain, and the DROK is non-isolated, so OUT− is already common with
+logic GND through the board and Pi; a power ground here would make a
+second logic-to-power tie. VBUS jumpered as on the other two boards, so
+V reads the rail going to the board.</p>
 <h3 id="5b5-logic--on-the-bay-i²c-chain">5b.5 Logic — on the bay I²C
 chain</h3>
 <p>G469 → INA226-MAIN → <strong>INA226-DROK</strong> → INA226-BATT →
 TMP102-bay, double-crimped 4-way housing, crimped by net (§16c row 13).
 Still one conductor per net at the G469.</p>
 <h3
-id="5b6-position--on-the-fence-front-wall-above-the-droks-out-end-operator-2026-11-15">5b.6
-Position — on the fence front wall, above the DROK's OUT end (operator,
-2026-11-15)</h3>
-<p><strong>Flat on the front wall's inner face, directly above the
-DROK's OUT terminals</strong> (fence CAD 03990a13). The carrier has no
-clean spot for it, and a stack on INA226-BATT doesn't clear the lid.</p>
+id="5b6-position--on-the-fence-front-wall-rotated-90-at-the-droks-out-end-operator-2026-11-16">5b.6
+Position — on the fence front wall, rotated 90° at the DROK's OUT end
+(operator, 2026-11-16)</h3>
+<p><strong>Flat on the front wall's inner face, rotated 90° at the +X
+end of the straight wall, above the DROK</strong> (operator, from CAD's
+corner render), with its terminal entries facing +X toward the DROK's
+OUT end. The carrier has no clean spot for it, and a stack on
+INA226-BATT doesn't clear the lid.</p>
 <ul>
+<li><strong>DROK OUT end = the pot end</strong> (operator, 2026-11-15):
++X, fence X ~258–271, the end with the current/voltage adjustment
+cutout. The DROK's IN and OUT blocks (operator caliper) are each 10.5
+wide × 7.6 thick, flush with the board's short ends, starting 7 mm below
+its top edge (LCD at the bottom), entries facing out of the short
+end.</li>
 <li><strong>Mount:</strong> the 21 × 25 board sits 4 mm off the wall on
-<strong>2 printed M1.7 self-tap standoffs at the header edge</strong>,
-with a printed rest rib under the terminal edge. Board at fence X
-17.2–38.2 (carrier X 192.8–213.8), 62.7–87.7 above the plate: 3.0 over
-the DROK envelope, 2.3 under the fence top, 7.1 clear of the front vent
-slots.</li>
-<li><strong>Orientation:</strong> the I²C header edge is UP, toward the
-lid. The screw terminals are on the bottom edge, facing down to the
-DROK's OUT terminals.</li>
-<li><strong>DROK-OUT:</strong> OUT+ goes up into IN+ and IN− comes back
-down to the Deans, a short loop of <strong>~30–50 mm a leg (plan 40, cut
-~80 each)</strong>, ⏳ string-measure at the first build. The basis: the
-DROK's OUT block sits in the top ~10 mm of the board's 50 mm edge
-(vendor photo
-<code>images/hardware/drok_dcdc_buck_12a_160w_view2.png</code>, with the
-board mounted upright as the fence cutouts show: heatsink under the
-vents, LCD/buttons/pots below), so its entries are at Z ~50–55 against
-the INA226-DROK terminals at Z ~64–66. That gives ~10–18 mm up, plus
-~5–15 mm along X and ~15 mm for the fork-lug bends. Not calipered on the
-board. OUT− goes straight to the Deans and stays twisted with the + lead
-everywhere except that loop.</li>
+<strong>2 printed M1.7 self-tap standoffs</strong>, a vertical pair at
+the header end (fence front half's pilots). Board at fence file X
+236–261, Z 66.7–87.7 above the plate, front face Y −127.16; IN+ / IN−
+entries at Z 69.2 / 85.2 (the DROK top is at Z 59.5), terminals facing
+the OUT end; CAD gates the 10 mm entry envelope (below) against the
+fence solid. To make room, the four front vent slots moved 8.2 mm toward
+the DROK's F1/F2 buttons (operator, option A on CAD's render). DROK IN
+entries at carrier X 193 (button end), OUT at X 266 (pot end).</li>
+<li><strong>Orientation:</strong> the screw-terminal edge faces +X
+(toward the OUT end) and the I²C header edge faces −X.</li>
+<li><strong>Terminations: E1008 ferrules, not forks</strong> (operator,
+2026-11-16), at INA226-DROK IN+ / IN− and at the DROK's OUT+ / OUT−: the
+slanted fence corner sits only ~8.6 mm past the DROK's OUT end, too
+close for a ~20 mm fork. <strong>Lead envelope (hard rule), measured
+from each terminal's entry face along its entry axis:</strong> the E1008
+seated to its collar leaves **~6 mm of collar straight**, then the 18
+AWG silicone (OD ~2.4) bends 90° at an inner radius ≥ 2.5 mm, so it
+needs **~10 mm clear along the entry axis** and ~3 mm across it (CAD
+gate: 10.5 / 10.5 at the INA3 entries). Bend toward where the wall falls
+away. Fully seat each pin and tug-test it. Never tin the strands.</li>
+<li><strong>DROK IN end: E1008 ferrules too, not forks</strong>
+(operator, 2026-11-16), on D8 / D9 at the DROK's IN+ / IN−. CAD measured
+only ~8 mm past the IN end before the fence's −X slant (Ø4 envelope
+8.25, a fork envelope 6.75), so a ~20 mm fork can't fit and the 10 mm
+straight run above can't be met. The 6 mm collar fits: <strong>turn each
+lead inboard (+Y) or up right at the collar</strong> (inner radius ≥
+2.5). The room grows ~0.9 mm per mm the entries sit inboard (⏳ the
+entry axis across the DROK's depth is not calipered; it's assumed 3.8 in
+from the inboard face of its top band).</li>
+<li><strong>DROK-OUT:</strong> OUT+ → IN+ and IN− → on to the Deans, a
+short loop: 23 mm OUT+ → IN+, 49 mm IN− → the pair junction, 28 mm OUT−
+→ the junction (centrelines, §16c row 6 has the cuts). OUT− goes
+straight to the Deans and stays twisted with the + lead everywhere
+except that loop.</li>
 <li><strong>I²C:</strong> the chain hops MAIN → INA226-DROK → BATT climb
-the front wall to the header (§16c row 13, ⏳ CAD's hop lengths).</li>
-<li><strong>Service:</strong> the terminals face down at the DROK and
-the board comes off the wall with its 2 screws. Nothing else sits on top
-of it.</li>
+the front wall to the header, 331–334 mm per conductor per hop (§16c row
+13).</li>
+<li><strong>Service:</strong> the board comes off the wall with its 2
+screws. Nothing else sits on top of it.</li>
 </ul>
 <h2 id="6-tmp102-power-bay--header-solder--mount--wiring">6. TMP102
 (Power-Bay) — Header Solder + Mount + Wiring</h2>
@@ -2766,7 +2789,7 @@ screw is the same GND net — B6 gives the tap its own cage instead of
 sharing D9's), and a <strong>fully insulated <strong>flag</strong>
 (right-angle) 4.8 × 0.8 mm female Faston, red 22–18 at the rocker LAMP
 blade end</strong>. Lamp lights when switch is ON because LOAD is at
-+13.8 V vs the GND-referenced LAMP pin. 20 AWG silicone hookup.</p></li>
++13.8 V vs the GND-referenced LAMP pin. 22 AWG silicone hookup.</p></li>
 </ul>
 <p><strong>AC inlet socket part spec:</strong> QTEATAK WPF-1 (IEC 320
 C14 panel-mount inlet with spring cover, 10 A 250 V AC, CE certified, 40
@@ -2878,7 +2901,7 @@ continuous GND reference to illuminate). <strong>When DC rocker OFF:
 only the DROK/STM32/Pi5 stack loses power</strong> — wand rail (A1) and
 both bay fans (A3/A4) stay live. <strong>When DC rocker ON: the built-in
 lamp illuminates</strong> (LOAD is now at +13.8 V vs the GND-referenced
-LAMP pin). 20 AWG silicone is fine for the LAMP tap — nA-scale current
+LAMP pin). 22 AWG silicone is fine for the LAMP tap — nA-scale current
 through the internal current-limiting resistor.</p></li>
 <li><p><strong>Power-up sequence:</strong> AC rocker ON first (PSU comes
 up, caps charge, fans immediately spin at full RPM since no PWM control
@@ -2892,11 +2915,13 @@ shutdown wait, then AC rocker OFF (kills wand + fans + PSU).</p></li>
 screw terminal (locked 2026-08-07):</strong></p>
 <p>Every stud-style screw-terminal landing inside the bay (PSU / INA226
 / DROK) uses a <strong>Kuject-kit insulated fork/spade crimp
-lug</strong> (size-matched to the screw stud; check the fork stud hole
-against the screw shank before crimping), with the <strong>fork bent
-60–90° upward after install</strong> to clear the tight lateral gap
-between the fence and the PSU / battery / DROK. Install sequence, in
-order (never out of order):</p>
+lug</strong>, <strong>except the DROK's IN and OUT terminals and
+INA226-DROK's IN+ / IN−, which take E1008 ferrules</strong> (§5b.6)
+(size-matched to the screw stud; check the fork stud hole against the
+screw shank before crimping), with the <strong>fork bent 60–90° upward
+after install</strong> to clear the tight lateral gap between the fence
+and the PSU / battery / DROK. Install sequence, in order (never out of
+order):</p>
 <ol type="1">
 <li><strong>Crimp first</strong> — wire into fork-lug crimp barrel,
 ratchet crimper.</li>
@@ -3156,15 +3181,16 @@ blade</td>
 +V</strong> screw terminal</td>
 <td>18 AWG silicone</td>
 <td>fully insulated <strong>flag</strong> (right-angle) 4.8 × 0.8 mm
-female Faston, red 22–18, at rocker end (see note) + <strong>Kuject fork
-lug + bend-up</strong> at DROK input +V screw</td>
+female Faston, red 22–18, at rocker end (see note) + <strong>E1008
+ferrule</strong> at DROK input +V (no room for a fork past the DROK's IN
+end, §5b.6)</td>
 </tr>
 <tr>
 <td><strong>D8a</strong></td>
 <td>D-1459 <strong>B6</strong> → DC rocker <strong>LAMP</strong> blade
 (the tap that makes the rocker light when ON; every B screw is the GND
 net, so the tap gets its own cage)</td>
-<td>20 AWG silicone</td>
+<td>22 AWG silicone</td>
 <td><strong>E0508 ferrule</strong> at B6 + fully insulated
 <strong>flag</strong> (right-angle) 4.8 × 0.8 mm female Faston, red
 22–18, at rocker LAMP end (see note)</td>
@@ -3174,9 +3200,9 @@ net, so the tap gets its own cage)</td>
 <td>D-1459 <strong>B2</strong> → DROK <strong>input −</strong> screw
 terminal</td>
 <td>18 AWG silicone</td>
-<td><strong>E1008 ferrule</strong> at B2 + <strong>Kuject fork lug +
-bend-up</strong> at DROK input − screw. <strong>NOT switched — straight
-from the GND bus.</strong></td>
+<td><strong>E1008 ferrule</strong> at B2 + <strong>E1008
+ferrule</strong> at DROK input − (§5b.6). <strong>NOT switched —
+straight from the GND bus.</strong></td>
 </tr>
 <tr>
 <td><strong>D10</strong></td>
@@ -3231,14 +3257,15 @@ JST-XH.</td>
 into the electronics bay)</td>
 <td>18 AWG silicone (flex, ~500 mm total, split into two pigtails at the
 Deans midpoint)</td>
-<td><strong>Kuject fork lug + bend-up</strong> at DROK output +V (on the
-DROK-side pigtail) + <strong>XHF ferrule</strong> at STM32 blue terminal
-(on the STM32-side pigtail). <strong>Mid-cable disconnect:</strong> male
-+ female Deans halves on each pigtail, mated in the middle;
-<strong>heat-shrink over the exposed metal of both Deans halves</strong>
-(the flat blades) so a wandering probe or stray wire can't short across
-them. Polarity-keyed — can't be plugged in backwards. Serviceable — pull
-the Deans to troubleshoot without unbolting anything.</td>
+<td><strong>E1008 ferrule</strong> at DROK output +V (no forks at the
+OUT corner, §5b.6; on the DROK-side pigtail) + <strong>XHF
+ferrule</strong> at STM32 blue terminal (on the STM32-side pigtail).
+<strong>Mid-cable disconnect:</strong> male + female Deans halves on
+each pigtail, mated in the middle; <strong>heat-shrink over the exposed
+metal of both Deans halves</strong> (the flat blades) so a wandering
+probe or stray wire can't short across them. Polarity-keyed — can't be
+plugged in backwards. Serviceable — pull the Deans to troubleshoot
+without unbolting anything.</td>
 </tr>
 <tr>
 <td><strong>D15</strong></td>
@@ -3247,7 +3274,7 @@ and GND) — DROK <strong>output −</strong> screw terminal → Deans (bottom
 conductor of the 2-pin pair) → STM32 controller <strong>blue terminal
 block GND</strong></td>
 <td>18 AWG silicone (shares Deans housing with D14)</td>
-<td><strong>Kuject fork lug + bend-up</strong> at DROK output − +
+<td><strong>E1008 ferrule</strong> at DROK output − (§5b.6) +
 <strong>XHF ferrule</strong> at STM32 blue terminal, same
 Deans-mid-disconnect as D14 (single 2-pin Deans carries the whole DC
 pair; no separate connector for GND)</td>
@@ -3276,10 +3303,10 @@ and INA226; no shared anchors with the signal bundle</td>
 <strong>INA226-DROK IN+</strong>; INA226-DROK <strong>IN−</strong> → on
 to the Deans (+). D15 (−) does NOT pass through it</td>
 <td>18 AWG silicone</td>
-<td><strong>Kuject fork lug + bend-up</strong> at DROK OUT+, INA226-DROK
-IN+ and IN−. INA226-DROK's <strong>GND screw stays EMPTY</strong> (its
-ground arrives on the I²C chain; the DROK is non-isolated, so OUT− is
-already common)</td>
+<td><strong>E1008 ferrules</strong> at DROK OUT+, INA226-DROK IN+ and
+IN− (no forks at the OUT corner, §5b.6). INA226-DROK's <strong>GND screw
+stays EMPTY</strong> (its ground arrives on the I²C chain; the DROK is
+non-isolated, so OUT− is already common)</td>
 </tr>
 <tr>
 <td><strong>D19</strong></td>
@@ -3295,9 +3322,8 @@ polarity before first power</td>
 LAMP</strong>) → IP6518 <strong>VIN−</strong> corner pad (Creator
 builds)</td>
 <td>18 AWG silicone</td>
-<td><strong>One E1508 ferrule holding D20 (18) + the LAMP lead</strong>
-(22 AWG on carrier builds, §16c row 3: 1.15 mm² total); solder at the
-pad</td>
+<td><strong>One E1508 ferrule holding D20 (18) + D8a LAMP (22)</strong>,
+1.15 mm² total; solder at the pad</td>
 </tr>
 <tr>
 <td><strong>D18</strong></td>
@@ -3649,7 +3675,7 @@ inlet (D5 / D6), 22 AWG, E0508</td>
 <tr>
 <td><strong>B6</strong> (far edge)</td>
 <td>GND</td>
-<td>DC rocker LAMP tap (D8a), 20 AWG, E0508</td>
+<td>DC rocker LAMP tap (D8a), 22 AWG, E0508</td>
 <td>mA</td>
 </tr>
 <tr>
@@ -3792,10 +3818,10 @@ inlet (D5 / D6), 22 AWG, E0508</td>
 <tr>
 <td><strong>B6</strong></td>
 <td>GND</td>
-<td>DC rocker LAMP tap (D8a), 20 AWG, E0508. <strong>Creator
-builds:</strong> LAMP (22 AWG on carrier builds, §16c row 3) + PHONE-IN
-GND (D20, 18 AWG) <strong>doubled in one E1508 ferrule</strong> (0.33 +
-0.82 = 1.15 mm²)</td>
+<td>DC rocker LAMP tap (D8a), 22 AWG, E0508. <strong>Creator
+builds:</strong> LAMP (22 AWG) + PHONE-IN GND (D20, 18 AWG)
+<strong>doubled in one E1508 ferrule</strong> (0.33 + 0.82 = 1.15
+mm²)</td>
 <td>mA (LAMP) + ≤ 3.4 A (phone)</td>
 </tr>
 <tr>
@@ -3951,7 +3977,7 @@ wire.</td>
 <tr>
 <td><strong>B6</strong></td>
 <td>GND</td>
-<td>DC rocker LAMP tap (D8a), 20 AWG, E0508</td>
+<td>DC rocker LAMP tap (D8a), 22 AWG, E0508</td>
 <td>mA through the rocker's internal resistor</td>
 </tr>
 <tr>
@@ -6135,21 +6161,23 @@ with every harness and the G469 pins toggleable); conductors and gauges
 schematic). <strong>Plan lengths are measured from CAD's own route
 polylines: carrier 43d7befb</strong>
 (<code>cad/freecad/output/lumi_powerbay_carrier_DRAFT_layout.json</code>)
-for every route, with the PIRs at centre Z 25. <strong>The along-row
-allowance:</strong> CAD's G469 routes end at a climb point at ONE end of
-the board (FL/FR/BL, FAN-SIG, SPS30/ZE15 and the I²C chain at the
-<strong>−X</strong> end; PIR-BR at <strong>+X</strong>), but the
-terminals spread over the 51 mm row, with <strong>pin 1 at +X</strong>
-(§11.3.9 orientation). A conductor whose pin sits at the far end needs
-<strong>up to ~60 mm more</strong>. It's added per row below as "+ row",
-sized for that harness's farthest conductor. <strong>Cut length = plan +
-110 mm (+ the along-row allowance where noted)</strong> (≈ 2 × 25
-vertical, carrier top to each terminal entry, + 2 × 30 service slack),
-rounded up to 10 mm. <strong>String-measure the FIRST build and correct
-this table.</strong> Runs that leave the carrier list only their
-on-carrier part plus a "measure" for the rest. Ferrule sizes at the G469
-follow the landing map's itemised ferrules (§4 figure), not this
-table.</p>
+for every route except rows 5, 6, 13's INA3 hops and 15a, which come
+from carrier a3742963 (DROK IN at −X, OUT at +X; PHONE-IN on A6/B6) and
+CAD's wired run (<code>lumi_powerbay_wired_runs.json</code>), with the
+PIRs at centre Z 25. <strong>The along-row allowance:</strong> CAD's
+G469 routes end at a climb point at ONE end of the board (FL/FR/BL,
+FAN-SIG, SPS30/ZE15 and the I²C chain at the <strong>−X</strong> end;
+PIR-BR at <strong>+X</strong>), but the terminals spread over the 51 mm
+row, with <strong>pin 1 at +X</strong> (§11.3.9 orientation). A
+conductor whose pin sits at the far end needs <strong>up to ~60 mm
+more</strong>. It's added per row below as "+ row", sized for that
+harness's farthest conductor. <strong>Cut length = plan + 110 mm (+ the
+along-row allowance where noted)</strong> (≈ 2 × 25 vertical, carrier
+top to each terminal entry, + 2 × 30 service slack), rounded up to 10
+mm. <strong>String-measure the FIRST build and correct this
+table.</strong> Runs that leave the carrier list only their on-carrier
+part plus a "measure" for the rest. Ferrule sizes at the G469 follow the
+landing map's itemised ferrules (§4 figure), not this table.</p>
 <table>
 <thead>
 <tr>
@@ -6170,7 +6198,8 @@ table.</p>
 <td>3 × 18 AWG silicone, 600 V-rated (spool marked 600 V / 6 A; operator
 2026-11-06), used as-is, no sleeve on Ultra (operator; Halo revisits
 sleeving if a safety issue shows up)</td>
-<td>54 on-carrier + entry</td>
+<td>151 on-carrier (from the floor-run join at X_MC to the PSU strip
+screws, incl. the raised span over F1) + the back-wall legs</td>
 <td><strong>measure</strong> (C14 and AC rocker on the BACK wall; the
 C14 stands 26.2 mm proud. <strong>E and N run straight into the bay over
 the carrier's back edge onto the raised span, joining just past tower
@@ -6226,8 +6255,9 @@ screw</strong> fork lug</td>
 <td>320</td>
 <td>INA226-MAIN ISENSE− fork lug (LINE wire)</td>
 <td>KCD1 LINE / LOAD: <strong>flag (right-angle) fully insulated 4.8 mm
-Fastons, red band</strong>; LAMP (22): flag 4.8 mm Faston → <strong>B6
-E0508</strong></td>
+Fastons, red band</strong>; LAMP (22): flag 4.8 mm Faston →
+<strong>B6</strong>: its own E0508, or on Creator builds inside
+PHONE-IN's GND <strong>E1508</strong> (18 + 22, row 15a)</td>
 <td>v2: rocker upstream of the whole bus. LOAD continues as BLK-IN.
 Fence-mounted, so leave a service loop for lifting the carrier</td>
 </tr>
@@ -6246,29 +6276,38 @@ stacked)</td>
 <td>5</td>
 <td><strong>DROK-IN</strong></td>
 <td>2 × 18</td>
-<td>216</td>
-<td>330</td>
+<td>276 (the IN end is at −X, X 193; wired run 287–288)</td>
+<td>390</td>
 <td>Block DROK pair, <strong>HL-PBB A1 / B1</strong> (D-1459: A2 / B2):
 <strong>E1008</strong></td>
-<td>V+ → DROK IN+ fork lug; GND → DROK IN− fork lug</td>
+<td>V+ → DROK IN+ <strong>E1008</strong>; GND → DROK IN−
+<strong>E1008</strong>; turn each lead inboard or up right at the collar
+(§5b.6)</td>
 <td>—</td>
 </tr>
 <tr>
 <td>6</td>
 <td><strong>DROK-OUT</strong></td>
 <td>2 × 18, twisted</td>
-<td>139 on-carrier</td>
+<td>176 (OUT−) / 185 (INA3 IN−), terminal to the top of the riser at the
+servo opening, + D14a 23</td>
 <td><strong>measure</strong> (+ up the servo opening to the STM32)</td>
-<td>DROK OUT +/− <strong>fork lugs</strong>; OUT+ → <strong>INA226-DROK
-IN+</strong> fork lug, IN− fork lug → on (OUT− goes direct)</td>
+<td>DROK OUT +/− <strong>E1008 ferrules</strong>; OUT+ →
+<strong>INA226-DROK IN+</strong> E1008, IN− E1008 → on (OUT− goes
+direct). No forks at this corner (§5b.6)</td>
 <td><strong>Deans (T-plug)</strong> solder joint → STM32 blue terminal
 <strong>E1008</strong></td>
 <td>Twisted pair; rises beside the tether, FFC kept on the far side.
-<strong>INA226-DROK is on the fence front wall directly above the DROK's
-OUT end</strong> (§5b.6): OUT+ → IN+ up and IN− → Deans back down,
-~30–50 mm a leg (plan 40, <strong>cut ~80 each</strong>, ⏳
-string-measure; §5b.6). The 139 on-carrier is unchanged. OUT+ / OUT−
-stay twisted except over that loop</td>
+<strong>INA226-DROK is on the fence front wall, rotated 90° above the
+DROK with its terminals facing the OUT (pot) end</strong> (§5b.6): OUT+
+→ IN+ and IN− → on to the Deans, E1008 ferrules, ~10 mm clear along each
+entry axis. Wired-run centrelines (CAD wired model, ferrule collars not
+included): <strong>D14a OUT+ → IN+ plan 23, cut 60; IN− → the pair
+junction plan 49, cut 80; OUT− → the junction plan 28</strong> (plan +
+the ferrule strip + ~20 slack; the model bends R0 at the terminals, the
+real 18 AWG takes ≥ 2.5, which that slack covers). From the junction the
+pair runs twisted along the carrier and up to the riser top. OUT+ / OUT−
+stay twisted except over the loop</td>
 </tr>
 <tr>
 <td>7</td>
@@ -6353,9 +6392,9 @@ lead; pull-ups' other ends → <strong>17</strong></td>
 <td>13</td>
 <td><strong>I2C</strong> (chain)</td>
 <td>4 × 26 per hop</td>
-<td>226 + ~255 + ~255 + 174 (4 hops)</td>
+<td>226 + 334 + 334 + 174 (4 hops)</td>
 <td><strong>400</strong> (+ row 60: climbs at −X, pins 1/3/5/9 are at
-the +X end) / <strong>~340</strong> / <strong>~340</strong> /
+the +X end) / <strong>420</strong> / <strong>420</strong> /
 <strong>290</strong> (TMP102 on <strong>8 mm posts</strong>, chain end
 soldered to its 0.1" row)</td>
 <td>G469 <strong>3 SDA / 5 SCL / 1 3V3 / 9 GND</strong> (shared ferrules
@@ -6363,15 +6402,21 @@ per the landing map)</td>
 <td>Each board: <strong>female 2.54 mm 4-way (Dupont) housing, each
 contact DOUBLE-CRIMPED</strong> (in + out) at INA226-MAIN, INA226-DROK
 and INA226-BATT (chain order G469 → MAIN → DROK → BATT → TMP102;
-INA226-DROK is on the fence front wall above the DROK, so the MAIN →
-DROK and DROK → BATT hops each run ~175 mm forward along the plate and
-climb ~80 mm up the wall beside the DROK's OUT end to its header (CAD
-estimate from fence 03990a13, ⏳ string-measure). Their cut is plan + 85
-(25 vertical at the carrier end only, + 2 × 30 slack). The two hops run
-side by side on the same path); at the TMP102 (end) the four conductors
-are <strong>soldered into the 0.1" row</strong>, each joint heat-shrunk,
-the leads wrapped round the −Y edge to the CORR_L band and zip-tied to
-the −Y post (204.3, −11.2)</td>
+INA226-DROK is on the fence front wall at the DROK's OUT end, so the
+MAIN → DROK and DROK → BATT hops run forward along the plate and up the
+front wall to its header, 331–334 mm each (CAD wired-run centrelines).
+Their cut is plan + 85 (it also covers the real wire bending wider than
+the model's 1.4 × OD) (25 vertical at the carrier end only, + 2 × 30
+slack; the wall climb is in the plan). The two hops run side by side on
+the same path. The whole bus is now ~2.7 m end to end (FFC 0.5 + this
+chain ~1.1 on the carrier + tether 0.6 + wand); at ~60–80 pF/m for loose
+26 AWG plus ~10 pF a device that's an estimated ~250–300 pF, under the
+400 pF limit, and with the ~1.9–2.6 kΩ pull-ups the rise time stays
+under 100 kHz's 1 µs. <code>i2cdetect</code> must show all seven
+addresses at bring-up); at the TMP102 (end) the four conductors are
+<strong>soldered into the 0.1" row</strong>, each joint heat-shrunk, the
+leads wrapped round the −Y edge to the CORR_L band and zip-tied to the
+−Y post (204.3, −11.2)</td>
 <td><strong>Crimp by NET, not pin number:</strong> the INA226 header and
 TMP102 orders differ. Tug-test every double crimp</td>
 </tr>
@@ -6403,10 +6448,10 @@ B1): <strong>E0508</strong>; GND-logic → G469 <strong>pin 9</strong>
 <td><strong>PHONE-IN</strong> <em>(creator edition; with rows 14–15 when
 the robot also carries the wand, as Ultra does)</em></td>
 <td>2 × 18, twisted</td>
-<td><strong>132</strong> (from A1/B1; ⏳ re-measure from A6/B6)</td>
-<td><strong>250</strong> ⏳</td>
+<td><strong>22</strong> (from A6/B6; wired run 36)</td>
+<td><strong>150</strong></td>
 <td>Block <strong>A6: E1008</strong> (V+); <strong>B6: one E1508 shared
-with the LAMP 20 AWG</strong> (GND)</td>
+with the LAMP 22 AWG</strong> (row 3) (GND)</td>
 <td><strong>Soldered</strong> to the IP6518's two corner VIN pads (DC
 end); <strong>meter polarity before first power</strong> (no reverse
 protection)</td>
@@ -6511,10 +6556,13 @@ fitted</td>
 </tbody>
 </table>
 <p><strong>Ultra (HL-PBB) length corrections, ⏳ ±10 mm (CAD estimate,
-2026-11-15; cut long and trim).</strong> The Plan column lands on the
-D-1459 terminals. On the HL-PBB (cx 238.1 / cy −20.5; board X
-203.1–273.1, Y −31.5..−9.5; cages at 5.0 pitch along both long edges;
-feed tower at the −X end, entries facing −X), adjust the cut:</p>
+2026-11-15; cut long and trim).</strong> The Plan and Cut columns
+(layout 43d7befb) still land on the <strong>D-1459</strong> terminals:
+CAD's routes end on the D-1459 cages. Apply these corrections
+<strong>once</strong>, on top of the Cut column. On the HL-PBB (cx 238.1
+/ cy −20.5; board X 203.1–273.1, Y −31.5..−9.5; cages at 5.0 pitch along
+both long edges; feed tower at the −X end, entries facing −X), adjust
+the cut:</p>
 <ul>
 <li><strong>BLK-IN (row 4): +37 mm.</strong> It comes out from under the
 board's −X end and turns back +X into the tower.</li>
@@ -6523,8 +6571,8 @@ FAN1-P): −5 mm each.</strong> About 18 mm shorter along the band, 12.5
 mm longer on the drop to the board edge.</li>
 <li><strong>−Y-edge outputs, A4 B4 A5 B5 B6 (FAN2-P, MUS-IN, LAMP): −21
 mm each.</strong> About 18 mm shorter along the band, 3.5 mm shorter on
-the drop. PHONE-IN (A6 / B6) keeps its own ⏳ in row 15a: its plan is
-from A1/B1.</li>
+the drop. PHONE-IN (row 15a) needs no correction: its route already
+lands on HL-PBB A6 / B6.</li>
 <li>Before fitting the HL-PBB, <strong>trim its 4 long edge pins (6–7
 mm) to ≤ 5 mm</strong> (operator).</li>
 </ul>

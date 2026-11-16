@@ -245,13 +245,24 @@ V, up to ~9 A) measures the board path and the plugs. <strong>Test
 pigtails:</strong> JST-PH 2.0 female housings and crimp contacts (fit on
 the board confirmed 2026-11-15). A PH contact is rated <strong>2
 A</strong> and takes 24–32 AWG, so at 8–9 A over two ports each V+ and
-GND contact carries ~4–4.5 A, about twice its rating. Use 24 AWG, keep
-the pigtails short, hold each step only as long as the reading needs
-(~30 s), and tape the e-load's NTC to a port housing: stop the step if
-the housing gets hot or the port-side drop jumps between readings. A
-servo stall dips the board's input along with the servo bus (Halo LV:
-7.4 → 6.58 V, 11 %; the same dip at 11.1 V is ~9.9 V), so acceptance (d)
-checks the board and Pi under the heaviest load.</li>
+GND contact carries ~4–4.5 A, about twice its rating. The genuine JST PH
+contact takes 24–32 AWG with insulation OD 0.8–1.5 mm. The kit's clone
+contacts carry no rating, so assume the same. <strong>With 22
+AWG</strong> (the operator's choice; the contact current is unchanged,
+the wire just runs cooler), the strands overfill the wire barrel and the
+insulation won't fit the insulation grip. So make one sample crimp first
+and check it: every strand inside the barrel, the barrel fully closed,
+the contact clicks and locks in the housing, and a firm tug doesn't pull
+it out. If the insulation grip can't close, put heat-shrink over the
+joint for strain relief. If the sample fails any check, crimp 24 AWG at
+the contact. A bad crimp is a high-resistance joint, the exact heat
+source the NTC watch below is for. Keep the pigtails short, hold each
+step only as long as the reading needs (~30 s), and tape the e-load's
+NTC to a port housing: stop the step if the housing gets hot or the
+port-side drop jumps between readings. A servo stall dips the board's
+input along with the servo bus (Halo LV: 7.4 → 6.58 V, 11 %; the same
+dip at 11.1 V is ~9.9 V), so acceptance (d) checks the board and Pi
+under the heaviest load.</li>
 <li><strong>On battery the rail falls out of regulation at heavy
 load.</strong> The DROK needs IN ≥ OUT + 0.8 V (manual), so 11.1 V needs
 ≥ 11.9 V in. Nova's 10 Ah pack measured 13.1 V at rest and 12.0 V at 5 A

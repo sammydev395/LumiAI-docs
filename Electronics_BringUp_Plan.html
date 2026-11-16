@@ -720,6 +720,22 @@ bus shows up empty or the Pi reboots, check that the G469 is seated
 flush first — a partially seated G469 produced exactly that (<a
 href="Power_Bay_Design.html#4-power-bay-g469-terminal-block--ffc-chain-mount">G469
 mount</a>).</p>
+<p><strong>Ultra — Pi 5 CPU fan PWM + tach (operator
+2026-11-04):</strong> Ultra's Pi 5 fan header is broken, and once the
+FFC chain is fitted the breakout takes the Pi header, so the cooler
+lands on the power-bay <strong>G469</strong>: red 5V → pin 4 (3rd
+conductor with SPS30 + ZE15), black → 14 GND, blue → 12 GPIO18 PWM,
+yellow → 18 GPIO24 tach (internal pull-up, never 5 V). All 26 AWG
+through a JST-SH 1.0 4-pin pigtail. Ultra only. The pin spec of record
+is the "Ultra only" rows of the <a
+href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html#master-connection-map-single-source-of-truth--every-pi-side-gpio--ic--uart">master
+connection map</a>.</p>
+<p>On 2026-11-04 Ultra's <code>pinctrl get</code> showed GPIO 13 and 23
+as pulled-up inputs (something claims them), while GPIO 18 and 24 read
+<code>none</code>. Until fan control is configured, the fan runs at full
+speed (PWM input floating high). Software (to do): a PWM fan driver on
+GPIO 18, tach on GPIO 24, pull-up on. Verify: a PWM sweep from 100 % to
+40 % audibly slows the fan, and the tach reading tracks it.</p>
 <p><strong>Failure modes to watch for:</strong></p>
 <ul>
 <li>Only one fan responds → check per-fan PWM landing at G469 (GPIO12 vs
