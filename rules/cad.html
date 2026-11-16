@@ -28,6 +28,28 @@ running FreeCAD builds after that on the same thing."). Its work on that
 part is the Python book rebuild and the 3MF and mesh gates; CAD's gate
 lines are quoted from CAD's push.</li>
 </ul>
+<h2 id="who-runs-which-build">Who runs which build</h2>
+<p>One FreeCAD build at a time on the GMKtec (operator 2026-11-16, to
+the CTO: "CAD runs all builds except for cradles, which Print3D runs ...
+only one run a build at a time ... Print3D is also responsible for
+preparing the books. Karma's job is to just check the books. That's
+it.").</p>
+<ul>
+<li><strong>CAD</strong> builds everything except the cradle family:
+fence, carrier, wired bay, wand, full assemblies. The full-assembly run
+is CAD's as one job; its cradles stage hangs 3D Printing's cradle parts
+at HEAD and rebuilds none.</li>
+<li><strong>3D Printing</strong> builds every BigClaw cradle part
+(cradle, L, catch, A-back, coupons) and prepares both print books.</li>
+<li><strong>Karma</strong> checks the print books only: slicer gates,
+settings tables, live printer reads, and tells the operator a plate is
+ready. No FreeCAD, on any machine.</li>
+<li><strong>Full assemblies are idle-time work</strong> (operator
+2026-11-16): they run when the GMKtec has nothing else to do, yield to
+any part or book build, and are never a gate on releasing a part or a
+plate. The wired-bay assembly is not in that class; it is a deliverable
+the operator wants to see.</li>
+</ul>
 <h2 id="the-occ-shim-is-not-freecad">The OCC shim is not FreeCAD</h2>
 <ul>
 <li><code>cad/exports/BUILD_STAMP.json</code> must read
