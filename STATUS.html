@@ -186,39 +186,41 @@ dovetail that must hold a part rigid needs a clamp across it (clearance
 alone gives ≈ 2c / cos θ of play).</td>
 </tr>
 <tr>
-<td><strong>Fence + rear cap + SPS30 carrier RELEASED (operator
-2026-11-14)</strong></td>
+<td><strong>Fence back half + rear cap + SPS30 carrier RELEASED
+(operator 2026-11-14); ⛔ fence FRONT half (plate 12) on
+HOLD</strong></td>
 <td><strong>Released on the operator's word 2026-11-14</strong>, each
 plate printing once Karma passes it: the <strong>fence back
 half</strong> (X1C / H2S 11) and the <strong>SPS30 carriers</strong>
-(X1C 14 / H2S 15) ("everything else that is ready. print it."), and the
-<strong>fence front half ALONE on plate 12</strong> at 0.32 ("Let's put
-the fence front on its own plate"). The <strong>rear cap alone</strong>
-at 0.16 (X1C 29 / H2S 32): "print the straps and rear cap". He did not
-see a fence render; the fixes are his own caliper calls. CAD fixed them
-on the operator's calipers while fitting the Ultra: <strong>AC
-inlet</strong> cut to the WPF-1 body 17.6 × 26 (+0.3), the AC frame face
-26.2 proud, 0.5 past the fan towers, so the 30 mm flange + spring cover
-sits and opens outside the tower channel; <strong>rear posts #5 /
-#6</strong> stop at plate Z 46 (2 over the strap bars) so the battery
-slides under; <strong>DROK upper bosses</strong> plain (keel + gusset
-web removed: they blocked the board; book paints a support enforcer
-under each, operator-approved); <strong>rear cap</strong> 6 snaps (the 2
-channel-side face fingers sat where the C14 hinge goes); <strong>SPS30
-carrier</strong> chamfers 7 → 11.5 (clears the base cover's brass-post
-sleeve 1.6). Fence OVERALL_OK incl. strength rows (ASA yield / 3);
-3dPrint PASS; CTO approved. Book actions at the rebuild: DROK enforcers,
-place the rear cap (ASA, H2S slot 2). <strong>Hardware for the battery
-+5 mm:</strong> the plate-side brass standoffs under posts #5 / #6 must
-stop at Z ≥ 40 or the battery's back corners hit them. <strong>Known
-printgate false positive (3dPrint 2026-11-15):</strong>
-<code>lumi_printgate.floating_islands</code> reports two islands on the
-front half's INA3 slab, h 11.90 (227 mm²) and h 56.30 (214 mm²), on
-<code>03990a13</code> and on the solid before it alike. They are not
-real: every sample point of each face (143 of 143, 144 of 144) has solid
-0.25 under it; the function misreads a layer whose section is
-near-identical to the one below. Do not chase them; the plate's island
-gate is <code>gate_floating.py</code>.</td>
+(X1C 14 / H2S 15) ("everything else that is ready. print it."). ⛔ The
+<strong>fence front half</strong> (alone on plate 12 at 0.32: "Let's put
+the fence front on its own plate") is <strong>on HOLD in both
+books</strong> (CTO 2026-11-15, the FENCE row below): do not print it.
+The <strong>rear cap alone</strong> at 0.16 (X1C 29 / H2S 32): "print
+the straps and rear cap". He did not see a fence render; the fixes are
+his own caliper calls. CAD fixed them on the operator's calipers while
+fitting the Ultra: <strong>AC inlet</strong> cut to the WPF-1 body 17.6
+× 26 (+0.3), the AC frame face 26.2 proud, 0.5 past the fan towers, so
+the 30 mm flange + spring cover sits and opens outside the tower
+channel; <strong>rear posts #5 / #6</strong> stop at plate Z 46 (2 over
+the strap bars) so the battery slides under; <strong>DROK upper
+bosses</strong> plain (keel + gusset web removed: they blocked the
+board; book paints a support enforcer under each, operator-approved);
+<strong>rear cap</strong> 6 snaps (the 2 channel-side face fingers sat
+where the C14 hinge goes); <strong>SPS30 carrier</strong> chamfers 7 →
+11.5 (clears the base cover's brass-post sleeve 1.6). Fence OVERALL_OK
+incl. strength rows (ASA yield / 3); 3dPrint PASS; CTO approved. Book
+actions at the rebuild: DROK enforcers, place the rear cap (ASA, H2S
+slot 2). <strong>Hardware for the battery +5 mm:</strong> the plate-side
+brass standoffs under posts #5 / #6 must stop at Z ≥ 40 or the battery's
+back corners hit them. <strong>Known printgate false positive (3dPrint
+2026-11-15):</strong> <code>lumi_printgate.floating_islands</code>
+reports two islands on the front half's INA3 slab, h 11.90 (227 mm²) and
+h 56.30 (214 mm²), on <code>03990a13</code> and on the solid before it
+alike. They are not real: every sample point of each face (143 of 143,
+144 of 144) has solid 0.25 under it; the function misreads a layer whose
+section is near-identical to the one below. Do not chase them; the
+plate's island gate is <code>gate_floating.py</code>.</td>
 <td>the reprint the operator ordered; printing an old plate wastes
 ASA</td>
 </tr>
@@ -406,58 +408,69 @@ Creator clamp slots, so the front half is reprinted once.</td>
 </tr>
 <tr>
 <td>🔶 <strong>FENCE: INA3 on the front wall + 4 Creator desk-clamp
-slots (CAD 2026-11-15; books rebuilt, not yet printed)</strong></td>
-<td><code>lumi_baseplate_fence.py</code> (gates PASS).
-<strong>INA3</strong> (INA226-DROK, operator): board 21 × 25 flat on the
-front wall's inner face above the DROK's OUT end, fence X 15.2–36.2,
-62.7–87.7 above the plate (3.0 over the DROK envelope, 2.3 under the
-fence top, 5.1 clear of the vents, ≥ 1.0 clear of the wall's slanted
-feature); 2 printed standoffs 5.3 wide, 4 off the wall, M1.7 pilots 4.9
-deep cut from the fused fence, + a rest rib, 54° leads, no supports.
-<strong>Clamp slots</strong> (operator via Karma; off-the-shelf Jhanw
-desk C-clamp, listing dims): 46 × 3.5 at the plate top through the 4 mm
-wall; right x +78.09 / left x −77.06 at y 90, front x 0, <strong>rear x
-−34.7</strong> (operator 11-15: at x 0 the AC-inlet frame hangs to 1.35
-over the plate and a fan-tower foot sits on it; at −34.7 the lowest
-thing behind the wall is the raised tower at 8.36). Jaw path gated 25
-outside to 30 past the inner face. Slot roofs print on <strong>painted
-support enforcers</strong> (46 spans). <strong>Both halves
-reprint</strong> (the back half carries the rear, right and left slots,
-the front half the front slot and INA3); the <strong>rear cap does
-not</strong> (same mesh; 71.7 clear of the rear jaw path in the
-assembly). Books rebuilt on <code>0dc0842e</code>, X1C / H2S
-<strong>11</strong> back + <strong>12</strong> front, Karma gates: the
-only new overhangs are the four slot roofs (184 mm² each, 46 span at 3.5
-above the bed, painted enforcers on both halves); INA3 pilots open 4.90
-deep on the exported front half, 3.1 of wall behind; verify PASS,
-gate_slots 0 / 0, gate_floating 0 regions on 11 / 12. <strong>Creator
-battery:</strong> 5 mm foam under the battery centre (carrier X 187–274)
-replaces the 3 mm carriage-bolt raise; battery top 40 under the
-unchanged strap bar; no CAD change. <strong>Phone Lift Route A
-sweeps</strong> (camera FIXED 2026-11-15: route_prep turned the OAK-D by
-the wrist turn W TWICE, 90° round the wrist, below the claw; every
-earlier BigClaw + OAK-D route number, incl. the 3.04 and the cradle-home
-forearm contact, is withdrawn; a pose-sanity gate now matches all 11
-camera bodies at W once with the camera above the claw, and bites on W
-twice). Halo 11-14 start → preset, all PASS, gate 2.0, bite 177.97 mm³:
-OP1 screen 616.9 above floor −14°, elbow 80 / shoulder 9 mm, least
-BigClaw+OAK-D 36.8; P2 485.0, +24°, elbow 169–187 / shoulder 95–108,
-30.6; OP2 667.9, −24°, elbow 87 / shoulder 83, 36.8; C1 7.7 (end pose,
-upper-arm U-bracket). <strong>Cradle home</strong> = the arbiter's
-stored TARGET b 0.379 / s −2.1405 / e −0.0335 / w 0.508 (LumiAI Ultra
-11-15; base yaw modelled as q[3] about the turntable axis) → OP1 / P2 /
-OP2 / C1 and back on the same line: all PASS, the phone 9.46 off the
-base cover at the target, BigClaw+OAK-D ≥ 28.7 (C1 end 7.7), bite 2.14
-mm³. The measured ARRIVAL (b 0.35 / e +0.03 / w 0.536: base ~2° short,
-elbow sag, wrist at end of travel) clears everything too; its phone
-rests 0.02 on the base cover = the accepted DOCKED REST (operator
-11-15), exempt by name only at a cradle-home route's step 0 vs
-lumi_base_cover_base (self-test: the same contact at step 1, on the Halo
-route, on the cover top or on arm body 075 is not exempt); those legs
-FAIL only on the URDF-limit check (wrist 0.536 &gt; 0.524). Camera model
-= the production mount (Full Assembly plate + 6 mm lift); Halo's printed
-L on the wrist servo is a one-off (ArmPi FPV → Ultra upgrade), so a Halo
-feeler reading is informational only.</td>
+slots (CAD 2026-11-15; back half plate 11 released, ⛔ FRONT half plate
+12 on HOLD)</strong></td>
+<td>⛔ <strong>HOLD plate 12 (fence front half), X1C and H2S books (CTO
+2026-11-15, physical defect): do not print it.</strong> Electronics:
+INA3 as placed in <code>0dc0842e</code> leaves 3.2 mm where a Kuject 18
+AWG fork lug needs ~20 mm of straight run from each terminal screw, and
+the DROK's OUT block is probably at the pot end, not the button end INA3
+sits over. CAD is asking the operator which end OUT is and whether INA3
+shifts or rotates; the front half changes again and plate 12 rebuilds on
+that revision. The plate is titled "HOLD do not print" in both books
+(<code>FENCE_SET_HOLD</code>, front-half stem). <strong>Plate 11 (back
+half) is unaffected and stays released.</strong>
+<code>lumi_baseplate_fence.py</code> (gates PASS). <strong>INA3</strong>
+(INA226-DROK, operator): board 21 × 25 flat on the front wall's inner
+face above the DROK's OUT end, fence X 15.2–36.2, 62.7–87.7 above the
+plate (3.0 over the DROK envelope, 2.3 under the fence top, 5.1 clear of
+the vents, ≥ 1.0 clear of the wall's slanted feature); 2 printed
+standoffs 5.3 wide, 4 off the wall, M1.7 pilots 4.9 deep cut from the
+fused fence, + a rest rib, 54° leads, no supports. <strong>Clamp
+slots</strong> (operator via Karma; off-the-shelf Jhanw desk C-clamp,
+listing dims): 46 × 3.5 at the plate top through the 4 mm wall; right x
++78.09 / left x −77.06 at y 90, front x 0, <strong>rear x −34.7</strong>
+(operator 11-15: at x 0 the AC-inlet frame hangs to 1.35 over the plate
+and a fan-tower foot sits on it; at −34.7 the lowest thing behind the
+wall is the raised tower at 8.36). Jaw path gated 25 outside to 30 past
+the inner face. Slot roofs print on <strong>painted support
+enforcers</strong> (46 spans). <strong>Both halves reprint</strong> (the
+back half carries the rear, right and left slots, the front half the
+front slot and INA3); the <strong>rear cap does not</strong> (same mesh;
+71.7 clear of the rear jaw path in the assembly). Books rebuilt on
+<code>0dc0842e</code>, X1C / H2S <strong>11</strong> back +
+<strong>12</strong> front, Karma gates: the only new overhangs are the
+four slot roofs (184 mm² each, 46 span at 3.5 above the bed, painted
+enforcers on both halves); INA3 pilots open 4.90 deep on the exported
+front half, 3.1 of wall behind; verify PASS, gate_slots 0 / 0,
+gate_floating 0 regions on 11 / 12. <strong>Creator battery:</strong> 5
+mm foam under the battery centre (carrier X 187–274) replaces the 3 mm
+carriage-bolt raise; battery top 40 under the unchanged strap bar; no
+CAD change. <strong>Phone Lift Route A sweeps</strong> (camera FIXED
+2026-11-15: route_prep turned the OAK-D by the wrist turn W TWICE, 90°
+round the wrist, below the claw; every earlier BigClaw + OAK-D route
+number, incl. the 3.04 and the cradle-home forearm contact, is
+withdrawn; a pose-sanity gate now matches all 11 camera bodies at W once
+with the camera above the claw, and bites on W twice). Halo 11-14 start
+→ preset, all PASS, gate 2.0, bite 177.97 mm³: OP1 screen 616.9 above
+floor −14°, elbow 80 / shoulder 9 mm, least BigClaw+OAK-D 36.8; P2
+485.0, +24°, elbow 169–187 / shoulder 95–108, 30.6; OP2 667.9, −24°,
+elbow 87 / shoulder 83, 36.8; C1 7.7 (end pose, upper-arm U-bracket).
+<strong>Cradle home</strong> = the arbiter's stored TARGET b 0.379 / s
+−2.1405 / e −0.0335 / w 0.508 (LumiAI Ultra 11-15; base yaw modelled as
+q[3] about the turntable axis) → OP1 / P2 / OP2 / C1 and back on the
+same line: all PASS, the phone 9.46 off the base cover at the target,
+BigClaw+OAK-D ≥ 28.7 (C1 end 7.7), bite 2.14 mm³. The measured ARRIVAL
+(b 0.35 / e +0.03 / w 0.536: base ~2° short, elbow sag, wrist at end of
+travel) clears everything too; its phone rests 0.02 on the base cover =
+the accepted DOCKED REST (operator 11-15), exempt by name only at a
+cradle-home route's step 0 vs lumi_base_cover_base (self-test: the same
+contact at step 1, on the Halo route, on the cover top or on arm body
+075 is not exempt); those legs FAIL only on the URDF-limit check (wrist
+0.536 &gt; 0.524). Camera model = the production mount (Full Assembly
+plate + 6 mm lift); Halo's printed L on the wrist servo is a one-off
+(ArmPi FPV → Ultra upgrade), so a Halo feeler reading is informational
+only.</td>
 <td></td>
 </tr>
 <tr>
@@ -775,54 +788,55 @@ strap. Slot-3 PETG+ filament z-hop 0.4 in both books.
 <strong>Avoid-crossing-walls ON book-wide in both books</strong> (PETG+
 oozes on every open-air crossing; gate_slots' PETG warning clears: H2S
 17 → 0). <strong>Released 2026-11-14 (operator), each once Karma passes
-it:</strong> plate 11 fence back, the sensor carriers X1C 14 / H2S 15,
-plate 12 fence front ALONE (0.32) and the rear cap's own plate X1C 29 /
-H2S 32 (0.16), both books; the front half's four DROK boss undersides
-painted (1076 triangles), manual tree_strong, top-z 0.32, as the back
-half's PSU pads; the rear cap at 0.16 (its snaps engage 0.6), top face
-down, ASA black H2S slot 2, no supports, 10 mm brim. <strong>One layer
-height per plate</strong> (verify FAILS a mixed plate: the H2S slicer
-refuses it with a prime tower, CLI -51, and the X1C slices fractional
-z-steps). <strong>Per part:</strong> fence halves 0.32 / 3 walls / 15 %
-gyroid / outer 60, inner 250 (ASA black, H2S slot 2, chamber door
-closed); the back half carries painted enforcers under the two PSU-strap
-pad tops (<code>ENFORCE_FLAT_DOWN</code>, manual trees), the front half
-no supports; brim 10 outer+inner; avoid-crossing-walls ON. Extension
-halves outer 60, avoid-crossing-walls ON; in the H2S book all three
-halves (ASA) on tree_strong (branch 5, diameter angle 5, branch angle
-35, critical-regions-only OFF), brim 15. Shell halves + head ring ASA
-slot 2, door CLOSED, turned 90° so the ear faces the H2S camera; keel
-ridge has a 2.0 mm flat land (CAD 3f0177d). EBC covers ASA slot 2,
-printed flipped, <strong>supports OFF</strong> on CAD
-<code>c3bc7ab4</code> (operator 2026-11-10; the supports-off slice
-passed gate_gcode_floating, 2 h 27 m / 36.8 g, re-gated with arcs read;
-Studio's floating-regions note on the right cover is the 2 raster-dust
-cells); plate 6 released. Flange coupon −Y prints flat, flange-down, no
-sink (CAD 3415f1e removed its tab). Tabbed battery straps stand INVERTED
-with supports ON, and enforcer paint under each leg-end tab's flat
-ceiling (print z 39.7, ~210 mm² a strap over open bed; X1C 22 left them
-bare: 4 floating starts, Karma 2026-11-14) --
-<code>ENFORCE_BOX_PRINT</code>, picked in the print frame. <strong>H2S
-slots</strong> (after <code>SLOT_MOVE</code>, which maps the builder's
-old 1→4, 4→1): 1 Inland PLA+ (blue, finished 2026-11-08), 2 Generic ASA
-(260 / bed 90 / chamber 60), 3 PolyLite PETG (black), 4 yellow PETG+, 5
-NylonX (<code>Generic PA-CF</code> base: 260 / bed 65 / chamber 0, part
-fan OFF for the first 13 layers, external from the PrintDry, CF-nylon
-speed set, outer brim 12 gap 0, thin fresh glue), 6 Generic TPU (cradle
-pads). <strong>X1C slots:</strong> 1 Overture PLA white, 2 red PETG
-while the ASA ships -- the AliExpress HS PETG red since 2026-11-14
-(preset <code>AliExpress HS PETG red</code>, the Inland PETG+ values,
-textured plate 80 -- the coupon stuck too hard at 85 -- qualified on the
-X1C 27 coupon: "prints well"; the builder writes its keys on slot 2
-itself, slot 1 PLA+ stays 60, and a one-spool slot change is
-<code>set_filament_slots.py ... --slots N</code>), 3 grey PETG+, 4 clear
-PETG+. The builder writes the old 4-slot plan and <code>SLOT_MOVE</code>
-remaps it (1→1, 2→3, 3→4, 4→3); the rigid cradle plate 27 moves onto
-slot 2 after that; parts that moved PLA→PETG+ with supports ON get
-tree_strong (verify fails PETG on slim trees), except the trees already
-sanctioned by name. H2S nozzle wrap detection stays ON, so multi-object
-H2S plates print by layer. <strong>Builder / tools:</strong> the builder
-declares every process override in
+it:</strong> plate 11 fence back, the sensor carriers X1C 14 / H2S 15
+and the rear cap's own plate X1C 29 / H2S 32 (0.16), both books. ⛔
+<strong>Plate 12, the fence front ALONE (0.32), is on HOLD in both
+books</strong> (CTO 2026-11-15: INA3 lug room, the FENCE row); the front
+half's four DROK boss undersides painted (1076 triangles), manual
+tree_strong, top-z 0.32, as the back half's PSU pads; the rear cap at
+0.16 (its snaps engage 0.6), top face down, ASA black H2S slot 2, no
+supports, 10 mm brim. <strong>One layer height per plate</strong>
+(verify FAILS a mixed plate: the H2S slicer refuses it with a prime
+tower, CLI -51, and the X1C slices fractional z-steps). <strong>Per
+part:</strong> fence halves 0.32 / 3 walls / 15 % gyroid / outer 60,
+inner 250 (ASA black, H2S slot 2, chamber door closed); the back half
+carries painted enforcers under the two PSU-strap pad tops
+(<code>ENFORCE_FLAT_DOWN</code>, manual trees), the front half no
+supports; brim 10 outer+inner; avoid-crossing-walls ON. Extension halves
+outer 60, avoid-crossing-walls ON; in the H2S book all three halves
+(ASA) on tree_strong (branch 5, diameter angle 5, branch angle 35,
+critical-regions-only OFF), brim 15. Shell halves + head ring ASA slot
+2, door CLOSED, turned 90° so the ear faces the H2S camera; keel ridge
+has a 2.0 mm flat land (CAD 3f0177d). EBC covers ASA slot 2, printed
+flipped, <strong>supports OFF</strong> on CAD <code>c3bc7ab4</code>
+(operator 2026-11-10; the supports-off slice passed gate_gcode_floating,
+2 h 27 m / 36.8 g, re-gated with arcs read; Studio's floating-regions
+note on the right cover is the 2 raster-dust cells); plate 6 released.
+Flange coupon −Y prints flat, flange-down, no sink (CAD 3415f1e removed
+its tab). Tabbed battery straps stand INVERTED with supports ON, and
+enforcer paint under each leg-end tab's flat ceiling (print z 39.7, ~210
+mm² a strap over open bed; X1C 22 left them bare: 4 floating starts,
+Karma 2026-11-14) -- <code>ENFORCE_BOX_PRINT</code>, picked in the print
+frame. <strong>H2S slots</strong> (after <code>SLOT_MOVE</code>, which
+maps the builder's old 1→4, 4→1): 1 Inland PLA+ (blue, finished
+2026-11-08), 2 Generic ASA (260 / bed 90 / chamber 60), 3 PolyLite PETG
+(black), 4 yellow PETG+, 5 NylonX (<code>Generic PA-CF</code> base: 260
+/ bed 65 / chamber 0, part fan OFF for the first 13 layers, external
+from the PrintDry, CF-nylon speed set, outer brim 12 gap 0, thin fresh
+glue), 6 Generic TPU (cradle pads). <strong>X1C slots:</strong> 1
+Overture PLA white, 2 red PETG while the ASA ships -- the AliExpress HS
+PETG red since 2026-11-14 (preset <code>AliExpress HS PETG red</code>,
+the Inland PETG+ values, textured plate 80 -- the coupon stuck too hard
+at 85 -- qualified on the X1C 27 coupon: "prints well"; the builder
+writes its keys on slot 2 itself, slot 1 PLA+ stays 60, and a one-spool
+slot change is <code>set_filament_slots.py ... --slots N</code>), 3 grey
+PETG+, 4 clear PETG+. The builder writes the old 4-slot plan and
+<code>SLOT_MOVE</code> remaps it (1→1, 2→3, 3→4, 4→3); the rigid cradle
+plate 27 moves onto slot 2 after that; parts that moved PLA→PETG+ with
+supports ON get tree_strong (verify fails PETG on slim trees), except
+the trees already sanctioned by name. H2S nozzle wrap detection stays
+ON, so multi-object H2S plates print by layer. <strong>Builder /
+tools:</strong> the builder declares every process override in
 <code>different_settings_to_system[0]</code> (verify check 13), or
 Studio resets it on the next save; verify FAILS a
 <code>filament_self_index</code> that is not 1..N.
