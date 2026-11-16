@@ -349,15 +349,16 @@ footprints agrees with CAD's layout file (tallest 76.46), and the same
 probe on the <code>f45172dc</code> carrier reads 91.74 on the two Deans
 posts. verify PASS (0 failures), gate_slots PASS, gate_floating plate 21
 PASS (0 floating regions). The carrier and the fence front half are the
-only meshes that differ from the previous book. The print-gate read of
-this carrier's STEP waits behind CAD's full assemblies (one heavy
-FreeCAD job on the GMKtec at a time). The INA226-DROK (INA3) is on the
-fence front wall, not on this carrier. <strong>Figures
-(2026-11-15):</strong> gen_carrier_figures.py output (routing PNG + HTML
-with the INA226-DROK board and its row 6 / row 13 runs from the wired
-assembly's run file, mounting points with the HL-PBB posts, in-fence,
-IP6518) on this carrier + fence; check_figures_match_docs.py ok; plate
-12 carries the fence front half of the same commit (the FENCE row).</td>
+only meshes that differ from the previous book. Print-gate read on this
+carrier's STEP: one valid solid, 0 cantilevers, 0 curved ceilings, 0
+steep unsupported faces, 2 bridges of 2.0 mm; a 12 mm ledge added at its
+top edge reads as a cantilever. The INA226-DROK (INA3) is on the fence
+front wall, not on this carrier. <strong>Figures (2026-11-15):</strong>
+gen_carrier_figures.py output (routing PNG + HTML with the INA226-DROK
+board and its row 6 / row 13 runs from the wired assembly's run file,
+mounting points with the HL-PBB posts, in-fence, IP6518) on this carrier
++ fence; check_figures_match_docs.py ok; plate 12 carries the fence
+front half of the same commit (the FENCE row).</td>
 <td></td>
 </tr>
 <tr>
