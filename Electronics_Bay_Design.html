@@ -259,10 +259,22 @@ the contact. A bad crimp is a high-resistance joint, the exact heat
 source the NTC watch below is for. Keep the pigtails short, hold each
 step only as long as the reading needs (~30 s), and tape the e-load's
 NTC to a port housing: stop the step if the housing gets hot or the
-port-side drop jumps between readings. A servo stall dips the board's
-input along with the servo bus (Halo LV: 7.4 → 6.58 V, 11 %; the same
-dip at 11.1 V is ~9.9 V), so acceptance (d) checks the board and Pi
-under the heaviest load.</li>
+port-side drop jumps between readings. <strong>Order and current
+split:</strong> run <strong>each port alone first</strong> (only that
+port's pigtail on the e-load, 3 A then 4 A), so all of the current is
+known to go through that one port's contacts; then both together for the
+total. Two ports on one load input share current <strong>by path
+resistance</strong> (crimps, contacts, lead length, board trace), not
+evenly by default, so measure the split: make both pigtails the same
+wire and length, and read the <strong>mV drop along each
+pigtail</strong> (housing to load end) with the load on. Same wire and
+length means the drop ratio is the current ratio (22 AWG ≈ 53 mΩ/m, so
+~30 mV at 4 A over 150 mm). Stop if one side carries clearly more than
+half. The Fluke i410 clamp's ±0.5 A offset is too coarse at 3–4 A. In
+the arm, each servo chain draws only through the port it's plugged into.
+A servo stall dips the board's input along with the servo bus (Halo LV:
+7.4 → 6.58 V, 11 %; the same dip at 11.1 V is ~9.9 V), so acceptance (d)
+checks the board and Pi under the heaviest load.</li>
 <li><strong>On battery the rail falls out of regulation at heavy
 load.</strong> The DROK needs IN ≥ OUT + 0.8 V (manual), so 11.1 V needs
 ≥ 11.9 V in. Nova's 10 Ah pack measured 13.1 V at rest and 12.0 V at 5 A
