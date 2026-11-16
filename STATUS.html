@@ -297,105 +297,23 @@ coupon and spring ≤30 mΩ (M1.2 screws in hand)</td>
 <td>gates the whole 22 AWG G469 harness</td>
 </tr>
 <tr>
-<td><strong>POWER-BAY CARRIER plate 21 rebuilt on the CURRENT carrier
-(2026-11-06 night)</strong></td>
-<td>The carrier printed on 11-06 was v19c (exports
-<code>02969e4b</code>, 11-04): CAD pushed three newer carriers to
-<code>cad/freecad/output</code> (last <code>b6cee5cb</code> 08:42) and
-never graduated them, so the 14:06 book rebuild took the two-day-old
-exports copy. CAD graduated the current carrier in
-<code>b08d2736</code>; X1C book plate 21 is rebuilt on it
-(<code>CARRIER b6cee5cb</code>, 228.4 × 124.5 × 40.4, grey PETG+ slot 3
-via the clear→grey SLOT_MOVE, 3 walls, 25 % gyroid, no supports, outer
-brim 10 / gap 0, outer wall 50; CLI slice 5 h 32 m, 92.0 g, 202 layers,
-verify PASS 0 failures, live gate PASS). <strong>Orientation (2026-11-07
-morning): turned 90° about Z (<code>R_Z90</code>), long axis along
-X.</strong> Along Y the 248 mm brimmed footprint cannot clear
-FRONT_KEEPOUT, so the packer put it against the BACK edge (brim 2 mm off
-it) and the back brim lifted on two starts, on the Engineering and the
-textured plate alike, glue on both; everywhere else held. Now X
-13.8–242.2 / Y 83.3–207.7 on the bed (brim 38 mm off the back edge, 3.8
-mm off the sides), slice clean 5 h 32 m, 92.0 g. Four aborts that
-morning were all operator stops (fail_reason 50348044 = 0x0300800C, hms
-empty): brim, wrong plate picked, plate-type mismatch, brim again.
-<strong>New builder gate, STL SOURCE:</strong>
-<code>build_lumiai_complete_3mf.py</code> stops when a plated part's
-<code>cad/freecad/output</code> copy was committed after its
-<code>cad/exports/stl</code> copy, or either has uncommitted changes;
-<code>--check-sources [--at REV]</code> runs it alone. Non-vacuous:
-<code>--at 370bfb65</code> FAILS on the carrier, HEAD passes. Every
-object's <code>source_file</code> now carries the exports commit + date.
-Strength (CAD, hand calc, no stress gate on the carrier macro yet):
-mains crossing towers 6.4 MPa and 13.8-tall fork posts 8.1 MPa at 10 N
-sideways against 8.3 allowable across layers; brace the posts when
-snapping wires in. <strong>The 22:43 print was cancelled at layer 0
-(operator, nothing printed): Studio's banner "object
-lumi_powerbay_carrier.stl has floating regions".</strong> CAD's B-rep
-scan finds no glyph over an opening; the trigger is three labels within
-0.1-0.3 mm of a lane edge (PIR-BL, Mus14, PSU); CAD is moving them and
-adding a label-on-solid gate (operator order). <strong>Two new gates,
-run before every install:
-<code>python cad/print/gate_slice.py &lt;book&gt; --plate N</code></strong>
-slices the plate headless and FAILS on Studio's own warning (result.json
-warning_message; it fails on b6cee5cb today) and prints time, weight,
-bridges, overhangs and each object's settings;
-<code>gate_floating.py</code> is a ray-cast locator for floating regions
-(advisory, 0.5 mm raster). The X1C also raised
-<strong>0300_0D00_0002_0001</strong> (heatbed homing abnormal) at 22:47
-with stringy PETG on the nozzle; the operator cleaned the tip.
-<strong>Rebuilt 2026-11-07 00:50 on the label-fixed carrier (CAD
-<code>3a48305b</code>, all 32 labels on solid and &gt;= 0.5 from edges):
-X1C plate 21 slices CLEAN in Studio's gate (5 h 31 m, 91.9 g, 202
-layers, 65 short bridges, no support), verify PASS 0 failures, every
-mesh stamped at HEAD.</strong> The real floating-regions trigger on
-11-06 was a stray Studio "Text" part saved into the carrier at 22:55
-(black slot 2, tilted); the rebuild used the committed clean profile, so
-it is gone. <strong>H2S book, same night: plate 29 = WAND CATCH bracket
-+ lock pin</strong> (CAD <code>227401e3</code>: waist 2.20, bore slivers
-merged into a slot, stepped coin slot 1.4 / 0.8, leg +2.32; min-section
-gate with the 1.902 hole-wall exception the operator allowed; tongue 9.3
-/ lobe 10.8 / jaw 9.3 MPa, pin shear 0.90): bracket on its side
-(tongue's flat face down), pin head down, PETG+ slot 3, 4 walls / 40 %
-gyroid / 0.16, no supports, 10 mm brim on the pin only; Studio gate
-clean, 55 min, 16.6 g. <strong>Plate 06 = both EBC covers on the current
-right cover</strong> (<code>370bfb65</code>), ASA slot 2, tree_strong,
-brim 10: Studio gate clean, 2 h 45 m, 40.9 g. Operator blanket "print
-it" (11-06) covers 21, 29 and 06. X1C live gate PASS 2026-11-07 07:00
-and after the rotation rebuild. ✅ <strong>Carrier b6cee5cb PRINTED
-2026-11-07 (X1C, R_Z90, grey PETG+ slot 3): started 07:40 after the four
-stops, one AMS feed stall on the cross-wound grey spool at layer 22
-(11:17, freed and resumed 11:34, the operator hand-rewound ~30 ft),
-FINISH 14:29, 202/202, no codes; camera frames at layers 2, 17, 22, 71,
-136 and 202 all clean, brim down on every edge, every post and label
-standing.</strong> ⬜ H2S was off the network at 00:50: run
-<code>gate_slots.py cad/print/lumiAi_Complete_PROD_H2S.3mf --printer h2s</code>
-before sending 29 or 06. H2S book rebuilt the same night through the
-gate (57 parts PASS, verify 0 failures, live gate PASS): plate 06 now
-carries the CURRENT right EBC cover (<code>370bfb65</code>, true mirror
-of the left; no painted supports on it) and plate 11 the 2026-11-05
-fence back from exports with its support paint carried over; Master's
-<code>LUMI_STL_PIN_DIR</code> pins (old right cover, fence halves, tab
-cap) are retired, HEAD exports are the only source.</td>
-<td></td>
-</tr>
-<tr>
-<td>🔶 <strong>POWER-BAY CARRIER: HL-PBB posts for Ultra (CAD
-2026-11-15; ⛔ X1C plate 21 on HOLD, carrier <code>43d7befb</code>
-superseded)</strong></td>
+<td>🔶 <strong>POWER-BAY CARRIER: HL-PBB posts for Ultra; DROK IN/OUT
+ends swapped, PHONE-IN on A6/B6 (CAD 2026-11-15; ⛔ X1C plate 21 on HOLD
+until the CTO releases the regenerated carrier)</strong></td>
 <td>⛔ <strong>HOLD X1C plate 21 (power-bay carrier
-<code>43d7befb</code>) (CTO 2026-11-15): do not print it.</strong> CAD:
-the carrier's <code>DROK_IN_X</code> / <code>DROK_OUT_X</code> (266 /
-193) are reversed. The "DROK out" route shrinks to 266 → 258.6 and its
-three YF-lane fork posts at X ≈ 199 / 225.8 / 252.6 go or move, "DROK
-in" needs a new YF path with new posts to ≈ 193, and the PHONE-IN
-landing moves to A6 / B6. Plate 21 rebuilds on CAD's regenerated
-carrier. The plate is titled "HOLD do not print" in the X1C book
-(<code>CARRIER_HOLD</code>); the H2S book has no carrier plate.
-<strong>Plate 22 (straps + tab cap) is unaffected and stays
-released.</strong> <code>lumi_powerbay_carrier.py</code> (gates PASS):
-Ultra's block is the <strong>HL-PBB-2-6-MINI</strong> (operator). One
-carrier carries both footprints. The HL-PBB is a RAISED board: 2 × M3
-posts on its O4 holes 64 c/c (operator caliper) at (206.1, −20.5) /
+<code>43d7befb</code>) (CTO 2026-11-15): do not print it.</strong> CAD
+regenerated the carrier (gates PASS, 105 ok): the DROK's IN block is at
+its button end (X 193) and OUT at its POT end (X 266) (operator). "DROK
+in" runs the trunk → Y_BB → X_DOUT → the YF lane → X 193; "DROK out"
+leaves at X_DIN, climbs to Y_BB and runs to the riser; PHONE-IN lands on
+block A6 / B6. The YF-lane fork posts move with them, so plate 21
+rebuilds on this carrier (CTO releases it). The plate is titled "HOLD do
+not print" in the X1C book (<code>CARRIER_HOLD</code>); the H2S book has
+no carrier plate. <strong>Plate 22 (straps + tab cap) is unaffected and
+stays released.</strong> <code>lumi_powerbay_carrier.py</code> (gates
+PASS): Ultra's block is the <strong>HL-PBB-2-6-MINI</strong> (operator).
+One carrier carries both footprints. The HL-PBB is a RAISED board: 2 ×
+M3 posts on its O4 holes 64 c/c (operator caliper) at (206.1, −20.5) /
 (270.1, −20.5), 13.5 tall (board top Z 84.5, 5.2 under the lid), feed =
 the −X tower. The X_T2 / X_TRUNK lanes run under it. Forks under it stay
 below its pins (5 mm, operator; <strong>trim the 4 long 6–7 mm edge pins
@@ -404,85 +322,93 @@ rows. Fan 2 power leaves its splice on the trunk lane, so no turn sits
 under the pins. <strong>Bay TMP102: soldered chain-end leads (no header
 / plug), on 8 mm posts</strong> (Electronics), so no HL-PBB pin
 overhangs it in plan. <strong>X1C book plate 21 =
-<code>CARRIER 43d7befb</code> (rebuilt 2026-11-15, the ONE
-reprint):</strong> 228.4 × 124.5 × 40.4, flat, posts up, long axis along
-X (<code>R_Z90</code>), grey PETG+ slot 3, 0.2 layers, 3 walls, 25 %
-infill, no supports, outer brim 10 / gap 0, outer wall 50. verify PASS
-(0 failures), gate_slots PASS, gate_floating plate 21 PASS (0 floating
+<code>CARRIER 43d7befb</code> (3dPrint, measured on the book's own mesh
+at e9aed40b):</strong> the carrier alone on the plate, 228.4 × 124.5 ×
+40.4 (X 13.8..242.2, Y 68.3..192.7), flat, posts up, long axis along X
+(<code>R_Z90</code>), outer-only 10 mm brim, ending 53.3 from the back
+edge (BACK_KEEPOUT 30), 58.3 from the front and 3.8 from the left and
+right edges; grey PETG+ slot 3, 0.2 layers, 3 walls, 25 % infill, no
+supports, outer brim 10 / gap 0, outer wall 50. verify PASS (0
+failures), gate_slots PASS, gate_floating plate 21 PASS (0 floating
 regions); print-gate read on the STEP: one valid solid, 0 cantilevers, 0
 curved ceilings, 2 bridges of 2.0 mm. The carrier is the only mesh that
 differs from the previous book (46 identical). The INA226-DROK (INA3) is
-on the fence front wall, not on this carrier; the fence-front plate (12)
-keeps its previous mesh (<code>LUMI_STL_PIN_DIR</code>) until CAD's
-fence revision with the Creator clamp slots, so the front half is
-reprinted once.</td>
+on the fence front wall, not on this carrier. <strong>Figures
+(2026-11-15):</strong> gen_carrier_figures.py output (routing PNG + HTML
+with the INA226-DROK board and its row 6 / row 13 runs from the wired
+assembly's run file, mounting points with the HL-PBB posts, in-fence,
+IP6518) on this carrier + fence; check_figures_match_docs.py ok; the
+fence-front plate (12) keeps its previous mesh
+(<code>LUMI_STL_PIN_DIR</code>) until CAD's fence revision with the
+Creator clamp slots, so the front half is reprinted once.</td>
 <td></td>
 </tr>
 <tr>
-<td>🔶 <strong>FENCE: INA3 on the front wall + 4 Creator desk-clamp
-slots (CAD 2026-11-15; back half plate 11 released, ⛔ FRONT half plate
-12 on HOLD)</strong></td>
-<td>⛔ <strong>HOLD plate 12 (fence front half), X1C and H2S books (CTO
-2026-11-15, physical defect): do not print it.</strong> Electronics:
-INA3 as placed in <code>0dc0842e</code> leaves 3.2 mm where a Kuject 18
-AWG fork lug needs ~20 mm of straight run from each terminal screw, and
-the DROK's OUT block is probably at the pot end, not the button end INA3
-sits over. CAD is asking the operator which end OUT is and whether INA3
-shifts or rotates; the front half changes again and plate 12 rebuilds on
-that revision. The plate is titled "HOLD do not print" in both books
-(<code>FENCE_SET_HOLD</code>, front-half stem). <strong>Plate 11 (back
-half) is unaffected and stays released.</strong>
-<code>lumi_baseplate_fence.py</code> (gates PASS). <strong>INA3</strong>
-(INA226-DROK, operator): board 21 × 25 flat on the front wall's inner
-face above the DROK's OUT end, fence X 15.2–36.2, 62.7–87.7 above the
-plate (3.0 over the DROK envelope, 2.3 under the fence top, 5.1 clear of
-the vents, ≥ 1.0 clear of the wall's slanted feature); 2 printed
-standoffs 5.3 wide, 4 off the wall, M1.7 pilots 4.9 deep cut from the
-fused fence, + a rest rib, 54° leads, no supports. <strong>Clamp
-slots</strong> (operator via Karma; off-the-shelf Jhanw desk C-clamp,
-listing dims): 46 × 3.5 at the plate top through the 4 mm wall; right x
-+78.09 / left x −77.06 at y 90, front x 0, <strong>rear x −34.7</strong>
-(operator 11-15: at x 0 the AC-inlet frame hangs to 1.35 over the plate
-and a fan-tower foot sits on it; at −34.7 the lowest thing behind the
-wall is the raised tower at 8.36). Jaw path gated 25 outside to 30 past
-the inner face. Slot roofs print on <strong>painted support
-enforcers</strong> (46 spans). <strong>Both halves reprint</strong> (the
-back half carries the rear, right and left slots, the front half the
-front slot and INA3); the <strong>rear cap does not</strong> (same mesh;
-71.7 clear of the rear jaw path in the assembly). Books rebuilt on
-<code>0dc0842e</code>, X1C / H2S <strong>11</strong> back +
-<strong>12</strong> front, Karma gates: the only new overhangs are the
-four slot roofs (184 mm² each, 46 span at 3.5 above the bed, painted
-enforcers on both halves); INA3 pilots open 4.90 deep on the exported
-front half, 3.1 of wall behind; verify PASS, gate_slots 0 / 0,
-gate_floating 0 regions on 11 / 12. <strong>Creator battery:</strong> 5
-mm foam under the battery centre (carrier X 187–274) replaces the 3 mm
-carriage-bolt raise; battery top 40 under the unchanged strap bar; no
-CAD change. <strong>Phone Lift Route A sweeps</strong> (camera FIXED
-2026-11-15: route_prep turned the OAK-D by the wrist turn W TWICE, 90°
-round the wrist, below the claw; every earlier BigClaw + OAK-D route
-number, incl. the 3.04 and the cradle-home forearm contact, is
-withdrawn; a pose-sanity gate now matches all 11 camera bodies at W once
-with the camera above the claw, and bites on W twice). Halo 11-14 start
-→ preset, all PASS, gate 2.0, bite 177.97 mm³: OP1 screen 616.9 above
-floor −14°, elbow 80 / shoulder 9 mm, least BigClaw+OAK-D 36.8; P2
-485.0, +24°, elbow 169–187 / shoulder 95–108, 30.6; OP2 667.9, −24°,
-elbow 87 / shoulder 83, 36.8; C1 7.7 (end pose, upper-arm U-bracket).
-<strong>Cradle home</strong> = the arbiter's stored TARGET b 0.379 / s
-−2.1405 / e −0.0335 / w 0.508 (LumiAI Ultra 11-15; base yaw modelled as
-q[3] about the turntable axis) → OP1 / P2 / OP2 / C1 and back on the
-same line: all PASS, the phone 9.46 off the base cover at the target,
-BigClaw+OAK-D ≥ 28.7 (C1 end 7.7), bite 2.14 mm³. The measured ARRIVAL
-(b 0.35 / e +0.03 / w 0.536: base ~2° short, elbow sag, wrist at end of
-travel) clears everything too; its phone rests 0.02 on the base cover =
-the accepted DOCKED REST (operator 11-15), exempt by name only at a
-cradle-home route's step 0 vs lumi_base_cover_base (self-test: the same
-contact at step 1, on the Halo route, on the cover top or on arm body
-075 is not exempt); those legs FAIL only on the URDF-limit check (wrist
-0.536 &gt; 0.524). Camera model = the production mount (Full Assembly
-plate + 6 mm lift); Halo's printed L on the wrist servo is a one-off
-(ArmPi FPV → Ultra upgrade), so a Halo feeler reading is informational
-only.</td>
+<td>🔶 <strong>FENCE: INA3 turned at the DROK's OUT end + front slots
+moved + 4 Creator desk-clamp slots (CAD 2026-11-15; back half plate 11
+released, ⛔ FRONT half plate 12 on HOLD until the CTO releases this
+revision)</strong></td>
+<td>⛔ <strong>HOLD plate 12 (fence front half), X1C and H2S books,
+until the CTO releases this revision.</strong> <strong>Plate 11 (back
+half) is unaffected and stays released</strong> (its bodies are
+unchanged). <code>lumi_baseplate_fence.py</code> (gates PASS, 51 ok, 13
+LEGACY must-FAILs still fail). <strong>INA3</strong> (INA226-DROK,
+0x47): the DROK's OUT block is at its POT end (operator), FILE X
+~264–271, entries facing out of the short end. INA3 is <strong>turned
+90°</strong> (operator) on the straight front wall's OUT end: 25 along
+the wall at FILE X 236.0–261.0, 66.7–87.7 above the plate (7.0 over the
+DROK, 2.3 under the fence top), header toward the LCD, screw terminals
+on its +X edge facing the OUT end. <strong>Ferrules on every DROK / D14a
+lead</strong> (E1008; operator: as on Halo and Ultra); each INA3 entry
+has 10.5 mm of straight run to the corner slant (Electronics: ≥ 10,
+gated, bitten). 2 printed standoffs 5.3 wide, 4 off the wall, M1.7
+pilots 4.9 deep (100 % wall), + a rest rib behind the terminal edge.
+<strong>Front slots:</strong> the 4 pointed slots (plate Z 47–86) moved
+8.2 toward the F1/F2 buttons (operator, option A) so the board clears
+them by 3.0. <strong>Clamp slots</strong> (operator via Karma;
+off-the-shelf Jhanw desk C-clamp, listing dims): 46 × 3.5 at the plate
+top through the 4 mm wall; right x +78.09 / left x −77.06 at y 90, front
+x 0, <strong>rear x −34.7</strong> (operator 11-15: at x 0 the AC-inlet
+frame hangs to 1.35 over the plate and a fan-tower foot sits on it; at
+−34.7 the lowest thing behind the wall is the raised tower at 8.36). Jaw
+path gated 25 outside to 30 past the inner face. Slot roofs print on
+<strong>painted support enforcers</strong> (46 spans). <strong>Both
+halves reprint</strong> (the back half carries the rear, right and left
+slots, the front half the front slot and INA3); the <strong>rear cap
+does not</strong> (same mesh; 71.7 clear of the rear jaw path in the
+assembly). Books rebuilt on <code>0dc0842e</code>, X1C / H2S
+<strong>11</strong> back + <strong>12</strong> front, Karma gates: the
+only new overhangs are the four slot roofs (184 mm² each, 46 span at 3.5
+above the bed, painted enforcers on both halves); INA3 pilots open 4.90
+deep on the exported front half, 3.1 of wall behind; verify PASS,
+gate_slots 0 / 0, gate_floating 0 regions on 11 / 12. <strong>Creator
+battery:</strong> 5 mm foam under the battery centre (carrier X 187–274)
+replaces the 3 mm carriage-bolt raise; battery top 40 under the
+unchanged strap bar; no CAD change. <strong>Phone Lift Route A
+sweeps</strong> (camera FIXED 2026-11-15: route_prep turned the OAK-D by
+the wrist turn W TWICE, 90° round the wrist, below the claw; every
+earlier BigClaw + OAK-D route number, incl. the 3.04 and the cradle-home
+forearm contact, is withdrawn; a pose-sanity gate now matches all 11
+camera bodies at W once with the camera above the claw, and bites on W
+twice). Halo 11-14 start → preset, all PASS, gate 2.0, bite 177.97 mm³:
+OP1 screen 616.9 above floor −14°, elbow 80 / shoulder 9 mm, least
+BigClaw+OAK-D 36.8; P2 485.0, +24°, elbow 169–187 / shoulder 95–108,
+30.6; OP2 667.9, −24°, elbow 87 / shoulder 83, 36.8; C1 7.7 (end pose,
+upper-arm U-bracket). <strong>Cradle home</strong> = the arbiter's
+stored TARGET b 0.379 / s −2.1405 / e −0.0335 / w 0.508 (LumiAI Ultra
+11-15; base yaw modelled as q[3] about the turntable axis) → OP1 / P2 /
+OP2 / C1 and back on the same line: all PASS, the phone 9.46 off the
+base cover at the target, BigClaw+OAK-D ≥ 28.7 (C1 end 7.7), bite 2.14
+mm³. The measured ARRIVAL (b 0.35 / e +0.03 / w 0.536: base ~2° short,
+elbow sag, wrist at end of travel) clears everything too; its phone
+rests 0.02 on the base cover = the accepted DOCKED REST (operator
+11-15), exempt by name only at a cradle-home route's step 0 vs
+lumi_base_cover_base (self-test: the same contact at step 1, on the Halo
+route, on the cover top or on arm body 075 is not exempt); those legs
+FAIL only on the URDF-limit check (wrist 0.536 &gt; 0.524). Camera model
+= the production mount (Full Assembly plate + 6 mm lift); Halo's printed
+L on the wrist servo is a one-off (ArmPi FPV → Ultra upgrade), so a Halo
+feeler reading is informational only.</td>
 <td></td>
 </tr>
 <tr>
@@ -2203,192 +2129,6 @@ pre-flipped, place at R_ID.</strong> Gate (shared
 curved, 0 bridges &gt; 10.5 (max 8.5 = the head-pocket floor) on both.
 Bed contact 261 / 301 mm² + brim. Render
 <code>docs/images/electronics_bay/ebc_cover_v6_2026-10-18.png</code>.</td>
-</tr>
-<tr>
-<td>🔶 <strong>POWER-BAY CARRIER — v19c in CAD
-(2026-10-28)</strong></td>
-<td><code>lumi_powerbay_carrier.py</code> (spec Power_Bay_Design
-§11.3.9; plate file frame, Z 0 = plate top): <strong>X1C plate 20
-carries the v19c STL (cad/freecad/output draft; the exports copy is
-still v19b): 10 mm brim (the 228 mm footprint warps off the bed at the
-ends without it), 4 h 52 m (4.86 h), grey PETG+ (clear is out: its
-printing cannot be read through it), watertight MeshPart STL (49,562
-triangles, exports on v19c), sliced clean.</strong> One PETG+ lattice, 4
-thick at <strong>Z 44..48</strong> (= the battery-strap bar top) over
-PSU + battery; prints flat, posts up, support-free (gate). Exports
-<code>output/lumi_powerbay_carrier_DRAFT.{step,stl}</code>, the
-<strong>PSU strap</strong> <code>lumi_powerbay_psu_strap</code> (12 × 5
-bar at Z 39..44, 6.25 tongues gravity-seated on the fence pads, 2 top
-pilots for the carrier; goes in before the carrier) and the mains-side
-<strong>tab cap</strong> <code>lumi_powerbay_tab_cap</code>;
-assembly-frame STEPs <code>cad/exports/step/*_ASSY.step</code>. Images:
-<code>docs/images/power_bay/carrier_routing.png</code> (interactive: <a
-href="images/power_bay/carrier_routing.html">carrier_routing.html</a>),
-<code>carrier_mounting_points.png</code>,
-<code>carrier_in_fence.png</code> (generated by
-<code>gen_carrier_figures.py</code>),
-<code>carrier_v19b_labels_joins.png</code>; all sketches are plain +Z
-top views (fans/back wall at the top). <strong>Outline:</strong> clipped
-to the fence's REAL interior (OUTLINE table − 4 mm wall − 1.5 clearance
-− every fence feature sectioned from the exported halves over the
-carrier's height; the fence has a waist beside the PSU and chamfered
-front corners); tapers round the fence PSU-strap pads (one 2D outline
-with B-spline spans, flat 1.0 off each pad + 20 mm cosine ramps);
-retreats ≥ 1.5 under the fan bodies (back-lane run at Y 110.4).
-<strong>Attachment:</strong> 4 M3 × 8 into the battery straps' tabs
-(<code>lumi_battery_strap.py</code> STRAP_TAB_*, Ø2.5 pilots; holes
-placed from the strap's own leg fit, 0.00 on all 4) + 2 M3 × 8 into the
-PSU strap; all heads clear of every board (gated). Every screw/driver
-hole keeps a full ≥ 2.5 ring to the outline (the strap tab by the L
-screw keeps 2.35: the mains 5 mm keep-out wins, gate floor ≥ 2.0).
-Strap-M4 hex holes Ø3.8 for a 3 mm hex key; the M4 at (287, 24) sits
-inside the open terminal slot. Raised marker rings Ø6.2/Ø9.2 × 0.8 and
-'S' embosses on the 6 strap screws. <strong>Mains:</strong> PSU strip
-(calipered) +V 233.80 / −V 242.35 / ⏚ 250.90 / N 259.45 / L 268.00, L
-12.00 from the +X case end; terminal slot 20 wide on the screw row, open
-through the +X edge; barrier ribs over L/N/⏚ only, the mains rib at X
-279.1 detouring round the strap-tab screw head by L; plastic ≥ 5 from
-L/N/⏚; every LV board, post, cage and ferrule ≥ 8 in 3D from every mains
-screw (gated); mains on its own 18 AWG forks (seat 3.4 / mouth 2.45) in
-the outer right lane, printed rib between, side entry into the slot at
-the L end. Terminal cover (~Z 22 closed) flips up under the carrier (37
-&lt; 44). The mains-side strap-tab head carries the printed INSULATING
-CAP (Ø7.7 × 2.6, press-on on the marker ring, a dot of RTV 81158 because
-it hangs; prints top-down); gate: cap ≥ 5 off the L/N/E heads, LV ≥ 8
-from it (nearest 14.4). PSU status LEDs at X 197.5, 14.5 from the −X
-case edge, under a 16 × 12 viewing window gated open. Orientation lock
-(gate): L first and 12 from the side-rocker-end case edge, LEDs 14.5
-from the opposite edge. In the +Z top view the terminal slot, mains, F1
-cradle, barrel lead and INA226-BATT are on the RIGHT (+X), the LED
-window and TMP102 on the LEFT (<code>LAYOUT_HAND = +1</code>,
-<code>AS_BUILT_ROCKER_SIDE = +1</code>). <strong>Open area:</strong>
-vent slots across the width + windows under every board (no plastic
-under PCBs) → 50 % open over the PSU. <strong>Boards</strong> (moulded
-posts, mic-carrier style): <strong>G469</strong> stacked on the 40P
-breakout (breakout holes 48.8 c/c, hole line 16.9 from the header edge
-⏳ bench caliper), on Geekworm's 2 end holes (58 c/c, M2 self-tap); its
-posts stop 0.3 under its seated underside (Z 62.8 vs 63.1): shim at fit,
-never close it by tightening (no header preload);
-<code>BRK_HDR_STACK</code> 8.5 ⏳. <strong>D-1459</strong> (manufacturer
-drawing ✅) centre Y −16: A1–B3 (tether, DROK, fan 1) on one long edge,
-A4–B6 (fan 2, Mus-14, LAMP) on the other, input at the −X end; the
-block-side mains rib is as tall as its terminal entries (top Z 65.6 ⏳).
-<strong>INA226 ×2:</strong> R002 21 × 25 boards at (219, 58) / (256,
-58), posts on the dead 17.5 pair, live Ø3.1 pads keep-out. <strong>One
-TMP102</strong> (0x48, SparkFun 20.32 / 25.4 grid) on 10 mm posts,
-straight header UP with the Dupont from above, header facing −Y (plug
-keep-out 6 ⏳), stack top Z 88.1 vs lid 89.7 (gated), posts 1.79 off the
-waist wall; PETG+ pending the TMP102-bay reading.
-<strong>Mus-14</strong> USB-C to +X; plug zone = the used (lower) USB-C
-port only ⏳. <strong>IP6518 phone fast-charger</strong> (real board,
-operator's caliper 2026-10-28: 56 × 22.5, Ø3.0 holes on 34.5 × 16.3,
-caps 14, USB-C 4.5 under) RAISED front-right (operator) on 4 × Ø6.2
-posts, 19 tall (underside Z 67, caps top 82.6, 7.1 under the lid —
-operator OK; the USB-C plug passes 1.55 over the DROK; zip-tie groove on
-each): M2.5 × 8 self-taps in the diagonal pair, locating pegs in the two
-holes with a part beside them (the 470 µF cap; the bottom connector,
-that post necked to Ø5.0), standing on Ø12.4 pads tied by a 5.8 mm plate
-frame anchored into the right lane, the front lane and the G469 +X post,
-with every vent rib on its −X side run on to the frame; figure
-<code>carrier_ip6518.png</code>. <strong>HL-PBB</strong> zone kept;
-posts deferred until its holes are calipered (63 c/c M3 ⏳).
-<strong>F1</strong> (calipered 59 mm stepped body) in two U-saddles on
-its Ø10 sections, the Ø13 collar as the axial stop, 16 AWG forks at both
-noses, along X in the far battery band; the fixed saddle's 2.0 × 14.6
-zip-tie-slot roof (model 249.4–251.4, 82.7–97.3, Z 53) is what the
-slicer flags as a "floating vertical shell" on X1C plate 20.
-<strong>Routes (12 mm lanes all round):</strong> a TRUNK (Mus-14 ↔︎ block
-−X end) carries fan power, tether, DROK in, rocker and block input; the
-waist leaves no left lane for ~80 mm, so PIR-FL/FR, the fan leads and
-the I²C chain (G469 → INA226-MAIN → INA226-BATT → TMP102) cross in the
-trunk channel (X_T2) and go west below the TMP102; the signal lane runs
-on X 177.7 past the −X pad; G469 even and odd rows climb from it at the
-board's −X end. Battery pack → F1 → INA226-BATT → CH2 (− straight to CH2
-BAT−; stub ≤ 150); CH1 → INA226-MAIN (GND = the logic-to-power tie);
-LOAD → block IN; DROK in/out in the front-right column, re-laid round
-the IP6518 posts; PHONE-IN 18 AWG soldered pair from A1/B1 (no fuse
-holder, Electronics 48419848). <strong>PIR-BR = option B:</strong>
-enters at its own corner, runs the front run west, north at X 253.4
-between the G469 and the DROK-in column, lands at the G469 +X end pins
-1/2 (5 V pin 2, GND pin 6, individually, joined in the ferrules, no Y);
-its OUT runs ~51 mm along the even-row edge to pin 40. ⏳ Land the I²C,
-TETHER-S, PIR 5 V/GND and sensor 5 V at the +X end too (pins 1–6).
-<strong>SPS30 + ZE15:</strong> 4 × 26 AWG each, down the servo-base
-opening, up beside the trunk to the corridor, down the signal lane to
-the G469 even-row landing; ZE15's 21/25 pair peels to the odd row; pin 4
-double-crimped. Lengths: PIR-FL 266, PIR-FR 326, FAN2 219, I²C 231/216,
-SPS30/ZE15 119. <strong>Forks (operator):</strong> ONE multi-seat snap
-fork per site, only at turns, entries and where a run would exceed 48 mm
-(≥ 30 mm apart on a route otherwise). Tines 1.5 thick; round seat = max
-OD + 0.1; barbed mouth narrower than the min OD (52° barb undersides,
-60° lead-in); seat/mouth 18 AWG 2.40/1.73, 22 AWG 1.90/1.37, 26 AWG
-1.50/1.08, 16 AWG 3.10/2.23, PIR round 3 × 26 triple 2.7/2.02. R0.7 root
-fillet in every flat seat's bottom corners (gate: every tine root
-section ≥ 7.5 mm²). A fork whose collar lies inside a window or vent
-slot keeps a slot-proof rib bridge. ⏳ The 26 AWG barbs are ~0.2 mm per
-side, at the print's resolution limit. <strong>Labels:</strong> embossed
-route/board/fuse IDs, 3.0 mm DejaVu Sans Condensed Bold, 0.6 raised,
-each near what it names and inside the fence clearance; 34 placed, incl.
-the board labels TMP, Mus14 (on a 3 × 13 plate strip kept along the
-Mus-14 window's +X edge, under the board's edge) and IP6518 (on the
-frame's +X rail); <strong>PIRs:</strong> the fence holds them at
-<code>PIR_Z_FROM_PLATE</code> 25 (board Z 9–41, below the carrier);
-keep-out <code>lumi_pir.py</code> (shared): board grown by
-<code>PIR_CAP_LEAN</code> 1.5 ⏳ × <code>PIR_BACK_H</code> 12.5 ⏳,
-clearance 1.50 ×4. Front PIRs: jumper end UP, ≤ 12.5 of soldered leads
-OR a right-angle plug behind the board (operator picks at assembly; a
-straight Dupont hits the PSU). Back PIRs: header on the long edge toward
-the back wall, straight Dupont 22 ⏳. The back-slant cap-model overlap
-with the adjacent walls is REPORT-ONLY. <strong>Battery straps (CAD
-91f9bd2, on X1C plate 21, reprint):</strong> each leg is a 7 × 8.5–10.5
-POST beside its M4 head (<code>STRAP_LEG_T_MIN</code> 4.0, the build
-fails rather than thins); the bar stops at the posts' battery-side
-faces, so nothing enters the back PIRs' 1.0 zone. STRENGTH gate (PETG
-yield/3 = 16.7): 50 N by hand ±x/±y at the bar top + the cell at 5 g,
-legs ≤ 13.8 MPa, bar ≤ 12.2; bites on the old 1.8 legs (194 MPa). Main's
-independent check: voxel min wall finds nothing &lt; 2 but the 4 blind
-tab-pilot floors (0.3, unloaded); posts constant through the height;
-hand calc ~15 MPa. 50 N straight down on mid-bar ~20 MPa (below 50 MPa
-yield, bottoms on the foam 2 mm down, assembly-only) — accepted, not
-gated. Clearance from the _ASSY files: battery, back PIRs, M4 heads,
-driver columns 1.00; fence 1.44 (L) / 3.83 (R) above the feet; the left
-foot's fence overlap is 5.57 mm³ (operator-accepted, was 7.4); carrier
-tab pilots unchanged. The PSU strap touches only its pad bearing faces
-(bar ≥ 2.0). <strong>Gates (PASS 83, assembly PASS):</strong> carrier ∩
-both fence halves = 0 and ≥ 1.5 to every surface; ≥ 1.0 from both pads;
-every on-plate route leg and the whole board zone inside; no route
-crossings; carrier ∩ PIR bodies = 0; STRUCTURE on the Z 46 section:
-every fork/post joined through ≥ 2 mm, every raised post on a solid Ø(2
-× post) pad with a ≥ 5 mm path; the +X edge tied across the terminal
-slot (a 3 mm rib at X 280.2–283.2, inboard of the mains drop) and the
-IP6518-window ribs reaching the frame, each ≥ 2 mm. <strong>Assembly
-frame:</strong> every <code>*_ASSY.step</code> (fence halves, carrier,
-PSU strap, tab cap,
-<code>lumi_battery_strap_{left,right}_tabbed_ASSY</code>) is in the
-operator's Full Assembly frame by construction:
-<code>lumi_paths.ASSY_FROM_CANON</code> = (−2.8536, −9.5789, 0),
-registered on all 22 plate holes of
-<code>cad/reference/step/Full Assembly.stp</code> (26666fe), no
-rotation, residual ≤ 0.001; written only through
-<code>lumi_paths.export_assy</code>. Permanent gate
-<code>cad/freecad/check_assembly_fit.py</code> on the _ASSY files: strap
-tongue ↔︎ pad pilot, tongue on the bearing face, carrier ↔︎ PSU-strap
-pilots, carrier ↔︎ battery-strap tabs, battery-strap feet ↔︎ plate holes
-(all ≤ 0.2, all 0.00), fence post bores ↔︎ plate post holes (0.30–0.40 ≤
-the 0.95 stud slack). ⏳ <strong>Fans:</strong> the operator's export
-has invalid fan BREPs (43.5 × 20.5 × 44.3, reaching Z 45.5 by bounding
-box); fans stay per fence v6.1 (our model clears by ≥ 1.5) until the
-real fan body is confirmed. ⏳ Still assumed: the strip's distance from
-the +Y case edge (7), cover swing (15), board hole patterns not yet
-calipered, IDC plug height under the G469, INA226 header end, PSU CH2 at
-the slot's −X end, DROK terminal X, the fan splice point, cable ODs.
-<strong>Figures (2026-11-15):</strong> gen_carrier_figures.py output
-(routing PNG + HTML, mounting points, in-fence, IP6518) regenerated on
-carrier 43d7befb (HL-PBB posts, TMP102 on 8 mm posts, FAN2-P) + fence
-0dc0842e (INA3 standoffs, clamp slots); check_figures_match_docs.py ok.
-The INA3 runs (rows 6 / 13) are not in the routing figure yet (they live
-in the wired assembly, not the carrier ROUTES). carrier_snap_forks.png /
-carrier_v19b_labels_joins.png have no committed generator.</td>
 </tr>
 <tr>
 <td>🔶 <strong>Halo MIC CARRIER v5: mounted on the cover's corner holes
