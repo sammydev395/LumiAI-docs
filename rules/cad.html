@@ -46,11 +46,14 @@ at HEAD and rebuilds none.</li>
 <li><strong>Karma</strong> checks the print books only: slicer gates,
 settings tables, live printer reads, and tells the operator a plate is
 ready. No FreeCAD, on any machine.</li>
-<li><strong>Full assemblies are idle-time work</strong> (operator
-2026-11-16): they run when the GMKtec has nothing else to do, yield to
-any part or book build, and are never a gate on releasing a part or a
-plate. The wired-bay assembly is not in that class; it is a deliverable
-the operator wants to see.</li>
+<li><strong>Full assemblies run at night only: 23:00-06:00
+Pacific</strong> (operator 2026-11-16: "all full assembly builds, not
+the wired builds, but the full assembly will be done after 11 o'clock
+Pacific time at night, between 11 and 6 in the morning"). No
+full-assembly build starts outside that window. They are never a gate on
+releasing a part or a plate. The wired-bay assembly is not in that
+class; it is a deliverable that runs in the day like any part
+build.</li>
 </ul>
 <h2 id="the-occ-shim-is-not-freecad">The OCC shim is not FreeCAD</h2>
 <ul>
