@@ -444,6 +444,31 @@ only.</td>
 <td></td>
 </tr>
 <tr>
+<td>🔶 <strong>WIRED BAY:
+<code>cad/Assemblies/Power Bay - Wired.step</code> (CAD
+<code>3c49543a</code>, FreeCAD 2026.11.11 weekly, operator-approved
+11-16)</strong></td>
+<td>DROK IN ferrule tails (E1008 6 mm collar + inboard turn at inner R
+2.5, Electronics / operator 11-16); DROK-in wired 301.0 / 299.3 (row 5's
+390 cut covers it). INA226-DROK (INA3, 0x47) board in the STEP on the
+fence front wall (X 236–261, Z 66.7–87.7; terminal block width along the
+board ⏳). Colours are written by <code>lumi_step_colour.py</code> (the
+weekly's GUI colour pass hangs offscreen). <strong>Gate record = the run
+file, not the STEP:</strong> the board and the colours were added to the
+saved model after the run; the macro reproduces neither until the staged
+split lands. 05:45 run: 48 ok, 1 FAIL = the DROK IN leads gate, which
+was blind (a compound common reads ~0; fixed in <code>3c49543a</code>).
+<strong>OPEN (Electronics + operator ruling; fence unchanged until
+then):</strong> the collar + R 2.5 turn sits <strong>0.21 mm
+into</strong> the fence front half's −X slant, and the built lead
+overlaps it by 0.39 mm³. Electronics' sweep (R 2.5 / 2.0 / 1.5, collar 6
+/ 5, entry axis 0 / +1 / +2) is running; collar and entry axis wait for
+calipers. <strong>Next (operator 11-16):</strong> wired macro split into
+cached stages parts → routes → gates → export; the full assembly follows
+at idle time.</td>
+<td></td>
+</tr>
+<tr>
 <td><strong>WAND + EXTENSION PRINT — RELEASED</strong> (operator: "print
 the wand and wand extn")</td>
 <td>H2S book <code>lumiAi_Complete_PROD_H2S.3mf</code>, Ø86 wand (CAD
