@@ -445,27 +445,26 @@ only.</td>
 </tr>
 <tr>
 <td>🔶 <strong>WIRED BAY:
-<code>cad/Assemblies/Power Bay - Wired.step</code> (CAD
-<code>3c49543a</code>, FreeCAD 2026.11.11 weekly, operator-approved
+<code>cad/Assemblies/Power Bay - Wired.step</code> (macro
+<code>b72de739</code>, FreeCAD 2026.11.11 weekly; STEP + run file pushed
 11-16)</strong></td>
-<td>DROK IN ferrule tails (E1008 6 mm collar + inboard turn at inner R
-2.5, Electronics / operator 11-16); DROK-in wired 301.0 / 299.3 (row 5's
-390 cut covers it). INA226-DROK (INA3, 0x47) board in the STEP on the
-fence front wall (X 236–261, Z 66.7–87.7; terminal block width along the
-board ⏳). Colours are written by <code>lumi_step_colour.py</code> (the
-weekly's GUI colour pass hangs offscreen). <strong>Gate record = the run
-file, not the STEP:</strong> the board and the colours were added to the
-saved model after the run; the macro reproduces neither until the staged
-split lands. 05:45 run: 48 ok, 1 FAIL = the DROK IN leads gate, which
-was blind (a compound common reads ~0; fixed in <code>3c49543a</code>).
-<strong>OPEN (Electronics + operator ruling; fence unchanged until
-then):</strong> the collar + R 2.5 turn sits <strong>0.21 mm
-into</strong> the fence front half's −X slant, and the built lead
-overlaps it by 0.39 mm³. Electronics' sweep (R 2.5 / 2.0 / 1.5, collar 6
-/ 5, entry axis 0 / +1 / +2) is running; collar and entry axis wait for
-calipers. <strong>Next (operator 11-16):</strong> wired macro split into
-cached stages parts → routes → gates → export; the full assembly follows
-at idle time.</td>
+<td><strong>Bare 18 AWG into the DROK and INA3 screw terminals, no
+ferrules (operator 11-16, as on the Halo).</strong> The macro now builds
+the whole STEP, INA3 board and colours included (nothing hand-added).
+Staged run 11-16: <strong>53 / 53 gates PASS</strong> (57 min cold:
+parts 25, routes 10, gates 22, export 6 s). DROK IN: 1 mm bare lead-out
++ inboard turn (inner R 2.5) clears the fence slant by
+<strong>3.47</strong> (bite: 48.9 mm³). INA3 board vs fence front half
+0.000 mm³ (bite 1195). OUT end: the leads run straight 6 off the block
+before turning (turning at 1 mm cut 68.5 mm³ into the DROK). Lengths,
+centreline per conductor: DROK-in 291.0 / 289.3, DROK-out 181.4 / 189.6,
+D14a 33.0 (to Electronics for rows 5/6). Fit: the printed fence front
+half takes the INA3 and the DROK (operator via Karma 11-16). ⛔
+2026-11-16 this row said: the 6 mm ferrule collar sat 0.21 mm into the
+fence slant (OPEN), and the STEP's board and colours were added by hand
+after the run. Both superseded. <strong>Next:</strong> stage graph +
+boolean memo (gate groups, per-boolean cache, parts sub-stages) under
+test; then the full assembly at idle time.</td>
 <td></td>
 </tr>
 <tr>
