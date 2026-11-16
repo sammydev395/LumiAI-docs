@@ -615,8 +615,9 @@ landings, §11 fan-tach/PWM wiring, etc.) uses the Pi GPIO-function map,
 so the G469 pinout diagram (reference images above) applies. Land wires
 on the G469's matching <strong>labeled</strong> terminals.</p>
 <p><strong>Never tin stranded wire for screw/clamp terminals</strong> —
-solder cold-flows and pulls out; use a ferrule. Full write-up:
-<code>memory/project_halo_ina226_bringup.md</code>.</p>
+solder cold-flows and pulls out; use a ferrule, or bare twisted strands
+where the doc says so (the DROK and INA226-DROK terminals, §5b.6). Full
+write-up: <code>memory/project_halo_ina226_bringup.md</code>.</p>
 </blockquote>
 <h3 id="every-wire-that-lands-on-the-g469--one-drawing-2026-09-23">Every
 wire that lands on the G469 — one drawing (2026-09-23)</h3>
@@ -1021,9 +1022,17 @@ G469.</strong></td>
 <td><strong>E1008</strong> (in the XHF kit)</td>
 </tr>
 <tr>
-<td>INA226 / PSU CH1 / DROK screw terminals</td>
+<td>INA226-MAIN / INA226-BATT screw terminals</td>
 <td>18 AWG</td>
-<td><strong>E1008</strong> (in the XHF kit)</td>
+<td><strong>E1008</strong> (in the XHF kit); <strong>E2508</strong> for
+the two conductors in INA226-MAIN's GND screw; bare twisted strands if a
+ferrule won't seat (operator 2026-11-16)</td>
+</tr>
+<tr>
+<td>DROK IN / OUT and INA226-DROK IN+ / IN− screw terminals</td>
+<td>18 AWG</td>
+<td><strong>none: bare strands</strong> (operator 2026-11-16,
+§5b.6)</td>
 </tr>
 </tbody>
 </table>
@@ -1639,11 +1648,11 @@ Getting it backwards inverts every alert below — label the board "PSU ←
 <li><strong>F1 stays FIRST from the pack</strong>: the pack is the
 fault-energy source, so the fuse protects every conductor downstream,
 including the INA226. Only the stretch F1 → INA226 → BAT+ is new.</li>
-<li><strong>Gauge:</strong> <strong>18 AWG / Kuject fork lugs</strong>
-at the INA226 screw terminals (same landing style as D1/D3); the uxcell
-F1 holder keeps its factory 16 AWG pigtail. 8 A peak on a short 18 AWG
-run is well inside palette ampacity. <strong>Keep the battery leads
-short (&lt; 20 cm)</strong> per the UPS doc.</li>
+<li><strong>Gauge:</strong> <strong>18 AWG / E1008 ferrules</strong> at
+the INA226 screw terminals (bare twisted strands if a ferrule won't
+seat, §11.4); the uxcell F1 holder keeps its factory 16 AWG pigtail. 8 A
+peak on a short 18 AWG run is well inside palette ampacity. <strong>Keep
+the battery leads short (&lt; 20 cm)</strong> per the UPS doc.</li>
 <li><strong>Mounting (§11.3.9):</strong> each INA226 self-taps onto
 moulded posts through its <strong>dedicated Ø2.0 mounting holes</strong>
 (operator caliper 2026-10-22; dead holes on the header edge, NOT the
@@ -1850,15 +1859,15 @@ TMP102s.</p>
 <h3 id="5b4-power-wiring--in-the-drok-output--lead">5b.4 Power wiring —
 in the DROK output + lead</h3>
 <p>DROK OUT+ → <strong>IN+</strong> … <strong>IN−</strong> → on to the
-Deans (+), every landing an <strong>E1008 ferrule</strong> (the corner
-has no room for forks, §5b.6), → STM32 (segment D14a, §16c row 6). DROK
-OUT− goes to the Deans <strong>direct</strong>. 18 AWG; the board's R002
-shunt reads to ~40 A against the DROK's ~11.8 A maximum. <strong>GND
-screw stays EMPTY</strong> (as on INA226-BATT): its ground comes on the
-I²C chain, and the DROK is non-isolated, so OUT− is already common with
-logic GND through the board and Pi; a power ground here would make a
-second logic-to-power tie. VBUS jumpered as on the other two boards, so
-V reads the rail going to the board.</p>
+Deans (+), every landing <strong>bare 18 AWG, no ferrule or
+fork</strong> (no room at that corner, §5b.6), → STM32 (segment D14a,
+§16c row 6). DROK OUT− goes to the Deans <strong>direct</strong>. 18
+AWG; the board's R002 shunt reads to ~40 A against the DROK's ~11.8 A
+maximum. <strong>GND screw stays EMPTY</strong> (as on INA226-BATT): its
+ground comes on the I²C chain, and the DROK is non-isolated, so OUT− is
+already common with logic GND through the board and Pi; a power ground
+here would make a second logic-to-power tie. VBUS jumpered as on the
+other two boards, so V reads the rail going to the board.</p>
 <h3 id="5b5-logic--on-the-bay-i²c-chain">5b.5 Logic — on the bay I²C
 chain</h3>
 <p>G469 → INA226-MAIN → <strong>INA226-DROK</strong> → INA226-BATT →
@@ -1891,25 +1900,19 @@ the DROK's F1/F2 buttons (operator, option A on CAD's render). DROK IN
 entries at carrier X 193 (button end), OUT at X 266 (pot end).</li>
 <li><strong>Orientation:</strong> the screw-terminal edge faces +X
 (toward the OUT end) and the I²C header edge faces −X.</li>
-<li><strong>Terminations: E1008 ferrules, not forks</strong> (operator,
-2026-11-16), at INA226-DROK IN+ / IN− and at the DROK's OUT+ / OUT−: the
-slanted fence corner sits only ~8.6 mm past the DROK's OUT end, too
-close for a ~20 mm fork. <strong>Lead envelope (hard rule), measured
-from each terminal's entry face along its entry axis:</strong> the E1008
-seated to its collar leaves **~6 mm of collar straight**, then the 18
-AWG silicone (OD ~2.4) bends 90° at an inner radius ≥ 2.5 mm, so it
-needs **~10 mm clear along the entry axis** and ~3 mm across it (CAD
-gate: 10.5 / 10.5 at the INA3 entries). Bend toward where the wall falls
-away. Fully seat each pin and tug-test it. Never tin the strands.</li>
-<li><strong>DROK IN end: E1008 ferrules too, not forks</strong>
-(operator, 2026-11-16), on D8 / D9 at the DROK's IN+ / IN−. CAD measured
-only ~8 mm past the IN end before the fence's −X slant (Ø4 envelope
-8.25, a fork envelope 6.75), so a ~20 mm fork can't fit and the 10 mm
-straight run above can't be met. The 6 mm collar fits: <strong>turn each
-lead inboard (+Y) or up right at the collar</strong> (inner radius ≥
-2.5). The room grows ~0.9 mm per mm the entries sit inboard (⏳ the
-entry axis across the DROK's depth is not calipered; it's assumed 3.8 in
-from the inboard face of its top band).</li>
+<li><strong>Terminations: bare 18 AWG, no ferrules or forks</strong>
+(operator, 2026-11-16, as built on Halo), at all four DROK terminals
+(IN+ / IN−, OUT+ / OUT−) and at INA226-DROK IN+ / IN−. There's no room
+for ferrules: the fence's −X slant is ~8 mm past the DROK's IN end and
+~8.6 mm past its OUT end. <strong>Lead prep:</strong> strip to the
+terminal's clamp depth, so no bare copper shows outside the entry; twist
+the strands tight; insert fully, with no stray strand outside the clamp;
+tighten; tug-test. <strong>Never tin the strands.</strong> Fine-strand
+silicone settles in a screw clamp, so <strong>retighten each of these
+screws after the first warm run</strong>. Leave the entry straight about
+1 mm, then bend toward where the wall falls away (inboard, +Y, at the IN
+end). CAD's model clears the IN-end slant by 3.47 mm this way; the INA3
+entries keep the fence's 10 mm room, more than bare wire needs.</li>
 <li><strong>DROK-OUT:</strong> OUT+ → IN+ and IN− → on to the Deans, a
 short loop: 23 mm OUT+ → IN+, 49 mm IN− → the pair junction, 28 mm OUT−
 → the junction (centrelines, §16c row 6 has the cuts). OUT− goes
@@ -2913,10 +2916,13 @@ shutdown wait, then AC rocker OFF (kills wand + fans + PSU).</p></li>
 </ul>
 <p><strong>Fork-lug landing technique — the fleet standard for every bay
 screw terminal (locked 2026-08-07):</strong></p>
-<p>Every stud-style screw-terminal landing inside the bay (PSU / INA226
-/ DROK) uses a <strong>Kuject-kit insulated fork/spade crimp
-lug</strong>, <strong>except the DROK's IN and OUT terminals and
-INA226-DROK's IN+ / IN−, which take E1008 ferrules</strong> (§5b.6)
+<p>Every PSU screw-terminal landing inside the bay uses a
+<strong>Kuject-kit insulated fork/spade crimp lug</strong>.
+<strong>INA226-MAIN and INA226-BATT take E1008 ferrules</strong>
+(operator, 2026-11-16); if a ferrule won't seat in a terminal, that
+landing goes <strong>bare</strong> (twisted strands, never tinned, as at
+the DROK). <strong>The DROK's IN and OUT terminals and INA226-DROK's IN+
+/ IN− take bare twisted strands</strong> (§5b.6). For the forks
 (size-matched to the screw stud; check the fork stud hole against the
 screw shank before crimping), with the <strong>fork bent 60–90° upward
 after install</strong> to clear the tight lateral gap between the fence
@@ -3101,8 +3107,9 @@ screw is captive: a fork lug with the screw torqued and tug-tested</td>
 <td>PSU <strong>CH1 +V</strong> screw terminal → INA226
 <strong>ISENSE+</strong> screw terminal (orange, pin 2)</td>
 <td>18 AWG silicone</td>
-<td><strong>Kuject fork lug (sized to stud) + bend-up</strong> at both —
-PSU CH1 +V screw and INA226 ISENSE+ screw</td>
+<td><strong>Kuject fork lug (sized to stud) + bend-up</strong> at the
+PSU CH1 +V screw + <strong>E1008 ferrule</strong> at INA226 ISENSE+
+(bare twisted strands if a ferrule won't seat, §11.4)</td>
 </tr>
 <tr>
 <td><strong>D1a</strong></td>
@@ -3125,24 +3132,28 @@ iron; tug-test each end.</td>
 <td>INA226 <strong>ISENSE−</strong> (green, pin 3) → D-1459
 <strong>input IN-A</strong> (V+ bus)</td>
 <td>18 AWG silicone</td>
-<td><strong>Kuject fork lug + bend-up</strong> at INA226 ISENSE− screw +
-<strong>E1008 ferrule</strong> at the D-1459 input cage</td>
+<td><strong>E1008 ferrule</strong> at INA226 ISENSE− (bare twisted
+strands if a ferrule won't seat, §11.4) + <strong>E1008 ferrule</strong>
+at the D-1459 input cage</td>
 </tr>
 <tr>
 <td><strong>D3</strong></td>
 <td>PSU <strong>CH1 GND</strong> screw terminal → INA226
 <strong>GND</strong> (green, pin 4)</td>
 <td>18 AWG silicone</td>
-<td><strong>Kuject fork lug (sized to stud) + bend-up</strong> at both —
-PSU CH1 GND screw and INA226 GND screw</td>
+<td><strong>Kuject fork lug (sized to stud) + bend-up</strong> at the
+PSU CH1 GND screw; at INA226 GND it shares <strong>one ferrule with
+D4</strong> (2 × 18 AWG ≈ 1.6 mm² → <strong>E2508</strong>) (bare
+twisted strands if a ferrule won't seat, §11.4)</td>
 </tr>
 <tr>
 <td><strong>D4</strong></td>
 <td>INA226 <strong>GND</strong> (already on pin 4) → D-1459
 <strong>input IN-B</strong> (GND bus)</td>
 <td>18 AWG silicone</td>
-<td><strong>Kuject fork lug + bend-up</strong> at INA226 GND screw +
-<strong>E1008 ferrule</strong> at the D-1459 input cage</td>
+<td>INA226 GND: in D3's <strong>E2508</strong> (bare twisted strands if
+a ferrule won't seat, §11.4) + <strong>E1008 ferrule</strong> at the
+D-1459 input cage</td>
 </tr>
 <tr>
 <td><strong>D5</strong></td>
@@ -3181,9 +3192,9 @@ blade</td>
 +V</strong> screw terminal</td>
 <td>18 AWG silicone</td>
 <td>fully insulated <strong>flag</strong> (right-angle) 4.8 × 0.8 mm
-female Faston, red 22–18, at rocker end (see note) + <strong>E1008
-ferrule</strong> at DROK input +V (no room for a fork past the DROK's IN
-end, §5b.6)</td>
+female Faston, red 22–18, at rocker end (see note) + <strong>bare
+strands</strong> at DROK input +V (no room for a ferrule or fork,
+§5b.6)</td>
 </tr>
 <tr>
 <td><strong>D8a</strong></td>
@@ -3200,9 +3211,9 @@ net, so the tap gets its own cage)</td>
 <td>D-1459 <strong>B2</strong> → DROK <strong>input −</strong> screw
 terminal</td>
 <td>18 AWG silicone</td>
-<td><strong>E1008 ferrule</strong> at B2 + <strong>E1008
-ferrule</strong> at DROK input − (§5b.6). <strong>NOT switched —
-straight from the GND bus.</strong></td>
+<td><strong>E1008 ferrule</strong> at B2 + <strong>bare strands</strong>
+at DROK input − (§5b.6). <strong>NOT switched — straight from the GND
+bus.</strong></td>
 </tr>
 <tr>
 <td><strong>D10</strong></td>
@@ -3257,15 +3268,15 @@ JST-XH.</td>
 into the electronics bay)</td>
 <td>18 AWG silicone (flex, ~500 mm total, split into two pigtails at the
 Deans midpoint)</td>
-<td><strong>E1008 ferrule</strong> at DROK output +V (no forks at the
-OUT corner, §5b.6; on the DROK-side pigtail) + <strong>XHF
-ferrule</strong> at STM32 blue terminal (on the STM32-side pigtail).
-<strong>Mid-cable disconnect:</strong> male + female Deans halves on
-each pigtail, mated in the middle; <strong>heat-shrink over the exposed
-metal of both Deans halves</strong> (the flat blades) so a wandering
-probe or stray wire can't short across them. Polarity-keyed — can't be
-plugged in backwards. Serviceable — pull the Deans to troubleshoot
-without unbolting anything.</td>
+<td><strong>bare strands</strong> at DROK output +V (no room for a
+ferrule or fork at the OUT corner, §5b.6; on the DROK-side pigtail) +
+<strong>XHF ferrule</strong> at STM32 blue terminal (on the STM32-side
+pigtail). <strong>Mid-cable disconnect:</strong> male + female Deans
+halves on each pigtail, mated in the middle; <strong>heat-shrink over
+the exposed metal of both Deans halves</strong> (the flat blades) so a
+wandering probe or stray wire can't short across them. Polarity-keyed —
+can't be plugged in backwards. Serviceable — pull the Deans to
+troubleshoot without unbolting anything.</td>
 </tr>
 <tr>
 <td><strong>D15</strong></td>
@@ -3274,10 +3285,10 @@ and GND) — DROK <strong>output −</strong> screw terminal → Deans (bottom
 conductor of the 2-pin pair) → STM32 controller <strong>blue terminal
 block GND</strong></td>
 <td>18 AWG silicone (shares Deans housing with D14)</td>
-<td><strong>E1008 ferrule</strong> at DROK output − (§5b.6) +
-<strong>XHF ferrule</strong> at STM32 blue terminal, same
-Deans-mid-disconnect as D14 (single 2-pin Deans carries the whole DC
-pair; no separate connector for GND)</td>
+<td><strong>bare strands</strong> at DROK output − (§5b.6) + <strong>XHF
+ferrule</strong> at STM32 blue terminal, same Deans-mid-disconnect as
+D14 (single 2-pin Deans carries the whole DC pair; no separate connector
+for GND)</td>
 </tr>
 <tr>
 <td><strong>D16</strong></td>
@@ -3303,8 +3314,8 @@ and INA226; no shared anchors with the signal bundle</td>
 <strong>INA226-DROK IN+</strong>; INA226-DROK <strong>IN−</strong> → on
 to the Deans (+). D15 (−) does NOT pass through it</td>
 <td>18 AWG silicone</td>
-<td><strong>E1008 ferrules</strong> at DROK OUT+, INA226-DROK IN+ and
-IN− (no forks at the OUT corner, §5b.6). INA226-DROK's <strong>GND screw
+<td><strong>bare strands</strong> at DROK OUT+, INA226-DROK IN+ and IN−
+(no room for ferrules or forks, §5b.6). INA226-DROK's <strong>GND screw
 stays EMPTY</strong> (its ground arrives on the I²C chain; the DROK is
 non-isolated, so OUT− is already common)</td>
 </tr>
@@ -6243,8 +6254,9 @@ spot, not paint) <strong>&lt; 0.1 Ω</strong></td>
 <td>67</td>
 <td>180</td>
 <td>PSU +V / −V screws: <strong>Kuject fork lugs</strong>, bent up</td>
-<td>+V → INA226-MAIN ISENSE+ fork lug; −V → INA226-MAIN <strong>GND
-screw</strong> fork lug</td>
+<td>+V → INA226-MAIN ISENSE+ <strong>E1008</strong>; −V → INA226-MAIN
+<strong>GND screw</strong>, in one <strong>E2508</strong> with BLK-IN's
+GND (bare if a ferrule won't seat)</td>
 <td>INA226-MAIN GND screw = the single logic-to-power tie</td>
 </tr>
 <tr>
@@ -6253,7 +6265,7 @@ screw</strong> fork lug</td>
 <td>2 × 18 + 1 × 22</td>
 <td>210</td>
 <td>320</td>
-<td>INA226-MAIN ISENSE− fork lug (LINE wire)</td>
+<td>INA226-MAIN ISENSE− <strong>E1008</strong> (LINE wire)</td>
 <td>KCD1 LINE / LOAD: <strong>flag (right-angle) fully insulated 4.8 mm
 Fastons, red band</strong>; LAMP (22): flag 4.8 mm Faston →
 <strong>B6</strong>: its own E0508, or on Creator builds inside
@@ -6267,8 +6279,8 @@ Fence-mounted, so leave a service loop for lifting the carrier</td>
 <td>2 × 18</td>
 <td>95</td>
 <td>210</td>
-<td>Rocker LOAD Faston; INA226-MAIN GND screw (2nd fork lug,
-stacked)</td>
+<td>Rocker LOAD Faston; INA226-MAIN GND screw (in CH1 −V's
+<strong>E2508</strong>)</td>
 <td>Block <strong>IN-A / IN-B: E1008</strong></td>
 <td>Input cage faces the block's short end</td>
 </tr>
@@ -6276,13 +6288,13 @@ stacked)</td>
 <td>5</td>
 <td><strong>DROK-IN</strong></td>
 <td>2 × 18</td>
-<td>276 (the IN end is at −X, X 193; wired run 287–288)</td>
+<td>276 (the IN end is at −X, X 193; ⏳ wired run re-measured for bare
+leads)</td>
 <td>390</td>
 <td>Block DROK pair, <strong>HL-PBB A1 / B1</strong> (D-1459: A2 / B2):
 <strong>E1008</strong></td>
-<td>V+ → DROK IN+ <strong>E1008</strong>; GND → DROK IN−
-<strong>E1008</strong>; turn each lead inboard or up right at the collar
-(§5b.6)</td>
+<td>V+ → DROK IN+ <strong>bare</strong>; GND → DROK IN−
+<strong>bare</strong>; ~1 mm straight, then turn inboard (§5b.6)</td>
 <td>—</td>
 </tr>
 <tr>
@@ -6292,22 +6304,21 @@ stacked)</td>
 <td>176 (OUT−) / 185 (INA3 IN−), terminal to the top of the riser at the
 servo opening, + D14a 23</td>
 <td><strong>measure</strong> (+ up the servo opening to the STM32)</td>
-<td>DROK OUT +/− <strong>E1008 ferrules</strong>; OUT+ →
-<strong>INA226-DROK IN+</strong> E1008, IN− E1008 → on (OUT− goes
-direct). No forks at this corner (§5b.6)</td>
+<td>DROK OUT +/− <strong>bare strands</strong>; OUT+ →
+<strong>INA226-DROK IN+</strong> bare, IN− bare → on (OUT− goes direct).
+No ferrules or forks at this corner (§5b.6)</td>
 <td><strong>Deans (T-plug)</strong> solder joint → STM32 blue terminal
 <strong>E1008</strong></td>
 <td>Twisted pair; rises beside the tether, FFC kept on the far side.
 <strong>INA226-DROK is on the fence front wall, rotated 90° above the
 DROK with its terminals facing the OUT (pot) end</strong> (§5b.6): OUT+
-→ IN+ and IN− → on to the Deans, E1008 ferrules, ~10 mm clear along each
-entry axis. Wired-run centrelines (CAD wired model, ferrule collars not
-included): <strong>D14a OUT+ → IN+ plan 23, cut 60; IN− → the pair
-junction plan 49, cut 80; OUT− → the junction plan 28</strong> (plan +
-the ferrule strip + ~20 slack; the model bends R0 at the terminals, the
-real 18 AWG takes ≥ 2.5, which that slack covers). From the junction the
-pair runs twisted along the carrier and up to the riser top. OUT+ / OUT−
-stay twisted except over the loop</td>
+→ IN+ and IN− → on to the Deans, bare strands. Wired-run centrelines
+(CAD wired model; ⏳ re-measured for bare leads): <strong>D14a OUT+ →
+IN+ plan 23, cut 60; IN− → the pair junction plan 49, cut 80; OUT− → the
+junction plan 28</strong> (plan + the strip + ~20 slack; the model bends
+R0 at the terminals, the real 18 AWG takes ≥ 2.5, which that slack
+covers). From the junction the pair runs twisted along the carrier and
+up to the riser top. OUT+ / OUT− stay twisted except over the loop</td>
 </tr>
 <tr>
 <td>7</td>
@@ -6320,9 +6331,9 @@ unfused stub: plan + ~50 vertical ≈ 100, no service slack) / 73 → 190 /
 <td>Pack <strong>XT30</strong> (mating XT30, soldered cups +
 heat-shrink)</td>
 <td>+ → <strong>F1 (uxcell 6×30 10 A, carrier cradle)</strong> →
-INA226-BATT <strong>IN−</strong> fork lug … <strong>IN+</strong> fork
-lug → PSU CH2 <strong>BAT+</strong> lead; − → PSU CH2
-<strong>BAT−</strong> lead <strong>direct</strong></td>
+INA226-BATT <strong>IN−</strong> E1008 … <strong>IN+</strong> E1008
+(bare if a ferrule won't seat) → PSU CH2 <strong>BAT+</strong> lead; − →
+PSU CH2 <strong>BAT−</strong> lead <strong>direct</strong></td>
 <td><strong>Unfused stub (pack terminal → F1) ≤ 150 mm, factory pigtail
 included.</strong> The F1 pigtail is 16 AWG; join by solder +
 heat-shrink. <strong>INA226-BATT's GND screw stays EMPTY.</strong> The
