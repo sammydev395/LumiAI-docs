@@ -187,18 +187,21 @@ alone gives ≈ 2c / cos θ of play).</td>
 </tr>
 <tr>
 <td><strong>Fence back half + rear cap + SPS30 carrier RELEASED
-(operator 2026-11-14); ⛔ fence FRONT half (plate 12) on
-HOLD</strong></td>
+(operator 2026-11-14); fence FRONT half (plate 12) released with the
+power-bay carrier, as a pair (CTO 2026-11-15)</strong></td>
 <td><strong>Released on the operator's word 2026-11-14</strong>, each
 plate printing once Karma passes it: the <strong>fence back
 half</strong> (X1C / H2S 11) and the <strong>SPS30 carriers</strong>
-(X1C 14 / H2S 15) ("everything else that is ready. print it."). ⛔ The
+(X1C 14 / H2S 15) ("everything else that is ready. print it."). The
 <strong>fence front half</strong> (alone on plate 12 at 0.32: "Let's put
-the fence front on its own plate") is <strong>on HOLD in both
-books</strong> (CTO 2026-11-15, the FENCE row below): do not print it.
-The <strong>rear cap alone</strong> at 0.16 (X1C 29 / H2S 32): "print
-the straps and rear cap". He did not see a fence render; the fixes are
-his own caliper calls. CAD fixed them on the operator's calipers while
+the fence front on its own plate") is <strong>released in both books
+together with the power-bay carrier (X1C plate 21)</strong> (CTO
+2026-11-15, the FENCE and CARRIER rows below): the fence front affects
+the carrier (operator), so the two plates are held and released as a
+pair, built on one CAD commit, and print once Karma passes both. The
+<strong>rear cap alone</strong> at 0.16 (X1C 29 / H2S 32): "print the
+straps and rear cap". He did not see a fence render; the fixes are his
+own caliper calls. CAD fixed them on the operator's calipers while
 fitting the Ultra: <strong>AC inlet</strong> cut to the WPF-1 body 17.6
 × 26 (+0.3), the AC frame face 26.2 proud, 0.5 past the fan towers, so
 the 30 mm flange + spring cover sits and opens outside the tower
@@ -298,67 +301,83 @@ coupon and spring ≤30 mΩ (M1.2 screws in hand)</td>
 </tr>
 <tr>
 <td>🔶 <strong>POWER-BAY CARRIER: HL-PBB posts for Ultra; DROK IN/OUT
-ends swapped, PHONE-IN on A6/B6 (CAD 2026-11-15; ⛔ X1C plate 21 on HOLD
-until the CTO releases the regenerated carrier)</strong></td>
-<td>⛔ <strong>HOLD X1C plate 21 (power-bay carrier
-<code>43d7befb</code>) (CTO 2026-11-15): do not print it.</strong> CAD
-regenerated the carrier (gates PASS, 105 ok): the DROK's IN block is at
-its button end (X 193) and OUT at its POT end (X 266) (operator). "DROK
-in" runs the trunk → Y_BB → X_DOUT → the YF lane → X 193; "DROK out"
-leaves at X_DIN, climbs to Y_BB and runs to the riser; PHONE-IN lands on
-block A6 / B6. The YF-lane fork posts move with them, so plate 21
-rebuilds on this carrier (CTO releases it). The plate is titled "HOLD do
-not print" in the X1C book (<code>CARRIER_HOLD</code>); the H2S book has
-no carrier plate. <strong>Plate 22 (straps + tab cap) is unaffected and
-stays released.</strong> <code>lumi_powerbay_carrier.py</code> (gates
-PASS): Ultra's block is the <strong>HL-PBB-2-6-MINI</strong> (operator).
-One carrier carries both footprints. The HL-PBB is a RAISED board: 2 ×
-M3 posts on its O4 holes 64 c/c (operator caliper) at (206.1, −20.5) /
-(270.1, −20.5), 13.5 tall (board top Z 84.5, 5.2 under the lid), feed =
-the −X tower. The X_T2 / X_TRUNK lanes run under it. Forks under it stay
-below its pins (5 mm, operator; <strong>trim the 4 long 6–7 mm edge pins
-to ≤ 5 before fitting</strong>) or below its bare PCB between the cage
-rows. Fan 2 power leaves its splice on the trunk lane, so no turn sits
-under the pins. <strong>Bay TMP102: soldered chain-end leads (no header
-/ plug), on 8 mm posts</strong> (Electronics), so no HL-PBB pin
-overhangs it in plan. <strong>X1C book plate 21 =
-<code>CARRIER 43d7befb</code> (3dPrint, measured on the book's own mesh
-at e9aed40b):</strong> the carrier alone on the plate, 228.4 × 124.5 ×
-40.4 (X 13.8..242.2, Y 68.3..192.7), flat, posts up, long axis along X
-(<code>R_Z90</code>), outer-only 10 mm brim, ending 53.3 from the back
-edge (BACK_KEEPOUT 30), 58.3 from the front and 3.8 from the left and
-right edges; grey PETG+ slot 3, 0.2 layers, 3 walls, 25 % infill, no
-supports, outer brim 10 / gap 0, outer wall 50. verify PASS (0
-failures), gate_slots PASS, gate_floating plate 21 PASS (0 floating
-regions); print-gate read on the STEP: one valid solid, 0 cantilevers, 0
-curved ceilings, 2 bridges of 2.0 mm. The carrier is the only mesh that
-differs from the previous book (46 identical). The INA226-DROK (INA3) is
-on the fence front wall, not on this carrier. <strong>Figures
+ends swapped, PHONE-IN on A6/B6 (CAD <code>a3742963</code>; X1C plate 21
+released with the fence front half, as a pair)</strong></td>
+<td><strong>X1C plate 21 = carrier <code>a3742963</code>, released
+together with the fence front half (plate 12), as a pair (CTO
+2026-11-15): the fence front affects the carrier (operator), so the two
+plates are held and released together, built on one CAD commit, and
+print once Karma passes both.</strong> The carrier (gates PASS, 106 ok):
+the DROK's IN block is at its button end (X 193) and OUT at its POT end
+(X 266) (operator). "DROK in" runs the trunk → Y_BB → X_DOUT → the YF
+lane → X 193; "DROK out" leaves at X_DIN, climbs to Y_BB and runs to the
+riser; PHONE-IN lands on block A6 / B6. The YF-lane fork posts move with
+them. <strong>Fork seats stack real wire heights</strong>
+(<code>bundle_dims</code>: each column is its conductors' own heights
+summed, tallest first into the shorter column, as the wired assembly's
+packing() stacks them; a seat holding one wire size is unchanged): the
+two seats that carry the Deans pair (2 × 18 AWG on edge, 6.7 tall), at
+(251.9, −42.0) and (245.4, −42.0), are 27.25 tall, and the tallest fork
+on the carrier is 28.47, its top at Z 76.46, 13.24 under the lid.
+<strong>Fork lid gate</strong> (<code>FORK_LID_CLEAR</code> 3.0, probed
+on the solid): no plastic above Z 86.7 (LID_Z 89.7 − 3.0) inside any
+route fork's footprint; its bite rebuilds the (251.9, −42.0) post with
+every row at the tallest conductor's height and reads Z 91.75, 66 mm³
+over the line. The H2S book has no carrier plate. <strong>Plate 22
+(straps + tab cap) is unaffected and stays released.</strong>
+<code>lumi_powerbay_carrier.py</code> (gates PASS): Ultra's block is the
+<strong>HL-PBB-2-6-MINI</strong> (operator). One carrier carries both
+footprints. The HL-PBB is a RAISED board: 2 × M3 posts on its O4 holes
+64 c/c (operator caliper) at (206.1, −20.5) / (270.1, −20.5), 13.5 tall
+(board top Z 84.5, 5.2 under the lid), feed = the −X tower. The X_T2 /
+X_TRUNK lanes run under it. Forks under it stay below its pins (5 mm,
+operator; <strong>trim the 4 long 6–7 mm edge pins to ≤ 5 before
+fitting</strong>) or below its bare PCB between the cage rows. Fan 2
+power leaves its splice on the trunk lane, so no turn sits under the
+pins. <strong>Bay TMP102: soldered chain-end leads (no header / plug),
+on 8 mm posts</strong> (Electronics), so no HL-PBB pin overhangs it in
+plan. <strong>X1C book plate 21 = <code>CARRIER a3742963</code>
+(3dPrint, measured on the book's own mesh):</strong> the carrier alone
+on the plate, 228.4 × 124.5 × 40.4 (X 13.8..242.2, Y 68.3..192.7), flat,
+posts up, long axis along X (<code>R_Z90</code>), outer-only 10 mm brim,
+ending 53.3 from the back edge (BACK_KEEPOUT 30), 58.3 from the front
+and 3.8 from the left and right edges; grey PETG+ slot 3, 0.2 layers, 3
+walls, 25 % infill, no supports, outer brim 10 / gap 0, outer wall 50.
+Highest plastic Z 84.35 (the mains towers), 5.35 under the lid, no
+vertex above Z 86.7; the mesh top inside each of the 56 route-fork
+footprints agrees with CAD's layout file (tallest 76.46), and the same
+probe on the <code>f45172dc</code> carrier reads 91.74 on the two Deans
+posts. verify PASS (0 failures), gate_slots PASS, gate_floating plate 21
+PASS (0 floating regions). The carrier and the fence front half are the
+only meshes that differ from the previous book. The print-gate read of
+this carrier's STEP waits behind CAD's full assemblies (one heavy
+FreeCAD job on the GMKtec at a time). The INA226-DROK (INA3) is on the
+fence front wall, not on this carrier. <strong>Figures
 (2026-11-15):</strong> gen_carrier_figures.py output (routing PNG + HTML
 with the INA226-DROK board and its row 6 / row 13 runs from the wired
 assembly's run file, mounting points with the HL-PBB posts, in-fence,
-IP6518) on this carrier + fence; check_figures_match_docs.py ok; the
-fence-front plate (12) keeps its previous mesh
-(<code>LUMI_STL_PIN_DIR</code>) until CAD's fence revision with the
-Creator clamp slots, so the front half is reprinted once.</td>
+IP6518) on this carrier + fence; check_figures_match_docs.py ok; plate
+12 carries the fence front half of the same commit (the FENCE row).</td>
 <td></td>
 </tr>
 <tr>
 <td>🔶 <strong>FENCE: INA3 turned at the DROK's OUT end + front slots
 moved + 4 Creator desk-clamp slots (CAD 2026-11-15; back half plate 11
-released, ⛔ FRONT half plate 12 on HOLD until the CTO releases this
-revision)</strong></td>
-<td>⛔ <strong>HOLD plate 12 (fence front half), X1C and H2S books,
-until the CTO releases this revision.</strong> <strong>Plate 11 (back
-half) is unaffected and stays released</strong> (its bodies are
-unchanged). <code>lumi_baseplate_fence.py</code> (gates PASS, 51 ok, 13
-LEGACY must-FAILs still fail). <strong>INA3</strong> (INA226-DROK,
-0x47): the DROK's OUT block is at its POT end (operator), FILE X
-~264–271, entries facing out of the short end. INA3 is <strong>turned
-90°</strong> (operator) on the straight front wall's OUT end: 25 along
-the wall at FILE X 236.0–261.0, 66.7–87.7 above the plate (7.0 over the
-DROK, 2.3 under the fence top), header toward the LCD, screw terminals
-on its +X edge facing the OUT end. <strong>Ferrules on every DROK / D14a
+released, FRONT half plate 12 released with the carrier, as a
+pair)</strong></td>
+<td><strong>Plate 12 (fence front half), X1C and H2S books, is released
+on this revision together with the power-bay carrier (X1C plate 21), as
+a pair (CTO 2026-11-15); it prints once Karma passes both
+plates.</strong> <strong>Plate 11 (back half) is unaffected and stays
+released</strong> (its bodies are unchanged).
+<code>lumi_baseplate_fence.py</code> (gates PASS, 51 ok, 13 LEGACY
+must-FAILs still fail). <strong>INA3</strong> (INA226-DROK, 0x47): the
+DROK's OUT block is at its POT end (operator), FILE X ~264–271, entries
+facing out of the short end. INA3 is <strong>turned 90°</strong>
+(operator) on the straight front wall's OUT end: 25 along the wall at
+FILE X 236.0–261.0, 66.7–87.7 above the plate (7.0 over the DROK, 2.3
+under the fence top), header toward the LCD, screw terminals on its +X
+edge facing the OUT end. <strong>Ferrules on every DROK / D14a
 lead</strong> (E1008; operator: as on Halo and Ultra); each INA3 entry
 has 10.5 mm of straight run to the corner slant (Electronics: ≥ 10,
 gated, bitten). 2 printed standoffs 5.3 wide, 4 off the wall, M1.7
@@ -376,39 +395,43 @@ path gated 25 outside to 30 past the inner face. Slot roofs print on
 halves reprint</strong> (the back half carries the rear, right and left
 slots, the front half the front slot and INA3); the <strong>rear cap
 does not</strong> (same mesh; 71.7 clear of the rear jaw path in the
-assembly). Books rebuilt on <code>0dc0842e</code>, X1C / H2S
-<strong>11</strong> back + <strong>12</strong> front, Karma gates: the
-only new overhangs are the four slot roofs (184 mm² each, 46 span at 3.5
-above the bed, painted enforcers on both halves); INA3 pilots open 4.90
-deep on the exported front half, 3.1 of wall behind; verify PASS,
-gate_slots 0 / 0, gate_floating 0 regions on 11 / 12. <strong>Creator
-battery:</strong> 5 mm foam under the battery centre (carrier X 187–274)
-replaces the 3 mm carriage-bolt raise; battery top 40 under the
-unchanged strap bar; no CAD change. <strong>Phone Lift Route A
-sweeps</strong> (camera FIXED 2026-11-15: route_prep turned the OAK-D by
-the wrist turn W TWICE, 90° round the wrist, below the claw; every
-earlier BigClaw + OAK-D route number, incl. the 3.04 and the cradle-home
-forearm contact, is withdrawn; a pose-sanity gate now matches all 11
-camera bodies at W once with the camera above the claw, and bites on W
-twice). Halo 11-14 start → preset, all PASS, gate 2.0, bite 177.97 mm³:
-OP1 screen 616.9 above floor −14°, elbow 80 / shoulder 9 mm, least
-BigClaw+OAK-D 36.8; P2 485.0, +24°, elbow 169–187 / shoulder 95–108,
-30.6; OP2 667.9, −24°, elbow 87 / shoulder 83, 36.8; C1 7.7 (end pose,
-upper-arm U-bracket). <strong>Cradle home</strong> = the arbiter's
-stored TARGET b 0.379 / s −2.1405 / e −0.0335 / w 0.508 (LumiAI Ultra
-11-15; base yaw modelled as q[3] about the turntable axis) → OP1 / P2 /
-OP2 / C1 and back on the same line: all PASS, the phone 9.46 off the
-base cover at the target, BigClaw+OAK-D ≥ 28.7 (C1 end 7.7), bite 2.14
-mm³. The measured ARRIVAL (b 0.35 / e +0.03 / w 0.536: base ~2° short,
-elbow sag, wrist at end of travel) clears everything too; its phone
-rests 0.02 on the base cover = the accepted DOCKED REST (operator
-11-15), exempt by name only at a cradle-home route's step 0 vs
-lumi_base_cover_base (self-test: the same contact at step 1, on the Halo
-route, on the cover top or on arm body 075 is not exempt); those legs
-FAIL only on the URDF-limit check (wrist 0.536 &gt; 0.524). Camera model
-= the production mount (Full Assembly plate + 6 mm lift); Halo's printed
-L on the wrist servo is a one-off (ArmPi FPV → Ultra upgrade), so a Halo
-feeler reading is informational only.</td>
+assembly). Books: X1C / H2S <strong>11</strong> back as rebuilt on
+<code>0dc0842e</code> (its mesh unchanged since), <strong>12</strong>
+front rebuilt on <code>a3742963</code> (the front half as exported at
+<code>f45172dc</code>: 164.9 × 80.7 × 90.0, 199558 triangles), Karma
+gates: the only new overhangs are the four slot roofs (184 mm² each, 46
+span at 3.5 above the bed, painted enforcers on both halves); the front
+half carries 1078 painted enforcer triangles (its four DROK boss
+undersides and the front slot roof, each box area-asserted by the
+builder); verify PASS, gate_slots 0 / 0, gate_floating 0 regions on
+plate 12 in both books. <strong>Creator battery:</strong> 5 mm foam
+under the battery centre (carrier X 187–274) replaces the 3 mm
+carriage-bolt raise; battery top 40 under the unchanged strap bar; no
+CAD change. <strong>Phone Lift Route A sweeps</strong> (camera FIXED
+2026-11-15: route_prep turned the OAK-D by the wrist turn W TWICE, 90°
+round the wrist, below the claw; every earlier BigClaw + OAK-D route
+number, incl. the 3.04 and the cradle-home forearm contact, is
+withdrawn; a pose-sanity gate now matches all 11 camera bodies at W once
+with the camera above the claw, and bites on W twice). Halo 11-14 start
+→ preset, all PASS, gate 2.0, bite 177.97 mm³: OP1 screen 616.9 above
+floor −14°, elbow 80 / shoulder 9 mm, least BigClaw+OAK-D 36.8; P2
+485.0, +24°, elbow 169–187 / shoulder 95–108, 30.6; OP2 667.9, −24°,
+elbow 87 / shoulder 83, 36.8; C1 7.7 (end pose, upper-arm U-bracket).
+<strong>Cradle home</strong> = the arbiter's stored TARGET b 0.379 / s
+−2.1405 / e −0.0335 / w 0.508 (LumiAI Ultra 11-15; base yaw modelled as
+q[3] about the turntable axis) → OP1 / P2 / OP2 / C1 and back on the
+same line: all PASS, the phone 9.46 off the base cover at the target,
+BigClaw+OAK-D ≥ 28.7 (C1 end 7.7), bite 2.14 mm³. The measured ARRIVAL
+(b 0.35 / e +0.03 / w 0.536: base ~2° short, elbow sag, wrist at end of
+travel) clears everything too; its phone rests 0.02 on the base cover =
+the accepted DOCKED REST (operator 11-15), exempt by name only at a
+cradle-home route's step 0 vs lumi_base_cover_base (self-test: the same
+contact at step 1, on the Halo route, on the cover top or on arm body
+075 is not exempt); those legs FAIL only on the URDF-limit check (wrist
+0.536 &gt; 0.524). Camera model = the production mount (Full Assembly
+plate + 6 mm lift); Halo's printed L on the wrist servo is a one-off
+(ArmPi FPV → Ultra upgrade), so a Halo feeler reading is informational
+only.</td>
 <td></td>
 </tr>
 <tr>
@@ -727,22 +750,26 @@ strap. Slot-3 PETG+ filament z-hop 0.4 in both books.
 oozes on every open-air crossing; gate_slots' PETG warning clears: H2S
 17 → 0). <strong>Released 2026-11-14 (operator), each once Karma passes
 it:</strong> plate 11 fence back, the sensor carriers X1C 14 / H2S 15
-and the rear cap's own plate X1C 29 / H2S 32 (0.16), both books. ⛔
-<strong>Plate 12, the fence front ALONE (0.32), is on HOLD in both
-books</strong> (CTO 2026-11-15: INA3 lug room, the FENCE row); ⛔
-<strong>X1C plate 21, the power-bay carrier <code>43d7befb</code>, is on
-HOLD</strong> (CTO 2026-11-15: DROK in / out reversed, the CARRIER row);
-the front half's four DROK boss undersides painted (1076 triangles),
-manual tree_strong, top-z 0.32, as the back half's PSU pads; the rear
-cap at 0.16 (its snaps engage 0.6), top face down, ASA black H2S slot 2,
-no supports, 10 mm brim. <strong>One layer height per plate</strong>
-(verify FAILS a mixed plate: the H2S slicer refuses it with a prime
-tower, CLI -51, and the X1C slices fractional z-steps). <strong>Per
-part:</strong> fence halves 0.32 / 3 walls / 15 % gyroid / outer 60,
-inner 250 (ASA black, H2S slot 2, chamber door closed); the back half
-carries painted enforcers under the two PSU-strap pad tops
-(<code>ENFORCE_FLAT_DOWN</code>, manual trees), the front half no
-supports; brim 10 outer+inner; avoid-crossing-walls ON. Extension halves
+and the rear cap's own plate X1C 29 / H2S 32 (0.16), both books.
+<strong>Plate 12, the fence front ALONE (0.32, both books), and X1C
+plate 21, the power-bay carrier <code>a3742963</code>, are released as a
+pair</strong> (CTO 2026-11-15; the FENCE and CARRIER rows), each
+printing once Karma passes both. The fence front affects the carrier
+(operator), so the two plates are held and released together, built on
+one CAD commit: <code>FENCE_SET_HOLD</code> and
+<code>CARRIER_HOLD</code> in the builder, set both or neither. The front
+half's four DROK boss undersides and its front clamp-slot roof painted
+(1078 triangles), manual tree_strong, top-z 0.32, as the back half's PSU
+pads; the rear cap at 0.16 (its snaps engage 0.6), top face down, ASA
+black H2S slot 2, no supports, 10 mm brim. <strong>One layer height per
+plate</strong> (verify FAILS a mixed plate: the H2S slicer refuses it
+with a prime tower, CLI -51, and the X1C slices fractional z-steps).
+<strong>Per part:</strong> fence halves 0.32 / 3 walls / 15 % gyroid /
+outer 60, inner 250 (ASA black, H2S slot 2, chamber door closed); the
+back half carries painted enforcers under the two PSU-strap pad tops
+(<code>ENFORCE_FLAT_DOWN</code>, manual trees), the front half under its
+DROK bosses and front slot roof (<code>ENFORCE_BOX_DOWN</code>, manual
+trees); brim 10 outer+inner; avoid-crossing-walls ON. Extension halves
 outer 60, avoid-crossing-walls ON; in the H2S book all three halves
 (ASA) on tree_strong (branch 5, diameter angle 5, branch angle 35,
 critical-regions-only OFF), brim 15. Shell halves + head ring ASA slot
