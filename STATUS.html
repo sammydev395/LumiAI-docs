@@ -222,12 +222,28 @@ build 24 of 24, RESULT PASS (finger strain while pressed 1.37 % side /
 show:</strong> the leg clicks in and holds a firm pull; pressing the tab
 lets it slide out; the finger does not whiten or stay bent; the 0.55
 serrations and the 2.0 rail print clean. The slides enter the cradle and
-the books only after this coupon and the operator's word on the design
-picture (LumiAI CTO). <strong>Book:</strong> X1C plate 33, 0.2 layers, 3
-walls, no supports, 10 mm brim, last plate so no number moves; verify
-PASS with and without the previous book, gate_slots PASS 0 / 0 without
-the live AMS. Not run on the GMKtec: the slice, gate_floating and the
-G-code gates (LumiAI 3DPrinter runs them before it installs the book).
+the books only after this coupon prints and passes in his hands (LumiAI
+CTO). <strong>Book:</strong> X1C plate 33, 0.2 layers, 3 walls, no
+supports, 10 mm brim, last plate so no number moves; verify PASS with
+and without the previous book, gate_slots PASS 0 / 0 without the live
+AMS. <strong>Gated by LumiAI 3DPrinter from <code>c068f291</code> (book
+sha256 <code>53ee23f5c630ad08</code>), 2026-11-16:</strong> gate_slice
+clean (0 h 25 min, 6.6 g, 70 layers, 7 bridges, 26 overhang walls, 0
+support); gate_floating --gcode PASS, 0 floating regions;
+gate_gcode_floating PASS, 0 floating starts of 3 mm or more, 1 smaller
+(a 1.0 mm overhang wall at layer 56, z 11.2); gate_slots on the live X1C
+PASS, all 4 slots match. <strong>gate_breakaway: N/A, 1 object of 4
+pieces x 1 shell.</strong> The plate has no break-away blocks; run
+anyway the gate reported FAIL on 2 blocks, "no roof extrusion found
+above it" (24.9 x 10.6 and 25.0 x 10.4, top 10.00), and one "??": it
+takes every shell but the largest for a block, and those two boxes are
+the coupon's two legs. Measured on the committed exports (weekly build):
+STEP 4 solids, STL 4 connected components; side leg 1 solid / 1
+component, 1233.6 mm³; side block 1 / 1, 1318.8; top leg 1 / 1, 1403.3;
+top block 1 / 1, 1340.9; every shell closed, so no finger or tooth is
+detached (LumiAI CTO accepted the override). <strong>Operator 2026-11-16
+on the design picture: "the picture looks good. Aesthetically fine. We
+have to print the test plate and see how it behaves."</strong>
 <strong>Halo test of the released serrated cradle (operator 2026-11-16,
 one install and one removal):</strong> grip "much, much, much better";
 swing down 60 to 70 % or more by his estimate (not measured: the IMU
