@@ -313,6 +313,40 @@ add up.</td>
 <td></td>
 </tr>
 <tr>
+<td><strong>Cradle REAR CAMERA check now covers the T ledge
+(2026-11-17)</strong></td>
+<td>The cradle macro's REAR CAMERA VIEW row never had the top T ledge or
+its nose pad among the parts a lens must see past. They are in it now,
+set at each phone's back, and the released cradle PASSES: least margin
++3.6° (Pixel 8 + case, ultra-wide, at Google's published 62.9°
+half-angle; +6.5° at the flat 60°); the operator's Galaxy S23 Ultra
++11.0° bare, +7.7° cased. <strong>Ultra-wide half-angles are per phone
+where the maker publishes a wider field than 120°</strong> (Pixel 7 Pro
+and 8: 62.9°; 8 Pro 62.8°; 9, 9 Pro, 9 Pro XL: 61.5°; every other phone
+60°), and the row prints which phones it gated wider. <strong>The nine
+Pixels' lenses are modelled on their camera bars</strong>
+(<code>lumi_phone_set.py</code>; table, sources and tolerances in
+<code>cad/freecad/lumi_phone_set_PIXEL_LENSES.md</code>): no official
+Google drawing is public, so they are scaled from Google's back renders,
+±0.7 mm on the 9 family, ±1.0 on the 8, 8 Pro, 7a, 8a, and the 7 and 7
+Pro are weak in height (±1.5: caliper a real unit before relying on it).
+Before this a camera bar was sampled as ultra-wide points every 3 mm,
+which put the T ledge 46° inside a "lens" that does not exist. <strong>A
+flash is no longer a lens:</strong> the fourth element of the iPhone
+Pros' camera plateau is the flash; it has its own class and a bite (read
+as an ultra-wide it fails the row by 1.2° on the cased iPhone 14 Pro).
+Released macro on the weekly build: RESULT PASS, 251 rows ok (250 + the
+bite), every other row unchanged; all 45 cradle STLs byte-identical and
+all 45 STEPs the same 801 solids as before, so no part changed. The
+REFERENCE STEPs and their stamp are re-exported with the macro (the
+catch macro refuses references whose stamp names another macro).
+<strong>Found while porting the quick release:</strong> its first top T,
+a bracket fixed at the thickest phone's height, stands in a real
+ultra-wide's view on 33 variants (S23 Ultra included); it is being
+redesigned to sit at each phone's back, with this row as its gate.</td>
+<td></td>
+</tr>
+<tr>
 <td><strong>Fence back half + rear cap + SPS30 carrier RELEASED
 (operator 2026-11-14); fence FRONT half (plate 12) released with the
 power-bay carrier, as a pair (CTO 2026-11-15)</strong></td>
