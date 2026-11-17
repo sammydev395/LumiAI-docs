@@ -359,8 +359,9 @@ trees, preset overrides) only warn</td>
 <td><strong>A</strong> each slot against the printer's live AMS
 (filament id, type, colour); <strong>B</strong> each PETG slot's
 filament values against the Inland PETG+ table, or against its own
-<code>PRESET_ROWS</code> row when the slot's vendor names another spool
-(today: AliExpress HS PETG red); <strong>C</strong> each printed
+<code>PRESET_ROWS</code> row, keyed by type, vendor and colour, when the
+slot's vendor names another spool (today: Kingroon HS PETG red on the
+X1C, Kingroon HS PETG blue on the H2S); <strong>C</strong> each printed
 object's process against its slot's material rules (temperature inside
 the material's band, PETG outer wall at most 70 mm/s and the
 <code>tree_strong</code> support set, ASA with a brim)</td>
@@ -426,12 +427,14 @@ avoid-crossing-walls on (a warning when off, a failure when the outer
 wall is also over the limit); supports only as <code>tree_strong</code>
 with branch Ø5, 2 walls, support speed 50 (the wand flange coupons are
 sanctioned slim).</li>
-<li>PETG, a named spool: its <code>PRESET_ROWS</code> row, keyed by type
-and the slot's <code>filament_vendor</code>, carries its own values and
-temperature band and falls back to the Inland PETG+ checks for anything
-it does not list. Today's row: AliExpress HS PETG red (X1C slot 2 from
-2026-11-14), 240 / 0.94 / 10, band 230-260, qualified on the X1C 27 seat
-coupon.</li>
+<li>PETG, a named spool: its <code>PRESET_ROWS</code> row, keyed by
+type, the slot's <code>filament_vendor</code> and its colour, carries
+its own values and temperature band and falls back to the Inland PETG+
+checks for anything it does not list. Today's rows, both Kingroon HS
+PETG from the 5 kg mix: red (X1C slot 2 from 2026-11-14), 240 / 0.94 /
+10, bed 75, band 230-260, qualified on the X1C 27 seat coupon; blue (H2S
+slot 1 from 2026-11-16), the same values with bed 80, untested beyond
+the H2S 35 coupon.</li>
 <li>Temperature bands (<code>TEMP_BAND</code>, nozzle temperature of
 every printed object against its slot's material): PLA 195-230, PETG
 225-250, ASA 245-275, PA-CF 250-300, TPU 210-240. A material without a
