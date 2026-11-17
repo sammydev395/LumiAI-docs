@@ -194,6 +194,48 @@ dovetail that must hold a part rigid needs a clamp across it (clearance
 alone gives ≈ 2c / cos θ of play).</td>
 </tr>
 <tr>
+<td>🔶 <strong>Cradle QUICK RELEASE: T-slide COUPON on X1C 33 (grey
+PETG+ slot 3), print and try it; the cradle parts are
+unchanged</strong></td>
+<td>Operator 2026-11-16: the phone must come out of the cradle fast, so
+the big knob and the three M2 thumb screws of the T ledges go and every
+hold becomes spring-loaded ("So you just get things out by pressing");
+the L, the base and the serrated grip stay, and may change where the
+quick release needs it. <strong>Design, worked out on the released
+solids in a working copy (Galaxy S23 Ultra + case only; not in the
+cradle macro, no cradle export changed):</strong> one steel spring
+between the ridge block and a carrier whose hooked arm sits in a rack in
+the base, so the spring both pinches the L and grips the phone (29.7 to
+36.9 N; lock push 37 N, release 15 N); the T ledges become click slides.
+<strong>The coupon (CAD <code>3f7bee11</code>,
+<code>lumi_bigclaw_cradle_t_slide_coupon.py</code>, export
+<code>lumi_bigclaw_phone_cradle_aback_t_slide_coupon</code>):</strong>
+the slide alone, four pieces: the side T's leg and its pocket block, the
+top T's leg and its roofed pocket block. Each leg carries a 1.2 x 7.6
+flexure finger with two teeth hooked 15°, 0.35 into serrations 0.55
+proud of the slotted wall, pitch 1.0, and a press tab out through the
+U-slot; the tab is 7.75 x 4 (the operator's picture shows 5.5 x 4: its
+head now stands on the bed so it prints without support). Legs print on
+their side: layer lines along the flexure. Macro gates on the weekly
+build 24 of 24, RESULT PASS (finger strain while pressed 1.37 % side /
+1.48 % top against 1.5 %; three bites). <strong>What the print has to
+show:</strong> the leg clicks in and holds a firm pull; pressing the tab
+lets it slide out; the finger does not whiten or stay bent; the 0.55
+serrations and the 2.0 rail print clean. The slides enter the cradle and
+the books only after this coupon and the operator's word on the design
+picture (LumiAI CTO). <strong>Book:</strong> X1C plate 33, 0.2 layers, 3
+walls, no supports, 10 mm brim, last plate so no number moves; verify
+PASS with and without the previous book, gate_slots PASS 0 / 0 without
+the live AMS. Not run on the GMKtec: the slice, gate_floating and the
+G-code gates (LumiAI 3DPrinter runs them before it installs the book).
+<strong>Halo test of the released serrated cradle (operator 2026-11-16,
+one install and one removal):</strong> grip "much, much, much better";
+swing down 60 to 70 % or more by his estimate (not measured: the IMU
+stream was not working); servo temperatures within 2 °C of the old
+cradle's. Watch the serrations for wear as cycles add up.</td>
+<td></td>
+</tr>
+<tr>
 <td><strong>Fence back half + rear cap + SPS30 carrier RELEASED
 (operator 2026-11-14); fence FRONT half (plate 12) released with the
 power-bay carrier, as a pair (CTO 2026-11-15)</strong></td>
