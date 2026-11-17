@@ -194,21 +194,46 @@ dovetail that must hold a part rigid needs a clamp across it (clearance
 alone gives ≈ 2c / cos θ of play).</td>
 </tr>
 <tr>
-<td>🔶 <strong>Cradle QUICK RELEASE: T-slide COUPON on X1C 33 (grey
-PETG+ slot 3) and H2S 35 (Kingroon HS PETG blue, slot 1), print one and
-try it; the cradle parts are unchanged. H2S plates 15 and 17 HELD (no
+<td>🔴 <strong>Cradle QUICK RELEASE: the v1 T-slide COUPON DOES NOT
+CATCH (printed 2026-11-16); X1C 33 and H2S 35 are HOLD do not print; v2
+in work; the cradle parts are unchanged. H2S plates 15 and 17 HELD (no
 material)</strong></td>
-<td>Operator 2026-11-16: the phone must come out of the cradle fast, so
-the big knob and the three M2 thumb screws of the T ledges go and every
-hold becomes spring-loaded ("So you just get things out by pressing");
-the L, the base and the serrated grip stay, and may change where the
-quick release needs it. <strong>Design, worked out on the released
-solids in a working copy (Galaxy S23 Ultra + case only; not in the
-cradle macro, no cradle export changed):</strong> one steel spring
-between the ridge block and a carrier whose hooked arm sits in a rack in
-the base, so the spring both pinches the L and grips the phone (29.7 to
-36.9 N; lock push 37 N, release 15 N); the T ledges become click slides.
-<strong>The coupon (CAD <code>3f7bee11</code>,
+<td><strong>The coupon failed in the operator's hands (H2S 35, Kingroon
+blue, 2026-11-16):</strong> "it goes in but never clicks or holds";
+"They just slide in and out. Nothing catches at all."; with the tab
+pulled so the teeth are against the wall, "not barely catches, but
+doesn't really catch enough"; and his two findings: "The ridges are not
+deep enough, first of all ... Secondly, the force exerted by the tab,
+you created this plastic spring, is not enough. Even if the ridges were
+okay, that force is not enough." <strong>Cause, the design
+(3dPrint):</strong> the teeth overlap the serrations by 0.35 with the
+leg in its nominal place, but the leg floats 0.4 in its pocket; a 0.2
+air gap was left between tooth tips and wall; the 0.55 knife-edge teeth
+and serrations do not print at height on a 0.4 nozzle; and the finger is
+straight at rest, so it presses the teeth into nothing. <strong>The
+gates were blind to it:</strong> the hold was measured at the leg's
+nominal position only, with no print allowance, so the macro's 24 of 24,
+the slicing gates below and the port's slide numbers (2.85 mm2 of
+bearing) say nothing about catching and are withdrawn for the slides.
+<strong>Both plates are titled "HOLD do not print - v1 slide does not
+catch"</strong> and stay in place until the v2 coupon replaces them. v2:
+a flat-topped catch of about 0.9 to 1.0 sized with the leg at the far
+side of its float, one tooth per slide, longer tapered fingers, and gate
+rows that measure the hold at both ends of the float with 0.15 off tooth
+and serration, which v1 must fail; a steel-sprung pawl is the
+alternative if the printed finger cannot give the force he asks for.
+<em>What follows describes v1 as it was built and gated, kept for the
+record of what was printed.</em> Operator 2026-11-16: the phone must
+come out of the cradle fast, so the big knob and the three M2 thumb
+screws of the T ledges go and every hold becomes spring-loaded ("So you
+just get things out by pressing"); the L, the base and the serrated grip
+stay, and may change where the quick release needs it. <strong>Design,
+worked out on the released solids in a working copy (Galaxy S23 Ultra +
+case only; not in the cradle macro, no cradle export changed):</strong>
+one steel spring between the ridge block and a carrier whose hooked arm
+sits in a rack in the base, so the spring both pinches the L and grips
+the phone (29.7 to 36.9 N; lock push 37 N, release 15 N); the T ledges
+become click slides. <strong>The coupon (CAD <code>3f7bee11</code>,
 <code>lumi_bigclaw_cradle_t_slide_coupon.py</code>, export
 <code>lumi_bigclaw_phone_cradle_aback_t_slide_coupon</code>):</strong>
 the slide alone, four pieces: the side T's leg and its pocket block, the
