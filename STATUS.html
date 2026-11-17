@@ -195,8 +195,9 @@ alone gives ≈ 2c / cos θ of play).</td>
 </tr>
 <tr>
 <td>🔶 <strong>Cradle QUICK RELEASE: T-slide COUPON on X1C 33 (grey
-PETG+ slot 3) and H2S 35 (yellow PETG+ slot 4), print one and try it;
-the cradle parts are unchanged</strong></td>
+PETG+ slot 3) and H2S 35 (Kingroon HS PETG blue, slot 1), print one and
+try it; the cradle parts are unchanged. H2S plates 15 and 17 HELD (no
+material)</strong></td>
 <td>Operator 2026-11-16: the phone must come out of the cradle fast, so
 the big knob and the three M2 thumb screws of the T ledges go and every
 hold becomes spring-loaded ("So you just get things out by pressing");
@@ -241,22 +242,38 @@ the coupon's two legs. Measured on the committed exports (weekly build):
 STEP 4 solids, STL 4 connected components; side leg 1 solid / 1
 component, 1233.6 mm³; side block 1 / 1, 1318.8; top leg 1 / 1, 1403.3;
 top block 1 / 1, 1340.9; every shell closed, so no finger or tooth is
-detached (LumiAI CTO accepted the override). <strong>H2S 35 (operator
-2026-11-16, via LumiAI 3DPrinter: print it on the H2S, the X1C is busy
-with plate 21):</strong> the same piece and settings, last plate of the
-H2S book (35 of Studio's 36), on the yellow Inland PETG+ already in slot
-4, the same PETG+ as the T ledges, so no spool change; verify PASS with
-and without the previous book, gate_slots PASS 0 / 0 without the live
-AMS; gated by LumiAI 3DPrinter from <code>888858c4</code> (book sha256
-<code>099bc9044f8494dd</code>): gate_slice clean (24 min, 6.7 g, 70
-layers, 0 support), gate_floating --gcode PASS 0 regions,
-gate_gcode_floating PASS (the same single 1.0 mm start at layer 56),
-gate_breakaway N/A (no blocks). <strong>Live gate_slots on the H2S: FAIL
-on slot 1 only</strong>: the book has PolyLite PLA (GFL00), the tray
-reads PETG (GFG60), the operator's blue HS PETG loaded 2026-11-16; slot
-4 and the rest match, so plate 35 is clear to print. The book is not
-re-slotted for the blue spool: every PLA plate on H2S slot 1 fails that
-gate until the spool goes back or the operator has slot 1 changed.
+detached (LumiAI CTO accepted the override). <strong>H2S 35 on the
+Kingroon HS PETG blue (operator 2026-11-16, in LumiAI 3DPrinter's
+session: "we can print on the h2s let me put blue hs petg in it in slot
+1"; "put slot 1, which is the new PETG high-speed blue from King
+Roon"):</strong> the same piece and settings, last plate of the H2S book
+(35 of Studio's 36), on H2S slot 1. <strong>This is NOT the T ledges'
+Inland PETG+</strong>, and the plate name says so ("T-slide coupon
+Kingroon HS not Inland"): a pass on it shows the slide's geometry prints
+and works, not that the Inland PETG+ part will flex the same; X1C 33
+(grey Inland PETG+) is the like-for-like test. Slot 1's values are the
+red HS PETG's from the X1C, carried over and untested on the blue spool
+(240 °C, flow 0.94, 10 mm³/s, textured plate 75, range 230-260,
+retraction 1 mm / 40 / 70 %); this coupon is the spool's first print.
+Gates on the GMKtec: STL source gate PASS, verify PASS (17 checks, 19
+warnings, 0 failures) with and without the previous book, gate_slots
+without the live AMS PASS 0 / 0. Not yet run on this build: the slice,
+gate_floating, the G-code gates and the live slots (LumiAI 3DPrinter).
+<strong>HELD, H2S plates 15 and 17 (LumiAI CTO 2026-11-16):</strong> the
+H2S book's former slot-1 objects, the sensor carriers
+(<code>lumi_ze15co_carrier</code>,
+<code>lumi_sps30_carrier_plate</code>,
+<code>lumi_sps30_carrier_strap</code>) and the U-bracket
+(<code>lumi_mount_ubracket</code>), have no material now that slot 1 is
+PETG. They are not re-slotted and not released: titled "HOLD do not
+print", and gate_slots reports what it finds on a held plate as a
+warning that names the hold. Both plates are X1C parts by the operator's
+2026-11-07 printer split and the carriers are PETG+ by his 2026-11-05
+material split, so these H2S copies may be deletions, not re-slots: his
+pick; they are re-gated when he makes it. The X1C book's own copies are
+untouched. <em>Was (888858c4, 17c224e0): plate 35 on the yellow Inland
+PETG+ in slot 4, gated there by 3DPrinter (24 min, 6.7 g); live slot 1
+FAIL, the tray reading PETG against the book's PLA.</em>
 <strong>Operator 2026-11-16 on the design picture: "the picture looks
 good. Aesthetically fine. We have to print the test plate and see how it
 behaves."</strong> <strong>Halo test of the released serrated cradle
@@ -898,25 +915,29 @@ enforcer paint under each leg-end tab's flat ceiling (print z 39.7, ~210
 mm² a strap over open bed; X1C 22 left them bare: 4 floating starts,
 Karma 2026-11-14) -- <code>ENFORCE_BOX_PRINT</code>, picked in the print
 frame. <strong>H2S slots</strong> (after <code>SLOT_MOVE</code>, which
-maps the builder's old 1→4, 4→1): 1 Inland PLA+ (blue, finished
-2026-11-08), 2 Generic ASA (260 / bed 90 / chamber 60), 3 PolyLite PETG
-(black), 4 yellow PETG+, 5 NylonX (<code>Generic PA-CF</code> base: 260
-/ bed 65 / chamber 0, part fan OFF for the first 13 layers, external
-from the PrintDry, CF-nylon speed set, outer brim 12 gap 0, thin fresh
-glue), 6 Generic TPU (cradle pads). <strong>X1C slots:</strong> 1
-Overture PLA white, 2 red PETG while the ASA ships -- the AliExpress HS
-PETG red since 2026-11-14 (preset <code>AliExpress HS PETG red</code>,
-the Inland PETG+ values, textured plate 80 -- the coupon stuck too hard
-at 85 -- qualified on the X1C 27 coupon: "prints well"; the builder
-writes its keys on slot 2 itself, slot 1 PLA+ stays 60, and a one-spool
-slot change is <code>set_filament_slots.py ... --slots N</code>), 3 grey
-PETG+, 4 clear PETG+. The builder writes the old 4-slot plan and
-<code>SLOT_MOVE</code> remaps it (1→1, 2→3, 3→4, 4→3); the rigid cradle
-plate 27 moves onto slot 2 after that; parts that moved PLA→PETG+ with
-supports ON get tree_strong (verify fails PETG on slim trees), except
-the trees already sanctioned by name. H2S nozzle wrap detection stays
-ON, so multi-object H2S plates print by layer. <strong>Builder /
-tools:</strong> the builder declares every process override in
+maps the builder's old 1→4, 4→1): 1 Kingroon HS PETG blue since
+2026-11-16 (operator; PolyLite PETG preset, the red HS PETG's values
+carried over: 240 / 0.94 / 10 mm³/s / bed 75, untested on this spool;
+<code>set_filament_slots.py h2s ... --slots 1 --like 4</code> writes the
+slot on the GMKtec, the builder lays the values on it), 2 Generic ASA
+(260 / bed 90 / chamber 60), 3 PolyLite PETG (black), 4 yellow PETG+, 5
+NylonX (<code>Generic PA-CF</code> base: 260 / bed 65 / chamber 0, part
+fan OFF for the first 13 layers, external from the PrintDry, CF-nylon
+speed set, outer brim 12 gap 0, thin fresh glue), 6 Generic TPU (cradle
+pads). <strong>X1C slots:</strong> 1 Overture PLA white, 2 red PETG
+while the ASA ships -- the AliExpress HS PETG red since 2026-11-14
+(preset <code>AliExpress HS PETG red</code>, the Inland PETG+ values,
+textured plate 80 -- the coupon stuck too hard at 85 -- qualified on the
+X1C 27 coupon: "prints well"; the builder writes its keys on slot 2
+itself, slot 1 PLA+ stays 60, and a one-spool slot change is
+<code>set_filament_slots.py ... --slots N</code>), 3 grey PETG+, 4 clear
+PETG+. The builder writes the old 4-slot plan and <code>SLOT_MOVE</code>
+remaps it (1→1, 2→3, 3→4, 4→3); the rigid cradle plate 27 moves onto
+slot 2 after that; parts that moved PLA→PETG+ with supports ON get
+tree_strong (verify fails PETG on slim trees), except the trees already
+sanctioned by name. H2S nozzle wrap detection stays ON, so multi-object
+H2S plates print by layer. <strong>Builder / tools:</strong> the builder
+declares every process override in
 <code>different_settings_to_system[0]</code> (verify check 13), or
 Studio resets it on the next save; verify FAILS a
 <code>filament_self_index</code> that is not 1..N.
