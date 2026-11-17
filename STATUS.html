@@ -459,12 +459,16 @@ parts 25, routes 10, gates 22, export 6 s). DROK IN: 1 mm bare lead-out
 before turning (turning at 1 mm cut 68.5 mm³ into the DROK). Lengths,
 centreline per conductor: DROK-in 291.0 / 289.3, DROK-out 181.4 / 189.6,
 D14a 33.0 (to Electronics for rows 5/6). Fit: the printed fence front
-half takes the INA3 and the DROK (operator via Karma 11-16). ⛔
-2026-11-16 this row said: the 6 mm ferrule collar sat 0.21 mm into the
-fence slant (OPEN), and the STEP's board and colours were added by hand
-after the run. Both superseded. <strong>Next:</strong> stage graph +
-boolean memo (gate groups, per-boolean cache, parts sub-stages) under
-test; then the full assembly at idle time.</td>
+half takes the INA3 and the DROK (operator via Karma 11-16).
+<strong>Cached build (<code>lumi_stages.py</code>, 21 stages + boolean
+memo):</strong> cold 51 min; reload 9 s; gate edit 7 s; part edit 9.6
+min; route edit 9.4 min (route gates 28 s, all memo); cached and
+from-scratch builds give the same 53 gate lines and the same STEP bodies
+(188 products). Run with <code>cad/freecad/run_wired_bay.sh</code> (one
+heavy build at a time; the log ends with its peak RSS).
+<strong>Next:</strong> full assembly 23:00 tonight
+(<code>run_full_assembly_night.sh</code>, 23:00-06:00 only), then stage
+it the same way.</td>
 <td></td>
 </tr>
 <tr>
