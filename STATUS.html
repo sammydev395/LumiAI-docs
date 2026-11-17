@@ -194,164 +194,119 @@ dovetail that must hold a part rigid needs a clamp across it (clearance
 alone gives ≈ 2c / cos θ of play).</td>
 </tr>
 <tr>
-<td>🔴 <strong>Cradle QUICK RELEASE: the v1 T-slide COUPON DOES NOT
-CATCH (printed 2026-11-16); X1C 33 and H2S 35 are HOLD do not print; v2
-in work; the cradle parts are unchanged. H2S plates 15 and 17 HELD (no
-material)</strong></td>
-<td><strong>The coupon failed in the operator's hands (H2S 35, Kingroon
-blue, 2026-11-16):</strong> "it goes in but never clicks or holds";
-"They just slide in and out. Nothing catches at all."; with the tab
-pulled so the teeth are against the wall, "not barely catches, but
-doesn't really catch enough"; and his two findings: "The ridges are not
-deep enough, first of all ... Secondly, the force exerted by the tab,
-you created this plastic spring, is not enough. Even if the ridges were
-okay, that force is not enough." <strong>Cause, the design
-(3dPrint):</strong> the teeth overlap the serrations by 0.35 with the
-leg in its nominal place, but the leg floats 0.4 in its pocket; a 0.2
-air gap was left between tooth tips and wall; the 0.55 knife-edge teeth
-and serrations do not print at height on a 0.4 nozzle; and the finger is
-straight at rest, so it presses the teeth into nothing. <strong>The
-gates were blind to it:</strong> the hold was measured at the leg's
-nominal position only, with no print allowance, so the macro's 24 of 24,
-the slicing gates below and the port's slide numbers (2.85 mm2 of
-bearing) say nothing about catching and are withdrawn for the slides.
-<strong>Both plates are titled "HOLD do not print - v1 slide does not
-catch"</strong> and stay in place until the v2 coupon replaces them. v2:
-a flat-topped catch of about 0.9 to 1.0 sized with the leg at the far
-side of its float, one tooth per slide, longer tapered fingers, and gate
-rows that measure the hold at both ends of the float with 0.15 off tooth
-and serration, which v1 must fail; a steel-sprung pawl is the
-alternative if the printed finger cannot give the force he asks for.
-<em>What follows describes v1 as it was built and gated, kept for the
-record of what was printed.</em> Operator 2026-11-16: the phone must
-come out of the cradle fast, so the big knob and the three M2 thumb
-screws of the T ledges go and every hold becomes spring-loaded ("So you
-just get things out by pressing"); the L, the base and the serrated grip
-stay, and may change where the quick release needs it. <strong>Design,
-worked out on the released solids in a working copy (Galaxy S23 Ultra +
-case only; not in the cradle macro, no cradle export changed):</strong>
-one steel spring between the ridge block and a carrier whose hooked arm
-sits in a rack in the base, so the spring both pinches the L and grips
-the phone (29.7 to 36.9 N; lock push 37 N, release 15 N); the T ledges
-become click slides. <strong>The coupon (CAD <code>3f7bee11</code>,
-<code>lumi_bigclaw_cradle_t_slide_coupon.py</code>, export
-<code>lumi_bigclaw_phone_cradle_aback_t_slide_coupon</code>):</strong>
-the slide alone, four pieces: the side T's leg and its pocket block, the
-top T's leg and its roofed pocket block. Each leg carries a 1.2 x 7.6
-flexure finger with two teeth hooked 15°, 0.35 into serrations 0.55
-proud of the slotted wall, pitch 1.0, and a press tab out through the
-U-slot; the tab is 7.75 x 4 (the operator's picture shows 5.5 x 4: its
-head now stands on the bed so it prints without support). Legs print on
-their side: layer lines along the flexure. Macro gates on the weekly
-build 24 of 24, RESULT PASS (finger strain while pressed 1.37 % side /
-1.48 % top against 1.5 %; three bites). <strong>What the print has to
-show:</strong> the leg clicks in and holds a firm pull; pressing the tab
-lets it slide out; the finger does not whiten or stay bent; the 0.55
-serrations and the 2.0 rail print clean. The slides enter the cradle and
-the books only after this coupon prints and passes in his hands (LumiAI
-CTO). <strong>Book:</strong> X1C plate 33, 0.2 layers, 3 walls, no
-supports, 10 mm brim, last plate so no number moves; verify PASS with
-and without the previous book, gate_slots PASS 0 / 0 without the live
-AMS. <strong>Gated by LumiAI 3DPrinter from <code>c068f291</code> (book
-sha256 <code>53ee23f5c630ad08</code>), 2026-11-16:</strong> gate_slice
-clean (0 h 25 min, 6.6 g, 70 layers, 7 bridges, 26 overhang walls, 0
-support); gate_floating --gcode PASS, 0 floating regions;
-gate_gcode_floating PASS, 0 floating starts of 3 mm or more, 1 smaller
-(a 1.0 mm overhang wall at layer 56, z 11.2); gate_slots on the live X1C
-PASS, all 4 slots match. <strong>gate_breakaway: N/A, 1 object of 4
-pieces x 1 shell.</strong> The plate has no break-away blocks; run
-anyway the gate reported FAIL on 2 blocks, "no roof extrusion found
-above it" (24.9 x 10.6 and 25.0 x 10.4, top 10.00), and one "??": it
-takes every shell but the largest for a block, and those two boxes are
-the coupon's two legs. Measured on the committed exports (weekly build):
-STEP 4 solids, STL 4 connected components; side leg 1 solid / 1
-component, 1233.6 mm³; side block 1 / 1, 1318.8; top leg 1 / 1, 1403.3;
-top block 1 / 1, 1340.9; every shell closed, so no finger or tooth is
-detached (LumiAI CTO accepted the override). <strong>H2S 35 on the
-Kingroon HS PETG blue (operator 2026-11-16, in LumiAI 3DPrinter's
-session: "we can print on the h2s let me put blue hs petg in it in slot
-1"; "put slot 1, which is the new PETG high-speed blue from King
-Roon"):</strong> the same piece and settings, last plate of the H2S book
-(35 of Studio's 36), on H2S slot 1. <strong>This is NOT the T ledges'
-Inland PETG+</strong>, and the plate name says so ("T-slide coupon
-Kingroon HS not Inland"): a pass on it shows the slide's geometry prints
-and works, not that the Inland PETG+ part will flex the same; X1C 33
-(grey Inland PETG+) is the like-for-like test. Slot 1's values are the
-red HS PETG's from the X1C, carried over and untested on the blue spool
-(240 °C, flow 0.94, 10 mm³/s, range 230-260, retraction 1 mm / 40 / 70
-%), with the textured plate at 80 (operator 2026-11-16: "I would still
-not print it at 85. It's too high. Maybe print it at 80 or 75 ... We can
-go 80 if we want to."); this coupon is the spool's first print. Why the
-blue and not the yellow Inland PETG+ (his words, through speech-to-text,
-as LumiAI 3DPrinter read them): the Inland PETG+ does not print as crisp
-as the Kingroon HS PETG, "and these are ridges we are talking about,
-which we want them to be distinct and clear". Whether the real T ledges
-and cradle parts move to the Kingroon is not decided. Gates on the
-GMKtec: STL source gate PASS, verify PASS (17 checks, 19 warnings, 0
-failures) with and without the previous book, gate_slots without the
-live AMS PASS 0 / 0. Gated by LumiAI 3DPrinter from
-<code>0a7e28f2</code> (book sha256 <code>b58d94dca061488e</code>):
-gate_slice clean (25 min, 6.7 g, 70 layers, G-code M104 S240 / M190
-S80), gate_floating --gcode PASS, gate_gcode_floating PASS (the same
-single 1.0 mm start), gate_breakaway N/A, gate_slots on the live H2S
-PASS 0 / 0 (slot 1's tray reads GFG60 PETG #2850E0, the book's colour).
-<strong>HELD, H2S plates 15 and 17 (LumiAI CTO 2026-11-16):</strong> the
-H2S book's former slot-1 objects, the sensor carriers
-(<code>lumi_ze15co_carrier</code>,
+<td>🔴 <strong>Cradle QUICK RELEASE: sprung T ledges; the SPRING-LESS
+test coupon is on X1C 33 and H2S 35, printed BEFORE any spring is
+bought; the port is in a scratch copy, the cradle parts are unchanged.
+H2S plates 15 and 17 HELD (no material)</strong></td>
+<td><strong>What the operator asked (2026-11-16):</strong> the phone
+must come out of the cradle fast, so the big knob and the three M2 thumb
+screws of the T ledges go and every hold is spring-loaded ("So you just
+get things out by pressing"); the L, the base and the serrated grip stay
+and may change where the quick release needs it. <strong>The first
+coupon failed in his hands (printed flexure fingers, CAD
+<code>3f7bee11</code>, H2S 35, 2026-11-16):</strong> "it goes in but
+never clicks or holds"; "The ridges are not deep enough, first of all
+... Secondly, the force exerted by the tab, you created this plastic
+spring, is not enough." Cause, the design (3dPrint): 0.35 of tooth
+overlap against 0.4 of leg float, 0.55 knife-edge teeth, a finger that
+pressed on nothing at rest; and the hold's gate measured the nominal
+position only, with no print allowance. That coupon, its macro and its
+plates are removed. <strong>His decisions since:</strong> steel springs
+on all three T ledges ("Plastic tabs are not going to work ... You have
+to go with springs"); the T ledges are captive ("the never coming out
+option is better"); a T ledge must touch the phone's back ("So what good
+is a T-ledge which is not sitting on the back of the phone?"), by a
+spring and not by TPU ("I don't think TPU is going to hold the phone");
+the real T ledges and every serrated cradle part print in the red
+Kingroon HS PETG on X1C slot 2; and on 2026-11-17: <strong>"I will not
+be ordering the springs till I have printed the parts and looked at them
+myself and checked if springs will even work in them."</strong> He
+cannot judge a force in newtons, so forces go to him as everyday
+weights. <strong>The design (worked out on the released solids in a
+working copy):</strong> <em>Main lock:</em> one steel spring (1.0 wire x
+8 x 15) between the ridge block and a carrier whose hooked arm sits in a
+rack in the base, so the spring both pinches the L and grips the phone;
+push the tab toward the phone to lock, push it down to release. <em>Side
+T ledges:</em> a rigid leg whose 2.0 toe sits under a ridge 1.0 proud of
+one end wall of its pocket; a 0.5 x 4 x 10 spring in a blind hole in the
+host presses the leg onto that wall (about 450 g at rest, 640 g pushed
+aside [4.4 N, 6.3 N]); out: push the T sideways against the spring and
+lift, for assembly and service only. They have one height. <em>Top T
+ledge:</em> a bracket FIXED in the crossbar's pocket by one cross pin
+(9.0 mm of 1.75 filament, its ends under both faces; a sprung toe does
+not fit between the 2.0 walls and the mic slots) and a hinged FLAP on a
+filament pin, two 0.5 x 4 x 12 springs under it, that follows the
+phone's back at every thickness: about a full soda can's weight on the
+thinnest phone, a litre of water's on the thickest [3.9 N, 10.1 N]. All
+spring figures are calculated on assumed coil counts for 304 stainless
+and are provisional until a real spring is measured. Springs per cradle:
+0.5 x 4 x 10, two; 0.5 x 4 x 12, two; 1.0 x 8 x 15, one. None ordered.
+<strong>The coupon (CAD <code>cae15c1c</code> and <code>10fb834b</code>,
+<code>lumi_bigclaw_cradle_t_spring_coupon.py</code>, export
+<code>lumi_bigclaw_phone_cradle_aback_t_spring_coupon</code>), six
+pieces:</strong> the side T's pocket (ridge, the spring's hole with its
+0.8 lip, "4.4 x 4.8" engraved beside it) and its leg; the top T's pocket
+twice, the cross pin's wall holes at 1.7 and at 1.8 (engraved); the top
+T's bracket; its flap. <strong>WITHOUT SPRINGS NOTHING ON IT HOLDS BY
+ITSELF; a finger stands in for the spring.</strong> What each piece
+should do: the side leg drops in at the long end of its pocket and
+slides 1.2 to the ridge wall; pressed onto that wall by a finger it
+cannot be lifted, let go it can. The bracket's leg goes up into either
+top pocket and a 9 mm length of filament through the back wall holds it:
+the block whose holes grip the filament without a hammer is the size the
+cradle gets (if neither grips, one M2 screw put in once at assembly is
+the fallback, LumiAI CTO). The flap on a 12.5 mm length of filament
+swings freely, stops on its heel about 18 degrees up and falls back down
+by itself. And he can see whether a 4 mm spring will go into the holes.
+Macro gates on the weekly build: 16 of 16, RESULT PASS; the hold is
+measured with 0.15 off ridge AND toe (catch 0.70 against the 0.35
+floor), and two bites: no ridge is not held, and the first coupon's own
+0.35 catch at its 0.4 float lifts straight out, as it did.
+<strong>Books:</strong> X1C plate 33 (red Kingroon HS PETG, slot 2) and
+H2S plate 35 (Kingroon HS PETG blue, slot 1; bed 80), the last plate of
+each so no number moves; 0.2 layers, 3 walls, no supports, 10 mm brim.
+Gates on the GMKtec: STL source gate PASS, verify PASS on both books
+with and without the previous book (0 failures), gate_slots without the
+live AMS PASS 0 / 0 on both (books sha256 X1C
+<code>8e9ac44edb2b10db</code>, H2S <code>92790ffd341f9d22</code>).
+<strong>Not yet gated by LumiAI 3DPrinter</strong> (slice, floating,
+G-code, live slots): do not print before that. The X1C cradle plate
+names now read "red HS PETG slot 2" (they said "red PETG+" after the
+spool had changed). <strong>HELD, H2S plates 15 and 17 (LumiAI CTO
+2026-11-16):</strong> the H2S book's former slot-1 objects, the sensor
+carriers (<code>lumi_ze15co_carrier</code>,
 <code>lumi_sps30_carrier_plate</code>,
 <code>lumi_sps30_carrier_strap</code>) and the U-bracket
 (<code>lumi_mount_ubracket</code>), have no material now that slot 1 is
-PETG. They are not re-slotted and not released: titled "HOLD do not
-print", and gate_slots reports what it finds on a held plate as a
-warning that names the hold. <strong>The held plates have NO findings
-today</strong> (their objects already run a PETG-safe process), so no
-such warning prints on this book; the rule is proven on a scratch copy
-(a held object given outer wall 200 mm/s FAILS the book with the hold
-title stripped and prints "HELD plate, would FAIL" with it on). Both
-plates are X1C parts by the operator's 2026-11-07 printer split and the
-carriers are PETG+ by his 2026-11-05 material split, so these H2S copies
-may be deletions, not re-slots: his pick; they are re-gated when he
-makes it. The X1C book's own copies are untouched. <em>Was (888858c4,
-17c224e0): plate 35 on the yellow Inland PETG+ in slot 4, gated there by
-3DPrinter (24 min, 6.7 g); live slot 1 FAIL, the tray reading PETG
-against the book's PLA.</em> <strong>Operator 2026-11-16,
-decisions:</strong> the real T ledges and every serrated cradle part
-print in the red Kingroon HS PETG on X1C slot 2 ("All the real T ledgers
-and the serrated parts will print in red on the Kingaroon HSPetG on X1C
-spool 2"), so H2S 35 in the blue Kingroon is the like-for-like coupon
-and X1C 33 in grey Inland PETG+ the comparison; the top T keeps its 1.0
-steps and may sit up to 0.9 short of the phone's back ("Yes, accept the
-gap"). <strong>Operator 2026-11-16 on the design picture: "the picture
-looks good. Aesthetically fine. We have to print the test plate and see
-how it behaves."</strong> <strong>Port into the cradle macro (in
-progress, a scratch copy, nothing on main; behind one switch that is
-off, so the released cradle builds unchanged):</strong> stated facts
-from it so far. (1) Up-down hold: on 60 of the 79 phone variants the
-block's ridges rest on the lands between the leg's grooves, 14 sit in
-the grooves, 5 between; friction alone at 2.0 x the 2 g load is
-therefore the normal case, as with the knob today, not a regression. (2)
-The side T ledges have ONE height, one click with two teeth: their web
-meets the host after 0.3 of travel, so the 1.0 the screw design allowed
-was never reachable. (3) The fixed side's T slide differs from the two
-on the coupon: its wall is cut away from z 7 up (the claw's finger in
-landscape), so its teeth and tab sit under z 7 and its finger pulls from
-the web; it has not been printed, and it goes on the next coupon plate
-before any book. (4) The top T is set in 1.0 steps, at the highest step
-not above the phone's back: 0 to 0.9 short of it. (5) <strong>Taking the
-phone out on a base with the landscape foot: after the 5 mm open and 2.6
-mm drop, tilt the fixed side up, slide the phone about 4 mm and LIFT it
-off; do not slide it 20 mm sideways, it runs into the landscape
-foot</strong> (8 wide, to z 32 beside the fixed jaw). (6) The L's leg is
-2.0 longer for the stop lug; with the shortest phone its end passes the
-base's bottom edge by 0.8. Checked in the copy: the lock on all 79
-variants (grip 29.8 to 36.8 N), the slides on three thicknesses, the way
-out on five phones. Not yet: the gate suite, the hung and home-pose
-clearances, printgate. <strong>Halo test of the released serrated cradle
-(operator 2026-11-16, one install and one removal):</strong> grip "much,
-much, much better"; swing down 60 to 70 % or more by his estimate (not
-measured: the IMU stream was not working); servo temperatures within 2
-°C of the old cradle's. Watch the serrations for wear as cycles add
-up.</td>
+PETG; titled "HOLD do not print"; gate_slots reports what it finds on a
+held plate as a warning that names the hold. Both are X1C parts by the
+operator's 2026-11-07 printer split, so these H2S copies may be
+deletions, not re-slots: his pick. <strong>Port into the cradle macro
+(in progress, a scratch copy behind one switch that is off, nothing on
+main; the released cradle builds unchanged, proven on geometry at all
+three mount settings):</strong> in so far: the main lock on all 79 phone
+variants (grip 29.8 to 36.8 N on the calculated spring) and the sprung
+side Ts. Stated facts: (1) on 60 of the 79 variants the block's ridges
+rest on the lands between the leg's grooves, 14 sit in the grooves, 5
+between. (2) <strong>LOCK HOLDS is open:</strong> the row asks friction
+of 3 x the hung load at 3 g; the calculated spring gives about 2.0 x on
+the 60 lands variants. The row is not relaxed (LumiAI CTO); it is
+settled by design (land/groove ratio, preload within the spring's
+stress) or by a measured figure, since the arm code has velocity caps
+and no acceleration cap. (3) Taking the phone out on a base with the
+landscape foot: after the 5 mm open and 2.6 mm drop, tilt the fixed side
+up, slide the phone about 4 mm and LIFT it off; do not slide it 20 mm
+sideways, it runs into the landscape foot. (4) The L's leg is 2.0 longer
+for the stop lug; with the shortest phone its end passes the base's
+bottom edge by 0.8. (5) The top T's bracket is 2.0 deeper under its web
+than the screw T; that slab is not yet checked against the L, the post
+and the catch. Not yet: the top T in the macro, the full gate suite, the
+hung and home-pose clearances, printgate, the catch sweep. <strong>Halo
+test of the released serrated cradle (operator 2026-11-16, one install
+and one removal):</strong> grip "much, much, much better"; swing down 60
+to 70 % or more by his estimate (not measured); servo temperatures
+within 2 °C of the old cradle's. Watch the serrations for wear as cycles
+add up.</td>
 <td></td>
 </tr>
 <tr>
