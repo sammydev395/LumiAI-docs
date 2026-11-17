@@ -619,9 +619,38 @@ min; route edit 9.4 min (route gates 28 s, all memo); cached and
 from-scratch builds give the same 53 gate lines and the same STEP bodies
 (188 products). Run with <code>cad/freecad/run_wired_bay.sh</code> (one
 heavy build at a time; the log ends with its peak RSS).
-<strong>Next:</strong> full assembly 23:00 tonight
-(<code>run_full_assembly_night.sh</code>, 23:00-06:00 only), then stage
-it the same way.</td>
+<strong>Next:</strong> see the FULL ASSEMBLY row below.</td>
+<td></td>
+</tr>
+<tr>
+<td>🔶 <strong>FULL ASSEMBLY: night-chain BASELINE (unconverted scripts,
+2026-11-16/17, FreeCAD 2026.11.11 weekly)</strong></td>
+<td><code>cad/freecad/run_full_assembly_night.sh</code> (23:00-06:00
+only; one heavy build at a time) ran pose → bay → cradles → text →
+verify: <strong>OVERALL PASS</strong>, every stage rc 0 and its own
+<code>RESULT: PASS</code>. SUMMARY:
+<code>~/.cache/lumi_stages/runs/full_20261116_2319/SUMMARY</code> (repo
+<code>c02ba21d</code> + the dirty cradles route-reporting change, sha256
+<code>6098dbf2…</code>). <strong>Per stage, wall / peak RSS:</strong>
+pose <strong>636 s / 1.9 GiB</strong>; bay <strong>459 s / 1.9
+GiB</strong>; cradles <strong>2467 s / 5.7 GiB</strong>; text
+<strong>245 s / 2.3 GiB</strong>; verify <strong>4261 s / 5.7
+GiB</strong>; <strong>2 h 14 min end to end</strong> (23:19:54 →
+01:34:23). This is the reference the converted (cached-stage) chain must
+reproduce, gate line for gate line and file for file
+(<code>lumi_stages_compare.py</code>). The 23:00 start died in 0 s (rc
+127: <code>/usr/bin/time</code> cannot run a shell function); fixed in
+<code>8966ce91</code>, which also refuses (exit 3) when the FreeCAD
+binary is missing; restarted 23:19. <strong>Wand tether inlet</strong>
+(REF_JST_XHP_6_shell, to Electronics for row 14): mating face (226.983,
+−133.413, 468.845), mating +Z, pin row +X, in the BigClaw occurrence
+frame (the same in every pose); assembly frame (231.379, −189.508,
+309.081) at this STEP's pose; checked against the written STEP's solid
+to 0.001 mm. <strong>Conversion:</strong> pose converted to cached
+stages and proven identical (24/24 gate lines, 27/27 work files, bite
+2/2; uncommitted, waits on the operator's go); next bay, cradles, text,
+verify by day, then the tether-route stage (lengths per conductor group
+at cradle home, Phone Lift and full extension, with the max).</td>
 <td></td>
 </tr>
 <tr>
