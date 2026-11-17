@@ -3300,8 +3300,8 @@ Pi), GND screw empty, chained MAIN → DROK → BATT (Power_Bay §5b);
 position: <strong>on the fence front wall, directly above the DROK's OUT
 end</strong> (operator; fence CAD 03990a13): INA3 rotated 90° above the
 DROK at its OUT (pot) end, bare 18 AWG at every DROK and INA3 terminal,
-no ferrules or forks (operator 2026-11-16, as on Halo); OUT+ loop 23 +
-49 mm plan; I²C hops MAIN → INA3 → BATT ~334 plan / 420 cut each, up the
+no ferrules or forks (operator 2026-11-16, as on Halo); OUT+ loop 33 +
+54 mm plan; I²C hops MAIN → INA3 → BATT ~334 plan / 420 cut each, up the
 front wall, the DROK-OUT pair stays twisted, chain G469 → MAIN → INA3 →
 BATT → TMP102. <strong>Block terminals may double up</strong> (≤ 3
 conductors in one ferrule sized by total cross-section): <strong>Ultra
@@ -3311,14 +3311,20 @@ E1508); far-end input block = alternative (block moves 15–20 mm −X).
 Caps sum ~12.6 A vs the PSC-100's ~7.7 A with wand + phone: the pack
 carries the excess, measure at bring-up. §11.3.5 step 7 fixed for the v2
 rocker. Ultra's Pi 5 cooler: 5 V from header pin 4 only.</li>
+<li>2026-11-16 (operator): <strong>HV DROK setpoint 12.0 V</strong> (at
+the board's 12 V max; HV servos 9–12.6 V), <strong>HV overvolt trip 12.6
+V</strong>. Acceptance on a spare board: 8 A for 10 min on port 1, PASS,
+path ~0.068 Ω flat, caps under ~30 °C. Open: tantalum marking (75 % of
+16 V), Pi throttle / STM32 reset on a board with a Pi, a full-pack
+battery run (EBD §1).</li>
 <li>2026-11-14 (operator): <strong>HV version = one rail.</strong> The
-existing DROK at 11.1 V (≤ ~11.6 V, board max 12 V) feeds the STM32
-board, which feeds the servos. F1 stays; a servo fuse is undecided
-(operator leans none, the DROK cuts out on overload). Bench: DROK 11.5 A
-sustained at 11.1 V, heatsink ~28.5 °C; on battery the rail sags to
-~9.6–9.85 V at that load; HV undervolt 9.5 V. APIELE retired; Ultra uses
-the HL-PBB. LV builds stay on the PSC-100-12; the PSC-150-12 (ordered)
-is for the HV version. EBD §1 rewritten.</li>
+existing DROK (setpoint now 12.0 V, see 11-16) feeds the STM32 board,
+which feeds the servos. F1 stays; a servo fuse is undecided (operator
+leans none, the DROK cuts out on overload). Bench: DROK 11.5 A sustained
+at 11.1 V, heatsink ~28.5 °C; on battery the rail sags to ~9.6–9.85 V at
+that load; HV undervolt 9.5 V. APIELE retired; Ultra uses the HL-PBB. LV
+builds stay on the PSC-100-12; the PSC-150-12 (ordered) is for the HV
+version. EBD §1 rewritten.</li>
 <li>2026-11-12 (operator, Electronics dec7ecb8): <strong>fuses: the
 shipping LV configuration carries F1 only</strong> (10 A glass, battery
 + → PSU CH2 BAT+). F2/F3/F4 are gone, which supersedes the older

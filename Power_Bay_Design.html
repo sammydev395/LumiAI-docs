@@ -1909,12 +1909,14 @@ terminal's clamp depth, so no bare copper shows outside the entry; twist
 the strands tight; insert fully, with no stray strand outside the clamp;
 tighten; tug-test. <strong>Never tin the strands.</strong> Fine-strand
 silicone settles in a screw clamp, so <strong>retighten each of these
-screws after the first warm run</strong>. Leave the entry straight about
-1 mm, then bend toward where the wall falls away (inboard, +Y, at the IN
-end). CAD's model clears the IN-end slant by 3.47 mm this way; the INA3
-entries keep the fence's 10 mm room, more than bare wire needs.</li>
+screws after the first warm run</strong>. At the <strong>IN end</strong>
+leave the entry straight about 1 mm, then bend inboard (+Y), toward
+where the wall falls away: CAD's model clears the slant by 3.47 mm this
+way. At the <strong>OUT end</strong> run ~6 mm straight off the block
+before turning, so the lead clears the DROK body; the INA3 entries keep
+the fence's 10 mm room, more than bare wire needs.</li>
 <li><strong>DROK-OUT:</strong> OUT+ → IN+ and IN− → on to the Deans, a
-short loop: 23 mm OUT+ → IN+, 49 mm IN− → the pair junction, 28 mm OUT−
+short loop: 33 mm OUT+ → IN+, 54 mm IN− → the pair junction, 33 mm OUT−
 → the junction (centrelines, §16c row 6 has the cuts). OUT− goes
 straight to the Deans and stays twisted with the + lead everywhere
 except that loop.</li>
@@ -3888,7 +3890,7 @@ fuse.</p>
                                      │
                                      ▼
                           HL-PBB-2-6-MINI IN-A (fed end)
-   branches (all unfused):  A1 ──► DROK IN (the STM32 board + servo rail: 7.5 V LV, 11.1 V after the HV swap)
+   branches (all unfused):  A1 ──► DROK IN (the STM32 board + servo rail: 7.5 V LV, 12.0 V after the HV swap)
                             A5 ──► Mus-14 dual-USB-C buck ──► HAT POWER
                             tether / fans / LAMP / creator-edition PHONE CHARGER (IP6518, on the tether&#39;s A / B position)
    after the HV swap (a future upgrade): DROK OUT ──► (servo fuse: undecided) ──► STM32 board ──► servos (one rail)
@@ -6263,8 +6265,8 @@ GND (bare if a ferrule won't seat)</td>
 <td>3</td>
 <td><strong>ROCKER</strong></td>
 <td>2 × 18 + 1 × 22</td>
-<td>210</td>
-<td>320</td>
+<td>210 (wired run 302–318)</td>
+<td><strong>370</strong></td>
 <td>INA226-MAIN ISENSE− <strong>E1008</strong> (LINE wire)</td>
 <td>KCD1 LINE / LOAD: <strong>flag (right-angle) fully insulated 4.8 mm
 Fastons, red band</strong>; LAMP (22): flag 4.8 mm Faston →
@@ -6288,8 +6290,7 @@ Fence-mounted, so leave a service loop for lifting the carrier</td>
 <td>5</td>
 <td><strong>DROK-IN</strong></td>
 <td>2 × 18</td>
-<td>276 (the IN end is at −X, X 193; ⏳ wired run re-measured for bare
-leads)</td>
+<td>276 (the IN end is at −X, X 193; wired run 289–291)</td>
 <td>390</td>
 <td>Block DROK pair, <strong>HL-PBB A1 / B1</strong> (D-1459: A2 / B2):
 <strong>E1008</strong></td>
@@ -6301,8 +6302,8 @@ leads)</td>
 <td>6</td>
 <td><strong>DROK-OUT</strong></td>
 <td>2 × 18, twisted</td>
-<td>176 (OUT−) / 185 (INA3 IN−), terminal to the top of the riser at the
-servo opening, + D14a 23</td>
+<td>181 (OUT−) / 190 (INA3 IN−), terminal to the top of the riser at the
+servo opening, + D14a 33</td>
 <td><strong>measure</strong> (+ up the servo opening to the STM32)</td>
 <td>DROK OUT +/− <strong>bare strands</strong>; OUT+ →
 <strong>INA226-DROK IN+</strong> bare, IN− bare → on (OUT− goes direct).
@@ -6313,12 +6314,15 @@ No ferrules or forks at this corner (§5b.6)</td>
 <strong>INA226-DROK is on the fence front wall, rotated 90° above the
 DROK with its terminals facing the OUT (pot) end</strong> (§5b.6): OUT+
 → IN+ and IN− → on to the Deans, bare strands. Wired-run centrelines
-(CAD wired model; ⏳ re-measured for bare leads): <strong>D14a OUT+ →
-IN+ plan 23, cut 60; IN− → the pair junction plan 49, cut 80; OUT− → the
-junction plan 28</strong> (plan + the strip + ~20 slack; the model bends
-R0 at the terminals, the real 18 AWG takes ≥ 2.5, which that slack
-covers). From the junction the pair runs twisted along the carrier and
-up to the riser top. OUT+ / OUT− stay twisted except over the loop</td>
+(CAD wired model, bare leads): <strong>D14a OUT+ → IN+ plan 33, cut 70;
+IN− → the pair junction plan 54, cut 90; OUT− → the junction plan
+33</strong> (plan + both strips + ~20 slack). At the DROK's OUT end each
+lead runs **~6 mm straight** off the block before it turns (a turn
+closer than that pushes the lead into the DROK body). The model draws
+D14a's corners sharp; the real 18 AWG silicone bends at ~1–2 × OD, which
+the slack covers. From the junction the pair runs twisted along the
+carrier and up to the riser top. OUT+ / OUT− stay twisted except over
+the loop</td>
 </tr>
 <tr>
 <td>7</td>
@@ -6326,8 +6330,9 @@ up to the riser top. OUT+ / OUT− stay twisted except over the loop</td>
 <td>2 × 18</td>
 <td>46 + 73 + 31 = 150 (3 legs)</td>
 <td>46 → <strong>≤ 150 minus the pack's factory pigtail</strong> (the
-unfused stub: plan + ~50 vertical ≈ 100, no service slack) / 73 → 190 /
-31 → 150</td>
+unfused stub, no service slack: the wired run routes it 74–78 incl. the
+vertical, so a factory pigtail over ~70 breaks the 150 budget, see §16b)
+/ 73 → 190 / 31 → 150</td>
 <td>Pack <strong>XT30</strong> (mating XT30, soldered cups +
 heat-shrink)</td>
 <td>+ → <strong>F1 (uxcell 6×30 10 A, carrier cradle)</strong> →
@@ -6369,9 +6374,9 @@ PSU BAT-lead joint matches that lead's own connector (§16b.4)</td>
 <td>Fan</td>
 <td>4 solder + heat-shrink joints (3 × 15 shrink), <strong>between
 forks, staggered</strong></td>
-<td>✅ <strong>FAN2 is 232 mm against the ~250 mm stock lead</strong>
-(~18 mm spare). If it still falls short after the vertical drop, splice
-earlier; the extension just gets longer</td>
+<td><strong>FAN2 routes 253 in the wired model against the ~250 mm stock
+lead</strong> (FAN1 186), so splice FAN2 earlier; the extension just
+gets longer</td>
 </tr>
 <tr>
 <td>11</td>
@@ -6587,6 +6592,59 @@ lands on HL-PBB A6 / B6.</li>
 <li>Before fitting the HL-PBB, <strong>trim its 4 long edge pins (6–7
 mm) to ≤ 5 mm</strong> (operator).</li>
 </ul>
+<p><strong>Wire totals per gauge, one Ultra Creator build (rows 1–19,
+incl. 14, 15 and 15a)</strong> ⏳ <em>preliminary: a sum of the Cut
+column above × conductor count, with the HL-PBB corrections and the "+
+row" allowances in; CAD's wired-run totals replace these when they
+land.</em> Rows marked "measure" are estimated and flagged.</p>
+<table>
+<thead>
+<tr>
+<th>Gauge</th>
+<th>Total</th>
+<th>Made up of (m)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>18 AWG</strong></td>
+<td><strong>~5.7 m (~18.5 ft)</strong></td>
+<td>CH1 0.36, ROCKER 0.74, BLK-IN 0.49, DROK-IN 0.77, BATT ~0.88,
+PHONE-IN 0.30; <strong>estimated:</strong> DROK-OUT ~1.07 (D14/D15 ~0.5
+each + D14a 0.07), MAINS ~1.05 (3 × ~0.35)</td>
+</tr>
+<tr>
+<td><strong>22 AWG</strong></td>
+<td><strong>~3.3 m (~11 ft)</strong></td>
+<td>LAMP 0.35, MUS-IN 0.44, FAN1-P 0.39, FAN2-P 0.30;
+<strong>estimated:</strong> TETHER-P ~1.8 (3 × ~0.6)</td>
+</tr>
+<tr>
+<td><strong>26 AWG</strong></td>
+<td><strong>~16.4 m (~54 ft)</strong> + the two sensor drops</td>
+<td>FAN-SIG 0.94, I²C chain 6.36, PIRs 4.50, SPS30 1.40, ZE15 1.40;
+<strong>estimated:</strong> TETHER-S ~1.8 (3 × ~0.6); <strong>plus
+measure:</strong> the SPS30 and ZE15 drops below the opening</td>
+</tr>
+<tr>
+<td>24 AWG</td>
+<td>none</td>
+<td>not in the bay plan (v1 as-built used it for some sensor tails)</td>
+</tr>
+<tr>
+<td>16 AWG</td>
+<td>none cut</td>
+<td>only F1's factory pigtail</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Not included:</strong> factory cables (USB-C, fan leads,
+PHONE-USB, the FFC), the wand's internal wiring, and the load-test
+pigtails. Buy ~20 % over these totals for strip lengths, a bad crimp and
+trim. <strong>Per build:</strong> a <strong>Pro / ceiling</strong> build
+(wand, no phone) drops 15a (−0.30 m / ~1 ft of 18 AWG); a
+<strong>Creator phone-only</strong> build (no wand) drops 14 and 15
+(−1.8 m / ~6 ft of 22 AWG, −1.8 m / ~6 ft of 26 AWG).</p>
 <p><strong>Build order</strong> (the Order column, grouped):</p>
 <ol type="1">
 <li><strong>Off-carrier mains first</strong> (row 1), with the earth
