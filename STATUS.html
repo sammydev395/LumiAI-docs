@@ -264,8 +264,12 @@ which we want them to be distinct and clear". Whether the real T ledges
 and cradle parts move to the Kingroon is not decided. Gates on the
 GMKtec: STL source gate PASS, verify PASS (17 checks, 19 warnings, 0
 failures) with and without the previous book, gate_slots without the
-live AMS PASS 0 / 0. Not yet run on this build: the slice,
-gate_floating, the G-code gates and the live slots (LumiAI 3DPrinter).
+live AMS PASS 0 / 0. Gated by LumiAI 3DPrinter from
+<code>0a7e28f2</code> (book sha256 <code>b58d94dca061488e</code>):
+gate_slice clean (25 min, 6.7 g, 70 layers, G-code M104 S240 / M190
+S80), gate_floating --gcode PASS, gate_gcode_floating PASS (the same
+single 1.0 mm start), gate_breakaway N/A, gate_slots on the live H2S
+PASS 0 / 0 (slot 1's tray reads GFG60 PETG #2850E0, the book's colour).
 <strong>HELD, H2S plates 15 and 17 (LumiAI CTO 2026-11-16):</strong> the
 H2S book's former slot-1 objects, the sensor carriers
 (<code>lumi_ze15co_carrier</code>,
@@ -274,21 +278,25 @@ H2S book's former slot-1 objects, the sensor carriers
 (<code>lumi_mount_ubracket</code>), have no material now that slot 1 is
 PETG. They are not re-slotted and not released: titled "HOLD do not
 print", and gate_slots reports what it finds on a held plate as a
-warning that names the hold. Both plates are X1C parts by the operator's
-2026-11-07 printer split and the carriers are PETG+ by his 2026-11-05
-material split, so these H2S copies may be deletions, not re-slots: his
-pick; they are re-gated when he makes it. The X1C book's own copies are
-untouched. <em>Was (888858c4, 17c224e0): plate 35 on the yellow Inland
-PETG+ in slot 4, gated there by 3DPrinter (24 min, 6.7 g); live slot 1
-FAIL, the tray reading PETG against the book's PLA.</em>
-<strong>Operator 2026-11-16 on the design picture: "the picture looks
-good. Aesthetically fine. We have to print the test plate and see how it
-behaves."</strong> <strong>Halo test of the released serrated cradle
-(operator 2026-11-16, one install and one removal):</strong> grip "much,
-much, much better"; swing down 60 to 70 % or more by his estimate (not
-measured: the IMU stream was not working); servo temperatures within 2
-°C of the old cradle's. Watch the serrations for wear as cycles add
-up.</td>
+warning that names the hold. <strong>The held plates have NO findings
+today</strong> (their objects already run a PETG-safe process), so no
+such warning prints on this book; the rule is proven on a scratch copy
+(a held object given outer wall 200 mm/s FAILS the book with the hold
+title stripped and prints "HELD plate, would FAIL" with it on). Both
+plates are X1C parts by the operator's 2026-11-07 printer split and the
+carriers are PETG+ by his 2026-11-05 material split, so these H2S copies
+may be deletions, not re-slots: his pick; they are re-gated when he
+makes it. The X1C book's own copies are untouched. <em>Was (888858c4,
+17c224e0): plate 35 on the yellow Inland PETG+ in slot 4, gated there by
+3DPrinter (24 min, 6.7 g); live slot 1 FAIL, the tray reading PETG
+against the book's PLA.</em> <strong>Operator 2026-11-16 on the design
+picture: "the picture looks good. Aesthetically fine. We have to print
+the test plate and see how it behaves."</strong> <strong>Halo test of
+the released serrated cradle (operator 2026-11-16, one install and one
+removal):</strong> grip "much, much, much better"; swing down 60 to 70 %
+or more by his estimate (not measured: the IMU stream was not working);
+servo temperatures within 2 °C of the old cradle's. Watch the serrations
+for wear as cycles add up.</td>
 <td></td>
 </tr>
 <tr>
