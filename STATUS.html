@@ -253,11 +253,18 @@ Kingroon HS not Inland"): a pass on it shows the slide's geometry prints
 and works, not that the Inland PETG+ part will flex the same; X1C 33
 (grey Inland PETG+) is the like-for-like test. Slot 1's values are the
 red HS PETG's from the X1C, carried over and untested on the blue spool
-(240 °C, flow 0.94, 10 mm³/s, textured plate 75, range 230-260,
-retraction 1 mm / 40 / 70 %); this coupon is the spool's first print.
-Gates on the GMKtec: STL source gate PASS, verify PASS (17 checks, 19
-warnings, 0 failures) with and without the previous book, gate_slots
-without the live AMS PASS 0 / 0. Not yet run on this build: the slice,
+(240 °C, flow 0.94, 10 mm³/s, range 230-260, retraction 1 mm / 40 / 70
+%), with the textured plate at 80 (operator 2026-11-16: "I would still
+not print it at 85. It's too high. Maybe print it at 80 or 75 ... We can
+go 80 if we want to."); this coupon is the spool's first print. Why the
+blue and not the yellow Inland PETG+ (his words, through speech-to-text,
+as LumiAI 3DPrinter read them): the Inland PETG+ does not print as crisp
+as the Kingroon HS PETG, "and these are ridges we are talking about,
+which we want them to be distinct and clear". Whether the real T ledges
+and cradle parts move to the Kingroon is not decided. Gates on the
+GMKtec: STL source gate PASS, verify PASS (17 checks, 19 warnings, 0
+failures) with and without the previous book, gate_slots without the
+live AMS PASS 0 / 0. Not yet run on this build: the slice,
 gate_floating, the G-code gates and the live slots (LumiAI 3DPrinter).
 <strong>HELD, H2S plates 15 and 17 (LumiAI CTO 2026-11-16):</strong> the
 H2S book's former slot-1 objects, the sensor carriers
@@ -917,7 +924,8 @@ Karma 2026-11-14) -- <code>ENFORCE_BOX_PRINT</code>, picked in the print
 frame. <strong>H2S slots</strong> (after <code>SLOT_MOVE</code>, which
 maps the builder's old 1→4, 4→1): 1 Kingroon HS PETG blue since
 2026-11-16 (operator; PolyLite PETG preset, the red HS PETG's values
-carried over: 240 / 0.94 / 10 mm³/s / bed 75, untested on this spool;
+carried over: 240 / 0.94 / 10 mm³/s, bed 80 by his word, untested on
+this spool;
 <code>set_filament_slots.py h2s ... --slots 1 --like 4</code> writes the
 slot on the GMKtec, the builder lays the values on it), 2 Generic ASA
 (260 / bed 90 / chamber 60), 3 PolyLite PETG (black), 4 yellow PETG+, 5
