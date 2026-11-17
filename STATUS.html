@@ -241,7 +241,7 @@ thinnest phone, a litre of water's on the thickest [3.9 N, 10.1 N]. All
 spring figures are calculated on assumed coil counts for 304 stainless
 and are provisional until a real spring is measured. Springs per cradle:
 0.5 x 4 x 10, two; 0.5 x 4 x 12, two; 1.0 x 8 x 15, one. None ordered.
-<strong>The coupon (CAD <code>cae15c1c</code> and <code>10fb834b</code>,
+<strong>The coupon (CAD <code>6eeb815d</code>,
 <code>lumi_bigclaw_cradle_t_spring_coupon.py</code>, export
 <code>lumi_bigclaw_phone_cradle_aback_t_spring_coupon</code>), six
 pieces:</strong> the side T's pocket (ridge, the spring's hole with its
@@ -255,7 +255,7 @@ cannot be lifted, let go it can. The bracket's leg goes up into either
 top pocket and a 9 mm length of filament through the back wall holds it:
 the block whose holes grip the filament without a hammer is the size the
 cradle gets (if neither grips, one M2 screw put in once at assembly is
-the fallback, LumiAI CTO). The flap on a 12.5 mm length of filament
+the fallback, LumiAI CTO). The flap on an 11.3 mm length of filament
 swings freely, stops on its heel about 18 degrees up and falls back down
 by itself. And he can see whether a 4 mm spring will go into the holes.
 Macro gates on the weekly build: 16 of 16, RESULT PASS; the hold is
@@ -265,16 +265,19 @@ floor), and two bites: no ridge is not held, and the first coupon's own
 <strong>Books:</strong> X1C plate 33 (red Kingroon HS PETG, slot 2) and
 H2S plate 35 (Kingroon HS PETG blue, slot 1; bed 80), the last plate of
 each so no number moves; 0.2 layers, 3 walls, no supports, 10 mm brim.
-Gates on the GMKtec: STL source gate PASS, verify PASS on both books
-with and without the previous book (0 failures), gate_slots without the
-live AMS PASS 0 / 0 on both (books sha256 X1C
-<code>8e9ac44edb2b10db</code>, H2S <code>92790ffd341f9d22</code>).
-<strong>Not yet gated by LumiAI 3DPrinter</strong> (slice, floating,
-G-code, live slots): do not print before that. The X1C cradle plate
-names now read "red HS PETG slot 2" (they said "red PETG+" after the
-spool had changed). <strong>HELD, H2S plates 15 and 17 (LumiAI CTO
-2026-11-16):</strong> the H2S book's former slot-1 objects, the sensor
-carriers (<code>lumi_ze15co_carrier</code>,
+Gates on the GMKtec: STL source gate PASS, verify PASS on both books (0
+failures); against the previous book the only difference is the coupon
+itself, changed on purpose (its flap ends 1.0 inside the phone's top
+edge: 0.2 past it, the raised flap cut into the top TPU pad on thin
+phones, found by the cradle macro copy's all-phones row), every other
+part carried over unchanged; gate_slots without the live AMS PASS 0 / 0
+on both (books sha256 X1C <code>71eab37c22aeff2f</code>, H2S
+<code>ce3e7b8a2198996f</code>). <strong>Not yet gated by LumiAI
+3DPrinter</strong> (slice, floating, G-code, live slots): do not print
+before that. The X1C cradle plate names now read "red HS PETG slot 2"
+(they said "red PETG+" after the spool had changed). <strong>HELD, H2S
+plates 15 and 17 (LumiAI CTO 2026-11-16):</strong> the H2S book's former
+slot-1 objects, the sensor carriers (<code>lumi_ze15co_carrier</code>,
 <code>lumi_sps30_carrier_plate</code>,
 <code>lumi_sps30_carrier_strap</code>) and the U-bracket
 (<code>lumi_mount_ubracket</code>), have no material now that slot 1 is
