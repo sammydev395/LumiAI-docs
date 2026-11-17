@@ -52,8 +52,15 @@ the wired builds, but the full assembly will be done after 11 o'clock
 Pacific time at night, between 11 and 6 in the morning"). No
 full-assembly build starts outside that window. They are never a gate on
 releasing a part or a plate. The wired-bay assembly is not in that
-class; it is a deliverable that runs in the day like any part
-build.</li>
+class; it is a deliverable that runs in the day like any part build.
+<strong>Converting the full-assembly scripts to cached stages is day
+work</strong> (operator 2026-11-16: "You can start work on breaking the
+code up for the full assemblies now. You don't have to wait till 11
+o'clock at night for that."), and he chose "Day tests OK": a
+single-script test build may run by day, one heavy build at a time under
+the 95 GB memory guard of <code>run_wired_bay.sh</code> /
+<code>run_full_assembly_night.sh</code>. The whole chain (pose, bay,
+cradles, text, verify) still runs only in the night window.</li>
 </ul>
 <h2 id="the-occ-shim-is-not-freecad">The OCC shim is not FreeCAD</h2>
 <ul>
