@@ -247,16 +247,24 @@ with plate 21):</strong> the same piece and settings, last plate of the
 H2S book (35 of Studio's 36), on the yellow Inland PETG+ already in slot
 4, the same PETG+ as the T ledges, so no spool change; verify PASS with
 and without the previous book, gate_slots PASS 0 / 0 without the live
-AMS; the slice and the G-code gates on this plate are LumiAI
-3DPrinter's, not yet run. Slot 1 of the H2S book is still PLA: the book
-is not re-slotted for the blue HS PETG. <strong>Operator 2026-11-16 on
-the design picture: "the picture looks good. Aesthetically fine. We have
-to print the test plate and see how it behaves."</strong> <strong>Halo
-test of the released serrated cradle (operator 2026-11-16, one install
-and one removal):</strong> grip "much, much, much better"; swing down 60
-to 70 % or more by his estimate (not measured: the IMU stream was not
-working); servo temperatures within 2 °C of the old cradle's. Watch the
-serrations for wear as cycles add up.</td>
+AMS; gated by LumiAI 3DPrinter from <code>888858c4</code> (book sha256
+<code>099bc9044f8494dd</code>): gate_slice clean (24 min, 6.7 g, 70
+layers, 0 support), gate_floating --gcode PASS 0 regions,
+gate_gcode_floating PASS (the same single 1.0 mm start at layer 56),
+gate_breakaway N/A (no blocks). <strong>Live gate_slots on the H2S: FAIL
+on slot 1 only</strong>: the book has PolyLite PLA (GFL00), the tray
+reads PETG (GFG60), the operator's blue HS PETG loaded 2026-11-16; slot
+4 and the rest match, so plate 35 is clear to print. The book is not
+re-slotted for the blue spool: every PLA plate on H2S slot 1 fails that
+gate until the spool goes back or the operator has slot 1 changed.
+<strong>Operator 2026-11-16 on the design picture: "the picture looks
+good. Aesthetically fine. We have to print the test plate and see how it
+behaves."</strong> <strong>Halo test of the released serrated cradle
+(operator 2026-11-16, one install and one removal):</strong> grip "much,
+much, much better"; swing down 60 to 70 % or more by his estimate (not
+measured: the IMU stream was not working); servo temperatures within 2
+°C of the old cradle's. Watch the serrations for wear as cycles add
+up.</td>
 <td></td>
 </tr>
 <tr>
