@@ -194,10 +194,11 @@ dovetail that must hold a part rigid needs a clamp across it (clearance
 alone gives ≈ 2c / cos θ of play).</td>
 </tr>
 <tr>
-<td>🔴 <strong>Cradle QUICK RELEASE: sprung T ledges; the SPRING-LESS
-test coupon is on X1C 33 and H2S 35, printed BEFORE any spring is
-bought; the port is in a scratch copy, the cradle parts are unchanged.
-H2S plates 15 and 17 HELD (no material)</strong></td>
+<td>🔴 <strong>Cradle QUICK RELEASE, a CANDIDATE: the knob cradle stays
+the CURRENT design. The sprung path is in the cradle macro behind a
+switch that is OFF (present, inert, incomplete); the spring-less test
+coupon is on X1C 33 and H2S 35; one spring size is on order (the top
+flap's); H2S plates 15 and 17 HELD (no material)</strong></td>
 <td><strong>What the operator asked (2026-11-16):</strong> the phone
 must come out of the cradle fast, so the big knob and the three M2 thumb
 screws of the T ledges go and every hold is spring-loaded ("So you just
@@ -220,28 +221,50 @@ spring and not by TPU ("I don't think TPU is going to hold the phone");
 the real T ledges and every serrated cradle part print in the red
 Kingroon HS PETG on X1C slot 2; and on 2026-11-17: <strong>"I will not
 be ordering the springs till I have printed the parts and looked at them
-myself and checked if springs will even work in them."</strong> He
-cannot judge a force in newtons, so forces go to him as everyday
-weights. <strong>The design (worked out on the released solids in a
-working copy):</strong> <em>Main lock:</em> one steel spring (1.0 wire x
-8 x 15) between the ridge block and a carrier whose hooked arm sits in a
-rack in the base, so the spring both pinches the L and grips the phone;
-push the tab toward the phone to lock, push it down to release. <em>Side
-T ledges:</em> a rigid leg whose 2.0 toe sits under a ridge 1.0 proud of
+myself and checked if springs will even work in them."</strong>
+<strong>The knob cradle stays (operator 2026-11-17):</strong> "Please
+remember to keep the knob, frame model, and the ledges and all the CAD
+work and Python scripts for that also ... until this new design is
+refined, we're still going to use the old design. Because the new design
+is not proven yet, the old design is fairly stable." So the knob, the
+knob frame and the screw T ledges are the current design, their plates
+stay released, nothing of them is removed, and one macro builds both. He
+ordered ONE spring size to prove the mechanism, the top flap's (304
+stainless, 0.5 wire x 4 x 5, 50 pieces, due 2026-11-19); the other two
+sizes are not ordered. Metal pins or sleeves in place of the filament
+pins are a fallback he looks at only if the quick release proves itself.
+His rule for new mechanisms: "build test cases, not just coupons, but
+real, small, but real test cases, and try things out." He cannot judge a
+force in newtons, so forces go to him as everyday weights. <strong>The
+design (worked out on the released solids in a working copy):</strong>
+<em>Main lock:</em> one steel spring (1.0 wire x 8 x 15) between the
+ridge block and a carrier whose hooked arm sits in a rack in the base,
+so the spring both pinches the L and grips the phone; push the tab
+toward the phone to lock, push it down to release. <em>Side T
+ledges:</em> a rigid leg whose 2.0 toe sits under a ridge 1.0 proud of
 one end wall of its pocket; a 0.5 x 4 x 10 spring in a blind hole in the
 host presses the leg onto that wall (about 450 g at rest, 640 g pushed
 aside [4.4 N, 6.3 N]); out: push the T sideways against the spring and
 lift, for assembly and service only. They have one height. <em>Top T
-ledge:</em> a bracket FIXED in the crossbar's pocket by one cross pin
-(9.0 mm of 1.75 filament, its ends under both faces; a sprung toe does
-not fit between the 2.0 walls and the mic slots) and a hinged FLAP on a
-filament pin, two 0.5 x 4 x 12 springs under it, that follows the
-phone's back at every thickness: about a full soda can's weight on the
-thinnest phone, a litre of water's on the thickest [3.9 N, 10.1 N]. All
-spring figures are calculated on assumed coil counts for 304 stainless
-and are provisional until a real spring is measured. Springs per cradle:
-0.5 x 4 x 10, two; 0.5 x 4 x 12, two; 1.0 x 8 x 15, one. None ordered.
-<strong>The coupon (CAD <code>6eeb815d</code>,
+ledge:</em> a PIN-SET bracket. Its leg goes up into the crossbar's
+pocket and one cross pin (9.0 mm of 1.75 filament, 1.0 blind in the
+front wall, its end 0.4 under the back face) through one of three holes
+in the leg sets its height, once per phone: 0, 2.90 or 4.05 down, for
+39, 19 and 21 of the 79 phone variants. A hinged FLAP on a filament pin
+(8.0 mm, 1.0 blind in the front lug), two 0.5 x 4 x 5 springs under it,
+takes up the last 1.8 at most and bears on the phone's back: about 420 g
+at the least, 910 g at the most [4.1 N, 8.9 N]. With no phone the flap
+rests 6.7 degrees up on its heel. The cross pin is a locking peg, the
+hinge pin a hinge; both carry the springs' reaction in shear (calculated
+6.2 MPa at a 30 N yank, 2.1 MPa at 10 N; limit 9.8). The bracket's web
+is 3.9 thick where the screw T's is 5.0. All spring figures are
+calculated on assumed coil counts and are provisional until a real
+spring is measured; the flap springs reach 725 MPa with the flap fully
+down (limit 750). The lock rows are calculated for spring steel (G 79
+000); a 304 spring is about 13 % softer and has not been put through
+them. Springs per cradle: 1.0 x 8 x 15, one (lock); 0.5 x 4 x 10, two
+(side ledges); 0.5 x 4 x 5, two (top flap). <strong>The coupon (CAD
+<code>6eeb815d</code>,
 <code>lumi_bigclaw_cradle_t_spring_coupon.py</code>, export
 <code>lumi_bigclaw_phone_cradle_aback_t_spring_coupon</code>), six
 pieces:</strong> the side T's pocket (ridge, the spring's hole with its
@@ -284,32 +307,45 @@ slot-1 objects, the sensor carriers (<code>lumi_ze15co_carrier</code>,
 PETG; titled "HOLD do not print"; gate_slots reports what it finds on a
 held plate as a warning that names the hold. Both are X1C parts by the
 operator's 2026-11-07 printer split, so these H2S copies may be
-deletions, not re-slots: his pick. <strong>Port into the cradle macro
-(in progress, a scratch copy behind one switch that is off, nothing on
-main; the released cradle builds unchanged, proven on geometry at all
-three mount settings):</strong> in so far: the main lock on all 79 phone
-variants (grip 29.8 to 36.8 N on the calculated spring) and the sprung
-side Ts. Stated facts: (1) on 60 of the 79 variants the block's ridges
-rest on the lands between the leg's grooves, 14 sit in the grooves, 5
-between. (2) <strong>LOCK HOLDS is open:</strong> the row asks friction
-of 3 x the hung load at 3 g; the calculated spring gives about 2.0 x on
-the 60 lands variants. The row is not relaxed (LumiAI CTO); it is
-settled by design (land/groove ratio, preload within the spring's
-stress) or by a measured figure, since the arm code has velocity caps
-and no acceleration cap. (3) Taking the phone out on a base with the
-landscape foot: after the 5 mm open and 2.6 mm drop, tilt the fixed side
-up, slide the phone about 4 mm and LIFT it off; do not slide it 20 mm
-sideways, it runs into the landscape foot. (4) The L's leg is 2.0 longer
-for the stop lug; with the shortest phone its end passes the base's
-bottom edge by 0.8. (5) The top T's bracket is 2.0 deeper under its web
-than the screw T; that slab is not yet checked against the L, the post
-and the catch. Not yet: the top T in the macro, the full gate suite, the
-hung and home-pose clearances, printgate, the catch sweep. <strong>Halo
-test of the released serrated cradle (operator 2026-11-16, one install
-and one removal):</strong> grip "much, much, much better"; swing down 60
-to 70 % or more by his estimate (not measured); servo temperatures
-within 2 °C of the old cradle's. Watch the serrations for wear as cycles
-add up.</td>
+deletions, not re-slots: his pick. <strong>In the cradle macro on main
+behind one switch, <code>LUMI_CRADLE_QR</code>, OFF by default: PRESENT,
+INERT with the switch off, INCOMPLETE.</strong> <em>Switch off:</em> the
+macro builds the knob cradle as before. Proven on the committed file
+against the previous macro at default, portrait-only and landscape-only
+mounts: 45 / 35 / 35 STL identical by sha256, the same STEP solid sets,
+335 / 314 / 315 check lines identical, RESULT PASS; only files written
+by both runs are compared (the export folder keeps other settings'
+files). <em>Switch on:</em> one full run on the weekly build, 204 ok, 0
+FAIL, RESULT PASS (on the file three comment lines before the committed
+one): the main lock on all 79 phone variants, the sprung side Ts, the
+pin-set top T. <em>Incomplete with the switch on:</em> the quick-release
+parts have no exports of their own yet, the hung and home-pose gates do
+not cover them, and the catch sweep has not been run with them; no part
+from a switch-on run is in a book. Stated facts: (1) on 60 of the 79
+variants the block's ridges rest on the lands between the leg's grooves,
+14 sit in the grooves, 5 between. (2) <strong>LOCK HOLDS, decided
+(operator 2026-11-17, "2 and 3 accept"):</strong> on friction alone the
+lock holds 1.8 x the hung load at 3 g (17.8 N against 9.7 N); under a
+harder stop the L may slip at most 1.94 mm, less than one tooth pitch of
+2.0, until its grooves come under the ridges, and there the teeth hold
+with 11.4 x (floor 10). (3) <strong>Release drop accepted, no detent
+(operator 2026-11-17):</strong> with the lock open the base and phone
+drop 2.6 to 23.8 mm, by phone, onto the stop lug. Taking the phone out
+on a base with the landscape foot: tilt the fixed side up, slide the
+phone about 4 mm and LIFT it off; do not slide it 20 mm sideways, it
+runs into the landscape foot. (4) The L's leg is 2.0 longer for the stop
+lug; with the shortest phone its end passes the base's bottom edge by
+0.8. (5) The pin-set bracket's flat underside is 2.0 under its web; with
+its flap it clears the L, the phone, its cameras and buttons, the top
+pad, the base, the jaw frame and the post on all 79 variants (post least
+4.19 away, a lens least 1.00). (6) <strong>Rear camera with the pin-set
+bracket: least margin +3.2°, 0.4 under the released ledge's least
+margin, iPhone 12 Pro Max + case</strong> (its ultra-wide at 60°); the
+row passes. <strong>Halo test of the released serrated cradle (operator
+2026-11-16, one install and one removal):</strong> grip "much, much,
+much better"; swing down 60 to 70 % or more by his estimate (not
+measured); servo temperatures within 2 °C of the old cradle's. Watch the
+serrations for wear as cycles add up.</td>
 <td></td>
 </tr>
 <tr>
