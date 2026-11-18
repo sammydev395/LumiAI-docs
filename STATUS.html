@@ -196,9 +196,10 @@ alone gives ≈ 2c / cos θ of play).</td>
 <tr>
 <td>🔴 <strong>Cradle QUICK RELEASE, a CANDIDATE: the knob cradle stays
 the CURRENT design. The sprung path is in the cradle macro behind a
-switch that is OFF (present, inert, incomplete); the spring-less test
-coupon is on X1C 33 and H2S 35; one spring size is on order (the top
-flap's); H2S plates 15 and 17 HELD (no material)</strong></td>
+switch that is OFF (present, inert, incomplete); the working TEST
+STATION is on X1C plate 33 only, not yet gated in the slicer; one spring
+size is on order (the top flap's); H2S plates 15 and 17 HELD (no
+material)</strong></td>
 <td><strong>What the operator asked (2026-11-16):</strong> the phone
 must come out of the cradle fast, so the big knob and the three M2 thumb
 screws of the T ledges go and every hold is spring-loaded ("So you just
@@ -302,24 +303,22 @@ comes down freely; no ridge: nothing holds the leg; the first coupon's
 0.35 catch at its 0.4 float lifts straight out, as it did). The spring
 figures are calculated on an assumed 3 active coils; the flap springs
 and the 5 mm side spring reach 725 MPa fully pushed (limit 750).
-<strong>Books:</strong> (until the book commit that follows, both books
-still hold the previous six-piece coupon <code>6eeb815d</code>) X1C
-plate 33 (red Kingroon HS PETG, slot 2) and H2S plate 35 (Kingroon HS
-PETG blue, slot 1; bed 80), the last plate of each so no number moves;
-0.2 layers, 3 walls, no supports, 10 mm brim. Gates on the GMKtec: STL
-source gate PASS, verify PASS on both books (0 failures); against the
-previous book the only difference is the coupon itself, changed on
-purpose (its flap ends 1.0 inside the phone's top edge: 0.2 past it, the
-raised flap cut into the top TPU pad on thin phones, found by the cradle
-macro copy's all-phones row), every other part carried over unchanged;
+<strong>Book: ONE plate, X1C 33 (operator 2026-11-17 via LumiAI CTO:
+"Put them on one plate on the X1C. That's it. We'll test it with the red
+petg.").</strong> Red Kingroon HS PETG, slot 2; station CAD
+<code>2b1bbee4</code>; 0.2 layers, 3 walls, no supports, 10 mm brim; the
+last plate, so no number moves. The H2S book's plate 35 (the previous
+coupon) is removed; that book now has 34 plates. Gates on the GMKtec:
+STL source gate PASS; verify PASS on both books (0 failures); against
+the previous books the X1C's one difference is the station itself,
+changed on purpose, and the H2S book's carried parts are unchanged;
 gate_slots without the live AMS PASS 0 / 0 on both (books sha256 X1C
-<code>71eab37c22aeff2f</code>, H2S <code>ce3e7b8a2198996f</code>).
+<code>2f4cbfe3837246c6</code>, H2S <code>1528370426192c47</code>).
 <strong>Not yet gated by LumiAI 3DPrinter</strong> (slice, floating,
-G-code, live slots): do not print before that. The X1C cradle plate
-names now read "red HS PETG slot 2" (they said "red PETG+" after the
-spool had changed). <strong>HELD, H2S plates 15 and 17 (LumiAI CTO
-2026-11-16):</strong> the H2S book's former slot-1 objects, the sensor
-carriers (<code>lumi_ze15co_carrier</code>,
+G-code, live slots): do not print before that. The operator prints it
+when the springs are in hand (due 2026-11-19). <strong>HELD, H2S plates
+15 and 17 (LumiAI CTO 2026-11-16):</strong> the H2S book's former slot-1
+objects, the sensor carriers (<code>lumi_ze15co_carrier</code>,
 <code>lumi_sps30_carrier_plate</code>,
 <code>lumi_sps30_carrier_strap</code>) and the U-bracket
 (<code>lumi_mount_ubracket</code>), have no material now that slot 1 is
