@@ -263,44 +263,63 @@ spring is measured; the flap springs reach 725 MPa with the flap fully
 down (limit 750). The lock rows are calculated for spring steel (G 79
 000); a 304 spring is about 13 % softer and has not been put through
 them. Springs per cradle: 1.0 x 8 x 15, one (lock); 0.5 x 4 x 10, two
-(side ledges); 0.5 x 4 x 5, two (top flap). <strong>The coupon (CAD
-<code>6eeb815d</code>,
-<code>lumi_bigclaw_cradle_t_spring_coupon.py</code>, export
-<code>lumi_bigclaw_phone_cradle_aback_t_spring_coupon</code>), six
-pieces:</strong> the side T's pocket (ridge, the spring's hole with its
-0.8 lip, "4.4 x 4.8" engraved beside it) and its leg; the top T's pocket
-twice, the cross pin's wall holes at 1.7 and at 1.8 (engraved); the top
-T's bracket; its flap. <strong>WITHOUT SPRINGS NOTHING ON IT HOLDS BY
-ITSELF; a finger stands in for the spring.</strong> What each piece
-should do: the side leg drops in at the long end of its pocket and
-slides 1.2 to the ridge wall; pressed onto that wall by a finger it
-cannot be lifted, let go it can. The bracket's leg goes up into either
-top pocket and a 9 mm length of filament through the back wall holds it:
-the block whose holes grip the filament without a hammer is the size the
-cradle gets (if neither grips, one M2 screw put in once at assembly is
-the fallback, LumiAI CTO). The flap on an 11.3 mm length of filament
-swings freely, stops on its heel about 18 degrees up and falls back down
-by itself. And he can see whether a 4 mm spring will go into the holes.
-Macro gates on the weekly build: 16 of 16, RESULT PASS; the hold is
-measured with 0.15 off ridge AND toe (catch 0.70 against the 0.35
-floor), and two bites: no ridge is not held, and the first coupon's own
-0.35 catch at its 0.4 float lifts straight out, as it did.
-<strong>Books:</strong> X1C plate 33 (red Kingroon HS PETG, slot 2) and
-H2S plate 35 (Kingroon HS PETG blue, slot 1; bed 80), the last plate of
-each so no number moves; 0.2 layers, 3 walls, no supports, 10 mm brim.
-Gates on the GMKtec: STL source gate PASS, verify PASS on both books (0
-failures); against the previous book the only difference is the coupon
-itself, changed on purpose (its flap ends 1.0 inside the phone's top
-edge: 0.2 past it, the raised flap cut into the top TPU pad on thin
-phones, found by the cradle macro copy's all-phones row), every other
-part carried over unchanged; gate_slots without the live AMS PASS 0 / 0
-on both (books sha256 X1C <code>71eab37c22aeff2f</code>, H2S
-<code>ce3e7b8a2198996f</code>). <strong>Not yet gated by LumiAI
-3DPrinter</strong> (slice, floating, G-code, live slots): do not print
-before that. The X1C cradle plate names now read "red HS PETG slot 2"
-(they said "red PETG+" after the spool had changed). <strong>HELD, H2S
-plates 15 and 17 (LumiAI CTO 2026-11-16):</strong> the H2S book's former
-slot-1 objects, the sensor carriers (<code>lumi_ze15co_carrier</code>,
+(side ledges); 0.5 x 4 x 5, two (top flap). <strong>The TEST STATION
+(operator 2026-11-17: "what we really need to test is the full mechanism
+with this spring I ordered ... like a small frame on which we install it
+and make sure it works"; macro
+<code>lumi_bigclaw_cradle_t_spring_coupon.py</code>, built from the
+cradle macro with the switch on; export
+<code>lumi_bigclaw_phone_cradle_aback_t_spring_coupon</code>), nine
+pieces on one plate, 193.0 x 107.2, tallest 14.8.</strong> <em>Top T
+station:</em> a FRAME that is a cut of the crossbar with the L's own
+pocket and pin holes (holes 1.7 on one column, 1.8 on the other, each
+engraved on its side of the pocket); the pin-set BRACKET; its FLAP; a
+stepped BAR standing in for six phone backs (11.90, 10.10, 9.00, 8.20,
+7.85 and 7.20 thick, engraved 1 1 2 2 3 3 for the setting each step
+takes). To use: the two 0.5 x 4 x 5 springs in the bracket's pockets,
+the flap on an 8.0 mm length of 1.75 filament, the bracket's leg up into
+the frame, a 9.0 mm length of filament through the hole of the step's
+setting, then slide the bar under the flap: the flap must sit on every
+step and push back. Calculated 4.1 to 8.9 N on the six steps (about 420
+to 910 g). The hole size whose filament pin grips without a hammer is
+the size the cradle gets. <em>Side-ledge station:</em> two hosts and two
+legs. The host engraved "5 mm test" has its spring hole 1.80 deep so
+that the ordered 0.5 x 4 x 5 spring works in it: 4.20 long at rest, 3.35
+N on the ridge wall (about 340 g); the cradle's side ledge on its own
+0.5 x 4 x 10 spring has 4.4 N. The second host is the cradle's,
+unchanged (hole 4.4 x 4.8), for the 10 mm spring. The leg drops in at
+the long end, the spring presses it under the ridge and it cannot be
+lifted; pushed 1.2 aside it lifts out; whether the spring stays in its
+hole behind the 3.7 mouth when the leg is out is one of the things this
+print answers. <em>Print orientation:</em> the bracket, the flap, both
+hosts and both legs print as the cradle's parts do. The frame does NOT:
+it prints on its top face so the pocket needs no bridge. The T CONTROL
+BLOCK beside it is the same pocket in the L's own print orientation, its
+roof bridged 10.4 x 6.4; the bracket's leg at the top setting stands
+0.20 under that roof, so a sagging bridge shows there. Macro gates on
+the weekly build: 21 of 21, RESULT PASS, with bites (no pin: the bracket
+comes down freely; no ridge: nothing holds the leg; the first coupon's
+0.35 catch at its 0.4 float lifts straight out, as it did). The spring
+figures are calculated on an assumed 3 active coils; the flap springs
+and the 5 mm side spring reach 725 MPa fully pushed (limit 750).
+<strong>Books:</strong> (until the book commit that follows, both books
+still hold the previous six-piece coupon <code>6eeb815d</code>) X1C
+plate 33 (red Kingroon HS PETG, slot 2) and H2S plate 35 (Kingroon HS
+PETG blue, slot 1; bed 80), the last plate of each so no number moves;
+0.2 layers, 3 walls, no supports, 10 mm brim. Gates on the GMKtec: STL
+source gate PASS, verify PASS on both books (0 failures); against the
+previous book the only difference is the coupon itself, changed on
+purpose (its flap ends 1.0 inside the phone's top edge: 0.2 past it, the
+raised flap cut into the top TPU pad on thin phones, found by the cradle
+macro copy's all-phones row), every other part carried over unchanged;
+gate_slots without the live AMS PASS 0 / 0 on both (books sha256 X1C
+<code>71eab37c22aeff2f</code>, H2S <code>ce3e7b8a2198996f</code>).
+<strong>Not yet gated by LumiAI 3DPrinter</strong> (slice, floating,
+G-code, live slots): do not print before that. The X1C cradle plate
+names now read "red HS PETG slot 2" (they said "red PETG+" after the
+spool had changed). <strong>HELD, H2S plates 15 and 17 (LumiAI CTO
+2026-11-16):</strong> the H2S book's former slot-1 objects, the sensor
+carriers (<code>lumi_ze15co_carrier</code>,
 <code>lumi_sps30_carrier_plate</code>,
 <code>lumi_sps30_carrier_strap</code>) and the U-bracket
 (<code>lumi_mount_ubracket</code>), have no material now that slot 1 is
