@@ -897,16 +897,16 @@ engraving, no contour (mecanum chassis).
 drill only, G83 Q1.0 Z-4.00 F60, one M0, 8-check audit 0. Generator (run
 with <code>~/.local/bin/FreeCAD-weekly-2026.11.11 -c</code>, never the
 1.1.1 binary):
-<code>BASEPLATE_DRILL_ONLY=1 BASEPLATE_SKIP="CARRIAGE,POST.1,POST.2,POST.3,POST.4,POST.7,POST.8"</code>
-through <code>gen_baseplate_nc.py</code>. <strong>Built with
-<code>BATTERY_SHIFT_Y</code> = 0.0</strong>; the banner prints the
-shift. ⏳ <strong>Regenerate and re-audit when the battery shift is
-final</strong> (CAD, pending the operator's back-PIR gap measurement);
-strap holes must not be cut before. <strong>Registration check before
-cutting:</strong> the plate is not rectangular, so zero at the centre of
-its extents, then drop the T1 shank into two or more existing POST holes
-at their NC coordinates (listed in the M0 #0 text). Procedure and
-hand-drill sizes in <a
+<code>BASEPLATE_BATTERY_SHIFT_Y=15.0 BASEPLATE_DRILL_ONLY=1 BASEPLATE_SKIP="CARRIAGE,POST.1,POST.2,POST.3,POST.4,POST.7,POST.8"</code>
+through <code>gen_baseplate_nc.py</code>. <strong>Built with the battery
+shift +15.0 mm Y (operator: battery and straps 15 mm back)</strong> via
+<code>BASEPLATE_BATTERY_SHIFT_Y=15.0</code>; the banner must read
++15.00. Strap centres (machine frame): L (56.195, 37.094) (58.439,
+123.957), R (-54.805, 37.594) (-54.305, 123.594). 8-check audit 0.
+<strong>Registration check before cutting:</strong> the plate is not
+rectangular, so zero at the centre of its extents, then drop the T1
+shank into two or more existing POST holes at their NC coordinates
+(listed in the M0 #0 text). Procedure and hand-drill sizes in <a
 href="CNC_BasePlate_x2.html"><code>docs/CNC_BasePlate_x2.md</code></a>. No
 cut until the operator's go.</td>
 <td></td>

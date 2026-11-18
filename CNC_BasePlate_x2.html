@@ -349,7 +349,7 @@ T1 only, 8 holes (PSU.1, PSU.2, STRAP.L.lo, STRAP.L.hi, STRAP.R.lo,
 STRAP.R.hi, POST.5, POST.6), no tool change, one setup M0. Built
 with</p>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">BASEPLATE_DRILL_ONLY</span><span class="op">=</span>1 <span class="va">BASEPLATE_SKIP</span><span class="op">=</span><span class="st">&quot;CARRIAGE,POST.1,POST.2,POST.3,POST.4,POST.7,POST.8&quot;</span> <span class="ex">~/.local/bin/FreeCAD-weekly-2026.11.11</span> <span class="at">-c</span> <span class="st">&quot;exec(open(&#39;cad/freecad/gen_baseplate_nc.py&#39;).read()); import sys; sys.exit(0)&quot;</span></span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">BASEPLATE_BATTERY_SHIFT_Y</span><span class="op">=</span>15.0 <span class="va">BASEPLATE_DRILL_ONLY</span><span class="op">=</span>1 <span class="va">BASEPLATE_SKIP</span><span class="op">=</span><span class="st">&quot;CARRIAGE,POST.1,POST.2,POST.3,POST.4,POST.7,POST.8&quot;</span> <span class="ex">~/.local/bin/FreeCAD-weekly-2026.11.11</span> <span class="at">-c</span> <span class="st">&quot;exec(open(&#39;cad/freecad/gen_baseplate_nc.py&#39;).read()); import sys; sys.exit(0)&quot;</span></span></code></pre></div>
 <p>POST.5 and POST.6 are the two circles (Circle.001, Circle.002) in the
 operator's <code>HiWonder_Base_plate.step</code> of 2026-11-13: their
 centres land within 0.4 mm of the NC's POST.6 and POST.5. The STEP's own
@@ -372,13 +372,15 @@ existing hole (PSU.2 is the closest at 5.76 mm, about 1.8 mm of web
 after hand-drilling to 4.0 / 4.5). POST.5 and POST.6 have no hole on the
 physical plate. The STEP-to-NC alignment is by outline centre only, so
 confirm on the real plate after zeroing.</p>
-<p><strong>Strap holes: do not cut until the battery shift is
-final.</strong> The NC's strap holes follow <code>BATTERY_SHIFT_Y</code>
-in <code>lumi_base_plate.py</code>, held at 0.0 until the operator
-measures the back-PIR gap (the operator asked for 5.0; it may change,
-and the two rear holes may get about 3 mm X nudges). The NC banner
-prints the value it was built with. Regenerate and re-audit when CAD
-gives the final value.</p>
+<p><strong>Strap holes carry the battery shift.</strong> The battery and
+both straps sit 15 mm back (+Y, toward the fans), so the four strap
+holes are built 15.0 mm further +Y than the model's base positions
+(right pair keeps its -2.0 X nudge). The drill-only command sets it with
+<code>BASEPLATE_BATTERY_SHIFT_Y=15.0</code>, which overrides
+<code>BATTERY_SHIFT_Y</code> in <code>lumi_base_plate.py</code>; the NC
+banner prints the value it was built with and must read +15.00.
+Machine-frame strap centres: L.lo (56.195, 37.094), L.hi (58.439,
+123.957), R.lo (-54.805, 37.594), R.hi (-54.305, 123.594).</p>
 <p>Hand-drill after the cut: PSU Dia 4.0 x 2, STRAP Dia 4.5 x 4, POST
 Dia 4.5 x 2.</p>
 <h2 id="what-holds-each-plate">What holds each plate</h2>
