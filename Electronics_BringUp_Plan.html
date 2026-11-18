@@ -725,9 +725,14 @@ mount</a>).</p>
 FFC chain is fitted the breakout takes the Pi header, so the cooler
 lands on the power-bay <strong>G469</strong>: red 5V → pin 4 (3rd
 conductor with SPS30 + ZE15), black → 14 GND, blue → 12 GPIO18 PWM,
-yellow → 18 GPIO24 tach (internal pull-up, never 5 V). All 26 AWG
-through a JST-SH 1.0 4-pin pigtail. Ultra only. The pin spec of record
-is the "Ultra only" rows of the <a
+yellow → 18 GPIO24 tach (internal pull-up, never 5 V). Two short 26 AWG
+pigtails (operator 2026-11-18): a soldered 2-pin JST-PH housing at the
+Pi end that the cooler's own power and signal JST-PH females plug into,
+fed ferrule-end first down the slots, ferrules at the G469 (single
+conductors E0208; pin 4 shares the AIRIC violet with SPS30 + ZE15). They
+drop straight down from the Pi 5 through the electronics-bay floor slots
+between the controller card and the Pi 5 mount, over the G469. Ultra
+only. The pin spec of record is the "Ultra only" rows of the <a
 href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html#master-connection-map-single-source-of-truth--every-pi-side-gpio--ic--uart">master
 connection map</a>.</p>
 <p>On 2026-11-04 Ultra's <code>pinctrl get</code> showed GPIO 13 and 23

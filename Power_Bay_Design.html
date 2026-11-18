@@ -3385,16 +3385,20 @@ day one.</p>
 note"):</strong> <strong>C14 inlet, AC rocker and DC rocker blades are
 all 4.8 × 0.8 mm</strong> (rockers operator-measured 2026-11-05; C14 per
 the QTEATAK WPF-1 datasheet; the same Faston fittings fit all three).
-<strong>Rocker blades</strong> take a <strong>fully insulated
+<strong>DC rocker blades</strong> take a <strong>fully insulated
 right-angle (flag) 4.8 × 0.8 mm female Faston</strong>: a straight
-receptacle plus its straight lead leg does not fit, because the AC
-rocker blades point at the battery and the DC rocker blades at the PSU.
-<strong>The three C14 blades take STRAIGHT fully insulated 4.8 × 0.8 mm
-female Fastons (FDFNY class):</strong> red 22–18 on L and E, blue 16–14
-for the N double crimp (A4 + A4a). The inlet stands 26.2 mm proud of the
-fence, so a flag's barrel would sit inside the 4 mm wall with no room to
-turn. All Faston leads are <strong>18 AWG</strong>, the standard
-gauge.</p>
+receptacle plus its straight lead leg does not fit, because they point
+at the PSU. <strong>The rear AC rocker takes STRAIGHT fully insulated
+4.8 mm sleeves (FDFNY, red 22–18)</strong> on every build (Ultra, Halo
+and Nova are one configuration from 2026-11-18, operator): its frame
+sits flush with the fan-tower faces (RM_P 25.7), the sleeves lie at 1.4
+mm between neighbours on the 7.0 pitch, and each lead bends 1.34 mm past
+its sleeve end (the operator's exception, §16c row 1). <strong>The three
+C14 blades take STRAIGHT fully insulated 4.8 × 0.8 mm female Fastons
+(FDFNY class):</strong> red 22–18 on L and E, blue 16–14 for the N
+double crimp (A4 + A4a). The inlet stands 26.2 mm proud of the fence, so
+a flag's barrel would sit inside the 4 mm wall with no room to turn. All
+Faston leads are <strong>18 AWG</strong>, the standard gauge.</p>
 <table>
 <thead>
 <tr>
@@ -3412,7 +3416,7 @@ gauge.</p>
 <tbody>
 <tr>
 <td>22–18 AWG (red)</td>
-<td>AC + DC rocker LINE / LOAD / LAMP (6)</td>
+<td>DC rocker LINE / LOAD / LAMP (3)</td>
 <td>14.7</td>
 <td>16.2</td>
 <td>10.8</td>
@@ -3435,24 +3439,28 @@ gauge.</p>
 </tbody>
 </table>
 <p><strong>Stock:</strong> 4.8 flags <strong>in stock</strong> (FLDNY 50
-red + 20 blue, arrived 2026-11-17): each build uses 6 red on the rockers
-and no blue. <strong>Straight 4.8 fully insulated FDFNY: 2 red + 1 blue
-per build</strong> (C14 L, E and the N double crimp). The Kuject kit's
-straight 4.8 Fastons are heat-shrink type; ⏳ they're only usable on the
-C14 if the receptacle is fully covered, otherwise buy FDFNY. The flag
-kit and the TICONN straight kit already in stock are the <strong>6.3 mm
-(.250)</strong> size. They are loose on these 4.8 mm blades, so they are
-<strong>not for mains use here</strong>. <strong>Swap the temporary 6.3
-mm flags (operator's exception until the 4.8 flags came):</strong> any
-rocker blade still carrying a 6.3 mm flag gets a 4.8 red flag.
-<strong>Ultra:</strong> at the bay build (§16c build order, step 1).
-<strong>Halo:</strong> the next time its bay is opened. Re-crimp each
-lead (cut the 6.3 flag off, re-strip), push the 4.8 flag fully home,
-<strong>tug-test each one hard</strong>, and check the AC rocker
-terminals for warmth after the first hour powered. Buy only parts marked
-4.8 / .187 / "187 series". The 22–18 / 16–14 flag crimper in stock fits
-the flags. The straight FDFNYs crimp on the Haisstronica ratchet
-(insulated barrels, 22–10 AWG) already in stock.</p>
+red + 20 blue, arrived 2026-11-17): each build uses 3 red on the DC
+rocker and no blue. <strong>Straight 4.8 fully insulated FDFNY: 5 red +
+1 blue per build</strong> (C14 L, E and the N double crimp; rear AC
+rocker LINE / LOAD / LAMP). The Kuject kit's straight 4.8 Fastons are
+heat-shrink type; ⏳ they're only usable on the C14 if the receptacle is
+fully covered, otherwise buy FDFNY. The flag kit and the TICONN straight
+kit already in stock are the <strong>6.3 mm (.250)</strong> size. They
+are loose on these 4.8 mm blades, so they are <strong>not for mains use
+here</strong>. <strong>Swap the temporary 6.3 mm flags (operator's
+exception until the 4.8 flags came):</strong> any rocker blade still
+carrying a 6.3 mm flag gets a 4.8 Faston. <strong>Ultra</strong> (and
+every build): at the bay build (§16c build order, step 1): <strong>red
+4.8 flags on the DC rocker, straight red 4.8 FDFNY on the rear AC
+rocker</strong>. <strong>Halo:</strong> the same as Ultra, when its bay
+is rebuilt on the current fence (Halo, Ultra and Nova are one
+configuration). Re-crimp each lead (cut the 6.3 flag off, re-strip),
+push the 4.8 flag fully home, <strong>tug-test each one hard</strong>,
+and check the AC rocker terminals for warmth after the first hour
+powered. Buy only parts marked 4.8 / .187 / "187 series". The 22–18 /
+16–14 flag crimper in stock fits the flags. The straight FDFNYs crimp on
+the Haisstronica ratchet (insulated barrels, 22–10 AWG) already in
+stock.</p>
 <p>The table is from the seller's datasheet for the nylon fully
 insulated flag-shaped right-angle spade (sent by the operator
 2026-11-06). How to read the columns:</p>
@@ -4471,12 +4479,17 @@ approved; just dress it along the even-row edge.</li>
 <p><strong>CAD v18 rulings (Electronics, 2026-10-23):</strong></p>
 <ul>
 <li><strong>v18d (CAD cdebe39): PIRs at centre Z 25</strong> (board Z
-9–41, clear under the carrier at 44); the carrier corners keep the full
-v18 outline. PIR-BR stays option B. Fork seats are 2.7 mm for the round
-twisted 3 × 26 lead. Front PIRs: jumper up, header away from the PSU, ≤
-12.5 mm behind the board. Back PIRs: header toward the back wall,
-straight Dupont. Battery straps trimmed ≥ 1 mm clear of the back PIRs
-(reprint). New cut lengths are in §16c row 16.</li>
+9–41, clear under the carrier at 44). <strong>Since 2026-11-18 (battery
++15 Y) the fan-side pair (FL / FR) sits at centre 68</strong> (board
+~50–86, ≥ 1.0 clear of carrier, straps and battery); lens edge ~3 mm
+from the fan grille edge in X at the same height, ~61° off the exhaust
+axis: ⏳ <strong>bench-check for false triggers with the fans stepped
+through their duty range before relying on it</strong>; the carrier
+corners keep the full v18 outline. PIR-BR stays option B. Fork seats are
+2.7 mm for the round twisted 3 × 26 lead. Front PIRs: jumper up, header
+away from the PSU, ≤ 12.5 mm behind the board. Back PIRs: header toward
+the back wall, straight Dupont. Battery straps trimmed ≥ 1 mm clear of
+the back PIRs (reprint). New cut lengths are in §16c row 16.</li>
 <li><strong>TMP102 on carrier builds: the I²C chain end is SOLDERED to
 the board's 0.1" row. No header, no plug.</strong> The board sits on
 <strong>8 mm posts</strong> (CAD option F + placement C, 2026-11-15).
@@ -6212,40 +6225,52 @@ landing map's itemised ferrules (§4 figure), not this table.</p>
 <td>3 × 18 AWG silicone, 600 V-rated (spool marked 600 V / 6 A; operator
 2026-11-06), used as-is, no sleeve on Ultra (operator; Halo revisits
 sleeving if a safety issue shows up)</td>
-<td>Wired run per conductor: <strong>L</strong> (A3 rocker LOAD → PSU L)
-393, <strong>N</strong> (A4 C14 N → PSU N) 223, <strong>E</strong> (A5
-C14 E → PSU ⏚) 228; jumpers <strong>A2</strong> C14 L → rocker LINE 80,
-<strong>A4a</strong> C14 N → rocker LAMP 94</td>
-<td><strong>L 430, N 260, E 270, A2 120, A4a 135</strong> (wired run +
-both strips + slack; C14 and AC rocker on the BACK wall; the C14 stands
-26.2 mm proud. <strong>E and N run straight into the bay over the
-carrier's back edge onto the raised span, joining just past tower
-1</strong>, then through the raised span and down the right lane to the
-PSU ⏚ / N end. <strong>A2 and A4a loop back from the C14 to the AC
-rocker:</strong> each runs level back past the carrier's edge, then
-straight down onto its flag's leg (LINE; LAMP at X 198.2). <strong>A3
-(rocker LOAD → PSU L) is the only mains wire on the floor:</strong> the
-LOAD flag points up (+Z) with a 6 × OD straight leg, then the wire drops
-to the floor lane behind the battery (Y 117.6, 13.4 mm off the pack,
-gate ≥ 8 mm), runs +X, climbs at X 259.6 to the carrier's MAINS start
-(256, 124.4), passes through tower 1 and the raised span over F1, and
-goes down the right lane to PSU L (174 mm to the carrier start). Ties:
-C14 end N 36.0 / E 37.7 / A2 40.1 / A4a 47.2 mm, A3 40 mm from its flag;
-PSU end L 38.2 / N 43.4 / E 48.6 mm (earth longest at both ends). The
-battery-to-fence gaps at its ends are 3–7 mm, too narrow for mains.
-<strong>The run crosses the BATT pack lead once</strong> (the lead comes
-onto the carrier's +X edge at Y ≈ 66–70): <strong>cross at 90°, mains
-ABOVE in its own raised clip, ≥ 8 mm clear of the lead. On Ultra both
-run as-is, unsleeved (operator): the 600 V silicone jacket plus the ≥ 8
-mm gap is the separation.</strong> Never along or over the battery
-itself. The straight-in E/N still cross the lead once, inside the raised
-span between tower 1 (Y 108.9) and tower 2 (Y 61.4); the
-battery-after-F1 and pack-lead crossings (Y ≈ 66–90) all sit under it,
-10.0 mm clear in 3D (gate ≥ 8 mm)</td>
+<td>Wired run per conductor: <strong>L</strong> (A3 rocker LOAD →
+carrier 120 + carrier span 219) 339, <strong>N</strong> (A4 C14 N → PSU
+N) 223, <strong>E</strong> (A5 C14 E → PSU ⏚) 228; jumpers
+<strong>A2</strong> C14 L → rocker LINE 94, <strong>A4a</strong> C14 N →
+rocker LAMP 107</td>
+<td><strong>L 380, N 260, E 270, A2 135, A4a 150</strong> (wired run +
+both strips + slack; C14 and AC rocker on the BACK wall, <strong>the
+rear AC rocker frame flush with the fan-tower faces (RM_P 25.7, operator
+2026-11-18: "move the AC rocker out further also, just like we moved the
+AC socket and the fans")</strong>; the C14 stands 26.2 mm proud.
+<strong>E and N run straight into the bay over the carrier's back edge
+onto the raised span, joining just past tower 1</strong>, then through
+the raised span and down the right lane to the PSU ⏚ / N end. <strong>A2
+and A4a loop back from the C14 to the AC rocker:</strong> each comes
+back to the A3 lane at C14 height and drops straight onto its sleeve
+(LINE, LAMP). <strong>A3 (rocker LOAD → PSU L) is the only mains wire on
+the floor:</strong> off its straight sleeve it runs to the floor lane
+behind the battery (<strong>Y 127.8, 8.6 mm off the pack</strong>, gate
+≥ 8 mm), runs +X, climbs in the lane and steps forward at carrier-seat
+height <strong>behind</strong> the pack (never over it) to the carrier's
+MAINS start, passes through tower 1 and the raised span over F1, and
+goes down the right lane to PSU L (120 mm to the carrier start).
+<strong>Rear AC rocker exception (operator, 2026-11-18): "straight
+fastons and i'll deal withthe 8 mm rule for this one, lets make an
+exception. We need to get htis done so I can assemble the damn
+robots".</strong> As built the 8 mm rule holds (A3 8.6 mm to the pack,
+all nine Faston gates ≥ 8 mm to LV). The deviation is the straight leg:
+each rear AC rocker lead runs only <strong>1.34 mm straight</strong>
+past its sleeve end (sleeve end Y 129.14, A3 lane Y 127.8) instead of 6
+× OD, then bends. Ties: C14 end N 36 / E 37.7 / A2 47 mm, A3 40 mm from
+its sleeve, A4a within 50; PSU end L 38.2 / N 43.4 / E 48.6 mm (earth
+longest at both ends). The battery-to-fence gaps at its ends are 3–7 mm,
+too narrow for mains. <strong>The run crosses the BATT pack lead
+once:</strong> <strong>cross at 90°, mains ABOVE in its own raised clip,
+≥ 8 mm clear of the lead. On Ultra both run as-is, unsleeved (operator):
+the 600 V silicone jacket plus the ≥ 8 mm gap is the
+separation.</strong> Never along or over the battery itself. The
+straight-in E/N still cross the lead once, inside the raised span
+between tower 1 (Y 108.9) and tower 2 (Y 61.4); the battery-after-F1 and
+pack-lead crossings all sit under it, 10.0 mm clear over F1 in 3D (gate
+≥ 8 mm)</td>
 <td>C14: <strong>straight fully insulated 4.8 mm Fastons
 (FDFNY)</strong>, red 22–18 on L and E, blue 16–14 for the N double
-crimp (A4 + A4a); AC rocker: <strong>right-angle (flag) 4.8 mm insulated
-Fastons</strong>, red 22–18</td>
+crimp (A4 + A4a); rear AC rocker LINE / LOAD / LAMP: <strong>straight
+fully insulated 4.8 mm Fastons (FDFNY)</strong>, red 22–18 (every build:
+Ultra, Halo and Nova are one configuration from 2026-11-18)</td>
 <td>PSU L / N: <strong>red fork lugs</strong>; earth → PSU ⏚:
 <strong>ring lug</strong> (A5)</td>
 <td>Own right-edge forks, ≥ 8 mm from all LV; earth longest; strain
@@ -6337,9 +6362,9 @@ twisted except over the loop</td>
 <td>2 × 18</td>
 <td>46 + 73 + 31 = 150 (3 legs)</td>
 <td>46 → <strong>≤ 150 minus the pack's factory pigtail</strong> (the
-unfused stub, no service slack: the wired run routes it 74–78 incl. the
-vertical, so a factory pigtail over ~70 breaks the 150 budget, see §16b)
-/ 73 → 190 / 31 → 150</td>
+unfused stub, no service slack: the wired run routes it 59–63 incl. the
+vertical (battery at +15), so a factory pigtail over ~85 breaks the 150
+budget, see §16b) / 73 → 190 / 31 → 150</td>
 <td>Pack <strong>XT30</strong> (mating XT30, soldered cups +
 heat-shrink)</td>
 <td>+ → <strong>F1 (uxcell 6×30 10 A, carrier cradle)</strong> →
@@ -6522,11 +6547,16 @@ generous one at the wrist roll</td>
 <td><strong>PIR-FL / FR / BL / BR</strong></td>
 <td><strong>3 × 26 AWG silicone, BUILT FROM SCRATCH</strong> (Fermerry,
 in stock), lightly twisted</td>
-<td>270 / 320 / 53 / 93 (from the fence corner)</td>
+<td><strong>By position: FL / FR = the fan-side (back-wall) pair, moved
+up to board centre 68</strong> (leaves the board's bottom edge at ~52
+and drops onto the carrier), wired run <strong>265 / 317</strong>;
+<strong>BL / BR = the other pair, centre 25</strong>, wired run 57 /
+97</td>
 <td><strong>470 / 510 / 240 / 280</strong> (exact cuts, no stock-length
-limit) = plan + 110 (rule above) <strong>+ 5</strong> (PIRs 5 mm lower:
-centre Z 25, board Z 9–41) <strong>+ 12</strong> (header on a SIDE edge,
-~12 mm from the board centre; 6656f6f) + the along-row allowance (60; BR
+limit; the fan-side pair keeps its cuts, ≥ 190 over the raised wired
+run) = plan + 110 (rule above) <strong>+ 5</strong> (BL / BR: centre Z
+25, board Z 9–41) <strong>+ 12</strong> (header on a SIDE edge, ~12 mm
+from the board centre; 6656f6f) + the along-row allowance (60; BR
 55).</td>
 <td>PIR 3-pin header (on a long side edge), <strong>crimp by NET after
 reading the HC-SR501 silk</strong>; pin order varies between boards.
@@ -6636,7 +6666,7 @@ below the opening.</p>
 <td><strong>18 AWG</strong></td>
 <td><strong>~5.8 m (~19 ft)</strong></td>
 <td>CH1 0.36, ROCKER 0.74, BLK-IN 0.49, DROK-IN 0.77, BATT ~0.88,
-PHONE-IN 0.30, MAINS 1.22 (5 pieces, row 1), DROK-OUT 0.52 to the riser
+PHONE-IN 0.30, MAINS 1.20 (5 pieces, row 1), DROK-OUT 0.52 to the riser
 top; <strong>estimated:</strong> DROK-OUT's climb up the servo opening
 to the STM32 ~0.55 (2 × ~0.28)</td>
 </tr>
@@ -6676,9 +6706,10 @@ trim. <strong>Per build:</strong> a <strong>Pro / ceiling</strong> build
 <p><strong>Build order</strong> (the Order column, grouped):</p>
 <ol type="1">
 <li><strong>Off-carrier mains first</strong> (row 1), with the earth
-check. Every rocker blade takes a <strong>4.8 mm red flag</strong>;
-replace any temporary 6.3 mm flag and tug-test each (§11.3 blade-size
-note). Nothing LV is powered before it passes.</li>
+check. DC rocker blades take <strong>4.8 mm red flags</strong>, the rear
+AC rocker <strong>straight red 4.8 mm FDFNY</strong>; replace any
+temporary 6.3 mm flag and tug-test each (§11.3 blade-size note). Nothing
+LV is powered before it passes.</li>
 <li><strong>Bench-build the carrier-local harnesses with the carrier OFF
 the bay:</strong> the power hub (rows 2–5, 8, 11), the I²C chain (row
 13), and FAN-SIG / PIR / sensor tails up to their G469 ferrules.</li>
