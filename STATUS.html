@@ -1203,15 +1203,17 @@ set in the builder, not just the project).</td>
 kit stays in use on Ultra or Halo.</strong> Production replacement not
 chosen; leading candidate Seeed reSpeaker Flex XVF3800 Circular-4 (4
 mics, ~5 m claimed vs the 20 ft target, one USB-C with DOA, onboard 10 W
-amp): recommended one unit for a Halo range test. <strong>If adopted
-(operator 2026-11-02):</strong> printed mount for the stock Flex boards
-(no custom PCB); speaker = 4 Ω on the Flex's own amp (echo-cancel
-reference); <strong>Flex 12 V terminal fed DIRECT from the 13.8 V bay
-rail, no buck, no add-on boards</strong> (ceiling arm: weight, space,
-part count), fused 22 AWG pair, ~1 A peak; checks: read the board's
-input parts or step a bench supply to 13.8 V with a meter before it goes
-on the arm, CH1 headroom on INA226-MAIN, bench hum check with the 12 V
-on vs off. Earlier POC record:</td>
+amp): <strong>one unit (circular, no ESP32-S3, USB/I²S) arrived
+2026-11-17</strong> for the Halo range test; power it on USB only until
+the 13.8 V checks below pass. <strong>If adopted (operator
+2026-11-02):</strong> printed mount for the stock Flex boards (no custom
+PCB); speaker = 4 Ω on the Flex's own amp (echo-cancel reference);
+<strong>Flex 12 V terminal fed DIRECT from the 13.8 V bay rail, no buck,
+no add-on boards</strong> (ceiling arm: weight, space, part count),
+fused 22 AWG pair, ~1 A peak; checks: read the board's input parts or
+step a bench supply to 13.8 V with a meter before it goes on the arm,
+CH1 headroom on INA226-MAIN, bench hum check with the 12 V on vs off.
+Earlier POC record:</td>
 <td>Electrical plan committed (Electronics_Bay_Design §3.4 two-cable
 update, BringUp <strong>Phase 7.5</strong>, UPS 5 V row): UAC cable →
 Pi5 blue #2 via the CableCreation extension, serial CH340 → black #2
@@ -3435,6 +3437,13 @@ session already made it.</p>
 </blockquote>
 <h2 id="recently-decided">Recently decided</h2>
 <ul>
+<li>2026-11-17 (Purchasing via CTO): <strong>4.8 mm flag Fastons (50 red
++ 20 blue) and the SV1.25-4-90D M4 forks (50) arrived.</strong> Swap
+every temporary 6.3 mm flag on the rocker blades for a 4.8 red flag,
+with a hard tug test: <strong>Ultra at its bay build, Halo the next time
+its bay is opened</strong> (Power_Bay §11.3 blade-size note). Test-fit
+one fork on the PSU strip screw (size still uncalipered) before relying
+on M4.</li>
 <li>2026-11-16 (operator): <strong>FreeCAD on the GMKtec =
 <code>~/.local/bin/FreeCAD-weekly-2026.11.11</code> only; the 1.1.1
 binary is banned for every session.</strong> The name
