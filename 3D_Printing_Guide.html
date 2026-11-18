@@ -1044,22 +1044,21 @@ thread band (~1.4 mm cut / 0 uncut) <strong>AND</strong> that
 root-radius verts span thousands of distinct Z values — the histogram
 alone once passed a threadless cartridge tube.</p>
 </blockquote>
-<p>⛔ <strong>TPU on the H2S bypasses the AMS and the filament buffer —
-and 95A and 85A take DIFFERENT paths.</strong> Source: Bambu's
-<strong>"Preparation for TPU Printing for H2 Series"</strong> (edited
-2026-08-10), which is what the printer's own <strong>"Detail"</strong>
-link opens — <em>"When H2S and H2C print specific types of TPU, the
-feeding method is basically the same as that of H2D."</em> <a
+<p>⛔ <strong>TPU on the H2S bypasses the AMS and the filament buffer,
+and goes through the TPU Feed Assist Module on the back of the printer.
+95A and 85A take the SAME path; only the module's push force
+differs.</strong> Sources: Bambu's <strong>"TPU Feed Assist Module
+Assembly &amp; Usage Guide"</strong> (H2-series tab; a text copy is on
+the DELL, <code>cad/print/TPU_Feed_Assist_Module_Guide.pdf</code>) and
+<strong>"Preparation for TPU Printing for H2 Series"</strong>, which the
+printer's own <strong>"Detail"</strong> link opens: <a
 href="https://wiki.bambulab.com/en/h2/h2d-tpu-printing-guide">https://wiki.bambulab.com/en/h2/h2d-tpu-printing-guide</a></p>
-<p>The load screen reads *"Attention: Bypass Filament Buffer to feed
-TPU.</p>
-<ol type="1">
-<li>Directly feed the filament into the right-side inlet. 2. Keeping low
-feeding resistance is highly recommended."* <strong>"Right-side inlet"
-means the hotend's feed</strong> — the H2D has two hotends and the H2S
-screen reuses its wording. <strong>Do not go hunting for a port on the
-right-hand side of the machine.</strong></li>
-</ol>
+<p><strong>First print through the module: 2026-11-17</strong>, 0.6 book
+plate 2 (six 95A back springs, red Generic TPU on the external spool,
+0.6 hardened hot end): 43 of 43 layers, no HMS error, and the cutter
+pause at 99 % did not occur on this path.</p>
+<p>The module needs an <strong>external spool</strong>. It does not
+support the AMS's automatic load and unload.</p>
 <p><strong>The three openings at the back</strong> (operator, at the
 machine 2026-11-01):</p>
 <table>
@@ -1076,114 +1075,116 @@ machine 2026-11-01):</p>
 </tr>
 <tr>
 <td>just below it</td>
-<td>a similar port, <strong>unused — purpose unknown</strong>. ⛔
+<td>a similar port, <strong>unused, purpose unknown</strong>. ⛔
 <strong>Not the TPU inlet</strong></td>
 </tr>
 <tr>
 <td><strong>near the middle of the back</strong></td>
-<td><strong>marked "TPU"</strong> — this is the one. It is a
-<strong>pass-through HOLE with an angled shield, NOT a push
-fitting</strong>: the tube goes <em>through</em> it, inside to outside.
-Nothing clicks in</td>
+<td><strong>marked "TPU"</strong>. It is a <strong>pass-through HOLE
+with an angled shield, NOT a push fitting</strong>: the tube goes
+<em>through</em> it, inside to outside. Nothing clicks in</td>
 </tr>
 </tbody>
 </table>
-<p>⚠️ <strong>Everything below is the procedure WITHOUT the Feed Assist
-Module.</strong> The module is <strong>on order</strong> (above), and
-with it fitted the path changes — Bambu's module wiki has <strong>85A
-running through the 275 mm tube with assist</strong>, so the hand-feed
-sequence here stops applying to 85A. A <strong>"with Feed Assist
-Module"</strong> branch will be added when LumiAI Main 2 has the
-module's own procedure. <strong>Check which of the two you are following
-before you unplug anything.</strong></p>
-<p>🛑 <strong>Hold the two open hardware questions until then.</strong>
-The <strong>longer 4 mm/2 mm PTFE tube</strong> and the <strong>top-feed
-rack</strong> below both exist to solve feeding problems the module is
-built to solve. <strong>Do not buy or print either until the module's
-procedure is known</strong> — the module may make both moot.</p>
-<p><strong>Step 1 is the same for both durometers. Then the paths
-diverge — 95A routes a tube, 85A has none at all.</strong></p>
+<p><strong>How the module is fitted</strong> (Bambu's H2-series
+steps):</p>
 <ol type="1">
-<li><strong>Unplug the internal PTFE tube at BOTH ends — the toolhead
-end FIRST</strong>, then the end seated in the <strong>spring-loaded
-filament buffer on the back wall</strong>. Bambu's page lists both:
-<em>"Disconnect the PTFE tube of the right hotend"</em>, then the one
-<em>"on the filament buffer"</em>.</li>
+<li>Remove the one set screw on the right side of the backplate (H2.0
+Allen) and keep it. Screw the module's bracket to the backplate there
+(ST3x12).</li>
+<li>Thread the extruder's PTFE tube out through the TPU feed port and
+put the <strong>single pass connector</strong> on it. The connector is
+directional: <strong>BLACK end towards the module, BLUE end towards the
+printer's rear panel.</strong></li>
+<li>The <strong>275 mm tube</strong> goes from the connector's black end
+to the module's <strong>outlet</strong>. ⛔ <strong>Only the 275 mm
+tube</strong>: longer or shorter adds feeding resistance.</li>
+<li>The 4PIN cable goes from the module to the printer's 4PIN
+interface.</li>
+<li>The <strong>160 mm tube</strong> goes on the module's feed port,
+towards the spool.</li>
 </ol>
-<p><strong>TPU 95A / 90A — the tube goes out through the "TPU"
-hole</strong></p>
-<ol start="2" type="1">
-<li><p><strong>Push the buffer end OUT through the "TPU" hole</strong>,
-from inside to outside.</p></li>
-<li><p><strong>Set the length from the toolhead's FAR position.</strong>
-Move the toolhead to the <strong>front, by the screen</strong> — the
-point farthest from the hole — and leave enough tube inside to reach it
-<strong>with slack</strong>. The remainder runs out the back towards the
-<strong>PrintDry</strong>.</p>
-<p>⚠️ <strong>If that leaves too little tube to reach the PrintDry
-without sharp bends, use ONE longer tube instead</strong> — <strong>4 mm
-OD / 2 mm ID PTFE</strong>, PrintDry straight through to the toolhead.
-<strong>The operator expects to need this</strong>, and no such tube is
-on the <a href="#13-printer-spares-on-the-shelf-2026-10-17">spares
-shelf</a>, so treat it as a likely purchase alongside the
-nozzle.</p></li>
-<li><p><strong>Thread the filament BEFORE heating.</strong> With the
-toolhead end <strong>still unplugged</strong>, push the filament through
-the tube until it <strong>comes out at the toolhead
-end</strong>.</p></li>
+<p><strong>The module's buttons and light</strong></p>
+<table>
+<thead>
+<tr>
+<th>Control</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>feed button</td>
+<td>click: assist ON, light solid. Click again: off</td>
+</tr>
+<tr>
+<td>unload button</td>
+<td>click: return mode, used with the printer's Unload. Click again:
+stop</td>
+</tr>
+<tr>
+<td>power button</td>
+<td>held with <strong>feed</strong>: more push. Held with
+<strong>unload</strong>: less push. The light flickers, faster =
+stronger</td>
+</tr>
+<tr>
+<td>light flashing continuously</td>
+<td>not calibrated: see Bambu's guide (about 1 m of hard PLA or PETG,
+feed + unload held together)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Push force.</strong> The default, medium, suits most TPU.
+<strong>85A:</strong> if it tangles in the module, reduce the force; if
+it misfeeds without tangling, increase it. <strong>95A / 90A:</strong>
+increase it if the tube's resistance is too high or the print is
+fast.</p>
+<p><strong>Before the print</strong></p>
+<ol type="1">
+<li><strong>Fit the 0.6 hardened hot end</strong>, then <strong>set the
+nozzle to 0.6 hardened on the H2S screen</strong>. ⛔ The printer goes
+on reporting <strong>0.4</strong> until the screen is changed (seen
+2026-11-17: it read 0.4 until the operator set it).</li>
+<li>Click the module's <strong>feed button</strong> (light stays
+on).</li>
+<li>Push the end of the TPU into the module's feed port. The module
+pulls it through to the extruder.</li>
+<li>Tap <strong>Load</strong> on the printer screen and watch the nozzle
+for extrusion.</li>
+<li>When sending the job, <strong>map the TPU to the external
+spool</strong>.</li>
 </ol>
-<p><strong>TPU 85A — no tube, fed from ABOVE</strong></p>
-<ol start="2" type="1">
-<li><p><strong>Take the internal tube right OUT</strong> — 85A
-<em>"cannot be fed through a PTFE tube and must be directly fed into the
-extruder"</em>. ⛔ <strong>It is removed, not parked in the
-hole</strong>; steps 2–3 above are 95A's only.</p></li>
-<li><p><strong>Feed from the top.</strong> Bambu's preferred route for
-90A/85A is the <strong>top feeding rack</strong>: <strong>open the top
-cover</strong> and run the filament down from the <strong>PrintDry
-placed ABOVE</strong> the printer — <em>"the shortest feeding path and
-the least resistance ... highly flexible filaments such as 90A and
-85A"</em>. Failing that, keep the dryer <strong>close and in
-line</strong> with the extruder. The filament runs
-<strong>unguided</strong> either way.</p>
-<p>⚠️ Bambu publish an <strong>"H2D Flexible Filament Top-feed
-Rack"</strong> model for this. It is named for the <strong>H2D</strong>
-and <strong>nobody has checked that it fits the H2S</strong> — the TPU
-High-Flow Kit turned out H2D-only too. The top-feed <em>principle</em>
-needs no rack: it is the dryer placed high and the cover open.</p></li>
+<p><strong>Unload, in this order</strong></p>
+<ol type="1">
+<li>Click the module's <strong>feed button OFF</strong> (light off) and
+<strong>unplug the PTFE tube at the toolhead</strong>. This releases the
+tension; without it the module's extruder stands still while the
+toolhead forces the retraction.</li>
+<li>Tap <strong>Unload</strong> on the printer screen.</li>
+<li>At the prompt <em>"Please pull out the filament from the right
+extruder external tray"</em>, click the module's <strong>unload
+button</strong> (light stays off). The filament backs out slowly.</li>
+<li>When it is fully out, wind it onto the spool, tap <strong>"Finished,
+Continue"</strong> and plug the toolhead tube back in.</li>
 </ol>
-<p><strong>Then both again:</strong></p>
-<ol start="5" type="1">
-<li>Set the hotend to <strong>250 °C</strong>. ⚠️ This is the
-<strong>LOADING</strong> temperature and it applies to
-<strong>both</strong> durometers. The 0.6 book's <strong>225 °C</strong>
-is 85A's <strong>printing</strong> temperature — a different number for
-a different job.</li>
-<li>Feed it into the extruder <strong>by hand</strong>, with
-<strong>single slow taps</strong> of the extruder <strong>↓</strong>
-arrow. ⛔ <strong>Never rapid taps.</strong> Wait until it extrudes
-steadily.</li>
-<li><strong>95A only — NOW plug the tube into the toolhead</strong>,
-then start the job. Bambu is explicit that <em>"85A does not require
-this step of inserting back the PTFE tube"</em> — for 85A there is no
-tube to plug in.</li>
-</ol>
-<p><strong>Teardown.</strong> <strong>95A:</strong> pull the tube back
-in through the hole, then plug it into the <strong>buffer</strong> and
-the <strong>toolhead</strong>. <strong>85A:</strong> refit the internal
-tube at both ends and close the top cover. (The refit is not in Bambu's
-steps — it follows from having removed the tube, and without it the AMS
-path stays broken for the next non-TPU print.)</p>
+<p>⛔ Do not force the module's unload fitting: it is one piece with the
+spring plate that measures the push force.</p>
+<p><strong>After TPU: the 0.4 hot end goes back on and the screen's
+nozzle setting goes back to 0.4.</strong> Every other book is sliced for
+0.4.</p>
+<p>📝 <strong>Operator's observations from the first print</strong> (to
+be filled in from his own words): how the loading went; how he mapped
+the external spool; the one paler spring.</p>
 <p>Bed: <strong>95A — Bambu liquid glue or a glue stick</strong> on
 Smooth or Textured PEI. <strong>85A — no glue.</strong></p>
-<p>✅ <strong>H2S nozzle fitted: 0.4 mm hardened.</strong> The hardened
-0.6 hotend (<strong>Bambu Hotend – H2/P2S/X2D</strong>, Standard Flow,
-H2S, 0.6 mm hardened steel) and the <strong>TPU Feed Assist
-Module</strong> are in hand and <strong>not installed yet</strong>: the
-operator fits them and says "print it" per plate, so the 0.4-default
-procedure and the per-plate nozzle check below stand. The cradle's 85A
-job (<a href="#85a-needs-the-06-nozzle">§3.5</a>) waits on that
-install.</p>
+<p>✅ <strong>H2S nozzle by default: 0.4 mm hardened.</strong> The
+hardened 0.6 hotend (<strong>Bambu Hotend – H2/P2S/X2D</strong>,
+Standard Flow, H2S, 0.6 mm hardened steel) goes on for the 0.6 book only
+and comes off after it; the <strong>TPU Feed Assist Module</strong> is
+fitted (first print 2026-11-17). The operator says "print it" per plate,
+so the 0.4-default procedure and the per-plate nozzle check below
+stand.</p>
 <p>🖨️ <strong>The module's printed parts</strong> — MakerWorld model
 <strong>2539247</strong> <em>"TPU Feed Assist Module Housing and
 Frame"</em>, <strong>H2-series bracket</strong>:</p>
@@ -6797,10 +6798,9 @@ production material.</li>
 high-flow</strong> nozzle (<a
 href="#12-second-printer--bambu-lab-h2s">§1.2</a>). A hardened 0.6 was
 bought for it (decided 2026-11-01); the pads stay 85A. The 0.6 hotend
-and the TPU Feed Assist Module both arrived 2026-11-05 and neither is
-installed yet. The operator holds <strong>all</strong> TPU until both
-are fitted. 95A could print on the 0.4, but it is in the 0.6 book with
-the 85A.</p>
+and the TPU Feed Assist Module both arrived 2026-11-05; the first TPU
+print through them was 2026-11-17 (95A back springs). 95A could print on
+the 0.4, but it is in the 0.6 book with the 85A.</p>
 <p>The last 85A book used Bambu's <strong>H2S 0.6 + TPU 85A 0.6</strong>
 system presets: 225 °C, 3 mm³/s, 0.2 layers, 2 walls, 100 % concentric,
 with a brim on the drag pad only.</p>
@@ -7338,13 +7338,13 @@ side T pads</td>
 </tr>
 </tbody>
 </table>
-<p>⚠️ <strong>Sequencing.</strong> All TPU waits for the 0.6 and the
-Feed Assist Module to be fitted. The L waits for the 0.6 to be fitted
-and the PAHT-CF to be dried. Printing the rigid parts early produces
-parts that sit until the pads exist. The operator released everything on
-2026-11-08; the order is the operator's call. What still waits is
-hardware: the 0.6 hotend fitted (85A book, PAHT-CF L), the PAHT-CF
-dried, and the Feed Assist Module for the TPU.</p>
+<p>⚠️ <strong>Sequencing.</strong> TPU prints with the 0.6 hot end
+fitted, through the Feed Assist Module. The L waits for the 0.6 to be
+fitted and the PAHT-CF to be dried. Printing the rigid parts early
+produces parts that sit until the pads exist. The operator released
+everything on 2026-11-08; the order is the operator's call. What still
+waits is hardware: the 0.6 hotend fitted for each 0.6 job (85A plates,
+PAHT-CF L) and the PAHT-CF dried.</p>
 <h3 id="field-results">Field results</h3>
 <p>What the printed parts have proven, as live rules:</p>
 <ul>

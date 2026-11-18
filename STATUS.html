@@ -197,9 +197,9 @@ alone gives ≈ 2c / cos θ of play).</td>
 <td>🔴 <strong>Cradle QUICK RELEASE, a CANDIDATE: the knob cradle stays
 the CURRENT design. The sprung path is in the cradle macro behind a
 switch that is OFF (present, inert, incomplete); the working TEST
-STATION is on X1C plate 33 only, not yet gated in the slicer; one spring
-size is on order (the top flap's); H2S plates 15 and 17 HELD (no
-material)</strong></td>
+STATION is on X1C plate 33 only, GATED (LumiAI 3DPrinter 2026-11-17);
+one spring size is on order (the top flap's); H2S plates 15 and 17 HELD
+(no material)</strong></td>
 <td><strong>What the operator asked (2026-11-16):</strong> the phone
 must come out of the cradle fast, so the big knob and the three M2 thumb
 screws of the T ledges go and every hold is spring-loaded ("So you just
@@ -314,11 +314,17 @@ the previous books the X1C's one difference is the station itself,
 changed on purpose, and the H2S book's carried parts are unchanged;
 gate_slots without the live AMS PASS 0 / 0 on both (books sha256 X1C
 <code>2f4cbfe3837246c6</code>, H2S <code>1528370426192c47</code>).
-<strong>Not yet gated by LumiAI 3DPrinter</strong> (slice, floating,
-G-code, live slots): do not print before that. The operator prints it
-when the springs are in hand (due 2026-11-19). <strong>HELD, H2S plates
-15 and 17 (LumiAI CTO 2026-11-16):</strong> the H2S book's former slot-1
-objects, the sensor carriers (<code>lumi_ze15co_carrier</code>,
+<strong>Gated by LumiAI 3DPrinter 2026-11-17, PASS on both
+books:</strong> X1C 33 slices clean (1 h 35 min, 31.2 g, 74 layers, no
+supports; the control block's roof and the horizontal pin holes slice as
+bridges); gate_floating 0, gate_gcode_floating 0, verify PASS,
+gate_slots without the live AMS PASS; against the previous books only
+X1C 33 and the H2S 35 removal changed. Still to come: the live-slot
+check at the printer, and the install once Bambu Studio has closed the
+books. The operator prints it when the springs are in hand (due
+2026-11-19). <strong>HELD, H2S plates 15 and 17 (LumiAI CTO
+2026-11-16):</strong> the H2S book's former slot-1 objects, the sensor
+carriers (<code>lumi_ze15co_carrier</code>,
 <code>lumi_sps30_carrier_plate</code>,
 <code>lumi_sps30_carrier_strap</code>) and the U-bracket
 (<code>lumi_mount_ubracket</code>), have no material now that slot 1 is
@@ -2734,11 +2740,13 @@ books; gate_slots --no-ams 0 / 0; gate_floating 0 regions on X1C 27 / 30
 <td>BigClaw phone cradle — design (CAD <code>2908d720</code>,
 operator-directed)</td>
 <td><strong>Print plan: the row above.</strong> Reprint set: X1C 27, H2S
-31 / 32, the 0.6 book's four plates. TPU waits on hardware only: the 0.6
-hotend fitted on the H2S and the TPU Feed Assist module.
-<strong>Loads:</strong> phone scale (2 g, 10 N by hand, a gentle 60 N
-clamp, the L's 16.5 N pull); stress is reported, not gated; gated are
-fit, clearances, print, min wall and the grip.</td>
+31 / 32, the 0.6 book's four plates. TPU prints with the 0.6 hotend
+fitted on the H2S, through the TPU Feed Assist module (first print
+2026-11-17: 0.6 book plate 2, six 95A back springs, 43 of 43 layers, no
+HMS error; procedure in 3D_Printing_Guide). <strong>Loads:</strong>
+phone scale (2 g, 10 N by hand, a gentle 60 N clamp, the L's 16.5 N
+pull); stress is reported, not gated; gated are fit, clearances, print,
+min wall and the grip.</td>
 </tr>
 <tr>
 <td>Lens plates 100 % infill + SIBLING GUARD + support-style overwrite
