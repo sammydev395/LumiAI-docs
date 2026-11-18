@@ -894,10 +894,14 @@ outline, 3.00 mm, mounting holes present), so only the 8 missing holes
 are drilled: PSU ×2, STRAP ×4, rear fence stud posts POST.5 / POST.6. No
 engraving, no contour (mecanum chassis).
 <code>cad/exports/cnc/LumiAI_Base_Plate_drill_only.nc</code>: T1 1/8"
-drill only, G83 Q1.0 Z-4.00 F60, one M0, 8-check audit 0. Generator (run
-with <code>~/.local/bin/FreeCAD-weekly-2026.11.11 -c</code>, never the
-1.1.1 binary):
-<code>BASEPLATE_BATTERY_SHIFT_Y=15.0 BASEPLATE_DRILL_ONLY=1 BASEPLATE_SKIP="CARRIAGE,POST.1,POST.2,POST.3,POST.4,POST.7,POST.8"</code>
+drill only, G83 Q1.0 Z-4.00 F60, one M0, <strong>STRAP.L.hi is milled as
+a slot</strong> (T2 SHARPRO, after a T1-&gt;T2 M0) from the existing
+vendor hole at X59.930 Y122.340, because the new centre is 2.2 mm from
+it; the other 7 holes are drilled. Prove T2 enters that old hole before
+the slot. 8-check audit 0. Generator (run with
+<code>~/.local/bin/FreeCAD-weekly-2026.11.11 -c</code>, never the 1.1.1
+binary):
+<code>BASEPLATE_SLOT="STRAP.L.hi=59.930,122.340" BASEPLATE_BATTERY_SHIFT_Y=15.0 BASEPLATE_DRILL_ONLY=1 BASEPLATE_SKIP="CARRIAGE,POST.1,POST.2,POST.3,POST.4,POST.7,POST.8"</code>
 through <code>gen_baseplate_nc.py</code>. <strong>Built with the battery
 shift +15.0 mm Y (operator: battery and straps 15 mm back)</strong> via
 <code>BASEPLATE_BATTERY_SHIFT_Y=15.0</code>; the banner must read
