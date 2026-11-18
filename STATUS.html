@@ -607,19 +607,31 @@ pilots 4.9 deep (100 % wall), + a rest rib behind the terminal edge.
 <strong>Front slots:</strong> the 4 pointed slots (plate Z 47–86) moved
 8.2 toward the F1/F2 buttons (operator, option A) so the board clears
 them by 3.0. <strong>Clamp slots</strong> (operator via Karma;
-off-the-shelf Jhanw desk C-clamp, listing dims): 46 × 3.5 at the plate
-top through the 4 mm wall; right x +78.09 / left x −77.06 at y 90, front
-x 0, <strong>rear x −34.7</strong> (operator 11-15: at x 0 the AC-inlet
-frame hangs to 1.35 over the plate and a fan-tower foot sits on it; at
-−34.7 the lowest thing behind the wall is the raised tower at 8.36). Jaw
-path gated 25 outside to 30 past the inner face. Slot roofs print on
-<strong>painted support enforcers</strong> (46 spans). <strong>Both
-halves reprint</strong> (the back half carries the rear, right and left
-slots, the front half the front slot and INA3); the <strong>rear cap
-does not</strong> (same mesh; 71.7 clear of the rear jaw path in the
-assembly). Books: X1C / H2S <strong>11</strong> back as rebuilt on
-<code>0dc0842e</code> (its mesh unchanged since), <strong>12</strong>
-front rebuilt on <code>a3742963</code> (the front half as exported at
+off-the-shelf Jhanw desk C-clamp, listing dims): ✅ <strong>VERIFIED on
+the real part with the Jhanw 2-pack (operator 2026-11-17: "The clamps
+are here from Amazon, the clamps for the creator version, and they fit
+beautifully. I tried them out.")</strong>; <strong>Slot heights for the
+desk (from the model, 2026-11-17):</strong> the machined plate is 3.0
+thick and stands flat on the desk (the Creator has no rails; in the
+assembly nothing but the Halo rails reaches below the plate), and every
+slot's bottom face IS the plate top, so all four slots (rear under the
+AC inlet, right, left, front under the DROK) run <strong>3.0 to 6.5
+above the desk</strong>; clear opening <strong>46.0 wide x 3.5 high, 4.0
+deep</strong> (through the wall), the same at all four (one CLAMP_SLOT_W
+/ CLAMP_SLOT_H for all); the jaw's gated path is 46 x 2.2 on the plate
+top; 46 × 3.5 at the plate top through the 4 mm wall; right x +78.09 /
+left x −77.06 at y 90, front x 0, <strong>rear x −34.7</strong>
+(operator 11-15: at x 0 the AC-inlet frame hangs to 1.35 over the plate
+and a fan-tower foot sits on it; at −34.7 the lowest thing behind the
+wall is the raised tower at 8.36). Jaw path gated 25 outside to 30 past
+the inner face. Slot roofs print on <strong>painted support
+enforcers</strong> (46 spans). <strong>Both halves reprint</strong> (the
+back half carries the rear, right and left slots, the front half the
+front slot and INA3); the <strong>rear cap does not</strong> (same mesh;
+71.7 clear of the rear jaw path in the assembly). Books: X1C / H2S
+<strong>11</strong> back as rebuilt on <code>0dc0842e</code> (its mesh
+unchanged since), <strong>12</strong> front rebuilt on
+<code>a3742963</code> (the front half as exported at
 <code>f45172dc</code>: 164.9 × 80.7 × 90.0, 199558 triangles), Karma
 gates: the only new overhangs are the four slot roofs (184 mm² each, 46
 span at 3.5 above the bed, painted enforcers on both halves); the front
@@ -706,11 +718,19 @@ binary is missing; restarted 23:19. <strong>Wand tether inlet</strong>
 −133.413, 468.845), mating +Z, pin row +X, in the BigClaw occurrence
 frame (the same in every pose); assembly frame (231.379, −189.508,
 309.081) at this STEP's pose; checked against the written STEP's solid
-to 0.001 mm. <strong>Conversion:</strong> pose converted to cached
-stages and proven identical (24/24 gate lines, 27/27 work files, bite
-2/2; uncommitted, waits on the operator's go); next bay, cradles, text,
-verify by day, then the tether-route stage (lengths per conductor group
-at cradle home, Phone Lift and full extension, with the max).</td>
+to 0.001 mm. <strong>Conversion (2026-11-17):</strong> pose, bay,
+cradles and verify converted to cached stages (runner FORMAT 7:
+transitive library keys, a later stage reading an uncacheable output
+FAILS the run); text stays plain python3. Each proven against an
+unconverted run with <code>lumi_stages_compare.py</code>, gate line for
+gate line and file for file: pose 24/24 lines, 27/27 files; bay 62/62,
+46/46; cradles 76/76, 179/179; verify 30/30, 180/180; every compare bite
+caught. Sampled results (route clouds, route clearances) are checked to
+the sampler's own bounds (cloud cover 0.86, clearances within 1.0),
+since OCC meshing is not stable under representation. Cold / warm:
+cradles 50.9 min / 3.8 s; verify 71.8 min / 1.1 s. A planted failing
+verify check ends <code>RESULT: FAIL</code> naming it, so the night
+wrapper still stops.</td>
 <td></td>
 </tr>
 <tr>
