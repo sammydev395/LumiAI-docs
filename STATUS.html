@@ -327,14 +327,17 @@ on an assumed 3 active coils; the flap springs and the 5 mm side spring
 reach 725 MPa fully pushed (limit 750). <strong>Book: ONE plate, X1C 33
 (operator 2026-11-17 via LumiAI CTO: "Put them on one plate on the X1C.
 That's it. We'll test it with the red petg.").</strong> Red Kingroon HS
-PETG, slot 2; station CAD <code>2b1bbee4</code>; 0.2 layers, 3 walls, no
-supports, 10 mm brim; the last plate, so no number moves. The H2S book's
-plate 35 (the previous coupon) is removed; that book now has 34 plates.
-Gates on the GMKtec: STL source gate PASS; verify PASS on both books (0
-failures); against the previous books the X1C's one difference is the
-station itself, changed on purpose, and the H2S book's carried parts are
-unchanged; gate_slots without the live AMS PASS 0 / 0 on both (books
-sha256 X1C <code>2f4cbfe3837246c6</code>, H2S
+PETG, slot 2; station CAD <code>409fbf4e</code> (both pins in through
+holes, rebuilt 2026-11-20 for the reprint; verify PASS, against the
+previous book only plate 33's station mesh differs, gate_slots PASS; ⛔
+was <code>2b1bbee4</code>, the blind-hole print); 0.2 layers, 3 walls,
+no supports, 10 mm brim; the last plate, so no number moves. The H2S
+book's plate 35 (the previous coupon) is removed; that book now has 34
+plates. Gates on the GMKtec: STL source gate PASS; verify PASS on both
+books (0 failures); against the previous books the X1C's one difference
+is the station itself, changed on purpose, and the H2S book's carried
+parts are unchanged; gate_slots without the live AMS PASS 0 / 0 on both
+(books sha256 X1C <code>2f4cbfe3837246c6</code>, H2S
 <code>1528370426192c47</code>). <strong>Gated by LumiAI 3DPrinter
 2026-11-17, PASS on both books:</strong> X1C 33 slices clean (1 h 35
 min, 31.2 g, 74 layers, no supports; the control block's roof and the
