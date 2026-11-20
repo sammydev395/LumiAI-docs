@@ -361,6 +361,20 @@ midpoint, touch the two end-edge Y points and take the midpoint, and
 square the plate on its straight Y-parallel side edge (two probes about
 50 mm apart agree within 0.05 mm). Mount face up. Z0 = top face on the
 T1 drill point.</p>
+<p><strong>Orientation.</strong> Mount face up.
+<code>LumiAI_Base_Plate_drill_only.nc</code> assumes the plate REAR
+(fan/PIR end, the end without the existing post holes near its edge) at
+the BACK of the machine, with the six existing post holes facing the
+operator. The plate as clamped on 2026-11-20 is turned 180 degrees in
+plane (rear toward the operator), so use
+<code>LumiAI_Base_Plate_drill_only_rot180.nc</code>, generated with
+<code>BASEPLATE_ROTATE180=1</code> (every X/Y negated about the zero, so
+no re-zeroing; the park move X0 Y-170 is unchanged). A face flip would
+mirror every new hole in X and the registration check cannot catch it,
+because POST.1-4/7/8 are X-symmetric within about 0.3 mm; a front/rear
+swap is caught by the post Y values. Machine home per the operator:
+far-left front corner as seen standing at the front (Y+ = back, X- =
+left).</p>
 <p><strong>Registration check before Cycle Start:</strong> jog to two or
 more of the existing holes listed in the NC banner (POST.1 to POST.4,
 POST.7, POST.8) and drop the T1 drill shank in. Each must drop in at its
