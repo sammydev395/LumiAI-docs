@@ -283,48 +283,69 @@ the frame, a 9.0 mm length of filament through the hole of the step's
 setting, then slide the bar under the flap: the flap must sit on every
 step and push back. Calculated 4.1 to 8.9 N on the six steps (about 420
 to 910 g). The hole size whose filament pin grips without a hammer is
-the size the cradle gets. <em>Side-ledge station:</em> two hosts and two
-legs. The host engraved "5 mm test" has its spring hole 1.80 deep so
-that the ordered 0.5 x 4 x 5 spring works in it: 4.20 long at rest, 3.35
-N on the ridge wall (about 340 g); the cradle's side ledge on its own
-0.5 x 4 x 10 spring has 4.4 N. The second host is the cradle's,
-unchanged (hole 4.4 x 4.8), for the 10 mm spring. The leg drops in at
-the long end, the spring presses it under the ridge and it cannot be
-lifted; pushed 1.2 aside it lifts out; whether the spring stays in its
-hole behind the 3.7 mouth when the leg is out is one of the things this
-print answers. <em>Print orientation:</em> the bracket, the flap, both
-hosts and both legs print as the cradle's parts do. The frame does NOT:
-it prints on its top face so the pocket needs no bridge. The T CONTROL
-BLOCK beside it is the same pocket in the L's own print orientation, its
-roof bridged 10.4 x 6.4; the bracket's leg at the top setting stands
-0.20 under that roof, so a sagging bridge shows there. Macro gates on
-the weekly build: 21 of 21, RESULT PASS, with bites (no pin: the bracket
-comes down freely; no ridge: nothing holds the leg; the first coupon's
-0.35 catch at its 0.4 float lifts straight out, as it did). The spring
-figures are calculated on an assumed 3 active coils; the flap springs
-and the 5 mm side spring reach 725 MPa fully pushed (limit 750).
-<strong>Book: ONE plate, X1C 33 (operator 2026-11-17 via LumiAI CTO:
-"Put them on one plate on the X1C. That's it. We'll test it with the red
-petg.").</strong> Red Kingroon HS PETG, slot 2; station CAD
-<code>2b1bbee4</code>; 0.2 layers, 3 walls, no supports, 10 mm brim; the
-last plate, so no number moves. The H2S book's plate 35 (the previous
-coupon) is removed; that book now has 34 plates. Gates on the GMKtec:
-STL source gate PASS; verify PASS on both books (0 failures); against
-the previous books the X1C's one difference is the station itself,
-changed on purpose, and the H2S book's carried parts are unchanged;
-gate_slots without the live AMS PASS 0 / 0 on both (books sha256 X1C
-<code>2f4cbfe3837246c6</code>, H2S <code>1528370426192c47</code>).
-<strong>Gated by LumiAI 3DPrinter 2026-11-17, PASS on both
-books:</strong> X1C 33 slices clean (1 h 35 min, 31.2 g, 74 layers, no
-supports; the control block's roof and the horizontal pin holes slice as
-bridges); gate_floating 0, gate_gcode_floating 0, verify PASS,
-gate_slots without the live AMS PASS; against the previous books only
-X1C 33 and the H2S 35 removal changed. Still to come: the live-slot
-check at the printer, and the install once Bambu Studio has closed the
-books. The operator prints it when the springs are in hand (due
-2026-11-19). <strong>HELD, H2S plates 15 and 17 (LumiAI CTO
-2026-11-16):</strong> the H2S book's former slot-1 objects, the sensor
-carriers (<code>lumi_ze15co_carrier</code>,
+the size the cradle gets. <strong>Pins go in and come out (operator
+2026-11-20, on the printed station):</strong> as printed, the hinge hole
+was half covered by the bracket's own web behind the rear lug and blind
+in the front lug, and the cross pin was blind in the frame's front wall
+and 0.4 under its back face, so neither pin could be put in cleanly or
+taken out to try another setting. Fixed in the station macro: both holes
+run THROUGH (frame and control block front to back; the bracket through
+both lugs, plus a 1.9 path through the web behind the rear lug), the
+pins stay 8 and 9 mm, centred with their ends 0.5 / 0.7 under the faces,
+and a paperclip pushes either one out from the other side; the grip fit
+holds them. A new row runs a straight 1.6 rod along each pin past both
+faces and finds nothing (all three settings); its bite is the printed
+version, which it fails. ⏳ The cradle macro's own builders (behind its
+switch) get the same change next. <em>On the printed station
+(operator):</em> the flap does not catch the bar's steps by hand without
+springs; it is not meant to catch. It presses the step up against the
+roof with the springs in (calculated 4.1 to 8.9 N); the spring test
+decides (operator: "if it holds my pressure on, then maybe we're okay").
+Assembled reference views (STEP
+<code>..._t_spring_station_*_ASSY.step</code>, labelled PNGs
+<code>docs/images/hardware/phone_cradle_t_spring_station_*.png</code>,
+script <code>lumi_bigclaw_cradle_t_spring_station_assy.py</code>; in no
+book). <em>Side-ledge station:</em> two hosts and two legs. The host
+engraved "5 mm test" has its spring hole 1.80 deep so that the ordered
+0.5 x 4 x 5 spring works in it: 4.20 long at rest, 3.35 N on the ridge
+wall (about 340 g); the cradle's side ledge on its own 0.5 x 4 x 10
+spring has 4.4 N. The second host is the cradle's, unchanged (hole 4.4 x
+4.8), for the 10 mm spring. The leg drops in at the long end, the spring
+presses it under the ridge and it cannot be lifted; pushed 1.2 aside it
+lifts out; whether the spring stays in its hole behind the 3.7 mouth
+when the leg is out is one of the things this print answers. <em>Print
+orientation:</em> the bracket, the flap, both hosts and both legs print
+as the cradle's parts do. The frame does NOT: it prints on its top face
+so the pocket needs no bridge. The T CONTROL BLOCK beside it is the same
+pocket in the L's own print orientation, its roof bridged 10.4 x 6.4;
+the bracket's leg at the top setting stands 0.20 under that roof, so a
+sagging bridge shows there. Macro gates on the weekly build: 21 of 21,
+RESULT PASS, with bites (no pin: the bracket comes down freely; no
+ridge: nothing holds the leg; the first coupon's 0.35 catch at its 0.4
+float lifts straight out, as it did). The spring figures are calculated
+on an assumed 3 active coils; the flap springs and the 5 mm side spring
+reach 725 MPa fully pushed (limit 750). <strong>Book: ONE plate, X1C 33
+(operator 2026-11-17 via LumiAI CTO: "Put them on one plate on the X1C.
+That's it. We'll test it with the red petg.").</strong> Red Kingroon HS
+PETG, slot 2; station CAD <code>2b1bbee4</code>; 0.2 layers, 3 walls, no
+supports, 10 mm brim; the last plate, so no number moves. The H2S book's
+plate 35 (the previous coupon) is removed; that book now has 34 plates.
+Gates on the GMKtec: STL source gate PASS; verify PASS on both books (0
+failures); against the previous books the X1C's one difference is the
+station itself, changed on purpose, and the H2S book's carried parts are
+unchanged; gate_slots without the live AMS PASS 0 / 0 on both (books
+sha256 X1C <code>2f4cbfe3837246c6</code>, H2S
+<code>1528370426192c47</code>). <strong>Gated by LumiAI 3DPrinter
+2026-11-17, PASS on both books:</strong> X1C 33 slices clean (1 h 35
+min, 31.2 g, 74 layers, no supports; the control block's roof and the
+horizontal pin holes slice as bridges); gate_floating 0,
+gate_gcode_floating 0, verify PASS, gate_slots without the live AMS
+PASS; against the previous books only X1C 33 and the H2S 35 removal
+changed. Still to come: the live-slot check at the printer, and the
+install once Bambu Studio has closed the books. The operator prints it
+when the springs are in hand (due 2026-11-19). <strong>HELD, H2S plates
+15 and 17 (LumiAI CTO 2026-11-16):</strong> the H2S book's former slot-1
+objects, the sensor carriers (<code>lumi_ze15co_carrier</code>,
 <code>lumi_sps30_carrier_plate</code>,
 <code>lumi_sps30_carrier_strap</code>) and the U-bracket
 (<code>lumi_mount_ubracket</code>), have no material now that slot 1 is
