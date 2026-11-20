@@ -1121,12 +1121,22 @@ oozes on every open-air crossing; gate_slots' PETG warning clears: H2S
 17 → 0). <strong>Released 2026-11-14 (operator), each once Karma passes
 it:</strong> plate 11 fence back, the sensor carriers X1C 14 / H2S 15
 and the rear cap's own plate X1C 29 / H2S 32 (0.16), both books.
-<strong>Plate 12, the fence front ALONE (0.32, both books), and X1C
-plate 21, the power-bay carrier <code>a3742963</code>, are released as a
-pair</strong> (CTO 2026-11-15; the FENCE and CARRIER rows), each
-printing once Karma passes both. The fence front affects the carrier
-(operator), so the two plates are held and released together, built on
-one CAD commit: <code>FENCE_SET_HOLD</code> and
+<strong>X1C 34, ALL CARRIERS on one plate</strong> (operator 2026-11-19
+via LumiAI 3DPrinter: "put them on same plate"; all PETG from slot 4 and
+the R818 shroud included, both confirmed): the ZE15-CO carrier, the
+SPS30 plate + strap, the Halo mic carrier and the R818 shroud, 0.16, no
+supports, each part's own settings (no brim on the three sensor parts,
+auto on the carrier and shroud); the shroud turned 90° on its face to
+fit. Its own positions (<code>PLATE_PINS</code> in the builder; X1C 14's
+<code>OPERATOR_PINS</code> stay X1C 14's). An ADDED plate: X1C 14 / 16 /
+17 unchanged (plates 1–33 byte-identical to the previous book). verify
+(alone and against the previous book) and gate_slots PASS; slicer gates
+by LumiAI 3DPrinter. <strong>Plate 12, the fence front ALONE (0.32, both
+books), and X1C plate 21, the power-bay carrier <code>a3742963</code>,
+are released as a pair</strong> (CTO 2026-11-15; the FENCE and CARRIER
+rows), each printing once Karma passes both. The fence front affects the
+carrier (operator), so the two plates are held and released together,
+built on one CAD commit: <code>FENCE_SET_HOLD</code> and
 <code>CARRIER_HOLD</code> in the builder, set both or neither. The front
 half's four DROK boss undersides and its front clamp-slot roof painted
 (1078 triangles), manual tree_strong, top-z 0.32, as the back half's PSU
