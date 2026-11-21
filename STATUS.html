@@ -267,31 +267,43 @@ held):</strong> with five settings every phone pushes the flap within
 every step of the station's bar, where the three-setting design fell to
 about 3 N on the thin phones. The leg cannot be longer, so the five fit
 in 0 .. 4.05 with at least 1.05 of plastic round every hole. Station
-24/24 (the frame's two 1.8 size labels dropped); its stepped bar now has
-the thickest and thinnest phone of each of the five settings (10 steps,
-engraved with the setting). A hinged FLAP on a filament pin (8.0 mm, 1.0
-blind in the front lug), two 0.5 x 4 x 5 springs under it, takes up the
-last 1.8 at most and bears on the phone's back: about 420 g at the
-least, 910 g at the most [4.1 N, 8.9 N]. With no phone the flap rests
-6.7 degrees up on its heel. The cross pin is a locking peg, the hinge
-pin a hinge; both carry the springs' reaction in shear (calculated 6.2
-MPa at a 30 N yank, 2.1 MPa at 10 N; limit 9.8). The bracket's web is
-3.9 thick where the screw T's is 5.0. <strong>Hinge lugs are side walls
-(operator 2026-11-21: the 6 mm wide lugs snapped at the pin hole when
-the filament went in):</strong> each lug is now a 2.0 thick wall the
-housing's full 25 mm length, from its floor to the lug's top; pin
-position, holes, flap and gaps unchanged; a gate row measures each lug's
-material above the housing across the pin's plane against 3× the old
-lug, with a bite on the old lug's 6 mm window. Station 25/25. All spring
-figures are calculated on assumed coil counts and are provisional until
-a real spring is measured; the flap springs reach 725 MPa with the flap
-fully down (limit 750). The lock rows are calculated for spring steel (G
-79 000); a 304 spring is about 13 % softer and has not been put through
-them. Springs per cradle: 1.0 x 8 x 15, one (lock); 0.5 x 4 x 10, two
-(side ledges); 0.5 x 4 x 5, two (top flap). <strong>The TEST STATION
-(operator 2026-11-17: "what we really need to test is the full mechanism
-with this spring I ordered ... like a small frame on which we install it
-and make sure it works"; macro
+26/26 (the frame's two 1.8 size labels dropped). <strong>Eight separate
+objects (operator 2026-11-21: "please split it into separate
+parts"):</strong> each piece is its own STL
+(<code>…t_spring_coupon_frame / _bracket / _flap / _bar / _side_host_5mm_test / _side_leg / _side_host_cradle</code>,
+the leg printed twice), placed on X1C 33 where the station's checked
+layout puts it, so one changed piece prints alone. <strong>Mesh
+fix:</strong> Studio flagged 4 non-manifold edges and reversed faces;
+the flap's two 4.4 spring seats were exactly as wide as the 4.4 flap,
+touching both sides in zero-width edges. The seats are now 0.1 wider and
+open through the sides (the spring is still held by their curved ends),
+and the station exports with the cradle macro's mesher. A new row checks
+every piece's mesh as a slicer does (closed, manifold, facets one way,
+no self-intersection); its bite is the old export, which it flags; its
+stepped bar now has the thickest and thinnest phone of each of the five
+settings (10 steps, engraved with the setting). A hinged FLAP on a
+filament pin (8.0 mm, 1.0 blind in the front lug), two 0.5 x 4 x 5
+springs under it, takes up the last 1.8 at most and bears on the phone's
+back: about 420 g at the least, 910 g at the most [4.1 N, 8.9 N]. With
+no phone the flap rests 6.7 degrees up on its heel. The cross pin is a
+locking peg, the hinge pin a hinge; both carry the springs' reaction in
+shear (calculated 6.2 MPa at a 30 N yank, 2.1 MPa at 10 N; limit 9.8).
+The bracket's web is 3.9 thick where the screw T's is 5.0. <strong>Hinge
+lugs are side walls (operator 2026-11-21: the 6 mm wide lugs snapped at
+the pin hole when the filament went in):</strong> each lug is now a 2.0
+thick wall the housing's full 25 mm length, from its floor to the lug's
+top; pin position, holes, flap and gaps unchanged; a gate row measures
+each lug's material above the housing across the pin's plane against 3×
+the old lug, with a bite on the old lug's 6 mm window. Station 25/25.
+All spring figures are calculated on assumed coil counts and are
+provisional until a real spring is measured; the flap springs reach 725
+MPa with the flap fully down (limit 750). The lock rows are calculated
+for spring steel (G 79 000); a 304 spring is about 13 % softer and has
+not been put through them. Springs per cradle: 1.0 x 8 x 15, one (lock);
+0.5 x 4 x 10, two (side ledges); 0.5 x 4 x 5, two (top flap).
+<strong>The TEST STATION (operator 2026-11-17: "what we really need to
+test is the full mechanism with this spring I ordered ... like a small
+frame on which we install it and make sure it works"; macro
 <code>lumi_bigclaw_cradle_t_spring_coupon.py</code>, built from the
 cradle macro with the switch on; export
 <code>lumi_bigclaw_phone_cradle_aback_t_spring_coupon</code>), eight
