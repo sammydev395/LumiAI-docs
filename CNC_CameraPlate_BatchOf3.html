@@ -120,7 +120,8 @@ through hand-drilled Ø4.0 holes in the side waste, at each plate's zero
 X ±62, zero Y +3 (level with the plate's physical centre) — i.e. 13 and
 137 mm from a long edge, and 32.5 / 92.5 / 152.5 mm from the clean end.
 About 12 mm outside the cutter envelope (X ±47.22) with the head
-included, and clear of the M0 park (now machine back, G53).</li>
+included, and clear of the M0 park position (gantry hand-jogged to the
+back-left).</li>
 <li>Edge clamps on the long edges, clear of the plate row.</li>
 <li><strong>Webs are 5.89 mm</strong> (tighter than the old 10 mm layout
 because the plate is 6 mm taller). long-edge clamps + the waste screws
@@ -227,14 +228,15 @@ href="../cad/exports/cnc/CameraMount_Oak-D_x3.nc"><code>CameraMount_Oak-D_x3.nc<
 cuts all three plates from <strong>one work zero at plate 1's
 scribe</strong>. Plates 2 and 3 are the single-plate moves shifted +60
 and +120 mm in Y (verified: each plate's moves equal the single-plate NC
-exactly). Order: 12 round holes → park at the BACK of the machine (G53
-Z−5, Y−5; the StepCraft spindle hangs off the front of the gantry, so a
-front park puts the beam over the plates) + M0 (screw all 12 down) →
-both slots on 3 plates → 3 contours. One Z touch-off. Y extent of the
-cutter from the zero: −24.06 … +150.05 (sheet Y 5.44 … 179.55 with
-scribes as before). The other two scribes are check marks. Only change
-vs the single-plate moves: retracts in the slot/contour ops are Z8
-instead of Z5, since 12 screw heads stand proud. Generator:
+exactly). Order: 12 round holes → G53 Z−5 lift + M0 (StepCraft spindle
+hangs off the front of the gantry, so jog X fully left and Y fully back
+BY HAND at the pause; automatic home-corner park pending the operator's
+DRO reading — G53 Y−5 was wrong, it hit the front end) (screw all 12
+down) → both slots on 3 plates → 3 contours. One Z touch-off. Y extent
+of the cutter from the zero: −24.06 … +150.05 (sheet Y 5.44 … 179.55
+with scribes as before). The other two scribes are check marks. Only
+change vs the single-plate moves: retracts in the slot/contour ops are
+Z8 instead of Z5, since 12 screw heads stand proud. Generator:
 <code>cad/freecad/gen_cameramount_nc_x3.py</code>. Dry-run it above the
 stock first — it has not been cut. The single-plate NC remains for
 per-plate runs.</p>
