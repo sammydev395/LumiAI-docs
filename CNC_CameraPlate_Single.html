@@ -92,10 +92,9 @@ face via SHARPRO tip. X/Y zero at the scribe.</td>
 <td>T2 cuts the 2× OAK-D camera holes and the 2× M3 tail-tab holes
 (17.17 c-c; they bolt to the printed PETG+ L-adapter) — all 4 round
 holes first. <strong>S18000, F600 XY, F100 plunge, Z=−3.0.</strong> Then
-lifts Z in machine coordinates (G53 Z−5) and pauses; <strong>jog X fully
-left and Y fully back by hand</strong> so the gantry is clear of the
-plates (automatic X/Y park pending the operator's home reading — an
-earlier G53 Y−5 hit the front end of travel); M5.</td>
+parks in machine coordinates (G53: Z−5, then X10, then Y780 = back-left
+home corner; DRO after Ref All Home reads X0 Y833 Z0, so Y833 is the
+back) so the gantry is clear of the plates; M5.</td>
 <td>Watch.</td>
 <td>~1 min</td>
 </tr>
