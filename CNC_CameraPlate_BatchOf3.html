@@ -15,10 +15,13 @@ session</strong>: Halo (new), Nova (next build), spare. One tool
 install, one Z zero, one chip cleanup; XY zero per plate.</p>
 <h2 id="why-this-doc-exists">Why this doc exists</h2>
 <p>The NC is written to cut ONE plate centred at the active work zero.
-Three plates = three runs of the same NC. The win is
-<strong>not</strong> modifying the NC — it is leaving the Stepcraft set
-up (tool, collet, Z zero, spoilboard, vacuum, dust shoe) across all
-three cuts and only moving the stock in through the workflow once.</p>
+Three plates = three runs of the same NC — <strong>or one run of
+<code>CameraMount_Oak-D_x3.nc</code>, see <a
+href="#one-zero-program-operator-request-2026-11-21">One-zero
+program</a>.</strong> The win is <strong>not</strong> modifying the NC —
+it is leaving the Stepcraft set up (tool, collet, Z zero, spoilboard,
+vacuum, dust shoe) across all three cuts and only moving the stock in
+through the workflow once.</p>
 <p><strong>Do not generate a modified-coordinates NC.</strong> Prior
 sessions have hit the usual UCCNC syntax traps (lone-LF, nested parens,
 M6 handling) every time an NC gets rewritten. The original passes the
