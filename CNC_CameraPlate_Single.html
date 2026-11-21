@@ -43,14 +43,14 @@ Kodiak 1/8" is retired, SHARPRO is the only 1/8" endmill on hand.</td>
 <tr>
 <td><strong>Hold-down A</strong></td>
 <td>Edge clamps or ~4 toe clamps on the stock perimeter</td>
-<td>Carries OP1 + OP2 (low-force hole/slot cuts)</td>
+<td>Carries OP1 only (low-force hole drilling)</td>
 </tr>
 <tr>
 <td><strong>Hold-down B</strong></td>
 <td>4× M3 × ~15 mm SHCS + hex key</td>
-<td>At M0: operator screws the part down through the 4 OAK-D M4
-clearance holes it just cut, into the spoilboard. Carries OP3
-(part-separating contour).</td>
+<td>At M0: operator screws the part down through the 4 round holes OP1
+just cut, into the spoilboard. Carries the slots + OP3 (part-separating
+contour).</td>
 </tr>
 <tr>
 <td><strong>Spoilboard</strong></td>
@@ -87,29 +87,32 @@ face via SHARPRO tip. X/Y zero at the scribe.</td>
 <td>—</td>
 </tr>
 <tr>
-<td><strong>OP1 — Camera Holes &amp; Slot</strong></td>
-<td>T2 cuts the OAK-D camera clearance slot + 4× M4 clearance holes.
-<strong>S18000, F600 XY, F100 plunge, Z=−3.0.</strong></td>
-<td>Watch.</td>
-<td>~2 min</td>
-</tr>
-<tr>
-<td><strong>OP2 — Robot Mount Holes</strong></td>
-<td>T2 cuts the 2× M3 tail-tab mounting holes at 17.17 c-c (these are
-what bolt to the printed PETG+ L-adapter). Same spindle, no tool change.
+<td><strong>OP1 — Round Holes</strong></td>
+<td>T2 cuts the 2× OAK-D camera holes and the 2× M3 tail-tab holes
+(17.17 c-c; they bolt to the printed PETG+ L-adapter) — all 4 round
+holes first. <strong>S18000, F600 XY, F100 plunge, Z=−3.0.</strong>
 Spindle parks <code>X=120, Y=−60, Z=25</code>, M5.</td>
 <td>Watch.</td>
-<td>~30 sec</td>
+<td>~1 min</td>
 </tr>
 <tr>
 <td><strong>M0 (mid-program)</strong></td>
 <td>—</td>
-<td><strong>Screw the part down through the 4 OAK-D M4 holes</strong>
-that OP1 just cut, into the spoilboard. 4× M3 × ~15 mm SHCS,
-finger-snug. <strong>This hold-down is what carries OP3 — the outside
-contour severs the plate from the stock, and these 4 bolts are what keep
-the finished part in place.</strong> Press Cycle Start.</td>
+<td><strong>Screw the part down through all 4 round holes</strong> (2
+camera + 2 tail-tab) that OP1 just cut, into the spoilboard. 4× M3 × ~15
+mm SHCS, finger-snug. <strong>These 4 bolts carry the slots and the
+contour — the outside contour severs the plate from the stock, and they
+keep the finished part in place.</strong> Press Cycle Start. <em>(Order
+changed 2026-11-20 at operator request: holes → bolt down → slots →
+contour.)</em></td>
 <td>~2 min</td>
+</tr>
+<tr>
+<td><strong>OP2 — Camera Slots</strong></td>
+<td>T2 cuts the OAK-D camera clearance slot and the 2nd slot with the
+plate already held down.</td>
+<td>Watch.</td>
+<td>~1 min</td>
 </tr>
 <tr>
 <td><strong>OP3 — Outside Contour</strong></td>
