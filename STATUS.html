@@ -265,15 +265,21 @@ bears on the phone's back: about 420 g at the least, 910 g at the most
 The cross pin is a locking peg, the hinge pin a hinge; both carry the
 springs' reaction in shear (calculated 6.2 MPa at a 30 N yank, 2.1 MPa
 at 10 N; limit 9.8). The bracket's web is 3.9 thick where the screw T's
-is 5.0. All spring figures are calculated on assumed coil counts and are
-provisional until a real spring is measured; the flap springs reach 725
-MPa with the flap fully down (limit 750). The lock rows are calculated
-for spring steel (G 79 000); a 304 spring is about 13 % softer and has
-not been put through them. Springs per cradle: 1.0 x 8 x 15, one (lock);
-0.5 x 4 x 10, two (side ledges); 0.5 x 4 x 5, two (top flap).
-<strong>The TEST STATION (operator 2026-11-17: "what we really need to
-test is the full mechanism with this spring I ordered ... like a small
-frame on which we install it and make sure it works"; macro
+is 5.0. <strong>Hinge lugs are side walls (operator 2026-11-21: the 6 mm
+wide lugs snapped at the pin hole when the filament went in):</strong>
+each lug is now a 2.0 thick wall the housing's full 25 mm length, from
+its floor to the lug's top; pin position, holes, flap and gaps
+unchanged; a gate row measures each lug's material above the housing
+across the pin's plane against 3× the old lug, with a bite on the old
+lug's 6 mm window. Station 25/25. All spring figures are calculated on
+assumed coil counts and are provisional until a real spring is measured;
+the flap springs reach 725 MPa with the flap fully down (limit 750). The
+lock rows are calculated for spring steel (G 79 000); a 304 spring is
+about 13 % softer and has not been put through them. Springs per cradle:
+1.0 x 8 x 15, one (lock); 0.5 x 4 x 10, two (side ledges); 0.5 x 4 x 5,
+two (top flap). <strong>The TEST STATION (operator 2026-11-17: "what we
+really need to test is the full mechanism with this spring I ordered ...
+like a small frame on which we install it and make sure it works"; macro
 <code>lumi_bigclaw_cradle_t_spring_coupon.py</code>, built from the
 cradle macro with the switch on; export
 <code>lumi_bigclaw_phone_cradle_aback_t_spring_coupon</code>), eight
@@ -1146,28 +1152,29 @@ fit. Its own positions (<code>PLATE_PINS</code> in the builder; X1C 14's
 (alone and against the previous book) and gate_slots PASS; slicer gates
 by LumiAI 3DPrinter. <strong>H2S 35, the ULTRA DRILL TEMPLATE</strong>
 (operator 2026-11-20 via LumiAI 3DPrinter: yellow PETG, 0.4 nozzle; CAD
-<code>df4321a3</code>, 150 × 257 × 8, too long for the X1C bed, so H2S
-only): bars down as exported, no supports, no brim, 0.2, 4 walls at 30 /
-60 mm/s so the Ø3.4 guides and Ø4.2 locators sit in solid wall (accuracy
-first: the operator measures POST.1 to POST.4, about 137 mm, before
-drilling). An ADDED plate: H2S 1–34 unchanged (byte-identical meshes and
-settings; only plate 35's entries added). verify PASS; slicer gates by
-LumiAI 3DPrinter. <strong>Plate 12, the fence front ALONE (0.32, both
-books), and X1C plate 21, the power-bay carrier <code>a3742963</code>,
-are released as a pair</strong> (CTO 2026-11-15; the FENCE and CARRIER
-rows), each printing once Karma passes both. The fence front affects the
-carrier (operator), so the two plates are held and released together,
-built on one CAD commit: <code>FENCE_SET_HOLD</code> and
-<code>CARRIER_HOLD</code> in the builder, set both or neither. The front
-half's four DROK boss undersides and its front clamp-slot roof painted
-(1078 triangles), manual tree_strong, top-z 0.32, as the back half's PSU
-pads; the rear cap at 0.16 (its snaps engage 0.6), top face down, ASA
-black H2S slot 2, no supports, 10 mm brim. <strong>One layer height per
-plate</strong> (verify FAILS a mixed plate: the H2S slicer refuses it
-with a prime tower, CLI -51, and the X1C slices fractional z-steps).
-<strong>Per part:</strong> fence halves 0.32 / 3 walls / 15 % gyroid /
-outer 60, inner 250 (ASA black, H2S slot 2, chamber door closed); the
-back half carries painted enforcers under the two PSU-strap pad tops
+<code>a4a4963c</code>: the lip round the full plate edge locates it, no
+raised guide bosses), 159.7 × 281.2 × 6.5, too long for the X1C bed, so
+H2S only: flipped, the bar / band face flat on the bed and the mount
+face and lip up, no supports, no brim, 0.2, 4 walls, 40% gyroid, PETG+
+walls 50 / 200 (the same settings as LumiAI 3DPrinter's standalone plate
+of this part). An ADDED plate: H2S 1–34 unchanged. verify PASS; slicer
+gates by LumiAI 3DPrinter. <strong>Plate 12, the fence front ALONE
+(0.32, both books), and X1C plate 21, the power-bay carrier
+<code>a3742963</code>, are released as a pair</strong> (CTO 2026-11-15;
+the FENCE and CARRIER rows), each printing once Karma passes both. The
+fence front affects the carrier (operator), so the two plates are held
+and released together, built on one CAD commit:
+<code>FENCE_SET_HOLD</code> and <code>CARRIER_HOLD</code> in the
+builder, set both or neither. The front half's four DROK boss undersides
+and its front clamp-slot roof painted (1078 triangles), manual
+tree_strong, top-z 0.32, as the back half's PSU pads; the rear cap at
+0.16 (its snaps engage 0.6), top face down, ASA black H2S slot 2, no
+supports, 10 mm brim. <strong>One layer height per plate</strong>
+(verify FAILS a mixed plate: the H2S slicer refuses it with a prime
+tower, CLI -51, and the X1C slices fractional z-steps). <strong>Per
+part:</strong> fence halves 0.32 / 3 walls / 15 % gyroid / outer 60,
+inner 250 (ASA black, H2S slot 2, chamber door closed); the back half
+carries painted enforcers under the two PSU-strap pad tops
 (<code>ENFORCE_FLAT_DOWN</code>, manual trees), the front half under its
 DROK bosses and front slot roof (<code>ENFORCE_BOX_DOWN</code>, manual
 trees); brim 10 outer+inner; avoid-crossing-walls ON. Extension halves
