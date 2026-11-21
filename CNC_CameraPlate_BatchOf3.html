@@ -51,9 +51,10 @@ used end)</td>
 <td>or toe / cam clamps</td>
 </tr>
 <tr>
-<td>3M VHB or foam double-sided tape</td>
-<td>Full-back under the sheet</td>
-<td>1 strip (300 × 150)</td>
+<td>M3 × 15 SHCS (waste hold-down)</td>
+<td>2 per plate through hand-drilled Ø4.0 holes in the side waste — NO
+tape (operator 2026-11-20)</td>
+<td>6</td>
 </tr>
 <tr>
 <td>Bolt-down screws</td>
@@ -63,8 +64,8 @@ bolt-down)</td>
 </tr>
 <tr>
 <td>Spoilboard</td>
-<td>Sacrificial 2 mm+ MDF/HDPE/ply, large enough for the sheet +
-clamps</td>
+<td>Sacrificial MDF/HDPE/ply, <strong>≥13 mm thick</strong> (M3 × 15
+bolt-down; shop board is 1"), large enough for the sheet + clamps</td>
 <td>1</td>
 </tr>
 <tr>
@@ -110,19 +111,24 @@ NC-zero scribe centres (Y_sheet from the clear-end edge of the sheet):
   Plate 3 at Y_sheet = 149.5 (5.89 mm web to plate 2;
                               camera-side margin 5.45 to used end Y=185)</code></pre>
 <ul>
-<li>Full-back <strong>VHB or foam double-sided tape</strong> keeps the
-sheet rigid as plates sever.</li>
+<li><strong>No tape (operator 2026-11-20).</strong> The sheet is held by
+the long-edge clamps plus 6 waste screws: 2× M3 × 15 SHCS per plate
+through hand-drilled Ø4.0 holes in the side waste, at each plate's zero
+X ±62, zero Y +3 (level with the plate's physical centre) — i.e. 13 and
+137 mm from a long edge, and 32.5 / 92.5 / 152.5 mm from the clean end.
+About 12 mm outside the cutter envelope (X ±47.22) with the head
+included, and clear of the M0 park at X120 Y-60.</li>
 <li>Edge clamps on the long edges, clear of the plate row.</li>
 <li><strong>Webs are 5.89 mm</strong> (tighter than the old 10 mm layout
-because the plate is 6 mm taller). VHB + edge clamps carry the sheet;
-the webs stay stiff enough through OP3 severs. Add web toe clamps if
-operator judges them needed.</li>
+because the plate is 6 mm taller). long-edge clamps + the waste screws
+carry the sheet; the webs stay stiff enough through OP3 severs. Add web
+toe clamps if operator judges them needed.</li>
 <li>End margins <strong>5.44 / 5.45 mm</strong> (clear-end tail side /
 used-end camera side).</li>
 <li>Pre-scribe each plate's NC-zero point on the sheet with a scribe +
-rule BEFORE applying VHB. Each scribe is 3 mm south of its plate's
-physical centre; the operator aligns on the scribe, the plate falls
-where the NC puts it.</li>
+rule BEFORE clamping. Each scribe is 3 mm south of its plate's physical
+centre; the operator aligns on the scribe, the plate falls where the NC
+puts it.</li>
 </ul>
 <p><strong>Fallback (5052 sheet, 200 × 200 × 2):</strong> 3 plates fit
 along Y with NC-zero scribes at Y = 50 / 110 / 170 (54.11 envelope × 3 =
@@ -142,9 +148,9 @@ same workflow.</p>
 <tr>
 <td><strong>PRE</strong></td>
 <td>Scribe 3 NC-zero marks on the sheet (Y_sheet = 29.5, 89.5, 149.5
-from clear-end edge, X = sheet centre). Apply VHB to the sheet back.
-Press the sheet onto the spoilboard, VHB side down. Edge-clamp the
-sheet's long edges. T2 SHARPRO in 1/4" OZ8 collet. Air blast on.</td>
+from clear-end edge, X = sheet centre). Drill the 6 waste holes (Ø4.0)
+and set the sheet on the spoilboard. Edge-clamp the long edges and run
+the 6 waste screws. T2 SHARPRO in 1/4" OZ8 collet. Air blast on.</td>
 <td>Set up once. ~8 min.</td>
 <td></td>
 </tr>
@@ -181,8 +187,8 @@ Start. See the single-plate doc for OP1/OP2/M0/OP3 details.</td>
 <td><strong>POST</strong></td>
 <td>Unbolt the 12 M3 SHCS. Lift 3 finished plates off the spoilboard
 (plates are held to spoilboard via their bolts, not to each other). Lift
-the sheet skeleton (held by VHB + edge clamps). De-burr edges + slot
-flash on each plate. Vacuum chips.</td>
+the sheet skeleton (held by edge clamps + waste screws). De-burr edges +
+slot flash on each plate. Vacuum chips.</td>
 <td>~10 min</td>
 <td></td>
 </tr>
@@ -196,9 +202,9 @@ three plates (one sheet)</h2>
 <p>One Z zero carries all three — same sheet, same thickness. The OP1
 holes cut to Z=−3.0 which is 1 mm into spoilboard, well inside the
 margin for the 2 mm sheet with ±0.3 mm nominal tolerance.</p>
-<p>If the sheet shows visible curl / local lift anywhere (VHB didn't
-bite everywhere), re-zero Z at that plate's centre specifically before
-Cycle Start.</p>
+<p>If the sheet shows visible curl / local lift anywhere (sheet not flat
+everywhere — no tape now), re-zero Z at that plate's centre specifically
+before Cycle Start.</p>
 <h2 id="xy-zero-across-all-three-plates">XY zero across all three
 plates</h2>
 <p><strong>Must re-zero XY between plates</strong> — the NC is written
@@ -207,10 +213,33 @@ points on the same sheet. There is no way around this short of modifying
 the NC with G-code work-offset switches (G54/G55/G56), which we are
 explicitly not doing.</p>
 <p>Scribe each plate's <strong>NC-zero point</strong> on the sheet
-BEFORE applying VHB. Each scribe is 3 mm <strong>south</strong> (toward
-the clear-end edge, i.e. the tail-tab side) of its plate's physical
-centre, because the +6 mm camera lift grew the plate from the camera end
-only. Touch-off the spindle at each scribe with the spindle lamp.</p>
+BEFORE clamping. Each scribe is 3 mm <strong>south</strong> (toward the
+clear-end edge, i.e. the tail-tab side) of its plate's physical centre,
+because the +6 mm camera lift grew the plate from the camera end only.
+Touch-off the spindle at each scribe with the spindle lamp.</p>
+<h2 id="one-zero-program-operator-request-2026-11-21">One-zero program
+(operator request 2026-11-21)</h2>
+<p><a
+href="../cad/exports/cnc/CameraMount_Oak-D_x3.nc"><code>CameraMount_Oak-D_x3.nc</code></a>
+cuts all three plates from <strong>one work zero at plate 1's
+scribe</strong>. Plates 2 and 3 are the single-plate moves shifted +60
+and +120 mm in Y (verified: each plate's moves equal the single-plate NC
+exactly). Order: 12 round holes → park X120 Y-60 + M0 (screw all 12
+down) → both slots on 3 plates → 3 contours. One Z touch-off. Y extent
+of the cutter from the zero: −24.06 … +150.05 (sheet Y 5.44 … 179.55
+with scribes as before). The other two scribes are check marks. Only
+change vs the single-plate moves: retracts in the slot/contour ops are
+Z8 instead of Z5, since 12 screw heads stand proud. Generator:
+<code>cad/freecad/gen_cameramount_nc_x3.py</code>. Dry-run it above the
+stock first — it has not been cut. The single-plate NC remains for
+per-plate runs.</p>
+<h2 id="sheet-orientation-operator-confirmed-2026-11-20">Sheet
+orientation (operator-confirmed 2026-11-20)</h2>
+<p>Sheet long side runs front to back. Clean end toward the operator
+(machine front, Y−); the used end (T-cutout, slot, 2 small holes) at the
+back (Y+, home side). Each plate's camera end faces the back; the tail
+tabs face the operator. Machine home is back-left, X+ to the right.
+Stock: uxcell 6061, 300 × 150 × 2 mm, ≥185 mm clean length.</p>
 <h2 id="mid-program-m0-bolt-down-per-plate">Mid-program M0 bolt-down per
 plate</h2>
 <p>The NC pauses after OP1 (the 4 round holes: 2 camera + 2 tail-tab,
@@ -226,20 +255,21 @@ with the stock they are holding; demount at the end of the batch.</p>
 <ul>
 <li><strong>Thin-stock flex after plate 1 severs:</strong> the sheet has
 an increasingly large hole in it after each plate cut, and the 5.89 mm
-webs are tighter than the pre-lift 10 mm layout. VHB full-back + edge
-clamps keep it rigid; without VHB the sheet will flex and plate 2 /
-plate 3 XY zeros drift. VHB is not optional. Web toe clamps are optional
-per operator judgment.</li>
+webs are tighter than the pre-lift 10 mm layout. Long-edge clamps + the
+6 waste screws keep it rigid (no tape); if the sheet flexes, plate 2 /
+plate 3 XY zeros drift — re-touch Z at every plate, since flatness
+varies without tape. Web toe clamps are optional per operator
+judgment.</li>
 <li><strong>Single SHARPRO, no spare:</strong> 6061 is clean-cutting but
 still weldable to the flute if the bit dulls. Inspect the flute between
 plates. STOP at the first stringer or stuck Al.</li>
 <li><strong>M0 bolt-down must hold through OP3 breakthrough:</strong> 4×
 M3 × ~15 mm SHCS per plate, self-tap into virgin spoilboard. The
-surrounding sheet is held by VHB + clamps, not by the plate's
+surrounding sheet is held by clamps + waste screws, not by the plate's
 bolts.</li>
 <li><strong>OP3 breakthrough severs the plate from the surrounding
 sheet:</strong> vacuum running, keep hands clear. The plate stays on 4
-bolts; the sheet skeleton stays on VHB + clamps.</li>
+bolts; the sheet skeleton stays on clamps + waste screws.</li>
 </ul>
 <h2 id="verifier">Verifier</h2>
 <p>Same <code>python3</code> audit from <a
