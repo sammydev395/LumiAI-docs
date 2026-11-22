@@ -317,11 +317,34 @@ bracket prints on its BACK face (the leg's back and the web's end are
 one flat face), so the bending runs along its layers; it gets 5 walls
 and tree supports in the flap's slot (which faces down that way); every
 station piece prints at 100 % infill (operator 2026-11-21: "make sure
-you have 100% infill now"). No geometry changed; station 29 ok. Next:
-reprint the bracket and test again, then the main lock (the knob frame's
-replacement). <strong>Eight separate objects (operator 2026-11-21:
-"please split it into separate parts"):</strong> each piece is its own
-STL
+you have 100% infill now"). No geometry changed; station 29 ok.
+<strong>The top ledge WORKS on the reprint (operator
+2026-11-21):</strong> with the bracket printed on its back face the grip
+is "pretty solid"; pushing the bar toward the flap (the way a phone
+would lift out) is "very difficult ... it's strong that way"; pulled
+along, the bar slides with some force, as intended (the flap seats the
+phone, the jaws and frame stop it sliding). Each step needs its own hole
+(the tightest the step still goes in), as designed; the thinnest two
+steps in the last hole are still to be tried. <strong>MAIN LOCK TEST
+STATION (operator 2026-11-21: "Build a test station for the main lock
+also ... It's a good idea to test these things before we print the whole
+cradle assembly"; macro
+<code>lumi_bigclaw_cradle_qr_lock_station.py</code>, CAD
+<code>ff4e30f8</code>, X1C plate 35):</strong> three pieces cut from the
+cradle's own parts for one phone (iPhone 12 Pro Max): a FRAME (the
+base's channel and rack, the jaw frame's tunnel and the L's leg end,
+fused; prints back face down, its overhangs ~14 mm bridges), the RIDGE
+BLOCK and the CARRIER with its flexure arm and tab. No spring: the
+lock's 1.0 x 8 x 15 is not in hand, so it tests the catch by hand: the
+cartridge slides in from the open end with the tab pressed; pushed
+toward the leg the arm clicks over the rack; pulled back the hooked
+teeth hold; a full press on the tab (1.5) frees it, a quarter press does
+not. The clamp force waits for the spring. 12/12 rows PASS with bites;
+renders
+<code>docs/images/hardware/phone_cradle_qr_lock_station_{assembled,exploded}.png</code>.
+Red PETG, 100 % infill, no supports, 10 mm brim; not yet sliced.
+<strong>Eight separate objects (operator 2026-11-21: "please split it
+into separate parts"):</strong> each piece is its own STL
 (<code>…t_spring_coupon_frame / _bracket / _flap / _bar / _side_host_5mm_test / _side_leg / _side_host_cradle</code>,
 the leg printed twice), placed on X1C 33 where the station's checked
 layout puts it, so one changed piece prints alone. <strong>Mesh
