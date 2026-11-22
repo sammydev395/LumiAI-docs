@@ -378,8 +378,32 @@ strength 3/3, stop lug 2/2, tab access 2/2, mechanism on all 79 variants
 7/7, way out 2/2, release drop 2/2; the station 15/15 and its assembly
 6/6; no full cradle run (operator). Close-up renders
 <code>docs/images/hardware/phone_cradle_qr_lock_station_{tab_stop,lug}.png</code>.
-<strong>Assembled views (operator 2026-11-22 via LumiAI CTO: "create an
-assembly for this lock station also and export it right away"):</strong>
+<strong>Flexure arm and web strengthened (operator 2026-11-22: "Why'd
+you leave weak parts? Why didn't you run a check to see if things are
+weak, which are going to be pressed by springs or human beings?"; then
+"go ahead" on the audit's fix):</strong> the audit of every spring- or
+hand-loaded feature of the lock found the arm's WEB (2.5 long, joined to
+the tongue on one face, the locked load 2.65 off it) at 38 MPa nominal
+(76 with Kt 2) and the arm's ROOT at 16.5-17.6 MPa every release into a
+sharp corner (~35 with Kt 2). Now: web 6.0 long (<code>QR_WEB_L</code>),
+arm root 11.0 before the leg face (was 7.5: the arm 3.5 longer), arm 2.2
+thick (was 2.4), a 1.5 fillet where its stressed face meets the web
+(<code>QR_ARM_FILLET</code>); the tongue, the channel and the finger
+groove reach 7 further back (under the jaw wall, solid plate; both cut
+regions measured: plain plate minus the cut, 2.0 / 2.5 of plate left).
+Rows <code>qr_arm_strength_rows</code>, at the locked load 46.6 N (the
+spring at the hard stop + the 3 g hung 9.7 N): root 15.3 MPa (Kt 1.3
+fillet), web 13.8 (Kt 2), teeth 12.4 shared by two (one tooth alone 24.9
+fails; the model bears on ~2.9); each bite the old arm (35.1 / 76.4 /
+24.9). The softer arm also eases the tab's neck (5.1 MPa). Audit,
+passing: rack teeth, the arm as a column (251 N to buckle), the spring's
+end wall (~7 MPa), the rails, the stop wall, the thumb's lock push (the
+tab tips onto the carrier body after ~2 N). Targeted switch-on rows all
+pass (79 variants: mechanism 8/8, way out 2/2, drop 2/2, tab access 2/2,
+stop lug 2/2, strength 6/6); station 18/18, assembly 6/6; no full cradle
+run (operator). <strong>Assembled views (operator 2026-11-22 via LumiAI
+CTO: "create an assembly for this lock station also and export it right
+away"):</strong>
 <code>cad/exports/step/lumi_bigclaw_phone_cradle_aback_qr_lock_station_ASSY.step</code>
 (LOCKED: arm teeth in the rack, block on the leg end) and
 <code>..._exploded_ASSY.step</code> (the cartridge 28 out of the open
