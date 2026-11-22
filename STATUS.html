@@ -232,17 +232,19 @@ knob frame and the screw T ledges are the current design, their plates
 stay released, nothing of them is removed, and one macro builds both. He
 ordered ONE spring size to prove the mechanism, the top flap's (304
 stainless, 0.5 wire x 4 x 5, 50 pieces, due 2026-11-19); the other two
-sizes are not ordered. Metal pins or sleeves in place of the filament
-pins are a fallback he looks at only if the quick release proves itself.
-His rule for new mechanisms: "build test cases, not just coupons, but
-real, small, but real test cases, and try things out." He cannot judge a
-force in newtons, so forces go to him as everyday weights. <strong>The
-design (worked out on the released solids in a working copy):</strong>
-<em>Main lock:</em> one steel spring (1.0 wire x 8 x 15) between the
-ridge block and a carrier whose hooked arm sits in a rack in the base,
-so the spring both pinches the L and grips the phone; push the tab
-toward the phone to lock, push it down to release. <em>Side T
-ledges:</em> a rigid leg whose 2.0 toe sits under a ridge 1.0 proud of
+sizes are not ordered. Filament pins are for quick tests only; the
+shipping cradle uses thin metal screws as its pins (operator 2026-11-21:
+"for shipping the final product, we should not use filament ... just
+metal screws"); not yet in the cradle macro, which still models 1.75
+filament. His rule for new mechanisms: "build test cases, not just
+coupons, but real, small, but real test cases, and try things out." He
+cannot judge a force in newtons, so forces go to him as everyday
+weights. <strong>The design (worked out on the released solids in a
+working copy):</strong> <em>Main lock:</em> one steel spring (1.0 wire x
+8 x 15) between the ridge block and a carrier whose hooked arm sits in a
+rack in the base, so the spring both pinches the L and grips the phone;
+push the tab toward the phone to lock, push it down to release. <em>Side
+T ledges:</em> a rigid leg whose 2.0 toe sits under a ridge 1.0 proud of
 one end wall of its pocket; a 0.5 x 4 x 5 spring presses the leg onto
 that wall (about 340 g at rest, 860 g pushed aside [3.4 N, 8.4 N];
 calculated, 725 MPa pushed aside). It is the springs in hand (operator
@@ -297,9 +299,29 @@ fully down, limit 750). No 15 mm spring is needed, and one would not fit
 (the housing would go 5 deeper). The station (27 ok) and the top T's
 cradle rows on all 79 phones pass, clearances to the base, lenses and
 jaw included; the full cradle run was not done (operator). The bracket
-changes and the coupler is new. <strong>Eight separate objects (operator
-2026-11-21: "please split it into separate parts"):</strong> each piece
-is its own STL
+changes and the coupler is new. <strong>The bracket's leg broke at its
+root (operator 2026-11-21, on the printed station):</strong> the
+couplers work and the force was more, but the grip faded step by step,
+and only the leg hole nearest the flap gripped at all. Cause, the design
+(3dPrint): the bracket printed standing on its underside, so the leg's
+layers ran across it, 3 walls round 25 % gyroid; the flap's load (about
+27 mm out from the leg) bent the leg on one layer line at its root, the
+leg crept and the housing sagged about 4 mm (so the hole nearest the
+flap acted as setting 1 and every other hole set the flap below the
+steps), then the leg broke off along that layer. Measured on the sagged
+bracket: flap rest 4.0-4.15 under the roof against 5.75 modelled, fully
+pressed 9.5-9.8 against 7.85; the bar's steps measured 12, 10.2, 9, 8.2,
+7.8, 7.22 (modelled 11.9 .. 7.2). The grip results so far say nothing
+about the springs. Fix for the test (CAD <code>d98e5696</code>): the
+bracket prints on its BACK face (the leg's back and the web's end are
+one flat face), so the bending runs along its layers; it gets 5 walls
+and tree supports in the flap's slot (which faces down that way); every
+station piece prints at 100 % infill (operator 2026-11-21: "make sure
+you have 100% infill now"). No geometry changed; station 29 ok. Next:
+reprint the bracket and test again, then the main lock (the knob frame's
+replacement). <strong>Eight separate objects (operator 2026-11-21:
+"please split it into separate parts"):</strong> each piece is its own
+STL
 (<code>…t_spring_coupon_frame / _bracket / _flap / _bar / _side_host_5mm_test / _side_leg / _side_host_cradle</code>,
 the leg printed twice), placed on X1C 33 where the station's checked
 layout puts it, so one changed piece prints alone. <strong>Mesh
