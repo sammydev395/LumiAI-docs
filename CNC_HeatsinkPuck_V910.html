@@ -1,6 +1,36 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CNC_HeatsinkPuck_V910</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
 id="heatsink-v910-bench-prep--ø54-puck">Heatsink v9.10 bench prep — Ø54
 puck</h1>
+<blockquote>
+<h2 id="one-zero-3-puck-program-operator-order-2026-11-21">One-zero
+3-puck program (operator order 2026-11-21)</h2>
+<p><a
+href="../cad/exports/cnc/lumi_wand_heatsink_x3.nc"><code>lumi_wand_heatsink_x3.nc</code></a>
+cuts <strong>three</strong> pucks from <strong>one XY zero at puck 1's
+centre</strong> (generator
+<code>cad/freecad/gen_heatsink_nc_x3.py</code>; not yet air-cut or cut).
+Pucks at X 0 / +65 / +130 — the single-puck moves shifted, verified
+identical per puck.</p>
+<p>Sequence: T1 drill <strong>9 puck-body holes + 4 waste-strip
+holes</strong> → park back-left (<code>G53 Z-5, X10, Y780</code>, the
+values proven on the OAK-D job) → <strong>M0 #1: screw down 13 × M3,
+swap T1→T2 (collet change), re-touch Z only — never X/Y</strong> → per
+puck: contour, then keyway slot, puck 1, 2, 3 → park, M30. The old M0 #2
+(clear waste) is gone: with the bar there are no corner offcuts to
+clear.</p>
+<p><strong>Why waste holes:</strong> the contour kerf (R 30.175 vs bar
+half-width 30) cuts the bar clean across at every puck centreline, so
+the 65 mm strips between pucks come <strong>free</strong> (the older
+note that the bar stays continuous is only true for the <em>outer</em>
+profile, not across the bar). 2 M3 holes per strip, midway (X +32.5 /
++97.5, Y ±22), 10.6 mm outside the cutter path.</p>
+<p><strong>Open checks before cutting:</strong> (1) <strong>bar
+length</strong> — puck 3's cutter sweep ends at +160.2 from puck 1's
+centre; with puck 1 ~37 mm from the used end that is ~197 mm of the ~200
+mm clear bar, leaving <strong>only ~3 mm</strong> and no room for an end
+clamp. Measure it. (2) Z is the one re-touch (tool swap), XY zero is
+kept. (3) No air-cut yet.</p>
+</blockquote>
 <p><strong>Program:</strong> <a
 href="../cad/exports/cnc/lumi_wand_heatsink.nc"><code>cad/exports/cnc/lumi_wand_heatsink.nc</code></a>
 (v9.10, 2026-09-18, HEATSINK_OD=54.0) <strong>Machine:</strong>
