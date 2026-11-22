@@ -1,0 +1,51 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Print_Log</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="print-log">Print Log</h1>
+<p>One row per printed part, added on the day it comes off the bed, so
+anyone can tell whether a part in hand predates a design change. Rows
+are never edited after the fact; a reprint is a new row.</p>
+<ul>
+<li><strong>Date</strong>: the day the print finished (YYYY-MM-DD).</li>
+<li><strong>Part</strong>: the export STL name in
+<code>cad/exports/stl/</code> (no folder). Use one row per part, even
+when several print on one plate.</li>
+<li><strong>STL sha</strong>: the first 16 hex characters of the sha256
+of the export that was printed. This is the design version. When a book
+or one-off prints from a renamed copy, hash the export it came
+from.</li>
+<li><strong>Source</strong>: the book and plate (<code>X1C 33</code>,
+<code>H2S 32 @ f7431ee7</code>) or the one-off folder in
+<code>cad/3dPrint/</code>.</li>
+<li><strong>Result</strong>: <code>ok</code>, <code>failed</code>
+(didn't finish), or <code>broke</code> (finished, failed in use). Say
+what happened in Notes.</li>
+</ul>
+<p>To find out whether a logged part has changed since it was printed,
+run <code>python docs/tools/print_log_check.py</code>. It hashes each
+part's current export and lists every part whose newest row is out of
+date (<code>CHANGED since printed</code>).</p>
+<table>
+<thead>
+<tr>
+<th>Date</th>
+<th>Printer / slot / material</th>
+<th>Part</th>
+<th>STL sha</th>
+<th>Source</th>
+<th>Result</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2026-11-21</td>
+<td>H2S / S2 / black ASA</td>
+<td>lumi_baseplate_fence_rear_cap.stl</td>
+<td>7f08ba5fd1ebc8f6</td>
+<td>H2S 32 @ f7431ee7 (v1, CAD dfae8226)</td>
+<td>broke</td>
+<td>Printed top face down; the 6 snap arms bent across their layers,
+none latched, one broke. Brim very hard to remove (Magigoo, textured
+PEI). v2 = 88ab4b95.</td>
+</tr>
+</tbody>
+</table></body></html>
