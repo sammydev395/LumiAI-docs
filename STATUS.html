@@ -1324,62 +1324,64 @@ catch 27, bed map 28, cradle seat + gap coupons 29, fence rear cap HOLD
 30, cradle landscape base 31, cradle grip post 32, Ultra drill template
 33). H2S numbers elsewhere on this board dated before 2026-11-22 are the
 old ones. The X1C book does not change. <strong>FENCE REAR CAP SCREWED +
-back half with screw bosses, both HELD (operator 2026-11-22, render
-approved; CAD <code>69b10f23</code>,
-<code>FENCE_SET_HOLD</code>):</strong> the v3 snap cap's outer tabs
-snapped on fitting, so the cap now screws on (4 x M3x12 countersunk
-self-tappers) into four Ø8 bosses outside the back half's fan towers;
-the snap grooves are gone. Rear cap (X1C 29, H2S 30) prints FLAT, top
-face down, no supports, 4 walls, 10 mm brim, ASA black H2S slot 2; the
-v2/v3 painted boxes and manual trees are gone. Back half (plate 11, both
-books) keeps its orientation and its painted PSU-pad and clamp-slot
-enforcers (areas re-asserted on the new mesh); the bosses are a 52° cone
-+ gusset, unsupported. Front half (12) unchanged. Both plates read "HOLD
-do not print" until the operator says print. <strong>BATTERY STRAPS WITH
-LIFT PADS, HELD (operator 2026-11-22, render seen; CAD
-<code>85a32c78</code>, <code>STRAP_HOLD</code>):</strong> four pads (10
-in, top at STL z 4.00) under the battery, for Halo, Nova and Halo HV;
-Ultra keeps its printed <code>e20ae589</code> straps. X1C 22 (straps +
-PSU strap + tab cap) and 36 (straps only) read "HOLD do not print". The
-straps print inverted, so each pad's battery face is a flat CEILING at
-print z 40.0 (429.1 mm2 per strap, not on the bed): painted enforcers on
-it (area asserted) plus the straps' tree(auto) strong supports; expect
-support marks on the pads' battery faces. <strong>Plates and
-prep:</strong> Every plate is <strong>Textured PEI</strong> on both
-printers. <strong>Glue stick on every plate</strong>, PLA+ included
-(PLA+ bed 60 °C on the X1C). Clean the PEI with soap and hot water only,
-<strong>no IPA</strong>. <strong>Defaults:</strong> layer 0.16, first
-layer 0.20, support top-Z 0.16 (verify FAILS a PETG top-Z under 1
-layer); elephant-foot 0.15; X1C first layer 30 mm/s; PETG+ walls 50/200
-unless a part is tuned; brim 10–12 mm, gap 0 (verify-gated; the H2S
-extension halves are the one 15 mm exception). <strong>Brim gate
-(verify, mandatory):</strong> brim only where the part needs it. An
-unbrimmed part with under 1000 mm² of bed contact and height / √(bed
-contact) ≥ 0.3 FAILS unless it is listed in <code>NO_BRIM_OK</code> with
-a reason (currently the X1C lens-tower coupons and the cartridge test
-coupon). Parts on a plate must be ≥ 20 mm apart, brim edge to brim edge
-(packer <code>BASE_GAP</code> 20; the packer reserves each part's brim
-as verify reads it, an auto brim at the profile's width:
-<code>pack_brim</code>, bite <code>LUMI_PACK_BRIM_OFF=1</code> fails
-verify on X1C 30 at 11.3). COLLISION and that gap are judged on the
-parts' footprint outlines (0.5 mm shadow raster) wherever the bounding
-boxes flag, so a concave part's open corner is no longer a collision;
-the operator's waivers sit in verify's <code>BACK_EDGE_OK</code> /
-<code>GAP_OK</code> by plate name (X1C 27, his own layout). An
-<code>auto_brim</code> part skips the 10–12 mm width rule (Studio sizes
-it). <strong>Brim-auto rule (operator 2026-11-10, "when in doubt pick
-the Auto option for brim"):</strong> <code>auto_brim</code> on the base
-cover base + top (X1C), the Halo mic carrier and the R818 shroud (both
-books) and the cradle L; every other unbrimmed part keeps
-<code>no_brim</code> for a recorded reason (lens plate and end plates:
-operator ruling, the brim belongs to the ring; cartridge caps:
-operator's proven values; test coupon and lens-tower coupons:
-<code>NO_BRIM_OK</code>; bed map: a brim hides the answer; cradle bases
-and gap coupon: break-away prints, as the operator saved them; wand
-catch bracket: ~1200 mm² on the bed; ZE15-CO + SPS30 plate + strap: the
-operator's pins sit 20 mm apart for no brims, so a brim needs the pins
-moved). The ZE15-CO pin moved +5 mm in X to clear the SPS30 strap.
-Slot-3 PETG+ filament z-hop 0.4 in both books.
+back half with screw bosses (operator 2026-11-22, render approved; CAD
+<code>69b10f23</code>, <code>FENCE_SET_HOLD</code>):</strong> the v3
+snap cap's outer tabs snapped on fitting, so the cap now screws on (4 x
+M3x12 countersunk self-tappers) into four Ø8 bosses outside the back
+half's fan towers; the snap grooves are gone. Rear cap (X1C 29, H2S 30)
+prints FLAT, top face down, no supports, 4 walls, 10 mm brim, ASA black
+H2S slot 2; the v2/v3 painted boxes and manual trees are gone. Back half
+(plate 11, both books) keeps its orientation and its painted PSU-pad and
+clamp-slot enforcers (areas re-asserted on the new mesh); the bosses are
+a 52° cone + gusset, unsupported. Front half (12) unchanged. RELEASED
+for printing (operator 2026-11-22, via LumiAI 3DPrinter: "as well as the
+battery brackets with pads look good. You can go ahead and prepare the
+plates"; 3DPrinter read "as well as" as covering this set).
+<strong>BATTERY STRAPS WITH LIFT PADS, RELEASED (operator 2026-11-22:
+"look good. You can go ahead and prepare the plates"; CAD
+<code>85a32c78</code>):</strong> four pads (10 in, top at STL z 4.00)
+under the battery, for Halo, Nova and Halo HV; Ultra keeps its printed
+<code>e20ae589</code> straps. X1C 22 (straps + PSU strap + tab cap) and
+36 (straps only); LumiAI 3DPrinter's slice: 3 h 07 / 58.2 g and 2 h 47 /
+51.5 g, pads supported. The straps print inverted, so each pad's battery
+face is a flat CEILING at print z 40.0 (429.1 mm2 per strap, not on the
+bed): painted enforcers on it (area asserted) plus the straps'
+tree(auto) strong supports; expect support marks on the pads' battery
+faces. <strong>Plates and prep:</strong> Every plate is <strong>Textured
+PEI</strong> on both printers. <strong>Glue stick on every
+plate</strong>, PLA+ included (PLA+ bed 60 °C on the X1C). Clean the PEI
+with soap and hot water only, <strong>no IPA</strong>.
+<strong>Defaults:</strong> layer 0.16, first layer 0.20, support top-Z
+0.16 (verify FAILS a PETG top-Z under 1 layer); elephant-foot 0.15; X1C
+first layer 30 mm/s; PETG+ walls 50/200 unless a part is tuned; brim
+10–12 mm, gap 0 (verify-gated; the H2S extension halves are the one 15
+mm exception). <strong>Brim gate (verify, mandatory):</strong> brim only
+where the part needs it. An unbrimmed part with under 1000 mm² of bed
+contact and height / √(bed contact) ≥ 0.3 FAILS unless it is listed in
+<code>NO_BRIM_OK</code> with a reason (currently the X1C lens-tower
+coupons and the cartridge test coupon). Parts on a plate must be ≥ 20 mm
+apart, brim edge to brim edge (packer <code>BASE_GAP</code> 20; the
+packer reserves each part's brim as verify reads it, an auto brim at the
+profile's width: <code>pack_brim</code>, bite
+<code>LUMI_PACK_BRIM_OFF=1</code> fails verify on X1C 30 at 11.3).
+COLLISION and that gap are judged on the parts' footprint outlines (0.5
+mm shadow raster) wherever the bounding boxes flag, so a concave part's
+open corner is no longer a collision; the operator's waivers sit in
+verify's <code>BACK_EDGE_OK</code> / <code>GAP_OK</code> by plate name
+(X1C 27, his own layout). An <code>auto_brim</code> part skips the 10–12
+mm width rule (Studio sizes it). <strong>Brim-auto rule (operator
+2026-11-10, "when in doubt pick the Auto option for brim"):</strong>
+<code>auto_brim</code> on the base cover base + top (X1C), the Halo mic
+carrier and the R818 shroud (both books) and the cradle L; every other
+unbrimmed part keeps <code>no_brim</code> for a recorded reason (lens
+plate and end plates: operator ruling, the brim belongs to the ring;
+cartridge caps: operator's proven values; test coupon and lens-tower
+coupons: <code>NO_BRIM_OK</code>; bed map: a brim hides the answer;
+cradle bases and gap coupon: break-away prints, as the operator saved
+them; wand catch bracket: ~1200 mm² on the bed; ZE15-CO + SPS30 plate +
+strap: the operator's pins sit 20 mm apart for no brims, so a brim needs
+the pins moved). The ZE15-CO pin moved +5 mm in X to clear the SPS30
+strap. Slot-3 PETG+ filament z-hop 0.4 in both books.
 <strong>Avoid-crossing-walls ON book-wide in both books</strong> (PETG+
 oozes on every open-air crossing; gate_slots' PETG warning clears: H2S
 17 → 0). <strong>Released 2026-11-14 (operator), each once Karma passes
