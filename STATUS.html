@@ -353,12 +353,25 @@ coils, a rate point, solid &lt;= 8.0) it becomes the modelled spring,
 any pocket change (on paper the preload 10.3 -&gt; 10.18 clears the two
 floors a catalogue 304 misses) goes under its own proof, and the station
 is re-run; the block's seat and the carrier's bore already take the
-spring. Its slice showed the tab only 0.3 past the carrier body, a slit
-under one 0.4 line that PETG may tack shut (no release): the tab now
-sits 0.5 past (<code>QR_TAB_GAP</code>, cradle and station); the
-cradle's switch-on lock rows (tab access + mechanism, all 79 variants)
-9/9 ok. <strong>Eight separate objects (operator 2026-11-21: "please
-split it into separate parts"):</strong> each piece is its own STL
+spring. <strong>Assembled views (operator 2026-11-22 via LumiAI CTO:
+"create an assembly for this lock station also and export it right
+away"):</strong>
+<code>cad/exports/step/lumi_bigclaw_phone_cradle_aback_qr_lock_station_ASSY.step</code>
+(LOCKED: arm teeth in the rack, block on the leg end) and
+<code>..._exploded_ASSY.step</code> (the cartridge 28 out of the open
+end), with the 1.0 x 8 x 15 spring as a swept coil at its installed 9.40
+(<code>REF_spring_1p0x8x15_304_installed_9p40</code>); REF_ names, STEP
+only, in no book; script
+<code>lumi_bigclaw_cradle_qr_lock_station_assy.py</code>, 6/6 with
+bites. The spring's clearance is measured by sampling its wire on the
+solids: the boolean of the coil against the carrier came back empty
+while a 0.5-longer coil cut into the bore's end wall. Its slice showed
+the tab only 0.3 past the carrier body, a slit under one 0.4 line that
+PETG may tack shut (no release): the tab now sits 0.5 past
+(<code>QR_TAB_GAP</code>, cradle and station); the cradle's switch-on
+lock rows (tab access + mechanism, all 79 variants) 9/9 ok.
+<strong>Eight separate objects (operator 2026-11-21: "please split it
+into separate parts"):</strong> each piece is its own STL
 (<code>…t_spring_coupon_frame / _bracket / _flap / _bar / _side_host_5mm_test / _side_leg / _side_host_cradle</code>,
 the leg printed twice), placed on X1C 33 where the station's checked
 layout puts it, so one changed piece prints alone. <strong>Mesh
