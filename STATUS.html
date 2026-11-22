@@ -344,39 +344,40 @@ renders
 <code>docs/images/hardware/phone_cradle_qr_lock_station_{assembled,exploded}.png</code>.
 Red PETG, 100 % infill, no supports, 10 mm brim; sliced by LumiAI
 3DPrinter: 1 h 02 min, 18.2 g, both 14 mm roofs bridge clean.
-<strong>HELD, do not print (operator 2026-11-21: "Let's hold off on
-printing the main lock till we have the spring and we can test that
-coupon all properly with the spring"):</strong> the lock spring is
-ordered, 304 stainless (MECCANIXITY 1.0 x 8 x 15, 10 pcs, due
-2026-11-23, no coil count or rate listed); measured (free length, active
-coils, a rate point, solid &lt;= 8.0) it becomes the modelled spring,
-any pocket change (on paper the preload 10.3 -&gt; 10.18 clears the two
-floors a catalogue 304 misses) goes under its own proof, and the station
-is re-run; the block's seat and the carrier's bore already take the
-spring. <strong>Lug and tab strengthened (operator 2026-11-22, on the
-assembly: the block's lug "I think is too weak. If there's force on it
-from the spring, it's going to snap right away"; "The tab on the carrier
-is also too weak"):</strong> <em>Lug</em> (both stops; the spring's
-whole preload when the cartridge is out): 5.0 wide (was 3.0; the
-tongue's rails 3.0 -&gt; 2.0), its faces flush with the block's relief
-face and back (no step at its root), 0.5 chamfers at its y roots; at the
-spring's hard-stop force (36.9 N) 13.9 MPa with Kt 2, limit 16.7, along
-its layers (the old lug 19.8, the bite). <em>Tab</em>: as built, a 14
-tall tab on a 3.0 x 2.4 neck, bent across its layers, with nothing to
-stop an over-press but the arm lying on the tongue BELOW the neck: a 20
-N push past what bends the arm put about 140 MPa in it. Now a STOP WALL
-on the carrier's end beside the tab's -y face (its face parallel to the
-tab at a 1.55 press, <code>QR_TAB_STOP</code>): the tab lands on it at
-1.60, before the arm reaches the tongue (1.70), so a harder push goes
-into the carrier; the stem runs the tab's full 4.6 length; the neck
-carries only the push that bends the arm (2.0 N calculated): 8.1 MPa
-with Kt 2, limit 8.3 across layers (the thinnest margin here; the stem
-cannot thicken: the channel wall and rack are at its side). New rows
-<code>qr_part_strength_rows</code> (lug, stop order, neck), each with
-the old feature as its bite. Re-run on the switch-on macro, targeted:
-strength 3/3, stop lug 2/2, tab access 2/2, mechanism on all 79 variants
-7/7, way out 2/2, release drop 2/2; the station 15/15 and its assembly
-6/6; no full cradle run (operator). Close-up renders
+<strong>RELEASED as a fit test without the spring (operator 2026-11-22,
+via LumiAI 3DPrinter: print it now to see whether it works and
+everything fits; plate 35 "Main lock station (fit test, no spring)"; it
+had been held since 2026-11-21 for the spring).</strong> For the spring
+test: the lock spring is ordered, 304 stainless (MECCANIXITY 1.0 x 8 x
+15, 10 pcs, due 2026-11-23, no coil count or rate listed); measured
+(free length, active coils, a rate point, solid &lt;= 8.0) it becomes
+the modelled spring, any pocket change (on paper the preload 10.3 -&gt;
+10.18 clears the two floors a catalogue 304 misses) goes under its own
+proof, and the station is re-run; the block's seat and the carrier's
+bore already take the spring. <strong>Lug and tab strengthened (operator
+2026-11-22, on the assembly: the block's lug "I think is too weak. If
+there's force on it from the spring, it's going to snap right away";
+"The tab on the carrier is also too weak"):</strong> <em>Lug</em> (both
+stops; the spring's whole preload when the cartridge is out): 5.0 wide
+(was 3.0; the tongue's rails 3.0 -&gt; 2.0), its faces flush with the
+block's relief face and back (no step at its root), 0.5 chamfers at its
+y roots; at the spring's hard-stop force (36.9 N) 13.9 MPa with Kt 2,
+limit 16.7, along its layers (the old lug 19.8, the bite). <em>Tab</em>:
+as built, a 14 tall tab on a 3.0 x 2.4 neck, bent across its layers,
+with nothing to stop an over-press but the arm lying on the tongue BELOW
+the neck: a 20 N push past what bends the arm put about 140 MPa in it.
+Now a STOP WALL on the carrier's end beside the tab's -y face (its face
+parallel to the tab at a 1.55 press, <code>QR_TAB_STOP</code>): the tab
+lands on it at 1.60, before the arm reaches the tongue (1.70), so a
+harder push goes into the carrier; the stem runs the tab's full 4.6
+length; the neck carries only the push that bends the arm (2.0 N
+calculated): 8.1 MPa with Kt 2, limit 8.3 across layers (the thinnest
+margin here; the stem cannot thicken: the channel wall and rack are at
+its side). New rows <code>qr_part_strength_rows</code> (lug, stop order,
+neck), each with the old feature as its bite. Re-run on the switch-on
+macro, targeted: strength 3/3, stop lug 2/2, tab access 2/2, mechanism
+on all 79 variants 7/7, way out 2/2, release drop 2/2; the station 15/15
+and its assembly 6/6; no full cradle run (operator). Close-up renders
 <code>docs/images/hardware/phone_cradle_qr_lock_station_{tab_stop,lug}.png</code>.
 <strong>Flexure arm and web strengthened (operator 2026-11-22: "Why'd
 you leave weak parts? Why didn't you run a check to see if things are
@@ -424,10 +425,9 @@ then we'll change the cradle and the coupon"):</strong> LumiAI
 3DPrinter's slice of plate 35 (1 h 10 min, 20.3 g, no supports) passed
 every gate; its one finding, Studio's "floating cantilever" on the
 carrier's spring bore (a flat 3.18 x 6.6 roof at z 14.3, held on both
-long sides and the far end), stays; the print decides. The plate is
-still HELD for the lock spring. <strong>Eight separate objects (operator
-2026-11-21: "please split it into separate parts"):</strong> each piece
-is its own STL
+long sides and the far end), stays; the print decides. <strong>Eight
+separate objects (operator 2026-11-21: "please split it into separate
+parts"):</strong> each piece is its own STL
 (<code>…t_spring_coupon_frame / _bracket / _flap / _bar / _side_host_5mm_test / _side_leg / _side_host_cradle</code>,
 the leg printed twice), placed on X1C 33 where the station's checked
 layout puts it, so one changed piece prints alone. <strong>Mesh
