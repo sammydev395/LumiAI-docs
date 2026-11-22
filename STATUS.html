@@ -330,7 +330,7 @@ STATION (operator 2026-11-21: "Build a test station for the main lock
 also ... It's a good idea to test these things before we print the whole
 cradle assembly"; macro
 <code>lumi_bigclaw_cradle_qr_lock_station.py</code>, CAD
-<code>ff4e30f8</code>, X1C plate 35):</strong> three pieces cut from the
+<code>51fa665c</code>, X1C plate 35):</strong> three pieces cut from the
 cradle's own parts for one phone (iPhone 12 Pro Max): a FRAME (the
 base's channel and rack, the jaw frame's tunnel and the L's leg end,
 fused; prints back face down, its overhangs ~14 mm bridges), the RIDGE
@@ -342,7 +342,12 @@ teeth hold; a full press on the tab (1.5) frees it, a quarter press does
 not. The clamp force waits for the spring. 12/12 rows PASS with bites;
 renders
 <code>docs/images/hardware/phone_cradle_qr_lock_station_{assembled,exploded}.png</code>.
-Red PETG, 100 % infill, no supports, 10 mm brim; not yet sliced.
+Red PETG, 100 % infill, no supports, 10 mm brim; sliced by LumiAI
+3DPrinter: 1 h 02 min, 18.2 g, both 14 mm roofs bridge clean. Its slice
+showed the tab only 0.3 past the carrier body, a slit under one 0.4 line
+that PETG may tack shut (no release): the tab now sits 0.5 past
+(<code>QR_TAB_GAP</code>, cradle and station); the cradle's switch-on
+lock rows (tab access + mechanism, all 79 variants) 9/9 ok.
 <strong>Eight separate objects (operator 2026-11-21: "please split it
 into separate parts"):</strong> each piece is its own STL
 (<code>…t_spring_coupon_frame / _bracket / _flap / _bar / _side_host_5mm_test / _side_leg / _side_host_cradle</code>,
