@@ -343,13 +343,22 @@ not. The clamp force waits for the spring. 12/12 rows PASS with bites;
 renders
 <code>docs/images/hardware/phone_cradle_qr_lock_station_{assembled,exploded}.png</code>.
 Red PETG, 100 % infill, no supports, 10 mm brim; sliced by LumiAI
-3DPrinter: 1 h 02 min, 18.2 g, both 14 mm roofs bridge clean. Its slice
-showed the tab only 0.3 past the carrier body, a slit under one 0.4 line
-that PETG may tack shut (no release): the tab now sits 0.5 past
-(<code>QR_TAB_GAP</code>, cradle and station); the cradle's switch-on
-lock rows (tab access + mechanism, all 79 variants) 9/9 ok.
-<strong>Eight separate objects (operator 2026-11-21: "please split it
-into separate parts"):</strong> each piece is its own STL
+3DPrinter: 1 h 02 min, 18.2 g, both 14 mm roofs bridge clean.
+<strong>HELD, do not print (operator 2026-11-21: "Let's hold off on
+printing the main lock till we have the spring and we can test that
+coupon all properly with the spring"):</strong> the lock spring is
+ordered, 304 stainless (MECCANIXITY 1.0 x 8 x 15, 10 pcs, due
+2026-11-23, no coil count or rate listed); measured (free length, active
+coils, a rate point, solid &lt;= 8.0) it becomes the modelled spring,
+any pocket change (on paper the preload 10.3 -&gt; 10.18 clears the two
+floors a catalogue 304 misses) goes under its own proof, and the station
+is re-run; the block's seat and the carrier's bore already take the
+spring. Its slice showed the tab only 0.3 past the carrier body, a slit
+under one 0.4 line that PETG may tack shut (no release): the tab now
+sits 0.5 past (<code>QR_TAB_GAP</code>, cradle and station); the
+cradle's switch-on lock rows (tab access + mechanism, all 79 variants)
+9/9 ok. <strong>Eight separate objects (operator 2026-11-21: "please
+split it into separate parts"):</strong> each piece is its own STL
 (<code>…t_spring_coupon_frame / _bracket / _flap / _bar / _side_host_5mm_test / _side_leg / _side_host_cradle</code>,
 the leg printed twice), placed on X1C 33 where the station's checked
 layout puts it, so one changed piece prints alone. <strong>Mesh
