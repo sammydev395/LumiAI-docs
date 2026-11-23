@@ -1463,20 +1463,25 @@ outer 60, avoid-crossing-walls ON; in the H2S book all three halves
 critical-regions-only OFF), brim 15. Shell halves + head ring ASA slot
 2, door CLOSED, turned 90° so the ear faces the H2S camera; keel ridge
 has a 2.0 mm flat land (CAD 3f0177d). EBC covers ASA slot 2, printed
-flipped, <strong>supports OFF</strong> on CAD <code>c3bc7ab4</code>
-(operator 2026-11-10; the supports-off slice passed gate_gcode_floating,
-2 h 27 m / 36.8 g, re-gated with arcs read; Studio's floating-regions
-note on the right cover is the 2 raster-dust cells); plate 6 released.
-Flange coupon −Y prints flat, flange-down, no sink (CAD 3415f1e removed
-its tab). Tabbed battery straps stand INVERTED with supports ON, and
-enforcer paint under each leg-end tab's flat ceiling (print z 39.7, ~210
-mm² a strap over open bed; X1C 22 left them bare: 4 floating starts,
-Karma 2026-11-14) -- <code>ENFORCE_BOX_PRINT</code>, picked in the print
-frame. <strong>H2S slots</strong> (after <code>SLOT_MOVE</code>, which
-maps the builder's old 1→4, 4→1): 1 Kingroon HS PETG blue since
-2026-11-16 (operator; PolyLite PETG preset, the red HS PETG's values
-carried over: 240 / 0.94 / 10 mm³/s, bed 80 by his word, untested on
-this spool;
+flipped, <strong>supports OFF</strong>, now on CAD <code>66832745</code>
+(2026-11-23: the operator's H2S 05 print came out with messy fin roots
+on both covers, one fin broken on the right; cause a 0.27 lip along the
+wall kink that started in air at every fin root; cut flush, -48.2 mm3 a
+cover, extents unchanged; both books rebuilt, settings and orientation
+unchanged, no rotation; slice gate by LumiAI 3DPrinter pending) ⛔
+<em>was: on CAD <code>c3bc7ab4</code></em> (operator 2026-11-10; the
+supports-off slice passed gate_gcode_floating, 2 h 27 m / 36.8 g,
+re-gated with arcs read; Studio's floating-regions note on the right
+cover is the 2 raster-dust cells); plate 6 released. Flange coupon −Y
+prints flat, flange-down, no sink (CAD 3415f1e removed its tab). Tabbed
+battery straps stand INVERTED with supports ON, and enforcer paint under
+each leg-end tab's flat ceiling (print z 39.7, ~210 mm² a strap over
+open bed; X1C 22 left them bare: 4 floating starts, Karma 2026-11-14) --
+<code>ENFORCE_BOX_PRINT</code>, picked in the print frame. <strong>H2S
+slots</strong> (after <code>SLOT_MOVE</code>, which maps the builder's
+old 1→4, 4→1): 1 Kingroon HS PETG blue since 2026-11-16 (operator;
+PolyLite PETG preset, the red HS PETG's values carried over: 240 / 0.94
+/ 10 mm³/s, bed 80 by his word, untested on this spool;
 <code>set_filament_slots.py h2s ... --slots 1 --like 4</code> writes the
 slot on the GMKtec, the builder lays the values on it), 2 Generic ASA
 (260 / bed 90 / chamber 60), 3 PolyLite PETG (black), 4 yellow PETG+, 5
