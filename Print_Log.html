@@ -1,13 +1,23 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Print_Log</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
 id="print-log">Print Log</h1>
-<p>One row per printed part, added on the day it comes off the bed, so
-anyone can tell whether a part in hand predates a design change. Rows
-are never edited after the fact; a reprint is a new row.</p>
+<p>One row per printed part, added on the day it comes off the bed. It
+answers two questions: how many copies of each part exist, and for which
+robot, and whether each copy predates a design change. Rows are never
+edited after the fact; a reprint is a new row.</p>
 <ul>
 <li><strong>Date</strong>: the day the print finished (YYYY-MM-DD).</li>
 <li><strong>Part</strong>: the export STL name in
 <code>cad/exports/stl/</code> (no folder). Use one row per part, even
 when several print on one plate.</li>
+<li><strong>Qty</strong>: how many copies of that part came off this
+print.</li>
+<li><strong>For</strong>: the robot the copies are for:
+<code>Ultra</code>, <code>Halo</code>, <code>Nova</code>,
+<code>Halo HV</code>, or <code>spare</code> / <code>test</code>. Use
+<code>?</code> until the operator says, then fill it in. The only other
+in-place edit allowed is a dated follow-up appended to Notes (fit,
+failure in use). Several copies for different robots: one row per
+robot.</li>
 <li><strong>STL sha</strong>: the first 16 hex characters of the sha256
 of the export that was printed. This is the design version. When a book
 or one-off prints from a renamed copy, hash the export it came
@@ -17,18 +27,24 @@ from.</li>
 <code>cad/3dPrint/</code>.</li>
 <li><strong>Result</strong>: <code>ok</code>, <code>failed</code>
 (didn't finish), or <code>broke</code> (finished, failed in use). Say
-what happened in Notes.</li>
+what happened in Notes. Failed and broken copies count as printed but
+not in service. When a copy is taken out of use, append a dated Notes
+follow-up containing <code>discarded</code> or <code>retired</code>; the
+checker then stops counting it as in service.</li>
 </ul>
-<p>To find out whether a logged part has changed since it was printed,
-run <code>python docs/tools/print_log_check.py</code>. It hashes each
-part's current export and lists every part whose newest row is out of
-date (<code>CHANGED since printed</code>).</p>
+<p>Run <code>python docs/tools/print_log_check.py</code> to see, for
+every part and robot, the copies printed, the copies in service, and
+whether the newest copy is out of date
+(<code>CHANGED since printed</code>) because the export changed
+afterwards.</p>
 <table>
 <thead>
 <tr>
 <th>Date</th>
 <th>Printer / slot / material</th>
 <th>Part</th>
+<th>Qty</th>
+<th>For</th>
 <th>STL sha</th>
 <th>Source</th>
 <th>Result</th>
@@ -37,15 +53,175 @@ date (<code>CHANGED since printed</code>).</p>
 </thead>
 <tbody>
 <tr>
+<td>2026-11-19</td>
+<td>H2S / S2 / black ASA</td>
+<td>lumi_baseplate_fence_back_half.stl</td>
+<td>1</td>
+<td>Ultra</td>
+<td>806efe6218d1072e</td>
+<td>H2S 11 @ 3459b9bb (CAD e20ae589, battery +15)</td>
+<td>ok</td>
+<td>Date and robot from the operator via CTO (11-22). Ultra's fence; the
+v3 rear cap is glued onto it. Result assumed ok (in service).</td>
+</tr>
+<tr>
 <td>2026-11-21</td>
 <td>H2S / S2 / black ASA</td>
 <td>lumi_baseplate_fence_rear_cap.stl</td>
+<td>1</td>
+<td>Ultra</td>
 <td>7f08ba5fd1ebc8f6</td>
 <td>H2S 32 @ f7431ee7 (v1, CAD dfae8226)</td>
 <td>broke</td>
 <td>Printed top face down; the 6 snap arms bent across their layers,
 none latched, one broke. Brim very hard to remove (Magigoo, textured
 PEI). v2 = 88ab4b95.</td>
+</tr>
+<tr>
+<td>2026-11-22</td>
+<td>H2S / S2 / black ASA</td>
+<td>lumi_baseplate_fence_rear_cap.stl</td>
+<td>1</td>
+<td>Ultra</td>
+<td>71ebf52db92e2c66</td>
+<td>H2S 32 @ ef845d06 (v2, CAD 88ab4b95)</td>
+<td>broke</td>
+<td>Printed clean on its bay edge with manual trees under the 2 outer
+arms (48 min, 205 layers, Magigoo thin coat). In use: slides off too
+easily toward the fans and toward the back; operator reported it to CAD
+for a fix.</td>
+</tr>
+<tr>
+<td>2026-11-22</td>
+<td>H2S / S2 / black ASA</td>
+<td>lumi_baseplate_fence_rear_cap.stl</td>
+<td>1</td>
+<td>Ultra</td>
+<td>26faa6996ac608aa</td>
+<td>H2S 32 @ cc18ddf3 (v3, CAD 6c3641fd)</td>
+<td>broke</td>
+<td>Printed clean on the stop-bar face with trees under the 2 outer arms
+(55 min, 225 layers). The outer fan-side snap tabs snapped on fitting;
+operator rejected the snap design. He is GLUING this cap onto Ultra's
+fence for now (in service, glued). The next Halo fence reprint and
+Nova's fence need CAD's screw-down cap (3-4 screws) + fence screw
+posts.</td>
+</tr>
+<tr>
+<td>2026-11-22</td>
+<td>X1C / S3 / grey PETG</td>
+<td>lumi_battery_strap_left_tabbed.stl</td>
+<td>1</td>
+<td>Ultra</td>
+<td>495c7980ef0ece92</td>
+<td>X1C 22 @ 22ee4739, PSU strap + tab cap deleted in Studio (= plate 36
+contents; CAD e20ae589, battery +15)</td>
+<td>ok</td>
+<td>355 layers, ~2 h 20, inverted with painted tree supports. 11-22
+operator: fits fine on Ultra's base plate with the battery. Next robots
+get inward battery lift pads (CAD asked 11-22); Ultra raises the battery
+with double tape. 11-23 operator: replaced on Ultra by the lift-pad pair
+(X1C 36); this copy discarded.</td>
+</tr>
+<tr>
+<td>2026-11-22</td>
+<td>X1C / S3 / grey PETG</td>
+<td>lumi_battery_strap_right_tabbed.stl</td>
+<td>1</td>
+<td>Ultra</td>
+<td>22707240ec6040e2</td>
+<td>X1C 22 @ 22ee4739, PSU strap + tab cap deleted in Studio (= plate 36
+contents; CAD e20ae589, battery +15)</td>
+<td>ok</td>
+<td>Printed with the left strap on the same plate. 11-22 operator: fits
+fine (see left strap). 11-23 operator: replaced on Ultra by the lift-pad
+pair (X1C 36); this copy discarded.</td>
+</tr>
+<tr>
+<td>2026-11-22</td>
+<td>H2S / S2 / black ASA</td>
+<td>lumi_ebc_cover_left_mounted.stl</td>
+<td>1</td>
+<td>Ultra</td>
+<td>ad283fa695870168</td>
+<td>H2S 6 (CAD c3bc7ab4)</td>
+<td>ok</td>
+<td>288 layers, finished clean; operator took the plate off. 11-22
+operator: "printed beautifully". 11-23 operator: printed perfectly, no
+supports. 11-23 follow-up (photo): a milder version of the right cover's
+defect at the same place, with stringing and blobs at the bottoms of the
+grille fins. Usable. Operator asked CAD to fix the fin-root design.</td>
+</tr>
+<tr>
+<td>2026-11-22</td>
+<td>H2S / S2 / black ASA</td>
+<td>lumi_ebc_cover_right_mounted.stl</td>
+<td>1</td>
+<td>Ultra</td>
+<td>cc76ced85ab26f9a</td>
+<td>H2S 6 (CAD c3bc7ab4)</td>
+<td>ok</td>
+<td>Printed with the left cover on the same plate. 11-22 operator:
+"printed beautifully". 11-23 operator: the bottoms of the grille fins
+came out messy (stringy blobs at the fin roots) and one fin broke.
+Usable. Reported to CAD. The sliced toolpaths are mirror-identical to
+the left cover with 0 support; the left prints first on each layer.</td>
+</tr>
+<tr>
+<td>2026-11-22</td>
+<td>X1C / S3 / grey PETG</td>
+<td>lumi_battery_strap_left_tabbed.stl</td>
+<td>1</td>
+<td>Ultra</td>
+<td>f123df5da411db74</td>
+<td>X1C 36 @ ba06d19a (lift pads, CAD 85a32c78)</td>
+<td>ok</td>
+<td>355 layers, finished clean, inverted with painted tree supports; the
+pad ceilings print on support interface. Fit not reported yet. 11-23
+operator: installed on Ultra with tape and kept (in service). It has the
+4.0 mm pads; CAD ae18718d later raised them to 5.5 for the next
+robots.</td>
+</tr>
+<tr>
+<td>2026-11-22</td>
+<td>X1C / S3 / grey PETG</td>
+<td>lumi_battery_strap_right_tabbed.stl</td>
+<td>1</td>
+<td>Ultra</td>
+<td>4780f81b0f6fe480</td>
+<td>X1C 36 @ ba06d19a (lift pads, CAD 85a32c78)</td>
+<td>ok</td>
+<td>Printed with the left strap on the same plate. Fit not reported yet.
+11-23 operator: installed on Ultra with tape and kept (in service). It
+has the 4.0 mm pads; CAD ae18718d later raised them to 5.5 for the next
+robots.</td>
+</tr>
+<tr>
+<td>2026-11-22</td>
+<td>H2S / S2 / black ASA</td>
+<td>lumi_base_cover_top.stl</td>
+<td>1</td>
+<td>Ultra</td>
+<td>1caef4dc96291167</td>
+<td>H2S 10, the operator's Studio save with top + base (= book plate 08
+from d9ce4167)</td>
+<td>ok</td>
+<td>230/230 layers, ended at the known end-of-print cutter pause. The
+H2S then dropped off the network, so no end-of-print camera check. Layer
+5 looked good.</td>
+</tr>
+<tr>
+<td>2026-11-22</td>
+<td>H2S / S2 / black ASA</td>
+<td>lumi_base_cover_base.stl</td>
+<td>1</td>
+<td>Ultra</td>
+<td>d8847d1df47de30f</td>
+<td>H2S 10, the operator's Studio save with top + base (= book plate 08
+from d9ce4167)</td>
+<td>ok</td>
+<td>Printed with the top on the same plate, no supports. Same note as
+the top.</td>
 </tr>
 </tbody>
 </table></body></html>
