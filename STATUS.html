@@ -3808,6 +3808,26 @@ session already made it.</p>
 </blockquote>
 <h2 id="recently-decided">Recently decided</h2>
 <ul>
+<li>2026-11-22 (CAD routed tether, full run 2026-11-21 23:24;
+Electronics): <strong>tether cuts set in <a
+href="Power_Bay_Design.html">Power_Bay §16c</a> rows 14–15:</strong> 1.0 m
+outside the bay on every conductor (CAD bound 890 / 888 / 883 mm across
+poses), so TETHER-P 1.17 m ×2 + GND-logic 1.05 m, TETHER-S 1.03 m ×3;
+string run on Halo before crimping the wand end. Totals now 22 AWG ~4.9
+m, 26 AWG ~17.7 m. <strong>PHONE-USB (15b): 1.5 m 90° C-to-C, PD 60 W,
+ordered 11-22 (qty 2 = Ultra + spare; Creator-only, not Halo / Nova; no
+ETA); caliper the plug against CAD's gate on arrival</strong>: same
+route, ~0.98 m before the cradle end, so the factory 1 m is too
+short.</li>
+<li>2026-11-18 (operator via CTO): <strong>new <a
+href="HV_Bay_Design.html">HV_Bay_Design.md</a> (Electronics owns) tracks
+the Halo HV bay:</strong> ZK-SJ20 buck-boost servo supply (ordered, est.
+Nov 29 – Dec 5; replaces the front-wall DROK on HV), carrier stepped
+down over the PSU, front fence = plain air-slot grill (no LCD window,
+pot or button cut-outs), front PIRs up to 68, INA3 stays on the front
+wall. No HV CAD work yet. HV battery +3–4 mm puts A3 5.57 / 4.57 mm off
+the pack: operator overrides the 8 mm rule ("i am overriding that 8m
+rule right now"). Blockers list B1–B14 at the top of the HV doc.</li>
 <li>2026-11-18 (operator via CAD): e20ae589's
 <code>Power Bay - Wired.step</code> was internally inconsistent: the
 tabbed straps at +15 on the 10-19 plate with the OLD strap holes (the

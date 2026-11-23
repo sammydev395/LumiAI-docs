@@ -6473,21 +6473,23 @@ TMP102 orders differ. Tug-test every double crimp</td>
 <td><strong>TETHER-P</strong></td>
 <td>2 × 22 + GND-logic 22</td>
 <td>169 / 167 on-carrier to the riser top; GND-logic 42</td>
-<td><strong>measure</strong> (~1.3 m per conductor: on-carrier +
-<strong>≥ 1.0–1.1 m outside the bay</strong>: riser → shoulder ~87, the
-chain from the shoulder 331, plus ~100 service loop at each of the 5
-joints, plus the BigClaw offset to the wand inlet. ⏳ An estimate until
-CAD's routed tether (bay exit → wand JST-XHP in the claw, longest length
-across poses) lands; cut to that, then check it with a string run on
-Halo at full extension and full wrist rotation. Bay exit = the riser
+<td><strong>power pair 1.17 m each, GND-logic 1.05 m</strong>
+(on-carrier + <strong>1.0 m outside the bay</strong>, ~110 mm margin).
+Outside the bay, CAD's routed bound (full run 2026-11-21 23:24) is 890
+mm for the power pair and 888 mm for GND-logic, riser top → wand XHP-6,
+longest across poses: the centreline along the arm's back face 441.5
+(riser → shoulder 87.5 / 85.8, shoulder → elbow 100.5, elbow → wrist
+94.7, wrist → XHP-6 158.8), service loops at the 5 joints 323 (wrap
+radius × 120°: base 38, shoulder 75, elbow 72, wrist pitch 71, wrist
+roll 67) and 25 mm bend/tie slack per joint (125). It is an upper bound
+(every joint at its worst end at once), not a simulated cable:
+<strong>check it with a string run on Halo at full extension and full
+wrist roll before crimping the wand end.</strong> Bay exit = the riser
 tops at the servo-base opening (cad/Assemblies file frame, mm): power
 pair (245.1, −60.3, 88.7), GND-logic (243.4, −60.3, 88.7), signal
-(238.4, −60.3, 88.7). Start the string run there. Wand inlet = the JST
-XHP-6 shell's mating face, in the BigClaw (claw) frame, the same in
-every pose: (226.983, −133.413, 468.845) mm, mating along +Z, pin row
-along +X (CAD full run 2026-11-16 23:19, checked against the STEP). The
-two points are in different frames; CAD's tether stage gives the length
-per pose)</td>
+(238.4, −60.3, 88.7). Wand inlet = the JST XHP-6 shell's mating face, in
+the BigClaw (claw) frame: (226.983, −133.413, 468.845) mm, mating along
++Z, pin row along +X</td>
 <td>Block tether pair, <strong>HL-PBB A2 / B2</strong> (D-1459: A1 /
 B1): <strong>E0508</strong>; GND-logic → G469 <strong>pin 9</strong>
 (shared ferrule)</td>
@@ -6500,8 +6502,9 @@ B1): <strong>E0508</strong>; GND-logic → G469 <strong>pin 9</strong>
 <td><strong>TETHER-S</strong></td>
 <td>3 × 26</td>
 <td>28 / 26 / 25 on-carrier (G469 odd row → riser top)</td>
-<td><strong>measure</strong> (~1.1–1.2 m per conductor, same route and
-same ⏳ estimate as row 14)</td>
+<td><strong>1.03 m each</strong> (on-carrier + 1.0 m outside the bay;
+CAD's routed bound 883 mm, same route and string-run check as row
+14)</td>
 <td>G469 <strong>3 / 5 / 1</strong> (shared ferrules)</td>
 <td>Same 6-pin housing: pins <strong>3 / 4 / 5</strong></td>
 <td>Separate from TETHER-P until the shell</td>
@@ -6526,12 +6529,21 @@ zip-tie groove on a DC-end post (Z 56–59), ≤ 30 mm from the pads</td>
 <tr>
 <td>15b</td>
 <td><strong>PHONE-USB</strong> <em>(creator edition)</em></td>
-<td>factory C-to-C</td>
+<td>bought C-to-C, 1.5 m, right-angle at the IP6518 end</td>
 <td>— (leaves the carrier)</td>
-<td><strong>factory ~1 m, likely short:</strong> the tether route
-outside the bay is ≥ 1.0–1.1 m with service loops (row 14, estimate
-until CAD's routed length lands), plus the cradle. <strong>Check the
-reach at the first build</strong>, 1.5 m if short</td>
+<td><strong>Bought 1.5 m 90° C-to-C, "PD Type-C 60 W" (3 A), replacing
+the factory 1 m, which is too short.</strong> Ordered 2026-11-22, qty 2
+(Ultra, the only Creator build, plus a spare; Halo and Nova carry no
+IP6518 or phone cable), no ETA. Silicone jacket and plug size not
+published. ⏳ <strong>On arrival:</strong> caliper the right-angle plug
+against CAD's gate (≤ 14 mm reach, ≤ 12.5 mm wide, ≤ 7 mm thick, 1.55 mm
+over the DROK), confirm the ends (listing photo: ONE 90° end, a flat
+side-exit paddle with the cable leaving along the long axis of the C
+oval, so a 180° flip picks the exit direction; the other end straight,
+to the phone), and check the jacket stays flexible through the service
+loops. Same route as the tether (operator: cradle and wand tether the
+same): 890 outside the bay (row 14) + ~90 receptacle → opening = ~0.98 m
+before the cradle end</td>
 <td>IP6518 USB-C (underside, USB end), <strong>right-angle plug turning
 −X</strong>, tied in the zip-tie groove on the USB-end −X post, ~20 mm
 from the receptacle; then +Y along the board's −X side to the tether
@@ -6649,10 +6661,10 @@ mm) to ≤ 5 mm</strong> (operator).</li>
 incl. 14, 15 and 15a)</strong> A sum of the Cut column above × conductor
 count, with the HL-PBB corrections and the "+ row" allowances in. Every
 on-carrier run is checked against CAD's wired model (a6d507ed): each cut
-is longer than its wired run. ⏳ <strong>Three runs leave the model and
+is longer than its wired run. The tether (rows 14–15) is CAD's routed
+bound across poses (2026-11-21). ⏳ <strong>Two runs leave the model and
 are still estimates:</strong> DROK-OUT's climb from the riser top to the
-STM32, the tether from the bay to the wand, and the SPS30 / ZE15 drops
-below the opening.</p>
+STM32, and the SPS30 / ZE15 drops below the opening.</p>
 <table>
 <thead>
 <tr>
@@ -6672,17 +6684,16 @@ to the STM32 ~0.55 (2 × ~0.28)</td>
 </tr>
 <tr>
 <td><strong>22 AWG</strong></td>
-<td><strong>~5.4 m (~18 ft)</strong></td>
-<td>LAMP 0.35, MUS-IN 0.44, FAN1-P 0.39, FAN2-P 0.30;
-<strong>estimated:</strong> TETHER-P ~3.9 (3 × ~1.3, row 14)</td>
+<td><strong>~4.9 m (~16 ft)</strong></td>
+<td>LAMP 0.35, MUS-IN 0.44, FAN1-P 0.39, FAN2-P 0.30, TETHER-P 3.39 (2 ×
+1.17 + 1.05, row 14)</td>
 </tr>
 <tr>
 <td><strong>26 AWG</strong></td>
-<td><strong>~18.1 m (~59 ft)</strong> + the two sensor drops</td>
-<td>FAN-SIG 0.94, I²C chain 6.36, PIRs 4.50, SPS30 1.40, ZE15 1.40;
-<strong>estimated:</strong> TETHER-S ~3.5 (3 × ~1.15, row 15);
-<strong>plus measure:</strong> the SPS30 and ZE15 drops below the
-opening</td>
+<td><strong>~17.7 m (~58 ft)</strong> + the two sensor drops</td>
+<td>FAN-SIG 0.94, I²C chain 6.36, PIRs 4.50, SPS30 1.40, ZE15 1.40,
+TETHER-S 3.09 (3 × 1.03, row 15); <strong>plus measure:</strong> the
+SPS30 and ZE15 drops below the opening</td>
 </tr>
 <tr>
 <td>24 AWG</td>
@@ -6702,7 +6713,7 @@ pigtails. Buy ~20 % over these totals for strip lengths, a bad crimp and
 trim. <strong>Per build:</strong> a <strong>Pro / ceiling</strong> build
 (wand, no phone) drops 15a (−0.30 m / ~1 ft of 18 AWG); a
 <strong>Creator phone-only</strong> build (no wand) drops 14 and 15
-(−3.9 m / ~13 ft of 22 AWG, −3.5 m / ~11.5 ft of 26 AWG).</p>
+(−3.4 m / ~11 ft of 22 AWG, −3.1 m / ~10 ft of 26 AWG).</p>
 <p><strong>Build order</strong> (the Order column, grouped):</p>
 <ol type="1">
 <li><strong>Off-carrier mains first</strong> (row 1), with the earth
@@ -6730,36 +6741,41 @@ phone AND wand, operator 2026-11-15):</strong> + 14–15
 <strong>and</strong> 15a–15b.</p>
 <h2 id="17-related-docs">17. Related Docs</h2>
 <ul>
-<li><a
+<li><p><a href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code></a> —
+<strong>Halo HV only:</strong> ZK-SJ20 servo supply, stepped HV carrier,
+slot-grill front fence, HV one-rail rules and open items. Everything
+else in this doc carries over.</p></li>
+<li><p><a
 href="Electronics_BringUp_Plan.html"><code>Electronics_BringUp_Plan.md</code></a>
 — <strong>the 8-phase electrical + software bring-up sequence</strong>
 (Phase 0 power-only → Phase 7 hazard sensors) that this Assembly Guide
 feeds into. Read it top-to-bottom once every physical component is
-mounted; each phase points back here for wiring specifics.</li>
-<li><a
+mounted; each phase points back here for wiring specifics.</p></li>
+<li><p><a
 href="Electronics_Soldering_Guide.html"><code>Electronics_Soldering_Guide.md</code></a>
 — <strong>sibling bench-ops guide owning all soldering
 operations</strong> (iron selection, tip care, SMD lift/swap, header
 solder, MCPCB solder, perfboard rail buses, address-pad bridging, trace
-cut + bridge). This guide cross-refs that one extensively.</li>
-<li><a
+cut + bridge). This guide cross-refs that one extensively.</p></li>
+<li><p><a
 href="Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
 — wand design, internal architecture, v9.1 band-layout power rails, arm
-tether</li>
-<li><a
+tether</p></li>
+<li><p><a
 href="Lumi_Wand_Flashlight_Variant.html"><code>Lumi_Wand_Flashlight_Variant.md</code></a>
 — battery-base flashlight mode. It uses the <strong>SAME 6-pin end-plate
-inlet the bay tether does</strong> — one interface, two SKUs.</li>
-<li><a
+inlet the bay tether does</strong> — one interface, two SKUs.</p></li>
+<li><p><a
 href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>
 — INA226 / TMP102 (bay) / PIR / hazard-sensor design; bus address
-allocation; bus pull-up reconciliation; FFC-chain BOM</li>
-<li><a
+allocation; bus pull-up reconciliation; FFC-chain BOM</p></li>
+<li><p><a
 href="Power/Compact_UPS_Power_System_HiWonder_RPi5.html"><code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code></a>
-— power system canonical</li>
-<li><a href="3D_Printing_Guide.html"><code>3D_Printing_Guide.md</code></a>
-— sibling bench-ops guide for prints</li>
-<li><a
+— power system canonical</p></li>
+<li><p><a
+href="3D_Printing_Guide.html"><code>3D_Printing_Guide.md</code></a> —
+sibling bench-ops guide for prints</p></li>
+<li><p><a
 href="CNC_Machining_Guide.html"><code>CNC_Machining_Guide.md</code></a> —
-sibling bench-ops guide for CNC</li>
+sibling bench-ops guide for CNC</p></li>
 </ul></body></html>

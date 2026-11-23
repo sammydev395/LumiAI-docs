@@ -282,6 +282,21 @@ schedule (e.g. blue = SDA, yellow = SCL, orange = 3.3 V).</td>
 %.</strong></td>
 </tr>
 <tr>
+<td><strong>ENERJOUR 26 AWG silicone hookup wire — 6-colour set, 100 ft
+each of red, black, white, blue, green, yellow.</strong> Same uses as
+the row above.</td>
+<td>26 AWG, 6 × 100 ft</td>
+<td><strong>Stock 2026-11-18.</strong> One build needs ~17.7 m (~58 ft)
+of 26 AWG: black 12.5, yellow 12.5, blue 11, red 7, white 4, green 2.5
+ft.</td>
+</tr>
+<tr>
+<td><strong>BNTECHGO 26 AWG silicone hookup wire — orange, 100
+ft.</strong> The orange 3.3 V conductor (8.5 ft per build).</td>
+<td>26 AWG, 1 × 100 ft</td>
+<td><strong>Stock 2026-11-18.</strong></td>
+</tr>
+<tr>
 <td><strong>DIY Wire &amp; Cable 22 AWG silicone hookup wire — stranded,
 multi-color 5 × 10 m. Used for: tether V+ × 2 and GND × 2 (§10.1 —
 <strong>peak ~2.6 A</strong> through 2 contacts, so each conductor
@@ -3196,127 +3211,11 @@ studs change length, every number shifts by the same amount. Each is
 CAD's model height above the arm mount face plus the 193.0 floor datum;
 on a desk-clamped Creator (mount face 96.0 above the desk) subtract
 97.0.</p>
-<h2 id="16e-zk-sj20-buck-boost--hv-servo-rail-candidate-2026-11-18">16e.
-ZK-SJ20 buck-boost — HV servo-rail candidate (2026-11-18)</h2>
-<p><strong>Status: the HV version's servo-rail supply (12.0 V to the
-STM32 board): electrically approved, fit approved by CAD, ORDERED
-2026-11-18 (1 unit, display version, est. Nov 29 – Dec 5).</strong> On
-arrival: caliper the size, mounting holes and terminal positions for
-CAD, then the pot setup and bench gate below before any servo
-connection. Mount: a stepped-down section of the extended HV carrier
-over the PSU, board top ~5.4 mm under the lid (the 46 mm includes the
-heatsink); the bay fans cool it. <strong>Fit (CAD envelope, final after
-the board is calipered):</strong> fins face DOWN, so it sits in a
-slender carrier <strong>frame</strong> gripping its long edges over an
-opening, not on a solid deck. Fin tips to the PSU lid: ~12.4 mm with the
-PSU on the plate, ~9.4 mm on the 3 mm desk-clamp feet; both accepted
-(Electronics). The board's plan shadow is 45 % of the 159 × 98 lid, so
-⏳ the frame must keep the lid ≥ 50 % open (CAD reports the exact figure
-when drawn). Fins run front-to-back, in line with the back-wall fans'
-flow. Terminals on the short ends: the front-facing end has ~17.8 mm to
-the front wall's inner face. Use E1008 ferrules where they fit with the
-bend, <strong>bare 18 AWG as the fallback</strong> (same rule as
-INA-MAIN / INA-BATT). Wire and adjust it with the lid off. Why this
-board: it is a 4-switch buck-boost, so it holds 12.0 V from the PSU's
-13.8 V <strong>and</strong> from a sagging battery; the in-service
-diymore 12 A buck sags at 9–10 A, and the 20 A LM25116 boards list a 3 V
-minimum dropout. Listing: WAVGAT Official Store (AliExpress), with
-display.</p>
-<table>
-<thead>
-<tr>
-<th>Parameter (seller's table)</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Input</td>
-<td>7–80 V DC</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>1.4–79 V DC, adjustable</td>
-</tr>
-<tr>
-<td>Output current regulation (CC)</td>
-<td>0–20 A</td>
-</tr>
-<tr>
-<td>Overpower protection</td>
-<td>300 W: output turns off, display shows <strong>OPP</strong></td>
-</tr>
-<tr>
-<td>Display</td>
-<td>voltage 1.40–80.00 V (±0.1 V), current 0.00–20.00 A (±0.03 A); also
-temperature (°C)</td>
-</tr>
-<tr>
-<td>Adjusting knobs</td>
-<td>three trim pots: <strong>CV</strong> (output voltage),
-<strong>CC</strong> (current limit), <strong>MPPT / CVT</strong>
-(input-hold voltage)</td>
-</tr>
-<tr>
-<td>Backflow</td>
-<td>0.5–40 mA flows back into the output side when the input is off
-(seller: add a diode when charging a battery)</td>
-</tr>
-<tr>
-<td>Cooling</td>
-<td><strong>finned aluminium heatsink covering the whole
-underside</strong>, fins along the 109 mm length, held by 4 brass
-screws; PCB corner holes outside it. <strong>5 V fan port, ships without
-a fan.</strong> Mount it with air moving along the fins (fins in line
-with the fans' flow), never fins-down flat on the carrier or over the
-PSU vent lid</td>
-</tr>
-<tr>
-<td>Size / weight</td>
-<td>109 × 64.5 × 46 mm (seller: hand-measured, may be slightly off;
-<strong>caliper on arrival</strong>, height incl. the display board and
-the base plate); 194 g with display (193 g without)</td>
-</tr>
-</tbody>
-</table>
-<p><img src="images/hardware/zk_sj20_overview.png"
-alt="ZK-SJ20 300 W automatic buck-boost module with LCD: input terminals left, output terminals right, toroid inductor in the middle, display with MPPT and ON LEDs and the IN/OUT and ON/OFF buttons." /></p>
-<p><img src="images/hardware/zk_sj20_functions.png"
-alt="ZK-SJ20 functions: input 7–80 V on the left terminals, output 1.4–79 V on the right; CC pot with its CC LED, CV pot, MPPT pot with its LED (lit when the input is below the MPPT setting), fan header, LCD, output and display buttons." /></p>
-<p><img src="images/hardware/zk_sj20_display.png"
-alt="ZK-SJ20 display screens: input voltage + output current, output voltage + output power, and the MPPT (input-hold) voltage screen; below the MPPT voltage the module cuts output power to hold its input." /></p>
-<p><img src="images/hardware/zk_sj20_keys.png"
-alt="ZK-SJ20 keys: ON/OFF tap toggles the output, a 2 s press sets power-on default ON or OFF; IN/OUT tap switches the upper display, long press the lower display, a 10 s press zeroes the current reading." /></p>
-<p><img src="images/hardware/zk_sj20_heat_fan_port.png"
-alt="ZK-SJ20 side view: the aluminium heatsink under the board for the chips and MOSFETs, and the 5 V fan port (no fan shipped)." /></p>
-<p><strong>Setup before it ever connects to servos (bench, e-load, meter
-on the output):</strong></p>
-<ol type="1">
-<li><strong>CV pot → 12.0 V</strong> (11.99–12.0), never above. Then
-seal the CV pot with a dab of varnish: it is a trimmer on a moving
-robot.</li>
-<li><strong>MPPT pot fully down (≤ 7 V)</strong>, so the board never
-throttles its output to hold the input. With it set higher, a battery
-sagging under load (HV undervolt cutover 9.5 V) would make it cut servo
-power.</li>
-<li><strong>CC pot:</strong> set the current limit above the arm's
-measured peak (servos ~8–9 A, peaks ~12 A) and confirm it on the
-e-load.</li>
-<li><strong>Power-on default ON:</strong> press ON/OFF for 2 s until the
-display reads <strong>ON</strong>, so the output comes up by itself
-after a power cycle.</li>
-<li>⚠️ <strong>No overvolt setting and no key lock:</strong> the only
-output limits are the CV pot and the 300 W OPP. A buck-boost can output
-far above its input, so a mis-set pot can put 20 V+ on the servos. The
-12.6 V software overvolt trip (Electronics_Bay_Design §1) is the
-protection; check the output on the meter after any handling.</li>
-</ol>
-<p><strong>Bench gate before it goes on a robot:</strong> e-load at 8,
-10 and 12 A, from 13.8 V and from the battery; read the servo port and
-the board temperature (display °C). Decide on a fan (5 V port) from that
-run, check its noise against the bay's acoustic design, and confirm the
-terminal type (screw terminals in the photos) and the continuous current
-with no fan.</p>
+<h2 id="16e-hv-servo-rail-supply-zk-sj20--moved">16e. HV servo-rail
+supply (ZK-SJ20) — moved</h2>
+<p>The HV version's bay (ZK-SJ20 buck-boost, HV carrier, HV front fence,
+one-rail rules) now lives in <a
+href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code></a>.</p>
 <h2 id="related-docs">Related Docs</h2>
 <ul>
 <li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> —
