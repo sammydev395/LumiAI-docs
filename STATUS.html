@@ -2389,6 +2389,39 @@ operator (add them to the mount-face numbers). Nothing commanded on Halo
 from this; Ultra holds the preset for the operator's go.</td>
 </tr>
 <tr>
+<td>🔶 <strong>EBC covers: KINK FLUSH CUT (operator 2026-11-23, both
+covers; reprint needed)</strong></td>
+<td>Operator photos 2026-11-23: blobs and strings along the bottom of
+the grille where every fin meets the lower wall, one fin broken on the
+right cover; the left showed the same, milder ("you may want to look at
+fixing ... so they print right"). Cause (CAD, measured on the exports):
+the outer wall's top stood <strong>0.27 PROUD of the slant's outer face
+along the whole kink</strong>. The trim that removes the wall above the
+slant has its rail B <code>EBC_TRIM_BURY</code> (0.15) outside the wall
+while the slab's rail B is <code>EBC_RAIL_BURY</code> (0.1) inside, so
+the trim plane tilts off the slab plane and leaves a lip. Flipped, that
+lip is a down-step whose first layers start in air at every fin root (a
+243 mm² steep face growing from a free edge,
+<code>printgate.steep_unsupported</code>). The two covers are exact
+mirrors and slice identically (LumiAI 3DPrinter); the right only looked
+worse. <strong>Fix (<code>lumi_ebc_vents.py</code>, KINK FLUSH
+CUT):</strong> before the slab fuse, the wall over the slab's own outer
+surface less <code>EBC_KINK_UNDER</code> 0.02 is cut away, built
+triangle by triangle from the slab's rails (rail B carried 3 mm further
+out, so the 0.1 strip outside it goes too), clipped to the wall's band;
+the panel side is untouched. Moving the trim's rail instead was tried
+first and shifted the hip geometry (a new 0.74 mm² floating region), so
+it was dropped. <strong>Gates, old → new, both covers:</strong> the kink
+face 243 mm² → gone; floating regions 0 → 0; cantilever / bridges /
+curved 0; solids diff: nothing added, 48.2 mm³ of lip removed (x
+7.8–11.9, z 18.6–23.9 in the print frame, along the kink to both taper
+ends); sections at Y −50 / −47 / 19 / 22 / 25 flush. Left: a 0.02 step
+on the outer 0.1 mm (under Bambu's 0.049 slice-closing radius). Cover
+macro RESULT PASS; lumi_cover_mounts RESULT PASS. Exports
+<code>lumi_ebc_cover_{left,right}_mounted</code>; H2S plate 05 needs a
+rebuild (3D Printing).</td>
+</tr>
+<tr>
 <td>EBC covers (H2S plate 6): vents up the slope, head-pocket membrane;
 plate 6 released, supports OFF</td>
 <td>Both covers print flipped (R_X180, canonical export pre-flipped,
