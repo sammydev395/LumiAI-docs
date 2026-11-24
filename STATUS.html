@@ -1478,20 +1478,27 @@ right away", via LumiAI 3DPrinter), so Studio's note on the LEFT cover
 is the waived specks; both books INSTALLED on the DELL at
 <code>d6bed4f4</code> (X1C 7d091fab, H2S fac24b76): H2S 05 / X1C 06
 ready to print; CAD told where the specks are) ⛔ <em>was: install held
-for the waiver</em> ⛔ <em>was: on CAD <code>c3bc7ab4</code></em>
-(operator 2026-11-10; the supports-off slice passed gate_gcode_floating,
-2 h 27 m / 36.8 g, re-gated with arcs read; Studio's floating-regions
-note on the right cover is the 2 raster-dust cells); plate 6 released.
-Flange coupon −Y prints flat, flange-down, no sink (CAD 3415f1e removed
-its tab). Tabbed battery straps stand INVERTED with supports ON, and
-enforcer paint under each leg-end tab's flat ceiling (print z 39.7, ~210
-mm² a strap over open bed; X1C 22 left them bare: 4 floating starts,
-Karma 2026-11-14) -- <code>ENFORCE_BOX_PRINT</code>, picked in the print
-frame. <strong>H2S slots</strong> (after <code>SLOT_MOVE</code>, which
-maps the builder's old 1→4, 4→1): 1 Kingroon HS PETG blue since
-2026-11-16 (operator; PolyLite PETG preset, the red HS PETG's values
-carried over: 240 / 0.94 / 10 mm³/s, bed 80 by his word, untested on
-this spool;
+for the waiver</em>. <strong>H2S 05 RIGHT COVER TURNED 180° about
+Z</strong> (operator 2026-11-23, Print_Log <code>daba607f</code>: on
+3467243b the right cover's fin roots failed again, two grille bars
+broke, the left was clean; printed alone and turned 180° in Studio it
+came out perfect -- "it gets the airflow on that side from the H2S": the
+cause is the H2S's cooling direction, not the geometry). The flip is
+kept; only the right cover's transform changed. X1C 06 is NOT turned
+(different machine's airflow, untested) unless the operator asks. ⛔
+<em>was: on CAD <code>c3bc7ab4</code></em> (operator 2026-11-10; the
+supports-off slice passed gate_gcode_floating, 2 h 27 m / 36.8 g,
+re-gated with arcs read; Studio's floating-regions note on the right
+cover is the 2 raster-dust cells); plate 6 released. Flange coupon −Y
+prints flat, flange-down, no sink (CAD 3415f1e removed its tab). Tabbed
+battery straps stand INVERTED with supports ON, and enforcer paint under
+each leg-end tab's flat ceiling (print z 39.7, ~210 mm² a strap over
+open bed; X1C 22 left them bare: 4 floating starts, Karma 2026-11-14) --
+<code>ENFORCE_BOX_PRINT</code>, picked in the print frame. <strong>H2S
+slots</strong> (after <code>SLOT_MOVE</code>, which maps the builder's
+old 1→4, 4→1): 1 Kingroon HS PETG blue since 2026-11-16 (operator;
+PolyLite PETG preset, the red HS PETG's values carried over: 240 / 0.94
+/ 10 mm³/s, bed 80 by his word, untested on this spool;
 <code>set_filament_slots.py h2s ... --slots 1 --like 4</code> writes the
 slot on the GMKtec, the builder lays the values on it), 2 Generic ASA
 (260 / bed 90 / chamber 60), 3 PolyLite PETG (black), 4 yellow PETG+, 5
