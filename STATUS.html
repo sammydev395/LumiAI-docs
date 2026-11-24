@@ -1378,17 +1378,25 @@ covers: facing +X clean twice, -X failed twice; Y facing does not
 matter). Turned 180° about Z for it: H2S 05's right EBC cover and H2S
 06's ext -Y half (its overhangs were -X 1833 / +X 78 mm2, now +X 1833 /
 -X 78; supports and paint turn with it). The X1C's direction is not
-calibrated yet (airflow coupon to come). Accepted as is (operator
-2026-11-22, via LumiAI 3DPrinter: "let's print them as is, no
-problem"):</strong> H2S 06's Studio warning on the ext -Y half (6
-unsupported overhang regions: the internal thread flanks z 172-188, a
-step at z 89.3, ledges at 51.5 and 76; supports stay build-plate-only,
-so none land in the thread) and H2S 03's one gcode floating start (layer
-86, z 13.8, a 35.9 mm overhang wall, the ear); both pre-existing, the
-same on the plates before the merge. H2S plate numbers elsewhere on this
-board dated before 2026-11-22 are the old ones. The X1C book is not
-affected. <strong>FENCE REAR CAP SCREWED + back half with screw bosses
-(operator 2026-11-22, render approved; CAD <code>69b10f23</code>,
+calibrated yet: the AIRFLOW COUPON
+(<code>lumi_airflow_coupon_plusX</code> with a 3 mm marker hole in its
+foot, overhangs facing +X, and <code>_minusX</code>, its mirror; the EBC
+fin root twice, <code>cad/freecad/lumi_airflow_coupon.py</code>) prints
+on <strong>X1C 35 with the lock station</strong> (operator 2026-11-23:
+same plate, same red PETG), both at the bed's centre X, either side of
+the station, no rotation. The worse piece sets the X1C rule; until then
+the X1C's -X-facing parts (X1C 6 right EBC cover, 8 ext -Y half, 11
+fence back half) stay as they are. Accepted as is (operator 2026-11-22,
+via LumiAI 3DPrinter: "let's print them as is, no problem"):</strong>
+H2S 06's Studio warning on the ext -Y half (6 unsupported overhang
+regions: the internal thread flanks z 172-188, a step at z 89.3, ledges
+at 51.5 and 76; supports stay build-plate-only, so none land in the
+thread) and H2S 03's one gcode floating start (layer 86, z 13.8, a 35.9
+mm overhang wall, the ear); both pre-existing, the same on the plates
+before the merge. H2S plate numbers elsewhere on this board dated before
+2026-11-22 are the old ones. The X1C book is not affected. <strong>FENCE
+REAR CAP SCREWED + back half with screw bosses (operator 2026-11-22,
+render approved; CAD <code>69b10f23</code>,
 <code>FENCE_SET_HOLD</code>):</strong> the v3 snap cap's outer tabs
 snapped on fitting, so the cap now screws on (4 x M3x12 countersunk
 self-tappers) into four Ø8 bosses outside the back half's fan towers;
