@@ -176,6 +176,30 @@ carry the finished part.</li>
 <li>The four holes are the Ø3.175 pilots OP1 just drilled; M3 × 15 SHCS
 self-tapping into the spoilboard.</li>
 </ul>
+<h2
+id="drill-check-at-the-m0-operators-yellow-petg-drill-template">Drill
+check at the M0 (operator's yellow PETG drill template)</h2>
+<p>Before bolting through POST.5-8, check that the drilled holes are
+where the model says. The template is the yellow PETG drill template the
+operator printed earlier, laid out by <a
+href="../cad/freecad/ultra_drill_template_layout.py"><code>cad/freecad/ultra_drill_template_layout.py</code></a>.
+Its 12 holes match the <code>LumiAI_Base_Plate_no_carriage.nc</code>
+drill XY exactly (checked by Machining): <strong>pegs</strong> at
+POST.1, POST.4, POST.7, POST.8; <strong>guides</strong> at PSU.1, PSU.2,
+the four STRAPs (at the +15 Y positions), POST.5 and POST.6. POST.2 and
+POST.3 are not on it.</p>
+<ol type="1">
+<li>At the tool-change M0, spindle parked: brush the chips off the
+plate.</li>
+<li>Lay the template on the plate, mount face up, same orientation as in
+the machine.</li>
+<li>Look through each template hole for the drilled hole.</li>
+<li>If every hole lines up, the job proceeds: bolt through POST.5-8,
+swap to T2, re-touch Z. If one does not, stop and tell Machining; do not
+bolt down or run the engrave and contour.</li>
+</ol>
+<p>This replaces the retired plate-2 hole check; the 1:1 paper template
+is not used.</p>
 <h2 id="sequence">Sequence</h2>
 <table>
 <thead>
@@ -205,8 +229,9 @@ stock centre, Z zero = sheet top face.</td>
 </tr>
 <tr>
 <td>M0</td>
-<td>Swap T1 to T2 (collet 1/8" to 1/4"), screw the plate down through
-POST.5–8, re-touch Z on T2.</td>
+<td><strong>Drill check first</strong> (below). Then swap T1 to T2
+(collet 1/8" to 1/4"), screw the plate down through POST.5–8, re-touch Z
+on T2.</td>
 <td>~10 min</td>
 </tr>
 <tr>
