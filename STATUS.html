@@ -723,10 +723,44 @@ need a rebuild on the new exports (3D Printing).</td>
 <td></td>
 </tr>
 <tr>
-<td>🔶 <strong>Halo HV battery hold-down: 2 BARS on 4 SCREWED FENCE PADS
-+ TRAY (operator 2026-11-24: "Yes, switch the battery bars to the screw
-pads"; replaces the 11-23 grooves; "Keep flat + enforcer"; fence render
-OK'd 11-24)</strong></td>
+<td>🔶 <strong>Halo HV RE-LAYOUT, step 1 (operator 2026-11-24: "use the
+space up front where the DROK used to be"; "We can probably still use
+the old battery straps"; CTO-reviewed; awaiting the
+operator)</strong></td>
+<td>Sketch: <a
+href="images/hardware/hv_relayout_study.png">hv_relayout_study.png</a>.
+Measured on the HV fence (inner walls sliced at Z 44 / 52 / 62).
+<strong>(a)</strong> The deck comes forward from Y −101 to about −130,
+tapering with the front slants (walls X 195.5 / 265.4 at Y −132, 184.5 /
+276.4 at −120, 162.4 / 298.5 at −96). Limits: INA3 on the front wall (Z
+66.7–87.7), the waist X 178.7–282.2 at Y −16..+4, the front PIRs at 25
+under the deck. <strong>(b)</strong> ZK-SJ20 6.5 forward (Y
+−101.5..+7.5, 2.1 off INA3); TMP102 (X 200–225.4) and Mus-14 (turned, X
+230–260) move into the nose at Y −129..−104, under INA3. <strong>Pinch 1
+is gone</strong> (32.8 flat lane), so <strong>no raised lane</strong>.
+The riser bend over the buck edge stays: the lid window sits over the
+only band the buck fits in. <strong>(c)</strong> The LV straps unchanged
+do NOT fit: their low LEG POSTS stand inside the 159 PSU (left 736 /
+right 1409 mm³ at +3.5; plate holes clear). Smallest fix: move only the
+low posts sideways (left −3.7; right outboard of its hole, X ~289–293),
+in the LV strap macro behind LUMI_BAY_HV. The bars, the 4 fence pads,
+the tray and the HV bars then go away. <strong>Pack position
+(operator):</strong> A = LV position (PSU-to-pack 1.08, LV plate strap
+holes exactly, A3 mains lane back to ~8.1 off the pack) or B = +3.5
+(4.58 gap, the left-high hole moves to clear the corner block).
+<strong>(d)</strong> Reused as-is: fence back half + rear cap + towers,
+SPS30 / ZE15 carriers, fans, switches, strap bars / high legs / lift
+pads / tabs, INA-MAIN / BATT / HL-PBB / F1 placement; base plate = LV
+except the PSU's 2 holes.</td>
+<td>operator OK on the sketch + A/B</td>
+</tr>
+<tr>
+<td>⛔ <strong>SUPERSEDED (operator 2026-11-24: redo with the carrier
+forward and the LV straps; parts kept until the replacement
+passes)</strong> -- <strong>Halo HV battery hold-down: 2 BARS on 4
+SCREWED FENCE PADS + TRAY (operator 2026-11-24: "Yes, switch the battery
+bars to the screw pads"; replaces the 11-23 grooves; "Keep flat +
+enforcer"; fence render OK'd 11-24)</strong></td>
 <td>Two flat PETG bars (25 × 4, wall to wall, Y 50–75 / 86–111, top Z 44
 = the carrier plane) sit on the pack. At each end a flat pad on the HV
 fence side wall (7.5 out, 10 wide, 9 thick, bearing face Z 44.3) holds
@@ -753,8 +787,9 @@ carriage heads). Fence OVERALL_OK; bars + tray RESULT PASS. Exports:
 <td>the full HV set</td>
 </tr>
 <tr>
-<td>🔶 <strong>Halo HV CARRIER (<code>LUMI_BAY_HV=1</code>, committed
-20cbbc29, exports with the fence + bars commit; operator OK
+<td>⛔ <strong>SUPERSEDED (operator 2026-11-24, see the re-layout
+row)</strong> -- <strong>Halo HV CARRIER (<code>LUMI_BAY_HV=1</code>,
+committed 20cbbc29, exports with the fence + bars commit; operator OK
 2026-11-24)</strong></td>
 <td>Deck Z 44–48 on the two HV bars (4 screws through ears to X 168.6 /
 289.5). Front mount = the LV carrier strap split into <strong>2 end
