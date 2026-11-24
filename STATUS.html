@@ -723,93 +723,38 @@ need a rebuild on the new exports (3D Printing).</td>
 <td></td>
 </tr>
 <tr>
-<td>🔶 <strong>Halo HV RE-LAYOUT, step 1 (operator 2026-11-24: "use the
-space up front where the DROK used to be"; "We can probably still use
-the old battery straps"; CTO-reviewed; awaiting the
-operator)</strong></td>
-<td>Sketch: <a
-href="images/hardware/hv_relayout_study.png">hv_relayout_study.png</a>.
-Measured on the HV fence (inner walls sliced at Z 44 / 52 / 62).
-<strong>(a)</strong> The deck comes forward from Y −101 to about −130,
-tapering with the front slants (walls X 195.5 / 265.4 at Y −132, 184.5 /
-276.4 at −120, 162.4 / 298.5 at −96). Limits: INA3 on the front wall (Z
-66.7–87.7), the waist X 178.7–282.2 at Y −16..+4, the front PIRs at 25
-under the deck. <strong>(b)</strong> ZK-SJ20 6.5 forward (Y
-−101.5..+7.5, 2.1 off INA3); TMP102 (X 200–225.4) and Mus-14 (turned, X
-230–260) move into the nose at Y −129..−104, under INA3, the deck
-reaching Y −131 (boards 2.0 inside its front edge, TMP102 7.3 off the
-left slant, Mus-14 8.1 off the right). <strong>Pinch 1 is gone</strong>
-(32.8 flat lane), so <strong>no raised lane</strong>. The riser bend
-over the buck edge stays: the lid window sits over the only band the
-buck fits in. <strong>(c)</strong> The LV straps unchanged do NOT fit:
-their low LEG POSTS stand inside the 159 PSU (left 736 / right 1409 mm³
-at +3.5; plate holes clear). Smallest fix: move only the low posts
-sideways (left −3.7; right outboard of its hole, X ~289–293), in the LV
-strap macro behind LUMI_BAY_HV. The bars, the 4 fence pads, the tray and
-the HV bars then go away. <strong>Pack position (operator):</strong> A =
-LV position (PSU-to-pack 1.08, LV plate strap holes exactly, A3 mains
-lane back to ~8.1 off the pack) or B = +3.5 (4.58 gap, the left-high
-hole moves to clear the corner block). <strong>(d)</strong> Reused
-as-is: fence back half + rear cap + towers, SPS30 / ZE15 carriers, fans,
-switches, strap bars / high legs / lift pads / tabs, INA-MAIN / BATT /
-HL-PBB / F1 placement; base plate = LV except the PSU's 2 holes.</td>
-<td>operator OK on the sketch + A/B</td>
-</tr>
-<tr>
-<td>⛔ <strong>SUPERSEDED (operator 2026-11-24: redo with the carrier
-forward and the LV straps; parts kept until the replacement
-passes)</strong> -- <strong>Halo HV battery hold-down: 2 BARS on 4
-SCREWED FENCE PADS + TRAY (operator 2026-11-24: "Yes, switch the battery
-bars to the screw pads"; replaces the 11-23 grooves; "Keep flat +
-enforcer"; fence render OK'd 11-24)</strong></td>
-<td>Two flat PETG bars (25 × 4, wall to wall, Y 50–75 / 86–111, top Z 44
-= the carrier plane) sit on the pack. At each end a flat pad on the HV
-fence side wall (7.5 out, 10 wide, 9 thick, bearing face Z 44.3) holds
-the bar; the bay hangs inverted, so the pack pushes the bars up into the
-pads. <strong>One M3 × 12 self-tap per end goes DOWN from above</strong>
-through the pad's Ø3.4 hole into the bar's blind pilot (X 160.4 / 300.5,
-Y 55 / 92), outside the pack; there's no driver room under the bar (the
-pack is 5.5 off the walls). A worst-case Ø5.8 head clears the wall by
-0.60 (bite: 3.0 off the wall reads 0.11), and the driver column over
-each head is open. Pad 0.82 MPa (ASA lim 13.3); bar 15.4 MPa at 5 g on
-one bar alone (PETG lim 16.7). <strong>Assembly:</strong> pack into the
-tray; both bars drop into the 27 gap between the pad rows (the walls
-turn in forward of Y ~45, so nothing drops over the PSU): back bar
-first, slid 25.5 back, then the front bar, slid 10.5 forward; 4 screws
-from above; then the carrier. <strong>Print:</strong> the pads' flat
-undersides print on a painted support enforcer, like the carrier-strap
-pads (operator: "Keep flat + enforcer"). <strong>Tray</strong> unchanged
-(floor Z 5.0, rim 4.5, cut round the clamp jaws, reliefs over the
-carriage heads). Fence OVERALL_OK; bars + tray RESULT PASS. Exports:
-<code>lumi_baseplate_fence_HV</code> (+ halves, rear cap),
-<code>lumi_battery_bar_{front,back}_HV</code>,
-<code>lumi_battery_tray_HV</code>. <strong>Not printed: HV print hold
-(operator 11-24) until the whole HV set is done.</strong></td>
-<td>the full HV set</td>
-</tr>
-<tr>
-<td>⛔ <strong>SUPERSEDED (operator 2026-11-24, see the re-layout
-row)</strong> -- <strong>Halo HV CARRIER (<code>LUMI_BAY_HV=1</code>,
-committed 20cbbc29, exports with the fence + bars commit; operator OK
-2026-11-24)</strong></td>
-<td>Deck Z 44–48 on the two HV bars (4 screws through ears to X 168.6 /
-289.5). Front mount = the LV carrier strap split into <strong>2 end
-stubs</strong> under the fence pads (the PSU is screwed to the plate;
-the one-piece strap ran through the buck's heatsink).
-<strong>ZK-SJ20</strong> (display unit) at X 213–277.5, Y −95..14 (+4 Y,
-operator), its 12 mm heatsink through a deck opening 3.0 over the PSU;
-provisional pilots with R 3.75 corner bosses (⏳ hole pattern B7 / B16).
-Operator rulings 11-24: front PIRs stay low (25), no IP6518 on Halo HV.
-Gates 73 / 0 (every new row with a bite); PSU lid 67.9 % open; left
-strip 12.0 MPa (0.15 kg stack at 5 g, 49 mm cantilever); 1.0-eroded deck
-section ONE piece; no floating islands. Exports
-<code>lumi_powerbay_carrier_HV</code>,
-<code>…_stub_{left,right}_HV</code> (cad/exports + output).
-<strong>Wiring:</strong> route plan + raised lane (Z 72 on 2 posts) +
-risers beside the buck into the lid window, all OK'd 11-24; HV rows per
-HV_Bay_Design §9; routes not in the wired macro yet. <strong>Not printed
-(HV hold).</strong></td>
-<td>HV routes in the wired macro</td>
+<td>🔶 <strong>Halo HV BAY v3: fence + plate + bars/tray + carrier BUILT
+(operator + CTO 2026-11-24; real battery + PSC-150 fitted by the
+operator; render <a
+href="images/hardware/hv_bay_built_v3.png">hv_bay_built_v3.png</a>)</strong></td>
+<td><strong>Battery:</strong> the real pack is 70 front-to-back
+(operator caliper; the reference block is 72), at the LV position
+(HV_PACK_DY 0: "no heat issue with the battery"), in the printed
+<strong>tray</strong> (floor Z 5.0, 4.5 rim, 0.5 round the pack), held
+by <strong>2 top bars</strong> left to right on <strong>4 screwed fence
+pads</strong> (M3 from above, pads printed on a support enforcer;
+operator: the straps must not go down to the feet). Pack corner R 1.0 +
+0.5 shrink-wrap allowance: 0.57 off the back slants. <strong>PSU
+PSC-150-12:</strong> 158 (approx) at gap <strong>5.6</strong> to the
+pack (operator measured 6-7; 5.6 keeps both front corners off the front
+slants), back face Y 41.98, LV X. Plate holes keep the PSC-100
+case-relative pattern (VERIFIED by the operator), at (272.606, 39.566) /
+(190.357, −113.434); no strap holes on HV. <strong>Fence:</strong> no
+DROK features, no INA3 on the wall, the bar pads, <strong>front PIRs up
+to centre 56</strong> (operator: the PSU front gets too close lower;
+envelope 5.50 off the PSU, bite at 25 reads 0.00).
+<strong>Carrier:</strong> deck forward into the freed DROK space to Y
+−131, outline from the real fence (innermost wall, ±3 smoothing, ≥ 1.5
+off: 1.75), notched to the wall round the front PIRs; INA3 + Mus-14 on
+the nose, the buck at Y −95..14 (IN lane 11 to the terminal slot), G469
+stack 12.5 back, TMP102 over the PSU; front mount = the 2 split stubs.
+76 / 0, deck one piece after a 1.0 erosion (fast raster, 0 / 200 vs
+isInside; 0.4-bridge bite splits). Bars + tray 67 PASS; fence
+OVERALL_OK; LV straps unchanged (regression PASS). ⏳ Open: LV strap
+side fingers (designed, OFF until the operator confirms); the HV wire
+routes (wired macro). <strong>Not printed: HV print hold (whole set
+first).</strong></td>
+<td>the HV routes; the operator on the LV fingers</td>
 </tr>
 <tr>
 <td>🔶 <strong>Fence BACK half + both battery straps REBUILT for the
