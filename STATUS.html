@@ -367,17 +367,18 @@ Print fix (the CAD stays): the carrier is SUNK 0.10 into the bed
 (builder <code>SINK_MM</code>, verify <code>SINK_OK</code>); the
 tongue's floor clearance becomes 0.4. New verify check HOVER (one flat
 underside level over 5 mm2 between the first layer's slice plane and its
-top): it fails only X1C 35 unsunk across both books, passes sunk.
-<strong>X1C 35 is HOLD again</strong> until LumiAI 3DPrinter's
-gate_slice is clean on the sunk carrier; the DELL keeps 7d091fab
-meanwhile. The cradle's own carrier will need the same sink when it
-reaches a plate. ⛔ <em>was: "the spring-bore roof is a bridge he
-accepted (2026-11-22)".</em> <strong>RELEASED as a fit test without the
-spring (operator 2026-11-22, via LumiAI 3DPrinter: print it now to see
-whether it works and everything fits; plate 35 "Main lock station (fit
-test, no spring)"; it had been held since 2026-11-21 for the
-spring).</strong> For the spring test: the lock spring is ordered, 304
-stainless (MECCANIXITY 1.0 x 8 x 15, 10 pcs, due 2026-11-23, no coil
+top): it fails only X1C 35 unsunk across both books, passes sunk. Sunk,
+LumiAI 3DPrinter's gate_slice is CLEAN (<code>56a3aa89</code>: 1 h 10
+min, 20.3 g, 123 layers, 0 Studio warnings, 0 supports; gate_floating 0,
+gate_gcode_floating 0 starts &gt;= 3 mm): <strong>X1C 35 RELEASED
+again</strong> as the fit test. The cradle's own carrier will need the
+same sink when it reaches a plate. ⛔ <em>was: "the spring-bore roof is
+a bridge he accepted (2026-11-22)".</em> <strong>RELEASED as a fit test
+without the spring (operator 2026-11-22, via LumiAI 3DPrinter: print it
+now to see whether it works and everything fits; plate 35 "Main lock
+station (fit test, no spring)"; it had been held since 2026-11-21 for
+the spring).</strong> For the spring test: the lock spring is ordered,
+304 stainless (MECCANIXITY 1.0 x 8 x 15, 10 pcs, due 2026-11-23, no coil
 count or rate listed); measured (free length, active coils, a rate
 point, solid &lt;= 8.0) it becomes the modelled spring, any pocket
 change (on paper the preload 10.3 -&gt; 10.18 clears the two floors a
@@ -1370,7 +1371,14 @@ bed map (its prime tower at 275, 20: the default 165, 250 sat on the map
 and crashed the CLI, rc -101 / -3, LumiAI 3DPrinter's sweep 2026-11-23;
 14 the same, tower at 30, 20), 25 cradle seat + gap coupons, 26 fence
 rear cap screwed, 27 cradle landscape base, 28 cradle grip post, 29
-Ultra drill template, 30 wand rings. <strong>Accepted as is (operator
+Ultra drill template, 30 wand rings. <strong><strong>H2S AIRFLOW RULE
+(operator's airflow pass 2026-11-23, via LumiAI 3DPrinter): a part's
+sloped overhangs face +X on the H2S</strong> (calibrated on the EBC
+covers: facing +X clean twice, -X failed twice; Y facing does not
+matter). Turned 180° about Z for it: H2S 05's right EBC cover and H2S
+06's ext -Y half (its overhangs were -X 1833 / +X 78 mm2, now +X 1833 /
+-X 78; supports and paint turn with it). The X1C's direction is not
+calibrated yet (airflow coupon to come). Accepted as is (operator
 2026-11-22, via LumiAI 3DPrinter: "let's print them as is, no
 problem"):</strong> H2S 06's Studio warning on the ext -Y half (6
 unsupported overhang regions: the internal thread flanks z 172-188, a
