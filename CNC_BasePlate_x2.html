@@ -20,6 +20,23 @@ href="CNC_Machining_Guide.html"><code>CNC_Machining_Guide.md</code>
 §6</a>. <strong>Rules:</strong> <a
 href="rules/cnc.html"><code>rules/cnc.md</code></a>.</p>
 <p>No cut until the operator gives the go.</p>
+<blockquote>
+<p><strong>2026-11-23 update.</strong>
+<code>LumiAI_Base_Plate_no_carriage.nc</code> was regenerated from the
+current model. ⛔ The 11/10 file it replaces had the strap holes 15 mm
+too far -Y (no battery shift) and labelled PSU/strap holes Ø4.0/Ø4.5
+hand-drill. Now: strap holes at the +15 Y battery shift, PSU and strap
+holes Ø3.3 then tap M4×0.7 (12567f48), so the caliper table below uses
+the new strap Y values (+15). It also follows the park standard: every
+park is <code>G53 G0 Z-5.000</code>, <code>X10.000</code>,
+<code>Y780.000</code> (back-left), and <code>G53 G0 Z-5.000</code> comes
+before every spindle start after an M0 and at program start (the old
+file parked X0 Y-170 toward the operator and started the spindle at Z0
+on the stock). The drill-only and rot180 NCs below were one-time jobs,
+already done per the operator (2026-11-23); they are retired and are not
+being regenerated (they keep the old X0 Y-170 park, so never re-run
+them).</p>
+</blockquote>
 <h2 id="order-of-work-operator">Order of work (operator)</h2>
 <ol type="1">
 <li>Camera plates and heatsink pucks first (<a
@@ -142,39 +159,39 @@ differs):</p>
 </tr>
 <tr>
 <td>PSU.1</td>
-<td>4.0</td>
+<td>3.3, tap M4</td>
 <td>57.83</td>
 <td>175.04</td>
 </tr>
 <tr>
 <td>PSU.2</td>
-<td>4.0</td>
+<td>3.3, tap M4</td>
 <td>140.08</td>
 <td>51.04</td>
 </tr>
 <tr>
 <td>STRAP.L.hi</td>
-<td>4.5</td>
+<td>3.3, tap M4</td>
 <td>158.44</td>
-<td>258.96</td>
+<td>273.96</td>
 </tr>
 <tr>
 <td>STRAP.L.lo</td>
-<td>4.5</td>
+<td>3.3, tap M4</td>
 <td>156.19</td>
-<td>172.09</td>
+<td>187.09</td>
 </tr>
 <tr>
 <td>STRAP.R.hi</td>
-<td>4.5</td>
+<td>3.3, tap M4</td>
 <td>45.70</td>
-<td>258.59</td>
+<td>273.59</td>
 </tr>
 <tr>
 <td>STRAP.R.lo</td>
-<td>4.5</td>
+<td>3.3, tap M4</td>
 <td>45.20</td>
-<td>172.59</td>
+<td>187.59</td>
 </tr>
 </tbody>
 </table>
@@ -211,19 +228,22 @@ Tell CNC.</td>
 </tbody>
 </table>
 <p><strong>Why 5.0 mm.</strong> The finished new hole is hand-drilled to
-Ø4.5 (Ø4.0 for PSU) and an old hole may be Ø4.5, so the web between them
-is <code>d − (D_new + D_old)/2</code>, and a 0.5 mm web needs d ≥ 5.0
-mm. Any old hole whose centre is more than 5.0 mm from every target is a
+Ø4.5 for POST (PSU and STRAP are Ø3.3, then tapped M4, so they need
+less) and an old hole may be Ø4.5, so the web between them is
+<code>d − (D_new + D_old)/2</code>, and a 0.5 mm web needs d ≥ 5.0 mm.
+The 5.0 mm rule is kept for every target because the POST holes set it.
+Any old hole whose centre is more than 5.0 mm from every target is a
 harmless unused hole.</p>
 <p><strong>On a sheet laid out like the original</strong>, nothing falls
-inside the 5.0 mm rings: the closest target pairs are STRAP.L.hi to
-POST.5 at 11.56 mm, PSU.1 to STRAP.R.lo at 12.87, STRAP.R.hi to POST.6
-at 15.68, PSU.2 to POST.7 at 22.52. If the sheet still has the old
-8-hole carriage set, the closest to a target are POST.1 to CARRIAGE.L.2
-at 10.04, POST.2 to CARRIAGE.L.1 at 12.10 and PSU.2 to CARRIAGE.L.3 at
-16.54, all outside 5.0. The Ultra's own pattern is unknown, so the check
-above is what decides it. The generator's 0.5 mm web guard only compares
-each hole with the outline; it cannot see what is on the sheet.</p>
+inside the 5.0 mm rings: the closest target pairs are PSU.1 to
+STRAP.R.lo at 17.81 mm, STRAP.L.hi to POST.5 at 22.51, PSU.2 to POST.7
+at 22.52, STRAP.R.hi to POST.6 at 24.76 (strap holes at the +15 Y
+battery shift). If the sheet still has the old 8-hole carriage set, the
+closest to a target are POST.1 to CARRIAGE.L.2 at 10.04, POST.2 to
+CARRIAGE.L.1 at 12.10 and PSU.2 to CARRIAGE.L.3 at 16.54, all outside
+5.0. The Ultra's own pattern is unknown, so the check above is what
+decides it. The generator's 0.5 mm web guard only compares each hole
+with the outline; it cannot see what is on the sheet.</p>
 <p><strong>Generate the plate 2 NC from the skip list.</strong> The
 operator says which IDs are right; CNC runs</p>
 <div class="sourceCode" id="cb1"><pre
@@ -292,10 +312,10 @@ plate</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Off-machine hand-drill after the cut: Ø4.0 × 2 (PSU), Ø4.5 × 12 (4
-strap + 8 post), for the holes this run drilled. The 8 MGN15H carriage
-holes are not drilled in this job (the model keeps them for the ceiling
-version).</p>
+<p>Off-machine after the cut, for the holes this run drilled: Ø3.3 then
+tap M4×0.7 × 6 (2 PSU + 4 strap, as built, 12567f48), hand-drill Ø4.5 ×
+8 (post). The 8 MGN15H carriage holes are not drilled in this job (the
+model keeps them for the ceiling version).</p>
 <p><strong>SHARPRO budget:</strong> one bit, no spare. Two plates are
 ~22.6 m before the camera plates and pucks, in a gummy alloy. Inspect
 the flute for welded aluminium after every plate.</p>
@@ -382,10 +402,10 @@ coordinates; if not, re-zero. Hold the plate with clamps; no screws are
 needed since nothing is cut free.</p>
 <p><strong>Hole check against the plate (STEP,
 outline-centred):</strong> every target is at least 5 mm from an
-existing hole (PSU.2 is the closest at 5.76 mm, about 1.8 mm of web
-after hand-drilling to 4.0 / 4.5). POST.5 and POST.6 have no hole on the
-physical plate. The STEP-to-NC alignment is by outline centre only, so
-confirm on the real plate after zeroing.</p>
+existing hole (PSU.2 is the closest at 5.76 mm, about 2.0 mm of web
+against an existing Ø4.3 hole once PSU.2 is Ø3.3). POST.5 and POST.6
+have no hole on the physical plate. The STEP-to-NC alignment is by
+outline centre only, so confirm on the real plate after zeroing.</p>
 <p><strong>Strap holes carry the battery shift.</strong> The battery and
 both straps sit 15 mm back (+Y, toward the fans), so the four strap
 holes are built 15.0 mm further +Y than the model's base positions
@@ -407,8 +427,8 @@ Start, lower T2 by hand into the old hole to prove it enters freely.
 Hand-drill Ø4.5 at the new centre afterwards. There is no spare SHARPRO.
 On the Lumi plate there is no vendor hole there, so this only applies to
 the HiWonder stand-in.</p>
-<p>Hand-drill after the cut: PSU Dia 4.0 x 2, STRAP Dia 4.5 x 4, POST
-Dia 4.5 x 2.</p>
+<p>After the cut: PSU Dia 3.3 then tap M4 x 2, STRAP Dia 3.3 then tap M4
+x 4 (as built, 12567f48), POST hand-drill Dia 4.5 x 2.</p>
 <h2 id="what-holds-each-plate">What holds each plate</h2>
 <p>No tape or VHB. Clamps hold the sheet for the drill pass, then screws
 hold it from the pause on.</p>
