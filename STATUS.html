@@ -843,9 +843,22 @@ lumi_baseplate_fence_HV_ceiling* / _HV_desk* (identical but for the
 logos: volume + bbox equal); a row checks all 3 read upright in the
 variant's pose (bite: the other variant fails). The no-DROK row now
 measures the EXPORTED half with a sum rule (an in-memory common() had
-read 0.0 % for a 93.8 % probe). ⏳ Open: the wired HV macro; LV strap
-side fingers (OFF until the operator confirms). <strong>Not printed: HV
-print hold (whole set first).</strong></td>
+read 0.0 % for a 93.8 % probe). <strong>WIRED HV bay (built 2026-11-24,
+<code>lumi_powerbay_wired_hv.py</code> → cad/Assemblies/Power Bay -
+Wired HV.step + output/lumi_powerbay_wired_hv_runs.json, render <a
+href="images/hardware/hv_bay_wired.png">hv_bay_wired.png</a>):</strong>
+67 conductors in 28 runs, each a tube at its OD (mitred offsets, 2 × OD
+bends); every conductor clear of the fence / PSU / pack / deck slab /
+boards (per-segment booleans with the SUM RULE; bite: a conductor
+through the deck), mains &gt;= 8 per conductor (analytic, 8.65; bite),
+under the lid, the stacked pair 2.31; lengths per conductor in the run
+file. Building it found real misses the route gate could not see: the
+sensor leads ran THROUGH the breakout + G469 (re-routed over the stack),
+the mains descended THROUGH the deck (the HV terminal slot is now OPEN
+to the +X wall), a battery-lead nick on INA-MAIN; the route gate now
+exempts the G469 only and carries the deck slab. ⏳ Open: LV strap side
+fingers (OFF until the operator confirms). <strong>Not printed: HV print
+hold (whole set first).</strong></td>
 <td>the logo pick; the wired HV macro</td>
 </tr>
 <tr>
