@@ -2764,18 +2764,21 @@ return puts the lamp across LOAD ↔︎ LAMP whenever the switch is closed,
 which is exactly what illuminates it.</p>
 <p><strong>LAMP-tap hardware — double crimp, no piggyback (operator
 2026-11-05):</strong> the AC lamp tap shares the C14 N blade's Faston
-with A4. A4 and A4a (both 18 AWG) go into ONE blue-band (16–14) straight
-fully insulated 4.8 × 0.8 mm female Faston (FDFNY): 0.82 + 0.82 = 1.64
-mm², inside the blue band's 1.5–2.5 mm². No piggyback, no extra part, no
-extra depth behind the inlet.</p>
+with A4. A4 and A4a (both 18 AWG) go into ONE red (22–16) straight nylon
+fully insulated 4.8 × 0.8 mm female Faston (uxcell FDFN1-187, the only
+straight Faston bought): 0.82 + 0.82 = 1.64 mm², just over the barrel's
+1.5 mm² top. That's the operator's call (2026-11-23: "I'll get 2 wires
+into it. I've done that before without a problem"); tug-test each wire
+separately. No piggyback, no extra part, no extra depth behind the
+inlet.</p>
 <ul>
 <li><p><strong>AC rocker (mains) — double crimp at the C14 N
 blade:</strong></p>
 <ol type="1">
 <li>Strip A4 and the A4a LAMP jumper (both 18 AWG, 600 V-rated) to the
 same length; twist the strands together.</li>
-<li>Crimp both into one blue-band straight 4.8 × 0.8 mm insulated female
-Faston.</li>
+<li>Crimp both into one red straight 4.8 × 0.8 mm fully insulated female
+Faston (uxcell FDFN1-187).</li>
 <li>Tug-test EACH wire separately; re-crimp if either moves.</li>
 <li>Plug the Faston onto the C14 N blade. Route A4a in the mains channel
 to the rocker's LAMP blade, ending in a fully insulated
@@ -3055,9 +3058,9 @@ bring-up; every segment is one row.</p>
 <td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
 V / 6 A), as-is, no sleeve on Ultra</td>
 <td>Straight fully insulated 4.8 × 0.8 mm female Faston (FDFNY, red) at
-C14 end + fully insulated <strong>flag</strong> (right-angle) 4.8 × 0.8
-mm female Faston, red 22–18, at rocker end (see blade-size note below
-the table)</td>
+C14 end + <strong>straight</strong> fully insulated 4.8 × 0.8 mm female
+Faston (FDFNY, red 22–18) at rear AC rocker end (see blade-size note
+below the table)</td>
 </tr>
 <tr>
 <td><strong>A3</strong></td>
@@ -3065,9 +3068,9 @@ the table)</td>
 terminal</td>
 <td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
 V / 6 A), as-is, no sleeve on Ultra</td>
-<td>fully insulated <strong>flag</strong> (right-angle) 4.8 × 0.8 mm
-female Faston, red 22–18, at rocker end (see note) + <strong>Kuject fork
-lug + bend-up</strong> at PSU L screw</td>
+<td><strong>straight</strong> fully insulated 4.8 × 0.8 mm female Faston
+(FDFNY, red 22–18) at rear AC rocker end (see note) + <strong>Kuject
+fork lug + bend-up</strong> at PSU L screw</td>
 </tr>
 <tr>
 <td><strong>A4</strong></td>
@@ -3075,9 +3078,9 @@ lug + bend-up</strong> at PSU L screw</td>
 <strong>N</strong> screw terminal</td>
 <td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
 V / 6 A), as-is, no sleeve on Ultra</td>
-<td>Straight fully insulated 4.8 × 0.8 mm female Faston (FDFNY, blue,
-the double crimp with A4a) at C14 end + <strong>Kuject fork lug +
-bend-up</strong> at PSU N screw. <strong>NEUTRAL IS NOT SWITCHED —
+<td>Straight fully insulated 4.8 × 0.8 mm female Faston (red uxcell
+FDFN1-187, the double crimp with A4a) at C14 end + <strong>Kuject fork
+lug + bend-up</strong> at PSU N screw. <strong>NEUTRAL IS NOT SWITCHED —
 straight through, unlike Hot.</strong></td>
 </tr>
 <tr>
@@ -3088,11 +3091,12 @@ light when ON</td>
 <td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
 V / 6 A), as-is, no sleeve on Ultra</td>
 <td><strong>Double crimp at C14 N:</strong> A4 + A4a (both 18 AWG) share
-ONE blue-band (16–14) straight fully insulated 4.8 × 0.8 mm female
-Faston (FDFNY) — 0.82 + 0.82 = 1.64 mm², inside the blue band's 1.5–2.5
-mm²; strip both to the same length, crimp together, tug-test each wire
-separately. + fully insulated <strong>flag</strong> (right-angle) 4.8 ×
-0.8 mm female Faston, red 22–18, at rocker LAMP end (see note)</td>
+ONE red (22–16) straight fully insulated 4.8 × 0.8 mm female Faston
+(uxcell FDFN1-187), 1.64 mm² in a 22–16 barrel by the operator's call;
+strip both to the same length, crimp together, tug-test each wire
+separately. + <strong>straight</strong> fully insulated 4.8 × 0.8 mm
+female Faston (FDFNY, red 22–18) at rear AC rocker LAMP end (see
+note)</td>
 </tr>
 <tr>
 <td><strong>A5</strong></td>
@@ -3427,7 +3431,7 @@ Faston leads are <strong>18 AWG</strong>, the standard gauge.</p>
 </tr>
 <tr>
 <td>16–14 AWG (blue)</td>
-<td>none now (the C14 N double crimp takes a straight blue)</td>
+<td>none (the C14 N double crimp takes a red, operator)</td>
 <td>15</td>
 <td>15.8</td>
 <td>9.8</td>
@@ -3440,27 +3444,31 @@ Faston leads are <strong>18 AWG</strong>, the standard gauge.</p>
 </table>
 <p><strong>Stock:</strong> 4.8 flags <strong>in stock</strong> (FLDNY 50
 red + 20 blue, arrived 2026-11-17): each build uses 3 red on the DC
-rocker and no blue. <strong>Straight 4.8 fully insulated FDFNY: 5 red +
-1 blue per build</strong> (C14 L, E and the N double crimp; rear AC
-rocker LINE / LOAD / LAMP). The Kuject kit's straight 4.8 Fastons are
-heat-shrink type; ⏳ they're only usable on the C14 if the receptacle is
-fully covered, otherwise buy FDFNY. The flag kit and the TICONN straight
-kit already in stock are the <strong>6.3 mm (.250)</strong> size. They
-are loose on these 4.8 mm blades, so they are <strong>not for mains use
-here</strong>. <strong>Swap the temporary 6.3 mm flags (operator's
-exception until the 4.8 flags came):</strong> any rocker blade still
-carrying a 6.3 mm flag gets a 4.8 Faston. <strong>Ultra</strong> (and
-every build): at the bay build (§16c build order, step 1): <strong>red
-4.8 flags on the DC rocker, straight red 4.8 FDFNY on the rear AC
-rocker</strong>. <strong>Halo:</strong> the same as Ultra, when its bay
-is rebuilt on the current fence (Halo, Ultra and Nova are one
-configuration). Re-crimp each lead (cut the 6.3 flag off, re-strip),
-push the 4.8 flag fully home, <strong>tug-test each one hard</strong>,
-and check the AC rocker terminals for warmth after the first hour
-powered. Buy only parts marked 4.8 / .187 / "187 series". The 22–18 /
-16–14 flag crimper in stock fits the flags. The straight FDFNYs crimp on
-the Haisstronica ratchet (insulated barrels, 22–10 AWG) already in
-stock.</p>
+rocker and no blue. <strong>Straight 4.8 fully insulated: 6 red per
+build (uxcell FDFN1-187)</strong> (C14 L, E and the N double crimp; rear
+AC rocker LINE / LOAD / LAMP). ⏳ <strong>Ordered 2026-11-23, due
+2026-11-25: uxcell FDFN1-187, red 22–16, nylon fully insulated, 50
+pcs</strong> (covers 18 for 3 builds). No voltage rating listed (nylon
+FDFN is typically 300 V, above the 120 / 240 V mains). The Kuject kit's
+female quick-disconnects are <strong>out</strong> for the C14 and the AC
+rocker (operator 2026-11-23): heat-shrink type, size not stated (likely
+6.3), and the metal receptacle shows at the mouth, so they aren't fully
+covered. The flag kit and the TICONN straight kit already in stock are
+the <strong>6.3 mm (.250)</strong> size. They are loose on these 4.8 mm
+blades, so they are <strong>not for mains use here</strong>.
+<strong>Swap the temporary 6.3 mm flags (operator's exception until the
+4.8 flags came):</strong> any rocker blade still carrying a 6.3 mm flag
+gets a 4.8 Faston. <strong>Ultra</strong> (and every build): at the bay
+build (§16c build order, step 1): <strong>red 4.8 flags on the DC
+rocker, straight red 4.8 FDFNY on the rear AC rocker</strong>.
+<strong>Halo:</strong> the same as Ultra, when its bay is rebuilt on the
+current fence (Halo, Ultra and Nova are one configuration). Re-crimp
+each lead (cut the 6.3 flag off, re-strip), push the 4.8 flag fully
+home, <strong>tug-test each one hard</strong>, and check the AC rocker
+terminals for warmth after the first hour powered. Buy only parts marked
+4.8 / .187 / "187 series". The 22–18 / 16–14 flag crimper in stock fits
+the flags. The straight FDFNYs crimp on the Haisstronica ratchet
+(insulated barrels, 22–10 AWG) already in stock.</p>
 <p>The table is from the seller's datasheet for the nylon fully
 insulated flag-shaped right-angle spade (sent by the operator
 2026-11-06). How to read the columns:</p>
@@ -4752,9 +4760,10 @@ terminations:</strong> <strong>snap-in/open forks</strong> the cable
 lifts out of, plus a service loop near the inlet, so the carrier lifts
 off without un-terminating anything.</li>
 <li><strong>Terminations:</strong> 18 AWG takes the <strong>red-band
-(22–18)</strong> fully insulated Fastons and forks; only the C14 N
-double crimp (2 × 18 AWG) takes a blue-band (16–14) one. Straight fully
-insulated Fastons (FDFNY) at the C14, flag Fastons at the rocker.</li>
+(22–18)</strong> fully insulated Fastons and forks; the C14 N double
+crimp (2 × 18 AWG) goes into a red one too (operator). Straight fully
+insulated Fastons at the C14 and the rear AC rocker, flags at the DC
+rocker.</li>
 <li>⚠️ <strong>The DC rocker sits on the same +X wall</strong> (CAD
 v15). Its 13.8 V LINE/LOAD/LAMP forks count as LV and must clear the
 mains route by ≥ 8 mm, in separate forks.</li>
@@ -6535,15 +6544,29 @@ zip-tie groove on a DC-end post (Z 56–59), ≤ 30 mm from the pads</td>
 the factory 1 m, which is too short.</strong> Ordered 2026-11-22, qty 2
 (Ultra, the only Creator build, plus a spare; Halo and Nova carry no
 IP6518 or phone cable), no ETA. Silicone jacket and plug size not
-published. ⏳ <strong>On arrival:</strong> caliper the right-angle plug
-against CAD's gate (≤ 14 mm reach, ≤ 12.5 mm wide, ≤ 7 mm thick, 1.55 mm
-over the DROK), confirm the ends (listing photo: ONE 90° end, a flat
-side-exit paddle with the cable leaving along the long axis of the C
-oval, so a 180° flip picks the exit direction; the other end straight,
-to the phone), and check the jacket stays flexible through the service
-loops. Same route as the tether (operator: cradle and wand tether the
-same): 890 outside the bay (row 14) + ~90 receptacle → opening = ~0.98 m
-before the cradle end</td>
+published. ⏳ <strong>On arrival</strong> (listing photo: ONE 90° end, a
+flat side-exit paddle with the cable leaving along the long axis of the
+C oval, so a 180° flip picks ±X; the other end straight, to the phone):
+<strong>(a) IP6518 end: the paddle HEIGHT is the binding size</strong>
+(across the C oval's short axis, vertical in the bay). The paddle sits
+over the DROK, whose top edge is at Z 59.7, with the receptacle centre
+at Z 64.75 and 1.0 mm kept, so the paddle can be <strong>≤ 8.1 mm tall
+centred on the plug</strong> (CAD probe 2026-11-22: 8 clears by 1.05, 10
+by 0.05, 12 collides). Reach and thickness along −Y are fine (fence
+8.7–10.8 mm away for paddles up to 7 thick × 20 long), and ±X exit makes
+no difference. Caliper the paddle height, where the plug sits within it,
+and the DROK's PCB top edge above its top mounting holes (CAD carries an
+estimate of 3.5; a lower real edge buys room back). Over ~8 mm, the
+fallback is raising the IP6518 posts, which eats the operator's 7 mm lid
+margin: operator's call. INA3 (wall, X ≥ 261, ~15 mm behind in Y) and
+the DROK-OUT leads are not gated. <strong>(b) Phone end:</strong> the
+cradle gate proves a 12.5 × 7 plug reaching 25 mm below the phone's
+bottom edge, for every phone variant, portrait and landscape. Measure
+the straight plug plus strain relief; if it's over 25 mm, CAD re-runs
+the cradle gate at that reach. Also check the jacket stays flexible
+through the service loops. Same route as the tether (operator: cradle
+and wand tether the same): 890 outside the bay (row 14) + ~90 receptacle
+→ opening = ~0.98 m before the cradle end</td>
 <td>IP6518 USB-C (underside, USB end), <strong>right-angle plug turning
 −X</strong>, tied in the zip-tie groove on the USB-end −X post, ~20 mm
 from the receptacle; then +Y along the board's −X side to the tether

@@ -277,11 +277,11 @@ Z 44–48 (riding the strap bars over the battery), plate X 180.6–277.5, Y
 −98..106.4, and the lid underside is Z 89.7, so only 41.7 mm of
 headroom.</li>
 <li><strong>HV carrier: only the front section steps down</strong>, over
-the PSU, from the front to ~Y 25 (the low strap tabs start at Y 27.7,
-where the deck is back at Z 44). Stack: PSU on 3 mm feet, top Z 33.3; ~1
-mm air; a <strong>frame holding the board by its long edges over an
-opening</strong> (frame top ~Z 38.3; fins face down, so no solid deck);
-board top ~Z 84.3, 5.4 mm under the lid.</li>
+the PSU, from the front to ~Y 25 (behind it the deck is back at Z 44 on
+the battery bars, the first at Y 50). Stack: PSU on 3 mm feet, top Z
+33.3; ~1 mm air; a <strong>frame holding the board by its long edges
+over an opening</strong> (frame top ~Z 38.3; fins face down, so no solid
+deck); board top ~Z 84.3, 5.4 mm under the lid.</li>
 <li><strong>Fin tips 9.4 mm above the PSU lid</strong> (accepted).
 <strong>PSU-lid open area:</strong> the board's shadow is 45 % of the
 159 × 98 lid, so the frame must keep it <strong>≥ 50 % open</strong> (⏳
@@ -303,9 +303,15 @@ the front slant corners (Y −114.5), on ~3 mm feet over the desk-clamp
 front jaw (2.2 mm thick, 30 mm into the bay, X 207–253). The PSU
 hold-down strap stays (PSU centre Y −35).</li>
 <li><strong>Battery +3–4 mm further back</strong> (operator;
-BATTERY_SHIFT_Y ~18–19 on HV), leaving 4–5 mm PSU-to-pack. The straps'
-low posts sit inside the PSU's 98 mm width, so the HV strap moves them
-outboard.</li>
+BATTERY_SHIFT_Y ~18–19 on HV), leaving 4–5 mm PSU-to-pack.
+<strong>Battery hold-down (operator 2026-11-23: "Wall catches, no
+screws"; CAD 80b9bd5b):</strong> no straps, floor feet or strap holes in
+the HV base plate. The pack sits on a printed pad (top Z 5.0) and is
+held by <strong>2 PETG bars, 25 × 4</strong>, at Y 50–75 and Y 86–111,
+top Z 44 (the carrier plane), whose ramp teeth sit under 52° ramp
+catches on the fence side walls. The pack is 5.5 mm off each wall, too
+tight for an M3 head. The carrier screws into the bars at X 174.6 /
+283.5, Y 62.5 / 98.5.</li>
 <li><strong>Mains clearance:</strong> the A3 floor lane stays at Y
 127.8; at battery +3 / +4 it sits 5.57 / 4.57 mm off the pack, under the
 8 mm rule, <strong>accepted by the operator's override</strong>
@@ -337,8 +343,8 @@ slots run vertical or with a 52° pitched top like the fan grilles. ⏳
 Slot pattern and open area: no CAD work yet.</li>
 <li><strong>One codebase:</strong> CAD carries the LV / HV differences
 as config variants in its macros (fence cut-outs and bosses, carrier
-deck height and PSU block, strap shift, wired assembly), not forked
-files.</li>
+deck height and PSU block, battery hold-down, wired assembly), not
+forked files.</li>
 </ul>
 <h2 id="4-one-rail-hv-rules-decided-and-open-items">4. One-rail HV rules
 (decided) and open items</h2>
@@ -362,7 +368,9 @@ assembly.</li>
 mains.</strong></li>
 <li><strong>PSU: MZMW PSC-150-12</strong> (150 W total, CH1 7.5 A + CH2
 3 A charge; hiccup at 105–115 % of 150 W). LV builds stay on the
-PSC-100-12.</li>
+PSC-100-12. <strong>On hand (arrived 2026-11-23).</strong> ⏳ Bench on
+arrival: read the rating off the factory inline fuse on the BAT lead,
+and caliper the case against 159 × 98 × 30.</li>
 <li><strong>F1 stays</strong> (10 A, battery + → PSU CH2 BAT+).</li>
 </ul>
 <p>Open:</p>
