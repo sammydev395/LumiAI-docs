@@ -1,21 +1,27 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CNC_BasePlate_x2</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
-id="lumiai-base-plate-x2--bench-prep-halo-class-base-plates-for-nova--one-more">LumiAI
-base plate x2 — bench prep (Halo-class base plates for Nova + one
-more)</h1>
+id="lumiai-base-plate--bench-prep-nova-plate-one-plate">LumiAI base
+plate — bench prep (Nova plate, one plate)</h1>
+<blockquote>
+<p>⛔ <strong>Plate 2 is retired (operator, 2026-11-23).</strong> It was
+a one-time deal (the Ultra's mecanum-base sheet, with a skip-list build,
+a hole-check against the sheet, and a drill-only HiWonder-plate job) and
+will never be done. This doc used to describe all of it; that text was
+removed on 2026-11-23 and is in git history before that date. The base
+plate job is <strong>plate 1 only</strong>: the Nova plate on a fresh
+200 × 300 × 3 mm sheet, all 14 holes, from
+<code>LumiAI_Base_Plate_no_carriage.nc</code> @32ea0e10. The drill-only
+and rot180 NCs and the 1:1 hole template have no job use; do not run
+them (the drill-only and rot180 NCs keep the old X0 Y-170 park).</p>
+</blockquote>
 <p><strong>Program:</strong> <a
 href="../cad/exports/cnc/LumiAI_Base_Plate_no_carriage.nc"><code>LumiAI_Base_Plate_no_carriage.nc</code></a>
-(3.00 mm, 1060-type sheet, 14 holes) for plate 1. Plate 2 gets a
-skip-list build of the same part once the operator has checked the sheet
-(below). The default <code>LumiAI_Base_Plate.nc</code> keeps all 22
-holes for the ceiling version, which always mounts on the rail; this job
-is the no-rail Ultra/mecanum one-off. <strong>Generator:</strong> <a
+(3.00 mm, 1060-type sheet, 14 holes). The default
+<code>LumiAI_Base_Plate.nc</code> keeps all 22 holes for the ceiling
+version, which always mounts on the rail; this job is the no-rail
+one-off. <strong>Generator:</strong> <a
 href="../cad/freecad/gen_baseplate_nc.py"><code>cad/freecad/gen_baseplate_nc.py</code></a>,
-geometry from <code>lumi_base_plate.py</code>.
-<strong>Template:</strong> <a
-href="../cad/exports/cnc/baseplate_template_1to1.svg"><code>baseplate_template_1to1.svg</code></a>,
-made by <a
-href="../cad/freecad/gen_baseplate_template.py"><code>gen_baseplate_template.py</code></a>.
-<strong>Per-part mechanics:</strong> <a
+geometry from <code>lumi_base_plate.py</code>. <strong>Per-part
+mechanics:</strong> <a
 href="CNC_Machining_Guide.html"><code>CNC_Machining_Guide.md</code>
 §6</a>. <strong>Rules:</strong> <a
 href="rules/cnc.html"><code>rules/cnc.md</code></a>.</p>
@@ -26,241 +32,34 @@ href="rules/cnc.html"><code>rules/cnc.md</code></a>.</p>
 current model. ⛔ The 11/10 file it replaces had the strap holes 15 mm
 too far -Y (no battery shift) and labelled PSU/strap holes Ø4.0/Ø4.5
 hand-drill. Now: strap holes at the +15 Y battery shift, PSU and strap
-holes Ø3.3 then tap M4×0.7 (12567f48), so the caliper table below uses
-the new strap Y values (+15). It also follows the park standard: every
-park is <code>G53 G0 Z-5.000</code>, <code>X10.000</code>,
-<code>Y780.000</code> (back-left), and <code>G53 G0 Z-5.000</code> comes
-before every spindle start after an M0 and at program start (the old
-file parked X0 Y-170 toward the operator and started the spindle at Z0
-on the stock). The drill-only and rot180 NCs below were one-time jobs,
-already done per the operator (2026-11-23); they are retired and are not
-being regenerated (they keep the old X0 Y-170 park, so never re-run
-them).</p>
+holes Ø3.3 then tap M4×0.7 (12567f48). It also follows the park
+standard: every park is <code>G53 G0 Z-5.000</code>,
+<code>X10.000</code>, <code>Y780.000</code> (back-left), and
+<code>G53 G0 Z-5.000</code> comes before every spindle start after an M0
+and at program start (the old file parked X0 Y-170 toward the operator
+and started the spindle at Z0 on the stock).</p>
 </blockquote>
 <h2 id="order-of-work-operator">Order of work (operator)</h2>
 <ol type="1">
 <li>Camera plates and heatsink pucks first (<a
 href="CNC_Batch_CameraPlates_HeatsinkPucks.html"><code>CNC_Batch_CameraPlates_HeatsinkPucks.md</code></a>).</li>
-<li>Base plates last, after a flute inspection.</li>
+<li>The base plate last, after a flute inspection.</li>
 </ol>
 <p>The single-SHARPRO protection rules apply across the whole day. The
 spare is undecided (Purchasing has 2 in the cart, no buy yet): until it
-is bought, inspect the flute between every plate and stop at the first
+is bought, inspect the flute before the plate and stop at the first
 stringer or stuck chip.</p>
-<h2 id="the-two-sheets-operator-2026-11-02">The two sheets (operator,
+<h2 id="the-sheet-operator-2026-11-02">The sheet (operator,
 2026-11-02)</h2>
-<p>Both are the older, softer aluminium (1060-type, not 6061); the
-operator accepts that for dev units. 3.00 mm, so the 3.00 mm NCs are
-right (<code>LumiAI_Base_Plate_no_carriage.nc</code> for this job).</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>Sheet</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Plate 1</td>
-<td>New 200 × 300 × 3 mm, 1060-type</td>
-<td>Full program, all 14 holes drilled.</td>
-</tr>
-<tr>
-<td>Plate 2</td>
-<td>200 × 300 × 3 mm, taken off the mecanum base and clamped to the
-machine bed. It is the Ultra's sheet: it may have no battery-strap
-holes, and its fence-post and PSU holes may be in the wrong place. It
-carries an engraving.</td>
-<td>The hole set must be checked against the sheet before the drill
-pass. Existing holes that are right are skipped; the rest are
-drilled.</td>
-</tr>
-</tbody>
-</table>
-<p><strong>1060 handling (both plates).</strong> Soft and gummy: it
-loads and welds to the flute. Use cutting fluid (WD-40 mist) or an air
-blast on the cut, watch for chip packing in the slot and for aluminium
-building up on the single SHARPRO flute, and de-burr every edge and hole
-afterwards. Stop at the first stringer or stuck chip.</p>
-<h2 id="plate-2-check-the-hole-set-before-the-drill-pass">Plate 2: check
-the hole set before the drill pass</h2>
-<p>The drill is a Ø3.175 twist drill. A drill that lands
-<strong>partly</strong> on an existing hole walks into the wall and
-breaks. It is safe only when it lands fully inside an existing hole
-(centre within 0.4 mm of that hole's centre for a Ø4.0, 0.65 mm for a
-Ø4.5), or on solid sheet.</p>
-<p><strong>What to do.</strong> Lay the 1:1 template on the sheet and
-look at each of the 14 target holes. The template is in the machine
-frame (mount face up, origin = stock centre, X right, Y up): print it at
-100 % on A3 with no fit-to-page, check the 100 mm bar with a ruler, put
-the sheet's min-X / min-Y corner on the corner mark, and read the holes
-through the paper. Each target has a green ring (r 0.25) and a dashed
-ring (r 5.0). Alternative with calipers, for a 200 × 300 sheet measured
-from the min-X and min-Y edges (use W/2 and H/2 if the real sheet
-differs):</p>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Final Ø</th>
-<th>X from min-X edge</th>
-<th>Y from min-Y edge</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>POST.1</td>
-<td>4.5</td>
-<td>168.53</td>
-<td>94.85</td>
-</tr>
-<tr>
-<td>POST.2</td>
-<td>4.5</td>
-<td>168.35</td>
-<td>58.69</td>
-</tr>
-<tr>
-<td>POST.3</td>
-<td>4.5</td>
-<td>31.28</td>
-<td>58.60</td>
-</tr>
-<tr>
-<td>POST.4</td>
-<td>4.5</td>
-<td>31.55</td>
-<td>94.56</td>
-</tr>
-<tr>
-<td>POST.5</td>
-<td>4.5</td>
-<td>168.89</td>
-<td>254.02</td>
-</tr>
-<tr>
-<td>POST.6</td>
-<td>4.5</td>
-<td>30.75</td>
-<td>253.85</td>
-</tr>
-<tr>
-<td>POST.7</td>
-<td>4.5</td>
-<td>143.21</td>
-<td>28.74</td>
-</tr>
-<tr>
-<td>POST.8</td>
-<td>4.5</td>
-<td>56.50</td>
-<td>29.01</td>
-</tr>
-<tr>
-<td>PSU.1</td>
-<td>3.3, tap M4</td>
-<td>57.83</td>
-<td>175.04</td>
-</tr>
-<tr>
-<td>PSU.2</td>
-<td>3.3, tap M4</td>
-<td>140.08</td>
-<td>51.04</td>
-</tr>
-<tr>
-<td>STRAP.L.hi</td>
-<td>3.3, tap M4</td>
-<td>158.44</td>
-<td>273.96</td>
-</tr>
-<tr>
-<td>STRAP.L.lo</td>
-<td>3.3, tap M4</td>
-<td>156.19</td>
-<td>187.09</td>
-</tr>
-<tr>
-<td>STRAP.R.hi</td>
-<td>3.3, tap M4</td>
-<td>45.70</td>
-<td>273.59</td>
-</tr>
-<tr>
-<td>STRAP.R.lo</td>
-<td>3.3, tap M4</td>
-<td>45.20</td>
-<td>187.59</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Classify every target:</strong></p>
-<table>
-<thead>
-<tr>
-<th>What is on the sheet</th>
-<th>Rule</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>An existing hole centred within <strong>0.25 mm</strong> of the
-target</td>
-<td>Right</td>
-<td>Put its ID in the skip list.</td>
-</tr>
-<tr>
-<td>No existing hole centre within <strong>5.0 mm</strong> of the
-target</td>
-<td>Missing</td>
-<td>Drill it (leave it out of the skip list).</td>
-</tr>
-<tr>
-<td>An existing hole centre <strong>between 0.25 and 5.0 mm</strong>
-from the target</td>
-<td>Conflict</td>
-<td>Do not drill it: a pilot there lands partly on the old hole. The
-operator decides (accept the old hole where it is, or another method).
-Tell CNC.</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Why 5.0 mm.</strong> The finished new hole is hand-drilled to
-Ø4.5 for POST (PSU and STRAP are Ø3.3, then tapped M4, so they need
-less) and an old hole may be Ø4.5, so the web between them is
-<code>d − (D_new + D_old)/2</code>, and a 0.5 mm web needs d ≥ 5.0 mm.
-The 5.0 mm rule is kept for every target because the POST holes set it.
-Any old hole whose centre is more than 5.0 mm from every target is a
-harmless unused hole.</p>
-<p><strong>On a sheet laid out like the original</strong>, nothing falls
-inside the 5.0 mm rings: the closest target pairs are PSU.1 to
-STRAP.R.lo at 17.81 mm, STRAP.L.hi to POST.5 at 22.51, PSU.2 to POST.7
-at 22.52, STRAP.R.hi to POST.6 at 24.76 (strap holes at the +15 Y
-battery shift). If the sheet still has the old 8-hole carriage set, the
-closest to a target are POST.1 to CARRIAGE.L.2 at 10.04, POST.2 to
-CARRIAGE.L.1 at 12.10 and PSU.2 to CARRIAGE.L.3 at 16.54, all outside
-5.0. The Ultra's own pattern is unknown, so the check above is what
-decides it. The generator's 0.5 mm web guard only compares each hole
-with the outline; it cannot see what is on the sheet.</p>
-<p><strong>Generate the plate 2 NC from the skip list.</strong> The
-operator says which IDs are right; CNC runs</p>
-<div class="sourceCode" id="cb1"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">BASEPLATE_SKIP</span><span class="op">=</span><span class="st">&quot;CARRIAGE,POST.1,PSU.2&quot;</span> <span class="ex">~/.local/bin/FreeCAD-weekly-2026.11.11</span> <span class="at">-c</span> <span class="st">&quot;exec(open(&#39;cad/freecad/gen_baseplate_nc.py&#39;).read()); import sys; sys.exit(0)&quot;</span></span></code></pre></div>
-<p>IDs: POST.1 to POST.8, PSU.1, PSU.2, STRAP.L.lo, STRAP.L.hi,
-STRAP.R.lo, STRAP.R.hi, and CARRIAGE for all eight carriage holes
-(always include it for this job). It writes
-<code>cad/exports/cnc/LumiAI_Base_Plate_plate2.nc</code> and leaves the
-canonical NCs alone. An unknown ID stops the run. The NC lists the
-skipped holes in its header and M0 #0 banner and drills only the
-others.</p>
-<p><strong>Engraving and zero.</strong> Zero on the sheet's corner like
-the other sheet (measure W × H; machine zero = min-X / min-Y corner +
-(W/2, H/2)), same orientation as the original cut: mount face UP,
-engraving face up, long axis along machine Y. The engrave pass runs over
-the existing letters: an air cut if the zero is exact, a recut of the
-letter edges if it is off. Look before Cycle Start.</p>
+<p>New 200 × 300 × 3 mm, 1060-type aluminium (older, softer than 6061;
+the operator accepts that for dev units). 3.00 mm, so the 3.00 mm NC is
+right: <code>LumiAI_Base_Plate_no_carriage.nc</code>. Full program, all
+14 holes drilled.</p>
+<p><strong>1060 handling .</strong> Soft and gummy: it loads and welds
+to the flute. Use cutting fluid (WD-40 mist) or an air blast on the cut,
+watch for chip packing in the slot and for aluminium building up on the
+single SHARPRO flute, and de-burr every edge and hole afterwards. Stop
+at the first stringer or stuck chip.</p>
 <h2 id="stock-fit-measured-from-the-nc">Stock fit (measured from the
 NC)</h2>
 <p>Cutter envelope per plate: <strong>158.32 × 279.78 mm</strong> (X
@@ -284,10 +83,10 @@ it.</p>
 </tr>
 </tbody>
 </table>
-<p>Two plates need two sheets (2 × 158.32 = 316.6 mm exceeds the 200
-width). Long Y along the sheet's long side. The NC banner says "200.6 ×
-302 × 3.000"; the origin is the stock centre, so only the size text
-differs from a 200 × 300 sheet.</p>
+<p>One plate per sheet (2 × 158.32 = 316.6 mm exceeds the 200 width).
+Long Y along the sheet's long side. The NC banner says "200.6 × 302 ×
+3.000"; the origin is the stock centre, so only the size text differs
+from a 200 × 300 sheet.</p>
 <h2 id="tools">Tools</h2>
 <table>
 <thead>
@@ -316,9 +115,9 @@ plate</strong></td>
 tap M4×0.7 × 6 (2 PSU + 4 strap, as built, 12567f48), hand-drill Ø4.5 ×
 8 (post). The 8 MGN15H carriage holes are not drilled in this job (the
 model keeps them for the ceiling version).</p>
-<p><strong>SHARPRO budget:</strong> one bit, no spare. Two plates are
-~22.6 m before the camera plates and pucks, in a gummy alloy. Inspect
-the flute for welded aluminium after every plate.</p>
+<p><strong>SHARPRO budget:</strong> one bit, no spare. The plate is
+~11.3 m of XY path, in a gummy alloy, after the camera plates and pucks.
+Inspect the flute for welded aluminium before and after it.</p>
 <h3
 id="dreanique-dsa1f-d31-l08-3-ordered-2026-11-03-on-aliexpress-526-each-arrived-2026-11-14-unproven">Dreanique
 DSA1F-D3.1-L08 (3 ordered 2026-11-03 on AliExpress, $5.26 each, arrived
@@ -356,80 +155,7 @@ the chips come out as chips, not strings.</p></li>
 passed the scrap run. The SHARPRO stays the plate tool until
 then.</p></li>
 </ul>
-<h2
-id="ultra-base-plate-drill-only-on-a-hiwonder-plate-operator-2026-11-13">Ultra
-base plate: drill-only on a HiWonder plate (operator, 2026-11-13)</h2>
-<p>The Ultra's plate is a spare HiWonder base plate (3.00 mm, same
-outline as the LumiAI plate, mounted on the mecanum chassis). It has the
-mounting holes but is missing the PSU holes, the battery-strap holes and
-the two rear fence stud posts. No engraving and no outline cut.</p>
-<p><strong>Program:</strong> <a
-href="../cad/exports/cnc/LumiAI_Base_Plate_drill_only.nc"><code>LumiAI_Base_Plate_drill_only.nc</code></a>:
-T1 only, 8 holes (PSU.1, PSU.2, STRAP.L.lo, STRAP.L.hi, STRAP.R.lo,
-STRAP.R.hi, POST.5, POST.6), no tool change, one setup M0. Built
-with</p>
-<div class="sourceCode" id="cb2"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="va">BASEPLATE_SLOT</span><span class="op">=</span><span class="st">&quot;STRAP.L.hi=59.930,122.340&quot;</span> <span class="va">BASEPLATE_BATTERY_SHIFT_Y</span><span class="op">=</span>15.0 <span class="va">BASEPLATE_DRILL_ONLY</span><span class="op">=</span>1 <span class="va">BASEPLATE_SKIP</span><span class="op">=</span><span class="st">&quot;CARRIAGE,POST.1,POST.2,POST.3,POST.4,POST.7,POST.8&quot;</span> <span class="ex">~/.local/bin/FreeCAD-weekly-2026.11.11</span> <span class="at">-c</span> <span class="st">&quot;exec(open(&#39;cad/freecad/gen_baseplate_nc.py&#39;).read()); import sys; sys.exit(0)&quot;</span></span></code></pre></div>
-<p>POST.5 and POST.6 are the two circles (Circle.001, Circle.002) in the
-operator's <code>HiWonder_Base_plate.step</code> of 2026-11-13: their
-centres land within 0.4 mm of the NC's POST.6 and POST.5. The STEP's own
-plate model shows holes there; the physical plate has none.</p>
-<p><strong>Zero:</strong> X/Y = the centre of the plate's own extents
-(the NC's origin is the centre of the 155.145 x 276.604 outline, which
-is this plate's outline): touch the two widest X points and take the
-midpoint, touch the two end-edge Y points and take the midpoint, and
-square the plate on its straight Y-parallel side edge (two probes about
-50 mm apart agree within 0.05 mm). Mount face up. Z0 = top face on the
-T1 drill point.</p>
-<p><strong>Orientation.</strong> Mount face up.
-<code>LumiAI_Base_Plate_drill_only.nc</code> assumes the plate REAR
-(fan/PIR end, the end without the existing post holes near its edge) at
-the BACK of the machine, with the six existing post holes facing the
-operator. The plate as clamped on 2026-11-20 is turned 180 degrees in
-plane (rear toward the operator), so use
-<code>LumiAI_Base_Plate_drill_only_rot180.nc</code>, generated with
-<code>BASEPLATE_ROTATE180=1</code> (every X/Y negated about the zero, so
-no re-zeroing; the park move X0 Y-170 is unchanged). A face flip would
-mirror every new hole in X and the registration check cannot catch it,
-because POST.1-4/7/8 are X-symmetric within about 0.3 mm; a front/rear
-swap is caught by the post Y values. Machine home per the operator:
-far-left front corner as seen standing at the front (Y+ = back, X- =
-left).</p>
-<p><strong>Registration check before Cycle Start:</strong> jog to two or
-more of the existing holes listed in the NC banner (POST.1 to POST.4,
-POST.7, POST.8) and drop the T1 drill shank in. Each must drop in at its
-coordinates; if not, re-zero. Hold the plate with clamps; no screws are
-needed since nothing is cut free.</p>
-<p><strong>Hole check against the plate (STEP,
-outline-centred):</strong> every target is at least 5 mm from an
-existing hole (PSU.2 is the closest at 5.76 mm, about 2.0 mm of web
-against an existing Ø4.3 hole once PSU.2 is Ø3.3). POST.5 and POST.6
-have no hole on the physical plate. The STEP-to-NC alignment is by
-outline centre only, so confirm on the real plate after zeroing.</p>
-<p><strong>Strap holes carry the battery shift.</strong> The battery and
-both straps sit 15 mm back (+Y, toward the fans), so the four strap
-holes are built 15.0 mm further +Y than the model's base positions
-(right pair keeps its -2.0 X nudge). The drill-only command sets it with
-<code>BASEPLATE_BATTERY_SHIFT_Y=15.0</code>, which overrides
-<code>BATTERY_SHIFT_Y</code> in <code>lumi_base_plate.py</code>; the NC
-banner prints the value it was built with and must read +15.00.
-Machine-frame strap centres: L.lo (56.195, 37.094), L.hi (58.439,
-123.957), R.lo (-54.805, 37.594), R.hi (-54.305, 123.594).</p>
-<p><strong>STRAP.L.hi is milled as a slot, not drilled.</strong> On the
-vendor plate that hole lands 2.2 mm from an existing Ø4.3 hole (centre
-X59.930 Y122.340, from the HiWonder STEP overlay, good to about 0.3 mm),
-so a drill would start half over air and walk. Instead the NC drills the
-other seven holes with T1, stops at a tool-change M0 (T1 -&gt; T2
-SHARPRO, 1/8" -&gt; 1/4" OZ8 collet, re-touch Z), and T2 plunges inside
-the old hole, then cuts a 3.175 mm slot to the new centre (X58.439
-Y123.957): 6 passes to Z-3.20, F400, plunge F100. Before that Cycle
-Start, lower T2 by hand into the old hole to prove it enters freely.
-Hand-drill Ø4.5 at the new centre afterwards. There is no spare SHARPRO.
-On the Lumi plate there is no vendor hole there, so this only applies to
-the HiWonder stand-in.</p>
-<p>After the cut: PSU Dia 3.3 then tap M4 x 2, STRAP Dia 3.3 then tap M4
-x 4 (as built, 12567f48), POST hand-drill Dia 4.5 x 2.</p>
-<h2 id="what-holds-each-plate">What holds each plate</h2>
+<h2 id="what-holds-the-plate">What holds the plate</h2>
 <p>No tape or VHB. Clamps hold the sheet for the drill pass, then screws
 hold it from the pause on.</p>
 <ul>
@@ -447,18 +173,10 @@ plate length. Machine coordinates: POST.5 X +68.886 Y +104.018, POST.6 X
 −120.992. The NC's tool-change banner lists them. The clamps stay on, so
 the waste frame stays held after the contour frees it, and the screws
 carry the finished part.</li>
-<li><strong>Plate 1:</strong> the four holes are the Ø3.175 pilots OP1
-just drilled; M3 × 15 SHCS self-tapping into the spoilboard.</li>
-<li><strong>Plate 2: screw only through holes verified on the
-sheet.</strong> Each of POST.5 to POST.8 is either drilled by this run
-or listed in the skip list because the operator checked it against the
-template; the NC banner tags each one "drilled by OP1" or "existing,
-verified". Never put a screw through an existing hole that was not
-checked. A verified old hole may already be Ø4.5, which leaves a thin
-bearing ring under an M3 head: use an M3 screw with an OD 7 washer, or
-an M4 × 16 SHCS.</li>
+<li>The four holes are the Ø3.175 pilots OP1 just drilled; M3 × 15 SHCS
+self-tapping into the spoilboard.</li>
 </ul>
-<h2 id="sequence-per-plate">Sequence per plate</h2>
+<h2 id="sequence">Sequence</h2>
 <table>
 <thead>
 <tr>
@@ -498,8 +216,8 @@ POST.5–8, re-touch Z on T2.</td>
 </tr>
 <tr>
 <td>OP3</td>
-<td>Fence outline cut completely through. Watch the last pass. Parks X0
-Y−170.</td>
+<td>Fence outline cut completely through. Watch the last pass. Parks
+back-left (G53 Z-5, X10, Y780).</td>
 <td></td>
 </tr>
 <tr>
@@ -516,8 +234,8 @@ setup and the M0. SHARPRO is cutting about 33 of those minutes.</p>
 <h2 id="verifier">Verifier</h2>
 <p>Run the 8-check audit from <a
 href="CNC_CameraPlate_Single.html"><code>CNC_CameraPlate_Single.md</code></a>
-against the chosen file. Last pass: 2026-11-02, total 0 on the NC and on
-a skip build.</p>
+against the chosen file. Last pass: 2026-11-23, total 0 on the
+regenerated no_carriage NC (32ea0e10).</p>
 <p>Generator guards: the reference STEP's own plate solid fixes the
 STEP-to-model offset for the carriage holes (0.000 on the canonical
 STEP, so the full 22-hole NC is motion-identical to the 2026-10-20
@@ -527,8 +245,6 @@ The STEP's PSU and strap circle annotations fall back to the model
 constants today.</p>
 <h2 id="still-open">Still open</h2>
 <ul>
-<li>Operator: for plate 2, which target holes are right (skip list),
-missing, or in conflict, from the template check.</li>
 <li>Spare SHARPRO: operator decided 2026-11-12 not to order one. There
 is one SHARPRO.</li>
 <li>Dreanique single-flute bits: arrived 2026-11-14. Still to read off
