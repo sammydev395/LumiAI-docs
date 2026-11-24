@@ -1460,16 +1460,23 @@ bed map (its prime tower at 275, 20: the default 165, 250 sat on the map
 and crashed the CLI, rc -101 / -3, LumiAI 3DPrinter's sweep 2026-11-23;
 14 the same, tower at 30, 20), 25 cradle seat + gap coupons, 26 fence
 rear cap screwed, 27 cradle landscape base, 28 cradle grip post, 29
-Ultra drill template, 30 wand rings. <strong><strong>H2S AIRFLOW RULE
-(operator's airflow pass 2026-11-23, via LumiAI 3DPrinter): a part's
-sloped overhangs face +X on the H2S</strong> (calibrated on the EBC
-covers: facing +X clean twice, -X failed twice; Y facing does not
-matter). Turned 180° about Z for it: H2S 05's right EBC cover and H2S
-06's ext -Y half (its overhangs were -X 1833 / +X 78 mm2, now +X 1833 /
--X 78; supports and paint turn with it). <strong>The X1C has NO facing
-bias</strong> (operator 2026-11-24, via LumiAI 3DPrinter): the AIRFLOW
-COUPON pair (<code>lumi_airflow_coupon_plusX</code> /
-<code>_minusX</code>, mirror twins of the EBC fin root,
+Ultra drill template, 30 wand rings. <strong>H2S 04 HEAD RING FLANGE
+DOWN</strong> (operator 2026-11-24, via LumiAI CTO: "Switch the head
+ring, flange down"): turned 180° about X, flange face on the bed;
+elephant's-foot compensation 0.15 set on the part; brim outer-only
+(verify agrees). LumiAI 3DPrinter's read-only slice: 0 support, 0
+warnings, 38 min saved. The head-ring copy on the head-ring + lens-plate
+plate shares the part settings (it already prints flipped).
+<strong><strong>H2S AIRFLOW RULE (operator's airflow pass 2026-11-23,
+via LumiAI 3DPrinter): a part's sloped overhangs face +X on the
+H2S</strong> (calibrated on the EBC covers: facing +X clean twice, -X
+failed twice; Y facing does not matter). Turned 180° about Z for it: H2S
+05's right EBC cover and H2S 06's ext -Y half (its overhangs were -X
+1833 / +X 78 mm2, now +X 1833 / -X 78; supports and paint turn with it).
+<strong>The X1C has NO facing bias</strong> (operator 2026-11-24, via
+LumiAI 3DPrinter): the AIRFLOW COUPON pair
+(<code>lumi_airflow_coupon_plusX</code> / <code>_minusX</code>, mirror
+twins of the EBC fin root,
 <code>cad/freecad/lumi_airflow_coupon.py</code>) printed on X1C 35 with
 the lock station came out exactly the same, so the +X rule is H2S-only
 and X1C parts keep their orientation (X1C 6 right EBC cover, 8 ext −Y
