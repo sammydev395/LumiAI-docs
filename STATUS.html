@@ -194,6 +194,46 @@ dovetail that must hold a part rigid needs a clamp across it (clearance
 alone gives ≈ 2c / cos θ of play).</td>
 </tr>
 <tr>
+<td>🔶 <strong>Cradle main lock = SLIDING PAWL (operator 2026-11-24, via
+LumiAI CTO: the flexure arm's teeth were "useless ... they'll break
+right away"; his go on the concept + the first-assembly pictures). Built
+into the cradle macro behind QUICK_RELEASE; the TEST STATION is X1C 35
+(<code>8b433f3d</code>, plate <code>c21c9323</code>), gating with LumiAI
+3DPrinter</strong></td>
+<td><strong>What it is:</strong> a solid 2-tooth PAWL slides in y in the
+carrier's pocket and locks a rack in the base's channel (pitch 4.0,
+depth 2.4, a 0.8 land with r 0.4 root fillets, 8° hook that pulls the
+pawl in under load); the spring's force goes carrier body → pawl
+(bearing) → one tooth → rack → base. Retention: a −x bayonet ear in an
+L-slot + a 1.75 filament GUIDE ROD pressed through the seat (2.5 engaged
+at every point of the travel) with the pawl's spring stack on it. Hard
+stop = the carrier body on the block's back (compression). Carrier: 45°
+slope over the pawl lane (no flat pocket roof), a 4.6 bridge over the
+spring's room, a 1.5 × 45° lead-in on the spring bore, a thumb pad;
+block: a snug Ø6.1 boss holds the relaxed spring; jaw: detent bumps hold
+the block in. <strong>Passed:</strong> the station 38 of 38 (assembly
+sweeps: the block past its detent, the relaxed spring through the mouth,
+the carrier and pawl in; one tooth 53.1 N (~5.4 kg) at 16.0 MPa ≤ 16.7;
+lock face engaged 1.95; release 26.5 N (~2.7 kg); tilt hold; ear, rod,
+bayonet, hard-stop rows with bites); the cradle's QR rows over all 79
+variants 17 of 17 (jaw travel past the widened channel, mechanism,
+thumb/finger access, stop lug, release drop, way out); flag-off proof:
+the knob cradle's 320 parts identical to the previous macro.
+<strong>Hardware (not printed):</strong> main spring 1.0 × 8 × 15, 304,
+MEASURED 6 coils (6.29 N/mm calc, 17–43 N; active ~4 and solid ~6.5
+UNMEASURED); two uxcell 0.5 × 4 × 5 stacked on the rod (wire 0.5
+MEASURED; ~6 N/mm each calc); a 1.75 filament guide rod ~15 long.
+<strong>GATE before any cradle production:</strong> the main spring runs
+938 MPa at the hard stop (~800 is the usual limit for 304 this size),
+accepted for the TEST STATION by LumiAI CTO 2026-11-24 — the operator
+presses it to the hard-stop length ~50 times and its free length must
+stay within 0.3 of 15.0. <strong>First assembly:</strong>
+<code>docs/images/hardware/qr_first_assembly.gif</code> (concept-era
+pictures; to be redrawn from the built station, with "keep the carrier
+upright until it's in the tunnel" on the pawl step).</td>
+<td></td>
+</tr>
+<tr>
 <td>🔴 <strong>Cradle QUICK RELEASE, a CANDIDATE: the knob cradle stays
 the CURRENT design. The sprung path is in the cradle macro behind a
 switch that is OFF (present, inert, incomplete); the working TEST
