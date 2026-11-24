@@ -1,6 +1,6 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CNC_BasePlate_x2</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
-id="lumiai-base-plate--bench-prep-nova-plate-one-plate">LumiAI base
-plate — bench prep (Nova plate, one plate)</h1>
+id="lumiai-base-plate--bench-prep-hv-bay-plate-for-the-psc-150-one-plate">LumiAI
+base plate — bench prep (HV bay plate for the PSC-150, one plate)</h1>
 <blockquote>
 <p>⛔ <strong>Plate 2 is retired (operator, 2026-11-23).</strong> It was
 a one-time deal (the Ultra's mecanum-base sheet, with a skip-list build,
@@ -17,21 +17,32 @@ them (the drill-only and rot180 NCs keep the old X0 Y-170 park).</p>
 <p>⛔ <strong>2026-11-24: <code>LumiAI_Base_Plate_no_carriage.nc</code>
 (@32ea0e10, the Nova plate with strap holes) is NOT for this
 job.</strong> The operator says it won't work. The plate to cut is the
-new one for the bigger PSU (the "150 PSU", PSC-150-12): no battery-strap
-holes, fewer holes. Its design is being confirmed with CAD
-(lumi_base_plate.py <code>LUMI_BAY_HV=1</code>, outputs
-<code>_HV</code>) and its NC is not generated yet. Until Machining has
-verified that NC and the operator gives the go, do not cut from any base
-plate NC. The sections below still describe the no_carriage plate (14
-holes, strap holes, drill check) and are being rewritten for the new
-plate.</p>
+HV bay plate for the bigger PSU (the PSC-150-12, "150 PSU"): no
+battery-strap holes. Do not run the old file.</p>
 </blockquote>
 <p><strong>Program:</strong> <a
-href="../cad/exports/cnc/LumiAI_Base_Plate_no_carriage.nc"><code>LumiAI_Base_Plate_no_carriage.nc</code></a>
-(3.00 mm, 1060-type sheet, 14 holes). The default
-<code>LumiAI_Base_Plate.nc</code> keeps all 22 holes for the ceiling
-version, which always mounts on the rail; this job is the no-rail
-one-off. <strong>Generator:</strong> <a
+href="../cad/exports/cnc/LumiAI_Base_Plate_HV.nc"><code>LumiAI_Base_Plate_HV.nc</code></a>
+(3.00 mm, 1060-type sheet, <strong>18 holes</strong>: 8 POST, 2 PSU, 8
+carriage, no strap holes). Built with <code>LUMI_BAY_HV=1</code> from
+<code>lumi_base_plate.py</code> (HV bay v3, geometry b9ed6d4d, the one
+bay design for new builds; Nova is its first build). The operator kept
+the carriage holes on 2026-11-24 ("rail carriages still stay"), so all
+18 are drilled. Same 38-edge fence outline, engrave and scribe as the
+other plates.</p>
+<blockquote>
+<p>⏳ <strong>Open check: PSU case length.</strong> The front PSU hole
+follows the PSC-150-12 case length. The operator says it is "officially
+159"; the model constant <code>HV_PSU_LEN</code> still reads 158
+(approx), and the operator is checking the caliper. The NC is built with
+<strong>159</strong>: front PSU hole FILE Y −114.434, machine Y −115.977
+(at 158 it would be −113.434 / −114.977). If the caliper reads 158,
+regenerate before any cut with <code>BASEPLATE_HV_PSU_LEN=158</code>.
+The back PSU hole and all POST and carriage holes do not depend on
+it.</p>
+</blockquote>
+<p>Regenerate:
+<code>BASEPLATE_HV_PSU_LEN=159 LUMI_BAY_HV=1 ~/.local/bin/FreeCAD-weekly-2026.11.11 -c "exec(open('cad/freecad/gen_baseplate_nc.py').read()); import sys; sys.exit(0)"</code>.
+<strong>Generator:</strong> <a
 href="../cad/freecad/gen_baseplate_nc.py"><code>cad/freecad/gen_baseplate_nc.py</code></a>,
 geometry from <code>lumi_base_plate.py</code>. <strong>Per-part
 mechanics:</strong> <a
@@ -40,17 +51,13 @@ href="CNC_Machining_Guide.html"><code>CNC_Machining_Guide.md</code>
 href="rules/cnc.html"><code>rules/cnc.md</code></a>.</p>
 <p>No cut until the operator gives the go.</p>
 <blockquote>
-<p><strong>2026-11-23 update.</strong>
-<code>LumiAI_Base_Plate_no_carriage.nc</code> was regenerated from the
-current model. ⛔ The 11/10 file it replaces had the strap holes 15 mm
-too far -Y (no battery shift) and labelled PSU/strap holes Ø4.0/Ø4.5
-hand-drill. Now: strap holes at the +15 Y battery shift, PSU and strap
-holes Ø3.3 then tap M4×0.7 (12567f48). It also follows the park
-standard: every park is <code>G53 G0 Z-5.000</code>,
-<code>X10.000</code>, <code>Y780.000</code> (back-left), and
-<code>G53 G0 Z-5.000</code> comes before every spindle start after an M0
-and at program start (the old file parked X0 Y-170 toward the operator
-and started the spindle at Z0 on the stock).</p>
+<p><strong>Regeneration history.</strong> 2026-11-23: the base plate NCs
+follow the park standard (every park <code>G53 G0 Z-5.000</code>,
+<code>X10.000</code>, <code>Y780.000</code>, back-left;
+<code>G53 G0 Z-5.000</code> before every spindle start after an M0 and
+at program start). ⛔ The 11/10 NC parked X0 Y-170 toward the operator
+and started the spindle at Z0 on the stock. 2026-11-24: HV plate NC
+added.</p>
 </blockquote>
 <h2 id="order-of-work-operator">Order of work (operator)</h2>
 <ol type="1">
@@ -66,8 +73,8 @@ stringer or stuck chip.</p>
 2026-11-02)</h2>
 <p>New 200 × 300 × 3 mm, 1060-type aluminium (older, softer than 6061;
 the operator accepts that for dev units). 3.00 mm, so the 3.00 mm NC is
-right: <code>LumiAI_Base_Plate_no_carriage.nc</code>. Full program, all
-14 holes drilled.</p>
+right: <code>LumiAI_Base_Plate_HV.nc</code>. Full program, all 18 holes
+drilled.</p>
 <p><strong>1060 handling .</strong> Soft and gummy: it loads and welds
 to the flute. Use cutting fluid (WD-40 mist) or an air blast on the cut,
 watch for chip packing in the slot and for aluminium building up on the
@@ -76,7 +83,7 @@ at the first stringer or stuck chip.</p>
 <h2 id="stock-fit-measured-from-the-nc">Stock fit (measured from the
 NC)</h2>
 <p>Cutter envelope per plate: <strong>158.32 × 279.78 mm</strong> (X
-±79.16, Y ±139.89 about the stock centre). All 14 drills sit inside
+±79.16, Y ±139.89 about the stock centre). All 18 drills sit inside
 it.</p>
 <table>
 <thead>
@@ -112,8 +119,8 @@ from a 200 × 300 sheet.</p>
 <tbody>
 <tr>
 <td>T1 Milwaukee 1/8" cobalt twist drill</td>
-<td>up to 14 holes through (2 PSU, 4 STRAP, 8 POST; no carriage holes),
-G83 Q1.0, F60, S12000, Z−4.00</td>
+<td>18 holes through (2 PSU, 8 POST, 8 carriage; no strap holes), G83
+Q1.0, F60, S12000, Z−4.00</td>
 <td>1/8" OZ8</td>
 </tr>
 <tr>
@@ -124,10 +131,11 @@ plate</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Off-machine after the cut, for the holes this run drilled: Ø3.3 then
-tap M4×0.7 × 6 (2 PSU + 4 strap, as built, 12567f48), hand-drill Ø4.5 ×
-8 (post). The 8 MGN15H carriage holes are not drilled in this job (the
-model keeps them for the ceiling version).</p>
+<p>Off-machine finish after the cut (every hole is drilled at Ø3.175
+first): PSU × 2 open to Ø3.3 then tap M4×0.7 (as built, 12567f48);
+carriage × 8 hand-drill Ø3.5 (M3 <strong>clearance</strong>, spec Ø3.4,
++0.16 radial; the tapped Ø3.0 holes are in the MGN15H carriages, not the
+plate, so do not tap these); POST × 8 hand-drill Ø4.5.</p>
 <p><strong>SHARPRO budget:</strong> one bit, no spare. The plate is
 ~11.3 m of XY path, in a gummy alloy, after the camera plates and pucks.
 Inspect the flute for welded aluminium before and after it.</p>
@@ -196,23 +204,25 @@ check at the M0 (operator's yellow PETG drill template)</h2>
 where the model says. The template is the yellow PETG drill template the
 operator printed earlier, laid out by <a
 href="../cad/freecad/ultra_drill_template_layout.py"><code>cad/freecad/ultra_drill_template_layout.py</code></a>.
-Its 12 holes match the <code>LumiAI_Base_Plate_no_carriage.nc</code>
-drill XY exactly (checked by Machining): <strong>pegs</strong> at
-POST.1, POST.4, POST.7, POST.8; <strong>guides</strong> at PSU.1, PSU.2,
-the four STRAPs (at the +15 Y positions), POST.5 and POST.6. POST.2 and
-POST.3 are not on it.</p>
+On the HV plate it checks <strong>6 holes only</strong>: the
+<strong>pegs</strong> at POST.1, POST.4, POST.7, POST.8 and the
+<strong>guides</strong> at POST.5 and POST.6 (the POST XYs are identical
+to the earlier plate, checked against the committed NC). <strong>Ignore
+the template's PSU and STRAP guide holes.</strong> The HV plate moves
+the PSU holes in Y, so they will NOT line up with the template, and that
+is expected; the HV plate has no strap holes. POST.2, POST.3 and the
+carriage holes are not on the template.</p>
 <ol type="1">
 <li>At the tool-change M0, spindle parked: brush the chips off the
 plate.</li>
 <li>Lay the template on the plate, mount face up, same orientation as in
 the machine.</li>
-<li>Look through each template hole for the drilled hole.</li>
-<li>If every hole lines up, the job proceeds: bolt through POST.5-8,
-swap to T2, re-touch Z. If one does not, stop and tell Machining; do not
-bolt down or run the engrave and contour.</li>
+<li>Look through the 6 template holes (POST.1/4/7/8 pegs, POST.5/6
+guides) for the drilled holes.</li>
+<li>If all 6 line up, the job proceeds: bolt through POST.5-8, swap to
+T2, re-touch Z. If one does not, stop and tell Machining; do not bolt
+down or run the engrave and contour.</li>
 </ol>
-<p>This replaces the retired plate-2 hole check; the 1:1 paper template
-is not used.</p>
 <h2 id="sequence">Sequence</h2>
 <table>
 <thead>
@@ -237,8 +247,8 @@ stock centre, Z zero = sheet top face.</td>
 </tr>
 <tr>
 <td>OP1</td>
-<td>T1 drills the holes (~2 min for 14).</td>
-<td>2 min</td>
+<td>T1 drills the holes (~3 min for 18).</td>
+<td>3 min</td>
 </tr>
 <tr>
 <td>M0</td>
@@ -272,8 +282,9 @@ setup and the M0. SHARPRO is cutting about 33 of those minutes.</p>
 <h2 id="verifier">Verifier</h2>
 <p>Run the 8-check audit from <a
 href="CNC_CameraPlate_Single.html"><code>CNC_CameraPlate_Single.md</code></a>
-against the chosen file. Last pass: 2026-11-23, total 0 on the
-regenerated no_carriage NC (32ea0e10).</p>
+against the chosen file. Last pass: 2026-11-24, total 0 on
+<code>LumiAI_Base_Plate_HV.nc</code> (ASCII, CRLF, no unclosed or nested
+parens, no M6, no Y-170 park).</p>
 <p>Generator guards: the reference STEP's own plate solid fixes the
 STEP-to-model offset for the carriage holes (0.000 on the canonical
 STEP, so the full 22-hole NC is motion-identical to the 2026-10-20
