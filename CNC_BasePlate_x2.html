@@ -13,6 +13,19 @@ plate job is <strong>plate 1 only</strong>: the Nova plate on a fresh
 and rot180 NCs and the 1:1 hole template have no job use; do not run
 them (the drill-only and rot180 NCs keep the old X0 Y-170 park).</p>
 </blockquote>
+<blockquote>
+<p>⛔ <strong>2026-11-24: <code>LumiAI_Base_Plate_no_carriage.nc</code>
+(@32ea0e10, the Nova plate with strap holes) is NOT for this
+job.</strong> The operator says it won't work. The plate to cut is the
+new one for the bigger PSU (the "150 PSU", PSC-150-12): no battery-strap
+holes, fewer holes. Its design is being confirmed with CAD
+(lumi_base_plate.py <code>LUMI_BAY_HV=1</code>, outputs
+<code>_HV</code>) and its NC is not generated yet. Until Machining has
+verified that NC and the operator gives the go, do not cut from any base
+plate NC. The sections below still describe the no_carriage plate (14
+holes, strap holes, drill check) and are being rewritten for the new
+plate.</p>
+</blockquote>
 <p><strong>Program:</strong> <a
 href="../cad/exports/cnc/LumiAI_Base_Plate_no_carriage.nc"><code>LumiAI_Base_Plate_no_carriage.nc</code></a>
 (3.00 mm, 1060-type sheet, 14 holes). The default
