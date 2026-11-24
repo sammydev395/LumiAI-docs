@@ -752,26 +752,24 @@ print gate with the 4 roof enforcers, legacy bites); bars + tray 53/53.
 Outputs <code>lumi_baseplate_fence_HV*</code>,
 <code>lumi_battery_bar_{front,back}_HV</code>,
 <code>lumi_battery_tray_HV</code>, <code>lumi_base_plate*_HV</code>.
-<strong>In the H2S book</strong> (operator go 2026-11-23, via LumiAI
-3DPrinter), the last plates, so no other number moves: <strong>H2S
-31</strong> HV fence back half, ASA black slot 2, plate edge down,
-turned 90° about Z so its sloped overhangs face +X (4496 mm² +X / 455 −X
-in the book; 1216 / 1215 as exported), manual tree_strong on painted
-enforcers only: the 4 groove roofs (45.1 mm² each at z 44.30), the 3
-clamp-slot roofs and the 2 PSU-strap pads (861 mm² in all), the fence's
-FENCE FAST settings (0.32, 3 walls, 15 %), brim 10 outer + inner;
-<strong>H2S 32</strong> the tray, ASA black slot 2, flat, floor down, no
-supports, brim 10; <strong>H2S 33</strong> the two bars, <strong>black
-PETG+ slot 3</strong>, flat, no supports, no brim, 5 walls / 80 % (their
-strength gate is PETG's: 15.6 MPa ≤ 16.7; ASA's yield / 3 of 13.3 would
-fail it). verify PASS; LumiAI 3DPrinter's gates PASS on book
-<code>139a4a90</code> (2026-11-23): gate_slice clean, 0 warnings, 0
-floating starts on 31 / 32 / 33. At 0.32 the groove slices LOOSER, not
-tighter: floor top 39.56, roof underside 44.36, so the opening is about
-4.80 for the 4.0 bar (0.8 of vertical play, against 4.6 / 0.3 gaps in
-CAD); 0.16 would give about 4.6 at roughly twice the time -- operator's
-choice, 0.32 stays until he says. Not printed. Next: the HV carrier
-(stage 1).</td>
+<strong>Print books</strong> (operator go 2026-11-23, via LumiAI
+3DPrinter): <strong>H2S 31</strong> HV fence back half, ASA black slot
+2, plate edge down, turned 90° about Z so its sloped overhangs face +X
+(4496 mm² +X / 455 −X), manual tree_strong on painted enforcers only (4
+groove roofs 45.1 mm² each at z 44.30, 3 clamp-slot roofs, 2 PSU-strap
+pads; 861 mm²), FENCE FAST (0.32); <strong>HOLD do not print</strong>
+(operator 2026-11-23): at 0.32 the groove slices about 4.80 open for the
+4.0 bar (3DPrinter: floor top 39.56, roof underside 44.36; CAD nominal
+4.6 = 0.3 a side), 0.8 of rattle -- "It has to be a tight fit"; held
+until the groove is re-cut. <strong>H2S 32</strong> the tray, ASA black
+slot 2, flat, no supports, brim 10 (gated PASS, 0 warnings, 0 floating).
+<strong>The bars print on the X1C in grey PETG+, like every battery
+strap</strong> (operator 2026-11-23: "They will always stay on the X1C";
+their strength gate is PETG's, 15.6 ≤ 16.7 MPa); not in a book yet
+(<code>HV_BARS_IN_BOOK</code>): the X1C is at its 36-plate cap, and the
+fit rework may change the bar. ⛔ <em>was: bars on H2S 33 in black PETG+
+(book 139a4a90), removed.</em> Not printed. Next: the HV carrier (stage
+1).</td>
 <td></td>
 </tr>
 <tr>
