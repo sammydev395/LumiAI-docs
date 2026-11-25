@@ -44,8 +44,8 @@ regenerate from the same value, and this hold comes off.</p>
 273.3 mm3), but <strong>CARRIAGE.R.3 and CARRIAGE.L.2 have fence
 material over them at Z 44–60</strong>: bolt the rail carriages to the
 plate <strong>before the fence goes on</strong>, or use a short L-key.
-This check had been silently skipped on HV plate builds until 2026-11-24
-(it read a stale fence filename); it now runs on every build.</p>
+The plate build runs this check on every build and stops if the fence
+STEP is missing.</p>
 </blockquote>
 <blockquote>
 <p>⏳ <strong>Open check: PSU case length.</strong> The front PSU hole
