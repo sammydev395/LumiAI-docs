@@ -2358,6 +2358,29 @@ fit was PLA-on-PLA.</p>
 <h2 id="yellow_circle-open-design-questions">🟡 Open design
 questions</h2>
 <ul>
+<li><p>⏸️ <strong>WAND CATCH LOCK PIN, lying print — DEFERRED (operator
+via CTO, 2026-11-25): "low priority, strong enough, not
+load-bearing".</strong> The pin stays as released (standing, head down).
+The parked change is <a
+href="../cad/freecad/parked/lumi_bigclaw_catch_wand_lock_pin_lying.patch"><code>cad/freecad/parked/lumi_bigclaw_catch_wand_lock_pin_lying.patch</code></a>
+(<code>git apply</code> it to <code>lumi_bigclaw_catch_wand.py</code>;
+review runs with <code>LUMI_NO_EXPORT=1</code>). It does three
+things:</p>
+<ul>
+<li>Prints the pin LYING on a 0.7 flat (−z, coplanar with the lug's
+face).</li>
+<li>Adds a 2-pin TWIST COUPON (standing / lying in one socket block, the
+lug reacting the twist).</li>
+<li>Adds rows: pry along the layers 30.9 MPa ≤ 33.3, against 24.8 across
+the layers standing; twist at the detent's 9 N·mm 0.43 MPa.</li>
+</ul>
+<p>Physics finding: lying does NOT cut the twist peak. A coin's 0.3 N·m
+gives 14.3 MPa on the layer through the axis (antisymmetric, no net
+force), against 12.2 standing on one whole layer. The coupon was to set
+that allowable.</p>
+<p>Open before resuming: the lying pin FAILs its print gate. It needs
+support: a 7.7 mm cantilever, a 1.7 mm one, and one steep face, from the
+D-shank's underside next to the flat.</p></li>
 <li><p>⏸️ <strong>BATTERY STRAPS — TABLED (operator, 2026-10-10): "very
 low priority".</strong> Do not spend time on it; parked here only so the
 measurement is not redone. The operator re-exported
