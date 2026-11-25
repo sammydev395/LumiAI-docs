@@ -540,6 +540,26 @@ stringing or lift. Fit not yet tested.</td>
 </tr>
 <tr>
 <td>2026-11-25</td>
+<td>X1C / S2 / red HS PETG</td>
+<td>lumi_bigclaw_phone_cradle_aback_qr_lock_station_pawl.stl</td>
+<td>1</td>
+<td>test</td>
+<td>af7ac8793c4e9ff5</td>
+<td>X1C 28 @ cfc5fdc4/f26fe469 (book; reworked lock station, CAD
+35ffb362)</td>
+<td>broke</td>
+<td>Snapped during BED REMOVAL (operator photo, via LumiAI CTO). The
+break is horizontal at the TAB's base, just above the body top (z 0.3,
+where the in-channel 4.6 x 6.1 column steps to 4.6 x 8.9): a
+delamination, with concentric layer perimeters on both faces. The body
+(teeth + U-slot) is intact; the right piece is the whole tab column.
+Cause: the 14 mm standing tab is loaded ACROSS its layers; neck Z 21.5
+mm3, so ~38 N on a 14 mm lever at ~25 MPa between layers. Fix (LumiAI
+CTO): remove by flexing the plate; neck fillet/flare with no step at a
+layer line + an across-layer strength row; U-slot unchanged.</td>
+</tr>
+<tr>
+<td>2026-11-25</td>
 <td>H2S / S1 / blue HS PETG</td>
 <td>lumi_powerbay_carrier_HV_fork_coupon.stl</td>
 <td>1</td>
