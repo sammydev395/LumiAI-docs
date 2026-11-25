@@ -1564,7 +1564,14 @@ limit 6.0); 5.27 cm3 of lip trees (29.6 %) -&gt; 0, plate 24 3 h 11 /
 54.6 g -&gt; 2 h 36 / 49.7 g, 0 floating starts; the X1C 16 copy bare
 too (was 11.8 %); the lip's underside (the clamp face on the extension
 flange) prints as a bare overhang, CAD's 45 deg lip chamfer if it is
-rough. <strong>SUPPORT BUDGET GATE</strong> in slice_all
+rough. <strong>FENCE PIR openings: no support today</strong> (LumiAI CTO
+2026-11-25): every fence half prints MANUAL trees only (the
+support-interface layers touch only the slot roofs, PSU ledges, bar pads
+and DROK bosses; forced bed-only the slices are identical); the trees
+the operator saw were on his older fence prints. verify row: a fence
+half on AUTO support FAILS (bite
+<code>LUMI_VERIFY_BITE_FENCE_AUTO=1</code>). <strong>SUPPORT BUDGET
+GATE</strong> in slice_all
 (<code>cad/print/gate_support_budget.py</code>): each part's support
 &lt;= 10 % of its own filament or a named waiver; bite: the painted ring
 29.6 % FAILS; the over-budget parts carry PROVISIONAL waivers (pending
