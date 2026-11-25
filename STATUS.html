@@ -1537,54 +1537,64 @@ reprinted): male (the shell's M88×3 on a 4 mm grip, grip down) + female
 (the ring's band, thread end down), ASA black slot 2, no supports, brim
 10; LumiAI 3DPrinter's gate PASS (0 warnings, 0 floating starts, 1 h 05,
 24.8 g; the female's internal 45° flank slices as "Bridge" layer by
-layer -- watch it for droop). <strong>H2S 34 = TEST, the LENS-PLATE
-MEMBRANE</strong> (CAD <code>ba1fcf25</code>, operator "Go with the
-membrane" 2026-11-24, via LumiAI CTO): ONE uxcell lens plate with the
-sacrificial one-layer membrane under each lens lip, NylonX slot 5, NO
-support and NO paint (the NylonX bridge over the 22.3 span is unproven;
-verify reads it as an 11.2 reach, sanctioned for this TEST only in
-<code>REACH_OK</code>); LumiAI 3DPrinter gates it. <strong>Production
-lens plates PINNED pre-membrane</strong> (H2S 13 / 17 / 19 and the X1C
-copy): the builder's <code>STL_PINS</code> loads the 7b1b0eb6 exports
-committed in <code>cad/print/stl_pins/</code>, with their painted
-support, as the fallback until the TEST passes (unpin = delete the entry
-+ file; the source gate FAILS an uncommitted pin). <strong>H2S WAND
-SLICER CHANGES</strong> (operator 2026-11-24, via LumiAI CTO; no CAD):
-the end ring and the ext tail ring (H2S 30) and the −Y shell (H2S 04)
-FLIPPED 180° about X, elephant's-foot 0.15 on each; the auto trees
-REPLACED by painted supports (manual trees) only on LumiAI 3DPrinter's
-listed faces -- the shells' bosses / ledges, the ext halves' z 89.3
-shelf + z 172.5 / 175.5 ledges (+ Waveshare z 83.1, −Y z 51.5), the
-retaining ring's lip, the lens plate's 3 roof pads -- NEVER on the
-thread turns (1.4 flat-bottomed steps that print unsupported); the ext
-halves' trees root on the bed (build-plate-only: the bracing the
-operator kept, his pick A) for their LOW bands only -- their TOP LEDGES
-(z 172.5 / 175.5) are left UNPAINTED (operator 2026-11-24, "Go with C":
-they print bare like the thread turns; bed-rooted trees to them
-outweighed the old auto trees); the 2 remaining ext −Y overhang regions
-Studio reports (over the part's own material, out of a bed-only tree's
-reach) fall under the operator's EXISTING H2S 06 ext −Y overhang waiver
-(it covered 6, now 2); brims unchanged. LumiAI 3DPrinter's gate on
-<code>f962211c</code>: PASS -- every wand plate clean, plate 6 now with
-no Studio warning at all, the bare top ledges 0 floating starts, plate
-3's layer-86 start the known waived one; support against the old auto
-trees: rings 0 (was 5.9-7.7k each), shells −24 % / −45 %, ext halves −34
-% / −61 % / −28 %; installs on the DELL when Studio closes (15 on ext
-−Y, 8 on the shells: flagged for the first-layer check). The +Y shell's
-z 1.9 ledge (289 mm², over 200 of bed contact) is left unpainted per
-3DPrinter, to paint only if Studio warns. <strong>verify ON A
-FOOT</strong> (LumiAI CTO 2026-11-24): a no-support part with a flat
-down-face 0.2–2.0 over the bed, &gt; 20 mm² and bigger than its bed
-contact, FAILS (bite: the c21c9323 ridge block). <strong><strong>H2S
-AIRFLOW RULE (operator's airflow pass 2026-11-23, via LumiAI 3DPrinter):
-a part's sloped overhangs face +X on the H2S</strong> (calibrated on the
-EBC covers: facing +X clean twice, -X failed twice; Y facing does not
-matter). Turned 180° about Z for it: H2S 05's right EBC cover and H2S
-06's ext -Y half (its overhangs were -X 1833 / +X 78 mm2, now +X 1833 /
--X 78; supports and paint turn with it). <strong>The X1C has NO facing
-bias</strong> (operator 2026-11-24, via LumiAI 3DPrinter): the AIRFLOW
-COUPON pair (<code>lumi_airflow_coupon_plusX</code> /
-<code>_minusX</code>, mirror twins of the EBC fin root,
+layer -- watch it for droop). <strong>X1C 21 RETIRED</strong> (operator
+2026-11-24: the LV power-bay carrier is DROPPED, one carrier for LV and
+HV, the HV one; CAD <code>8638bb4e</code> deleted its exports): an EMPTY
+placeholder plate named "21 RETIRED - do not print", so X1C 22-35 keep
+their numbers (LumiAI CTO, option B; renumber only at the next
+deliberate book reset). X1C 22 (PSU strap + tab cap + tabbed straps L/R)
+and 36 (straps) stay as spares / reprints for Halo and Ultra; the PSU
+strap and tab cap now build from
+<code>lumi_powerbay_psu_strap.py</code>, exports byte-identical. X1C
+verify PASS; the H2S book is unaffected (rebuilt byte-identical).
+<strong>H2S 34 = TEST, the LENS-PLATE MEMBRANE</strong> (CAD
+<code>ba1fcf25</code>, operator "Go with the membrane" 2026-11-24, via
+LumiAI CTO): ONE uxcell lens plate with the sacrificial one-layer
+membrane under each lens lip, NylonX slot 5, NO support and NO paint
+(the NylonX bridge over the 22.3 span is unproven; verify reads it as an
+11.2 reach, sanctioned for this TEST only in <code>REACH_OK</code>);
+LumiAI 3DPrinter gates it. <strong>Production lens plates PINNED
+pre-membrane</strong> (H2S 13 / 17 / 19 and the X1C copy): the builder's
+<code>STL_PINS</code> loads the 7b1b0eb6 exports committed in
+<code>cad/print/stl_pins/</code>, with their painted support, as the
+fallback until the TEST passes (unpin = delete the entry + file; the
+source gate FAILS an uncommitted pin). <strong>H2S WAND SLICER
+CHANGES</strong> (operator 2026-11-24, via LumiAI CTO; no CAD): the end
+ring and the ext tail ring (H2S 30) and the −Y shell (H2S 04) FLIPPED
+180° about X, elephant's-foot 0.15 on each; the auto trees REPLACED by
+painted supports (manual trees) only on LumiAI 3DPrinter's listed faces
+-- the shells' bosses / ledges, the ext halves' z 89.3 shelf + z 172.5 /
+175.5 ledges (+ Waveshare z 83.1, −Y z 51.5), the retaining ring's lip,
+the lens plate's 3 roof pads -- NEVER on the thread turns (1.4
+flat-bottomed steps that print unsupported); the ext halves' trees root
+on the bed (build-plate-only: the bracing the operator kept, his pick A)
+for their LOW bands only -- their TOP LEDGES (z 172.5 / 175.5) are left
+UNPAINTED (operator 2026-11-24, "Go with C": they print bare like the
+thread turns; bed-rooted trees to them outweighed the old auto trees);
+the 2 remaining ext −Y overhang regions Studio reports (over the part's
+own material, out of a bed-only tree's reach) fall under the operator's
+EXISTING H2S 06 ext −Y overhang waiver (it covered 6, now 2); brims
+unchanged. LumiAI 3DPrinter's gate on <code>f962211c</code>: PASS --
+every wand plate clean, plate 6 now with no Studio warning at all, the
+bare top ledges 0 floating starts, plate 3's layer-86 start the known
+waived one; support against the old auto trees: rings 0 (was 5.9-7.7k
+each), shells −24 % / −45 %, ext halves −34 % / −61 % / −28 %; installs
+on the DELL when Studio closes (15 on ext −Y, 8 on the shells: flagged
+for the first-layer check). The +Y shell's z 1.9 ledge (289 mm², over
+200 of bed contact) is left unpainted per 3DPrinter, to paint only if
+Studio warns. <strong>verify ON A FOOT</strong> (LumiAI CTO 2026-11-24):
+a no-support part with a flat down-face 0.2–2.0 over the bed, &gt; 20
+mm² and bigger than its bed contact, FAILS (bite: the c21c9323 ridge
+block). <strong><strong>H2S AIRFLOW RULE (operator's airflow pass
+2026-11-23, via LumiAI 3DPrinter): a part's sloped overhangs face +X on
+the H2S</strong> (calibrated on the EBC covers: facing +X clean twice,
+-X failed twice; Y facing does not matter). Turned 180° about Z for it:
+H2S 05's right EBC cover and H2S 06's ext -Y half (its overhangs were -X
+1833 / +X 78 mm2, now +X 1833 / -X 78; supports and paint turn with it).
+<strong>The X1C has NO facing bias</strong> (operator 2026-11-24, via
+LumiAI 3DPrinter): the AIRFLOW COUPON pair
+(<code>lumi_airflow_coupon_plusX</code> / <code>_minusX</code>, mirror
+twins of the EBC fin root,
 <code>cad/freecad/lumi_airflow_coupon.py</code>) printed on X1C 35 with
 the lock station came out exactly the same, so the +X rule is H2S-only
 and X1C parts keep their orientation (X1C 6 right EBC cover, 8 ext −Y
