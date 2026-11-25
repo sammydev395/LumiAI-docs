@@ -3905,7 +3905,7 @@ W, silk "IP6518_A1V1.0"; Creator builds)</td>
 wall's lower straight, front-right corner, 93.6 mm from the mains
 (CAD)</td>
 <td>M2.5 self-tap, diagonal pair</td>
-<td>PHONE-IN 232.9 routed; USB-C 71 to the lid window (CAD 3debe125).
+<td>PHONE-IN 233.6 routed; USB-C 71 to the lid window (CAD 3debe125).
 Vent slots only if the IC reads &gt; 70 °C after 30 min of a 45 W
 charge</td>
 </tr>
@@ -5497,14 +5497,14 @@ Carrier harness build list — every harness, by route ID (every build,
 the §11.3.9 harness table. <strong>Routed</strong> = CAD's wired bay
 (e74bddb2; Ø3.3 re-gate 2c45839e; lid-window ends e974f78a; IP6518 +
 buck-clear risers 3debe125; tie anchors + mains tie caps, carrier
-release 9ef299b1), centreline face to face, no strip or slack.
-<strong>Cut</strong> = routed + both strips + ~20 mm, rounded up. Every
-18 AWG run is gated at Ø3.3, above the stock's measured Ø1.85–2.00 (CAD
-2c45839e, all PASS: mains ≥ 8 at 8.65 nearest, BATT pair 1.66 to the
-pack and wall). The 16 AWG buck runs pass at Ø3.6 (CAD f0105c7a), above
-the stock's measured Ø2.60–2.75. Retention (forks, hooks, clips) is
-checked at the low end of each range (§11.3.9 cable ODs). String-run the
-mains on the carrier before crimping.</p>
+release 9ef299b1; wiring map 38d204ba), centreline face to face, no
+strip or slack. <strong>Cut</strong> = routed + both strips + ~20 mm,
+rounded up. Every 18 AWG run is gated at Ø3.3, above the stock's
+measured Ø1.85–2.00 (CAD 2c45839e, all PASS: mains ≥ 8 at 8.65 nearest,
+BATT pair 1.66 to the pack and wall). The 16 AWG buck runs pass at Ø3.6
+(CAD f0105c7a), above the stock's measured Ø2.60–2.75. Retention (forks,
+hooks, clips) is checked at the low end of each range (§11.3.9 cable
+ODs). String-run the mains on the carrier before crimping.</p>
 <p><strong>Dressing (every run, mains included):</strong> the cut's
 slack goes at the <strong>ends</strong>, as a short loop within
 <strong>30–50 mm of each terminal</strong> (the ~20 mm of the cut, or
@@ -5642,16 +5642,19 @@ the lid window. Rises beside the tether, FFC on the far side</td>
 <td>7</td>
 <td><strong>BATT</strong></td>
 <td>2 × 18</td>
-<td>pack → F1 71 · F1 → INA-BATT 27–33 · INA-BATT → CH2 99–111</td>
-<td><strong>110 / 70 / 150</strong></td>
+<td>pack → F1 <strong>80.3</strong> · F1 → INA-BATT
+<strong>33.5</strong> · INA-BATT → CH2 <strong>112.8</strong></td>
+<td><strong>120 / 70 / 150</strong></td>
 <td>Pack <strong>XT30</strong> (mating XT30, soldered cups +
 heat-shrink)</td>
 <td>+ → <strong>F1 (uxcell 6×30 10 A, carrier cradle)</strong> →
 INA226-BATT <strong>IN− … IN+</strong> (E1008) → PSU <strong>CH2
 BAT+</strong>; pack − → CH2 BAT− <strong>direct</strong></td>
 <td>In the pack-to-wall gap, nothing terminated there. <strong>Unfused
-stub pack + → F1 ≤ 150 mm including the pack's factory pigtail.</strong>
-Meter polarity before connecting</td>
+stub pack + → F1 ≤ 150 mm including the pack's factory pigtail:</strong>
+the 120 cut leaves ~45 mm for the pigtail once it's dressed (~105 after
+the strip and solder cup), so measure the pigtail first (§16b.1). Meter
+polarity before connecting</td>
 </tr>
 <tr>
 <td>8</td>
@@ -5750,7 +5753,7 @@ bounds; string-run on Halo before crimping)</td>
 <td>15a</td>
 <td><strong>PHONE-IN</strong> <em>(Creator builds)</em></td>
 <td>2 × 22, twisted</td>
-<td>232.9: IP6518 VIN pads → riser to the deck → along the +X strip (X
+<td>233.6: IP6518 VIN pads → riser to the deck → along the +X strip (X
 279.5) → over the buck along Y 17 → up HV5's lane (X 245) → under the
 HL-PBB along Y 50 → A6 / B6, all on the deck, tied to its anchors</td>
 <td><strong>280</strong></td>
@@ -5847,7 +5850,7 @@ the bench (operator, 2026-11-24)</td>
 <td><strong>18 AWG</strong></td>
 <td><strong>~2.6 m (~8.5 ft)</strong></td>
 <td>MAINS 1.13 (5 pieces), CH1 0.20, ROCKER 0.50, BLK-IN 0.13, BATT
-0.66</td>
+0.68</td>
 </tr>
 <tr>
 <td><strong>22 AWG</strong></td>
