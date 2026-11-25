@@ -30,36 +30,27 @@ the carriage holes on 2026-11-24 ("rail carriages still stay"), so all
 18 are drilled. Same 38-edge fence outline, engrave and scribe as the
 other plates.</p>
 <blockquote>
-<p>🛑 <strong>HOLD — LumiAI_Base_Plate_HV.nc is NOT FOR CUTTING
-(2026-11-24, CTO).</strong> The NC is built at PSU length 159 (front PSU
-holes 154.0 apart along the length); CAD's committed HV plate uses 158
-(153.0 apart), so the NC and the CAD plate disagree by 1 mm on the front
-PSU hole. Do not cut this file, and do not cut Nova's plate from it,
-until the operator calipers the PSC-150 hole spacing. Then CAD and CNC
-regenerate from the same value, and this hold comes off.</p>
+<p>✅ <strong>PSU length settled: 158.5 (2026-11-24).</strong> The
+operator measured the PSC-150-12 mounting holes at 153.5 mm centre to
+centre along the length, so the case length is 158.5 (CAD plate
+@7c7ad472, <code>HV_PSU_LEN</code> = 158.5). The NC is built from that
+value: front PSU hole FILE Y −113.934, machine Y −115.477; back PSU hole
+unchanged (machine −42.167, 38.023). ⛔ The earlier build at 159
+(@4b4ce90d, front hole −115.977) was 0.5 mm off and is superseded; the
+HOLD that stood on this file earlier today is lifted by the regenerated
+NC. The 8 POST and 8 carriage holes do not depend on it.</p>
 </blockquote>
 <blockquote>
-<p>🔧 <strong>Assembly order (CAD 2026-11-24, plate gate):</strong> all
-8 carriage holes clear the fence wall with the M3 head (r 2.75; bite
-273.3 mm3), but <strong>CARRIAGE.R.3 and CARRIAGE.L.2 have fence
-material over them at Z 44–60</strong>: bolt the rail carriages to the
-plate <strong>before the fence goes on</strong>, or use a short L-key.
-The plate build runs this check on every build and stops if the fence
-STEP is missing.</p>
-</blockquote>
-<blockquote>
-<p>⏳ <strong>Open check: PSU case length.</strong> The front PSU hole
-follows the PSC-150-12 case length. The operator says it is "officially
-159"; the model constant <code>HV_PSU_LEN</code> still reads 158
-(approx), and the operator is checking the caliper. The NC is built with
-<strong>159</strong>: front PSU hole FILE Y −114.434, machine Y −115.977
-(at 158 it would be −113.434 / −114.977). If the caliper reads 158,
-regenerate before any cut with <code>BASEPLATE_HV_PSU_LEN=158</code>.
-The back PSU hole and all POST and carriage holes do not depend on
-it.</p>
+<p>ℹ️ <strong>Countersinks (CAD, 2026-11-24):</strong> the operator uses
+flat-head M3 for the rail carriages so they sit flush. Neither the model
+nor the NC has a countersink: the carriage holes are plain Ø3.4 through.
+Decision pending with the operator: hand-countersink the 8 carriage
+holes (90°, to about Ø6), or add a spot op to the NC.</p>
 </blockquote>
 <p>Regenerate:
-<code>BASEPLATE_HV_PSU_LEN=159 LUMI_BAY_HV=1 ~/.local/bin/FreeCAD-weekly-2026.11.11 -c "exec(open('cad/freecad/gen_baseplate_nc.py').read()); import sys; sys.exit(0)"</code>.
+<code>LUMI_BAY_HV=1 ~/.local/bin/FreeCAD-weekly-2026.11.11 -c "exec(open('cad/freecad/gen_baseplate_nc.py').read()); import sys; sys.exit(0)"</code>
+(uses the model's <code>HV_PSU_LEN</code>;
+<code>BASEPLATE_HV_PSU_LEN</code> overrides it).
 <strong>Generator:</strong> <a
 href="../cad/freecad/gen_baseplate_nc.py"><code>cad/freecad/gen_baseplate_nc.py</code></a>,
 geometry from <code>lumi_base_plate.py</code>. <strong>Per-part
