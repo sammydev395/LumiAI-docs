@@ -1547,14 +1547,30 @@ arms, per-fork slots; red HS PETG S2, deck down, no supports, hole
 compensation 0, 0.2; the test: thumb in, flip + shake, a HARD pull (it
 must NOT open the arm), release by pushing the arm tip aside with a flat
 tool. 2 h 35 / 47.4 g, 0 floating starts, flex-slot gate 14 / 14 arms at
-1.60. <strong>H2S 28 = RETIRED</strong> (the tag placeholder).
-<strong>XY HOLE COMPENSATION 0 on true-size parts</strong> (LumiAI CTO +
-CAD 2026-11-25): the H2S book's 0.15 grows every CLOSED slot or hole, so
-it thinned the latch-fork coupon's closed-slot arms 1.60 -&gt; 1.30. Now
-0 per object on the latch-fork coupon, the bay v3 CARRIER (latch arms,
-mains clip towers) and the DESK FENCE BACK HALF (its mains clips); CAD
-sizes every slot, channel and screw pilot for true size.
-<strong>FLEX-SLOT GATE</strong> in <code>slice_all.py</code>
+1.60. <strong>H2S 28 = RETIRED</strong> (operator 2026-11-25, via LumiAI
+CTO: no fork coupon prints, latch or hook; the carrier goes straight to
+print once CAD's slimmed hooks pass placement; the coupon exports stay).
+<strong>H2S 24 RETAINING RING BARE</strong> (LumiAI CTO 2026-11-25; the
+operator found it still making "tons of supports"): thread end down as
+before, NO paint, NO support -- its lip reaches 2.66 (verify's ledge
+limit 6.0); 5.27 cm3 of lip trees (29.6 %) -&gt; 0, plate 24 3 h 11 /
+54.6 g -&gt; 2 h 36 / 49.7 g, 0 floating starts; the X1C 16 copy bare
+too (was 11.8 %); the lip's underside (the clamp face on the extension
+flange) prints as a bare overhang, CAD's 45 deg lip chamfer if it is
+rough. <strong>SUPPORT BUDGET GATE</strong> in slice_all
+(<code>cad/print/gate_support_budget.py</code>): each part's support
+&lt;= 10 % of its own filament or a named waiver; bite: the painted ring
+29.6 % FAILS; the over-budget parts carry PROVISIONAL waivers (pending
+the operator) as the fix list, in the CTO's order: the wand shells + ext
+halves (gusset study), the X1C wand copies, the cradle L, the fence
+fronts. (the tag placeholder). <strong>XY HOLE COMPENSATION 0 on
+true-size parts</strong> (LumiAI CTO + CAD 2026-11-25): the H2S book's
+0.15 grows every CLOSED slot or hole, so it thinned the latch-fork
+coupon's closed-slot arms 1.60 -&gt; 1.30. Now 0 per object on the
+latch-fork coupon, the bay v3 CARRIER (latch arms, mains clip towers)
+and the DESK FENCE BACK HALF (its mains clips); CAD sizes every slot,
+channel and screw pilot for true size. <strong>FLEX-SLOT GATE</strong>
+in <code>slice_all.py</code>
 (<code>cad/print/gate_flex_slots.py</code>): every plate carrying a part
 with flexure arms in slots (its scan lines in <code>FLEX_PROBES</code>)
 has its arms measured in the sliced G-code against the model, each
