@@ -1564,11 +1564,20 @@ limit 6.0); 5.27 cm3 of lip trees (29.6 %) -&gt; 0, plate 24 3 h 11 /
 54.6 g -&gt; 2 h 36 / 49.7 g, 0 floating starts; the X1C 16 copy bare
 too (was 11.8 %); the lip's underside (the clamp face on the extension
 flange) prints as a bare overhang, CAD's 45 deg lip chamfer if it is
-rough. <strong>X1C BOOK = 14 PLATES, the ASA plates dropped</strong>
-(operator 2026-11-25, via LumiAI CTO: "you can drop those plates from
-the X1C"; the X1C has no ASA, so its 14 "H2S S2 ASA black" plates would
-have printed silently in PLA / PETG): old 3 end plates, 4 / 5 shells, 6
-EBC covers, 7 / 8 / 9 ext halves, 10 / 13 base covers, 16 wand rings, 17
+rough. <strong>PARTS COVERAGE GATE</strong>
+(<code>cad/print/gate_parts_coverage.py &lt;X1C&gt; &lt;H2S&gt;</code>,
+LumiAI CTO 2026-11-25): every part in the builder's printer map (DIST)
+is on a printable plate in one of the two books (a part only on a HOLD
+plate is reported as held; RETIRED_STEMS and NOT_ON_A_PLATE carry their
+reasons); PASS today (39 parts; held: the desk fence front half;
+retired: the old LV fence halves; off: 3 cut test coupons); bite
+<code>LUMI_COVERAGE_BITE=&lt;stem&gt;</code> FAILS. Limit: DIST lists
+the parts with a printer split, not every later part (cradle, bay).
+<strong>X1C BOOK = 14 PLATES, the ASA plates dropped</strong> (operator
+2026-11-25, via LumiAI CTO: "you can drop those plates from the X1C";
+the X1C has no ASA, so its 14 "H2S S2 ASA black" plates would have
+printed silently in PLA / PETG): old 3 end plates, 4 / 5 shells, 6 EBC
+covers, 7 / 8 / 9 ext halves, 10 / 13 base covers, 16 wand rings, 17
 head ring + lens plate, 22 rear cap (each keeps its H2S plate), and old
 11 / 12, the OLD LV fence halves, which leave BOTH books (bay v3
 replaces them for every robot; their CAD + STLs stay). Old -&gt; new:
