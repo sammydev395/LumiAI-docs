@@ -75,7 +75,7 @@ battery; 8 A × 10 min acceptance, port ≥ 11.1 V). This also answers
 <tr>
 <td>B6</td>
 <td><strong>ZK-SJ20 frame</strong>: PSU-lid open area ≥ 50 %; IN / OUT
-routes and lengths (rows 5 / 6, D14a)</td>
+routes and lengths (§9: HV5, HV6, HV6a)</td>
 <td>CAD</td>
 <td>⏳ on the operator's CAD go, after calipering</td>
 </tr>
@@ -140,10 +140,38 @@ can pass the PSC-150's limit; battery covers peaks</td>
 </tr>
 <tr>
 <td>B14</td>
-<td><strong>Front fence grill</strong> + front PIRs at 68 (slots, open
-area, lens view, lead lengths)</td>
+<td><strong>Front fence grill</strong> (slots, open area); front PIRs
+stay low at 25 (operator 2026-11-24)</td>
 <td>CAD</td>
 <td>⏳ no CAD work yet</td>
+</tr>
+<tr>
+<td>B15</td>
+<td><strong>DC path current on HV</strong> (§9), worked through
+2026-11-24. Bay current at 13.8 V: buck input ~8.4 A sustained / ~11.2 A
+peak (servos 9 / 12 A at 12.0 V, 93 % efficiency) + wand 2.4 + HAT 1.2 +
+fans 0.1 = **~12 A sustained / ~15 A peak on mains**; on battery (~11.5
+V) **~14 A sustained / ~17 A peak**. Against the parts in series:
+<strong>DC rocker KCD1:</strong> no DC rating, 10 A @ 125 V AC best
+case, so <strong>short by ~2 A sustained / ~5 A peak on mains, ~4 / ~7 A
+on battery</strong>. <strong>Red 4.8 flags on it:</strong> 10 A, short
+by the same. <strong>HL-PBB:</strong> 16 A total, OK on mains, ~1 A over
+at the battery peak. <strong>F1 (10 A, battery lead):</strong> on
+battery it carries the whole bay, so <strong>short by ~4 A sustained /
+~7 A peak</strong>. <strong>PSU CH1 (7.5 A, 150 W):</strong> ~12 A /
+~166 W sustained, so <strong>short by ~4.5 A / ~16 W</strong> (B13).
+Assumes the 9 A sustained servo figure; INA3 / INA-MAIN on real HV moves
+(B12) set the true numbers</td>
+<td>Electronics → operator</td>
+<td>⏳ verdict: short at the PSU, F1, the DC rocker and its flags; block
+OK; operator decides after measurement</td>
+</tr>
+<tr>
+<td>B16</td>
+<td><strong>ZK-SJ20 hole pattern</strong>: not in the listing; caliper
+on arrival (with B7)</td>
+<td>CAD + operator</td>
+<td>⏳ board est. Nov 29 – Dec 5</td>
 </tr>
 </tbody>
 </table>
@@ -212,8 +240,9 @@ temperature (°C)</td>
 underside</strong>, fins along the 109 mm length, held by 4 brass
 screws; PCB corner holes outside it. <strong>5 V fan port, ships without
 a fan.</strong> Mount it with air moving along the fins (fins in line
-with the fans' flow), never fins-down flat on the carrier or over the
-PSU vent lid</td>
+with the fans' flow), never flat against a solid deck: in the bay it
+sits over an opening with 3.0 mm to the PSU top and the lid kept ≥ 50 %
+open (§2)</td>
 </tr>
 <tr>
 <td>Size / weight</td>
@@ -262,9 +291,8 @@ run, check its noise against the bay's acoustic design, and confirm the
 terminal type (screw terminals in the photos) and the continuous current
 with no fan.</p>
 <h2
-id="2-hv-carrier-and-psu-cad-figures-2026-11-18-drawn-when-the-board-is-calipered">2.
-HV carrier and PSU (CAD figures, 2026-11-18; drawn when the board is
-calipered)</h2>
+id="2-hv-carrier-and-psu-cad-figures-final-when-the-board-is-calipered">2.
+HV carrier and PSU (CAD figures; final when the board is calipered)</h2>
 <ul>
 <li><strong>Board:</strong> Halo HV dev unit = the ZK-SJ20
 <strong>display</strong> version, 109 × 64.5 × 46 mm incl. the heatsink,
@@ -272,26 +300,26 @@ no onboard fan. ⏳ <strong>Production = the non-display
 version:</strong> its size, holes, terminals and keys (power-on default)
 are TBD; re-check before the production frame, and set it up with a
 meter instead of its display.</li>
-<li><strong>Why the deck can't take it:</strong> today's carrier deck is
-Z 44–48 (riding the strap bars over the battery), plate X 180.6–277.5, Y
-−98..106.4, and the lid underside is Z 89.7, so only 41.7 mm of
-headroom.</li>
-<li><strong>HV carrier: only the front section steps down</strong>, over
-the PSU, from the front to ~Y 25 (behind it the deck is back at Z 44 on
-the battery bars, the first at Y 50). Stack: PSU on 3 mm feet, top Z
-33.3; ~1 mm air; a <strong>frame holding the board by its long edges
-over an opening</strong> (frame top ~Z 38.3; fins face down, so no solid
-deck); board top ~Z 84.3, 5.4 mm under the lid.</li>
-<li><strong>Fin tips 9.4 mm above the PSU lid</strong> (accepted).
-<strong>PSU-lid open area:</strong> the board's shadow is 45 % of the
-159 × 98 lid, so the frame must keep it <strong>≥ 50 % open</strong> (⏳
-exact figure when drawn).</li>
+<li><strong>The carrier stays FLAT</strong> (operator 2026-11-23: "keep
+it flat"; lowering it over the PSU makes printing hard): the deck is Z
+44–48 everywhere. The ZK-SJ20 sits <strong>on the deck top (Z 48) over
+an opening</strong>, its ~12 mm heatsink (from photos; ≤ 14 fits)
+hanging through, <strong>3.0 mm above the PSU top</strong> (PSU on 3 mm
+feet). The lid underside is Z 89.7. ⏳ Re-layout awaiting the operator's
+OK (STATUS "Halo HV RE-LAYOUT"): buck 6.5 forward (Y −101.5..+7.5), deck
+extended forward to Y −131; numbers follow on his OK.</li>
+<li><strong>PSU-lid open area:</strong> the board's shadow is 45 % of
+the 159 × 98 lid, so the deck opening must keep it <strong>≥ 50 %
+open</strong> (⏳ exact figure when drawn).</li>
 <li><strong>Airflow:</strong> the 109 mm length runs front to back, fins
 in line with the back-wall fans.</li>
-<li><strong>Leads:</strong> board front edge ~Y −100, ~20 mm of lead
-room at the front, ~16 mm at the back before the step. <strong>ZK-SJ20
-terminals take E1008 ferrules</strong> (operator 2026-11-18). Wire and
-adjust it with the lid off.</li>
+<li><strong>Board position: Y −95..14 on the carrier</strong> (moved +4
+Y, operator 2026-11-24), leaving <strong>~19 mm of lead room at the
+front and 13 mm at the back</strong>. <strong>Terminals (listing): IN on
+the left short end, OUT on the right, seen display-up; 2-position
+side-entry blocks on the 64.5 mm ends.</strong> Hole pattern not
+published (B16). <strong>ZK-SJ20 terminals take E1008 ferrules</strong>
+(operator 2026-11-18). Wire and adjust it with the lid off.</li>
 <li><strong>INA226-DROK (INA3, 0x47) stays on the front wall where it
 is</strong> (operator 2026-11-18; X 236–261, Z 66.7–87.7, M1.7 pilots);
 it now measures the ZK-SJ20's output. Its leads stay bare 18 AWG, or
@@ -300,47 +328,55 @@ E1008 where they fit. With no front window, INA3 and
 reading above the setpoint (a moved pot or a failing supply).</li>
 <li><strong>PSU: PSC-150-12, 159 × 98 × 30</strong>, front face 1 mm off
 the front slant corners (Y −114.5), on ~3 mm feet over the desk-clamp
-front jaw (2.2 mm thick, 30 mm into the bay, X 207–253). The PSU
-hold-down strap stays (PSU centre Y −35).</li>
+front jaw (2.2 mm thick, 30 mm into the bay, X 207–253). The PSU is
+screwed to the plate (PSU centre Y −35). The carrier's front mount (the
+old "PSU strap") is split into 2 end stubs on HV.</li>
 <li><strong>Battery +3–4 mm further back</strong> (operator;
-BATTERY_SHIFT_Y ~18–19 on HV), leaving 4–5 mm PSU-to-pack.
-<strong>Battery hold-down (operator 2026-11-23: "Wall catches, no
-screws"; CAD 80b9bd5b):</strong> no straps, floor feet or strap holes in
-the HV base plate. The pack sits on a printed pad (top Z 5.0) and is
-held by <strong>2 PETG bars, 25 × 4</strong>, at Y 50–75 and Y 86–111,
-top Z 44 (the carrier plane), whose ramp teeth sit under 52° ramp
-catches on the fence side walls. The pack is 5.5 mm off each wall, too
-tight for an M3 head. The carrier screws into the bars at X 174.6 /
-283.5, Y 62.5 / 98.5.</li>
+BATTERY_SHIFT_Y ~18–19 on HV), leaving 4–5 mm PSU-to-pack (the
+operator's margin on CAD's 1.1 mm). ⏳ Being re-decided: CAD's options A
+(1.08 mm) / B (4.58 mm); no PSU case-temperature figure exists, so bench
+the on-hand PSC-150's back face after 30 min near 150 W. <strong>Battery
+hold-down: screwed fence pads, like the carrier strap (operator
+2026-11-24: "Yes, switch the battery bars to the screw pads"; CAD
+a278da8b, fence OVERALL_OK, bars PASS).</strong> No straps, floor feet
+or strap holes in the HV base plate; the pack sits on a printed pad and
+is held by 2 PETG bars (Y 50–75 / 86–111, top Z 44, the carrier plane).
+<strong>Pads:</strong> 4 flat pads on the side walls, 7.5 out, 10 wide,
+9 thick, bearing face Z 44.3 (0.3 over the bar top), at Y 50–60 (front)
+/ 87–97 (back); printed on a support enforcer. <strong>Screws:</strong>
+one <strong>M3 × 12 pan self-tap</strong> per bar end, down from above
+through the pad's Ø3.4 hole into the bar's blind Ø2.5 pilot, at X 160.4
+/ 300.5 (2.0 / 3.1 outside the pack), 4 in all.
+<strong>Assembly:</strong> pack into the tray; drop both bars into the
+27 mm gap between the pad rows, back bar first and slid 25.5 back, then
+the front bar slid 10.5 forward; fit the 4 screws; then the carrier,
+which screws into the bars.</li>
 <li><strong>Mains clearance:</strong> the A3 floor lane stays at Y
 127.8; at battery +3 / +4 it sits 5.57 / 4.57 mm off the pack, under the
 8 mm rule, <strong>accepted by the operator's override</strong>
 (B8).</li>
-<li>⏳ CAD: ZK-SJ20 IN / OUT routes and lengths for Power_Bay §16c rows
-5 / 6 and the D14a loop (on the operator's CAD go).</li>
+<li>⏳ CAD: routes and lengths for the §9 wire list (HV5, HV6,
+HV6a).</li>
 </ul>
 <h2 id="3-hv-front-fence">3. HV front fence</h2>
 <p><strong>Decided (operator, 2026-11-18):</strong> the front fence
 loses everything the front-wall DROK needed: the 34 × 16 LCD viewport,
 the 12 × 10 CV/CC pot cutout, the two function-button holes, the four
 DROK mount bosses and the engraved DROK labels. <strong>The front
-becomes a plain grill of air slots.</strong> The ZK-SJ20's display, pots
-and buttons are reached with the lid off; no outside access to the
-setpoint, by design.</p>
+becomes a plain grill of air slots</strong>, with no DROK features at
+all (operator 2026-11-24: "Remove all DROK features"); INA3's footprint
+stays. The ZK-SJ20's display, pots and buttons are reached with the lid
+off; no outside access to the setpoint, by design.</p>
 <ul>
-<li><strong>Front PIRs move up to centre 68</strong>, like the back pair
-(board + 1.5 lean spans Z 50.2–85.8 under the 90 top). At 68 they touch
-today's carrier front corners, so the HV carrier gets front-corner PIR
-clearance.</li>
-<li>The PIRs keep their G469 pins and GPIOs (OUT 36 / 11 / 38 / 40), so
-the software config doesn't change. Their lead lengths for Power_Bay
-§16c row 16 come from CAD.</li>
+<li><strong>Front PIRs stay low, at today's centre 25</strong> (operator
+2026-11-24: "Keep front PIRs low (25)"), so their openings, G469 pins,
+GPIOs (OUT 36 / 11 / 38 / 40) and §16c row 16 cuts are unchanged.</li>
 <li><strong>Grill constraints (CAD):</strong> keep INA3's footprint and
 pilots; keep the front clamp slot (46 wide at X ≈ 230, 3.5 tall at the
-plate edge); the front PIR openings at the slant corners, now high; wall
-4.0 thick, printed plate-edge down (bridges ≤ 10.5, no cantilevers), so
-slots run vertical or with a 52° pitched top like the fan grilles. ⏳
-Slot pattern and open area: no CAD work yet.</li>
+plate edge); the front PIR openings at the slant corners (low, as LV);
+wall 4.0 thick, printed plate-edge down (bridges ≤ 10.5, no
+cantilevers), so slots run vertical or with a 52° pitched top like the
+fan grilles. ⏳ Slot pattern and open area: no CAD work yet.</li>
 <li><strong>One codebase:</strong> CAD carries the LV / HV differences
 as config variants in its macros (fence cut-outs and bosses, carrier
 deck height and PSU block, battery hold-down, wired assembly), not
@@ -402,10 +438,12 @@ href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> not
 named above, as of 2026-11-18: mains (C14, rear AC rocker out flush on
 straight 4.8 FDFNY, A3 floor lane), battery at +15 Y with F1 and
 INA226-BATT, PSU CH1 → INA226-MAIN → DC rocker → distribution block,
-Mus-14 5 V HAT feed, fans, G469 map and I²C chain, the fan-side PIR pair
-at centre 68, wand tether, and the §16c cut list (rows 5 / 6 and the
-front PIRs get new lengths from CAD). Halo, Ultra and Nova are one
-configuration; Halo HV differs only by this document.</p>
+Mus-14 5 V HAT feed, fans, G469 map and I²C chain, both PIR pairs (fan
+side at 68, front at 25), wand tether, and the §16c cut list except the
+rows replaced in §9. <strong>No IP6518 / phone charger on Halo
+HV</strong> (not a Creator build), so §16c rows 15a / 15b don't apply.
+Halo, Ultra and Nova are one configuration; Halo HV differs only by this
+document.</p>
 <h2 id="6-hv-record-moved-from-electronics_bay_design-1-2026-11-18">6.
 HV record (moved from Electronics_Bay_Design §1, 2026-11-18)</h2>
 <p>The one-rail rules, arbiter rules, acceptance and the 11-12…11-16
@@ -666,4 +704,130 @@ positions on the ArmPi Ultra.</li>
 <p>The arm reset operation at startup is implemented in the auto-start
 script ... You can try commenting out the corresponding arm control code
 in the startup script to disable the automatic reset behavior.</p>
-</blockquote></body></html>
+</blockquote>
+<h2 id="9-hv-wire-list-replaces-power_bay-16c-rows-5--6--d14a">9. HV
+wire list (replaces Power_Bay §16c rows 5 / 6 / D14a)</h2>
+<p>Every other §16c row carries over (§5). The DROK is gone; the ZK-SJ20
+takes its place in the chain: block → <strong>ZK-SJ20 IN</strong> →
+<strong>ZK-SJ20 OUT</strong> → INA226-DROK (INA3) → servo riser → STM32
+board. Gauge stays <strong>18 AWG silicone</strong> (fleet palette 18 /
+22 / 26), each pair twisted. Plan and cut lengths come from CAD's HV
+wired model; cut = wired run + both strips + ~20 mm slack, as in
+§16c.</p>
+<p><strong>Terminal orientation:</strong> with the ZK-SJ20's 109 mm
+length front to back (§2), its short ends face the front wall and the
+back. Put the <strong>OUT end toward the front wall</strong>, where INA3
+sits, and the <strong>IN end toward the back (the block)</strong>.
+Confirmed by CAD: on HV the HL-PBB sits at the back, raised over the
+bars (Y 56–78), so the IN leads use the back lane (Y 14–27, 13 mm) and
+the OUT leads the front lane (Y −114..−95, 19 mm).</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Cond. × gauge</th>
+<th>From → to</th>
+<th>End A — termination</th>
+<th>End B — termination</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HV5 BUCK-IN</strong></td>
+<td>2 × 18, twisted</td>
+<td>Block <strong>HL-PBB A1 / B1</strong> → ZK-SJ20 <strong>IN+ /
+IN−</strong></td>
+<td>Block A1 / B1: <strong>E1008</strong></td>
+<td>ZK-SJ20 IN block (side entry): <strong>E1008</strong> (operator
+2026-11-18)</td>
+<td>Replaces DROK-IN (row 5). Current: ~8.4 A sustained, ~11 A peak at
+13.8 V; ~13.5 A from a sagging battery (B15). Routed 73 (wired bay
+e74bddb2); <strong>cut 150</strong> (includes a ~40 mm service loop: the
+board is wired with the lid off)</td>
+</tr>
+<tr>
+<td><strong>HV6 BUCK-OUT</strong></td>
+<td>2 × 18, twisted</td>
+<td>ZK-SJ20 <strong>OUT+ / OUT−</strong> → riser top → STM32 board</td>
+<td>OUT+ / OUT−: <strong>E1008</strong>. OUT+ goes to INA3 (HV6a); OUT−
+runs direct</td>
+<td><strong>Deans (T-plug)</strong> solder joint → STM32 blue terminal
+<strong>E1008</strong>, as LV</td>
+<td>Replaces DROK-OUT (row 6). ~9 A sustained, ~12 A peak at 12.0 V.
+Rises beside the tether, FFC on the far side, as LV. Routed 101–109 to
+the lid window (wired bay, doubled 18 re-gate); <strong>cut 145 to the
+lid window + measure</strong> the climb up the servo opening to the
+STM32, as LV</td>
+</tr>
+<tr>
+<td><strong>HV6a</strong></td>
+<td>1 × 18</td>
+<td>ZK-SJ20 <strong>OUT+</strong> → <strong>INA3 IN+</strong>; INA3
+<strong>IN−</strong> → on as HV6's + leg</td>
+<td>ZK OUT+: <strong>E1008</strong></td>
+<td>INA3 IN+ / IN−: bare 18 AWG strands, or E1008 where it seats
+(§2)</td>
+<td>Replaces D14a. INA3 stays on the front wall (X 236–261, Z
+66.7–87.7). Routed 19; <strong>cut 60</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Mains and battery on HV (CAD route, gated on the solids
+2026-11-24).</strong> The HL-PBB sits across the LV mains path, so on HV
+the mains runs down the +X side and the battery lead moves into the
+pack-to-wall gap. Gates: ≥ 8 mm jacket-to-jacket from every mains
+conductor to all LV (nearest: 13.97 to the battery pair, 8.71 to the
+HL-PBB, 8.76 to the back-right PIR). Crossings: 3, all at 90 ± 10° with
+the mains above (PIR-FR lead, fan-2 lead, battery pair). The mains' +X
+leg runs about 6 mm along over F1's +X nose end, 9.4 mm above its collar
+top; accepted as part of the crossing (≥ 8 holds). It is held there by a
+mains clip at (272, 92) on the raised span.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Cond. × gauge</th>
+<th>Route</th>
+<th>Routed (CAD)</th>
+<th>Cut</th>
+<th>Ends</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HV1 MAINS</strong></td>
+<td>3 × 18 silicone, 600 V</td>
+<td>C14 → up to Z 76 behind the pack → +X to X 266 → −Y → +X at Y 92
+(over F1's nose) → down X 289 past the PSU back face → −X under the deck
+to the strip L / N / ⏚ (268, 35)</td>
+<td>N / E 203–208 from the C14; <strong>L ≈ 284</strong> from the AC
+rocker LOAD (79 from the rear AC rocker under fan 2, then the same
+lane); entry into the PSU strip through the terminal slot opened to the
++X wall (wired bay e74bddb2)</td>
+<td><strong>L 320, N 245, E 260</strong> (earth longest at the PSU
+end)</td>
+<td>As row 1: C14 and AC rocker straight red 4.8 Fastons; PSU L / N red
+forks, ⏚ ring lug</td>
+</tr>
+<tr>
+<td><strong>HV-BATT</strong></td>
+<td>2 × 18 silicone, stacked pair</td>
+<td>Pack XT30 → into the gap (X 300.7; pack 297.38 / wall 304.01) →
+along it to Y 80 → up between the wall pads → −X over the pack top at Z
+52 → +Y at X 276 → F1 +X nose</td>
+<td>pack → F1 73; F1 → INA-BATT 27–33; INA-BATT → CH2 99–111 (wired bay
+e74bddb2)</td>
+<td><strong>110 / 70 / 150</strong></td>
+<td>As row BATT. Nothing terminates in the gap; nearest to the pack or
+wall is 1.26. Pack → F1 is 73, within the ≤ 150 mm unfused limit</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DC rocker on HV:</strong> at the rear, under fan 1 (mirror
+pair with the AC rocker under fan 2; wired bay e74bddb2). LINE / LOAD /
+LAMP routed 167–175, <strong>cut 250</strong> (includes a ~40 mm service
+loop for lifting the carrier). Ends as row 3. No PSU LED window on HV
+(operator: the LED shows through the fence slots).</p>
+<p>Not wired: the ZK-SJ20's 5 V fan port (fan decided at the bench gate,
+§1).</p></body></html>
