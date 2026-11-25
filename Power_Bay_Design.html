@@ -3668,9 +3668,9 @@ disconnected: 95 W at 7 A, cuts out at 8 A; with the pack connected it
 did not trip to 10 A, the pack most likely covering the excess);
 PSC-150-12 rated 7.5 A. The battery carries peaks above CH1's
 limit.</li>
-<li><strong>Feed gauge:</strong> 18 AWG on D2 / D4 / D7 (E1008); doubled
-18 AWG on the ZK-SJ20 runs; the wand tether a single 22 AWG pair; fans
-and HAT 22 AWG.</li>
+<li><strong>Feed gauge:</strong> 18 AWG on D2 / D4 / D7 (E1008); single
+16 AWG on the ZK-SJ20 runs (E1508); the wand tether a single 22 AWG
+pair; fans and HAT 22 AWG.</li>
 </ul>
 <h4 id="1134-mounting--on-the-power-bay-carrier">11.3.4 Mounting — on
 the power-bay carrier</h4>
@@ -5467,13 +5467,13 @@ Carrier harness build list — every harness, by route ID (every build,
 <p><strong>Scope:</strong> the one power-bay carrier, every build
 (Ultra, Nova, Halo HV; Halo at its rebuild). Route IDs and gauges match
 the §11.3.9 harness table. <strong>Routed</strong> = CAD's wired bay
-(e74bddb2; Ø3.3 re-gate 2c45839e), centreline face to face, no strip or
-slack. <strong>Cut</strong> = routed + both strips + ~20 mm, rounded up.
-Every 18 AWG run is gated at Ø3.3 (the stock measures Ø2.8–3.3; CAD
-2c45839e, all PASS: mains ≥ 8 at 8.65 nearest, BATT pair 1.66 to the
-pack and wall). The 16 AWG buck runs pass at Ø3.6 (CAD f0105c7a), above
-the stock's listed Ø3.0. String-run the mains on the carrier before
-crimping.</p>
+(e74bddb2; Ø3.3 re-gate 2c45839e; lid-window ends e974f78a), centreline
+face to face, no strip or slack. <strong>Cut</strong> = routed + both
+strips + ~20 mm, rounded up. Every 18 AWG run is gated at Ø3.3 (the
+stock measures Ø2.8–3.3; CAD 2c45839e, all PASS: mains ≥ 8 at 8.65
+nearest, BATT pair 1.66 to the pack and wall). The 16 AWG buck runs pass
+at Ø3.6 (CAD f0105c7a), above the stock's listed Ø3.0. String-run the
+mains on the carrier before crimping.</p>
 <table>
 <thead>
 <tr>
@@ -5560,9 +5560,9 @@ one won't seat)</td>
 <td>6</td>
 <td><strong>BUCK-OUT</strong></td>
 <td><strong>2 × 16 AWG</strong>, red / black</td>
-<td>96–111 to the lid window (mid-lane at Y −99.5, raised to Z 67.5 over
-the breakout)</td>
-<td><strong>150 to the lid window + measure</strong> the climb up the
+<td>109–122 to the lid window (mid-lane at Y −99.5, raised to Z 67.5
+over the breakout)</td>
+<td><strong>160 to the lid window + measure</strong> the climb up the
 servo opening to the STM32</td>
 <td>ZK-SJ20 <strong>OUT−: E1508</strong> (direct); OUT+ via row 6a</td>
 <td><strong>Deans (T-plug)</strong> solder joint → STM32 blue terminal
@@ -5609,7 +5609,7 @@ Meter polarity before connecting</td>
 <td>9</td>
 <td><strong>USB-C</strong></td>
 <td>factory C-to-C</td>
-<td>81</td>
+<td>93</td>
 <td>factory <strong>0.46 m</strong></td>
 <td>Mus-14 USB-C</td>
 <td>HAT POWER</td>
@@ -5669,8 +5669,8 @@ orders differ</td>
 <td>14</td>
 <td><strong>TETHER-P</strong></td>
 <td>2 × 22 + GND-logic 22</td>
-<td>174–176 in the bay + CAD's routed bound outside the bay (890 power
-pair / 888 GND-logic, riser top → wand XHP-6, longest across poses)</td>
+<td>186–189 in the bay + CAD's bound outside the bay (≤ 904 power pair /
+≤ 902 GND-logic, riser top → wand XHP-6, longest across poses)</td>
 <td><strong>power pair 1.17 m each, GND-logic 1.05 m</strong> (upper
 bounds; string-run on Halo before crimping)</td>
 <td>HL-PBB <strong>A2 / B2: E0508</strong>; GND-logic → <strong>G469 pin
@@ -5682,7 +5682,7 @@ bounds; string-run on Halo before crimping)</td>
 <td>15</td>
 <td><strong>TETHER-S</strong></td>
 <td>3 × 26</td>
-<td>30 in the bay + 883 outside</td>
+<td>43 in the bay + ≤ 897 outside</td>
 <td><strong>1.03 m each</strong></td>
 <td>G469 <strong>3 / 5 / 1</strong> (shared ferrules)</td>
 <td>Same 6-pin housing: pins <strong>3 / 4 / 5</strong></td>
@@ -5732,7 +5732,7 @@ HC-SR501 silk)</td>
 <td>17</td>
 <td><strong>SPS30</strong></td>
 <td>4 × 26 + vendor ZH1.5 pigtail</td>
-<td>84–90 on-carrier (over the G469 stack)</td>
+<td>85–90 on-carrier (over the G469 stack)</td>
 <td><strong>125</strong> on-carrier <strong>+ measure</strong> the drop
 below the opening</td>
 <td>SPS30 ZH1.5 (vendor) + staggered solder splices</td>
@@ -5744,7 +5744,7 @@ conductors in one ferrule</strong> with the ZE15's 5 V)</td>
 <td>18</td>
 <td><strong>ZE15</strong></td>
 <td>4 × 26</td>
-<td>84–90 on-carrier</td>
+<td>85–90 on-carrier</td>
 <td><strong>125</strong> on-carrier <strong>+ measure</strong> the drop
 to the sensor</td>
 <td>ZE15 header pins: solder + heat-shrink</td>
@@ -5777,10 +5777,10 @@ incl. 14, 15 and 15a):</strong> the Cut column × conductor count.</p>
 <tbody>
 <tr>
 <td><strong>16 AWG</strong></td>
-<td><strong>~1.2 m</strong> (red ~0.64, black ~0.58)</td>
-<td>BUCK-IN 0.30, BUCK-OUT 0.30 to the lid window, 6a 0.06;
+<td><strong>~1.2 m</strong> (red ~0.65, black ~0.59)</td>
+<td>BUCK-IN 0.30, BUCK-OUT 0.32 to the lid window, 6a 0.06;
 <strong>estimated:</strong> BUCK-OUT's climb to the STM32 ~0.56 (2 ×
-~0.28). Four builds use ~2.5 m red / ~2.3 m black of the ~4 m each in
+~0.28). Four builds use ~2.6 m red / ~2.4 m black of the ~4 m each in
 stock</td>
 </tr>
 <tr>
