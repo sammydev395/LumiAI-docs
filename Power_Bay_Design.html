@@ -4506,17 +4506,23 @@ terminals.</li>
 <li><strong>PSU CH2 BAT± leads</strong> exit beside <strong>+V</strong>,
 at the strip end away from L.</li>
 </ul>
-<p><strong>Cable ODs (CALIPER before CAD commits fork
-mouths):</strong></p>
+<p><strong>Cable ODs (measured):</strong></p>
 <ul>
-<li>26 AWG silicone ~1.2–1.3 mm; 22 AWG silicone ~1.6–1.8 mm; <strong>18
-AWG silicone Ø2.8–3.3 mm</strong> (operator-measured on the stock in
-hand, 2026-10-09). 16 AWG silicone (INVENTO stock):
-<strong>Ø3.0</strong> by the listing (<a
-href="Electronics_Soldering_Guide.html">Soldering Guide §1</a>); CAD gates
-it at Ø3.6, above that.</li>
-<li>PIR lead (3 × 26 AWG, lightly twisted): ~2.7 mm round.</li>
-<li>Deans pair, 16 AWG, twisted: ~Ø7.2 envelope (provisional).</li>
+<li><strong>Bench stock, operator's caliper 2026-11-25:</strong> 26 AWG
+silicone <strong>Ø1.05–1.20</strong>; 22 AWG silicone
+<strong>Ø1.25–1.40</strong>; <strong>18 AWG silicone Ø1.85–2.00</strong>
+(mains included); <strong>16 AWG silicone Ø2.60–2.75</strong>. CAD's
+clearance gates ran fatter (18 at Ø3.3, 16 at Ø3.6), so every spacing
+PASS holds with margin; anything that <strong>retains</strong> a wire
+(fork mouths, hooks, clips) is checked at the low end of these
+ranges.</li>
+<li>PIR lead: each conductor <strong>Ø0.99–1.12</strong> (operator's
+caliper, 2026-11-25); 3 lightly twisted ≈ Ø2.4 envelope.</li>
+<li>Deans pair, 16 AWG, twisted: ~Ø5.5 envelope (2 × 2.75).</li>
+<li><strong>Ferrules don't change:</strong> they're sized by conductor
+area, not jacket. Every insulated collar (ØW, table above) takes its
+wire's jacket with room; the tightest is the B6 E7508 twin, two 22 AWG
+jackets (2 × 1.40) in its 2.8 collar.</li>
 <li>D18 C-to-C: HOTNOW ~4.0–4.5 mm. Noctua stock 4-wire lead: ~3–4 mm
 sleeved. 40P 0.5 mm FFC: ~21 × 0.3 mm flat.</li>
 <li><strong>Every snap fork must be narrower than its SMALLEST
@@ -5477,11 +5483,12 @@ the §11.3.9 harness table. <strong>Routed</strong> = CAD's wired bay
 (e74bddb2; Ø3.3 re-gate 2c45839e; lid-window ends e974f78a; IP6518 +
 buck-clear risers 3debe125), centreline face to face, no strip or slack.
 <strong>Cut</strong> = routed + both strips + ~20 mm, rounded up. Every
-18 AWG run is gated at Ø3.3 (the stock measures Ø2.8–3.3; CAD 2c45839e,
-all PASS: mains ≥ 8 at 8.65 nearest, BATT pair 1.66 to the pack and
-wall). The 16 AWG buck runs pass at Ø3.6 (CAD f0105c7a), above the
-stock's listed Ø3.0. String-run the mains on the carrier before
-crimping.</p>
+18 AWG run is gated at Ø3.3, above the stock's measured Ø1.85–2.00 (CAD
+2c45839e, all PASS: mains ≥ 8 at 8.65 nearest, BATT pair 1.66 to the
+pack and wall). The 16 AWG buck runs pass at Ø3.6 (CAD f0105c7a), above
+the stock's measured Ø2.60–2.75. Retention (forks, hooks, clips) is
+checked at the low end of each range (§11.3.9 cable ODs). String-run the
+mains on the carrier before crimping.</p>
 <p><strong>Dressing (every run, mains included):</strong> the cut's
 slack goes at the <strong>ends</strong>, as a short loop within
 <strong>30–50 mm of each terminal</strong> (the ~20 mm of the cut, or
@@ -5496,10 +5503,13 @@ fork channel are tied into one lane bundle: a nylon zip tie (stock,
 Assembly Guide §1) at each fork and every ~40 mm between. Ties go on
 <strong>after crimping</strong>, snug but not cinched on the silicone,
 trimmed flush with no tail toward a wire, and are cut for service.
-<strong>Alternative:</strong> a heat-shrink band from the 2:1 kit (Ø5
-for two 22 AWG, Ø8 for two 18 or 16 AWG), which must be slid on before
-the second end is crimped. <strong>Never tie mains with LV:</strong> L /
-N / E are bundled only with each other, in their own clips.</p>
+<strong>Alternative:</strong> a heat-shrink band from the 2:1 kit, slid
+on before the second end is crimped: <strong>Ø3</strong> for two 22 AWG;
+<strong>Ø5</strong> for three or four 22 AWG, or two or three 18 AWG;
+<strong>Ø8</strong> for four 18 AWG, or two to four 16 AWG (sized so the
+band slides over the bundle and still grips it at half its diameter).
+<strong>Never tie mains with LV:</strong> L / N / E are bundled only
+with each other, in their own clips.</p>
 <table>
 <thead>
 <tr>
