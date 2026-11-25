@@ -154,8 +154,11 @@ opened to the +X wall</td>
 </tr>
 <tr>
 <td><strong>Servo-rail buck</strong> (ZK-SJ20)</td>
-<td>Flat on the carrier deck over an opening, heatsink 3.0 mm above the
-PSU top, IN end toward the block, OUT end toward the front (§5c)</td>
+<td>On a <strong>+5.0 seat</strong> (two end bars on the deck, board
+underside Z 53.0) over the deck's heatsink opening, heatsink Z 36.5–46.5
+(3.5 above the PSU top), <strong>4 × M3 × 12 pan head self-tap</strong>,
+no shims (carrier release b6a53ce7); IN end toward the block, OUT end
+toward the front (§5c)</td>
 </tr>
 <tr>
 <td><strong>INA226-DROK (INA3)</strong></td>
@@ -1975,8 +1978,9 @@ ON / OFF</td>
 <td>Cooling</td>
 <td>finned aluminium heatsink over the whole underside, fins along the
 109 mm length; <strong>5 V fan port, ships without a fan</strong>. Air
-along the fins, never flat on a solid deck: on the carrier it sits over
-an opening, 3.0 mm above the PSU top, lid kept ≥ 50 % open</td>
+along the fins, never flat on a solid deck: on the carrier it sits on
+the +5.0 seat over the deck opening, heatsink 3.5 above the PSU top, lid
+kept ≥ 50 % open (64.5 %)</td>
 </tr>
 <tr>
 <td>Size / weight</td>
@@ -3770,12 +3774,17 @@ Power-bay carrier — layout requirements (in design, 2026-10-22)</h4>
 <p><strong>One carrier for every build (operator, 2026-11-24): CAD's
 <code>lumi_powerbay_carrier_HV</code></strong> (the former HV carrier;
 the LV carrier is dropped). Printed, flat deck at Z 48 with board posts
-moulded in; boards self-tap onto them, no studs. The ZK-SJ20 sits on the
-deck over an opening (heatsink hanging through, 3.0 mm above the PSU
-top); the deck is <strong>62 % open</strong> over the PSU. Front mount =
-<strong>2 end stubs</strong> (2 screws), clear of the buck's heatsink.
-The <strong>PSU is screwed to the base plate</strong>; the battery is
-held by <strong>4 screwed wall pads</strong> (M3 × 12, <a
+moulded in; boards self-tap onto them, no studs. The ZK-SJ20 sits on a
+<strong>+5.0 seat</strong> (two end bars, board underside Z 53.0) with
+its heatsink hanging through the deck opening (Z 36.5–46.5, 3.5 above
+the PSU top), on <strong>4 × M3 × 12 pan head self-tap</strong>, no
+shims; the deck is <strong>64.5 % open</strong> over the PSU with every
+anchor and post (65.6 % bare; gate ≥ 50). Front mount = <strong>2 front
+ears</strong>, each <strong>M3 × 10 pan head self-tap</strong> straight
+down into the fence's flipped front pads (Ø2.5 × 6.5 pilots); the end
+stubs are retired (carrier release b6a53ce7). The <strong>PSU is screwed
+to the base plate</strong>; the battery is held by <strong>4 screwed
+wall pads</strong> (M3 × 12, <a
 href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code></a> §2).
 <strong>Nothing mounts on the PSU cover.</strong> Electronics owns this
 layout spec; CAD owns the part and its layout file
@@ -4028,9 +4037,10 @@ survey).</li>
 the carrier fitted ≤ <strong>+5 °C</strong> over the same load without
 it. One reading each, folded into the pending PSU-top thermal
 survey.</li>
-<li><strong>Height:</strong> PSU top → deck → tallest board (ZK-SJ20 46
-mm, HL-PBB raised over the bars, G469 stack) must clear the bay lid. CAD
-checks against the fence envelope.</li>
+<li><strong>Height:</strong> PSU top → deck → tallest board (ZK-SJ20
+coil top Z 86.6 under the Z 89.7 lid, HL-PBB raised over the bars, G469
+stack) must clear the bay lid. CAD checks against the fence
+envelope.</li>
 </ul>
 <p><strong>TMP102 intent — fan-loop source (answered
 2026-10-22):</strong> the bay has <strong>ONE TMP102 (0x48)</strong>,
@@ -4144,11 +4154,14 @@ only, no LV in or touching the tie</strong>, head and flush-trimmed tail
 on the cap side away from the jacket and from LV (nearest LV to a mains
 tie, loop and head modelled: 11.35). The tie holds the bundle in every
 orientation, the inverted ceiling build included. <strong>C1's tie is
-the C14-end strain relief.</strong> <strong>The L leg's first
-hold</strong>, on the fence post block at (243.45, 126.75, Z 35), keeps
-its own strain-relief tie. <strong>Assembly:</strong> inspect the jacket
-after tying; a scuff or nick means a new wire. PETG/ASA is fine, since
-the cap isn't the insulation.</li>
+the C14-end strain relief.</strong> <strong>The L leg's first holds are
+two fence tie lugs</strong> (fence rev 11-25, b6a53ce7): <strong>Z 30 (w
+6.0) = the L leg's strain-relief tie</strong>, ~41 mm along the
+conductor from its rocker terminal; <strong>Z 52 (w 4.0) = locate
+only</strong>, snug. Same tie rules: mains only, no LV in the tie.
+<strong>Assembly:</strong> inspect the jacket after tying; a scuff or
+nick means a new wire. PETG/ASA is fine, since the cap isn't the
+insulation.</li>
 <li><strong>Never over the carrier's top face or the LV half of the
 slot:</strong> the run reaches the strip through the slot's +X opening
 at the L/N/⏚ end.</li>
@@ -5497,8 +5510,9 @@ Carrier harness build list — every harness, by route ID (every build,
 the §11.3.9 harness table. <strong>Routed</strong> = CAD's wired bay
 (e74bddb2; Ø3.3 re-gate 2c45839e; lid-window ends e974f78a; IP6518 +
 buck-clear risers 3debe125; tie anchors + mains tie caps, carrier
-release 9ef299b1; wiring map 38d204ba), centreline face to face, no
-strip or slack. <strong>Cut</strong> = routed + both strips + ~20 mm,
+release 9ef299b1; wiring map 38d204ba; buck +5.0 seat, front ears,
+PHONE-USB reroute, carrier release b6a53ce7), centreline face to face,
+no strip or slack. <strong>Cut</strong> = routed + both strips + ~20 mm,
 rounded up. Every 18 AWG run is gated at Ø3.3, above the stock's
 measured Ø1.85–2.00 (CAD 2c45839e, all PASS: mains ≥ 8 at 8.65 nearest,
 BATT pair 1.66 to the pack and wall). The 16 AWG buck runs pass at Ø3.6
@@ -5606,7 +5620,7 @@ inside PHONE-IN's GND <strong>E7508</strong></td>
 <td>5</td>
 <td><strong>BUCK-IN</strong></td>
 <td><strong>2 × 16 AWG</strong> silicone, red / black, twisted</td>
-<td>73</td>
+<td>75.0 (lands on the raised buck from above)</td>
 <td><strong>150</strong> (incl. ~40 service loop: the buck is wired
 lid-off)</td>
 <td>HL-PBB <strong>A1 / B1: E1508</strong></td>
@@ -5618,8 +5632,7 @@ one won't seat)</td>
 <td>6</td>
 <td><strong>BUCK-OUT</strong></td>
 <td><strong>2 × 16 AWG</strong>, red / black</td>
-<td>110–123 to the lid window (mid-lane at Y −99.5, raised to Z 67.5
-over the breakout)</td>
+<td>123.9 to the riser (lands on the raised buck from above)</td>
 <td><strong>160 to the lid window + measure</strong> the climb up the
 servo opening to the STM32</td>
 <td>ZK-SJ20 <strong>OUT−: E1508</strong> (direct); OUT+ via row 6a</td>
@@ -5632,7 +5645,7 @@ the lid window. Rises beside the tether, FFC on the far side</td>
 <td>6a</td>
 <td><strong>INA3 hop</strong></td>
 <td>1 × 16 AWG red</td>
-<td>19</td>
+<td>21.0</td>
 <td><strong>60</strong></td>
 <td>ZK-SJ20 <strong>OUT+: E1508</strong></td>
 <td>INA3 <strong>IN+: E1508</strong> (bare if it won't seat, §5b.4)</td>
@@ -5769,7 +5782,9 @@ with the carrier</td>
 <td>15b</td>
 <td><strong>PHONE-USB</strong> <em>(Creator builds)</em></td>
 <td>bought C-to-C, 1.5 m, right-angle at one end</td>
-<td>71 in the bay to the lid window</td>
+<td>99.4 in the bay to the lid window: up off the plug to Z 75.5, then
+round the buck's front at Z 80 (never over the buck: its coil is Z
+86.6)</td>
 <td><strong>Bought 1.5 m 90° C-to-C, "PD Type-C 60 W" (3 A)</strong>,
 ordered 2026-11-22, qty 2 (Ultra + spare)</td>
 <td>IP6518 USB-C (underside)</td>
@@ -5881,7 +5896,8 @@ passes.</li>
 <li><strong>Bench-build the carrier-local harnesses with the carrier off
 the bay:</strong> the power hub (rows 2–4, 8, 11), the I²C chain (row
 13), FAN-SIG / PIR / sensor tails up to their G469 ferrules.</li>
-<li><strong>Fit the carrier</strong> (its 2 front-stub screws), then the
+<li><strong>Fit the carrier</strong> (its 2 front ears: <strong>M3 × 10
+pan head self-tap</strong> down into the fence's front pads), then the
 <strong>cross-boundary</strong> connections: CH1 at the PSU, BATT (row
 7, polarity metered first), USB-C, the tether legs, the FFC.</li>
 <li><strong>Buck last:</strong> the ZK-SJ20 goes on only after it passes

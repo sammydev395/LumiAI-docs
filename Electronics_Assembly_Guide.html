@@ -2641,10 +2641,12 @@ mains-side wall, Creator builds); <strong>M2 × 8 pan self-tap
 0.1–0.5 under the seated board, shim at fit); <strong>M3 × 8 pan
 self-tap ×4</strong> (the block: HL-PBB ×2, breakout ×2); <strong>M3 ×
 12 pan self-tap ×4</strong> for the battery hold-down pads (from above,
-Ø2.5 blind pilots). ⏳ <strong>ZK-SJ20 ×4 and the carrier's 2 front-stub
-screws:</strong> sizes from CAD once the buck's holes are calipered (HV
-B16). The PSU is screwed to the base plate, not strapped. G469 stacked
-on the breakout header <strong>plus 2 carrier posts</strong> (operator:
+Ø2.5 blind pilots). <strong>M3 × 12 pan self-tap ×4</strong> for the
+ZK-SJ20 (into the seat's end bars + deck, no shims) and <strong>M3 × 10
+pan self-tap ×2</strong> for the carrier's front ears (into the fence's
+front pads, Ø2.5 pilots) (carrier release b6a53ce7; both in stock). The
+PSU is screwed to the base plate, not strapped. G469 stacked on the
+breakout header <strong>plus 2 carrier posts</strong> (operator:
 header-only was wobbly).</td>
 <td>per robot</td>
 <td>Power-bay carrier</td>
@@ -3095,12 +3097,13 @@ href="Power_Bay_Design.html#1139-power-bay-carrier--layout-requirements-in-desig
 nylon</strong>); one distribution block per robot; INA226-MAIN +
 INA226-BATT side by side; F1 in its cradle; the mains on its own
 right-edge lane.</p></li>
-<li><p><strong>Service (carrier release 9ef299b1):</strong></p>
+<li><p><strong>Service (carrier releases 9ef299b1,
+b6a53ce7):</strong></p>
 <ol type="1">
 <li>To reach the MECCANIXITY breakout screws: cut the stretch-post ties
 and lift the raised bundle (I²C TMP102 → INA3, Mus-14 in) aside.</li>
-<li>To remove the carrier (desk build): lift the IP6518 IN pair aside
-from the right stub screw first. No unsoldering.</li>
+<li>To remove the carrier: undo the 2 front-ear screws (M3 × 10, from
+above); nothing to lift aside. No unsoldering.</li>
 <li>Mains: cut the mains tie caps' ties and lift the bundle off its
 saddles; never un-terminate (Power_Bay §11.3.9 mains route, item
 8).</li>
@@ -3237,14 +3240,15 @@ Servo-rail buck (ZK-SJ20) — every build: setup and bench gate</h2>
 <p>The <strong>ZK-SJ20 300 W buck-boost (display version)</strong>
 replaces the DROK on every build (operator 2026-11-24): <strong>7.50
 V</strong> on LV, <strong>12.0 V</strong> on Halo HV. It sits on the
-carrier deck over an opening. Every robot gets the same carrier; nothing
-goes on the front wall but the logo. Board data, photos and the HV
-numbers: <a href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code>
-§1</a>. Wiring: block A1 / B1 → ZK IN, ZK OUT → STM32 blue terminal via
-the Deans, ZK OUT+ → INA3 (INA226 0x47, on the carrier) → on to the
-STM32. All three runs are <strong>16 AWG</strong> red / black silicone
-(stock, ~4 m each) with <strong>E1508</strong> ends; bare twisted
-strands where an E1508 won't seat. Cuts: <a
+carrier's +5.0 seat, heatsink through the deck opening, on 4 × M3 × 12
+pan self-tap. Every robot gets the same carrier; nothing goes on the
+front wall but the logo. Board data, photos and the HV numbers: <a
+href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code> §1</a>. Wiring:
+block A1 / B1 → ZK IN, ZK OUT → STM32 blue terminal via the Deans, ZK
+OUT+ → INA3 (INA226 0x47, on the carrier) → on to the STM32. All three
+runs are <strong>16 AWG</strong> red / black silicone (stock, ~4 m each)
+with <strong>E1508</strong> ends; bare twisted strands where an E1508
+won't seat. Cuts: <a
 href="Power_Bay_Design.html#16c-carrier-harness-build-list--every-harness-by-cad-route-id-carrier-builds-2026-10-23">Power_Bay
 §16c</a>.</p>
 <p><strong>Stock:</strong> 4 in total. Unit 1 arrives before Nov 28 and
