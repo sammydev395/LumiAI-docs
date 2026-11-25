@@ -4,7 +4,7 @@ Phased Bring-Up Plan</h1>
 <p><strong>Purpose.</strong> Sequenced electrical + software bring-up of
 the LumiAI Ultra bay + wand + arm build <strong>after every physical
 component is already mounted</strong> (bay STM32 + Pi5 stack, G469 +
-MECCANIXITY FFC chain, PSU, D-1459 13.8 V distribution block,
+MECCANIXITY FFC chain, PSU, HL-PBB 13.8 V distribution block,
 INA226-MAIN, TMP102-bay, TMP102-wand, PCA9685, 12× LED drivers, LED
 MCPCB stack, wand fan, 2× bay fans, 4× HC-SR501 PIR array on the fence
 slants, SPS30 + ZE15-CO on the base plate, arm servos, BigClaw gripper,
@@ -237,12 +237,11 @@ checklist.</p>
 <blockquote>
 <p>🎯 <strong>Distribution block — design of record 2026-09-29:</strong>
 <strong>YRYAR HL-PBB-2-6-MINI</strong> (block of record; Ultra's block)
-or <strong>CZH-Labs D-1459</strong> dual-bus distribution module,
-ferrule-based, zero modification, one per robot on the power-bay carrier
-(spec: <a
+or <strong>HL-PBB</strong> dual-bus distribution module, ferrule-based,
+zero modification, one per robot on the power-bay carrier (spec: <a
 href="Power_Bay_Design.html#1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova"><code>Power_Bay_Design.md</code>
 §11.3.2</a>). Wiring + port map: <a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
 §11.3</a>; part spec: <a
 href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
 §1.4</a>.</p>
@@ -292,7 +291,7 @@ href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project
 before Phase 0; these rules govern that mount).</li>
 </ul>
 <p><strong>MUST DO before declaring Phase 0 complete → <a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
 §11.3 "Phase 0 verify checklist"</a>.</strong> Walk the full 8-step
 verify checklist end-to-end — AC rocker continuity, PSU CH1 output,
 distribution-block bus at 13.8 V, fan-side 13.8 V direct (no diode
@@ -305,7 +304,7 @@ vs GND, expect ~3.3 V and ~5 V; any other reading fails Phase 0 and
 gates every downstream phase). Also verify <strong>both illuminated
 rockers light up when ON</strong> — dark lamp = LAMP tap wrong;
 always-lit = LINE/LOAD swapped (<a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29">§11.3
+href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module">§11.3
 diagnostic tree</a>).</p>
 <hr />
 <h2
@@ -1518,7 +1517,7 @@ normal) → <strong>0x40 = the HAT's INA219</strong> alongside
 logs the BC-3 ≥4.90 V gate in-band (Ultra's
 <code>hat_power_logger</code> stays on 0x40 untouched).</li>
 <li>HAT swap: X1001 off, Waveshare on (same 16-pin FPC), SSD moves over.
-Wire the MusRock input from the D-1459 per wiring step 1 (A5/B5, 22 AWG
+Wire the MusRock input from the HL-PBB per wiring step 1 (A5/B5, 22 AWG
 / E0508 twisted pair, 3 A ATC inline; <strong>Halo:</strong> the DROK
 input screws, no F4, per the <a
 href="Bench_Plan_2026-11-02_to_11-06.html">Bench plan §3</a>) —

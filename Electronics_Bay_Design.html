@@ -20,18 +20,18 @@ that live between them and their external interfaces.</strong></p>
 <ul>
 <li><a
 href="Lumi_Wand_Integration.html#51-power-chain"><code>Lumi_Wand_Integration.md</code>
-§5.1</a> — split-rails power topology (bay D-1459 distribution block →
-wand 13.8 V + STM32-DROK 7.5 V)</li>
+§5.1</a> — split-rails power topology (bay HL-PBB distribution block →
+wand 13.8 V + the ZK-SJ20 servo-rail buck, 7.5 V)</li>
 <li><a
 href="Lumi_Wand_Integration.html#102-end-to-end-diagram-power-bay--arm--gripper--wand"><code>Lumi_Wand_Integration.md</code>
 §10.2</a> — end-to-end power bay wiring diagram</li>
 <li><a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
-§11.3</a> — bay 13.8 V distribution-block assembly (HL-PBB block of
-record, D-1459 alternate)</li>
+href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
+§11.3</a> — bay 13.8 V distribution-block assembly (HL-PBB, the only
+block)</li>
 <li><a
 href="Power/Compact_UPS_Power_System_HiWonder_RPi5.html"><code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code></a>
-— PSU, DROK, battery, fuse specs</li>
+— PSU, battery, fuse specs</li>
 </ul>
 <hr />
 <h2
@@ -117,9 +117,8 @@ HTS-16L, HTS-25L, etc.)</li>
 I²C is on the G469 chain, not these)</li>
 <li><strong>2× Custom keys</strong> — assignable</li>
 <li><strong>Power port</strong> (screw-terminal) — input +V / GND,
-<strong>7.5 V</strong> from the DROK on LV builds; the HV setpoint
-(<strong>12.0 V</strong>) from the same DROK after the HV servo
-swap</li>
+<strong>7.5 V</strong> from the ZK-SJ20 servo-rail buck on LV builds,
+<strong>12.0 V</strong> on Halo HV</li>
 <li><strong>5 V 5 A external power port</strong> — USB-C
 <strong>OUTPUT</strong> that powers the RPi5 (see §3.2 below)</li>
 <li><strong>Buzzer</strong></li>
@@ -128,7 +127,7 @@ board (separate from the bay-level AC/DC rockers on the fence)</li>
 </ul>
 <p><strong>Power flow through the STM32 board (bay-level
 context):</strong></p>
-<pre><code>PSU 13.8 V → D-1459 A2 → DROK buck (7.5 V, 8 A rated) → STM32 power port                                                              │
+<pre><code>PSU 13.8 V → HL-PBB A1 → ZK-SJ20 buck-boost (7.5 V, CC 18 A) → STM32 power port                                                              │
                                                               ▼
                                              STM32 board internal 5 V regulator
                                                               │
@@ -146,14 +145,14 @@ context):</strong></p>
                                          - PIR modules (via GPIO)
                                          - Wand tether +3.3 V (via G469)</code></pre>
 <blockquote>
-<p>🎯 <strong>Distribution block — design of record 2026-09-29:</strong>
-<strong>YRYAR HL-PBB-2-6-MINI</strong> (block of record; Ultra's block)
-or <strong>CZH-Labs D-1459</strong> dual-bus distribution module,
-ferrule-based, zero modification, one per robot on the power-bay carrier
-(spec: <a
+<p>🎯 <strong>Distribution block: YRYAR HL-PBB-2-6-MINI, the only
+block</strong> (operator 2026-11-24), dual-bus, ferrule-based, zero
+modification, one per robot on the power-bay carrier. Ultra has no block
+yet and gets one; Halo v1 keeps its retired modified APIELE until its
+bay is rebuilt (spec: <a
 href="Power_Bay_Design.html#1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova"><code>Power_Bay_Design.md</code>
 §11.3.2</a>). Wiring + port map: <a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
 §11.3</a>; part spec: <a
 href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
 §1.4</a>.</p>
@@ -209,13 +208,19 @@ label). After the HV swap the board runs at the HV setpoint, because the
 servos are fed through it.</p>
 <ul>
 <li><strong>Shipping configuration (LV servos: LX-15D, HTS-25L, LX-225,
-HX-06L, all 6–8.4 V):</strong> one rail. The DROK sets <strong>7.5
+HX-06L, all 6–8.4 V):</strong> one rail. The <strong>ZK-SJ20 servo-rail
+buck</strong> (every build, replacing the DROK) sets <strong>7.5
 V</strong> and that is both the board and the servo voltage.
-<strong>Never set it above 8.4 V.</strong> <strong>One fuse: F1</strong>
-(10 A glass, battery + → PSU CH2 BAT+); the DROK branch and every other
-CH1 branch are unfused, cleared only by the PSU's own output limit (on
-AC) or F1 (on battery). Per robot: <strong>Halo ✅</strong> 7.5 V
-verified 2026-11-02 (servos 7.41–7.51 V, board input 7.56 V, Pi
+<strong>Never set it above 8.4 V.</strong> Its CC is <strong>18
+A</strong> (operator 2026-11-24): headroom, since the real servo load is
+≤ 7–8 A. Setup and the first-unit bench gate: <a
+href="Electronics_Assembly_Guide.html">Assembly Guide §16e</a>.
+<strong>One fuse: F1</strong> (10 A glass, battery + → PSU CH2 BAT+);
+the buck branch and every other CH1 branch are unfused (no servo fuse,
+operator order 2026-11-24), cleared only by the PSU's own output limit
+(on AC) or F1 (on battery). Per robot: <strong>Halo ✅</strong> 7.5 V
+verified 2026-11-02 on its DROK, which stays until Halo's ZK-SJ20 has
+passed the bench gate (servos 7.41–7.51 V, board input 7.56 V, Pi
 <code>get_throttled</code> 0x0, EXT5V 5.16 V); <strong>Ultra ⏳</strong>
 measured 9.11 V on 2026-11-02, re-set per <a
 href="Power_Bay_Design.html">Power_Bay §4 power-up</a>;
@@ -223,7 +228,7 @@ href="Power_Bay_Design.html">Power_Bay §4 power-up</a>;
 <li><strong>Halo HV (4th robot, January 2027): everything HV (supply,
 carrier, fence, rules, bench record, blockers) is in <a
 href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code></a>.</strong>
-Halo, Ultra and Nova stay LV (7.4 V servos, DROK 7.5 V).</li>
+Halo, Ultra and Nova stay LV (7.4 V servos, ZK-SJ20 at 7.5 V).</li>
 </ul>
 <hr />
 <h2 id="2-raspberry-pi-5-16-gb--the-bay-compute-node">2. Raspberry Pi 5
@@ -819,11 +824,10 @@ bay, fully offloading the Pi's own input budget — that bay feed is
 </table>
 <h4 id="362-bay-fed-5-v-rail--musrock-mus-14">3.6.2 Bay-fed 5 V rail —
 MusRock Mus-14</h4>
-<p><strong>The chain:</strong> D-1459 <strong>A5/B5</strong> (B5
-released by the operator 2026-10-13 — <a
+<p><strong>The chain:</strong> HL-PBB <strong>A5/B5</strong> (<a
 href="Power_Bay_Design.html#1133-distribution-module-port-assignments-a-bus--v-b-bus--gnd">Power_Bay
-§11.3.3</a>) → <strong>22 AWG / E0508 twisted pair</strong> → <strong>3
-A ATC inline fuse</strong> → MusRock IN (~1.2 A peak at 13.8 V) →
+§11.3.3</a>) → <strong>22 AWG / E0508 twisted pair</strong>, unfused (F1
+is the only fuse) → MusRock IN (~1.2 A peak at 13.8 V) →
 <strong>C-to-C</strong> → the HAT's power-only USB-C.</p>
 <table>
 <tbody>
@@ -841,11 +845,12 @@ real output at the bench, no-load and at ~2.5 A: fixed "5 V" boards
 often sit at ~5.1 V, and that number decides the interim gate. Not yet
 in service: Ultra's HAT runs on the bench DROK directly (§3.6.3 gate 1).
 ⚠️ <strong>Naming ledger — three "DROKs" circulate:</strong> (1) the bay
-<strong>9 V DROK</strong> buck (STM32 branch), (2) the operator's
-<strong>bench DROK</strong> 0–32 V screen supply (feeding Ultra's HAT
-today), (3) <strong>"the drok we bought last week" = this dual-USB-C
-5-pack, doc name Mus-14.</strong> <strong>No second DROK</strong> —
-operator: <em>"we do not have room for a 2nd DROK, period."</em></td>
+<strong>DROK</strong> buck (STM32 branch; the ZK-SJ20 replaces it on
+every build), (2) the operator's <strong>bench DROK</strong> 0–32 V
+screen supply (feeding Ultra's HAT today), (3) <strong>"the drok we
+bought last week" = this dual-USB-C 5-pack, doc name Mus-14.</strong>
+<strong>No second DROK</strong> — operator: <em>"we do not have room for
+a 2nd DROK, period."</em></td>
 </tr>
 <tr>
 <td><strong>Planned replacement</strong> (🔴 <strong>NOT
@@ -896,10 +901,10 @@ reach before unscrewing anything).</td>
 </tr>
 <tr>
 <td><strong>Switching rule</strong></td>
-<td><strong>Same master-switched bus as the DROK — never separately
-switched</strong>: a late HAT rail = NVMe boot failure (the SSD is the
-Pi's boot drive and powers from the HAT's USB-C feed, not the PCIe
-ribbon).</td>
+<td><strong>Same master-switched bus as the servo-rail buck — never
+separately switched</strong>: a late HAT rail = NVMe boot failure (the
+SSD is the Pi's boot drive and powers from the HAT's USB-C feed, not the
+PCIe ribbon).</td>
 </tr>
 <tr>
 <td><strong>Budget</strong></td>
@@ -1077,14 +1082,11 @@ checks below.</td>
 </tr>
 <tr>
 <td><strong>Feed</strong></td>
-<td>From the <strong>wand tether's V+ / <code>GND-power</code>
-position</strong> on the distribution block (A1 / B1 on the D-1459 map,
-§11.3.3 in Power_Bay). It is unused in the creator edition, because the
-phone replaces the wand in the BigClaw; the phone's ~33 W in roughly
-replaces the wand's measured ~33 W, so the bay budget is unchanged.
-<strong>18 AWG twisted pair SOLDERED to the two corner VIN pads</strong>
-(operator: solder, not the DC5521 jack). <strong>Meter polarity at the
-pads before first power</strong> (the board has no reverse protection).
+<td>From block <strong>A6 / B6</strong> (PHONE-IN, Power_Bay §16c row
+15a; B6 shared with the DC rocker LAMP in one E1508). <strong>18 AWG
+twisted pair SOLDERED to the two corner VIN pads</strong> (operator:
+solder, not the DC5521 jack). <strong>Meter polarity at the pads before
+first power</strong> (the board has no reverse protection).
 Strain-relieve the pair in <strong>CAD's post tie groove</strong>.</td>
 </tr>
 <tr>
@@ -1093,14 +1095,17 @@ Strain-relieve the pair in <strong>CAD's post tie groove</strong>.</td>
 small 6-dof robot with tons of stuff already in the power bay"</em>:
 small 6-DOF arm, power bay already full). The IP6518's own output OCP /
 short protection covers phone-side faults; the input run is unfused like
-every CH1 branch (Power_Bay §11.3.2a, two-fuse design). <strong>Accepted
-trade-off:</strong> an input-side short is cleared only by the PSU's own
-output limit (on AC) or F1 (on battery) and darkens the whole bay.</td>
+every CH1 branch (F1 is the only fuse, operator order 2026-11-24).
+<strong>Accepted trade-off:</strong> an input-side short is cleared only
+by the PSU's own output limit (on AC) or F1 (on battery) and darkens the
+whole bay.</td>
 </tr>
 <tr>
 <td><strong>Mount</strong></td>
-<td>CAD: raised on <strong>4 × 19 mm M2 posts over the PSU intake,
-beside the tether riser</strong>. No fuse holder to place.</td>
+<td><strong>Upright on the mains-side fence wall's lower straight,
+front-right corner</strong> (CAD), ≥ 8 mm from every mains part; USB-C
+~95 mm to the lid window. ~3 W in the fan-swept bay air: no extra vent
+slots unless check 5 reads the IC above 70 °C.</td>
 </tr>
 <tr>
 <td><strong>Ports</strong></td>
@@ -1138,9 +1143,9 @@ straight-out cables</strong> — they'd protrude beyond the bay lid and
 either crush against the lid or apply strain to the Pi5's fragile
 connectors.</li>
 <li><strong>STM32 board is the power hub</strong> — never plug the Pi5's
-USB-C directly into a wall charger or the DROK output. It always sources
-from the STM32's 5 V 5 A external port. This ensures the DROK's 8 A
-output is fully accounted for and the STM32 board's internal 5 V
+USB-C directly into a wall charger or the servo-rail buck output. It
+always sources from the STM32's 5 V 5 A external port. This ensures the
+buck's output is fully accounted for and the STM32 board's internal 5 V
 regulator + protection is in the path.</li>
 <li><strong>Reserve spares</strong> of each GELRHONR / CableCreation
 3-pack in the bench spares drawer.</li>
@@ -1307,16 +1312,16 @@ lid can lift for service without tugging on any connector.</p>
 <p><strong>Route B — direct opening in black base plate under the STM32
 board</strong> (for the STM32's power feed):</p>
 <ul>
-<li><strong>DROK 7.5 V output → STM32 blue terminal block</strong>
-(power-in) — routes UP from the power bay (where the DROK lives, on the
-PSU top) through <strong>openings in the Hiwonder black base plate
-directly beneath the STM32 board</strong>, and lands at the STM32's
-blue-terminal-block power-input header. Does NOT go through the
-back-cover hole; does NOT share the base-servo harness. Keeping the
+<li><strong>ZK-SJ20 7.5 V output → STM32 blue terminal block</strong>
+(power-in; 16 AWG, Power_Bay §16c) — routes UP from the power bay (the
+buck sits on the carrier deck) through <strong>openings in the Hiwonder
+black base plate directly beneath the STM32 board</strong>, and lands at
+the STM32's blue-terminal-block power-input header. Does NOT go through
+the back-cover hole; does NOT share the base-servo harness. Keeping the
 STM32 power feed on its own opening isolates it from the signal harness
-(no inductive coupling from the ~5.5 A DROK-output current into the FFC
-/ USB cables) and keeps the entry point right under the STM32's terminal
-block for the shortest possible power lead.</li>
+(no inductive coupling from the servo-rail current into the FFC / USB
+cables) and keeps the entry point right under the STM32's terminal block
+for the shortest possible power lead.</li>
 </ul>
 <p><strong>Static-side / moving-side notes:</strong> the electronics bay
 lid is static (screws into fence). The Hiwonder base-plate opening is
@@ -1349,8 +1354,9 @@ jackets are still preferred for the STM32 bus cable's arm-side segment
 <li>Land Pi5 in the bay per the (separately-owned) Electronics-bay
 agent's fence CAD + PSU-top mounting.</li>
 <li>Land STM32 controller card per the fence CAD.</li>
-<li>Wire STM32 power port from the DROK output (V+ / GND) using the
-DROK's screw-terminal output.</li>
+<li>Wire the STM32 power port from the ZK-SJ20 output (V+ / GND, 16
+AWG), only after the buck has passed its bench gate and reads 7.50 V (<a
+href="Electronics_Assembly_Guide.html">Assembly Guide §16e</a>).</li>
 <li>Plug the STM32's 5 V 5 A external USB-C port into the Pi5's USB-C
 PWR port using the §3.2 right-angle 0.5 ft cable.</li>
 <li>Plug the STM32's USB-C control port into Pi5 black #1 using the §3.3
@@ -1364,8 +1370,9 @@ Phase 7.5, HAT ports from 7.6).</li>
 <p><strong>Test before closing the bay lid:</strong></p>
 <ul>
 <li>Power-up sequence: (a) AC rocker ON (kills all bay), (b) DC rocker
-ON (enables DROK + downstream), (c) STM32 controller switch ON (enables
-the STM32 board and its 5 V out to Pi5).</li>
+ON (enables the whole 13.8 V bus: the servo-rail buck and everything
+downstream), (c) STM32 controller switch ON (enables the STM32 board and
+its 5 V out to Pi5).</li>
 <li>Pi5 should boot within 5-10 s of the STM32 5 V rail coming up.
 Access via SSH over Wi-Fi (headless — no monitor).</li>
 <li><code>dmesg | tail</code> should show the STM32 as a USB device on

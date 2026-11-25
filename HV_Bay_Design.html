@@ -2,13 +2,14 @@
 id="hv-bay-design--halo-hv-4th-robot-january-2027">HV Bay Design — Halo
 HV (4th robot, January 2027)</h1>
 <p><strong>Owner: Electronics</strong> (electrical content; CAD sends
-the numbers). This is the one place for everything that differs on the
-HV version. The LV bay (<a
-href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>) stays
-the design of record for everything else (§5). Started 2026-11-18 on the
-operator's order: "start a new document for the high voltage design …
-track all this in there." No CAD work yet for the HV fence or carrier;
-the sections below record what is decided and what is open.</p>
+the numbers). <strong>Every build now shares one bay</strong> (operator,
+2026-11-24): one carrier, the HL-PBB, the ZK-SJ20 servo-rail buck and
+one wire list, all in <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a>. This
+doc holds only what differs on Halo HV: the 12.0 V rail and its rules,
+the HV servos and arm, the PSC-150, and the HV-specific blockers.
+Started 2026-11-18 on the operator's order: "start a new document for
+the high voltage design … track all this in there."</p>
 <h2 id="possible-blockers-to-fix-one-list-owner--status">Possible
 blockers to fix (one list; owner · status)</h2>
 <table>
@@ -66,44 +67,39 @@ STM32 reset under the HV arm (needs a board with a Pi: Halo HV)</td>
 </tr>
 <tr>
 <td>B5</td>
-<td><strong>ZK-SJ20 bench gate</strong> (8 / 10 / 12 A from 13.8 V and
-battery; 8 A × 10 min acceptance, port ≥ 11.1 V). This also answers
-<strong>10 A at ≥ 11.1 V</strong></td>
+<td><strong>ZK-SJ20 bench gate</strong> (Power_Bay §5c, every build)
+<strong>plus the HV check: at 12.0 V, 10 A for 10 min with the port ≥
+11.1 V</strong></td>
 <td>Electronics + operator</td>
-<td>⏳ board ordered, est. Nov 29 – Dec 5</td>
+<td>⏳ unit 1 arrives before Nov 28; gate ~Nov 27–28</td>
 </tr>
 <tr>
 <td>B6</td>
-<td><strong>ZK-SJ20 frame</strong>: PSU-lid open area ≥ 50 %; IN / OUT
-routes and lengths (§9: HV5, HV6, HV6a)</td>
+<td><strong>ZK-SJ20 frame and routes</strong></td>
 <td>CAD</td>
-<td>⏳ on the operator's CAD go, after calipering</td>
+<td>✅ the shared carrier (Power_Bay §11.3.9); runs and cuts in
+Power_Bay §16c rows 5 / 6 / 6a</td>
 </tr>
 <tr>
 <td>B7</td>
-<td><strong>Production ZK-SJ20 = non-display version</strong>: size,
-holes, terminals, power-on default unknown</td>
-<td>CAD + Purchasing</td>
-<td>⏳</td>
+<td><strong>ZK-SJ20 version</strong></td>
+<td>operator</td>
+<td>✅ display version on every build (4 ordered); the non-display
+version isn't used</td>
 </tr>
 <tr>
 <td>B8</td>
-<td><strong>A3 mains lane vs the pack with the HV battery +3 / +4
-mm</strong> (§2): A3 stays on today's floor lane (Y 127.8), <strong>5.57
-/ 4.57 mm off the pack</strong>, under the 8 mm mains-to-LV rule.
-<strong>Operator override, 2026-11-18: "i am overriding that 8m rule
-right now"</strong> (confirmed in Electronics' session the same day). No
-lane or rocker change; CAD's gate keeps no contact (0 mm³) and carries
-the 8 mm check as an overridden line. A3 never runs over the pack</td>
-<td>operator</td>
-<td>✅ overridden</td>
+<td><strong>Mains lane vs the pack</strong></td>
+<td>CAD</td>
+<td>✅ the floor lane is gone: mains runs down the +X side lane into the
+terminal slot, ≥ 8 mm from all LV (Power_Bay §11.3.9)</td>
 </tr>
 <tr>
 <td>B9</td>
-<td><strong>Servo fuse</strong> decision; what clears a ZK-SJ20 OPP trip
-on a ceiling mount</td>
+<td><strong>Servo fuse</strong></td>
 <td>operator</td>
-<td>⏳ undecided (leans none)</td>
+<td>✅ closed by the operator's order (2026-11-24): no servo fuse, F1
+only</td>
 </tr>
 <tr>
 <td>B10</td>
@@ -126,17 +122,19 @@ max, all rated ≥ 12.0 V</td>
 </tr>
 <tr>
 <td>B12</td>
-<td><strong>Arm peak current</strong> measured through INA226-DROK (sets
-the ZK-SJ20 CC pot)</td>
+<td><strong>Arm peak current</strong> measured through INA3 on real HV
+moves: confirms the 18 A CC is headroom (servos ≤ 7–8 A) and watches the
+STM32 board, untested past 11 A</td>
 <td>Electronics</td>
 <td>⏳ swap day</td>
 </tr>
 <tr>
 <td>B13</td>
-<td><strong>PSU total power</strong>: servos ~9 A at 12 V + wand + Pi
-can pass the PSC-150's limit; battery covers peaks</td>
-<td>Electronics</td>
-<td>⏳ read INA-MAIN / INA-BATT at acceptance</td>
+<td><strong>PSU total power</strong>: servos at 12 V + wand + Pi can
+pass the PSC-150's 7.5 A CH1; the battery covers peaks</td>
+<td>operator</td>
+<td>✅ accepted by the operator's order (2026-11-24); INA-MAIN /
+INA-BATT at acceptance give the real figure</td>
 </tr>
 <tr>
 <td>B14</td>
@@ -147,170 +145,59 @@ stay low at 25 (operator 2026-11-24)</td>
 </tr>
 <tr>
 <td>B15</td>
-<td><strong>DC path current on HV</strong> (§9), worked through
-2026-11-24. Bay current at 13.8 V: buck input ~8.4 A sustained / ~11.2 A
-peak (servos 9 / 12 A at 12.0 V, 93 % efficiency) + wand 2.4 + HAT 1.2 +
-fans 0.1 = **~12 A sustained / ~15 A peak on mains**; on battery (~11.5
-V) **~14 A sustained / ~17 A peak**. Against the parts in series:
-<strong>DC rocker KCD1:</strong> no DC rating, 10 A @ 125 V AC best
-case, so <strong>short by ~2 A sustained / ~5 A peak on mains, ~4 / ~7 A
-on battery</strong>. <strong>Red 4.8 flags on it:</strong> 10 A, short
-by the same. <strong>HL-PBB:</strong> 16 A total, OK on mains, ~1 A over
-at the battery peak. <strong>F1 (10 A, battery lead):</strong> on
-battery it carries the whole bay, so <strong>short by ~4 A sustained /
-~7 A peak</strong>. <strong>PSU CH1 (7.5 A, 150 W):</strong> ~12 A /
-~166 W sustained, so <strong>short by ~4.5 A / ~16 W</strong> (B13).
-Assumes the 9 A sustained servo figure; INA3 / INA-MAIN on real HV moves
-(B12) set the true numbers</td>
-<td>Electronics → operator</td>
-<td>⏳ verdict: short at the PSU, F1, the DC rocker and its flags; block
-OK; operator decides after measurement</td>
+<td><strong>DC path current on HV.</strong> Real load: servos ≤ 7–8 A at
+12.0 V → buck input ~7 A at 13.8 V; + wand 2.4 + HAT 1.2 + fans 0.1 ≈
+**~11 A on mains, ~13 A on battery**. At the 18 A CC case the bus would
+pass the HL-PBB (16 A), the KCD1 rocker and its flags (10 A), F1 (10 A,
+battery) and PSU CH1 (7.5 A)</td>
+<td>operator</td>
+<td>✅ <strong>accepted by the operator's order (2026-11-24)</strong>:
+those parts stay as specified; INA3 / INA-MAIN on real moves (B12) give
+the true numbers</td>
 </tr>
 <tr>
 <td>B16</td>
-<td><strong>ZK-SJ20 hole pattern</strong>: not in the listing; caliper
-on arrival (with B7)</td>
+<td><strong>ZK-SJ20 hole pattern and terminal opening</strong> (must
+take an E1508 on 16 AWG): not in the listing; caliper on arrival</td>
 <td>CAD + operator</td>
-<td>⏳ board est. Nov 29 – Dec 5</td>
+<td>⏳ unit 1 before Nov 28</td>
 </tr>
 </tbody>
 </table>
-<h2 id="1-servo-rail-supply--zk-sj20-buck-boost">1. Servo-rail supply —
-ZK-SJ20 buck-boost</h2>
-<p><strong>Decided (operator, 2026-11-18):</strong> the HV servo rail
-(12.0 V to the STM32 board, which feeds the servos) comes from a
-<strong>ZK-SJ20 300 W buck-boost CC/CV module with display</strong>
-(WAVGAT, AliExpress), <strong>ordered 2026-11-18, 1 unit, est. Nov 29 –
-Dec 5</strong>. It replaces the front-wall DROK (a diymore 12 A / 160 W
-LCD buck) on the HV build.</p>
-<p><strong>Why:</strong> the buck in service sags ~0.6–0.7 V at 10 A,
-and on battery it drops out of regulation (needs IN ≥ OUT + 0.8 V),
-falling to ~9.6 V at heavy load. The 20 A LM25116-type boards (60 × 53 ×
-28 mm) list a 3 V minimum dropout, so they can't make 12.0 V from 13.8
-V. The ZK-SJ20 is a 4-switch buck-boost, so it holds 12.0 V from the
-PSU's 13.8 V <strong>and</strong> from a sagging battery. Load: servos
-only, ~8–9 A sustained, ~12 A peaks (~110–145 W); the wand runs off the
-13.8 V rail, not through it.</p>
-<p><strong>On arrival:</strong> caliper the size, mounting holes and
-terminal positions for CAD; then the setup and bench gate below before
-any servo connection.</p>
-<table>
-<thead>
-<tr>
-<th>Parameter (seller's table)</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Input</td>
-<td>7–80 V DC</td>
-</tr>
-<tr>
-<td>Output</td>
-<td>1.4–79 V DC, adjustable</td>
-</tr>
-<tr>
-<td>Output current regulation (CC)</td>
-<td>0–20 A</td>
-</tr>
-<tr>
-<td>Overpower protection</td>
-<td>300 W: output turns off, display shows <strong>OPP</strong></td>
-</tr>
-<tr>
-<td>Display</td>
-<td>voltage 1.40–80.00 V (±0.1 V), current 0.00–20.00 A (±0.03 A); also
-temperature (°C)</td>
-</tr>
-<tr>
-<td>Adjusting knobs</td>
-<td>three trim pots: <strong>CV</strong> (output voltage),
-<strong>CC</strong> (current limit), <strong>MPPT / CVT</strong>
-(input-hold voltage)</td>
-</tr>
-<tr>
-<td>Backflow</td>
-<td>0.5–40 mA flows back into the output side when the input is off
-(seller: add a diode when charging a battery)</td>
-</tr>
-<tr>
-<td>Cooling</td>
-<td><strong>finned aluminium heatsink covering the whole
-underside</strong>, fins along the 109 mm length, held by 4 brass
-screws; PCB corner holes outside it. <strong>5 V fan port, ships without
-a fan.</strong> Mount it with air moving along the fins (fins in line
-with the fans' flow), never flat against a solid deck: in the bay it
-sits over an opening with 3.0 mm to the PSU top and the lid kept ≥ 50 %
-open (§2)</td>
-</tr>
-<tr>
-<td>Size / weight</td>
-<td>109 × 64.5 × 46 mm (seller: hand-measured, may be slightly off;
-<strong>caliper on arrival</strong>, height incl. the display board and
-the base plate); 194 g with display (193 g without)</td>
-</tr>
-</tbody>
-</table>
-<p><img src="images/hardware/zk_sj20_overview.png"
-alt="ZK-SJ20 300 W automatic buck-boost module with LCD: input terminals left, output terminals right, toroid inductor in the middle, display with MPPT and ON LEDs and the IN/OUT and ON/OFF buttons." /></p>
-<p><img src="images/hardware/zk_sj20_functions.png"
-alt="ZK-SJ20 functions: input 7–80 V on the left terminals, output 1.4–79 V on the right; CC pot with its CC LED, CV pot, MPPT pot with its LED (lit when the input is below the MPPT setting), fan header, LCD, output and display buttons." /></p>
-<p><img src="images/hardware/zk_sj20_display.png"
-alt="ZK-SJ20 display screens: input voltage + output current, output voltage + output power, and the MPPT (input-hold) voltage screen; below the MPPT voltage the module cuts output power to hold its input." /></p>
-<p><img src="images/hardware/zk_sj20_keys.png"
-alt="ZK-SJ20 keys: ON/OFF tap toggles the output, a 2 s press sets power-on default ON or OFF; IN/OUT tap switches the upper display, long press the lower display, a 10 s press zeroes the current reading." /></p>
-<p><img src="images/hardware/zk_sj20_heat_fan_port.png"
-alt="ZK-SJ20 side view: the aluminium heatsink under the board for the chips and MOSFETs, and the 5 V fan port (no fan shipped)." /></p>
-<p><strong>Setup before it ever connects to servos (bench, e-load, meter
-on the output):</strong></p>
-<ol type="1">
-<li><strong>CV pot → 12.0 V</strong> (11.99–12.0), never above. Then
-seal the CV pot with a dab of varnish: it is a trimmer on a moving
-robot.</li>
-<li><strong>MPPT pot fully down (≤ 7 V)</strong>, so the board never
-throttles its output to hold the input. With it set higher, a battery
-sagging under load (HV undervolt cutover 9.5 V) would make it cut servo
-power.</li>
-<li><strong>CC pot:</strong> set the current limit above the arm's
-measured peak (servos ~8–9 A, peaks ~12 A) and confirm it on the
-e-load.</li>
-<li><strong>Power-on default ON:</strong> press ON/OFF for 2 s until the
-display reads <strong>ON</strong>, so the output comes up by itself
-after a power cycle.</li>
-<li>⚠️ <strong>No overvolt setting and no key lock:</strong> the only
-output limits are the CV pot and the 300 W OPP. A buck-boost can output
-far above its input, so a mis-set pot can put 20 V+ on the servos. The
-12.6 V software overvolt trip (Electronics_Bay_Design §1) is the
-protection; check the output on the meter after any handling.</li>
-</ol>
-<p><strong>Bench gate before it goes on a robot:</strong> e-load at 8,
-10 and 12 A, from 13.8 V and from the battery; read the servo port and
-the board temperature (display °C). Decide on a fan (5 V port) from that
-run, check its noise against the bay's acoustic design, and confirm the
-terminal type (screw terminals in the photos) and the continuous current
-with no fan.</p>
+<h2 id="1-servo-rail-supply--zk-sj20-at-120-v">1. Servo-rail supply —
+ZK-SJ20 at 12.0 V</h2>
+<p>The ZK-SJ20 (spec, setup and bench gate: <a
+href="Power_Bay_Design.html">Power_Bay §5c</a>) is the servo-rail supply
+on every build. <strong>On Halo HV its CV is set to 12.0 V</strong>
+(11.99–12.0, never above; the STM32 board's maximum is 12 V), then
+sealed. CC 18 A, MPPT fully down and power-on default ON, as on every
+build.</p>
+<p><strong>Why a buck-boost on HV:</strong> the DROK sagged ~0.6–0.7 V
+at 10 A, and on battery it dropped out of regulation (it needs IN ≥ OUT
++ 0.8 V), falling to ~9.6 V at heavy load. The 20 A LM25116-type boards
+list a 3 V minimum dropout, so they can't make 12.0 V from 13.8 V. A
+4-switch buck-boost holds 12.0 V from the PSU's 13.8 V and from a
+sagging battery.</p>
+<p>⚠️ <strong>No overvolt setting and no key lock:</strong> a mis-set CV
+pot can put 20 V+ on the servos. The 12.6 V software overvolt trip (§4)
+is the protection; check the output on the meter after any handling.</p>
 <h2
-id="2-hv-carrier-and-psu-cad-figures-final-when-the-board-is-calipered">2.
-HV carrier and PSU (CAD figures; final when the board is calipered)</h2>
+id="2-carrier-and-psu-shared-by-every-build-cad-figures-final-when-the-buck-is-calipered">2.
+Carrier and PSU (shared by every build; CAD figures, final when the buck
+is calipered)</h2>
 <ul>
-<li><strong>Board:</strong> Halo HV dev unit = the ZK-SJ20
-<strong>display</strong> version, 109 × 64.5 × 46 mm incl. the heatsink,
-no onboard fan. ⏳ <strong>Production = the non-display
-version:</strong> its size, holes, terminals and keys (power-on default)
-are TBD; re-check before the production frame, and set it up with a
-meter instead of its display.</li>
+<li><strong>Board:</strong> the ZK-SJ20 <strong>display</strong> version
+on every build, 109 × 64.5 × 46 mm incl. the heatsink, no onboard
+fan.</li>
 <li><strong>The carrier stays FLAT</strong> (operator 2026-11-23: "keep
 it flat"; lowering it over the PSU makes printing hard): the deck is Z
 44–48 everywhere. The ZK-SJ20 sits <strong>on the deck top (Z 48) over
 an opening</strong>, its ~12 mm heatsink (from photos; ≤ 14 fits)
 hanging through, <strong>3.0 mm above the PSU top</strong> (PSU on 3 mm
-feet). The lid underside is Z 89.7. ⏳ Re-layout awaiting the operator's
-OK (STATUS "Halo HV RE-LAYOUT"): buck 6.5 forward (Y −101.5..+7.5), deck
-extended forward to Y −131; numbers follow on his OK.</li>
+feet). The lid underside is Z 89.7.</li>
 <li><strong>PSU-lid open area:</strong> the board's shadow is 45 % of
 the 159 × 98 lid, so the deck opening must keep it <strong>≥ 50 %
-open</strong> (⏳ exact figure when drawn).</li>
+open</strong>: CAD's layout reads <strong>62 %</strong>.</li>
 <li><strong>Airflow:</strong> the 109 mm length runs front to back, fins
 in line with the back-wall fans.</li>
 <li><strong>Board position: Y −95..14 on the carrier</strong> (moved +4
@@ -318,19 +205,18 @@ Y, operator 2026-11-24), leaving <strong>~19 mm of lead room at the
 front and 13 mm at the back</strong>. <strong>Terminals (listing): IN on
 the left short end, OUT on the right, seen display-up; 2-position
 side-entry blocks on the 64.5 mm ends.</strong> Hole pattern not
-published (B16). <strong>ZK-SJ20 terminals take E1008 ferrules</strong>
-(operator 2026-11-18). Wire and adjust it with the lid off.</li>
-<li><strong>INA226-DROK (INA3, 0x47) stays on the front wall where it
-is</strong> (operator 2026-11-18; X 236–261, Z 66.7–87.7, M1.7 pilots);
-it now measures the ZK-SJ20's output. Its leads stay bare 18 AWG, or
-E1008 where they fit. With no front window, INA3 and
-<code>board_v</code> are the only view of the rail: fleet alerts on a
-reading above the setpoint (a moved pot or a failing supply).</li>
-<li><strong>PSU: PSC-150-12, 159 × 98 × 30</strong>, front face 1 mm off
-the front slant corners (Y −114.5), on ~3 mm feet over the desk-clamp
-front jaw (2.2 mm thick, 30 mm into the bay, X 207–253). The PSU is
-screwed to the plate (PSU centre Y −35). The carrier's front mount (the
-old "PSU strap") is split into 2 end stubs on HV.</li>
+published (B16). Its runs are <strong>16 AWG with E1508
+ferrules</strong> (Power_Bay §16c rows 5 / 6 / 6a). Wire and adjust it
+with the lid off.</li>
+<li><strong>INA3 (0x47)</strong> sits on the carrier at the buck's OUT
+end (Power_Bay §5b). With no front window, INA3 and <code>board_v</code>
+are the only view of the rail: fleet alerts on a reading above the
+setpoint (a moved pot or a failing supply).</li>
+<li><strong>PSU: PSC-150-12, 159 × 98 × 30</strong> on Nova and Halo HV
+(Ultra and Halo keep their PSC-100-12, 129 mm, on their existing base
+plates), front face 1 mm off the front slant corners (Y −114.5), on ~3
+mm feet over the desk-clamp front jaw. The PSU is screwed to the plate.
+The carrier's front mount is 2 end stubs.</li>
 <li><strong>Battery +3–4 mm further back</strong> (operator;
 BATTERY_SHIFT_Y ~18–19 on HV), leaving 4–5 mm PSU-to-pack (the
 operator's margin on CAD's 1.1 mm). ⏳ Being re-decided: CAD's options A
@@ -351,36 +237,28 @@ through the pad's Ø3.4 hole into the bar's blind Ø2.5 pilot, at X 160.4
 27 mm gap between the pad rows, back bar first and slid 25.5 back, then
 the front bar slid 10.5 forward; fit the 4 screws; then the carrier,
 which screws into the bars.</li>
-<li><strong>Mains clearance:</strong> the A3 floor lane stays at Y
-127.8; at battery +3 / +4 it sits 5.57 / 4.57 mm off the pack, under the
-8 mm rule, <strong>accepted by the operator's override</strong>
-(B8).</li>
-<li>⏳ CAD: routes and lengths for the §9 wire list (HV5, HV6,
-HV6a).</li>
+<li><strong>Mains:</strong> down the +X side lane into the terminal
+slot, ≥ 8 mm jacket-to-jacket from all LV (Power_Bay §11.3.9).</li>
 </ul>
-<h2 id="3-hv-front-fence">3. HV front fence</h2>
-<p><strong>Decided (operator, 2026-11-18):</strong> the front fence
-loses everything the front-wall DROK needed: the 34 × 16 LCD viewport,
-the 12 × 10 CV/CC pot cutout, the two function-button holes, the four
-DROK mount bosses and the engraved DROK labels. <strong>The front
-becomes a plain grill of air slots</strong>, with no DROK features at
-all (operator 2026-11-24: "Remove all DROK features"); INA3's footprint
-stays. The ZK-SJ20's display, pots and buttons are reached with the lid
-off; no outside access to the setpoint, by design.</p>
+<h2 id="3-front-fence-shared-by-every-build">3. Front fence (shared by
+every build)</h2>
+<p><strong>Decided (operator, 2026-11-18 / 11-24):</strong> the front
+fence carries no boards, switches or DROK features: a grill of air slots
+and the logo. The buck's display, pots and buttons are reached with the
+lid off; no outside access to the setpoint, by design.</p>
 <ul>
 <li><strong>Front PIRs stay low, at today's centre 25</strong> (operator
 2026-11-24: "Keep front PIRs low (25)"), so their openings, G469 pins,
 GPIOs (OUT 36 / 11 / 38 / 40) and §16c row 16 cuts are unchanged.</li>
-<li><strong>Grill constraints (CAD):</strong> keep INA3's footprint and
-pilots; keep the front clamp slot (46 wide at X ≈ 230, 3.5 tall at the
-plate edge); the front PIR openings at the slant corners (low, as LV);
-wall 4.0 thick, printed plate-edge down (bridges ≤ 10.5, no
-cantilevers), so slots run vertical or with a 52° pitched top like the
-fan grilles. ⏳ Slot pattern and open area: no CAD work yet.</li>
-<li><strong>One codebase:</strong> CAD carries the LV / HV differences
-as config variants in its macros (fence cut-outs and bosses, carrier
-deck height and PSU block, battery hold-down, wired assembly), not
-forked files.</li>
+<li><strong>Grill constraints (CAD):</strong> keep the front clamp slot
+(46 wide at X ≈ 230, 3.5 tall at the plate edge); the front PIR openings
+at the slant corners (low, as LV); wall 4.0 thick, printed plate-edge
+down (bridges ≤ 10.5, no cantilevers), so slots run vertical or with a
+52° pitched top like the fan grilles. ⏳ Slot pattern and open area: no
+CAD work yet.</li>
+<li><strong>One codebase:</strong> the only LV / HV difference in CAD is
+the PSU block (PSC-100 / PSC-150) and its base plate; everything else is
+one design.</li>
 </ul>
 <h2 id="4-one-rail-hv-rules-decided-and-open-items">4. One-rail HV rules
 (decided) and open items</h2>
@@ -403,47 +281,41 @@ assembly.</li>
 <li><strong>Requirement: the servo port stays ≥ 11.1 V on
 mains.</strong></li>
 <li><strong>PSU: MZMW PSC-150-12</strong> (150 W total, CH1 7.5 A + CH2
-3 A charge; hiccup at 105–115 % of 150 W). LV builds stay on the
-PSC-100-12. <strong>On hand (arrived 2026-11-23).</strong> ⏳ Bench on
-arrival: read the rating off the factory inline fuse on the BAT lead,
-and caliper the case against 159 × 98 × 30.</li>
+3 A charge; hiccup at 105–115 % of 150 W). <strong>On hand (arrived
+2026-11-23).</strong> ⏳ Bench: read the rating off the factory inline
+fuse on the BAT lead, caliper the case against 159 × 98 × 30, and read
+its back-face temperature after 30 min near 150 W (battery gap A / B,
+§2).</li>
 <li><strong>F1 stays</strong> (10 A, battery + → PSU CH2 BAT+).</li>
 </ul>
 <p>Open:</p>
 <ul>
-<li>⏳ <strong>ZK-SJ20 bench gate</strong> (§1): 8 / 10 / 12 A from 13.8
-V and from battery, port voltage, temperature, fan decision.
-<strong>Acceptance, as the DROK's was: 8 A for 10 min on one port, port
-≥ 11.1 V</strong>, with its sag measured at its own output. The 11-16
-board-port results (PASS, ~0.068–0.072 Ω path) were all on the old DROK;
-only the board-path resistance carries over.</li>
-<li>⏳ <strong>Arm peak current</strong>, measured through INA226-DROK
-on real HV moves (sets the CC pot).</li>
-<li>⏳ <strong>Servo fuse:</strong> undecided (operator leans none). The
-ZK-SJ20 cuts its output at 300 W (OPP); whether that latches, and what
-clears it on a ceiling mount, is checked on the bench.</li>
-<li>⏳ <strong>PSU total power:</strong> servos ~9 A at 12 V plus wand
-2–4 A plus Pi / HAT / fans can pass the PSC-150's limit; the battery
-carries peaks. Read INA226-MAIN and INA226-BATT during acceptance.</li>
+<li>⏳ <strong>ZK-SJ20 bench gate:</strong> Power_Bay §5c on unit 1,
+plus the HV check at 12.0 V: <strong>10 A for 10 min, port ≥ 11.1
+V</strong> (B5). The 11-16 board-port results (PASS, ~0.068–0.072 Ω
+path) were on the old DROK; only the board-path resistance carries
+over.</li>
+<li>⏳ <strong>Arm peak current</strong> through INA3 on real HV moves
+(B12).</li>
+<li>✅ <strong>Servo fuse:</strong> none (operator's order, 2026-11-24).
+Record on the bench what clears an OPP trip (latch or auto-retry).</li>
+<li>✅ <strong>PSU total power:</strong> accepted (B13); read
+INA226-MAIN and INA226-BATT at acceptance.</li>
 <li>⏳ <strong>STM32 board:</strong> Pi throttle / STM32 reset check
 under the HV arm on a board with a Pi; the 16 V input tantalums' marking
 (75 % of rating at 12.0 V).</li>
 <li>⏳ <strong>Swap day:</strong> read each HV servo's EEPROM vin min /
 max; every model must be rated ≥ 12.0 V.</li>
 </ul>
-<h2 id="5-carries-over-unchanged-from-the-lv-bay">5. Carries over
-unchanged from the LV bay</h2>
-<p>Everything in <a
-href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> not
-named above, as of 2026-11-18: mains (C14, rear AC rocker out flush on
-straight 4.8 FDFNY, A3 floor lane), battery at +15 Y with F1 and
-INA226-BATT, PSU CH1 → INA226-MAIN → DC rocker → distribution block,
-Mus-14 5 V HAT feed, fans, G469 map and I²C chain, both PIR pairs (fan
-side at 68, front at 25), wand tether, and the §16c cut list except the
-rows replaced in §9. <strong>No IP6518 / phone charger on Halo
-HV</strong> (not a Creator build), so §16c rows 15a / 15b don't apply.
-Halo, Ultra and Nova are one configuration; Halo HV differs only by this
-document.</p>
+<h2 id="5-everything-else-the-shared-bay">5. Everything else: the shared
+bay</h2>
+<p>Every build uses <a
+href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> as
+written: mains, battery with F1 and INA226-BATT, PSU CH1 → INA226-MAIN →
+rear DC rocker → HL-PBB, the ZK-SJ20 and INA3, Mus-14 HAT feed, fans,
+G469 map and I²C chain, both PIR pairs (fan side at 68, front at 25),
+wand tether, and the §16c cut list. <strong>No IP6518 / phone charger on
+Halo HV</strong> (not a Creator build).</p>
 <h2 id="6-hv-record-moved-from-electronics_bay_design-1-2026-11-18">6.
 HV record (moved from Electronics_Bay_Design §1, 2026-11-18)</h2>
 <p>The one-rail rules, arbiter rules, acceptance and the 11-12…11-16
@@ -705,129 +577,9 @@ positions on the ArmPi Ultra.</li>
 script ... You can try commenting out the corresponding arm control code
 in the startup script to disable the automatic reset behavior.</p>
 </blockquote>
-<h2 id="9-hv-wire-list-replaces-power_bay-16c-rows-5--6--d14a">9. HV
-wire list (replaces Power_Bay §16c rows 5 / 6 / D14a)</h2>
-<p>Every other §16c row carries over (§5). The DROK is gone; the ZK-SJ20
-takes its place in the chain: block → <strong>ZK-SJ20 IN</strong> →
-<strong>ZK-SJ20 OUT</strong> → INA226-DROK (INA3) → servo riser → STM32
-board. Gauge stays <strong>18 AWG silicone</strong> (fleet palette 18 /
-22 / 26), each pair twisted. Plan and cut lengths come from CAD's HV
-wired model; cut = wired run + both strips + ~20 mm slack, as in
-§16c.</p>
-<p><strong>Terminal orientation:</strong> with the ZK-SJ20's 109 mm
-length front to back (§2), its short ends face the front wall and the
-back. Put the <strong>OUT end toward the front wall</strong>, where INA3
-sits, and the <strong>IN end toward the back (the block)</strong>.
-Confirmed by CAD: on HV the HL-PBB sits at the back, raised over the
-bars (Y 56–78), so the IN leads use the back lane (Y 14–27, 13 mm) and
-the OUT leads the front lane (Y −114..−95, 19 mm).</p>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Cond. × gauge</th>
-<th>From → to</th>
-<th>End A — termination</th>
-<th>End B — termination</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>HV5 BUCK-IN</strong></td>
-<td>2 × 18, twisted</td>
-<td>Block <strong>HL-PBB A1 / B1</strong> → ZK-SJ20 <strong>IN+ /
-IN−</strong></td>
-<td>Block A1 / B1: <strong>E1008</strong></td>
-<td>ZK-SJ20 IN block (side entry): <strong>E1008</strong> (operator
-2026-11-18)</td>
-<td>Replaces DROK-IN (row 5). Current: ~8.4 A sustained, ~11 A peak at
-13.8 V; ~13.5 A from a sagging battery (B15). Routed 73 (wired bay
-e74bddb2); <strong>cut 150</strong> (includes a ~40 mm service loop: the
-board is wired with the lid off)</td>
-</tr>
-<tr>
-<td><strong>HV6 BUCK-OUT</strong></td>
-<td>2 × 18, twisted</td>
-<td>ZK-SJ20 <strong>OUT+ / OUT−</strong> → riser top → STM32 board</td>
-<td>OUT+ / OUT−: <strong>E1008</strong>. OUT+ goes to INA3 (HV6a); OUT−
-runs direct</td>
-<td><strong>Deans (T-plug)</strong> solder joint → STM32 blue terminal
-<strong>E1008</strong>, as LV</td>
-<td>Replaces DROK-OUT (row 6). ~9 A sustained, ~12 A peak at 12.0 V.
-Rises beside the tether, FFC on the far side, as LV. Routed 101–109 to
-the lid window (wired bay, doubled 18 re-gate); <strong>cut 145 to the
-lid window + measure</strong> the climb up the servo opening to the
-STM32, as LV</td>
-</tr>
-<tr>
-<td><strong>HV6a</strong></td>
-<td>1 × 18</td>
-<td>ZK-SJ20 <strong>OUT+</strong> → <strong>INA3 IN+</strong>; INA3
-<strong>IN−</strong> → on as HV6's + leg</td>
-<td>ZK OUT+: <strong>E1008</strong></td>
-<td>INA3 IN+ / IN−: bare 18 AWG strands, or E1008 where it seats
-(§2)</td>
-<td>Replaces D14a. INA3 stays on the front wall (X 236–261, Z
-66.7–87.7). Routed 19; <strong>cut 60</strong></td>
-</tr>
-</tbody>
-</table>
-<p><strong>Mains and battery on HV (CAD route, gated on the solids
-2026-11-24).</strong> The HL-PBB sits across the LV mains path, so on HV
-the mains runs down the +X side and the battery lead moves into the
-pack-to-wall gap. Gates: ≥ 8 mm jacket-to-jacket from every mains
-conductor to all LV (nearest: 13.97 to the battery pair, 8.71 to the
-HL-PBB, 8.76 to the back-right PIR). Crossings: 3, all at 90 ± 10° with
-the mains above (PIR-FR lead, fan-2 lead, battery pair). The mains' +X
-leg runs about 6 mm along over F1's +X nose end, 9.4 mm above its collar
-top; accepted as part of the crossing (≥ 8 holds). It is held there by a
-mains clip at (272, 92) on the raised span.</p>
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Cond. × gauge</th>
-<th>Route</th>
-<th>Routed (CAD)</th>
-<th>Cut</th>
-<th>Ends</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>HV1 MAINS</strong></td>
-<td>3 × 18 silicone, 600 V</td>
-<td>C14 → up to Z 76 behind the pack → +X to X 266 → −Y → +X at Y 92
-(over F1's nose) → down X 289 past the PSU back face → −X under the deck
-to the strip L / N / ⏚ (268, 35)</td>
-<td>N / E 203–208 from the C14; <strong>L ≈ 284</strong> from the AC
-rocker LOAD (79 from the rear AC rocker under fan 2, then the same
-lane); entry into the PSU strip through the terminal slot opened to the
-+X wall (wired bay e74bddb2)</td>
-<td><strong>L 320, N 245, E 260</strong> (earth longest at the PSU
-end)</td>
-<td>As row 1: C14 and AC rocker straight red 4.8 Fastons; PSU L / N red
-forks, ⏚ ring lug</td>
-</tr>
-<tr>
-<td><strong>HV-BATT</strong></td>
-<td>2 × 18 silicone, stacked pair</td>
-<td>Pack XT30 → into the gap (X 300.7; pack 297.38 / wall 304.01) →
-along it to Y 80 → up between the wall pads → −X over the pack top at Z
-52 → +Y at X 276 → F1 +X nose</td>
-<td>pack → F1 73; F1 → INA-BATT 27–33; INA-BATT → CH2 99–111 (wired bay
-e74bddb2)</td>
-<td><strong>110 / 70 / 150</strong></td>
-<td>As row BATT. Nothing terminates in the gap; nearest to the pack or
-wall is 1.26. Pack → F1 is 73, within the ≤ 150 mm unfused limit</td>
-</tr>
-</tbody>
-</table>
-<p><strong>DC rocker on HV:</strong> at the rear, under fan 1 (mirror
-pair with the AC rocker under fan 2; wired bay e74bddb2). LINE / LOAD /
-LAMP routed 167–175, <strong>cut 250</strong> (includes a ~40 mm service
-loop for lifting the carrier). Ends as row 3. No PSU LED window on HV
-(operator: the LED shows through the fence slots).</p>
-<p>Not wired: the ZK-SJ20's 5 V fan port (fan decided at the bench gate,
-§1).</p></body></html>
+<h2 id="9-wire-list">9. Wire list</h2>
+<p>The same as every build: <a href="Power_Bay_Design.html">Power_Bay
+§16c</a> (rows 5 / 6 / 6a are the ZK-SJ20 runs; the cuts come from CAD's
+wired HV bay). Halo HV drops rows 15a / 15b (no phone charger). Not
+wired: the ZK-SJ20's 5 V fan port (fitted only if the bench gate shows
+the heatsink running hot).</p></body></html>

@@ -1575,7 +1575,7 @@ accidentally-paralleled tach wires.</td>
 <td>GND</td>
 <td>RESERVED</td>
 <td><strong>ON HOLD — not installed.</strong> Was: one 24 AWG jumper
-from D-1459 B5. The grounds are already common through the DROK
+from HL-PBB B5. The grounds are already common through the DROK
 (non-isolated buck: in− ≡ out−), so this would be a <strong>parallel
 return</strong>, not a reference — and an unfused one. <a
 href="Power_Bay_Design.html#1122-wiring--cut-off-stock-4-pin-spade-lug-the-12-v-pair-land-gpio-wires-direct-at-g469">Rationale
@@ -1817,26 +1817,21 @@ quartet (PWM + 2 tach + GND ref) is on C3. Star-ground at the
 distribution block. <strong>The wand LED rail is likewise 13.8 V
 direct</strong> — after the 2026-06-28 split-rails topology change
 (distribution block finalized 2026-07-29), the wand takes 13.8 V direct
-from the PSU via the <strong>dual-bus D-1459 distribution block</strong>
+from the PSU via the <strong>dual-bus HL-PBB distribution block</strong>
 (A bus V+ / B bus GND, no modification) mounted above the PSU top (LED
 drivers accept 5-35 V, no drop needed). See <a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
 §11.3</a> and <a
 href="Lumi_Wand_Integration.html#51-power-chain"><code>Lumi_Wand_Integration.md</code>
 §5.1</a>.</li>
 </ul>
 <blockquote>
-<p>🎯 <strong>Distribution block — design of record 2026-09-29:</strong>
-<strong>CZH-Labs D-1459</strong> or <strong>YRYAR
-HL-PBB-2-6-MINI</strong> dual-bus distribution module, ferrule-based,
-zero modification — <strong>from the NOVA build on</strong> (next build,
-Ultra-compatible kit in stock). <strong>Halo v1 keeps its as-built
-modified APIELE. The APIELE is retired (operator): no new APIELE
-installs, and the Ultra bay uses an HL-PBB-2-6-MINI</strong> (spec +
-port map: <a
-href="Power_Bay_Design.html#1137-apiele-barrier-strip--physical-spec"><code>Power_Bay_Design.md</code>
-§11.3.1</a>). Wiring + port map: <a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+<p>🎯 <strong>Distribution block:</strong> <strong>YRYAR
+HL-PBB-2-6-MINI</strong> dual-bus module, ferrule-based, no
+modification, on <strong>every build</strong> (operator, 2026-11-24):
+Ultra, Nova, Halo HV, and Halo when its bay is rebuilt. Halo v1 as built
+keeps its modified APIELE until then. Wiring + port map: <a
+href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
 §11.3</a>; part spec: <a
 href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
 §1.4</a>.</p>

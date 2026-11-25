@@ -106,7 +106,7 @@ sweep at 700 mA each works fine, as does parallel testing of <strong>all
 12 channels (~2.4 A total, measured 2026-09-01) — inside the 5 A
 ceiling; see §16.4.</strong> In the robot the wand LED rail comes off
 the <strong>13.8 V distribution block fed from PSU CH1</strong> (§11.2),
-not the DROK (which feeds only the STM32).</td>
+not the servo-rail buck (the ZK-SJ20, which feeds only the STM32).</td>
 </tr>
 <tr>
 <td><strong>Heat-shrink gun</strong> (portable)</td>
@@ -448,13 +448,13 @@ one-off splices / prototyping / low-current jumps.</td>
 <td><strong>APIELE 15 A 5-position dual-row covered barrier
 strip</strong> — 5-pack (5× blocks + 2× red jumper strips + 3× black
 jumper strips). <strong>RETIRED (operator): no new APIELE
-installs.</strong> It is on Halo v1 as built only; Ultra and every new
-build use the HL-PBB-2-6-MINI (§1.4) — <strong>1× MODIFIED
-block</strong> (5 internal copper conductors removed, top row = V+,
-bottom row = GND — see §11.3.2) forms the bay 13.8 V distribution
-mounted on standoffs above the PSU top. Each block: 63 × 22 × 15 mm, 15
-A/position, integral M4 mount ears, clear snap-on cover, 0.39" (10 mm)
-column pitch.</td>
+installs.</strong> It is on Halo v1 as built only, until its bay is
+rebuilt; every other build gets the HL-PBB-2-6-MINI (§1.4), the only
+block — <strong>1× MODIFIED block</strong> (5 internal copper conductors
+removed, top row = V+, bottom row = GND — see §11.3.2) forms the bay
+13.8 V distribution mounted on standoffs above the PSU top. Each block:
+63 × 22 × 15 mm, 15 A/position, integral M4 mount ears, clear snap-on
+cover, 0.39" (10 mm) column pitch.</td>
 <td>15 A / 5-pos dual-row</td>
 <td>Stock (5-pack, retired; Halo v1 as-built carries one)</td>
 </tr>
@@ -629,7 +629,7 @@ Bay §11.2.2 gauge note</a>), so both sizes present the same Φ1.1 mm
 barrel to the terminal. <strong>Collar clears 2.54 mm pitch by 0.64
 mm</strong> → no long/short staggering on adjacent terminals. <strong>8
 mm barrel</strong> also suits the partial-crimp fallback (<a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29">Power
+href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module">Power
 Bay §11.3</a>). ⚠️ <strong>Gated on the crimper</strong> — same gate as
 any fine ferrule, see §11.3.</td>
 <td>E0308 200 pc + E0208 200 pc</td>
@@ -708,14 +708,14 @@ stock</strong>.</td>
 female pairs</strong>. RC-hobby standard polarity-keyed 2-conductor
 power connector, rated ~30-40 A continuous. Solder-cup terminals; wrap
 the exposed metal in heat-shrink after soldering + mating. <strong>In
-active use</strong> — the D14/D15 DROK output → STM32 blue terminal
+active use</strong> — the servo-rail buck output → STM32 blue terminal
 block link uses one Deans pair as a mid-cable serviceable disconnect
-(see §11.3 D14/D15 rows for the wiring recipe: DROK-side pigtail with
-Kuject fork lugs → Deans → STM32-side pigtail with XHF ferrules;
-heat-shrink over the exposed Deans blades). Advantage over the 2 mm /
-3.5 mm bullets: polarity-keyed housing prevents reverse-plugging,
-2-conductor pair carried by ONE housing (not two separate bullets),
-heat-shrink outside instead of individual per-bullet.</td>
+(Power_Bay §16c row 6: buck-side pigtail → Deans solder joint →
+STM32-side pigtail with an E1508 (16 AWG); heat-shrink over the exposed
+Deans blades). Advantage over the 2 mm / 3.5 mm bullets: polarity-keyed
+housing prevents reverse-plugging, 2-conductor pair carried by ONE
+housing (not two separate bullets), heat-shrink outside instead of
+individual per-bullet.</td>
 <td>Deans T-plug M + F</td>
 <td><strong>Stock — inherited from RC ESC / motor bench
 stock</strong>.</td>
@@ -883,18 +883,14 @@ strip). M3 steel screws (Cr3+ Zn), brass pin header + cage, UL/CE/CQC
 terminal blocks, FR-4 PCB, 57 × 38 mm, 4× Ø3.2 mounting holes, ships
 with 4× nylon spacers + M3×16 screws.</td>
 <td><strong>Stock: 1 on hand</strong></td>
-<td><strong>Bench spare — the HL-PBB-2-6-MINI is the block of record
-from Nova onward</strong> (operator 2026-10-20: "we are using these
-going forward"; Power_Bay §11.3.2). The D-1459's 30 A input is the
-fallback if a future build ever outgrows the HL-PBB's 16 A. Wiring +
-port map (1:1 for both parts): <a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29">Power
-Bay §11.3</a>. Halo v1 keeps the modified APIELE as built. A bus = 13.8
-V, B bus = GND, fed once at the big A/B input — <strong>zero
-modification</strong> (the APIELE needed 5 internal conductors removed
-at receipt), <strong>ferrule-based</strong> (the proven E-series
-ferrules drop into 5.0/7.62 mm-pitch cage clamps), and far smaller than
-the barrier strip + fork-lug approach.</td>
+<td><strong>Bench spare only; no build is designed for it.</strong> The
+HL-PBB-2-6-MINI is the only distribution block (operator 2026-11-24;
+Power_Bay §11.3.2). Halo v1 keeps the modified APIELE as built until its
+bay is rebuilt. A bus = 13.8 V, B bus = GND, fed once at the big A/B
+input — <strong>zero modification</strong> (the APIELE needed 5 internal
+conductors removed at receipt), <strong>ferrule-based</strong> (the
+proven E-series ferrules drop into 5.0/7.62 mm-pitch cage clamps), and
+far smaller than the barrier strip + fork-lug approach.</td>
 </tr>
 <tr>
 <td><strong>YRYAR HL-PBB-2-6-MINI 16 A / 48 V 2×6-position distribution
@@ -906,15 +902,14 @@ mm², 16 A, 7 mm strip</strong>; M3 steel screws (Cr3+ Zn), brass header
 tall</strong>. Input blocks at <strong>both</strong> ends → daisy-chain
 A/B module-to-module for expansion (vendor connection diagram
 filed).</td>
-<td><strong>Block of record from Nova onward</strong> (operator
-2026-10-20); 2 ordered 2026-10-22 (§17.10a)</td>
+<td><strong>The only distribution block</strong> (operator 2026-11-24):
+Ultra, Nova, Halo HV, and Halo when its bay is rebuilt; 2 ordered
+2026-10-22 (§17.10a)</td>
 <td>The dual-bus, zero-modification, ferrule-based bay distribution
-block for every new bay — functionally interchangeable with the D-1459
-at our loads. Differences worth knowing: <strong>16 A total vs the
-D-1459's 30 A</strong> (bay peak is 8 A, so both carry it — the D-1459
-just has more headroom), input wire ceiling <strong>12 AWG / 2.5 mm² vs
-10 AWG / 4.0 mm²</strong> (the 18 AWG bay feed fits either), narrower
-board (22 vs 38 mm), and the chainable dual input the D-1459 lacks.</td>
+block. <strong>16 A total</strong>; the operator accepts the HV 18 A-CC
+case against it (order 2026-11-24, real load ~7–8 A servos); input wire
+ceiling 12 AWG / 2.5 mm² (the doubled 18 AWG feed fits); chainable dual
+inputs.</td>
 </tr>
 <tr>
 <td><strong>LEDiL RGBX single lenses</strong> — TIR optics
@@ -1770,19 +1765,18 @@ shelf before ordering (§17.9).</li>
 <h3 id="171-what-changes-from-halo">17.1 What changes from Halo</h3>
 <ol type="1">
 <li><strong>Distribution block: HL-PBB-2-6-MINI</strong> (16 A / 48 V, 2
-inputs, 6 output pairs) replaces both the modified APIELE (Halo, Ultra)
-and the D-1459. Operator 2026-10-20: "we are using these going forward".
-Electronics 6372c3c makes it the block of record; the D-1459 becomes a
-bench spare.
+inputs, 6 output pairs), the only block on every build (operator
+2026-11-24). Halo keeps its modified APIELE until its bay is rebuilt;
+Ultra has no block yet and gets one; the D-1459 is a bench spare.
 <ul>
 <li>The §11.3.3 port map carries over 1:1.</li>
 <li>Mount: <strong>M3 × 8 pan self-tap ×2</strong> onto the power-bay
 carrier's two Ø7 posts (Ø2.5 pilots, §17.8 carrier-screw row), through
 its 2 × Ø4 holes at <strong>64 mm c/c</strong> (calipered; one per short
 end, centred, 1.5 mm from the edge). The board is 70 × 22 mm, 23 mm
-tall, against the D-1459's 57 × 38.</li>
-<li>Loads: bay peak ~8 A = 50 % of 16 A; busiest branch DROK ~5.5 A = 34
-%.</li>
+tall.</li>
+<li>Loads: bay peak ~8 A = 50 % of 16 A; busiest branch the servo-rail
+buck input, ~4.6 A at 13.8 V for ~8 A of servos at 7.5 V.</li>
 </ul></li>
 <li><strong>DC rocker UPSTREAM of the whole V+ bus</strong> (the Halo-v2
 fix):
@@ -1792,8 +1786,8 @@ draw it with Nova's map. The rocker now carries the full bus, ~8–9 A DC
 peak. <strong>Operator ruling (2026-10-20): the KCD1 stays.</strong>
 These switches have been in service for 6 months on AC and DC. The
 KCD1's documented ratings are AC only (6 A at 250 VAC / 10 A at 125
-VAC); Halo's DC rocker carries the DROK branch (≤ 5.5 A), so Nova is the
-first at full-bus current. Feel the switch body after a long run.</li>
+VAC); Nova is the first build at full-bus current. Feel the switch body
+after a long run.</li>
 <li><strong>Bay power wiring 18 AWG / E1008 from day one</strong> (Halo
 v1 ran 16 AWG).</li>
 <li><strong>No extra-tall 2×20 stacking header</strong> — the HAT's
@@ -2043,11 +2037,16 @@ family max, equal to the bus. Acceptance per Power_Bay §11.2.0a.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>MZMW PSC-100-12</strong> UPS PSU (100–240 VAC → 13.8 V 5 A +
-13.8 V 2 A charge, 100 W)</td>
+<td><strong>MZMW PSC-150-12</strong> UPS PSU (13.8 V, 7.5 A CH1, 150
+W)</td>
 <td>1</td>
 <td>Mains → bay</td>
-<td>🔴 <strong>TO BUY</strong> (operator 2026-10-20)</td>
+<td>🟡 <strong>1 on hand</strong> (arrived 2026-11-23); Nova and Halo HV
+each take one: count with Purchasing. Every robot gets the new carrier
+and the PSU is the only difference: Ultra and Halo keep their
+PSC-100-12s (129 mm) on their existing base plates; Nova and Halo HV
+take the PSC-150-12 on the new base plates (operator 2026-11-24); the
+PSC-100 ordered 2026-10-22 for Nova is a spare</td>
 </tr>
 <tr>
 <td><strong>ALEAIVY LiFePO4 32700 4S1P</strong> 12.8 V 10 Ah (BMS, 5.5 ×
@@ -2060,21 +2059,25 @@ low-temperature charge cutoff</td>
 <tr>
 <td><strong>HL-PBB-2-6-MINI</strong> distribution module (AliExpress,
 Dongguan ARYRA; ~$6.85)</td>
-<td>1 per robot, <strong>order 3</strong></td>
+<td>1 per robot</td>
 <td>13.8 V distribution (A = V+, B = GND)</td>
-<td>🔴 <strong>TO BUY</strong> (Nova + bench/first-article + spare)</td>
+<td>🟢 <strong>3 ON HAND</strong> (1 earlier + 2 received 2026-10-22):
+Ultra, Nova, Halo's rebuild. 🔴 Halo HV needs 1 more</td>
 </tr>
 <tr>
 <td>CZH-Labs D-1459</td>
 <td>0</td>
-<td>Bench spare / 30 A fallback</td>
+<td>Bench spare only</td>
 <td>🟢 <strong>1 on hand</strong></td>
 </tr>
 <tr>
-<td><strong>DROK</strong> buck 5.3–32 V → 7.5 V, 8 A</td>
+<td><strong>ZK-SJ20</strong> 300 W buck-boost CC/CV, display version
+(WAVGAT)</td>
 <td>1</td>
-<td>HL-PBB → STM32 7.5 V</td>
-<td>🔴 <strong>TO BUY / COUNT</strong></td>
+<td>HL-PBB A1 / B1 → STM32 7.5 V (§16e)</td>
+<td>🟡 <strong>ORDERED</strong>, 4 in total: unit 1 before Nov 28 (bench
+gate ~Nov 27–28); 3 more (Halo, Nova, +1) in the first week of
+December</td>
 </tr>
 <tr>
 <td>HAT 5 V supply: the <strong>dual-USB-C buck, doc name MusRock
@@ -2091,9 +2094,9 @@ replacement = LM25116 300 W CC/CV (🔴 not ordered, EBD §3.6.2). The
 <tr>
 <td>KCD1-104 / KCD1-106/2P illuminated rocker</td>
 <td>2</td>
-<td>1 AC + 1 DC: the <strong>DC rocker sits in the FRONT fence
-half</strong> (operator 2026-10-20), wired <strong>upstream</strong> of
-the block</td>
+<td>1 AC + 1 DC: a <strong>rear-wall mirror pair</strong>, the DC rocker
+under fan 1 and the AC rocker under fan 2; the DC rocker is wired
+<strong>upstream</strong> of the block</td>
 <td>🟢 <strong>ON HAND</strong>: 6–7 in stock (operator 2026-10-20)</td>
 </tr>
 <tr>
@@ -2121,23 +2124,20 @@ ordering in quantity</td>
 built.</td>
 </tr>
 <tr>
-<td>Fuses + holders — <strong>shipping configuration: F1 only; future
-HV-servo upgrade: F1 + the servo fuse, nothing else</strong>:
+<td>Fuses + holders — <strong>F1 only, on every build including Halo
+HV</strong> (no servo fuse, operator order 2026-11-24):
 <strong>F1</strong> 10 A fast-blow glass 6 × 30 (uxcell inline holder,
-16 AWG), battery + → PSU CH2 BAT+; <strong>servo fuse</strong> 10 A
-glass 6 × 30 in a spare 6 × 30 inline holder, on the 11.1 V servo rail
-in the base's second opening (under the solid cover): <strong>future
-HV-servo upgrade, not the shipping configuration</strong> (EBD §1). No
-CH1, DROK-branch or HAT-feed fuses.</td>
-<td>1 + holder (2 with the HV upgrade)</td>
-<td>Battery lead (+ servo rail with the HV upgrade)</td>
+16 AWG), battery + → PSU CH2 BAT+. No CH1, buck-branch or HAT-feed
+fuses.</td>
+<td>1 + holder</td>
+<td>Battery lead</td>
 <td>🟢 <strong>ON HAND</strong>: ≥ 10 spare 6 × 30 glass holders and
 glass fuses; fuse counts and F/T marking ⏳ to read</td>
 </tr>
 <tr>
 <td>Deans T-plug pair</td>
 <td>1</td>
-<td>DROK out → STM32 disconnect</td>
+<td>Buck out → STM32 disconnect</td>
 <td>🟡 <strong>SPARE</strong> (RC stock, no count)</td>
 </tr>
 <tr>
@@ -2622,21 +2622,21 @@ BUY</strong>: 18 for Halo, Ultra and Nova (+ spares)</td>
 <td><strong>Power-bay carrier screws, self-tap only</strong> (operator
 2026-10-22; CAD self-tap-only gate): <strong>counts per robot:</strong>
 <strong>M1.7 × 6 button-head-with-washer self-tap ×10</strong>
-(INA226-MAIN + INA226-BATT × 2 on the carrier, INA226-DROK × 2 into the
-fence front wall's standoffs, Mus-14 × 4; Ø1.3 pilots; <strong>dry-fit
-one screw per board</strong>: if the washer flange sits on the INA226
-header plastic, use a plain M1.7 pan head or a nylon washer instead);
-<strong>M2.5 × 8 pan self-tap ×6</strong>: 4 for the one TMP102 + 2 for
-the raised IP6518 phone charger (the diagonal pair; locating pegs in the
-other two holes); <strong>M2 × 8 pan self-tap ×2</strong> for the G469's
-2 support posts (Ø1.6 pilots; posts stop 0.1–0.5 under the seated board,
-shim at fit); <strong>M3 × 8 pan self-tap ×14 with the D-1459, ×12 with
-the HL-PBB</strong> (the block: D-1459 ×4 or HL-PBB ×2, breakout ×2, 6
-strap screws = 2 PSU strap + 4 battery-strap tabs, PSU strap → fence
-pads). Plus <strong>1 printed TAB_CAP</strong> (insulating) on the
-strap-tab screw by the L terminal, <strong>retained with a dot of RTV
-81158</strong>. G469 stacked on the breakout header <strong>plus 2
-carrier posts</strong> (operator: header-only was wobbly).</td>
+(INA226-MAIN + INA226-BATT × 2 on the carrier, INA226-DROK (INA3) × 2 on
+the carrier, Mus-14 × 4; Ø1.3 pilots; <strong>dry-fit one screw per
+board</strong>: if the washer flange sits on the INA226 header plastic,
+use a plain M1.7 pan head or a nylon washer instead); <strong>M2.5 × 8
+pan self-tap ×4</strong> for the one TMP102 (+ 2 for the IP6518 on the
+mains-side wall, Creator builds); <strong>M2 × 8 pan self-tap
+×2</strong> for the G469's 2 support posts (Ø1.6 pilots; posts stop
+0.1–0.5 under the seated board, shim at fit); <strong>M3 × 8 pan
+self-tap ×4</strong> (the block: HL-PBB ×2, breakout ×2); <strong>M3 ×
+12 pan self-tap ×4</strong> for the battery hold-down pads (from above,
+Ø2.5 blind pilots). ⏳ <strong>ZK-SJ20 ×4 and the carrier's 2 front-stub
+screws:</strong> sizes from CAD once the buck's holes are calipered (HV
+B16). The PSU is screwed to the base plate, not strapped. G469 stacked
+on the breakout header <strong>plus 2 carrier posts</strong> (operator:
+header-only was wobbly).</td>
 <td>per robot</td>
 <td>Power-bay carrier</td>
 <td>M1.7 × 6 (XunLiu stainless, button head with washer, 100 pcs) and
@@ -2673,9 +2673,8 @@ PCB, nut on the PCB side)</td>
 <td><strong>Stock</strong> (GB2672 kit)</td>
 </tr>
 <tr>
-<td>M3 × 8 pan self-tap (DROK ×4, into the fence bosses) + M3 pan
-self-tap (AC inlet ×2, into the fence's M3 mount posts)</td>
-<td>6</td>
+<td>M3 pan self-tap (AC inlet ×2, into the fence's M3 mount posts)</td>
+<td>2</td>
 <td>Fence</td>
 <td><strong>Stock</strong> (HanTof kit)</td>
 </tr>
@@ -2776,9 +2775,9 @@ breakouts (female + male), G469.</li>
 <li>🟡 <strong>Arm:</strong> rubber pads.</li>
 <li>🟡 <strong>Sensors:</strong> TMP102 ×2, HC-SR501 ×4, M3 self-tapping
 threaded inserts ×8 (fence fans).</li>
-<li>🟡 <strong>Power:</strong> ALEAIVY pack, DROK (STM32 7.5 V) 8 A, C14
-(5 in stock, AC-04C), 4.8 flag Fastons (in stock, 2026-11-17), C13 cord,
-barrel pigtail, mains-rated 18 AWG, whether the D-1459 arrived.</li>
+<li>🟡 <strong>Power:</strong> ALEAIVY pack, C14 (5 in stock, AC-04C),
+4.8 flag Fastons (in stock, 2026-11-17), C13 cord, barrel pigtail,
+mains-rated 18 AWG.</li>
 <li>🟡 <strong>USB:</strong> 0.5 ft C-C (3-pack remainder),
 CableCreation (3-pack remainder).</li>
 <li>🟡 <strong>Hardware:</strong> M4 F standoffs (Ø5.4, 3/4″), plain 1″
@@ -2808,7 +2807,8 @@ Halo. Production replacement not chosen.</strong></li>
 </ul>
 <p><strong>Power:</strong></p>
 <ul>
-<li>🔴 MZMW PSC-100-12</li>
+<li>🟢 MZMW PSC-100-12: ordered 2026-10-22 (§17.10a); a spare now that
+Nova takes the PSC-150 (§17.4)</li>
 <li>🔴 HL-PBB-2-6-MINI ×3</li>
 <li>🟡 Power-bay carrier self-taps <strong>M1.7 × 6</strong> (10; XunLiu
 button head with washer) and <strong>M2.5 × 8</strong> (6; CLAHJQX pan):
@@ -2827,8 +2827,8 @@ female pairs (AliExpress). Not stated as genuine Amass: before first
 use, solder one pair and check the housing doesn't soften at the cup,
 and meter polarity per <a href="Power_Bay_Design.html">Power_Bay
 §16b.1</a>.</li>
-<li>🔴 ALEAIVY pack + DROK (STM32 7.5 V), unless the shelf count finds
-spares</li>
+<li>🔴 ALEAIVY pack, unless the shelf count finds spares. The STM32 rail
+is the ZK-SJ20 (ordered, §17.4)</li>
 </ul>
 <p><strong>Cables:</strong></p>
 <ul>
@@ -2882,7 +2882,7 @@ a CC/CV buck ≥ 8 A continuous. Caliper every board's holes for CAD.</p>
 <td>1</td>
 <td>$25.95</td>
 <td>confirmed</td>
-<td>Nova PSU</td>
+<td>Spare: Nova takes the PSC-150 (§17.4)</td>
 </tr>
 <tr>
 <td><strong>32700 4S1P 12 V 10 Ah LiFePO4</strong> pack, <strong>XT30 +
@@ -2898,9 +2898,9 @@ arrival</td>
 <td><strong>HL-PBB-2-6-MINI</strong> 16 A / 48 V distribution</td>
 <td>2</td>
 <td>$14.52</td>
-<td>confirmed</td>
-<td>✅ Enough: 1 D-1459 on hand + these 2 HL-PBB = <strong>3 blocks for
-3 robots</strong> (operator 2026-10-22)</td>
+<td>received 2026-10-22</td>
+<td>The HL-PBB is the only block (operator 2026-11-24). 3 on hand with
+an earlier unit: Ultra, Nova, Halo's rebuild; Halo HV needs 1 more</td>
 </tr>
 <tr>
 <td><strong>INA226, R002 shunt</strong> (orange + green screw terminals,
@@ -2983,7 +2983,8 @@ wands</strong> (operator 2026-10-22)</td>
 <td>1</td>
 <td>$14.66</td>
 <td>confirmed</td>
-<td>Presumed the STM32 7.5 V buck (DROK slot): confirm the part</td>
+<td>A CC/CV buck; the STM32 rail is now the ZK-SJ20, so this is a spare:
+confirm the part</td>
 </tr>
 </tbody>
 </table>
@@ -2995,12 +2996,11 @@ It stays unless the ≥ 4.90 V gate fails at install; the interim until
 the LM25116 300 W CC/CV buck (🔴 not ordered; CAD reserves its carrier
 spot, ≈ 61 × 53 × 28).</li>
 <li><strong>DC rocker — closed.</strong> The operator keeps the KCD1,
-which has 6 months of AC/DC service. The <strong>DC rocker is in the
-front fence half</strong>; the rocker cutouts are CAD's proven design
-(operator 2026-10-20), so no change is needed.</li>
-<li><strong>Fusing — closed.</strong> The shipping configuration carries
-one fuse, F1 on the battery lead; the future HV-servo upgrade adds the
-servo-rail fuse. Both 10 A 6 × 30 glass, in stock.</li>
+which has 6 months of AC/DC service. The rockers are a <strong>rear-wall
+mirror pair</strong>: DC under fan 1, AC under fan 2.</li>
+<li><strong>Fusing — closed.</strong> One fuse on every build, Halo HV
+included: F1 on the battery lead, 10 A 6 × 30 glass, in stock. No servo
+fuse (operator order 2026-11-24).</li>
 <li><strong>HL-PBB mount:</strong> 2 × Ø4 holes at <strong>64 mm
 c/c</strong> (calipered). It self-taps onto the carrier's two posts with
 <strong>M3 × 8 pan self-taps</strong>.</li>
@@ -3073,9 +3073,12 @@ robots.</li>
 <h2
 id="16b-power-bay-carrier-build--where-it-lives-pointer-2026-10-23">16b.
 Power-bay carrier build — where it lives (pointer, 2026-10-23)</h2>
-<p>The power-bay <strong>carrier</strong> (Nova onward; Halo/Ultra when
-carriered) replaces mounting boards on the PSU cover. Everything for
-building it lives in Power_Bay_Design, not here:</p>
+<p>The power-bay <strong>carrier</strong> goes on every robot (one
+carrier for LV and HV) and replaces mounting boards on the PSU cover.
+The only per-robot difference is the PSU: Ultra and Halo keep their
+PSC-100-12s (129 mm) on their existing base plates; Nova and Halo HV
+take the PSC-150-12 on the new base plates. Everything for building it
+lives in Power_Bay_Design, not here:</p>
 <ul>
 <li><p><strong>Layout, mounting and rules:</strong> <a
 href="Power_Bay_Design.html#1139-power-bay-carrier--layout-requirements-in-design-2026-10-22">Power_Bay
@@ -3209,16 +3212,59 @@ studs change length, every number shifts by the same amount. Each is
 CAD's model height above the arm mount face plus the 193.0 floor datum;
 on a desk-clamped Creator (mount face 96.0 above the desk) subtract
 97.0.</p>
-<h2 id="16e-hv-servo-rail-supply-zk-sj20--moved">16e. HV servo-rail
-supply (ZK-SJ20) — moved</h2>
-<p>The HV version's bay (ZK-SJ20 buck-boost, HV carrier, HV front fence,
-one-rail rules) now lives in <a
-href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code></a>.</p>
+<h2
+id="16e-servo-rail-buck-zk-sj20--every-build-setup-and-bench-gate">16e.
+Servo-rail buck (ZK-SJ20) — every build: setup and bench gate</h2>
+<p>The <strong>ZK-SJ20 300 W buck-boost (display version)</strong>
+replaces the DROK on every build (operator 2026-11-24): <strong>7.50
+V</strong> on LV, <strong>12.0 V</strong> on Halo HV. It sits on the
+carrier deck over an opening. Every robot gets the same carrier; nothing
+goes on the front wall but the logo. Board data, photos and the HV
+numbers: <a href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code>
+§1</a>. Wiring: block A1 / B1 → ZK IN, ZK OUT → STM32 blue terminal via
+the Deans, ZK OUT+ → INA3 (INA226 0x47, on the carrier) → on to the
+STM32. All three runs are <strong>16 AWG</strong> red / black silicone
+(stock, ~4 m each) with <strong>E1508</strong> ends; bare twisted
+strands where an E1508 won't seat. Cuts: <a
+href="Power_Bay_Design.html#16c-carrier-harness-build-list--every-harness-by-cad-route-id-carrier-builds-2026-10-23">Power_Bay
+§16c</a>.</p>
+<p><strong>Stock:</strong> 4 in total. Unit 1 arrives before Nov 28 and
+takes the bench gate (~Nov 27–28); the other 3 (Halo, Nova, +1) arrive
+in the first week of December. Ultra and Nova can be wired in full
+before it arrives, but the STM32 and Pi can't power up without it: the
+Pi boots from the STM32's 5 V port.</p>
+<p><strong>Setup (bench, e-load, meter on the output), before it ever
+connects to the STM32:</strong></p>
+<ol type="1">
+<li><strong>CV → 7.50 V</strong> (LV; never above 8.4 V) or <strong>12.0
+V</strong> (Halo HV). Seal the CV pot with varnish.</li>
+<li><strong>MPPT pot fully down</strong> (≤ 7 V), so it never throttles
+its output to hold its input.</li>
+<li><strong>CC → 18 A</strong> (operator 2026-11-24): headroom over the
+real servo load of ≤ 7–8 A.</li>
+<li><strong>Power-on default ON:</strong> press ON/OFF for 2 s until the
+display reads ON.</li>
+</ol>
+<p><strong>Bench gate on the first unit, before it goes into any
+robot:</strong></p>
+<ol type="1">
+<li>18 A for 10 min from 13.8 V, then from the battery: CC holds 18 A
+with the rail sagging, no latch.</li>
+<li>Overload past 300 W: record what OPP does (latch or auto-retry) and
+what clears it.</li>
+<li>10 power cycles: time to 7.5 V each time; the STM32 and Pi boot
+every time, and the output comes up ON by itself.</li>
+<li>Mains pull under servo load: no Pi reset.</li>
+<li>Heatsink temperature in the bay airflow, lid on; a fan on its 5 V
+port only if it runs hot.</li>
+</ol>
+<p><strong>After install:</strong> read INA3 on real arm moves on each
+robot (HV_Bay B12). The STM32 board is bench-proven to 11 A only.</p>
 <h2 id="related-docs">Related Docs</h2>
 <ul>
 <li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> —
-power-bay sections: G469 chain, sensor installs, rails, fans, APIELE /
-HL-PBB / D-1459 distribution, PIR, power-up verification</li>
+power-bay sections: G469 chain, sensor installs, rails, fans, HL-PBB
+distribution (Halo v1: APIELE), PIR, power-up verification</li>
 <li><a
 href="Electronics_Soldering_Guide.html"><code>Electronics_Soldering_Guide.md</code></a>
 — sibling bench-ops guide owning all soldering operations</li>

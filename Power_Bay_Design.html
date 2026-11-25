@@ -118,34 +118,57 @@ multimeter against known rails on the header is deterministic and takes
 30 seconds.</li>
 </ul>
 <h3 id="02-bay-physical-layout">0.2 Bay physical layout</h3>
-<p>Board positions are given in the carrier's CAD frame (§11.3.9). Where
-the furniture is, operator-confirmed from the hardware:</p>
+<p><strong>One bay for every build, LV and HV (operator,
+2026-11-24).</strong> One carrier (the former HV carrier), one
+distribution block (HL-PBB) and one servo-rail buck (ZK-SJ20: 7.50 V LV,
+12.0 V HV) on every robot. <strong>The only difference is the
+PSU:</strong> Ultra and Halo use the <strong>PSC-100-12</strong> (129
+mm) on their existing base plates; Nova and Halo HV use the
+<strong>PSC-150-12</strong> (159 mm) on the new base plates. The
+terminal strip is the same on both. Halo v1 as built keeps its modified
+APIELE strip until its bay is rebuilt. Only the HV differences live in
+<a href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code></a>. Board
+positions are in the carrier's CAD frame (§11.3.9):</p>
 <table>
 <thead>
 <tr>
 <th>Item</th>
-<th>Where it actually is</th>
+<th>Where it is</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>PSU CH1 +V / GND terminals</strong></td>
-<td>Near the <strong>battery, toward the FAN end</strong></td>
+<td><strong>PSU terminal strip</strong> (L · N · ⏚ · −V · +V)</td>
+<td>Under the carrier's terminal slot; mains enters through the slot
+opened to the +X wall</td>
 </tr>
 <tr>
-<td><strong>AC L / N terminals</strong></td>
-<td><strong>Same end</strong> — near the battery, toward the fan
-end</td>
+<td><strong>Distribution block</strong> (HL-PBB)</td>
+<td>At the back of the carrier, raised over the battery bars (Y
+56–78)</td>
 </tr>
 <tr>
-<td><strong>Distribution block</strong> (HL-PBB / D-1459)</td>
-<td>On the carrier over the PSU, feed end toward INA226-MAIN
-(§11.3.9)</td>
+<td><strong>Servo-rail buck</strong> (ZK-SJ20)</td>
+<td>Flat on the carrier deck over an opening, heatsink 3.0 mm above the
+PSU top, IN end toward the block, OUT end toward the front (§5c)</td>
 </tr>
 <tr>
-<td><strong>DROK buck</strong></td>
-<td><strong>Front end of the fence, mounted STANDING UP</strong> — not
-on the carrier</td>
+<td><strong>INA226-DROK (INA3)</strong></td>
+<td>On the carrier at the buck's OUT end, on the OUT+ lead (§5b)</td>
+</tr>
+<tr>
+<td><strong>DC and AC rockers</strong></td>
+<td>Rear wall, a mirror pair: DC rocker under fan 1, AC rocker under fan
+2</td>
+</tr>
+<tr>
+<td><strong>IP6518 phone charger</strong> (Creator builds)</td>
+<td>Upright on the mains-side wall's lower straight, front-right corner,
+93.6 mm from the mains</td>
+</tr>
+<tr>
+<td><strong>Front fence wall</strong></td>
+<td>Logo only: no boards, no switches</td>
 </tr>
 <tr>
 <td><strong>FPC breakout + G469 stack</strong></td>
@@ -153,22 +176,18 @@ on the carrier</td>
 </tr>
 <tr>
 <td><strong>FFC to the electronics bay</strong></td>
-<td>Exits <strong>UPWARD through the ARM BASE</strong> — <em>not</em>
-through a fence wall</td>
+<td>Exits <strong>upward through the arm base</strong>, not through a
+fence wall</td>
 </tr>
 </tbody>
 </table>
-<p>⚠️ <strong>Two open questions follow from this.</strong></p>
-<ol type="1">
-<li><strong>The mains and the DC distribution share an end.</strong> AC
-L/N, CH1 DC and the D-1459's ferruled landings are all clustered at the
-battery/fan end. Worth a deliberate look at creepage and at
-mains-to-signal coupling before the layout is called final.</li>
-<li>⏳ <strong>Which PSU end runs hottest is unmeasured.</strong> The
-bay TMP102 sits over the PSU's downstream (+Y) half, where the bay
-airflow says the warmest air is. The PSU-top thermal survey (§11.3.9
-"TMP102 intent") settles it.</li>
-</ol>
+<p><strong>Mains routing:</strong> L / N / E run down the +X side lane
+(X ~287) and enter the PSU strip through the terminal slot; the battery
+pair runs in the pack-to-wall gap (X ~300.7). CAD gates every mains
+conductor at ≥ 8 mm jacket-to-jacket from all LV (nearest 8.65 in the
+wired bay). ⏳ <strong>Which PSU end runs hottest is
+unmeasured;</strong> the PSU-top thermal survey (§11.3.9 "TMP102
+intent") settles it.</p>
 <h3
 id="01-header-inventory--what-needs-soldering-vs-what-ships-pre-populated">0.1
 Header inventory — what needs soldering vs. what ships
@@ -616,8 +635,8 @@ so the G469 pinout diagram (reference images above) applies. Land wires
 on the G469's matching <strong>labeled</strong> terminals.</p>
 <p><strong>Never tin stranded wire for screw/clamp terminals</strong> —
 solder cold-flows and pulls out; use a ferrule, or bare twisted strands
-where the doc says so (the DROK and INA226-DROK terminals, §5b.6). Full
-write-up: <code>memory/project_halo_ina226_bringup.md</code>.</p>
+where the doc says so (INA3's IN+ / IN−, §5b.4). Full write-up:
+<code>memory/project_halo_ina226_bringup.md</code>.</p>
 </blockquote>
 <h3 id="every-wire-that-lands-on-the-g469--one-drawing-2026-09-23">Every
 wire that lands on the G469 — one drawing (2026-09-23)</h3>
@@ -744,7 +763,7 @@ never has to fit inside the pitch. The as-built INA226 chain reads
 they arrive on ONE connector at the wand end.</strong> At the
 <strong>bay</strong> end nothing changes: SDA + SCL + 3V3 come off
 <strong>this</strong> board, while 13.8 V + <code>GND-power</code> +
-<code>GND-logic</code> come off the <strong>D-1459 distribution
+<code>GND-logic</code> come off the <strong>HL-PBB distribution
 block</strong>, never the G469. At the <strong>wand</strong> end those
 six land on a single <strong>6-pin JST-XH in the END PLATE</strong> (<a
 href="Lumi_Wand_Integration.html#93b-end-cap--end-plate--retaining-ring-v911-active-3d-printed">Integration
@@ -1029,20 +1048,27 @@ the two conductors in INA226-MAIN's GND screw; bare twisted strands if a
 ferrule won't seat (operator 2026-11-16)</td>
 </tr>
 <tr>
-<td>DROK IN / OUT and INA226-DROK IN+ / IN− screw terminals</td>
-<td>18 AWG</td>
-<td><strong>none: bare strands</strong> (operator 2026-11-16,
-§5b.6)</td>
+<td>ZK-SJ20 IN / OUT terminals, HL-PBB A1 / B1, STM32 blue terminal
+(buck runs)</td>
+<td><strong>16 AWG</strong></td>
+<td><strong>E1508</strong> (XHF kit, black); bare twisted strands where
+one won't seat (§5c)</td>
+</tr>
+<tr>
+<td>INA3 (INA226-DROK) IN+ / IN−</td>
+<td>16 AWG</td>
+<td><strong>E1508</strong>, or bare twisted strands if it won't seat
+(§5b.4)</td>
 </tr>
 </tbody>
 </table>
 <blockquote>
 <p><strong>Bay power gauge = 18 AWG / E1008</strong> (fleet palette
 18/22/26). <strong>Halo v1 as-built runs 16 AWG / E1508</strong> (XHF
-kit, black, strip 10 mm, 8 mm barrel; rated <strong>18 A</strong>
-against the bay's <strong>8.0 A</strong> peak, §11.3.3). There is
-<strong>no 14 AWG in the bay</strong>. The D-1459's cages take 26–12
-AWG.</p>
+kit, black, strip 10 mm, 8 mm barrel; §11.3.3). The buck runs are
+<strong>16 AWG</strong> red / black silicone (§5c; ~4 m of each in
+stock). There is <strong>no 14 AWG in the bay</strong>. The HL-PBB's
+cages take 26–12 AWG.</p>
 </blockquote>
 <p>⚠️ <strong>E0208 and E0308 are dimensionally identical</strong> —
 same 0.8 bore, 1.9 collar, 8 mm barrel, 12.4 overall. Only the rated
@@ -1559,9 +1585,9 @@ gate; a 5 A cable only if it fails (EBD §3.6.2). Planned replacement
 buck: the LM25116 (not ordered).</li>
 <li><strong>Feed:</strong> a distribution-block A/B pair off <strong>PSU
 CH1</strong> (UPS-backed) → Mus-14, unfused, 22 AWG / E0508 (D16/D17;
-Halo instead taps its DROK input screws, Bench plan §3). <strong>Never
-from the DROK 7.5 V output or a separately switched branch</strong>
-(§3.6.2: a late HAT rail = NVMe boot failure).</li>
+Halo v1 as built taps its DROK input screws until its bay is rebuilt).
+<strong>Never from the servo-rail buck output or a separately switched
+branch</strong> (§3.6.2: a late HAT rail = NVMe boot failure).</li>
 <li><strong>Runtime cost:</strong> ~7 W ≈ **~0.6 A more from the pack**
 on battery. That's inside the 10 Ah budget, and the §5a.7 runtime leg
 measures it.</li>
@@ -1836,96 +1862,163 @@ before INA226-BATT existed. After the early-November parity upgrade,
 Ultra runs THIS procedure exactly like Halo.</li>
 </ol>
 <h2
-id="5b-ina226-drok--third-ina226-on-the-drok-output-operator-yes-2026-11-15-all-carrier-builds">5b.
-INA226-DROK — third INA226 on the DROK output (operator yes 2026-11-15;
-all carrier builds)</h2>
+id="5b-ina226-drok-ina3--third-ina226-on-the-servo-rail-buck-output-all-builds">5b.
+INA226-DROK (INA3) — third INA226 on the servo-rail buck output (all
+builds)</h2>
+<p>The name is historical: it reads the ZK-SJ20's output (§5c), which
+replaced the DROK on every build.</p>
 <h3 id="5b1-what-it-measures">5b.1 What it measures</h3>
-<p>Voltage, current and power on the DROK output, i.e. <strong>the STM32
+<p>Voltage, current and power on the buck output, i.e. <strong>the STM32
 board's TOTAL draw, not the servos alone</strong>: the servos, Ultra's
 mecanum motors and the board's 5 V converter (which powers the Pi) all
-sit behind the DROK. It is the number INA226-MAIN can't give, because
-MAIN reads the whole bay (DROK input + Mus-14 + wand + phone + fans
-together). When the DROK trips (OCP latch, Electronics_Bay_Design §1)
-the Pi goes dark with the board, so INA226-DROK logs everything up to a
-trip, not after it.</p>
+sit behind the buck. It is the number INA226-MAIN can't give, because
+MAIN reads the whole bay (buck input + Mus-14 + wand + phone + fans
+together). It also gives the real servo peaks (HV B12) that set the
+final current limit (§5c).</p>
 <h3 id="5b2-address--0x47">5b.2 Address — <strong>0x47</strong></h3>
 <p>A1 = VS (bottom row, pad <strong>U</strong>), A0 = SCL (top row, pad
 <strong>L</strong>): one pad off INA226-BATT's 0x45. One bridge per row;
 continuity-check first (§5.2 recipe). Bus: 0x40 HAT INA219, 0x41
-PCA9685, 0x44 MAIN, 0x45 BATT, <strong>0x47 DROK</strong>, 0x48 / 0x49
+PCA9685, 0x44 MAIN, 0x45 BATT, <strong>0x47 INA3</strong>, 0x48 / 0x49
 TMP102s.</p>
 <h3 id="5b3-pull-ups--lift-both-01c-like-53">5b.3 Pull-ups — lift both
 "01C" like §5.3</h3>
-<h3 id="5b4-power-wiring--in-the-drok-output--lead">5b.4 Power wiring —
-in the DROK output + lead</h3>
-<p>DROK OUT+ → <strong>IN+</strong> … <strong>IN−</strong> → on to the
-Deans (+), every landing <strong>bare 18 AWG, no ferrule or
-fork</strong> (no room at that corner, §5b.6), → STM32 (segment D14a,
-§16c row 6). DROK OUT− goes to the Deans <strong>direct</strong>. 18
-AWG; the board's R002 shunt reads to ~40 A against the DROK's ~11.8 A
-maximum. <strong>GND screw stays EMPTY</strong> (as on INA226-BATT): its
-ground comes on the I²C chain, and the DROK is non-isolated, so OUT− is
-already common with logic GND through the board and Pi; a power ground
-here would make a second logic-to-power tie. VBUS jumpered as on the
-other two boards, so V reads the rail going to the board.</p>
+<h3 id="5b4-power-wiring--in-the-buck-output--lead">5b.4 Power wiring —
+in the buck output + lead</h3>
+<p>ZK-SJ20 OUT+ → <strong>IN+</strong> … <strong>IN−</strong> → on to
+the Deans (+) → STM32 (§16c rows 6 / 6a). OUT− goes to the Deans
+<strong>direct</strong>. Both legs are <strong>16 AWG</strong> (CC 18 A,
+§5c). At IN+ / IN−: <strong>E1508</strong>, or bare twisted strands if
+it won't seat; never tinned. The board's R002 shunt reads to ~40 A.
+<strong>GND screw stays EMPTY</strong> (as on INA226-BATT): its ground
+comes on the I²C chain, and the buck is non-isolated, so OUT− is already
+common with logic GND through the board and Pi; a power ground here
+would make a second logic-to-power tie. VBUS jumpered as on the other
+two boards, so V reads the rail going to the board.</p>
 <h3 id="5b5-logic--on-the-bay-i²c-chain">5b.5 Logic — on the bay I²C
 chain</h3>
-<p>G469 → INA226-MAIN → <strong>INA226-DROK</strong> → INA226-BATT →
-TMP102-bay, double-crimped 4-way housing, crimped by net (§16c row 13).
-Still one conductor per net at the G469.</p>
-<h3
-id="5b6-position--on-the-fence-front-wall-rotated-90-at-the-droks-out-end-operator-2026-11-16">5b.6
-Position — on the fence front wall, rotated 90° at the DROK's OUT end
-(operator, 2026-11-16)</h3>
-<p><strong>Flat on the front wall's inner face, rotated 90° at the +X
-end of the straight wall, above the DROK</strong> (operator, from CAD's
-corner render), with its terminal entries facing +X toward the DROK's
-OUT end. The carrier has no clean spot for it, and a stack on
-INA226-BATT doesn't clear the lid.</p>
+<p>G469 → INA226-MAIN → INA226-BATT → TMP102-bay →
+<strong>INA3</strong>, double-crimped 4-way housings, crimped by net
+(§16c row 13). Still one conductor per net at the G469.</p>
+<h3 id="5b6-position--on-the-carrier-at-the-bucks-out-end">5b.6 Position
+— on the carrier at the buck's OUT end</h3>
+<p>On the carrier beside the ZK-SJ20's OUT end (toward the front),
+terminal edge facing the buck; the OUT+ → IN+ lead is 19 mm centreline
+(§16c row 6a). Position, posts and screw size are CAD's (§11.3.9). The
+front fence wall carries nothing. <strong>Lead prep at the screw
+entries:</strong> strip to the clamp depth, twist tight, insert fully,
+tighten, tug-test, and <strong>retighten after the first warm
+run</strong> (fine-strand silicone settles).</p>
+<h2 id="5c-servo-rail-buck--zk-sj20-buck-boost-all-builds">5c.
+Servo-rail buck — ZK-SJ20 buck-boost (all builds)</h2>
+<p><strong>Decided (operator, 2026-11-24):</strong> every build's servo
+rail (to the STM32 board, which feeds the servos and, through its 5 V
+port, the Pi) comes from a <strong>ZK-SJ20 300 W buck-boost CC/CV
+module, display version</strong> (WAVGAT, AliExpress): <strong>7.50 V on
+LV builds, 12.0 V on Halo HV</strong> (<a
+href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code></a> §1). It
+replaces the DROK buck. <strong>Stock:</strong> 4 ordered: unit 1
+arrives before Nov 28 (it takes the bench gate first), the other 3
+(Halo, Nova, +1) in the first week of December. As a 4-switch buck-boost
+it holds its setpoint from the PSU's 13.8 V and from a sagging
+battery.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter (seller's table)</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Input</td>
+<td>7–80 V DC</td>
+</tr>
+<tr>
+<td>Output</td>
+<td>1.4–79 V DC, adjustable</td>
+</tr>
+<tr>
+<td>Output current regulation (CC)</td>
+<td>0–20 A</td>
+</tr>
+<tr>
+<td>Overpower protection</td>
+<td>300 W: output turns off, display shows <strong>OPP</strong></td>
+</tr>
+<tr>
+<td>Display</td>
+<td>voltage 1.40–80.00 V (±0.1 V), current 0.00–20.00 A (±0.03 A); also
+temperature (°C)</td>
+</tr>
+<tr>
+<td>Adjusting knobs</td>
+<td>three trim pots: <strong>CV</strong> (output voltage),
+<strong>CC</strong> (current limit), <strong>MPPT / CVT</strong>
+(input-hold voltage)</td>
+</tr>
+<tr>
+<td>Keys</td>
+<td>ON/OFF tap toggles the output; a 2 s press sets the power-on default
+ON / OFF</td>
+</tr>
+<tr>
+<td>Backflow</td>
+<td>0.5–40 mA flows back into the output side when the input is off</td>
+</tr>
+<tr>
+<td>Cooling</td>
+<td>finned aluminium heatsink over the whole underside, fins along the
+109 mm length; <strong>5 V fan port, ships without a fan</strong>. Air
+along the fins, never flat on a solid deck: on the carrier it sits over
+an opening, 3.0 mm above the PSU top, lid kept ≥ 50 % open</td>
+</tr>
+<tr>
+<td>Size / weight</td>
+<td>109 × 64.5 × 46 mm (seller, hand-measured; <strong>caliper on
+arrival</strong>); 194 g. Hole pattern not listed (caliper on
+arrival)</td>
+</tr>
+</tbody>
+</table>
+<p><img src="images/hardware/zk_sj20_overview.png"
+alt="ZK-SJ20 300 W automatic buck-boost module with LCD: input terminals left, output terminals right, toroid inductor in the middle, display with MPPT and ON LEDs and the IN/OUT and ON/OFF buttons." /></p>
+<p><strong>Terminals:</strong> IN on one short end, OUT on the other,
+2-position side-entry blocks. On the carrier the <strong>IN end faces
+the block (back)</strong> and the <strong>OUT end faces INA3
+(front)</strong>. Buck runs are <strong>16 AWG</strong> silicone (red /
+black) with <strong>E1508</strong> ferrules (caliper the terminal
+opening on arrival); see §16c rows 5 / 6 / 6a.</p>
+<p><strong>Setup before it ever connects to the robot (bench, e-load,
+meter on the output):</strong></p>
+<ol type="1">
+<li><strong>CV pot → 7.50 V on LV</strong> (never above 8.4 V: servo and
+board limit) or <strong>12.0 V on HV</strong>, then seal it with a dab
+of varnish.</li>
+<li><strong>MPPT pot fully down (≤ 7 V)</strong>, so the board never
+throttles its output to hold the input on a sagging battery.</li>
+<li><strong>CC pot → 18 A</strong> (operator, 2026-11-24). It is
+headroom: real servo load is ≤ 7–8 A. CC limits current (the rail sags);
+it doesn't latch.</li>
+<li><strong>Power-on default ON:</strong> press ON/OFF for 2 s until the
+display reads <strong>ON</strong>. Without it the output stays off after
+a power cycle and the STM32 and Pi never boot.</li>
+<li>⚠️ <strong>No overvolt setting and no key lock:</strong> a
+buck-boost can output far above its input, so a mis-set CV pot can put
+20 V+ on the board. Check the output on the meter after any
+handling.</li>
+</ol>
+<p><strong>Bench gate on the first unit, before any robot:</strong></p>
 <ul>
-<li><strong>DROK OUT end = the pot end</strong> (operator, 2026-11-15):
-+X, fence X ~258–271, the end with the current/voltage adjustment
-cutout. The DROK's IN and OUT blocks (operator caliper) are each 10.5
-wide × 7.6 thick, flush with the board's short ends, starting 7 mm below
-its top edge (LCD at the bottom), entries facing out of the short
-end.</li>
-<li><strong>Mount:</strong> the 21 × 25 board sits 4 mm off the wall on
-<strong>2 printed M1.7 self-tap standoffs</strong>, a vertical pair at
-the header end (fence front half's pilots). Board at fence file X
-236–261, Z 66.7–87.7 above the plate, front face Y −127.16; IN+ / IN−
-entries at Z 69.2 / 85.2 (the DROK top is at Z 59.5), terminals facing
-the OUT end; CAD gates the 10 mm entry envelope (below) against the
-fence solid. To make room, the four front vent slots moved 8.2 mm toward
-the DROK's F1/F2 buttons (operator, option A on CAD's render). DROK IN
-entries at carrier X 193 (button end), OUT at X 266 (pot end).</li>
-<li><strong>Orientation:</strong> the screw-terminal edge faces +X
-(toward the OUT end) and the I²C header edge faces −X.</li>
-<li><strong>Terminations: bare 18 AWG, no ferrules or forks</strong>
-(operator, 2026-11-16, as built on Halo), at all four DROK terminals
-(IN+ / IN−, OUT+ / OUT−) and at INA226-DROK IN+ / IN−. There's no room
-for ferrules: the fence's −X slant is ~8 mm past the DROK's IN end and
-~8.6 mm past its OUT end. <strong>Lead prep:</strong> strip to the
-terminal's clamp depth, so no bare copper shows outside the entry; twist
-the strands tight; insert fully, with no stray strand outside the clamp;
-tighten; tug-test. <strong>Never tin the strands.</strong> Fine-strand
-silicone settles in a screw clamp, so <strong>retighten each of these
-screws after the first warm run</strong>. At the <strong>IN end</strong>
-leave the entry straight about 1 mm, then bend inboard (+Y), toward
-where the wall falls away: CAD's model clears the slant by 3.47 mm this
-way. At the <strong>OUT end</strong> run ~6 mm straight off the block
-before turning, so the lead clears the DROK body; the INA3 entries keep
-the fence's 10 mm room, more than bare wire needs.</li>
-<li><strong>DROK-OUT:</strong> OUT+ → IN+ and IN− → on to the Deans, a
-short loop: the D14a jumper OUT+ → IN+ is the only separate piece (33 mm
-centreline, cut 70). The first 54 mm of the + lead (IN− → where it meets
-OUT−) and the first 33 mm of OUT− are part of the two pair conductors,
-not extra pieces (§16c row 6). OUT− goes straight to the Deans and stays
-twisted with the + lead everywhere except that loop.</li>
-<li><strong>I²C:</strong> the chain hops MAIN → INA226-DROK → BATT climb
-the front wall to the header, 331–334 mm per conductor per hop (§16c row
-13).</li>
-<li><strong>Service:</strong> the board comes off the wall with its 2
-screws. Nothing else sits on top of it.</li>
+<li>e-load at <strong>18 A for 10 min</strong>, from 13.8 V and from the
+battery: CC holds with the rail sagging, no latch;</li>
+<li>record what <strong>OPP</strong> does (latch or auto-retry) and what
+clears it;</li>
+<li><strong>10 power cycles</strong>, timing time-to-setpoint; the STM32
+and Pi boot every time;</li>
+<li><strong>mains pull under servo load</strong>: no Pi reset;</li>
+<li>heatsink temperature in the bay airflow; the 5 V fan goes on only if
+it runs hot.</li>
 </ul>
 <h2 id="6-tmp102-power-bay--header-solder--mount--wiring">6. TMP102
 (Power-Bay) — Header Solder + Mount + Wiring</h2>
@@ -1977,11 +2070,11 @@ PSU's downstream (+Y) half in its plume, ≥ 20 mm off the Mus-14 heatsink
 row (§11.3.9, §16c row 13).</p>
 <p><strong>Thermal caveat:</strong> the TMP102 die sits on the IC body
 (not at the edge). This mount reads AIR TEMPERATURE, not any specific
-heatsink surface. For direct DROK heatsink temp monitoring, a separate
-DS18B20 probe or a second TMP102 at a different I²C address would be the
-phase-2 add. Current design uses this one sensor as the bay-average
-thermal proxy for the <code>bay_thermal_node</code> fan-PWM control
-loop.</p>
+heatsink surface. For direct buck-heatsink temperature monitoring, a
+separate DS18B20 probe or a second TMP102 at a different I²C address
+would be the phase-2 add. Current design uses this one sensor as the
+bay-average thermal proxy for the <code>bay_thermal_node</code> fan-PWM
+control loop.</p>
 <h3 id="65-cable-to-g469">6.5 Cable to G469</h3>
 <table>
 <thead>
@@ -2052,7 +2145,7 @@ wand-side bench work, in <a
 href="Lumi_Wand_Integration.html#24-wand-fan--noctua-nf-a4x10-pwm-40--40--10-mm-connector-re-crimp-bench"><code>Lumi_Wand_Integration.md</code>
 §24</a>.</li>
 <li><strong>Bay fans (§11.2):</strong> <strong>no JST-XH.</strong> 12 V
-pair (V+/GND) terminates in <strong>E0508 ferrules at the D-1459 cage
+pair (V+/GND) terminates in <strong>E0508 ferrules at the HL-PBB cage
 end</strong> and is <strong>soldered + heat-shrink joined to the fan
 lead</strong> at the fan end. GPIO pair (PWM/TACH) lands <strong>in
 ferrules directly in the G469 screw terminals</strong> (E0308 on v1's 24
@@ -2246,7 +2339,7 @@ Wiring — cut off stock 4-pin, spade-lug the 12 V pair, land GPIO wires
 direct at G469</h4>
 <p><strong>Design decision (locked 2026-08-05):</strong> no JST-XH
 connectors on the bay-fan run. The 12 V pair (V+ / GND) terminates in
-<strong>E0508 ferrules at the D-1459 cage end</strong> and is soldered +
+<strong>E0508 ferrules at the HL-PBB cage end</strong> and is soldered +
 heat-shrink joined to the fan's stock lead at the fan end. The GPIO pair
 (PWM / TACH) is landed <strong>directly into the G469 screw
 terminals</strong> in <strong>26 AWG</strong> (signal palette; v1
@@ -2258,13 +2351,13 @@ anywhere on the fan run.</p>
 lead length attached to the fan (~250 mm).</li>
 <li>Separate the 4 wires. Strip ~5 mm at the cut end of each.</li>
 <li><strong>Yellow (V+) + Black (GND) 12 V pair — extend and terminate
-at the D-1459:</strong>
+at the HL-PBB:</strong>
 <ul>
 <li>Solder each wire to an extension of 22 AWG silicone hookup wire,
 sized to reach from the fence back wall (fan) to the distribution block
 on the carrier. Heat-shrink the solder joint (3 mm × 15 mm shrink,
 centered).</li>
-<li>At the D-1459 end of each extension: crimp an <strong>E0508
+<li>At the HL-PBB end of each extension: crimp an <strong>E0508
 ferrule</strong>. Land in the assigned cage (§11.3 D10-D13: fan #1
 A3/B3, fan #2 A4/B4). V+ and GND both run straight — <strong>no inline
 diodes</strong> (fans are Pi5-PWM-controlled and tolerate 13.8 V direct
@@ -2309,7 +2402,7 @@ under “Why the signal-GND jumper” below. Each fan's only ground wire
 <td>22 AWG silicone, solder + heat-shrink joint at fan lead; <strong>no
 diodes</strong> (see Assembly Guide §1.2 1N5408 row for why)</td>
 <td><strong>E0508 ferrule</strong></td>
-<td>D-1459 V+ bus — fan #1 <strong>A3</strong>, fan #2
+<td>HL-PBB V+ bus — fan #1 <strong>A3</strong>, fan #2
 <strong>A4</strong> (see §11.3 D10 / D12)</td>
 </tr>
 <tr>
@@ -2317,7 +2410,7 @@ diodes</strong> (see Assembly Guide §1.2 1N5408 row for why)</td>
 <td>22 AWG silicone, solder + heat-shrink joint at fan lead; <strong>no
 diode</strong> on GND</td>
 <td><strong>E0508 ferrule</strong></td>
-<td>D-1459 GND bus — fan #1 <strong>B3</strong>, fan #2
+<td>HL-PBB GND bus — fan #1 <strong>B3</strong>, fan #2
 <strong>B4</strong> (see §11.3 D11 / D13)</td>
 </tr>
 <tr>
@@ -2395,7 +2488,7 @@ fan wires do <strong>not</strong> share a gauge.</p>
 <tbody>
 <tr>
 <td>Yellow V+ / Black GND</td>
-<td><strong>22 AWG</strong> → E0508 ferrule at the D-1459</td>
+<td><strong>22 AWG</strong> → E0508 ferrule at the HL-PBB</td>
 <td>Carries fan current on the 13.8 V rail. Power.</td>
 </tr>
 <tr>
@@ -2429,9 +2522,9 @@ id="step-7-is-on-hold--not-installed-and-probably-should-not-be-2026-09-30">STEP
 <p><strong>As-built: there is no jumper in the bay.</strong></p>
 <p><strong>The Pi already shares a reference with the fans'
 ground</strong> (the fans read PWM and drive tach relative to the
-distribution block's GND bus where their black wires land): the DROK is
-a <strong>non-isolated</strong> buck, so its input− and output− are the
-same node, and the chain Pi GND → STM32 → Deans → DROK → D9 → B2 already
+distribution block's GND bus where their black wires land): the ZK-SJ20
+is <strong>non-isolated</strong>, so its input− and output− are the same
+node, and the chain Pi GND → STM32 → Deans → ZK-SJ20 → D9 → B1 already
 ties Pi ground to the fan ground bus. The jumper would not create the
 reference — it would add a <strong>second, parallel</strong> one.</p>
 <p><strong>The margins do not need it:</strong></p>
@@ -2483,7 +2576,7 @@ by ratio, and the fault mode is real.</em></p>
 wanted later, get it by making the power ground stiff, not by adding a
 second path.</p>
 <p><strong>The measurement that would settle it</strong> — with the bay
-at full load, DC between G469 pin 34 and the D-1459 B bus. Under ~100 mV
+at full load, DC between G469 pin 34 and the HL-PBB B bus. Under ~100 mV
 and the jumper buys nothing. ⏳ <strong>Blocked</strong> until the wand
 electronics are finished, the new wand is printed, and the 6-wire tether
 is run from the bay up through the arm base — there is no full-load
@@ -2536,7 +2629,7 @@ bench-verify</h4>
 <ul>
 <li><strong>Twist the V+ / GND pair</strong> for each fan (twisted-pair,
 ~1 turn per cm) inside the bay from the fan lead all the way to the
-D-1459. The 12 V rail carries small but continuous current + the PWM
+HL-PBB. The 12 V rail carries small but continuous current + the PWM
 switching creates a differential-mode aggressor pair; twisting the fan
 power leads reduces radiated noise onto the I²C bus and the wand
 tether.</li>
@@ -2555,8 +2648,8 @@ disconnected = 100 % duty via internal pull-up in the fan).</li>
 <li>Multimeter check at each fan's V+ solder joint (fan lead to
 extension, right where the heat-shrink ends): <strong>13.8 V ±
 0.1</strong> (direct from the distribution block — no diode drop). If
-reading is 0 V, the ferrule isn't seated in its D-1459 cage or the
-solder joint at the fan lead is open.</li>
+reading is 0 V, the ferrule isn't seated in its block cage or the solder
+joint at the fan lead is open.</li>
 <li>Bring up the <code>bay_thermal_node</code> and issue a 30 % PWM duty
 command. Both fans should drop to ~1500 RPM.</li>
 <li>Cover one fan with a fingertip momentarily; the corresponding
@@ -2569,164 +2662,72 @@ reading, the two green wires were accidentally paralleled somewhere
 </ol>
 <hr />
 <h3
-id="113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29">11.3
-Bay 13.8 V distribution — D-1459 / HL-PBB-2-6-MINI dual-bus distribution
-module (adopted 2026-09-29)</h3>
+id="113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module">11.3
+Bay 13.8 V distribution — HL-PBB-2-6-MINI dual-bus distribution
+module</h3>
 <blockquote>
 <p>✅ <strong>§11.3 reads in build order:</strong> <strong><a
-href="#1131-czh-labs-d-1459-distribution-module--physical-spec">§11.3.1</a></strong>
-the board → <strong><a
+href="#1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova">§11.3.2</a></strong>
+the block → <strong><a
 href="#1133-distribution-module-port-assignments-a-bus--v-b-bus--gnd">§11.3.3</a></strong>
 which net lands where → <strong><a
 href="#1134-mounting--on-the-power-bay-carrier">§11.3.4</a></strong>
 mount (the carrier, §11.3.9) → <strong><a
 href="#1135-wiring-procedure">§11.3.5</a></strong> wire → <strong><a
 href="#1136-verify-wand-led-rail-behavior-at-138-v-new-voltage-vs-previous-106-v-drok-feed">§11.3.6</a></strong>
-verify. <strong><a
-href="#1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova">§11.3.2</a></strong>
-is the HL-PBB, the bay block of record from Nova.</p>
+verify.</p>
 </blockquote>
 <blockquote>
 <h3
-id="dart-dual-bus-distribution-module--hl-pbb-2-6-mini-block-of-record--czh-labs-d-1459">🎯
-Dual-bus distribution module — HL-PBB-2-6-MINI (block of record) /
-CZH-Labs D-1459</h3>
-<p>From the <strong>NOVA build on</strong> (the next build after Halo,
-from the in-stock Ultra-compatible kit), bay 13.8 V distribution is a
-dual-bus module: the <strong>YRYAR HL-PBB-2-6-MINI is the block of
-record</strong> (operator, 2026-10-20: "we are using these going
-forward"; <a
-href="#1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova">§11.3.2</a>),
-and the <strong>CZH-Labs D-1459</strong> 30 A / 48 V 2×6 is the
-alternate (<a
-href="#1131-czh-labs-d-1459-distribution-module--physical-spec">§11.3.1</a>;
-photos + dimensions below; inventory row + sourcing in <a
+id="dart-one-distribution-block-on-every-build--yryar-hl-pbb-2-6-mini">🎯
+One distribution block on every build — YRYAR HL-PBB-2-6-MINI</h3>
+<p><strong>Every build uses the HL-PBB-2-6-MINI</strong> (operator,
+2026-11-24): Ultra, Nova, Halo HV, and Halo when its bay is rebuilt.
+Halo v1 as built keeps its modified APIELE strip until then. Dual bus by
+design (every A screw is V+, every B screw is GND), ferrules in every
+cage, nothing to modify. <strong>16 A total</strong>, accepted for every
+build by the operator's order (2026-11-24). Physical spec: <a
+href="#1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova">§11.3.2</a>;
+inventory row in <a
 href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates">Assembly
-Guide §1.4</a>). The carrier takes either footprint, one block per robot
-(§11.3.9); the §11.3.3 port map applies 1:1 to both. The two blocks
-compared:</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th><strong>D-1459 (alternate)</strong></th>
-<th><strong>HL-PBB-2-6-MINI (block of record from Nova)</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Feed</td>
-<td>one 2-position input, 26–10 AWG, <strong>30 A</strong></td>
-<td>A/B input block at <strong>each end</strong>, 7.5 mm pitch, 26–12
-AWG, <strong>16 A</strong> (no dedicated high-current block; the second
-block chains or sits spare)</td>
-</tr>
-<tr>
-<td>Distribution</td>
-<td><strong>A1–A6 + B1–B6</strong> cage-clamp screws, 26–12 AWG,
-<strong>16 A/position</strong></td>
-<td><strong>A1–A6 + B1–B6</strong> cage-clamp screws, 5.0 mm pitch,
-26–12 AWG, <strong>16 A/position — 16 A TOTAL</strong></td>
-</tr>
-<tr>
-<td>Wire prep</td>
-<td><strong>ferrules</strong> — the proven E-series parts drop straight
-into the 5.0 mm-pitch cages</td>
-<td>same <strong>ferrules</strong> — identical 5.0 mm cages, same
-E-series map</td>
-</tr>
-<tr>
-<td>Modification</td>
-<td><strong>none</strong> — A bus and B bus are the two nets by
-design</td>
-<td><strong>none</strong> — same dual-bus-by-design layout</td>
-</tr>
-<tr>
-<td>Bulk</td>
-<td>57 × 38 mm FR-4 board, 4× M3 on Ø3.2 holes, nylon spacers
-included</td>
-<td><strong>70 × 22 mm</strong> FR-4, 23 mm tall — longer, ~16 mm
-narrower; 2 × Ø4 at 64 mm c/c (§11.3.2)</td>
-</tr>
-</tbody>
-</table>
-<p><img src="images/electronics_bay/d1459_distribution_module_photo.png"
-alt="CZH-Labs D-1459 30 A / 48 V 2×6-position terminal-block distribution module — one high-current A/B input block (7.62 mm pitch, 26–10 AWG) fanning out through the PCB to twelve 5.0 mm-pitch distribution screws labeled A4/B4/A5/B5/A6/B6 on the visible edge (A1–B3 on the far edge), FR-4 board with four corner Ø3.2 holes, shipped with nylon spacers and M3×16 screws." /></p>
-<p><img
-src="images/electronics_bay/d1459_distribution_module_dimensions.png"
-alt="CZH-Labs D-1459 dimensioned drawing: board 57.0 × 38.0 mm, mounting holes 51.0 × 32.0 mm centres at Ø3.2 (4 pcs), overall height ~23.3 mm with the input block, 1.6 mm PCB; terminal layout A1 B1 A2 B2 A3 B3 on one edge and A4 B4 A5 B5 A6 B6 on the other with the A/B input block between; nylon spacer Ø7 × 4 mm (Ø3.2 bore) and M3×16 screws, 4 pcs each." /></p>
-<p><strong>Block of record from Nova: YRYAR HL-PBB-2-6-MINI</strong>
-(AliExpress, <a
-href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates">Assembly
-Guide §1.4</a> row below the D-1459) — same dual-bus / zero-mod /
-ferrule role as the D-1459, 70 × 22 mm, <strong>16 A total</strong> (vs
-30 A) with chainable A/B inputs at both ends. Full physical spec +
-substitution notes: <a
-href="#1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova">§11.3.2</a>.</p>
+Guide §1.4</a>.</p>
 <p><img
 src="images/electronics_bay/hlpbb_mini_distribution_module_photo.png"
 alt="YRYAR HL-PBB-2-6-MINI 16 A / 48 V 2×6-position distribution module — long narrow FR-4 board (70 × 22 mm, 23 mm tall) with an A/B input block at EACH short end (7.5 mm pitch) and twelve 5.0 mm-pitch distribution screws between them in A/B pairs, all positions 26–12 AWG / 2.5 mm² with M3 steel screws in brass cages; UL/CE/CQC-marked blocks." /></p>
 <p><img src="images/electronics_bay/hlpbb_mini_chaining_diagram.png"
 alt="YRYAR HL-PBB family chaining diagram (vendor) — because the A/B input blocks sit at BOTH ends, modules daisy-chain end-to-end: feed enters module 1&#39;s near-end input, a short A/B jumper pair leaves its far-end input block into module 2&#39;s near-end input, and so on — expanding the bus without splices. The same drawing shows the family sizes 2-4 through 2-16 sharing the layout." /></p>
-<p>⚠️ Two design notes: <strong>16 A per distribution position</strong>
-is the per-screw ceiling (bay peak is 8 A total — fine), and the module
-is a <strong>dual-bus</strong> part: every A screw is one net (V+),
-every B screw is one net (GND) — the topology the modified strip
-implemented, with the surgery deleted. From the next unit on, pair it
-with the power-topology change (DC rocker <strong>upstream</strong> of
-the distribution block, so one switch kills everything downstream —
-<code>memory/project_halo_v2_power_topology.md</code>); the wiring below
-keeps the current rocker placement (rocker on the DROK branch only) so
-it stays drop-in for the existing fence.</p>
 </blockquote>
-<p><strong>Goal:</strong> distribute PSU CH1 13.8 V direct to the wand
-tether and the STM32-DROK input, via <strong>one HL-PBB-2-6-MINI
-dual-bus distribution module — the bay block of record from Nova onward
-(operator, 2026-10-20: "we are using these going forward"; ARYRA/YRYAR
-family, 16 A / 48 V, ~$6.85)</strong> mounted above the PSU top; the
-D-1459 (§11.3.1) is the alternate, and the port map applies 1:1 to both
-parts. The <strong>A bus carries V+</strong> (input <code>IN-A</code> +
-positions A1–A6), the <strong>B bus carries GND</strong>
-(<code>IN-B</code> + B1–B6); <strong>every landing is a ferrule</strong>
-and the module is used unmodified. The wand LED rail takes 13.8 V
-direct, separate from the DROK's STM32 rail. See <a
-href="Lumi_Wand_Integration.html#51-power-chain"><code>Lumi_Wand_Integration.md</code>
-§5.1</a> for the split-rails rationale + tether-current math (<a
-href="Power/Compact_UPS_Power_System_HiWonder_RPi5.html"><code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code></a>
-is the power-side source of truth).</p>
-<p><strong>Full bay power path (topology locked 2026-08-05; the DC
-rocker sits on the DROK branch only, cutting the DROK/STM32/Pi5
-stack):</strong></p>
+<p><strong>Goal:</strong> distribute PSU CH1 13.8 V, switched by the DC
+rocker, to every bay branch through one HL-PBB on the carrier
+(§0.2).</p>
+<p><strong>Full bay power path (every build; the DC rocker sits upstream
+of the whole bus):</strong></p>
 <pre><code>Wall AC (L) → C14 inlet L → AC rocker LINE → AC rocker LOAD → PSU L
 Wall AC (N) → C14 inlet N ────────────────────────────────→ PSU N
                               ↑
                               └── double crimp with A4 at C14 N blade → AC rocker LAMP (makes lamp light when switch ON)
-Wall AC (E) → C14 inlet E → chassis ground
+Wall AC (E) → C14 inlet E → PSU ⏚
 
-PSU CH1 +13.8 V → INA226 (ISENSE+ → shunt → ISENSE-) → D-1459 input IN-A
-                                                     → V+ bus (A row)
-                                                           → A1: wand tether (always live when AC on)
-                                                           → A2: DC rocker LINE → DC rocker LOAD → DROK input → STM32 blue terminal
-                                                           → A3: fan #1 +V direct at 13.8 V (always live when AC on — no diodes)
-                                                           → A4: fan #2 +V direct at 13.8 V (always live when AC on)
-                                                     → GND bus (B row) → same positions return (GND is UNSWITCHED throughout)
-                                                                       ↑
-                                                                       └── short jumper (B6) to DC rocker LAMP (makes lamp light when switch ON)</code></pre>
-<p>Two panel-mount <strong>rocker switches</strong> are wired into this
-path:</p>
+PSU CH1 +13.8 V → INA226-MAIN (ISENSE+ → shunt → ISENSE−) → DC rocker LINE → DC rocker LOAD → HL-PBB IN-A (fed end)
+PSU CH1 −V      → INA226-MAIN GND ───────────────────────────────────────────────→ HL-PBB IN-B (GND is never switched)
+   A1 / B1: ZK-SJ20 IN (16 AWG) → ZK OUT → INA3 → Deans → STM32 blue terminal → servos; STM32 5 V port → Pi5
+   A2 / B2: wand tether
+   A3 / B3: fan #1          A4 / B4: fan #2
+   A5 / B5: Mus-14 → HAT    A6: PHONE-IN V+ (Creator)    B6: DC rocker LAMP (+ PHONE-IN GND on Creator)
+
+Battery: pack + → F1 10 A → INA226-BATT → PSU CH2 BAT+;  pack − → CH2 BAT− direct</code></pre>
+<p>Two panel-mount <strong>rocker switches</strong>, a mirror pair on
+the <strong>rear wall</strong> (DC rocker under fan 1, AC rocker under
+fan 2):</p>
 <ul>
-<li><strong>AC rocker (mains-side, back wall)</strong> — cuts AC line to
-the PSU. Wired between the AC inlet socket's hot leg (L) and the PSU's L
-input. When OFF, the entire bay is dark. <strong>Master power
-switch.</strong></li>
-<li><strong>DC rocker (front slanted wall)</strong> — sits between
-<strong>D-1459 A2 (V+ bus)</strong> and the <strong>DROK input
-+V</strong> terminal. When OFF, ONLY the DROK feed is cut, which means
-STM32 + Pi5 + everything downstream of the DROK stops. <strong>The wand
-rail (A1) and both bay fans (A3/A4) stay live</strong> as long as AC is
-on — useful for running fans during service without booting the compute
-stack, and for keeping the wand LED rail live during STM32 firmware
-work. GND for the DROK is unswitched (straight from B2).</li>
+<li><strong>AC rocker</strong> — cuts AC line to the PSU, between the
+C14's L and the PSU's L input. <strong>Master power switch:</strong> OFF
+on mains means the PSU runs from the battery until the pack is flat, so
+turn both off for storage.</li>
+<li><strong>DC rocker</strong> — between INA226-MAIN ISENSE− and the
+HL-PBB input, so it cuts <strong>the whole 13.8 V bus</strong>: ZK-SJ20
+/ STM32 / Pi5, wand, fans, HAT feed and phone charger. The PSU and its
+battery charging stay on.</li>
 </ul>
 <p><strong>Rocker switch part spec (operator ruling 2026-10-20: the KCD1
 family STAYS, including for Nova's upstream-of-the-whole-bus position —
@@ -2789,16 +2790,11 @@ to the rocker's LAMP blade, ending in a fully insulated
 neutral-referenced LAMP pin. <strong>The LAMP tap counts as a live mains
 conductor — insulate the crimp and route it in the mains channel with
 the rest of the AC.</strong></p></li>
-<li><p><strong>DC rocker (12 V) — ferrule at the D-1459 + plain Faston
-at rocker:</strong> the DC LAMP tap point is the D-1459 GND bus (a screw
-cage, not a blade), so there's no existing Faston connection to share.
-The DC LAMP jumper is a plain wire: crimp an <strong>E0508 ferrule at
-the D-1459 end</strong> and land it at <strong>B6</strong> (every B
-screw is the same GND net — B6 gives the tap its own cage instead of
-sharing D9's), and a <strong>fully insulated <strong>flag</strong>
-(right-angle) 4.8 × 0.8 mm female Faston, red 22–18 at the rocker LAMP
-blade end</strong>. Lamp lights when switch is ON because LOAD is at
-+13.8 V vs the GND-referenced LAMP pin. 22 AWG silicone hookup.</p></li>
+<li><p><strong>DC rocker (13.8 V) — ferrule at the block + flag Faston
+at the rocker:</strong> the DC LAMP tap is a plain 22 AWG wire from
+<strong>HL-PBB B6</strong> (GND bus, E0508; on Creator builds shared
+with PHONE-IN's GND in one E1508) to the rocker's LAMP blade (flag 4.8 ×
+0.8 mm Faston, red 22–18).</p></li>
 </ul>
 <p><strong>AC inlet socket part spec:</strong> QTEATAK WPF-1 (IEC 320
 C14 panel-mount inlet with spring cover, 10 A 250 V AC, CE certified, 40
@@ -2809,59 +2805,11 @@ href="LumiAI_Hardware_Integration.html#ac-inlet-socket--iec-320-c14-panel-mount-
 full mechanical spec + datasheet images
 (<code>docs/images/hardware/iec_c14_panel_mount.png</code>,
 <code>docs/images/hardware/iec_c14_panel_mount_detail.png</code>).</p>
-<p><strong>Fence wall layouts (viewed from outside the
-bay):</strong></p>
-<ul>
-<li><p><strong>Back wall — mains + fans only:</strong></p>
-<ul>
-<li>Upper-left: <strong>AC power rocker switch</strong> (KCD1-104 /
-KCD1-106/2P — 19 × 13 mm cutout, mounted above FAN #1)</li>
-<li>Middle horizontal band, left to right: <strong>Bay fan #1</strong>
-(100 mm) — <strong>AC power inlet socket</strong> (IEC C14, ~27.1 × 19.8
-mm cutout + 40 mm M3 mount posts) — <strong>Bay fan #2</strong> (100
-mm)</li>
-</ul>
-<p><img
-src="images/electronics_bay/fence_back_ac_rocker_ac_inlet_fans.png"
-alt="Fence back wall CAD view — mains + fan zone. Upper-left rectangular cutout labeled &quot;AC Power Rocker Switch&quot;. Center vertical cutout labeled &quot;AC Power Input&quot; flanked by M3 mount holes above and below. Round fan cutouts left (labeled FAN1) and right, each with 4-corner M3 mount holes for a 40 mm PC-fan grille. No DC rocker on this wall." /></p></li>
-<li><p><strong>Front slanted wall — DC rocker only:</strong></p>
-<ul>
-<li><strong>DC rocker switch</strong> (same 19 × 13 mm cutout as the AC
-rocker, on the slanted portion of the front fence — user-accessible from
-the front of the robot).</li>
-</ul>
-<p><img
-src="images/electronics_bay/fence_front_slanted_dc_rocker_mount.png"
-alt="Fence front slanted wall CAD view — a single rectangular cutout labeled &quot;DC Rocker Mount&quot; on the angled panel that transitions from the horizontal fence top down to the vertical front face. Ergonomically placed for a user standing in front of the robot to reach." /></p></li>
-<li><p><strong>Front vertical wall — DROK internal mount + external
-access cutouts:</strong></p>
-<ul>
-<li>The <strong>DROK buck converter</strong> mounts INSIDE the bay on
-<strong>horizontal posts on the front fence</strong> (screws through the
-fence into the DROK's mount plate).</li>
-<li>Front-wall external cutouts give the user visibility / access to the
-DROK's front-panel controls without opening the bay:
-<ul>
-<li><strong>DROK LCD access</strong> — large rectangular window in the
-middle of the front wall exposes the DROK's onboard LCD readout (V / A /
-W).</li>
-<li><strong>DROK FUNC button access</strong> — 2 round holes at the left
-of the DROK LCD window expose the DROK's function push-buttons.</li>
-<li><strong>DROK CURRENT / Voltage adjustment access</strong> — small
-rectangular cutout at the right of the DROK LCD window exposes the
-DROK's V-set / I-set pots for a small screwdriver.</li>
-<li><strong>Ventilation slats</strong> above the DROK LCD window (4
-diagonal slots) for the DROK's convective heat rise.</li>
-</ul></li>
-</ul>
-<p><img
-src="images/electronics_bay/fence_front_drok_mount_and_access_cutouts.png"
-alt="Fence front vertical wall CAD view — inside face. Central large rectangular cutout labeled &quot;DROK LCD ACCESS&quot; for the DROK&#39;s front-panel LCD. Two small circular cutouts labeled &quot;DROK FUNC Button access&quot; on the left. A rectangular cutout on the right labeled &quot;DROK CURRENT / Voltage Adjustment&quot;. Diagonal ventilation slots above the DROK cutouts." /></p></li>
-</ul>
-<p>Exact cutout positions + fence CAD geometry are owned by the separate
-Electronics-bay agent; the electrical connections + switch/socket roles
-+ DROK mount location above are the electrical / assembly source of
-truth.</p>
+<p><strong>Fence walls:</strong> rear wall = both rockers, C14 inlet and
+both fans; mains-side wall (lower straight, front-right) = the IP6518 on
+Creator builds; front wall = the logo only, no boards or switches. Exact
+cutout positions and fence geometry are CAD's; the electrical
+connections and switch / socket roles here are the source of truth.</p>
 <p><strong>Rocker wiring notes:</strong></p>
 <ul>
 <li><p><strong>AC rocker (3-pin illuminated):</strong> three blades
@@ -2888,37 +2836,27 @@ though the LAMP conductor carries only a milliamp or two through the
 internal current-limiting resistor. Use the fence rib divider to keep
 them physically separate from any low-voltage bay wiring (same rule as
 the C14 inlet).</p></li>
-<li><p><strong>DC rocker (3-pin illuminated, locked
-2026-08-05):</strong> three blades total —</p>
+<li><p><strong>DC rocker (3-pin illuminated):</strong> three blades
+total —</p>
 <ol type="1">
-<li><strong>LINE</strong> — <strong>D-1459 A2 (V+ bus, +13.8 V)</strong>
-lands here (18 AWG silicone).</li>
-<li><strong>LOAD</strong> — <strong>DROK input +V</strong> screw
-terminal (18 AWG silicone).</li>
-<li><strong>LAMP</strong> — tapped from <strong>GND</strong> so the lamp
-lights whenever the switch is closed. Take the tap from <strong>D-1459
-B6</strong> (any B screw is the GND net; B6 is a free cage) OR from the
-<strong>DROK input −</strong> screw terminal (share the D9 landing).
-Either works; the distribution-block tap is neater because both crimps
-live on the same module.</li>
+<li><strong>LINE</strong> — from <strong>INA226-MAIN ISENSE−</strong>
+(+13.8 V, 18 AWG silicone).</li>
+<li><strong>LOAD</strong> — on to the <strong>HL-PBB IN-A</strong>
+(BLK-IN, 18 AWG silicone).</li>
+<li><strong>LAMP</strong> — tapped from <strong>GND at HL-PBB
+B6</strong> (22 AWG, E0508; on Creator builds shared with PHONE-IN's GND
+in one E1508), so the lamp lights whenever the switch is closed.</li>
 </ol>
-<p>DROK input GND comes straight from D-1459 B2 — unswitched (segment D9
-unchanged). GND is NOT switched anywhere on the DC side (single-pole
-rocker on V+ leg is enough to cut the DROK; keeping GND continuous
-preserves multimeter references during service; and the LAMP tap needs a
-continuous GND reference to illuminate). <strong>When DC rocker OFF:
-only the DROK/STM32/Pi5 stack loses power</strong> — wand rail (A1) and
-both bay fans (A3/A4) stay live. <strong>When DC rocker ON: the built-in
-lamp illuminates</strong> (LOAD is now at +13.8 V vs the GND-referenced
-LAMP pin). 22 AWG silicone is fine for the LAMP tap — nA-scale current
-through the internal current-limiting resistor.</p></li>
-<li><p><strong>Power-up sequence:</strong> AC rocker ON first (PSU comes
-up, caps charge, fans immediately spin at full RPM since no PWM control
-yet — wand rail is live at 13.8 V). Pause ~1 s. DC rocker ON (DROK
-inrush hits an already-stable PSU output; STM32 + Pi5 boot).</p></li>
-<li><p><strong>Power-down sequence:</strong> DC rocker OFF first (kills
-STM32 / Pi5 controllably; wand + fans stay live), then Pi5-side software
-shutdown wait, then AC rocker OFF (kills wand + fans + PSU).</p></li>
+<p>GND is never switched: the block's IN-B comes straight from
+INA226-MAIN's GND screw. Ends at the rocker: fully insulated
+<strong>flag</strong> 4.8 × 0.8 mm Fastons, red 22–18. Leave the service
+loop in the cut (§16c row 3): the rocker is on the fence and the carrier
+lifts.</p></li>
+<li><p><strong>Power-up sequence:</strong> AC rocker ON (PSU comes up),
+pause ~1 s, DC rocker ON (the bus comes up; ZK-SJ20 output on by its
+power-on default; STM32 and Pi5 boot).</p></li>
+<li><p><strong>Power-down sequence:</strong> software shutdown of the
+Pi5 first, then DC rocker OFF, then AC rocker OFF.</p></li>
 </ul>
 <p><strong>Fork-lug landing technique — the fleet standard for every bay
 screw terminal (locked 2026-08-07):</strong></p>
@@ -2926,14 +2864,15 @@ screw terminal (locked 2026-08-07):</strong></p>
 <strong>Kuject-kit insulated fork/spade crimp lug</strong>.
 <strong>INA226-MAIN and INA226-BATT take E1008 ferrules</strong>
 (operator, 2026-11-16); if a ferrule won't seat in a terminal, that
-landing goes <strong>bare</strong> (twisted strands, never tinned, as at
-the DROK). <strong>The DROK's IN and OUT terminals and INA226-DROK's IN+
-/ IN− take bare twisted strands</strong> (§5b.6). For the forks
-(size-matched to the screw stud; check the fork stud hole against the
-screw shank before crimping), with the <strong>fork bent 60–90° upward
-after install</strong> to clear the tight lateral gap between the fence
-and the PSU / battery / DROK. Install sequence, in order (never out of
-order):</p>
+landing goes <strong>bare</strong> (twisted strands, never tinned).
+<strong>The ZK-SJ20's IN and OUT terminals take E2508 ferrules on the
+doubled 18 AWG</strong> (bare twisted strands if one won't seat), and
+<strong>INA3's IN+ / IN− take bare twisted 2 × 18</strong> (§5b.4). For
+the forks (size-matched to the screw stud; check the fork stud hole
+against the screw shank before crimping), with the <strong>fork bent
+60–90° upward after install</strong> to clear the tight lateral gap
+between the fence and the PSU / battery / DROK. Install sequence, in
+order (never out of order):</p>
 <ol type="1">
 <li><strong>Crimp first</strong> — wire into fork-lug crimp barrel,
 ratchet crimper.</li>
@@ -2944,11 +2883,11 @@ cable-run clearance).</li>
 <li><strong>Bend the fork upward</strong> using needle-nose pliers
 pivoting around the screw as the axis. 60-90° is the sweet spot.</li>
 </ol>
-<p>⚡ <strong>The D-1459 / HL-PBB distribution module is the standing
-exception to all of the above — every landing there is a FERRULE, never
-a lug, and nothing is bent:</strong> E1008 for 18 AWG, E0508 for 22 AWG,
-E0208 for 26 AWG signal wires. Strip to the <strong>ferrule's</strong>
-length, not the terminal's — see the strip-length note in <a
+<p>⚡ <strong>The HL-PBB distribution module is the standing exception
+to all of the above — every landing there is a FERRULE, never a lug, and
+nothing is bent:</strong> E1008 for 18 AWG, E0508 for 22 AWG, E0208 for
+26 AWG signal wires. Strip to the <strong>ferrule's</strong> length, not
+the terminal's — see the strip-length note in <a
 href="#1131-czh-labs-d-1459-distribution-module--physical-spec">§11.3.1</a>.</p>
 <p>Never bend before crimping (crimp doesn't hold well on a pre-bent
 wire). Never bend against a tightened screw (twists the fork rather than
@@ -3012,19 +2951,21 @@ needed for a same-board jumper.</li>
 <li><strong>Earth bond (A5) at the PSU ⏚ terminal:</strong> ring lug
 (fully enclosed), so it can't slip out from under a loosened screw.</li>
 </ul>
-<p><strong>PSU terminal reference — PSC-100-12 (vendor images).</strong>
-Where the A-rows and D1/D3 actually land: the screw-terminal strip
-reads, left to right, <strong><code>L</code> · <code>N</code> ·
-<code>⏚</code> (chassis ground) · <code>−V</code> ·
-<code>+V</code></strong> — CH1's 13.8 V pair is the right-hand
-<code>+V</code>/<code>−V</code>; the battery (CH2, BAT.CHARGE 2 A) is
-the separate <strong><code>BAT+</code>/<code>BAT−</code> lead pair with
-the inline fuse holder</strong>, not on the strip. Label ratings: DC
-OUTPUT +13.8 V / 5.0 A, input 100–120 V~ 3.2 A / 200–240 V~ 1.6 A, 50/60
-Hz. Status LEDs: <strong>green = DC output, red = AC input, yellow =
-battery charging</strong>. The <strong><code>+V ADJ</code> pot</strong>
-(right edge of the PCB) is the CH1 voltage trim — it's what sets the
-13.8 ± 0.1 V that §16.2 expects. The vendor notes the AC input is L/N
+<p><strong>PSU terminal reference — PSC-100-12 (Ultra, Halo; vendor
+images). The PSC-150-12 (Nova, Halo HV) has the same strip and
+terminals, in a 159 mm case.</strong> Where the A-rows and D1/D3
+actually land: the screw-terminal strip reads, left to right,
+<strong><code>L</code> · <code>N</code> · <code>⏚</code> (chassis
+ground) · <code>−V</code> · <code>+V</code></strong> — CH1's 13.8 V pair
+is the right-hand <code>+V</code>/<code>−V</code>; the battery (CH2,
+BAT.CHARGE 2 A) is the separate
+<strong><code>BAT+</code>/<code>BAT−</code> lead pair with the inline
+fuse holder</strong>, not on the strip. Label ratings: DC OUTPUT +13.8 V
+/ 5.0 A, input 100–120 V~ 3.2 A / 200–240 V~ 1.6 A, 50/60 Hz. Status
+LEDs: <strong>green = DC output, red = AC input, yellow = battery
+charging</strong>. The <strong><code>+V ADJ</code> pot</strong> (right
+edge of the PCB) is the CH1 voltage trim — it's what sets the 13.8 ± 0.1
+V that §16.2 expects. The vendor notes the AC input is L/N
 polarity-insensitive ("regardless of zero fire"); our build still routes
 Hot through the AC rocker per segments A2/A3 regardless.</p>
 <p><img src="images/electronics_bay/psc100_12_terminal_annotations.png"
@@ -3057,10 +2998,10 @@ bring-up; every segment is one row.</p>
 <strong>LINE</strong> blade</td>
 <td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
 V / 6 A), as-is, no sleeve on Ultra</td>
-<td>Straight fully insulated 4.8 × 0.8 mm female Faston (FDFNY, red) at
-C14 end + <strong>straight</strong> fully insulated 4.8 × 0.8 mm female
-Faston (FDFNY, red 22–18) at rear AC rocker end (see blade-size note
-below the table)</td>
+<td>Straight fully insulated 4.8 × 0.8 mm female Faston (uxcell
+FDFN1-187, red) at C14 end + <strong>straight</strong> fully insulated
+4.8 × 0.8 mm female Faston (uxcell FDFN1-187, red) at rear AC rocker end
+(see blade-size note below the table)</td>
 </tr>
 <tr>
 <td><strong>A3</strong></td>
@@ -3069,8 +3010,8 @@ terminal</td>
 <td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
 V / 6 A), as-is, no sleeve on Ultra</td>
 <td><strong>straight</strong> fully insulated 4.8 × 0.8 mm female Faston
-(FDFNY, red 22–18) at rear AC rocker end (see note) + <strong>Kuject
-fork lug + bend-up</strong> at PSU L screw</td>
+(uxcell FDFN1-187, red) at rear AC rocker end (see note) +
+<strong>Kuject fork lug + bend-up</strong> at PSU L screw</td>
 </tr>
 <tr>
 <td><strong>A4</strong></td>
@@ -3095,7 +3036,7 @@ ONE red (22–16) straight fully insulated 4.8 × 0.8 mm female Faston
 (uxcell FDFN1-187), 1.64 mm² in a 22–16 barrel by the operator's call;
 strip both to the same length, crimp together, tug-test each wire
 separately. + <strong>straight</strong> fully insulated 4.8 × 0.8 mm
-female Faston (FDFNY, red 22–18) at rear AC rocker LAMP end (see
+female Faston (uxcell FDFN1-187, red) at rear AC rocker LAMP end (see
 note)</td>
 </tr>
 <tr>
@@ -3104,10 +3045,11 @@ note)</td>
 terminal</strong></td>
 <td><strong>18 AWG silicone, 600 V-rated</strong> (the spool marked 600
 V / 6 A), as-is, no sleeve on Ultra, green</td>
-<td>Straight fully insulated 4.8 × 0.8 mm female Faston (FDFNY, red) at
-C14 end + <strong>ring lug</strong> at the PSU ⏚ screw, screw taken
-fully out to fit it (ring, not fork, for safety earth). Only if the ⏚
-screw is captive: a fork lug with the screw torqued and tug-tested</td>
+<td>Straight fully insulated 4.8 × 0.8 mm female Faston (uxcell
+FDFN1-187, red) at C14 end + <strong>ring lug</strong> at the PSU ⏚
+screw, screw taken fully out to fit it (ring, not fork, for safety
+earth). Only if the ⏚ screw is captive: a fork lug with the screw
+torqued and tug-tested</td>
 </tr>
 <tr>
 <td><strong>D1</strong></td>
@@ -3136,122 +3078,106 @@ iron; tug-test each end.</td>
 </tr>
 <tr>
 <td><strong>D2</strong></td>
-<td>INA226 <strong>ISENSE−</strong> (green, pin 3) → D-1459
-<strong>input IN-A</strong> (V+ bus)</td>
+<td>INA226-MAIN <strong>ISENSE−</strong> (green, pin 3) → DC rocker
+<strong>LINE</strong> blade</td>
 <td>18 AWG silicone</td>
-<td><strong>E1008 ferrule</strong> at INA226 ISENSE− (bare twisted
-strands if a ferrule won't seat, §11.4) + <strong>E1008 ferrule</strong>
-at the D-1459 input cage</td>
+<td><strong>E1008 ferrule</strong> at ISENSE− (bare twisted strands if a
+ferrule won't seat, §11.4) + fully insulated <strong>flag</strong> 4.8 ×
+0.8 mm Faston, red 22–18, at the rocker (§16c row 3)</td>
 </tr>
 <tr>
 <td><strong>D3</strong></td>
-<td>PSU <strong>CH1 GND</strong> screw terminal → INA226
+<td>PSU <strong>CH1 GND</strong> screw terminal → INA226-MAIN
 <strong>GND</strong> (green, pin 4)</td>
 <td>18 AWG silicone</td>
-<td><strong>Kuject fork lug (sized to stud) + bend-up</strong> at the
-PSU CH1 GND screw; at INA226 GND it shares <strong>one ferrule with
-D4</strong> (2 × 18 AWG ≈ 1.6 mm² → <strong>E2508</strong>) (bare
-twisted strands if a ferrule won't seat, §11.4)</td>
+<td><strong>Kuject fork lug + bend-up</strong> at the PSU; at INA226 GND
+it shares <strong>one E2508</strong> with D4 (bare twisted strands if it
+won't seat, §11.4)</td>
 </tr>
 <tr>
 <td><strong>D4</strong></td>
-<td>INA226 <strong>GND</strong> (already on pin 4) → D-1459
-<strong>input IN-B</strong> (GND bus)</td>
+<td>INA226-MAIN <strong>GND</strong> → HL-PBB <strong>IN-B</strong> (GND
+bus)</td>
 <td>18 AWG silicone</td>
-<td>INA226 GND: in D3's <strong>E2508</strong> (bare twisted strands if
-a ferrule won't seat, §11.4) + <strong>E1008 ferrule</strong> at the
-D-1459 input cage</td>
+<td>In D3's <strong>E2508</strong> at INA226 GND +
+<strong>E1008</strong> at the block input</td>
+</tr>
+<tr>
+<td><strong>D7</strong></td>
+<td>DC rocker <strong>LOAD</strong> blade → HL-PBB <strong>IN-A</strong>
+(V+ bus; BLK-IN)</td>
+<td>18 AWG silicone</td>
+<td><strong>Flag</strong> 4.8 × 0.8 mm Faston, red 22–18, at the rocker
++ <strong>E1008</strong> at the block input</td>
+</tr>
+<tr>
+<td><strong>D8a</strong></td>
+<td>HL-PBB <strong>B6</strong> → DC rocker <strong>LAMP</strong>
+blade</td>
+<td>22 AWG silicone</td>
+<td><strong>E0508</strong> at B6 (Creator builds: one
+<strong>E1508</strong> with D20) + <strong>flag</strong> 4.8 × 0.8 mm
+Faston, red 22–18, at the rocker</td>
 </tr>
 <tr>
 <td><strong>D5</strong></td>
-<td>D-1459 <strong>A1</strong> → wand tether V+ (<strong>pin 1 of the
+<td>HL-PBB <strong>A2</strong> → wand tether V+ (<strong>pin 1 of the
 wand's 6-pin END-PLATE inlet</strong>)</td>
 <td><strong>22 AWG</strong>, one continuous run — inside the XH crimp
 range, no splice</td>
-<td><strong>E0508 ferrule</strong> at A1 + JST-XH crimp at wand
+<td><strong>E0508 ferrule</strong> at A2 + JST-XH crimp at wand
 bulkhead</td>
 </tr>
 <tr>
 <td><strong>D6</strong></td>
-<td>D-1459 <strong>B1</strong> → wand tether
+<td>HL-PBB <strong>B2</strong> → wand tether
 <strong><code>GND-power</code></strong> (<strong>pin 2 of the wand's
 6-pin END-PLATE inlet</strong>). ⚡ <strong><code>GND-logic</code> does
 NOT come here</strong> — it lands on <strong>G469 pin 9</strong> (Pi
 ground); landing it at the distribution block undoes the wand's star
 ground.</td>
-<td><strong>22 AWG</strong>, same as D5. <strong>Routed as its own
-cable</strong> — the signal leg runs separately</td>
-<td><strong>E0508 ferrule</strong> at B1 + JST-XH crimp at wand
+<td><strong>22 AWG</strong></td>
+<td><strong>E0508 ferrule</strong> at B2 + JST-XH crimp at wand
 bulkhead</td>
 </tr>
 <tr>
-<td><strong>D7</strong></td>
-<td>D-1459 <strong>A2</strong> → DC rocker <strong>LINE</strong>
-blade</td>
-<td>18 AWG silicone</td>
-<td><strong>E1008 ferrule</strong> at A2 + fully insulated
-<strong>flag</strong> (right-angle) 4.8 × 0.8 mm female Faston, red
-22–18, at rocker end (see note)</td>
-</tr>
-<tr>
-<td><strong>D8</strong></td>
-<td>DC rocker <strong>LOAD</strong> blade → <strong>DROK input
-+V</strong> screw terminal</td>
-<td>18 AWG silicone</td>
-<td>fully insulated <strong>flag</strong> (right-angle) 4.8 × 0.8 mm
-female Faston, red 22–18, at rocker end (see note) + <strong>bare
-strands</strong> at DROK input +V (no room for a ferrule or fork,
-§5b.6)</td>
-</tr>
-<tr>
-<td><strong>D8a</strong></td>
-<td>D-1459 <strong>B6</strong> → DC rocker <strong>LAMP</strong> blade
-(the tap that makes the rocker light when ON; every B screw is the GND
-net, so the tap gets its own cage)</td>
-<td>22 AWG silicone</td>
-<td><strong>E0508 ferrule</strong> at B6 + fully insulated
-<strong>flag</strong> (right-angle) 4.8 × 0.8 mm female Faston, red
-22–18, at rocker LAMP end (see note)</td>
-</tr>
-<tr>
 <td><strong>D9</strong></td>
-<td>D-1459 <strong>B2</strong> → DROK <strong>input −</strong> screw
-terminal</td>
-<td>18 AWG silicone</td>
-<td><strong>E1008 ferrule</strong> at B2 + <strong>bare strands</strong>
-at DROK input − (§5b.6). <strong>NOT switched — straight from the GND
-bus.</strong></td>
+<td>HL-PBB <strong>A1 / B1</strong> → ZK-SJ20 <strong>IN+ / IN−</strong>
+(BUCK-IN)</td>
+<td><strong>16 AWG</strong> silicone, red / black, twisted pair</td>
+<td><strong>E1508</strong> at A1 / B1 and at the ZK-SJ20 IN block (bare
+twisted strands where one won't seat). GND is not switched</td>
 </tr>
 <tr>
 <td><strong>D10</strong></td>
-<td>D-1459 <strong>A3</strong> → direct solder-and-heat-shrink joint to
+<td>HL-PBB <strong>A3</strong> → direct solder-and-heat-shrink joint to
 fan #1 yellow (V+) lead (no diodes)</td>
 <td>22 AWG silicone</td>
-<td><strong>E0508 ferrule at the D-1459 end</strong> + solder +
+<td><strong>E0508 ferrule at the block end</strong> + solder +
 heat-shrink joint at fan lead. No JST-XH.</td>
 </tr>
 <tr>
 <td><strong>D11</strong></td>
-<td>D-1459 <strong>B3</strong> → direct solder-and-heat-shrink joint to
+<td>HL-PBB <strong>B3</strong> → direct solder-and-heat-shrink joint to
 fan #1 black (GND) lead</td>
 <td>22 AWG silicone (no diode)</td>
-<td><strong>E0508 ferrule at the D-1459 end</strong> + solder +
+<td><strong>E0508 ferrule at the block end</strong> + solder +
 heat-shrink joint at fan lead. No JST-XH.</td>
 </tr>
 <tr>
 <td><strong>D12</strong></td>
-<td>D-1459 <strong>A4</strong> → direct solder-and-heat-shrink joint to
+<td>HL-PBB <strong>A4</strong> → direct solder-and-heat-shrink joint to
 fan #2 yellow (V+) lead (no diodes)</td>
 <td>22 AWG silicone</td>
-<td><strong>E0508 ferrule at the D-1459 end</strong> + solder +
+<td><strong>E0508 ferrule at the block end</strong> + solder +
 heat-shrink joint at fan lead. No JST-XH.</td>
 </tr>
 <tr>
 <td><strong>D13</strong></td>
-<td>D-1459 <strong>B4</strong> → direct solder-and-heat-shrink joint to
+<td>HL-PBB <strong>B4</strong> → direct solder-and-heat-shrink joint to
 fan #2 black (GND) lead</td>
 <td>22 AWG silicone</td>
-<td><strong>E0508 ferrule at the D-1459 end</strong> + solder +
+<td><strong>E0508 ferrule at the block end</strong> + solder +
 heat-shrink joint at fan lead. No JST-XH.</td>
 </tr>
 <tr>
@@ -3261,84 +3187,58 @@ heat-shrink joint at fan lead. No JST-XH.</td>
 <strong>green (TACH)</strong> → G469 <code>GPIO5</code>; fan #2
 <strong>green (TACH)</strong> → G469 <code>GPIO6</code>; 2× 10 kΩ tach
 pull-up pigtails GPIO5→3V3 and GPIO6→3V3</td>
-<td>Fan-stock leads (extend with <strong>26 AWG</strong> silicone if
-length short; v1 as-built 24 — §11.2.2 gauge note)</td>
-<td><strong>E0308 / E0208 ferrules into the G469 screw
-terminals</strong> (shared ferrules per the landing map ×2 badges). No
-JST-XH.</td>
+<td>Fan-stock leads + 26 AWG extensions</td>
+<td>E0308 / E0208 ferrules at the G469 (§11.2.2)</td>
 </tr>
 <tr>
 <td><strong>D14</strong></td>
-<td>DROK <strong>output +V</strong> screw terminal → <strong>Deans
-(T-plug) 2-pin polarity-keyed disconnect</strong> → STM32 controller
-<strong>blue terminal block V+</strong> (up through the base-servo hole
-into the electronics bay)</td>
-<td>18 AWG silicone (flex, ~500 mm total, split into two pigtails at the
-Deans midpoint)</td>
-<td><strong>bare strands</strong> at DROK output +V (no room for a
-ferrule or fork at the OUT corner, §5b.6; on the DROK-side pigtail) +
-<strong>XHF ferrule</strong> at STM32 blue terminal (on the STM32-side
-pigtail). <strong>Mid-cable disconnect:</strong> male + female Deans
-halves on each pigtail, mated in the middle; <strong>heat-shrink over
-the exposed metal of both Deans halves</strong> (the flat blades) so a
-wandering probe or stray wire can't short across them. Polarity-keyed —
-can't be plugged in backwards. Serviceable — pull the Deans to
-troubleshoot without unbolting anything.</td>
+<td>ZK-SJ20 <strong>OUT+</strong> → <strong>INA3 IN+</strong>; INA3
+<strong>IN−</strong> → <strong>Deans (T-plug)</strong> (+) → STM32
+controller <strong>blue terminal V+</strong> (up through the base-servo
+hole into the electronics bay)</td>
+<td><strong>16 AWG</strong> red, twisted with D15</td>
+<td><strong>E1508</strong> at ZK OUT+ and at INA3 IN+ / IN− (bare if it
+won't seat); Deans solder joint; <strong>E1508</strong> at the STM32
+terminal (bare if it won't seat). The OUT+ → INA3 IN+ hop is §16c row
+6a</td>
 </tr>
 <tr>
 <td><strong>D15</strong></td>
-<td>Runs in the SAME Deans pair as D14 (the 2-pin Deans carries both +V
-and GND) — DROK <strong>output −</strong> screw terminal → Deans (bottom
-conductor of the 2-pin pair) → STM32 controller <strong>blue terminal
-block GND</strong></td>
-<td>18 AWG silicone (shares Deans housing with D14)</td>
-<td><strong>bare strands</strong> at DROK output − (§5b.6) + <strong>XHF
-ferrule</strong> at STM32 blue terminal, same Deans-mid-disconnect as
-D14 (single 2-pin Deans carries the whole DC pair; no separate connector
-for GND)</td>
+<td>ZK-SJ20 <strong>OUT−</strong> → Deans (−) → STM32 controller
+<strong>blue terminal GND</strong> (direct, not through INA3)</td>
+<td><strong>16 AWG</strong> black</td>
+<td><strong>E1508</strong> at ZK OUT− and at the STM32 terminal (bare if
+it won't seat); Deans solder joint</td>
 </tr>
 <tr>
 <td><strong>D16</strong></td>
-<td>D-1459 <strong>A5</strong> → MusRock <strong>IN+</strong>
+<td>HL-PBB <strong>A5</strong> → MusRock <strong>IN+</strong>
 (unfused)</td>
 <td>22 AWG silicone</td>
 <td><strong>E0508 ferrule</strong> at A5; MusRock end = <strong>solder
-pads</strong> (operator 2026-11-03): solder + heat-shrink</td>
+pads</strong>: solder + heat-shrink</td>
 </tr>
 <tr>
 <td><strong>D17</strong></td>
-<td>D-1459 <strong>B5</strong> → MusRock <strong>IN−</strong> (unfused +
-unswitched — mirrors D9) (§11.3.3)</td>
+<td>HL-PBB <strong>B5</strong> → MusRock <strong>IN−</strong> (unfused,
+unswitched) (§11.3.3)</td>
 <td>22 AWG silicone</td>
 <td><strong>E0508 ferrule</strong> at B5 + MusRock end solder +
-heat-shrink (pads, per D16). <strong>Twist D16/D17 as a pair</strong>;
-dress opposite the block↔︎G469 signal bundle, clear of PSU vents, TMP102
-and INA226; no shared anchors with the signal bundle</td>
-</tr>
-<tr>
-<td><strong>D14a</strong></td>
-<td>In D14's + conductor: DROK <strong>output +V</strong> →
-<strong>INA226-DROK IN+</strong>; INA226-DROK <strong>IN−</strong> → on
-to the Deans (+). D15 (−) does NOT pass through it</td>
-<td>18 AWG silicone</td>
-<td><strong>bare strands</strong> at DROK OUT+, INA226-DROK IN+ and IN−
-(no room for ferrules or forks, §5b.6). INA226-DROK's <strong>GND screw
-stays EMPTY</strong> (its ground arrives on the I²C chain; the DROK is
-non-isolated, so OUT− is already common)</td>
+heat-shrink. <strong>Twist D16/D17 as a pair</strong>; dress opposite
+the block↔︎G469 signal runs</td>
 </tr>
 <tr>
 <td><strong>D19</strong></td>
-<td>Block <strong>A6</strong> (HL-PBB) → IP6518 <strong>VIN+</strong>
-corner pad (Creator builds)</td>
+<td>HL-PBB <strong>A6</strong> → IP6518 <strong>VIN+</strong> corner pad
+(Creator builds)</td>
 <td>18 AWG silicone, twisted with D20</td>
 <td><strong>E1008 ferrule</strong> at A6; solder at the pad; meter
 polarity before first power</td>
 </tr>
 <tr>
 <td><strong>D20</strong></td>
-<td>Block <strong>B6</strong> (HL-PBB, <strong>shared with D8a
-LAMP</strong>) → IP6518 <strong>VIN−</strong> corner pad (Creator
-builds)</td>
+<td>HL-PBB <strong>B6</strong> (<strong>shared with D8a LAMP</strong>) →
+IP6518 <strong>VIN−</strong> corner pad (Creator builds)</td>
 <td>18 AWG silicone</td>
 <td><strong>One E1508 ferrule holding D20 (18) + D8a LAMP (22)</strong>,
 1.15 mm² total; solder at the pad</td>
@@ -3366,26 +3266,10 @@ after Phase 3 lands the PWM signal, so the ~5 % over-spec at raw 13.8 V
 is inside Noctua's tolerance margin; (b) 4 diodes soldered inline in the
 constrained bay space was a poor mechanical trade-off; (c) bench-tested
 at 13.8 V direct without issue during Phase 0 bring-up.</p>
-<blockquote>
-<p><strong>Known v1 limitation (Halo v1 = current build):</strong> with
-both rockers OFF, PSU switches to UPS mode from the LiFePO4 battery.
-Fans on the always-live V+ bus (A3/A4) keep spinning at ~0.2 A total →
-~50 h to full BMS cutoff. No zero-hardware, zero-effort retrofit
-possible on a ceiling-mounted robot (would require DROK removal or
-fence-rocker rework).</p>
-<p><strong>Halo v2 planned fix (deferred to next robot, not retrofitting
-v1):</strong> put the DC rocker <strong>in-series with the whole
-distribution-block V+ bus</strong> —
-<code>PSU CH1 → INA226 → DC rocker LINE → DC rocker LOAD → D-1459 IN-A → whole bus</code>.
-DC rocker OFF then kills the entire 13.8 V rail — fans, wand, DROK,
-everything. Only trade-off: wand tether no longer "always live," which
-is acceptable for a ceiling-mount product (wand doesn't need to be
-independently powered when the rest of the robot is off). v2 topology is
-captured in memory (<code>project_halo_v2_power_topology</code>) and
-will be built into the next unit's fence CAD + wiring segment map from
-day one.</p>
-</blockquote>
-<p><strong>Blade-size note (A2, A3, A4, A4a, A5, D7, D8, D8a — "see
+<p><strong>Rocker-off drain:</strong> the DC rocker cuts the whole bus,
+so with both rockers OFF only the PSU's own idle draw remains on the
+battery.</p>
+<p><strong>Blade-size note (A2, A3, A4, A4a, A5, D2, D7, D8a — "see
 note"):</strong> <strong>C14 inlet, AC rocker and DC rocker blades are
 all 4.8 × 0.8 mm</strong> (rockers operator-measured 2026-11-05; C14 per
 the QTEATAK WPF-1 datasheet; the same Faston fittings fit all three).
@@ -3460,15 +3344,16 @@ blades, so they are <strong>not for mains use here</strong>.
 4.8 flags came):</strong> any rocker blade still carrying a 6.3 mm flag
 gets a 4.8 Faston. <strong>Ultra</strong> (and every build): at the bay
 build (§16c build order, step 1): <strong>red 4.8 flags on the DC
-rocker, straight red 4.8 FDFNY on the rear AC rocker</strong>.
-<strong>Halo:</strong> the same as Ultra, when its bay is rebuilt on the
-current fence (Halo, Ultra and Nova are one configuration). Re-crimp
-each lead (cut the 6.3 flag off, re-strip), push the 4.8 flag fully
-home, <strong>tug-test each one hard</strong>, and check the AC rocker
-terminals for warmth after the first hour powered. Buy only parts marked
-4.8 / .187 / "187 series". The 22–18 / 16–14 flag crimper in stock fits
-the flags. The straight FDFNYs crimp on the Haisstronica ratchet
-(insulated barrels, 22–10 AWG) already in stock.</p>
+rocker, straight red 4.8 uxcell FDFN1-187 on the rear AC
+rocker</strong>. <strong>Halo:</strong> the same as Ultra, when its bay
+is rebuilt on the current fence (Halo, Ultra and Nova are one
+configuration). Re-crimp each lead (cut the 6.3 flag off, re-strip),
+push the 4.8 flag fully home, <strong>tug-test each one hard</strong>,
+and check the AC rocker terminals for warmth after the first hour
+powered. Buy only parts marked 4.8 / .187 / "187 series". The 22–18 /
+16–14 flag crimper in stock fits the flags. The straight FDFN1-187s
+crimp on the Haisstronica ratchet (insulated barrels, 22–10 AWG) already
+in stock.</p>
 <p>The table is from the seller's datasheet for the nylon fully
 insulated flag-shaped right-angle spade (sent by the operator
 2026-11-06). How to read the columns:</p>
@@ -3497,9 +3382,9 @@ low; safe)</li>
 Noctua PWM input is floating (no signal wire yet) so it defaults to 100
 % duty. Loud but expected. Fan tach output is also floating (no
 readout).</li>
-<li>DROK output at 7.5 V (bench-calibrate at first power-up before
-landing D14/D15) → STM32 blue terminal → STM32 boots → Pi5 boots off
-STM32's 5 V/5 A external port</li>
+<li>ZK-SJ20 output at 7.50 V LV / 12.0 V HV (set and bench-gated before
+it goes on the robot, §5c) → INA3 → STM32 blue terminal → STM32 boots →
+Pi5 boots off STM32's 5 V/5 A external port</li>
 <li>No I²C traffic yet (no G469 signal wiring); no PWM control (fans
 stuck at 100 %); no tach readback; no sensor readouts</li>
 </ol>
@@ -3519,13 +3404,13 @@ wiring is between LINE and LAMP (some lots) rather than LOAD and LAMP —
 swap the LINE and LOAD blade assignments.</label></li>
 <li><label><input type="checkbox" />Multimeter at PSU CH1 output:
 <strong>13.8 V ± 0.1</strong> (adjust PSU pot if off).</label></li>
-<li><label><input type="checkbox" />Multimeter at the D-1459 input IN-A:
-<strong>13.8 V</strong> vs IN-B. Same at every A-row cage (A1–A6 are one
-bus), including A2 feeding the DC rocker.</label></li>
+<li><label><input type="checkbox" />DC rocker ON. Multimeter at the
+HL-PBB input IN-A: <strong>13.8 V</strong> vs IN-B. Same at every A-row
+cage (A1–A6 are one bus). DC rocker OFF: 0 V on the bus.</label></li>
 <li><label><input type="checkbox" />Multimeter at each fan's V+ solder
 joint (fan lead-to-extension joint, right where the heat-shrink ends):
 <strong>13.8 V ± 0.1</strong> (direct from the distribution block — no
-diode drop). If reading is 0 V, the ferrule isn't seated in its D-1459
+diode drop). If reading is 0 V, the ferrule isn't seated in its block
 cage or the solder joint at the fan lead is open.</label></li>
 <li><label><input type="checkbox" />Multimeter at the <strong>wand-side
 6-pin END-PLATE inlet</strong>, V+ vs <strong>GND-power</strong>:
@@ -3536,24 +3421,14 @@ cage or the solder joint at the fan lead is open.</label></li>
 drop the split exists to keep off the I²C bus). Meter them <strong>OPEN
 on the bare rail</strong> before assembly — if they read short there,
 the col-14 track cut did not take.</label></li>
-<li><label><input type="checkbox" />DC rocker ON. <strong>The DC rocker
-lamp should illuminate.</strong> Same failure modes as the AC rocker:
-dark lamp = LAMP blade not tapped to GND (re-check D8a); always-lit =
-LINE/LOAD swapped (swap them). Multimeter at DROK output V+ vs GND:
-<strong>7.50 V ± 0.05</strong> (Hiwonder's own adapter voltage; never
-above 8.4 V — the STM32 input is also the servo-bus voltage, and the
-board and both servo types top out at 8.4 V; <a
-href="Electronics_Bay_Design.html">EBD §1</a>). <strong>STM32 must NOT be
-connected yet during this calibration</strong> — run the full DROK CC-CV
-bench-calibration procedure per <a
-href="LumiAI_Hardware_Integration.html#drok-cc-cv-dc-dc-buck-converter-12-a--160-w-stm32-75-v-rail"><code>LumiAI_Hardware_Integration.md</code>
-§"DROK CC-CV DC-DC Buck Converter" bench-calibration section</a> (7-step
-sequence — V-set with multimeter, I-set to 6-8 A, DC rocker cycle sanity
-check, THEN land D14/D15). Vendor manual for FUNC-button behavior + LCD
-field definitions: <a
-href="DROK%20Buck%20Boost.pdf"><code>DROK Buck Boost.pdf</code></a>.</label></li>
+<li><label><input type="checkbox" /><strong>The DC rocker lamp should
+illuminate</strong> with the rocker ON. Dark lamp = LAMP blade not
+tapped to GND (re-check D8a); always lit = LINE / LOAD swapped.
+Multimeter at the ZK-SJ20 output: <strong>7.50 V ± 0.05</strong> LV
+(<strong>12.0 V</strong> HV), display reading ON.</label></li>
 <li><label><input type="checkbox" />Multimeter at STM32 blue terminal
-input (STM32 not powered): <strong>7.5 V</strong>.</label></li>
+input (STM32 not powered): <strong>7.5 V</strong> LV / <strong>12.0
+V</strong> HV.</label></li>
 <li><label><input type="checkbox" />Now land D14/D15 into the STM32
 terminal. AC rocker + DC rocker both ON. STM32 should boot; Pi5 should
 boot off STM32's 5 V; both fans should spin at full RPM. LEDs on STM32 +
@@ -3574,159 +3449,14 @@ here.</label></li>
 <p>Nothing else. GPIO / signal wiring lands in Phase 3 (fan PWM + INA226
 I²C) and Phase 4 (TMP102). Servo bus daisy-chain wiring is separate
 (Phase 1 / Phase 2 arm-servo work).</p>
-<h4 id="1131-czh-labs-d-1459-distribution-module--physical-spec">11.3.1
-CZH-Labs D-1459 distribution module — physical spec</h4>
-<p>The alternate dual-bus part — the HL-PBB (§11.3.2) is the block of
-record from Nova (photos + dimensioned drawing in the 🎯 box at the top
-of §11.3; inventory row + sourcing in <a
-href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates">Assembly
-Guide §1.4</a>).</p>
-<table>
-<thead>
-<tr>
-<th>Spec</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Part</td>
-<td><strong>CZH-Labs D-1459</strong> — 30 A / 48 V, 2×6-position
-terminal-block distribution module</td>
-</tr>
-<tr>
-<td>Topology</td>
-<td><strong>Dual-bus on the PCB:</strong> every A screw is one net (we
-use it as V+), every B screw is one net (GND). Nothing to jumper,
-nothing to remove — the two buses are etched copper.</td>
-</tr>
-<tr>
-<td>Input block</td>
-<td>One high-current 2-position block (<code>IN-A</code> /
-<code>IN-B</code>), <strong>7.62 mm pitch</strong>, 26–10 AWG / 4.0 mm²,
-<strong>30 A</strong>, 8 mm strip length</td>
-</tr>
-<tr>
-<td>Distribution positions</td>
-<td>12 screws in 6 A/B pairs (A1–A6 / B1–B6), <strong>5.0 mm
-pitch</strong>, 26–12 AWG / 2.5 mm², <strong>16 A per position</strong>,
-7 mm strip length</td>
-</tr>
-<tr>
-<td>Screws / cages</td>
-<td>M3 steel screws (Cr3+ Zn plated) in brass cages; UL/CE/CQC-marked
-terminal blocks</td>
-</tr>
-<tr>
-<td>Board</td>
-<td>57.0 × 38.0 mm FR-4, 1.6 mm thick; overall height ~23.3 mm with the
-input block</td>
-</tr>
-<tr>
-<td>Mounting</td>
-<td><strong>4× Ø3.2 corner holes at 51.0 × 32.0 mm centres</strong>; on
-the carrier it self-taps onto 4 posts with M3 × 8 (§11.3.9); the spacers
-and screws it ships with are not used</td>
-</tr>
-<tr>
-<td>Wire prep</td>
-<td><strong>Ferrules on every landing</strong> (this build): E1008 for
-18 AWG, E0508 for 22 AWG, E0208 for 26 AWG (palette-locked 2026-09-30).
-<strong>Strip to the FERRULE's spec, not the terminal's</strong> —
-<strong>E0308/E0208 = 10 mm</strong> (<a
-href="Electronics_Assembly_Guide.html#12-consumables">Assembly Guide
-§1.2</a>: bore Φ0.8 · barrel 8 mm · overall 12.4 mm · strip 10 mm). The
-cage's own 7 mm spec (row above) is for bare wire, which this build
-never lands; 7 mm leaves the 8 mm barrel under-filled.</td>
-</tr>
-<tr>
-<td>Load context</td>
-<td>Bay peak ~8.0 A total = 27 % of the 30 A input rating; busiest
-distribution position A2 at ~5.5 A = 34 % of its 16 A — §11.3.3</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Physical port assignment — D-1459 (paper, from the vendor
-drawing; ⚠️ verify the silk labels against the in-hand board before
-landing any wire).</strong> The D-1459's input block sits in the
-<strong>middle of the board</strong> with three A/B distribution pairs
-on each edge (<code>A1 B1 A2 B2 A3 B3</code> on one edge,
-<code>A4 B4 A5 B5 A6 B6</code> on the other). With the §11.3.4
-orientation (input toward the INA226 so the 18 AWG feed stays short),
-put the two heavy branches and fan #1 on the edge facing the fence cable
-runs, and the light stuff on the far edge:</p>
-<table>
-<thead>
-<tr>
-<th>Physical position</th>
-<th>Net</th>
-<th>Assignment (segment)</th>
-<th>Load</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>IN-A / IN-B</strong> (centre block)</td>
-<td>V+ / GND</td>
-<td>PSU CH1 feed via INA226 shunt (D2 / D4), 18 AWG, E1008</td>
-<td>~8.0 A peak</td>
-</tr>
-<tr>
-<td><strong>A1 / B1</strong> (near edge)</td>
-<td>V+ / GND</td>
-<td>Wand tether V+ / <code>GND-power</code> → the wand's 6-pin end-plate
-inlet (D5 / D6), 22 AWG, E0508</td>
-<td>~2.4 A</td>
-</tr>
-<tr>
-<td><strong>A2 / B2</strong> (near edge)</td>
-<td>V+ / GND</td>
-<td>DC rocker → DROK (D7 / D8); DROK − direct off B2 (D9)</td>
-<td>~5.5 A</td>
-</tr>
-<tr>
-<td><strong>A3 / B3</strong> (near edge)</td>
-<td>V+ / GND</td>
-<td>Bay fan #1 (D10 / D11), 22 AWG, E0508</td>
-<td>~0.04 A</td>
-</tr>
-<tr>
-<td><strong>A4 / B4</strong> (far edge)</td>
-<td>V+ / GND</td>
-<td>Bay fan #2 (D12 / D13), 22 AWG, E0508</td>
-<td>~0.04 A</td>
-</tr>
-<tr>
-<td><strong>B5</strong> (far edge)</td>
-<td>GND</td>
-<td>MusRock IN− (D17), 22 AWG, E0508</td>
-<td>~1.2 A</td>
-</tr>
-<tr>
-<td><strong>B6</strong> (far edge)</td>
-<td>GND</td>
-<td>DC rocker LAMP tap (D8a), 22 AWG, E0508</td>
-<td>mA</td>
-</tr>
-<tr>
-<td><strong>A5 / A6</strong> (far edge)</td>
-<td>V+</td>
-<td><strong>A5</strong> = MusRock IN+ (D16), 22 AWG, E0508; <strong>A6
-spare</strong></td>
-<td>~1.2 A / —</td>
-</tr>
-</tbody>
-</table>
 <h4
 id="1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova">11.3.2
 YRYAR HL-PBB-2-6-MINI — physical spec (bay block of record from
 Nova)</h4>
-<p>The bay block of record from Nova (photo + vendor chaining diagram in
-the 🎯 box; inventory row in <a
+<p>The one distribution block on every build (photo + vendor chaining
+diagram in the 🎯 box; inventory row in <a
 href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates">Assembly
-Guide §1.4</a>). <strong>The §11.3.3 port map applies 1:1</strong> —
-same A/B dual-bus layout, so a build can substitute it without touching
-the wiring segment map.</p>
+Guide §1.4</a>).</p>
 <table>
 <thead>
 <tr>
@@ -3741,20 +3471,15 @@ the wiring segment map.</p>
 distribution module (AliExpress, $6.82)</td>
 </tr>
 <tr>
-<td>Family</td>
-<td>2-4 / 2-6 / 2-8 / 2-10 / 2-12 / 2-16 output positions, same layout —
-the 2-6 matches our port count</td>
-</tr>
-<tr>
 <td>Topology</td>
-<td>Same dual-bus-on-PCB as the D-1459: all A screws one net, all B
-screws one net</td>
+<td>Dual bus on the PCB: all A screws one net (V+), all B screws one net
+(GND). Nothing to jumper or remove</td>
 </tr>
 <tr>
 <td>Input blocks</td>
-<td><strong>A/B input block at BOTH short ends</strong>, 7.5 mm pitch —
-feed either end; the second block <strong>daisy-chains</strong>
-module-to-module for bus expansion (vendor diagram in the 🎯 box)</td>
+<td><strong>A/B input block at BOTH short ends</strong>, 7.5 mm pitch:
+feed one end, the other stays spare (it can daisy-chain a second
+module)</td>
 </tr>
 <tr>
 <td>All positions</td>
@@ -3764,180 +3489,71 @@ screws (Cr3+ Zn), brass header + cage; UL/CE/CQC blocks, FR-4</td>
 <tr>
 <td>Board</td>
 <td><strong>70 × 22 mm, 23 mm to the highest point</strong>
-(operator-calipered 2026-11-15) — longer and ~16 mm narrower than the
-D-1459</td>
+(operator-calipered 2026-11-15)</td>
 </tr>
 <tr>
-<td>Differences vs the D-1459</td>
-<td><strong>16 A TOTAL vs 30 A</strong> (bay peak is 8 A — both carry
-it, the D-1459 just has more headroom); input wire ceiling <strong>12
-AWG vs 10 AWG</strong> (the 18 AWG bay feed fits either); no dedicated
-high-current input block (inputs share the 16 A / 2.5 mm² spec);
-chainable dual inputs the D-1459 lacks</td>
+<td>Rating</td>
+<td><strong>16 A total.</strong> Accepted for every build by the
+operator's order (2026-11-24), real load §11.3.3</td>
 </tr>
 <tr>
 <td>Mounting</td>
 <td><strong>2 × Ø4 holes, 64 mm centre to centre</strong>, one per short
-end, centred across the width, 1.5 mm from the edge, outboard of the
-input towers (operator calipers 2026-11-15). M3 screws on carrier posts
-(§11.3.9)</td>
+end, centred across the width, 1.5 mm from the edge (operator calipers
+2026-11-15). M3 screws on carrier posts (§11.3.9). Check first that the
+mount holes are not tied to either bus</td>
 </tr>
 <tr>
 <td>Wire prep</td>
-<td>Same ferrule map as the D-1459 (E1008 / E0508 / E0208).
-<strong>Strip to the ferrule's spec — 10 mm for all three in-use sizes
-(E1008 / E0508 / E0208)</strong>, not the 7 mm cage spec.</td>
+<td>Ferrules in every cage (E1508 / E1008 / E0508 by conductor,
+§11.3.3). <strong>Strip to the ferrule's spec, 10 mm</strong>, not the 7
+mm cage spec. Never tin</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Physical port assignment — HL-PBB-2-6-MINI (paper, from the
-vendor photos; ⚠️ verify silk labels + which block is which against the
-in-hand board before landing any wire).</strong> An A/B input tower
-stands at each short end (the tallest part, wire entries facing outward
-along the long axis). The outputs <strong>alternate A/B along BOTH long
-edges</strong>, as on the D-1459: <strong>A1 B1 A2 B2 A3 B3</strong> on
-one edge, <strong>A4 B4 A5 B5 A6 B6</strong> on the other (operator
-2026-11-15), so wires enter both long edges. Best-guess placement:
-<strong>feed the end nearest the INA226</strong>, park the far-end input
-block as spare/chain, and order the branches heavy-to-light away from
-the fed end so the highest currents travel the least bus copper:</p>
-<table>
-<thead>
-<tr>
-<th>Physical position</th>
-<th>Net</th>
-<th>Assignment (segment)</th>
-<th>Load</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Input block, fed end</strong> (toward INA226)</td>
-<td>V+ / GND</td>
-<td>PSU CH1 feed via INA226 shunt (D2 / D4), 18 AWG, E1008 — ⚠️ no
-dedicated high-current block on this part: 26–12 AWG / 16 A spec applies
-here too</td>
-<td>~8.0 A peak</td>
-</tr>
-<tr>
-<td><strong>A1 / B1</strong> (1st pair from the fed end)</td>
-<td>V+ / GND</td>
-<td>DC rocker → DROK (D7 / D8); DROK − direct (D9) — heaviest branch
-closest to the feed</td>
-<td>~5.5 A</td>
-</tr>
-<tr>
-<td><strong>A2 / B2</strong></td>
-<td>V+ / GND</td>
-<td>Wand tether V+ / <code>GND-power</code> → the wand's 6-pin end-plate
-inlet (D5 / D6), 22 AWG, E0508</td>
-<td>~2.4 A</td>
-</tr>
-<tr>
-<td><strong>A3 / B3</strong></td>
-<td>V+ / GND</td>
-<td>Bay fan #1 (D10 / D11), 22 AWG, E0508</td>
-<td>~0.04 A</td>
-</tr>
-<tr>
-<td><strong>A4 / B4</strong></td>
-<td>V+ / GND</td>
-<td>Bay fan #2 (D12 / D13), 22 AWG, E0508</td>
-<td>~0.04 A</td>
-</tr>
-<tr>
-<td><strong>B6</strong></td>
-<td>GND</td>
-<td>DC rocker LAMP tap (D8a), 22 AWG, E0508. <strong>Creator
-builds:</strong> LAMP (22 AWG) + PHONE-IN GND (D20, 18 AWG)
-<strong>doubled in one E1508 ferrule</strong> (0.33 + 0.82 = 1.15
-mm²)</td>
-<td>mA (LAMP) + ≤ 3.4 A (phone)</td>
-</tr>
-<tr>
-<td><strong>A5</strong></td>
-<td>V+</td>
-<td><strong>MusRock HAT 5 V buck input</strong> (D16, <strong>22 AWG,
-E0508</strong>): A5 → MusRock IN+</td>
-<td>~1.2 A</td>
-</tr>
-<tr>
-<td><strong>A6</strong></td>
-<td>V+</td>
-<td><strong>Creator builds: PHONE-IN V+</strong> (D19, 18 AWG, E1008) →
-IP6518 VIN+. Otherwise spare</td>
-<td>≤ 3.4 A (45 W PD at 13.8 V)</td>
-</tr>
-<tr>
-<td><strong>B5</strong></td>
-<td>GND</td>
-<td><strong>MusRock IN− (D17)</strong>, 22 AWG, E0508 (see §11.3.3 B5
-row for the on-hold signal-GND jumper's forward path)</td>
-<td>~1.2 A</td>
-</tr>
-<tr>
-<td><strong>Input block, far end</strong></td>
-<td>V+ / GND</td>
-<td><strong>Spare / chain port</strong> — daisy-chain a second module
-here if the bay ever needs more positions (vendor diagram in the 🎯
-box)</td>
-<td>—</td>
-</tr>
-</tbody>
-</table>
-<p>⚠️ <strong>If the HL-PBB is substituted, the §11.3.3 net-level map
-still applies 1:1, but the DROK and wand branches swap position numbers
-vs the D-1459 table above</strong> (here the DROK pair sits at A1/B1,
-nearest the feed). Update the wiring segment map's position labels at
-build time to whichever part is in hand — the nets, gauges and ferrules
-don't change.</p>
-<hr />
-<h4
-id="1132a-nova-fuse--switch-chain-first-hl-pbb-build--normative-2026-10-20">11.3.2a
-Nova fuse + switch chain (first HL-PBB build — normative,
-2026-10-20)</h4>
-<p>Fuses + holders are <strong>in stock</strong> (operator) — no
-purchase. <strong>The shipping configuration carries ONE fuse: F1 on the
-battery lead.</strong> After the HV servo swap (a future upgrade) a
-servo fuse is undecided (the operator leans none, relying on the DROK);
-at most two fuses, nothing else. No CH1 master, DROK-branch or HAT-feed
-fuse.</p>
-<pre class="text"><code>PSU CH1 +V ──► INA226 shunt ──► DC rocker KCD1
-                                (v2: UPSTREAM of the whole bus)
-                                     │
-                                     ▼
-                          HL-PBB-2-6-MINI IN-A (fed end)
-   branches (all unfused):  A1 ──► DROK IN (the STM32 board + servo rail: 7.5 V LV, 12.0 V after the HV swap)
+<p><strong>Physical layout (⚠️ verify the silk labels and which input
+block is which on the board in hand before landing any wire):</strong>
+an A/B input tower stands at each short end, wire entries facing outward
+along the long axis. The outputs alternate A/B along both long edges:
+<strong>A1 B1 A2 B2 A3 B3</strong> on one edge, <strong>A4 B4 A5 B5 A6
+B6</strong> on the other (operator 2026-11-15). Feed the end nearest the
+buck and INA226-MAIN; the heaviest branch (A1 / B1, the ZK-SJ20) sits
+next to the fed end.</p>
+<h4 id="1132a-fuse--switch-chain-every-build">11.3.2a Fuse + switch
+chain (every build)</h4>
+<p>Fuses and holders are in stock. <strong>Every build carries ONE fuse:
+F1 on the battery lead</strong> (operator's order, 2026-11-24: no servo
+fuse, no branch fuses; HV B9 closed).</p>
+<pre class="text"><code>PSU CH1 +V ──► INA226-MAIN shunt ──► DC rocker KCD1 (upstream of the whole bus)
+                                          │
+                                          ▼
+                               HL-PBB-2-6-MINI IN-A (fed end)
+   branches (all unfused):  A1 ──► ZK-SJ20 IN ──► OUT ──► INA3 ──► STM32 board ──► servos (7.50 V LV, 12.0 V HV)
+                            A2 ──► wand tether     A3 / A4 ──► fans
                             A5 ──► Mus-14 dual-USB-C buck ──► HAT POWER
-                            tether / fans / LAMP / creator-edition PHONE CHARGER (IP6518, on the tether&#39;s A / B position)
-   after the HV swap (a future upgrade): DROK OUT ──► (servo fuse: undecided) ──► STM32 board ──► servos (one rail)
+                            A6 ──► IP6518 phone charger (Creator builds)
 
-Battery: BAT+ ──► F1: 10 A fast-blow glass 6×30 (uxcell holder, 16 AWG red) ──► PSU CH2 BAT+   (unchanged, per the UPS doc)</code></pre>
+Battery: BAT+ ──► F1: 10 A fast-blow glass 6×30 (uxcell holder) ──► INA226-BATT ──► PSU CH2 BAT+</code></pre>
 <ul>
-<li><strong>F1</strong> (battery, 10 A glass) — exactly as the UPS doc's
-Fuse Selection section. <strong>Carrier builds:</strong> mounted in a
-printed cradle on the power-bay carrier near the battery-barrel end; ≤
-150 mm of unfused stub from the pack + terminal (§11.3.9).</li>
-<li>⏳ <strong>Servo fuse: undecided</strong> (operator leans none; the
-DROK cuts out on overload). If added: 10 A glass 6×30 in a spare inline
-holder, base's second opening. See
-<code>Electronics_Bay_Design.md</code> §1.</li>
+<li><strong>F1</strong> (battery, 10 A glass): mounted in a printed
+cradle on the carrier near the battery end, ≤ 150 mm of unfused lead
+from the pack + terminal (71 mm routed, §16c BATT row).</li>
+<li><strong>Servo rail:</strong> no fuse. The ZK-SJ20's CC limit (18 A)
+and its 300 W OPP are the only limits after the block.</li>
 <li><strong>Consequence:</strong> every CH1 branch is unfused; a fault
 on one is cleared only by the PSU's own CH1 output limit (on AC) or F1
-(on battery), and takes the whole bay down.</li>
+(on battery), and takes the whole bay down. Accepted by the
+operator.</li>
 </ul>
-<p>⚠️ <strong>Halo as-built delta:</strong> Halo's battery F1 is per the
-UPS doc; any CH1-side fuse found on Halo or Ultra at a bay-open comes
-out (two-fuse design). The rocker position shown is the <strong>v2
-topology</strong> (operator ruling 2026-10-20: KCD1 stays, 6 months
-AC+DC service, DC rating closed); Halo keeps its as-built
-rocker-on-the-DROK-branch until retrofitted.</p>
+<p>⚠️ <strong>Halo v1 as built:</strong> Halo keeps its
+rocker-on-the-servo-branch and its APIELE until its bay is rebuilt on
+the new carrier. Any CH1-side fuse found at a bay-open comes out.</p>
 <h4
 id="1133-distribution-module-port-assignments-a-bus--v-b-bus--gnd">11.3.3
 Distribution-module port assignments (A bus = V+, B bus = GND)</h4>
-<p>On the dual-bus module <strong>every A screw is the +13.8 V net,
-every B screw is the GND net</strong>, bussed on the PCB — nothing to
-jumper, nothing to remove. One ferruled conductor per cage.</p>
+<p>Every A screw is the +13.8 V net and every B screw the GND net,
+bussed on the PCB. One ferruled conductor per cage, except where a row
+says one ferrule holds two.</p>
 <table>
 <thead>
 <tr>
@@ -3949,35 +3565,26 @@ jumper, nothing to remove. One ferruled conductor per cage.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>IN-A / IN-B</strong></td>
+<td><strong>IN-A / IN-B</strong> (fed end)</td>
 <td>V+ / GND</td>
-<td>PSU CH1 +13.8 V feed via the INA226 shunt (D2 / D4), 18 AWG, E1008
-ferrules</td>
-<td>Feed — <strong>~8.0 A peak</strong> total</td>
+<td>From the DC rocker LOAD (D7) and INA226-MAIN GND (D4), 18 AWG,
+E1008</td>
+<td>Feed: ~8.4 A typical, ~11.8 A on Creator builds (below)</td>
 </tr>
 <tr>
 <td><strong>A1 / B1</strong></td>
 <td>V+ / GND</td>
-<td>Wand tether V+ / <code>GND-power</code> — end-plate inlet pins 1 / 2
-(D5 / D6), 22 AWG, E0508</td>
-<td><strong>~2.4 A @ 33 W</strong> peak <em>(<a
-href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
-§5.3</a>, measured 2026-09-01)</em></td>
+<td><strong>ZK-SJ20 IN+ / IN−</strong> (D9), 16 AWG, E1508</td>
+<td>~4.7 A at 7.5 V LV / ~7.5 A at 12.0 V HV (servos ≤ 7–8 A)</td>
 </tr>
 <tr>
 <td><strong>A2 / B2</strong></td>
 <td>V+ / GND</td>
-<td>DC rocker LINE → DROK input +V (D7 / D8); DROK input − direct off B2
-(D9, unswitched)</td>
-<td><strong>up to ~4.6 A</strong> (DROK output capped at 8 A × 7.5 V =
-60 W; input at 13.8 V and 95 % efficiency = 4.6 A). Downstream 5 V rail
-off the STM32 board serves RPi5 (up to 5 A) + NVMe + OAK-D S2 + mic
-array + PIRs + wand 3.3 V logic + arm bus servos — 10-16 A on the 5 V
-side. ⏳ When the Waveshare HAT lands (Phase 7.6), the NVMe + mic set +
-sound-card stick move to the MusRock rail (A5) — the STM32 5 V regulator
-regains ~1–2 A, which also relieves the Pi's own input and thereby its
-onboard 3.3 V LDO, the source of the wand's 3V3 logic rail (the G469's
-five-load 3V3 net, §4). OAK-D stays on a native Pi port.</td>
+<td>Wand tether V+ / <code>GND-power</code> — end-plate inlet pins 1 / 2
+(D5 / D6), 22 AWG, E0508</td>
+<td>~2.4 A @ 33 W peak (<a
+href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
+§5.3</a>)</td>
 </tr>
 <tr>
 <td><strong>A3 / B3</strong></td>
@@ -3992,148 +3599,78 @@ five-load 3V3 net, §4). OAK-D stays on a native Pi port.</td>
 <td>~0.04 A</td>
 </tr>
 <tr>
-<td><strong>B5</strong></td>
-<td>GND</td>
-<td><strong>MusRock IN− (segment D17, 22 AWG, E0508)</strong> (operator,
-2026-10-13). The on-hold pin-34 signal-GND jumper (§11.2.2 step 7; its
-go/no-go measurement is blocked behind wand completion) does
-<strong>NOT</strong> go on B5. If it is ever proven needed, land it by a
-two-conductor AIRIC-class ferrule sharing B3 with fan #1's return
-(bench-verify one crimp at the 5.0 mm cage first), or by moving a 0.04 A
-fan return to a 2-position satellite; it would be a 26 AWG signal-class
-wire.</td>
-<td>~1.2 A return</td>
-</tr>
-<tr>
-<td><strong>B6</strong></td>
-<td>GND</td>
-<td>DC rocker LAMP tap (D8a), 22 AWG, E0508</td>
-<td>mA through the rocker's internal resistor</td>
-</tr>
-<tr>
-<td><strong>A5</strong></td>
-<td>V+</td>
-<td><strong>MusRock HAT 5 V buck input</strong>: A5 → MusRock IN+
-(<strong>segment D16, 22 AWG, E0508</strong> — 1.2 A peak sits in the 22
-AWG class; the bay palette has no 14 AWG). Output: D18 C-to-C (HOTNOW
-1.5 ft; 5 A cable only if the gate fails, <a
-href="Electronics_Bay_Design.html">Electronics_Bay_Design §3.6.2</a>) via
-the base-servo hole → Waveshare HAT.</td>
-<td>~1.2 A peak at 13.8 V</td>
+<td><strong>A5 / B5</strong></td>
+<td>V+ / GND</td>
+<td><strong>MusRock HAT 5 V buck</strong> (D16 / D17), 22 AWG, E0508.
+Output: D18 C-to-C via the base-servo hole → Waveshare HAT (<a
+href="Electronics_Bay_Design.html">Electronics_Bay_Design §3.6.2</a>)</td>
+<td>~1.2 A</td>
 </tr>
 <tr>
 <td><strong>A6</strong></td>
 <td>V+</td>
-<td><strong>Spare</strong> — the last free V+ cage</td>
+<td><strong>Creator builds: PHONE-IN V+</strong> (D19, 18 AWG, E1008) →
+IP6518 VIN+. Otherwise spare</td>
+<td>≤ 3.4 A (45 W PD)</td>
+</tr>
+<tr>
+<td><strong>B6</strong></td>
+<td>GND</td>
+<td>DC rocker LAMP tap (D8a, 22 AWG, E0508). <strong>Creator
+builds:</strong> LAMP + PHONE-IN GND (D20, 18 AWG) <strong>in one
+E1508</strong> (1.15 mm²)</td>
+<td>mA + ≤ 3.4 A</td>
+</tr>
+<tr>
+<td><strong>Input block, far end</strong></td>
+<td>V+ / GND</td>
+<td>Spare</td>
 <td>—</td>
 </tr>
 </tbody>
 </table>
-<p>One ferruled conductor per cage, 16 A per position — the busiest
-distribution position is A2 at ~5.5 A (**~34 %** of rating); the wand's
-A1 carries <strong>~2.4 A</strong> (<strong>~15 %</strong>).</p>
+<p>The on-hold pin-34 signal-GND jumper (§11.2.2 step 7) does
+<strong>not</strong> go on B5. If it is ever proven needed, it shares B3
+with fan #1's return in a two-conductor AIRIC-class ferrule
+(bench-verify one crimp at the cage first).</p>
 <p><strong>Ampacity note — single V+ / single GND:</strong> the wand
 tether is a <strong>single V+ line + single GND line</strong> on the
 <strong>6-pin end-plate inlet</strong> (V+ pin 1, <code>GND-power</code>
 pin 2, <code>GND-logic</code> pin 6; signal on 3/4/5). JST-XH's per-pin
-contact rating is 3 A conservative / 5 A per JST datasheet for the XH
-series with 22-16 AWG conductors — the wand's <strong>~2.4 A
-peak</strong> (all-12-channels-full-white worst case, <a
-href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
-§5.3</a>, measured 2026-09-01) is <strong>inside even the conservative 3
-A rating</strong>, with the datasheet 5 A envelope as further margin.
-<strong>No firmware current cap is needed and none should be
-implemented.</strong> The 6-pin carries SIX live nets and has <strong>NO
-spare</strong> (pin 5 = 3.3 V, pin 6 = <code>GND-logic</code>; <a
-href="Lumi_Wand_Integration.html#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand">Integration
-§10.5.2</a>); a fan-tach return would need a 7th conductor that the
-end-plate inlet and cradle do not have.</p>
-<p><strong>Bay-fan branch — one dedicated column per fan, direct 13.8
-V:</strong></p>
-<p>Each bay fan (2× Noctua NF-A4x20 PWM) gets its own distribution
-position so each branch is straight-through — no Y-splices, no shared
-branches, fans are independently serviceable. V+ path per fan is a
-direct wire from the D-1459 to the fan lead — <strong>no diodes</strong>
-(fans see 13.8 V direct, PWM-controlled by Pi5 after Phase 3 so the ~5 %
-over-spec at raw 13.8 V is inside Noctua's tolerance). GND path per fan
-is a direct wire.</p>
+rating is 3 A conservative / 5 A per the XH datasheet with 22–16 AWG;
+the wand's <strong>~2.4 A peak</strong> is inside the conservative
+rating.</p>
+<p><strong>Bay-fan branches — one column per fan, direct 13.8 V, no
+diodes:</strong> fan V+ / GND from A3 / B3 and A4 / B4 (E0508 at the
+cage) to a <strong>solder + heat-shrink joint</strong> on the fan's own
+leads; no JST-XH on the fan power or signal runs. Fan signals (blue PWM,
+green TACH) land in <strong>E0308 / E0208 ferrules at the G469</strong>:
+both blue wires in one ferrule under <code>GPIO12</code>, fan #1 green
+under <code>GPIO5</code>, fan #2 green under <code>GPIO6</code> (§11.2).
+Each fan is serviceable on its own.</p>
+<p><strong>Current budget at 13.8 V (typical heavy use):</strong></p>
 <ul>
-<li><strong>Fan #1 V+ path:</strong> D-1459 <strong>A3</strong> cage
-(E0508 ferrule) → 22 AWG wire → <strong>soldered + heat-shrink
-joint</strong> to fan #1 yellow lead (per <a
-href="#112-bay-fans--2-noctua-nf-a4x20-pwm-40--40--20-mm-mount--wiring">§11.2</a>).
-<strong>No JST-XH on the bay-fan run. No diodes.</strong></li>
-<li><strong>Fan #2 V+ path:</strong> D-1459 <strong>A4</strong> cage
-(E0508 ferrule) → 22 AWG wire → <strong>soldered + heat-shrink
-joint</strong> to fan #2 yellow lead.</li>
-<li><strong>Fan #1 GND path:</strong> D-1459 <strong>B3</strong> cage
-(E0508 ferrule) → 22 AWG wire → <strong>soldered + heat-shrink
-joint</strong> to fan #1 black lead. No diode.</li>
-<li><strong>Fan #2 GND path:</strong> D-1459 <strong>B4</strong> cage
-(E0508 ferrule) → 22 AWG wire → <strong>soldered + heat-shrink
-joint</strong> to fan #2 black lead. No diode.</li>
-<li><strong>Fan signal wires (blue PWM + green TACH):</strong> land
-<strong>in E0308/E0208 ferrules directly in the G469 screw
-terminals</strong> — both fans' blue wires in one ferrule under
-<code>GPIO12</code> (two-in-one is fine), fan #1 green under
-<code>GPIO5</code>, fan #2 green under <code>GPIO6</code>. <strong>No
-JST-XH on the bay-fan signal run.</strong></li>
-<li><strong>Independent service:</strong> if one fan bearing fails or
-its wiring needs re-work, the other fan branch is untouched. Y-splice
-designs would have required disconnecting both fans to service either
-one.</li>
-</ul>
-<p><strong>Combined current budget at wand full brightness + arm
-active:</strong></p>
-<ul>
-<li>Wand: <strong>~2.4 A</strong> (A1) <em>(<a
-href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
-§5.3</a>, measured 2026-09-01)</em></li>
-<li>STM32-DROK input: up to 4.6 A (A2, at DROK max output 8 A / 7.5
-V)</li>
-<li>Bay fan #1: 0.04 A (A3)</li>
-<li>Bay fan #2: 0.04 A (A4)</li>
-<li><strong>Total on the input (IN-A/IN-B): ~9.2 A peak</strong> at
-simultaneous wand-full-white + arm-heavy-load + HAT rail full (2.4 + 5.5
-+ 0.04 + 0.04 + 1.2). The 5.5 A DROK term does NOT drop when the HAT
-loads move off the STM32 rail, because it is the DROK's cap, not a
-measured draw — the real simultaneous number is lower.</li>
-<li>Input load factor: 9.2 A / 30 A D-1459 input rating = <strong>31
-%</strong> (58 % of the HL-PBB's 16 A) — comfortable, and this is a
-peak-only condition; sustained running is much lower (typical wand duty
-~30-50 %, arm not always at peak, RPi5 not always at 5 A).</li>
-<li>A3 / A4 (fan branches): each 0.04 A — ~0.3 % of the 16 A position
-rating (direct 13.8 V, no diodes)</li>
-<li>PSU CH1 (rated 5 A; bench, battery disconnected: 95 W at 7 A with no
-sag, holds to ~7.7 A (~104 W), cuts out at 8 A): <strong>the 9.2 A cap
-sum is past the PSU's limit.</strong> With the pack connected after
-draining it to ~12.8 V at rest, the charger active, it did not trip up
-to 10 A: the output held ~13 V, the yellow CHARGE LED stayed on through
-the lower steps and went out at ~10 A while the power LED stayed on,
-most likely with the pack covering the excess (battery current direction
-and PSU case heat not yet measured). If confirmed, the battery carries
-peaks above the PSU's limit, and sustained load above ~7.7 A drains the
-pack. The measured LV peak is ~76 W (~5.5 A: robot ~43 W on Halo + wand
-~33 W). It fits on its own, but not with battery charging (~28 W) on
-top. <strong>The PSC-100-12 has no headroom for a higher-power wand or
-the HV servos.</strong> <strong>The LV builds, Nova included, stay on
-the PSC-100-12:</strong> the measured LV peak fits, and the pack carries
-peaks above the PSU's limit. <strong>The HV version gets the MZMW
-PSC-150-12, ordered (due ~Nov 20)</strong> (150 W total, CH1 7.5 A + CH2
-3 A charge, 159 × 97 × 30 mm: the PSC-100's width and height, 30 mm
-longer). Its limit is total power shared with charging: hiccup at
-105–115 % of 150 W is ~11.4–12.5 A with the battery full, ~8–9.5 A on
-the load while the charger draws its 3 A. See <a
-href="Lumi_Wand_Integration.html#53-power-draw-summary">Integration
-§5.3</a>.</li>
-<li><strong>Wire gauge for the input feed:</strong> <strong>18
-AWG</strong> per segments D2/D4 (chassis rating ~16 A, ~1.7× the 9.2 A
-peak; palette power gauge, ferrule E1008); Halo v1 as-built runs 16 AWG.
-The <strong>wand tether is a single 22 AWG pair</strong> carrying ~2.4 A
-(<a
-href="Lumi_Wand_Integration.html#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand">Integration
-§10.5.2</a>). STM32-DROK feed is 18 AWG (D7/D8/D9; 5.5 A). Fan feeds are
-22 AWG (0.04 A, trivial).</li>
+<li>ZK-SJ20 input (A1): servos ≤ 7–8 A at 7.5 V ≈ 60 W → <strong>~4.7
+A</strong> LV (~7.5 A on HV at 12.0 V)</li>
+<li>Wand: <strong>~2.4 A</strong> (A2) · HAT: <strong>~1.2 A</strong>
+(A5) · fans: <strong>~0.1 A</strong></li>
+<li>Phone charger (Creator builds): <strong>≤ 3.4 A</strong> (A6)</li>
+<li><strong>Bus total: ~8.4 A LV, ~11.8 A LV Creator</strong> (HV
+figures in <a href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code></a>
+B15)</li>
+<li>The ZK-SJ20's 18 A CC is headroom, not load. Where the 18 A case
+exceeds the HL-PBB (16 A), the DC rocker and its flags (10 A), F1 (10 A)
+or PSU CH1, those limits are <strong>accepted by the operator's order
+(2026-11-24)</strong>; INA3 / INA-MAIN readings on real moves give the
+true numbers.</li>
+<li><strong>PSU CH1:</strong> PSC-100-12 rated 5 A (bench, battery
+disconnected: 95 W at 7 A, cuts out at 8 A; with the pack connected it
+did not trip to 10 A, the pack most likely covering the excess);
+PSC-150-12 rated 7.5 A. The battery carries peaks above CH1's
+limit.</li>
+<li><strong>Feed gauge:</strong> 18 AWG on D2 / D4 / D7 (E1008); doubled
+18 AWG on the ZK-SJ20 runs; the wand tether a single 22 AWG pair; fans
+and HAT 22 AWG.</li>
 </ul>
 <h4 id="1134-mounting--on-the-power-bay-carrier">11.3.4 Mounting — on
 the power-bay carrier</h4>
@@ -4143,7 +3680,7 @@ mounts on the PSU cover.</p>
 <ol type="1">
 <li><strong>Power off + capacitor discharge.</strong> <strong>AC rocker
 OFF</strong> (kills PSU AC input) AND <strong>DC rocker OFF</strong>.
-Wait 30 s for PSU caps to bleed. Multimeter-verify 0 V at the D-1459
+Wait 30 s for PSU caps to bleed. Multimeter-verify 0 V at the HL-PBB
 input feed AND 0 V at the PSU CH1 output before starting.</li>
 <li><strong>Continuity sanity on the module (unmodified, straight out of
 the bag):</strong> <code>IN-A</code> → any A cage should read
@@ -4199,8 +3736,8 @@ wired but PSU still OFF, continuity-check:
 <li>PSU CH1 +13.8 V terminal → wand tether V+ pin: short</li>
 <li>PSU CH1 GND terminal → wand tether <code>GND-power</code> pin:
 short</li>
-<li>DROK +V input → A bus: short (straight off the DROK cage); DROK GND
-input → B bus: short</li>
+<li>ZK-SJ20 IN+ → A bus: short (A1); ZK-SJ20 IN− → B bus: short
+(B1)</li>
 <li>PSU CH1 +V (INA226-MAIN ISENSE−) → block input A: short <strong>only
 with the DC rocker held ON</strong>, open with it OFF (v2: the rocker
 sits upstream of the whole bus)</li>
@@ -4208,12 +3745,11 @@ sits upstream of the whole bus)</li>
 <li><strong>Power up.</strong> Multimeter at the wand-tether JST-XH male
 end: V+ to <code>GND-power</code> should read <strong>13.6-13.9
 V</strong> (essentially no drop across ferrule + cage).</li>
-<li><strong>STM32 branch check.</strong> Multimeter at DROK output
-terminals: <strong>7.5 V ± 0.1</strong> (assuming DROK was previously
-calibrated to 7.50 V — if not, adjust the DROK's CV pot until it reads
-7.5 V with the STM32 stack fully booted and drawing its typical ~4.5 A).
-STM32 boot behavior unchanged — its INPUT source is the distribution
-block instead of a direct PSU tap.</li>
+<li><strong>STM32 branch check.</strong> Multimeter at the ZK-SJ20
+output: <strong>7.50 V ± 0.05</strong> LV / <strong>12.0 V</strong> HV
+with the STM32 stack booted (the buck was set and bench-gated before
+fitting, §5c; never trim it on the robot unless the reading is
+off).</li>
 </ol>
 <h4
 id="1136-verify-wand-led-rail-behavior-at-138-v-new-voltage-vs-previous-106-v-drok-feed">11.3.6
@@ -4226,21 +3762,23 @@ href="Lumi_Wand_Integration.html#25-verify-wand-led-rail-behavior-at-138-v--benc
 <h4
 id="1139-power-bay-carrier--layout-requirements-in-design-2026-10-22">11.3.9
 Power-bay carrier — layout requirements (in design, 2026-10-22)</h4>
-<p><strong>Decision (operator, 2026-10-22):</strong> one printed
-<strong>carrier, "just like the iFlytek one"</strong>. Board posts are
-moulded into it, boards self-tap onto them, no studs. The carrier is
-<strong>strap-mounted to the base plate</strong> — the battery end on
-modified battery straps, the PSU end on a new strap over the PSU at 90°
-to them, held to the base plate like the battery straps (operator,
-2026-10-22; CAD designing). It lifts off by its strap fasteners without
-opening or moving the PSU. <strong>Nothing mounts on the PSU
-cover.</strong> Electronics owns this layout spec; CAD owns the part. ⏳
-Hardware = the strap-foot fasteners, same as the battery straps, exact
-list from CAD.</p>
+<p><strong>One carrier for every build (operator, 2026-11-24): CAD's
+<code>lumi_powerbay_carrier_HV</code></strong> (the former HV carrier;
+the LV carrier is dropped). Printed, flat deck at Z 48 with board posts
+moulded in; boards self-tap onto them, no studs. The ZK-SJ20 sits on the
+deck over an opening (heatsink hanging through, 3.0 mm above the PSU
+top); the deck is <strong>62 % open</strong> over the PSU. Front mount =
+<strong>2 end stubs</strong> (2 screws), clear of the buck's heatsink.
+The <strong>PSU is screwed to the base plate</strong>; the battery is
+held by <strong>4 screwed wall pads</strong> (M3 × 12, <a
+href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code></a> §2).
+<strong>Nothing mounts on the PSU cover.</strong> Electronics owns this
+layout spec; CAD owns the part and its layout file
+(<code>lumi_powerbay_carrier_HV_layout.json</code>).</p>
 <p><strong>Per board — what CAD needs</strong> (⏳ = caliper at the
 bench; never take it from a listing. Pilots follow CAD's proven self-tap
-convention: blind Ø2.5–2.7 for M3 as on the mic carrier and DROK bosses,
-~Ø2.0–2.2 for M2.5):</p>
+convention: blind Ø2.5–2.7 for M3 as on the mic carrier, ~Ø2.0–2.2 for
+M2.5):</p>
 <table>
 <thead>
 <tr>
@@ -4329,29 +3867,6 @@ offset); both USB-C sockets reachable; right-angle C-to-C exits toward
 the HAT route</td>
 </tr>
 <tr>
-<td><strong>F2 / F3 / F4 tie-wrap saddle bosses</strong> (built
-carrier)</td>
-<td>—</td>
-<td>—</td>
-<td>—</td>
-<td>—</td>
-<td><strong>PROPOSED: bosses unused (two-fuse design: no F2/F3/F4);
-removal pending the operator.</strong> CAD does not change the carrier
-until then. F1: own row below</td>
-</tr>
-<tr>
-<td><strong>D-1459</strong> (operator, 2026-10-22: ON the carrier)</td>
-<td>57 × 38 mm; high-current A/B input block (7.62 mm, 30 A, to 10 AWG)
-+ 12 distribution cages</td>
-<td><strong>4× Ø3.2 on 51.0 × 32.0</strong> (CAD: 4 self-tap posts on
-this pattern)</td>
-<td>1.6 mm FR-4; terminal pins below → <strong>post ≥ 4 mm</strong></td>
-<td>Yes (M3 into the Ø3.2 holes), after the same check that the mount
-holes don't touch either bus</td>
-<td><strong>One block per robot</strong> — see "Distribution block on
-the carrier" below. Feed end toward INA226-MAIN, as for the HL-PBB</td>
-</tr>
-<tr>
 <td><strong>F1 battery fuse</strong> (uxcell 6×30 inline holder, 10 A
 fast glass, factory 16 AWG pigtails) — <strong>ON the carrier in a
 printed cradle</strong> (operator, 2026-10-22)</td>
@@ -4376,60 +3891,26 @@ chosen), strain relief on both pigtails. Heat is negligible (&lt; 1 W at
 </tr>
 <tr>
 <td><strong>IP6518 phone fast-charger</strong> (MusRock PD 3.0 / PPS 45
-W, silk "IP6518_A1V1.0"; a SECOND board beside the Mus-14, which stays
-the HAT's 5 V rail; Electronics conditional GO)</td>
-<td><strong>56 × 22.5</strong> PCB (no connector past an end); caps
-<strong>14</strong> tall (470 µF 35 V by the USB-end holes, 220 µF 50 V
-by the DC-end holes); <strong>USB-C on the UNDERSIDE, 4.5 proud</strong>
-— operator's caliper, 2026-10-28</td>
-<td>4 × <strong>Ø3.0</strong> on <strong>34.5 × 16.3</strong> c-c: USB-A
-end → holes 14.0, DC end → holes 7.5, 3.1 in from the long edges (holes
-centred). Beside them (from the hole centre, worst case): the 470 µF cap
-2.5 and the USB-A shell 5.0 from the USB-end +X hole; a bottom-side
-connector 3.0 from the DC-end −X hole. Two plated corner pads (USB-end
-−X, DC-end +X) stay clear of every post</td>
-<td><strong>RAISED: 4 × Ø6.2 posts, 19 tall → underside Z 67, caps top Z
-82.6 (7.1 under the lid — operator, 2026-10-28)</strong>. The USB-C
-plug's underside (Z 61.25) passes 1.55 over the DROK's top (Z 59.7, from
-the fence's DROK bosses ⏳ board edge / parts)</td>
-<td>Yes, <strong>M2.5 × 8 pan self-tap × 2</strong> in the DIAGONAL pair
-(USB-end −X, DC-end +X; Ø2.05 pilots = the TMP102's screw). The other
-two holes get printed <strong>locating pegs Ø2.7 × 1.2</strong> (no
-screw head beside the 470 µF cap; the DC-end −X post necked to Ø5.0 for
-its top 5.5 under the bottom connector)</td>
-<td>No flat spot is free on the carrier, so it rides raised front-right
-(operator's choice). Board X 249.8–272.3, Y −102.6..−46.6 (file frame),
-long axis front-to-back over the PSU's intake half; DC end toward the
-D-1459, USB end at the front. PIR-BR runs beside the G469 (X 247.6);
-DROK-out (259.0) and DROK-in (264.2) run between the post columns, under
-the board. <strong>Structure</strong> (operator: posts on thin ribs
-"will never hold"): the four post roots stand on Ø12.4 solid pads tied
-by a <strong>5.8 mm plate frame</strong>, anchored into the right lane
-over the +X PSU-strap screw boss, down into the front lane, and through
-the G469's +X post on the left; every vent rib on its −X side runs on to
-the frame. CAD gate: every raised post (these 4 + the 2 G469 posts) on a
-solid Ø(2 × post Ø) pad joined to the main plate through ≥ 5 mm; every
-fork/post joined through ≥ 2 mm. The window under the board is what is
-left inside and around the frame; the PSU open area stays ≥ 50 %.
-<strong>Feed: a soldered 18 AWG twisted pair from the D-1459's A1/B1
-(the wand-tether position) to the two corner VIN pads, no fuse holder,
-no DC5521 plug</strong> (Electronics 48419848 / 9c1b5993, the operator's
-ruling). <strong>Strain relief:</strong> a zip-tie groove on every post;
-the USB-C cable ties to a USB-end post, the input pair to a DC-end post.
-<strong>USB-A stays empty</strong> (tape or a printed blank).
-Right-angle USB-C plug, the cable up the servo-base opening with the
-tether. Thermal: Electronics' 30 min 9 V / 3 A soak &lt; ~85 °C, a 10 ×
-10 heatsink allowed on the IC. Plan, side elevation and key dimensions:
-<code>images/power_bay/carrier_ip6518.png</code>; layout:
-<code>images/power_bay/carrier_routing.png</code></td>
+W, silk "IP6518_A1V1.0"; Creator builds)</td>
+<td><strong>56 × 22.5</strong> PCB; caps <strong>14</strong> tall;
+<strong>USB-C on the UNDERSIDE, 4.5 proud</strong> (operator's caliper,
+2026-10-28)</td>
+<td>4 × <strong>Ø3.0</strong> on <strong>34.5 × 16.3</strong> c-c</td>
+<td><strong>Not on the carrier:</strong> upright on the mains-side
+wall's lower straight, front-right corner, 93.6 mm from the mains
+(CAD)</td>
+<td>M2.5 self-tap, diagonal pair</td>
+<td>PHONE-IN 206 mm routed; USB-C 95 mm to the lid window. Vent slots
+only if the IC reads &gt; 70 °C after 30 min of a 45 W charge</td>
 </tr>
 <tr>
 <td><strong>NOT on the carrier</strong></td>
-<td>DROK (bay floor/back), DC rocker (fence)</td>
+<td>DC and AC rockers (rear fence wall), IP6518 (mains-side wall,
+Creator builds)</td>
 <td>—</td>
 <td>—</td>
 <td>—</td>
-<td>Don't block the DROK's airflow.</td>
+<td>—</td>
 </tr>
 </tbody>
 </table>
@@ -4484,71 +3965,23 @@ full row (~50 mm) to pin 40 at −X.</strong> That's fine electrically, as
 approved; just dress it along the even-row edge.</li>
 </ul></li>
 </ul>
-<p><strong>CAD v18 rulings (Electronics, 2026-10-23):</strong></p>
+<p><strong>PIRs and the TMP102 on the carrier:</strong></p>
 <ul>
-<li><strong>v18d (CAD cdebe39): PIRs at centre Z 25</strong> (board Z
-9–41, clear under the carrier at 44). <strong>Since 2026-11-18 (battery
-+15 Y) the fan-side pair (FL / FR) sits at centre 68</strong> (board
-~50–86, ≥ 1.0 clear of carrier, straps and battery); lens edge ~3 mm
-from the fan grille edge in X at the same height, ~61° off the exhaust
-axis: ⏳ <strong>bench-check for false triggers with the fans stepped
-through their duty range before relying on it</strong>; the carrier
-corners keep the full v18 outline. PIR-BR stays option B. Fork seats are
-2.7 mm for the round twisted 3 × 26 lead. Front PIRs: jumper up, header
-away from the PSU, ≤ 12.5 mm behind the board. Back PIRs: header toward
-the back wall, straight Dupont. Battery straps trimmed ≥ 1 mm clear of
-the back PIRs (reprint). New cut lengths are in §16c row 16.</li>
-<li><strong>TMP102 on carrier builds: the I²C chain end is SOLDERED to
-the board's 0.1" row. No header, no plug.</strong> The board sits on
-<strong>8 mm posts</strong> (CAD option F + placement C, 2026-11-15).
-Reasons:
-<ul>
-<li>The HL-PBB's −X feed zone leaves no room for a plug stack above the
-board. Shifting the block −Y failed on the tall lane forks, and rotating
-the TMP102 failed on the fence waist (2.7 mm room).</li>
-<li><strong>Leads:</strong> the solder joints sit on the −Y row, each
-heat-shrunk before the wrap. The leads wrap the −Y edge down to the
-CORR_L band, where the I²C route already arrives, and are zip-tied to
-the −Y post (204.3, −11.2).</li>
-<li><strong>Hard plan check (CAD gate):</strong> no HL-PBB under-PCB pin
-over the TMP102, ≥ 0.5 mm clear in plan. PASS: the feed tower's pins sit
-~1.0 mm off, the +Y cage row ~4.3 mm.</li>
-<li>Solder by NET (the INA226 header and TMP102 orders differ), and
-meter each net to the G469 before first power.</li>
-<li>Halo v1 as-built keeps its downward JST-XH on the cover studs.</li>
-</ul></li>
-<li><strong>Battery-strap-tab screw 6.2 mm from L, on the mains side of
-the rib: ACCEPTED, with conditions.</strong> It's a metal self-tap into
-a printed fence pad, so floating metal, part of no LV circuit, and 6.2
-mm is well past basic mains clearance (~2.5–3 mm at 250 V). Conditions:
-<ol type="1">
-<li>The <strong>rib stays between the screw head and every LV
-part.</strong> That's the current detour, and it's the right side:
-moving the rib would put the head in the LV zone.</li>
-<li><strong>A printed insulating cap over the head</strong> (snap or
-press-fit), as cheap insurance against a stray L strand. ✅
-<strong>v18c: a printed press-on cap (TAB_CAP) seats on the head's
-marker ring, retained by a dot of RTV 81158</strong> because it hangs in
-service. That satisfies this: the printed cap insulates, the RTV only
-retains. 81158 is non-acetoxy, so it's fine near metal. Let it cure
-before first power.</li>
-<li>The screw must not touch any LV conductor or the pack
-terminals.</li>
-<li>It <strong>counts as a mains-side part</strong> for the 8 mm LV
-keep-out: nothing LV within 8 mm of it either.</li>
-</ol></li>
+<li><strong>PIRs:</strong> the front pair sits low at centre Z 25 (board
+Z 9–41, under the deck); the fan-side pair (FL / FR) at centre 68,
+beside the fan grilles (operator, 2026-11-24: front PIRs stay low).</li>
+<li><strong>TMP102 (0x48):</strong> mid-chain (TMP102 → INA3, 171 mm).
+It joins with a <strong>double-crimped 4-way housing on its JST-XH
+header</strong> (§6.1); if the plug doesn't clear, solder both wires per
+net to the 0.1" row. Solder by NET (the INA226 header and TMP102 orders
+differ) and meter each net to the G469 before first power. Halo v1 as
+built keeps its downward JST-XH on the cover studs.</li>
 </ul>
-<p><strong>Distribution block on the carrier — ✅ DECIDED (operator,
-2026-10-22): ONE block per robot, never chained.</strong> The carrier
-carries <strong>both footprints</strong> (the D-1459 four-post 51.0 ×
-32.0 pattern and the HL-PBB collinear ~60 mm pair), overlapping in the
-power-hub zone with the feed end toward INA226-MAIN, and <strong>each
-robot fits the block it has</strong>. The §11.3.3 port map applies 1:1
-to either. Basis: bay peak ~8 A sits inside either block's rating, six
-pairs carry every branch, and chaining would only add terminations and a
-second board in the PSU's airflow. If a future build ever runs out of
-positions, the HL-PBB's second input block chains to another HL-PBB
-(§11.3.2), and that gets designed then.</p>
+<p><strong>Distribution block on the carrier: ONE HL-PBB per robot,
+never chained</strong> (operator, 2026-10-22; HL-PBB only from
+2026-11-24). Feed end toward the buck and INA226-MAIN. If a future build
+ever runs out of positions, the HL-PBB's second input block chains to
+another HL-PBB (§11.3.2).</p>
 <p><strong>Breakout + G469 stay stacked on the carrier</strong>
 (operator, 2026-10-22), exactly as on Halo. The 90 mm fence adds FFC
 run:</p>
@@ -4574,10 +4007,9 @@ unchanged.</strong></li>
 PSU has NO fan.</strong> Cooling is bay-level only: 2× NF-A4x20 exhaust
 on the fence back wall pull air front → back, and the PSU's <strong>hex
 top grating is its only vent</strong> (UPS doc, Cooling). A carrier
-spanning the PSU top can choke it unless it's mostly open. With the
-strap mount, <strong>the air gap above the grating is set by the strap
-height</strong>: larger is better, so ask CAD to maximise it within the
-lid envelope. Requirements:</p>
+spanning the PSU top can choke it unless it's mostly open. The deck
+height sets the air gap above the grating; the ZK-SJ20's heatsink hangs
+through to 3.0 mm above it. Requirements:</p>
 <ul>
 <li><strong>≥ 50 % open area over the PSU footprint</strong>: a
 rib/lattice frame with boards on bosses, not a solid plate.</li>
@@ -4590,110 +4022,65 @@ survey).</li>
 the carrier fitted ≤ <strong>+5 °C</strong> over the same load without
 it. One reading each, folded into the pending PSU-top thermal
 survey.</li>
-<li><strong>Height:</strong> PSU top → strap-set gap → carrier → tallest
-board (HL-PBB 23 mm, G469 stack) must clear the bay lid. CAD checks
-against the fence envelope.</li>
+<li><strong>Height:</strong> PSU top → deck → tallest board (ZK-SJ20 46
+mm, HL-PBB raised over the bars, G469 stack) must clear the bay lid. CAD
+checks against the fence envelope.</li>
 </ul>
 <p><strong>TMP102 intent — fan-loop source (answered
 2026-10-22):</strong> the bay has <strong>ONE TMP102 (0x48)</strong>,
 and its only job is to tell <code>bay_thermal_node</code> how hot the
 air the fans are exhausting is.</p>
 <ul>
-<li><strong>The I²C cluster over the battery is NOT a valid fan-loop
+<li><p><strong>The I²C cluster over the battery is NOT a valid fan-loop
 position.</strong> The battery tray gets its own baffled parallel intake
 air (UPS doc, Cooling), so a sensor there reads COOL air while the PSU
 heats up. The loop would under-respond: a false negative on its one
-job.</li>
-<li><strong>Required position: over the PSU, in its plume, on the
+job.</p></li>
+<li><p><strong>Required position: over the PSU, in its plume, on the
 exhaust half</strong> (between the PSU's hot zone and the back-wall
-NF-A4x20s), on <strong>8 mm posts</strong> (the chain end is soldered,
-so nothing stacks above the board), so it reads moving air, not the
-carrier. Keep ≥ 20 mm lateral offset from the Mus-14 heatsink (it sits
-over the PSU too).</li>
-<li><strong>Short bus runs don't argue for the cluster:</strong> the bus
-already spans the 500 mm FFC + a 600 mm tether. The TMP102's own 4-pin
-cable to the G469 is the same few-cm job wherever it sits, and an extra
-100 mm is nothing at 100 kHz. The two INA226s can cluster freely (keep
-INA226-MAIN's 18 AWG CH1 runs on the power edge; the few hundred mm of
-extra 18 AWG is a ~30 mV drop at 8 A).</li>
-<li><strong>Position — set 1 (193.62, −1.0)</strong> (CAD v16
-recommendation, below): in the PSU's downstream (+Y) half, in the plume,
-20.0 mm off the Mus-14 (exactly at the limit, accepted). The PSU's
-length and the bay airflow both run along Y (intake −Y front wall,
-exhaust +Y back wall, terminal strip at the +Y end), so the downstream
-air is always the warmest; a two-ends survey along Y answers itself.
+NF-A4x20s), on <strong>8 mm posts</strong>, so it reads moving air, not
+the carrier. Keep ≥ 20 mm lateral offset from the Mus-14 heatsink (it
+sits over the PSU too).</p></li>
+<li><p><strong>Short bus runs don't argue for the cluster:</strong> the
+bus already spans the 500 mm FFC + a 600 mm tether. The TMP102's own
+4-pin cable to the G469 is the same few-cm job wherever it sits, and an
+extra 100 mm is nothing at 100 kHz. The two INA226s can cluster freely
+(keep INA226-MAIN's 18 AWG CH1 runs on the power edge; the few hundred
+mm of extra 18 AWG is a ~30 mV drop at 8 A).</p></li>
+<li><p><strong>Position:</strong> CAD's layout puts it at X 184–209, Y
+1–26 on 8 mm posts, in the PSU's downstream half. The PSU's length and
+the bay airflow both run along Y (intake −Y front wall, exhaust +Y back
+wall), so the downstream air is the warmest.</p>
 <ul>
 <li><strong>Survey → sanity check:</strong> a hand-thermocouple sweep at
-15 mm height across the PSU's downstream half. Set 1 passes if it reads
-within <strong>2 °C</strong> of the hottest point found; otherwise move
-the set to that spot.</li>
+15 mm height across the PSU's downstream half. The position passes if it
+reads within <strong>2 °C</strong> of the hottest point found; otherwise
+move the set to that spot.</li>
 <li><strong>Survey conditions for a fair comparison:</strong> same
 steady bay load, both fans on the same fixed duty (loop off), ≥ 30 min
 settle per position, ambient recorded.</li>
 <li><strong>Mus-14 clearance is locked by a CAD hard gate check</strong>
 (edge-to-edge plan rectangles; the RESULT fails if &lt; 20.0).</li>
-<li><strong>TMP102 keep-outs:</strong> the 0.1" row faces −Y, and the
-soldered leads wrap that edge down to the CORR_L band. With no header or
-plug, nothing stands above the board.</li>
+<li><strong>TMP102 cable:</strong> the 4-way chain housing plugs onto
+its soldered JST-XH header (§6.1); keep the plug clear of the Mus-14 and
+the buck heatsink.</li>
 <li><strong>We don't use the Qwiic plug.</strong> The bay TMP102 is
 wired through its <strong>0.1" header row</strong> (§6), and the generic
 boards on order (§16b.3) may have no Qwiic socket at all. Route the
 4-pin cable from the 0.1" row.</li>
 </ul></li>
-<li>✅ <strong>Mains layout, CAD v12 (559eaf4) — VERIFIED, file X, PSU
-case 183–280:</strong> strip L→R <strong>+V 233.80 · −V 242.35 · ⏚
-250.90 · N 259.45 · L 268.00</strong> (L 12.00 from the +X side-rocker
-end). <strong>Barrier rib X 246.62–277.49</strong> covers ⏚/N/L ± 3.5
-and ends 4.27 short of −V ✓. LV pair exits −X, away from the mains end
-✓. LEDs at 197.5, window clear. <strong>Plastic ≥ 5 ✓, nearest LV 9.0 ≥
-8 ✓.</strong> CAD gate checks hold the L position, LED position, ribs
-over L/N/⏚ only. The terminal-strip slot rules are tied to the PSU's
-physical strip order (<strong>L · N · ⏚ · −V · +V</strong>), never to
-the carrier's own frame.</li>
-<li><strong>G469 support posts:</strong> the carrier gives the G469
-<strong>2× M2.5 support posts</strong> (operator: header-only was
-wobbly). They stop 0.3 BELOW the seated underside (Z 62.80 vs 63.10);
-the gate holds them 0.1–0.5 under, so there is no header preload ✓ —
-shim at fit rather than force; header height is a parameter. If the
-G469's mounting holes are plated/GND-tied, a metal self-tap alone in
-plastic is harmless, but <strong>never give the hole a metal path to
-anything else</strong>. Meter the holes once.</li>
-<li>A battery-zone temperature reading would be genuinely useful later
-(LiFePO4 charge-temperature limits), but that's a SECOND sensor at
+<li><p><strong>G469 support posts:</strong> the carrier gives the G469
+<strong>2× M2 support posts</strong> (operator: header-only was wobbly).
+They stop 0.3 BELOW the seated underside (Z 62.80 vs 63.10); the gate
+holds them 0.1–0.5 under, so there is no header preload ✓ — shim at fit
+rather than force; header height is a parameter. If the G469's mounting
+holes are plated/GND-tied, a metal self-tap alone in plastic is
+harmless, but <strong>never give the hole a metal path to anything
+else</strong>. Meter the holes once.</p></li>
+<li><p>A battery-zone temperature reading would be genuinely useful
+later (LiFePO4 charge-temperature limits), but that's a SECOND sensor at
 <strong>0x4A or 0x4B</strong> (0x49 belongs to the wand). Not in scope
-now; recorded so the cluster spot isn't confused with it.</li>
-</ul>
-<p><strong>CAD v16 decisions (Electronics, 2026-10-23) — TMP102 set 2 +
-the D-1459 vs the slot:</strong></p>
-<ul>
-<li>✅ <strong>Drop set 2: ONE TMP102 at set 1</strong> (see "TMP102
-intent" above). Never place it toward the front/intake end — near-inlet
-air is useless as a fan-loop source.</li>
-<li>✅ <strong>Dropping set 2 frees the band under the D-1459, so the
-block moves −Y by ≥ ~6 mm.</strong> That does two jobs:
-<ol type="1">
-<li>its <strong>−Y row (A4–B6: fan 2, Mus-14, LAMP)</strong> exits into
-the freed band;</li>
-<li>its <strong>+Y row (A1–B3: tether, DROK, fan 1)</strong> sits
-<strong>≥ 8 mm from the slot edge</strong>, so A3/B3 don't sit under the
-mains barrier rib.</li>
-</ol></li>
-<li><strong>Rules for the +Y row either way:</strong> those cage entries
-face +Y, toward the slot, so:
-<ul>
-<li>every A1–B3 cage, ferrule and bare strand must be <strong>≥ 8 mm in
-3D from every L/N/⏚ screw</strong> (CAD computes this with Z);</li>
-<li>the wires <strong>turn −X before reaching the slot edge</strong>,
-never into or over the slot;</li>
-<li>the printed barrier rib stays at least as tall as the D-1459
-terminal entries over the L/N/⏚ third.</li>
-<li>Re-assigning cages can't empty A3/B3: every B cage is used (B1
-tether … B6 LAMP), and A6 is the only spare. <strong>So moving the block
-is the fix</strong>, not cage juggling.</li>
-</ul></li>
-<li>If the operator wants to keep a second TMP102 spot anyway, it must
-sit in the <strong>downstream (+Y) half</strong>, never toward the
-front/intake end.</li>
+now; recorded so the cluster spot isn't confused with it.</p></li>
 </ul>
 <p><strong>Mains / LV separation — with the terminal-strip slot
 (operator, 2026-10-22):</strong> the PSU strip reads L · N · ⏚ · −V ·
@@ -4712,11 +4099,12 @@ CAD: confirm against the measured row.</li>
 <li><strong>Wire exits:</strong> the LV pair (−V/+V → INA226-MAIN)
 leaves the slot <strong>upward at the −V/+V end</strong>. Mains never
 crosses the carrier TOP face.</li>
-<li>✅ <strong>Mains on the carrier's RIGHT EDGE — accepted, with
-conditions (operator request, Electronics ruling 2026-10-23).</strong>
-The AC input (C14 inlet → AC rocker → PSU L/N/⏚) may run along the
-carrier's <strong>outer right edge</strong> (the side-rocker /
-mains-terminal side) in its own forks:
+<li>✅ <strong>Mains route (CAD wired bay, 2026-11-24):</strong> the AC
+input (C14 → AC rocker → PSU L/N/⏚) runs <strong>down the +X side lane
+(X ~287)</strong> and enters the PSU strip <strong>through the terminal
+slot opened to the +X wall</strong>; the battery pair runs in the
+pack-to-wall gap. Gated ≥ 8 mm jacket-to-jacket from every LV conductor
+(nearest 8.65). Conditions:
 <ol type="1">
 <li><strong>Wire: 18 AWG silicone, 600 V-rated</strong> (the operator's
 spool, marked <strong>600 V / 6 A</strong>, checked 2026-11-06).
@@ -4735,18 +4123,18 @@ plus the ≥ 8 mm spacing and the printed rib (item 3); the printed fork
 is only the support. Halo revisits sleeving if Ultra shows a safety
 issue; a sleeved wire (~4–5 mm OD) needs the carrier's mains forks
 resized.</li>
-<li><strong>Its own forks, outer edge only.</strong> <strong>Never share
+<li><strong>Its own forks, in its own lane.</strong> <strong>Never share
 a fork, tie or bundle with ANY LV conductor.</strong> <strong>≥ 8 mm
-from every LV route, board, screw, ferrule and fork</strong>, with a
-printed rib between the mains channel and the LV area where the geometry
-allows.</li>
+from every LV route, board, screw, ferrule and fork.</strong> Crossings
+with LV only at 90 ± 10°, mains above, in its own raised clip (one sits
+over F1's nose end, 9.4 mm clear).</li>
 <li><strong>Forks:</strong> edges radiused ≥ 1 mm, no burrs or sharp
 corners, pitch ≤ 50 mm, no clamping pressure on the insulation (hold,
 don't pinch). PETG/ASA is fine, since the fork isn't the
 insulation.</li>
-<li><strong>Not over the terminal slot or the carrier's top
-face.</strong> The run reaches the strip <strong>from the side at the
-L/N/⏚ end</strong> and never crosses the LV half of the slot.</li>
+<li><strong>Never over the carrier's top face or the LV half of the
+slot:</strong> the run reaches the strip through the slot's +X opening
+at the L/N/⏚ end.</li>
 <li><strong>Strain relief at BOTH ends:</strong> a fork or tie
 <strong>within 30–50 mm of the C14 Fastons</strong> and <strong>within
 30–50 mm of the PSU screw terminals</strong>, so a tug never loads a
@@ -4764,9 +4152,6 @@ off without un-terminating anything.</li>
 crimp (2 × 18 AWG) goes into a red one too (operator). Straight fully
 insulated Fastons at the C14 and the rear AC rocker, flags at the DC
 rocker.</li>
-<li>⚠️ <strong>The DC rocker sits on the same +X wall</strong> (CAD
-v15). Its 13.8 V LINE/LOAD/LAMP forks count as LV and must clear the
-mains route by ≥ 8 mm, in separate forks.</li>
 </ol></li>
 <li><strong>Barrier rib:</strong> a printed rib along the slot edge over
 the <strong>L/N/⏚ third</strong> of the strip, standing ≥ 5 mm proud of
@@ -4781,8 +4166,8 @@ termination within <strong>~8 mm</strong> of an L/N/⏚ screw
 problem):</strong></p>
 <ul>
 <li><strong>Power hub at the terminal end:</strong> CH1 +V → INA226-MAIN
-→ (fence rocker) → HL-PBB fed end → branches (DROK, tether, Mus-14,
-fans, LAMP), all unfused.</li>
+→ (rear DC rocker) → HL-PBB fed end → branches (ZK-SJ20, tether, Mus-14,
+fans, LAMP, phone charger), all unfused.</li>
 <li><strong>INA226-BATT beside the CH2 battery leads.</strong></li>
 <li><strong>Signal hub at the opposite end:</strong> breakout + G469,
 where the FFC arrives, with I²C/3V3 to the INA226s, TMP102, PIRs, SPS30,
@@ -4793,16 +4178,14 @@ signal cross <strong>only at right angles</strong>.</li>
 <li><strong>Every logic GND returns to G469 pin 9</strong> (star). No
 route through the power hub.</li>
 </ul>
-<p><strong>Harness schedule — keyed to CAD v16 route IDs (Electronics,
-2026-10-23; CAD 0b793d6).</strong> This is the SOURCE for the carrier
-wiring schematic below
+<p><strong>Harness schedule — by route ID.</strong> This is the SOURCE
+for the carrier wiring schematic below
 (<code>images/power_bay/gen_carrier_wiring.py</code>).
 <code>check_figures_match_docs.py</code> fails if the two disagree on
 any ID, conductor count or gauge. Palette: 18 power / 22 mid / 26
-signal; mains is 18 AWG silicone, 600 V-rated. "Block" = whichever
-distribution block the robot carries (one per robot). <strong>Nova uses
-the v2 topology</strong> (DC rocker upstream of the whole bus); Halo
-v1's as-built D7/D8 put it on the DROK branch only. FAN-SIG is 4
+signal; mains is 18 AWG silicone, 600 V-rated. "Block" = the HL-PBB (one
+per robot). Every carrier build has the DC rocker upstream of the whole
+bus; Halo v1 as built has it on the DROK branch only. FAN-SIG is 4
 conductors: the two PWM wires meet only in one ferrule at the G469
 (§11.2.2). On Halo v1 the PIRs run on 2 modified Y harnesses; carrier
 builds run each PIR lead individually.</p>
@@ -4827,7 +4210,7 @@ screw (the single logic-to-power GND tie)</td>
 </tr>
 <tr>
 <td>ROCKER</td>
-<td>DC rocker (v2, fence)</td>
+<td>DC rocker (rear wall, upstream of the bus)</td>
 <td>3</td>
 <td>18+22</td>
 <td>INA226-MAIN ISENSE− → LINE; LOAD → block input (via BLK-IN); LAMP
@@ -4842,21 +4225,20 @@ E1508)</td>
 <td>Rocker LOAD → IN-A; INA226-MAIN GND → IN-B</td>
 </tr>
 <tr>
-<td>DROK-IN</td>
-<td>DROK feed</td>
+<td>BUCK-IN</td>
+<td>Servo-rail buck feed</td>
 <td>2</td>
-<td>18</td>
-<td>Block DROK pair (<strong>HL-PBB A1/B1</strong>; D-1459 A2/B2) → DROK
-input</td>
+<td>16</td>
+<td>HL-PBB <strong>A1 / B1</strong> → ZK-SJ20 IN (unfused)</td>
 </tr>
 <tr>
-<td>DROK-OUT</td>
+<td>BUCK-OUT</td>
 <td>STM32 power</td>
 <td>2</td>
-<td>18</td>
-<td>DROK OUT+ → <strong>INA226-DROK IN+ … IN−</strong> → Deans; DROK
-OUT− → Deans <strong>direct</strong>; Deans pair (twisted) → STM32, up
-the servo-base opening</td>
+<td>16</td>
+<td>ZK-SJ20 OUT+ → <strong>INA3 IN+ … IN−</strong> → Deans; OUT− → Deans
+<strong>direct</strong>; Deans pair (twisted) → STM32, up the servo-base
+opening</td>
 </tr>
 <tr>
 <td>MUS-IN</td>
@@ -4915,9 +4297,8 @@ fails), up the opening</td>
 <td>Wand tether, power leg</td>
 <td>3</td>
 <td>22</td>
-<td>Block tether pair (<strong>HL-PBB A2/B2</strong>; D-1459 A1/B1) (V+
-/ GND-power), G469 <strong>9</strong> (GND-logic) → wand 6-pin 1 / 2 /
-6</td>
+<td>Block tether pair (<strong>HL-PBB A2/B2</strong>) (V+ / GND-power),
+G469 <strong>9</strong> (GND-logic) → wand 6-pin 1 / 2 / 6</td>
 </tr>
 <tr>
 <td>TETHER-S</td>
@@ -4948,9 +4329,9 @@ route → phone in the BigClaw cradle</td>
 <td>Bay I²C daisy chain</td>
 <td>4</td>
 <td>26</td>
-<td>G469 <strong>3 / 5 / 1 / 9</strong> → INA226-MAIN → INA226-DROK →
-INA226-BATT → TMP102-bay (double-crimped housings; TMP102 end soldered;
-INA226-DROK on the fence front wall)</td>
+<td>G469 <strong>3 / 5 / 1 / 9</strong> → INA226-MAIN → INA226-BATT →
+TMP102-bay → INA3 (double-crimped housings; INA3 at the chain end, on
+the carrier)</td>
 </tr>
 <tr>
 <td>BATT</td>
@@ -5014,8 +4395,8 @@ through the opening (no CAD ID yet)</td>
 <td>AC mains input</td>
 <td>3</td>
 <td>18 mains</td>
-<td>C14 → AC rocker → PSU <strong>L / N / ⏚</strong> — own right-edge
-lane, ≥ 8 mm from all LV, jacketed or sleeved</td>
+<td>C14 → AC rocker → PSU <strong>L / N / ⏚</strong> — down the +X side
+lane into the terminal slot, ≥ 8 mm from all LV</td>
 </tr>
 <tr>
 <td>FFC</td>
@@ -5034,47 +4415,25 @@ TETHER-P</strong> (22 AWG) on the tether pair, with
 B6</strong> (B6 doubled with LAMP) + <strong>PHONE-USB</strong>, and the
 wand tether stays wired when the robot also carries the wand
 (<strong>Ultra Creator runs both</strong>, operator 2026-11-15).
-<strong>Wand + phone together:</strong> the caps sum to ~12.6 A at 13.8
-V (wand 2.4 + DROK 5.5 + phone 3.4 + Mus-14 1.2 + fans), inside the
-HL-PBB's 16 A but past the PSC-100's ~7.7 A; the pack carries the excess
-and drains under sustained load. ⏳ Measure at bring-up: INA226-MAIN +
-INA226-BATT with the phone fast-charging, the wand full and the arm
-moving (BATT negative on AC = PSU out of headroom). <strong>Alternative
-(operator's choice):</strong> PHONE-IN alone on the HL-PBB's far-end
-input block, no doubled ferrule; that end sits 0.7 mm from the fence
-waist, so the block moves 15–20 mm −X with a trunk re-route (CAD).
-Charger spec, bench checks and the no-fuse ruling: <a
+<strong>Wand + phone together:</strong> ~11.8 A at 13.8 V (wand 2.4 +
+buck input ~4.7 + phone 3.4 + Mus-14 1.2 + fans), inside the HL-PBB's 16
+A but past the PSC-100's ~7.7 A and the PSC-150's 7.5 A; the pack
+carries the excess and drains under sustained load (accepted, operator's
+order 2026-11-24). ⏳ Measure at bring-up: INA226-MAIN + INA226-BATT
+with the phone fast-charging, the wand full and the arm moving (BATT
+negative on AC = PSU out of headroom). Charger spec, bench checks and
+the no-fuse ruling: <a
 href="Electronics_Bay_Design.html#365-phone-charger--creator-edition-musrock-ip6518-candidate-operator-rulings-2026-10-27">Electronics_Bay_Design
 §3.6.5</a>.</p>
 <p><img src="images/power_bay/carrier_wiring.png"
-alt="Power-bay carrier wiring schematic (carrier v19b): every harness by its CAD route ID. Power chain PSU CH1 → INA226-MAIN → DC rocker (v2) → block (D-1459 two-row cages or HL-PBB); DROK → STM32; Mus-14 → HAT, every power branch unfused; battery pack → F1 → INA226-BATT → CH2; mains on its own lane; signal side G469 with the I²C daisy chain, fans, PIRs, SPS30/ZE15 and the wand tether." /></p>
-<p><strong>Carrier routing and placement (v19c).</strong> Every route by
-its embossed ID, with its plan length on the carrier (the §16c "Plan
-(CAD)" measure). The IP6518 phone charger rides raised over the
-front-right runs: DROK-IN and DROK-OUT pass under it between its post
-columns, PIR-BR runs beside the G469, and PHONE-IN (2 × 18 from block A1
-/ B1) climbs to its VIN pads at the board's DC end. The phone USB-C
-leaves the board's USB end in air and rises with the tether. Generated
-by <code>images/power_bay/gen_carrier_figures.py</code> from the carrier
-macro's outputs.</p>
-<p><img src="images/power_bay/carrier_routing.png"
-alt="Carrier wiring (plain +Z top view, fans / back wall at the top): every harness from terminal to terminal in CAD&#39;s wire colours (mains as L / N / E, including the back-wall jumpers A2–A5 from the C14 and the AC rocker, read from CAD&#39;s wired assembly), shared lanes drawn as parallel tracks, every part with its terminals, the fork sites and the riser; the list gives each route&#39;s ends, conductors and plan length, grouped by harness." /></p>
-<p><strong>Interactive version:</strong> <a
-href="images/power_bay/carrier_routing.html">carrier_routing.html</a>.
-Open it in a browser (download it; GitHub shows HTML as source). Toggle
-harnesses or single routes, click a route to focus it, scroll to zoom,
-drag to pan.</p>
-<p><img src="images/power_bay/carrier_mounting_points.png"
-alt="Carrier mounting points: every self-tap pilot by screw size (battery-strap tabs, PSU-strap pilots, board posts, G469 and IP6518 posts) and the driver holes over the battery-strap M4 heads." /></p>
-<p><img src="images/power_bay/carrier_ip6518.png"
-alt="The raised IP6518 phone charger on the carrier. Left, a plan: the 56 × 22.5 board on its 34.5 × 16.3 hole pattern (Ø3.0), M2.5 self-tap posts in the diagonal pair and locating pegs in the other two, with the 470 µF cap and USB-A shell beside the USB-end +X hole and the bottom connector beside the DC-end −X hole; the DROK&#39;s envelope and the right-angle USB-C plug over it at the front. Right, a side elevation: 19 mm posts to the underside at Z 67, the caps&#39; top at Z 82.6, 7.1 under the lid at Z 89.7, and the plug&#39;s underside at Z 61.25, 1.55 over the DROK&#39;s top at Z 59.7." /></p>
-<p><img src="images/power_bay/carrier_in_fence.png"
-alt="The carrier and PSU strap inside both fence halves (real frame, base plate down): two iso views and a top view." /></p>
-<p><img src="images/power_bay/pir_z25_carrier_corners.png"
-alt="The PIRs sit at centre Z 25 (board Z 9–41, below the carrier at 44), so the carrier corners keep the full outline." /></p>
-<p><strong>Bay I²C daisy chain (operator rule, 2026-10-23; Electronics
-confirms):</strong> G469 → INA226-MAIN → INA226-BATT → TMP102, one
-4-wire 26 AWG chain.</p>
+alt="Power-bay carrier wiring schematic: every harness by its route ID. Power chain PSU CH1 → INA226-MAIN → rear DC rocker → HL-PBB; ZK-SJ20 → INA3 → STM32; Mus-14 → HAT, every power branch unfused; battery pack → F1 → INA226-BATT → CH2; mains in its own lane; the bay I²C chain G469 → INA-MAIN → INA-BATT → TMP102 → INA3." /></p>
+<p><strong>Routing map and mounting figures:</strong> ⏳ regenerated
+from CAD's carrier layout
+(<code>lumi_powerbay_carrier_HV_layout.json</code>); per-conductor
+lengths and cuts are in §16c.</p>
+<p><strong>Bay I²C daisy chain (operator rule, 2026-10-23):</strong>
+G469 → INA226-MAIN → INA226-BATT → TMP102 → INA3, one 4-wire 26 AWG
+chain.</p>
 <ul>
 <li><strong>Better for the bus than a star:</strong> a linear trunk with
 near-zero stubs. The bus as a whole is one T at the G469: the bay chain
@@ -5109,112 +4468,51 @@ v1's TMP102 GND lands there, §6.5).</li>
 <li><strong>3V3:</strong> from G469 pin 17 or 1, whichever has ferrule
 budget. Chain current is a few mA.</li>
 <li><strong>Pull-up recap (one bus, so pull-ups anywhere are
-equivalent):</strong> both INA226s <strong>lifted</strong> (01C); bay
-TMP102 <strong>4.7 k</strong> (SparkFun) or <strong>~10 k</strong> (the
-generic boards on order, measured at arrival, §16b.3); wand TMP102 4.7
-k; wand PCA9685 ~10 k; HAT INA219 on the pass-through <strong>unknown,
-measure</strong>. Today: 4.7 k ∥ 4.7 k ∥ 10 k ≈ <strong>1.9 kΩ</strong>.
-With a generic 10 k bay TMP102 it rises to ~2.6 kΩ (still fine at 100
-kHz). The floor is ~1 kΩ at 3.3 V: <strong>meter SDA → 3V3 with
-everything fitted</strong> and record it.</li>
+equivalent):</strong> all three INA226s <strong>lifted</strong> (01C);
+bay TMP102 <strong>4.7 k</strong> (SparkFun) or <strong>~10 k</strong>
+(the generic boards on order, measured at arrival, §16b.3); wand TMP102
+4.7 k; wand PCA9685 ~10 k; HAT INA219 on the pass-through
+<strong>unknown, measure</strong>. Today: 4.7 k ∥ 4.7 k ∥ 10 k ≈
+<strong>1.9 kΩ</strong>. With a generic 10 k bay TMP102 it rises to ~2.6
+kΩ (still fine at 100 kHz). The floor is ~1 kΩ at 3.3 V: <strong>meter
+SDA → 3V3 with everything fitted</strong> and record it.</li>
 </ul>
-<p><strong>CAD routing v15 — answers to its ⏳ assumptions (Electronics,
-2026-10-23):</strong></p>
-<ol type="1">
+<p><strong>Routing rules carried by every carrier build:</strong></p>
+<ul>
 <li><strong>G469 rows:</strong> our landing map is drawn in bay
 orientation with <strong>ODD pins in the LEFT column, the inner/jumper
-side</strong>, and the breakout silk prints its odd numbers beside the
-INNER header row (§4 step 1 photos). So the odd row is the header row
-nearer the board's interior, which fixes which G469 long edge carries
-odd once the breakout rotation (FPC end toward the FFC entry) is set in
-CAD. CAD's "odd on +Y" holds only if that inner row is +Y in its frame.
-⏳ <strong>One look at Halo's as-built confirms it.</strong> Terminal
-wire entries face OUTWARD from both long edges (screws on top).</li>
-<li><strong>PIR leads:</strong> carrier builds run each PIR lead
-individually to the G469 — no Ys (3 × 26 AWG, §16c row 16). Keep them on
-the signal edge, off the power edge.</li>
-<li><strong>Mus-14 → HAT C-to-C:</strong> Ø4.5 is fine to model. ⏳
-Caliper the D18 cable (HOTNOW ~4.0–4.5; a 5 A cable runs thicker).</li>
-<li><strong>DROK-out Deans pair:</strong> loose 18 AWG silicone,
-<strong>Ø2.8–3.3 each</strong> (operator-measured on the stock in hand,
-2026-10-09). <strong>Twist the pair</strong> (it carries the STM32's
-full current; smaller loop area), so model a ~Ø6.6 twisted
-envelope.</li>
-<li><strong>Servo-base opening = one shared hole</strong>, consistent
-with the docs (tether, FFC, DROK-out D14/D15 and SPS30/ZE15 all route
-via the base-servo hole). Conditions: edge protection (caterpillar
-strip) where cables bear; the <strong>FFC on the opposite side of the
-hole from the DROK-out pair and the Mus-14 USB-C</strong>; the tether's
-power and signal legs separated as they rise.</li>
-<li><strong>DC rocker on the as-built +X wall:</strong> fine
-electrically, but with mains now on the right edge, <strong>its
-LINE/LOAD/LAMP forks must clear the mains route by ≥ 8 mm, in separate
-forks</strong> (mains condition 10).</li>
-</ol>
-<p><strong>Carrier routing — Electronics answers on CAD's open items
-(from the part reference images; map
-<code>images/power_bay/carrier_routing.png</code>):</strong></p>
-<ol type="1">
-<li>❌ <strong>D-1459 outputs are NOT all on one long edge</strong>
-(<code>images/electronics_bay/d1459_distribution_module_dimensions.png</code>).
-The <strong>A/B input block's wire entries face the SHORT end</strong>.
-<strong>Row A1·B1·A2·B2·A3·B3</strong> (tether, DROK branch, fan 1)
-faces <strong>one long edge</strong>, and <strong>row
-A4·B4·A5·B5·A6·B6</strong> (fan 2, Mus-14, LAMP/spare) faces the
-<strong>OPPOSITE long edge</strong>: the two elevation views show the
-rows' openings on opposite sides. <strong>Routing must reach BOTH long
-edges plus the input end.</strong> The HL-PBB-2-6-MINI (input blocks at
-both short ends, six pairs in one row) likely uses a single long edge ⏳
-(confirm on the in-hand board, §16b.4). Because the carrier carries both
-footprints, the lanes must serve either block.</li>
-<li>✅ <strong>INA226 header at the +Y end</strong> is consistent with
-the board: the 4-pin logic header and the dead Ø2.0 @ 17.5 mm mounting
-pair share the edge OPPOSITE the screw-terminal blocks
-(<code>images/external_sensors/ina226_board_pinout.png</code>). So
-terminals at −Y, header at +Y, as CAD has it.</li>
-<li>✅ <strong>PSU CH2 BAT± at the slot's −X end — CONFIRMED</strong>
-(<code>images/electronics_bay/psc100_12_terminal_annotations.png</code>).
-The BAT+/BAT− lead pair exits beside <strong>+V</strong>, at the end of
-the strip away from L. In CAD's frame (+V 233.80 … L 268.00) that's −X.
-They're flying leads, not strip terminals.</li>
-<li>⏳ <strong>DROK in/out at X 266 / 193:</strong> the fence front-wall
-cut-outs
-(<code>images/electronics_bay/fence_front_drok_mount_and_access_cutouts.png</code>)
-show FUNC buttons, the LCD window and the CV/CC pots. None of the docs
-record which DROK end carries IN vs OUT. <strong>Bench: one photo of the
-DROK's terminal silk, mounted.</strong> Electrically either works; the
-IN side must face the F3 route and OUT the riser.</li>
-<li>⏳ <strong>AC rocker side (fence model vs as-built mirror):</strong>
-not answerable from electronics docs. Bench/CAD against the as-built
-fence. Whichever side, the mains rules hold (own forks, ≥ 8 mm from LV
-incl. the DC rocker).</li>
-<li>✅ <strong>Fan splice point (from §11.2.2):</strong> the stock
-Noctua lead stays attached at full length (<strong>~250 mm</strong>), so
-the 4 solder-and-heat-shrink joints to the 22 AWG extensions sit
-<strong>wherever ~250 mm of route from each fan ends</strong>. Place
-them <strong>between forks, not inside one</strong> (each joint is ~3.5
-mm over shrink), staggered so they don't stack. The blue (PWM) wires of
-both fans meet only at the G469 (one E0308 ferrule).</li>
-<li>⏳ <strong>Cable ODs (typical, CALIPER before CAD commits fork
-mouths):</strong>
+side</strong>; the breakout silk prints its odd numbers beside the INNER
+header row (§4 step 1 photos).</li>
+<li><strong>PIR leads</strong> run individually to the G469 (3 × 26 AWG,
+no Ys, §16c row 16), on the signal side.</li>
+<li><strong>Servo-base opening = one shared hole</strong> for the
+tether, FFC, BUCK-OUT (Deans pair) and SPS30 / ZE15: edge protection
+where cables bear, the FFC on the opposite side from the power
+pairs.</li>
+<li><strong>Fan splice point:</strong> the stock Noctua lead stays at
+full length (~250 mm); the 4 solder-and-heat-shrink joints sit where
+~250 mm of route from each fan ends, between forks, never inside
+one.</li>
+<li><strong>INA226 orientation:</strong> the 4-pin logic header and the
+dead Ø2.0 @ 17.5 mm mounting pair share the edge opposite the screw
+terminals.</li>
+<li><strong>PSU CH2 BAT± leads</strong> exit beside <strong>+V</strong>,
+at the strip end away from L.</li>
+</ul>
+<p><strong>Cable ODs (CALIPER before CAD commits fork
+mouths):</strong></p>
 <ul>
-<li>26 AWG silicone: ~1.2–1.3 mm. 22 AWG silicone: ~1.6–1.8 mm. 18 AWG
-silicone: <strong>Ø2.8–3.3 mm</strong> (operator-measured on the stock
-in hand, 2026-10-09).</li>
-<li>PIR lead (3 × 26 AWG silicone, lightly twisted): ~2.7 mm round.</li>
-<li>Deans 18 AWG pair: <strong>~6.6 mm</strong> twisted envelope.</li>
-<li>D18 C-to-C: HOTNOW ~4.0–4.5 mm; a 5 A cable ⏳ caliper (expect ≥ 4.5
-mm).</li>
-<li>Noctua stock 4-wire lead: ~3–4 mm sleeved bundle.</li>
-<li>40P 0.5 mm FFC: ~21 × 0.3 mm flat.</li>
+<li>26 AWG silicone ~1.2–1.3 mm; 22 AWG silicone ~1.6–1.8 mm; <strong>18
+AWG silicone Ø2.8–3.3 mm</strong> (operator-measured on the stock in
+hand, 2026-10-09). 16 AWG silicone ⏳ caliper (provisional Ø3.6).</li>
+<li>PIR lead (3 × 26 AWG, lightly twisted): ~2.7 mm round.</li>
+<li>Deans pair, 16 AWG, twisted: ~Ø7.2 envelope (provisional).</li>
+<li>D18 C-to-C: HOTNOW ~4.0–4.5 mm. Noctua stock 4-wire lead: ~3–4 mm
+sleeved. 40P 0.5 mm FFC: ~21 × 0.3 mm flat.</li>
 <li><strong>Every snap fork must be narrower than its SMALLEST
 conductor</strong> (CAD's rule), so caliper the thinnest wire per
 site.</li>
-</ul></li>
-</ol>
-<p><strong>Attachment:</strong> decided (above): <strong>straps to the
-base plate, nothing on the PSU cover.</strong> The PSU never has to come
-out, or even be uncovered, for board work.</p>
+</ul>
 <h2 id="13-pir-modules-4-hc-sr501--bench-prep--mount--wiring">13. PIR
 Modules (4× HC-SR501) — Bench Prep + Mount + Wiring</h2>
 <p><strong>Goal:</strong> prep 4× HC-SR501 PIR modules (jumper-H,
@@ -5505,9 +4803,10 @@ HAT</strong></td>
 <td>INA226 not in series — verify wiring direction</td>
 </tr>
 <tr>
-<td>DROK 7.5 V buck output (to STM32 → Pi5 + servo bus)</td>
-<td>7.5 V</td>
-<td>DROK fault or load too high</td>
+<td>ZK-SJ20 output (to INA3 → STM32 → Pi5 + servo bus)</td>
+<td>7.50 V LV / 12.0 V HV</td>
+<td>Mis-set CV pot, output OFF (power-on default), CC limiting or OPP
+trip</td>
 </tr>
 <tr>
 <td>Wand feed at distribution-block A1 (13.8 V direct from PSU CH1)</td>
@@ -5623,12 +4922,11 @@ clips on the inverted face), service loops sized out of the arm's swept
 volume below the cover (§3.4 orientation note).</p>
 <h3 id="b5--musrock-feed-pair-d16d17-added-2026-10-13">B5 — MusRock feed
 pair (D16/D17, added 2026-10-13)</h3>
-<p>Twisted pair, 22 AWG silicone, E0508 at A5/B5; lengths from dry-fit
-(D-1459 → MusRock position beside the G469). D16 is unfused. Dress
-opposite the block↔︎G469 signal bundle. The D18 C-to-C is a factory cable
-— no build; HOTNOW 1.5 ft ≈ 0.46 m (on hand) for the interim gate; a 5 A
-cable only if it fails (EBD §3.6.2); route ≥ 0.46 m measured (operator
-2026-10-30).</p>
+<p>Twisted pair, 22 AWG silicone, E0508 at A5/B5; lengths in §16c
+(MUS-IN). D16 is unfused. Dress opposite the block↔︎G469 signal bundle.
+The D18 C-to-C is a factory cable — no build; HOTNOW 1.5 ft ≈ 0.46 m (on
+hand) for the interim gate; a 5 A cable only if it fails (EBD §3.6.2);
+route ≥ 0.46 m measured (operator 2026-10-30).</p>
 <p>One card per cable still to build. Each card collects what the master
 map (<a
 href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html#master-connection-map-single-source-of-truth--every-pi-side-gpio--ic--uart"><code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code></a>),
@@ -5843,14 +5141,12 @@ That doc owns the wand-end connector and crimp-by-net order.</p>
 <tr>
 <td>1 · 13.8 V</td>
 <td>22 AWG</td>
-<td>Block tether pair <strong>A</strong> (HL-PBB A2 / D-1459 A1),
-E0508</td>
+<td>Block tether pair <strong>A</strong> (HL-PBB A2), E0508</td>
 </tr>
 <tr>
 <td>2 · GND-power</td>
 <td>22 AWG</td>
-<td>Block tether pair <strong>B</strong> (HL-PBB B2 / D-1459 B1),
-E0508</td>
+<td>Block tether pair <strong>B</strong> (HL-PBB B2), E0508</td>
 </tr>
 <tr>
 <td>6 · GND-logic</td>
@@ -6154,74 +5450,35 @@ before the fence.</li>
 <li><strong>ACP4010-12-PWM ×1 (wand fan alternate):</strong> 4-pin, 12
 V, tach present; the 1 kHz PCA-PWM listen + 20 %-floor spin check
 (Integration §6.4).</li>
-<li><strong>CC/CV buck ×1 (the STM32 7.5 V buck):</strong> ✅ <strong>12
-A with cooling (operator, 2026-10-22)</strong>, so it meets the ≥ 8 A
-continuous requirement (STM32 branch 8 A typ / 10 A max)
-<strong>provided its cooling is kept.</strong> Set <strong>CV = 7.50
-V</strong> (never above 8.4 V — board + servo ceiling, <a
-href="Electronics_Bay_Design.html">EBD §1</a>) and <strong>CC above the
-load (~11 A, so CC never limits)</strong> BEFORE the STM32 connects.
-Input range must cover battery mode (≥ ~8.5 V in for 7.5 V out; the 11.5
-V graceful shutdown keeps it well above that) through AC float (13.8 V).
-<strong>Placement conditions (front-wall DROK slot, off the
-carrier):</strong>
+<li><strong>CC/CV buck ×1 (the 10-22 STM32 buck):</strong> a spare. The
+servo rail is the ZK-SJ20 on every build (§5c).
 <ul>
-<li><strong>Front wall = the INTAKE side:</strong> good, it gets the
-coolest air. Orient the heatsink fins <strong>parallel to the front →
-back flow</strong>, and don't sit it over the intake louvers (≥ 10 mm
-off them; never block more than a sliver of louver area).</li>
-<li>✅ <strong>NO onboard fan (operator ruling, 2026-10-22):
-heatsink-only, cooled by the bay's two back-wall exhaust fans, same as
-the existing DROK</strong> ("that is enough to cool the DROK's heatsink
-easily"). If the module ships with a fan, <strong>remove or disconnect
-it</strong>. <strong>Acceptance check:</strong> a 30 min bench soak at 8
-A, heatsink-only, heatsink ≤ ~80 °C, no thermal derating or
-drop-out.</li>
-<li>Its waste heat (~5–7 W at 8 A) flows downstream across the bay and
-lifts the PSU-plume TMP102 reading slightly. That's correct behaviour:
-it's real bay heat the fans must remove.</li>
 <li>Wiring: 18 AWG in from the block, 18 AWG out to the STM32
 branch.</li>
 </ul></li>
 </ul>
 <h2
-id="16c-carrier-harness-build-list--every-harness-by-cad-route-id-carrier-builds-2026-10-23">16c.
-Carrier harness build list — every harness, by CAD route ID (carrier
-builds, 2026-10-23)</h2>
-<p><strong>Scope:</strong> the power-bay CARRIER, every build. IDs =
-CAD's embossed route labels (carrier v19b, 558378e8; routing map
-<code>images/power_bay/carrier_routing.png</code>, interactive version
-<a href="images/power_bay/carrier_routing.html">carrier_routing.html</a>
-with every harness and the G469 pins toggleable); conductors and gauges
-= the §11.3.9 harness table (tripwire-checked against the wiring
-schematic). <strong>Plan lengths are measured from CAD's own route
-polylines: carrier 43d7befb</strong>
-(<code>cad/freecad/output/lumi_powerbay_carrier_DRAFT_layout.json</code>)
-for every route except rows 5, 6, 13's INA3 hops and 15a, which come
-from carrier a3742963 (DROK IN at −X, OUT at +X; PHONE-IN on A6/B6) and
-CAD's wired run (<code>lumi_powerbay_wired_runs.json</code>), with the
-PIRs at centre Z 25. <strong>The along-row allowance:</strong> CAD's
-G469 routes end at a climb point at ONE end of the board (FL/FR/BL,
-FAN-SIG, SPS30/ZE15 and the I²C chain at the <strong>−X</strong> end;
-PIR-BR at <strong>+X</strong>), but the terminals spread over the 51 mm
-row, with <strong>pin 1 at +X</strong> (§11.3.9 orientation). A
-conductor whose pin sits at the far end needs <strong>up to ~60 mm
-more</strong>. It's added per row below as "+ row", sized for that
-harness's farthest conductor. <strong>Cut length = plan + 110 mm (+ the
-along-row allowance where noted)</strong> (≈ 2 × 25 vertical, carrier
-top to each terminal entry, + 2 × 30 service slack), rounded up to 10
-mm. <strong>String-measure the FIRST build and correct this
-table.</strong> Runs that leave the carrier list only their on-carrier
-part plus a "measure" for the rest. Ferrule sizes at the G469 follow the
-landing map's itemised ferrules (§4 figure), not this table.</p>
+id="16c-carrier-harness-build-list--every-harness-by-route-id-every-build-2026-11-24">16c.
+Carrier harness build list — every harness, by route ID (every build,
+2026-11-24)</h2>
+<p><strong>Scope:</strong> the one power-bay carrier, every build
+(Ultra, Nova, Halo HV; Halo at its rebuild). Route IDs and gauges match
+the §11.3.9 harness table. <strong>Routed</strong> = CAD's wired bay
+(e74bddb2; Ø3.3 re-gate 2c45839e), centreline face to face, no strip or
+slack. <strong>Cut</strong> = routed + both strips + ~20 mm, rounded up.
+Every 18 AWG run is gated at Ø3.3 (⏳ the 16 AWG buck runs re-gate at
+their calipered OD) (the stock measures Ø2.8–3.3; CAD 2c45839e, all
+PASS: mains ≥ 8 at 8.65 nearest, BUCK-OUT 0.70 to the Mus-14 under the
+lid, BATT pair 1.66 to the pack and wall). String-run the mains on the
+carrier before crimping.</p>
 <table>
 <thead>
 <tr>
 <th>Order</th>
 <th>ID</th>
 <th>Cond. × gauge</th>
-<th>Plan (CAD)</th>
-<th>Cut (est.)</th>
+<th>Routed (CAD)</th>
+<th>Cut</th>
 <th>End A — termination</th>
 <th>End B — termination</th>
 <th>Notes</th>
@@ -6231,417 +5488,262 @@ landing map's itemised ferrules (§4 figure), not this table.</p>
 <tr>
 <td>1</td>
 <td><strong>MAINS</strong></td>
-<td>3 × 18 AWG silicone, 600 V-rated (spool marked 600 V / 6 A; operator
-2026-11-06), used as-is, no sleeve on Ultra (operator; Halo revisits
-sleeving if a safety issue shows up)</td>
-<td>Wired run per conductor: <strong>L</strong> (A3 rocker LOAD →
-carrier 120 + carrier span 219) 339, <strong>N</strong> (A4 C14 N → PSU
-N) 223, <strong>E</strong> (A5 C14 E → PSU ⏚) 228; jumpers
-<strong>A2</strong> C14 L → rocker LINE 94, <strong>A4a</strong> C14 N →
-rocker LAMP 107</td>
-<td><strong>L 380, N 260, E 270, A2 135, A4a 150</strong> (wired run +
-both strips + slack; C14 and AC rocker on the BACK wall, <strong>the
-rear AC rocker frame flush with the fan-tower faces (RM_P 25.7, operator
-2026-11-18: "move the AC rocker out further also, just like we moved the
-AC socket and the fans")</strong>; the C14 stands 26.2 mm proud.
-<strong>E and N run straight into the bay over the carrier's back edge
-onto the raised span, joining just past tower 1</strong>, then through
-the raised span and down the right lane to the PSU ⏚ / N end. <strong>A2
-and A4a loop back from the C14 to the AC rocker:</strong> each comes
-back to the A3 lane at C14 height and drops straight onto its sleeve
-(LINE, LAMP). <strong>A3 (rocker LOAD → PSU L) is the only mains wire on
-the floor:</strong> off its straight sleeve it runs to the floor lane
-behind the battery (<strong>Y 127.8, 8.6 mm off the pack</strong>, gate
-≥ 8 mm), runs +X, climbs in the lane and steps forward at carrier-seat
-height <strong>behind</strong> the pack (never over it) to the carrier's
-MAINS start, passes through tower 1 and the raised span over F1, and
-goes down the right lane to PSU L (120 mm to the carrier start).
-<strong>Rear AC rocker exception (operator, 2026-11-18): "straight
-fastons and i'll deal withthe 8 mm rule for this one, lets make an
-exception. We need to get htis done so I can assemble the damn
-robots".</strong> As built the 8 mm rule holds (A3 8.6 mm to the pack,
-all nine Faston gates ≥ 8 mm to LV). The deviation is the straight leg:
-each rear AC rocker lead runs only <strong>1.34 mm straight</strong>
-past its sleeve end (sleeve end Y 129.14, A3 lane Y 127.8) instead of 6
-× OD, then bends. Ties: C14 end N 36 / E 37.7 / A2 47 mm, A3 40 mm from
-its sleeve, A4a within 50; PSU end L 38.2 / N 43.4 / E 48.6 mm (earth
-longest at both ends). The battery-to-fence gaps at its ends are 3–7 mm,
-too narrow for mains. <strong>The run crosses the BATT pack lead
-once:</strong> <strong>cross at 90°, mains ABOVE in its own raised clip,
-≥ 8 mm clear of the lead. On Ultra both run as-is, unsleeved (operator):
-the 600 V silicone jacket plus the ≥ 8 mm gap is the
-separation.</strong> Never along or over the battery itself. The
-straight-in E/N still cross the lead once, inside the raised span
-between tower 1 (Y 108.9) and tower 2 (Y 61.4); the battery-after-F1 and
-pack-lead crossings all sit under it, 10.0 mm clear over F1 in 3D (gate
-≥ 8 mm)</td>
-<td>C14: <strong>straight fully insulated 4.8 mm Fastons
-(FDFNY)</strong>, red 22–18 on L and E, blue 16–14 for the N double
-crimp (A4 + A4a); rear AC rocker LINE / LOAD / LAMP: <strong>straight
-fully insulated 4.8 mm Fastons (FDFNY)</strong>, red 22–18 (every build:
-Ultra, Halo and Nova are one configuration from 2026-11-18)</td>
-<td>PSU L / N: <strong>red fork lugs</strong>; earth → PSU ⏚:
-<strong>ring lug</strong> (A5)</td>
-<td>Own right-edge forks, ≥ 8 mm from all LV; earth longest; strain
-relief ≤ 50 mm from each end. ⚠️ <strong>Earth check before first
-power:</strong> continuity C14 E ↔︎ PSU <strong>case metal</strong> (bare
-spot, not paint) <strong>&lt; 0.1 Ω</strong></td>
+<td>3 × 18 AWG silicone, 600 V-rated, as-is</td>
+<td><strong>L</strong> ~284 (79 from the rear AC rocker LOAD, then the
+shared lane), <strong>N / E</strong> 203–208 from the C14; jumpers
+<strong>A2</strong> C14 L → AC rocker LINE, <strong>A4a</strong> C14 N →
+AC rocker LAMP</td>
+<td><strong>L 320, N 245, E 260; A2 135, A4a 150</strong> (jumpers:
+string-check)</td>
+<td>C14 and rear AC rocker: <strong>straight fully insulated 4.8 mm
+Fastons, red (uxcell FDFN1-187)</strong>; the C14 N double crimp (A4 +
+A4a) in one red</td>
+<td>PSU <strong>L / N: red fork lugs</strong>; <strong>E → PSU ⏚: ring
+lug</strong></td>
+<td>Down the +X side lane, into the strip through the terminal slot
+(§11.3.9 mains route). Earth longest at both ends; strain relief ≤ 50 mm
+from each end. ⚠️ <strong>Earth check before first power:</strong> C14 E
+↔︎ PSU <strong>case metal</strong> (bare spot) <strong>&lt; 0.1
+Ω</strong></td>
 </tr>
 <tr>
 <td>2</td>
 <td><strong>CH1</strong></td>
 <td>2 × 18</td>
-<td>67</td>
-<td>180</td>
+<td>61</td>
+<td><strong>100</strong></td>
 <td>PSU +V / −V screws: <strong>Kuject fork lugs</strong>, bent up</td>
 <td>+V → INA226-MAIN ISENSE+ <strong>E1008</strong>; −V → INA226-MAIN
 <strong>GND screw</strong>, in one <strong>E2508</strong> with BLK-IN's
-GND (bare if a ferrule won't seat)</td>
+GND</td>
 <td>INA226-MAIN GND screw = the single logic-to-power tie</td>
 </tr>
 <tr>
 <td>3</td>
 <td><strong>ROCKER</strong></td>
 <td>2 × 18 + 1 × 22</td>
-<td>210 (wired run 302–318)</td>
-<td><strong>370</strong></td>
-<td>INA226-MAIN ISENSE− <strong>E1008</strong> (LINE wire)</td>
-<td>KCD1 LINE / LOAD: <strong>flag (right-angle) fully insulated 4.8 mm
-Fastons, red band</strong>; LAMP (22): flag 4.8 mm Faston →
-<strong>B6</strong>: its own E0508, or on Creator builds inside
-PHONE-IN's GND <strong>E1508</strong> (18 + 22, row 15a)</td>
-<td>v2: rocker upstream of the whole bus. LOAD continues as BLK-IN.
-Fence-mounted, so leave a service loop for lifting the carrier</td>
+<td>167–175 (rocker rear, under fan 1)</td>
+<td><strong>250</strong> (incl. ~40 service loop)</td>
+<td>INA226-MAIN ISENSE− <strong>E1008</strong> (LINE)</td>
+<td>KCD1 LINE / LOAD / LAMP: <strong>flag 4.8 mm Fastons, red</strong>;
+LAMP (22) → <strong>B6</strong>: its own E0508, or on Creator builds
+inside PHONE-IN's GND <strong>E1508</strong></td>
+<td>Upstream of the whole bus. LOAD continues as BLK-IN</td>
 </tr>
 <tr>
 <td>4</td>
 <td><strong>BLK-IN</strong></td>
 <td>2 × 18</td>
-<td>95</td>
-<td>210</td>
+<td>17–29</td>
+<td><strong>65</strong></td>
 <td>Rocker LOAD Faston; INA226-MAIN GND screw (in CH1 −V's
 <strong>E2508</strong>)</td>
-<td>Block <strong>IN-A / IN-B: E1008</strong></td>
-<td>Input cage faces the block's short end</td>
-</tr>
-<tr>
-<td>5</td>
-<td><strong>DROK-IN</strong></td>
-<td>2 × 18</td>
-<td>276 (the IN end is at −X, X 193; wired run 289–291)</td>
-<td>390</td>
-<td>Block DROK pair, <strong>HL-PBB A1 / B1</strong> (D-1459: A2 / B2):
-<strong>E1008</strong></td>
-<td>V+ → DROK IN+ <strong>bare</strong>; GND → DROK IN−
-<strong>bare</strong>; ~1 mm straight, then turn inboard (§5b.6)</td>
+<td>HL-PBB <strong>IN-A / IN-B: E1008</strong></td>
 <td>—</td>
 </tr>
 <tr>
+<td>5</td>
+<td><strong>BUCK-IN</strong></td>
+<td><strong>2 × 16 AWG</strong> silicone, red / black, twisted</td>
+<td>73</td>
+<td><strong>150</strong> (incl. ~40 service loop: the buck is wired
+lid-off)</td>
+<td>HL-PBB <strong>A1 / B1: E1508</strong></td>
+<td>ZK-SJ20 <strong>IN+ / IN−: E1508</strong> (bare twisted strands if
+one won't seat)</td>
+<td>Unfused. ⏳ Caliper the ZK-SJ20 terminal opening on arrival</td>
+</tr>
+<tr>
 <td>6</td>
-<td><strong>DROK-OUT</strong></td>
-<td>2 × 18, twisted</td>
-<td>181 (OUT−) / 190 (INA3 IN−), terminal to the top of the riser at the
-servo opening, + D14a 33</td>
-<td><strong>220 / 230 to the riser top + measure</strong> the climb up
-the servo opening to the STM32 (not modelled); D14a
-<strong>70</strong></td>
-<td>DROK OUT +/− <strong>bare strands</strong>; OUT+ →
-<strong>INA226-DROK IN+</strong> bare, IN− bare → on (OUT− goes direct).
-No ferrules or forks at this corner (§5b.6)</td>
+<td><strong>BUCK-OUT</strong></td>
+<td><strong>2 × 16 AWG</strong>, red / black</td>
+<td>95–109 to the lid window (mid-lane at Y −99.5, raised to Z 67.5 over
+the breakout)</td>
+<td><strong>145 to the lid window + measure</strong> the climb up the
+servo opening to the STM32</td>
+<td>ZK-SJ20 <strong>OUT−: E1508</strong> (direct); OUT+ via row 6a</td>
 <td><strong>Deans (T-plug)</strong> solder joint → STM32 blue terminal
-<strong>E1008</strong></td>
-<td>Twisted pair; rises beside the tether, FFC kept on the far side.
-<strong>INA226-DROK is on the fence front wall, rotated 90° above the
-DROK with its terminals facing the OUT (pot) end</strong> (§5b.6): OUT+
-→ IN+ and IN− → on to the Deans, bare strands. Wired-run centrelines
-(CAD wired model, bare leads): <strong>D14a OUT+ → IN+: plan 33, cut
-70</strong> (plan + both strips + ~20 slack), the only separate piece.
-The + lead's first 54 mm (IN− → the pair junction) and OUT−'s first 33
-mm (→ the junction) are inside the 190 / 181 runs, not cut separately.
-At the DROK's OUT end each lead runs **~6 mm straight** off the block
-before it turns (a turn closer than that pushes the lead into the DROK
-body). The model draws D14a's corners sharp; the real 18 AWG silicone
-bends at ~1–2 × OD, which the slack covers. From the junction the pair
-runs twisted along the carrier and up to the riser top. OUT+ / OUT− stay
-twisted except over the loop</td>
+<strong>E1508</strong> (bare if it won't seat)</td>
+<td>+ leg: INA3 IN− → Deans. Keep + and − side by side, twisted above
+the lid window. Rises beside the tether, FFC on the far side</td>
+</tr>
+<tr>
+<td>6a</td>
+<td><strong>INA3 hop</strong></td>
+<td>1 × 16 AWG red</td>
+<td>19</td>
+<td><strong>60</strong></td>
+<td>ZK-SJ20 <strong>OUT+: E1508</strong></td>
+<td>INA3 <strong>IN+: E1508</strong> (bare if it won't seat, §5b.4)</td>
+<td>INA3 IN− continues as BUCK-OUT's + leg</td>
 </tr>
 <tr>
 <td>7</td>
 <td><strong>BATT</strong></td>
 <td>2 × 18</td>
-<td>46 + 73 + 31 = 150 (3 legs)</td>
-<td>46 → <strong>≤ 150 minus the pack's factory pigtail</strong> (the
-unfused stub, no service slack: the wired run routes it 59–63 incl. the
-vertical (battery at +15), so a factory pigtail over ~85 breaks the 150
-budget, see §16b) / 73 → 190 / 31 → 150</td>
+<td>pack → F1 71 · F1 → INA-BATT 27–33 · INA-BATT → CH2 99–111</td>
+<td><strong>110 / 70 / 150</strong></td>
 <td>Pack <strong>XT30</strong> (mating XT30, soldered cups +
 heat-shrink)</td>
 <td>+ → <strong>F1 (uxcell 6×30 10 A, carrier cradle)</strong> →
-INA226-BATT <strong>IN−</strong> E1008 … <strong>IN+</strong> E1008
-(bare if a ferrule won't seat) → PSU CH2 <strong>BAT+</strong> lead; − →
-PSU CH2 <strong>BAT−</strong> lead <strong>direct</strong></td>
-<td><strong>Unfused stub (pack terminal → F1) ≤ 150 mm, factory pigtail
-included.</strong> The F1 pigtail is 16 AWG; join by solder +
-heat-shrink. <strong>INA226-BATT's GND screw stays EMPTY.</strong> The
-PSU BAT-lead joint matches that lead's own connector (§16b.4)</td>
+INA226-BATT <strong>IN− … IN+</strong> (E1008) → PSU <strong>CH2
+BAT+</strong>; pack − → CH2 BAT− <strong>direct</strong></td>
+<td>In the pack-to-wall gap, nothing terminated there. <strong>Unfused
+stub pack + → F1 ≤ 150 mm including the pack's factory pigtail.</strong>
+Meter polarity before connecting</td>
 </tr>
 <tr>
 <td>8</td>
 <td><strong>MUS-IN</strong></td>
 <td>2 × 22</td>
-<td>124</td>
-<td>240</td>
-<td>Block <strong>A5 / B5: E0508</strong></td>
-<td>A5 → Mus-14 IN+; B5 → IN− (Mus-14 end: <strong>solder pads</strong>
-+ heat-shrink, operator 2026-11-03)</td>
-<td>—</td>
+<td>218–220</td>
+<td><strong>255</strong></td>
+<td>HL-PBB <strong>A5 / B5: E0508</strong></td>
+<td>Mus-14 IN+ / IN− <strong>solder pads</strong> + heat-shrink</td>
+<td>Twisted pair</td>
 </tr>
 <tr>
 <td>9</td>
 <td><strong>USB-C</strong></td>
 <td>factory C-to-C</td>
-<td>10 on-carrier</td>
+<td>81</td>
 <td>factory <strong>0.46 m</strong></td>
-<td>Mus-14 USB-C (right-angle end)</td>
+<td>Mus-14 USB-C</td>
 <td>HAT POWER</td>
-<td>Straight up the opening</td>
+<td>Up the opening</td>
 </tr>
 <tr>
 <td>10</td>
 <td><strong>FAN1 / FAN2</strong></td>
 <td>4-wire stock leads</td>
-<td>166 / 232</td>
-<td>stock <strong>~250</strong> (not cut)</td>
+<td>97 / 160</td>
+<td>stock <strong>~250</strong></td>
 <td>Fan</td>
-<td>4 solder + heat-shrink joints (3 × 15 shrink), <strong>between
-forks, staggered</strong></td>
-<td><strong>FAN2 routes 253 in the wired model against the ~250 mm stock
-lead</strong> (FAN1 186), so splice FAN2 earlier; the extension just
-gets longer</td>
+<td>4 solder + heat-shrink joints, <strong>between forks,
+staggered</strong></td>
+<td>Splice where the stock lead ends on the route; trim the stock lead
+if it overruns</td>
 </tr>
 <tr>
 <td>11</td>
 <td><strong>FAN1-P / FAN2-P</strong></td>
 <td>2 × 22 each</td>
-<td>90 / 51</td>
-<td>200 / 170</td>
-<td>Splice joints (from row 10)</td>
-<td>Block <strong>A3 / B3</strong> (FAN1-P), <strong>A4 / B4</strong>
+<td>41</td>
+<td><strong>75 each</strong> (⏳ string-check with the splice
+point)</td>
+<td>Splice joints</td>
+<td>HL-PBB <strong>A3 / B3</strong> (FAN1-P), <strong>A4 / B4</strong>
 (FAN2-P): <strong>E0508</strong></td>
-<td>Two opposite block edges (+Y row / −Y row). FAN2-P leaves the fan
-splice on the trunk lane (X_TRUNK, CORR_L): a turn at X_T2 would sit
-under the HL-PBB's −Y cage pins, where no fork fits</td>
+<td>—</td>
 </tr>
 <tr>
 <td>12</td>
 <td><strong>FAN-SIG</strong></td>
 <td>4 × 26</td>
-<td>71</td>
-<td><strong>210</strong> (+ row 25: climbs at −X, pins 29/31/32 sit ~25
-mm in)</td>
+<td>122</td>
+<td><strong>155</strong></td>
 <td>Splice joints</td>
 <td>G469: both PWM in <strong>one ferrule at pin 32</strong>; TACH →
-<strong>29 / 31</strong>, each sharing its ferrule with its 10 k pull-up
-lead; pull-ups' other ends → <strong>17</strong></td>
-<td>Ferrule sizes per the landing map</td>
+<strong>29 / 31</strong>, each sharing its ferrule with its 10 k
+pull-up; pull-ups' other ends → <strong>17</strong></td>
+<td>—</td>
 </tr>
 <tr>
 <td>13</td>
 <td><strong>I2C</strong> (chain)</td>
 <td>4 × 26 per hop</td>
-<td>226 + 334 + 334 + 174 (4 hops)</td>
-<td><strong>400</strong> (+ row 60: climbs at −X, pins 1/3/5/9 are at
-the +X end) / <strong>420</strong> / <strong>420</strong> /
-<strong>290</strong> (TMP102 on <strong>8 mm posts</strong>, chain end
-soldered to its 0.1" row)</td>
+<td>G469 → INA-MAIN 78–80 · INA-MAIN → INA-BATT 2 · INA-BATT → TMP102
+81–84 · TMP102 → INA3 171</td>
+<td><strong>115 / 40 / 120 / 205</strong></td>
 <td>G469 <strong>3 SDA / 5 SCL / 1 3V3 / 9 GND</strong> (shared ferrules
 per the landing map)</td>
-<td>Each board: <strong>female 2.54 mm 4-way (Dupont) housing, each
-contact DOUBLE-CRIMPED</strong> (in + out) at INA226-MAIN, INA226-DROK
-and INA226-BATT (chain order G469 → MAIN → DROK → BATT → TMP102;
-INA226-DROK is on the fence front wall at the DROK's OUT end, so the
-MAIN → DROK and DROK → BATT hops run forward along the plate and up the
-front wall to its header, 331–334 mm each (CAD wired-run centrelines).
-Their cut is plan + 85 (it also covers the real wire bending wider than
-the model's 1.4 × OD) (25 vertical at the carrier end only, + 2 × 30
-slack; the wall climb is in the plan). The two hops run side by side on
-the same path. The whole bus is now ~2.7 m end to end (FFC 0.5 + this
-chain ~1.1 on the carrier + tether 0.6 + wand); at ~60–80 pF/m for loose
-26 AWG plus ~10 pF a device that's an estimated ~250–300 pF, under the
-400 pF limit, and with the ~1.9–2.6 kΩ pull-ups the rise time stays
-under 100 kHz's 1 µs. <code>i2cdetect</code> must show all seven
-addresses at bring-up); at the TMP102 (end) the four conductors are
-<strong>soldered into the 0.1" row</strong>, each joint heat-shrunk, the
-leads wrapped round the −Y edge to the CORR_L band and zip-tied to the
-−Y post (204.3, −11.2)</td>
-<td><strong>Crimp by NET, not pin number:</strong> the INA226 header and
-TMP102 orders differ. Tug-test every double crimp</td>
+<td>Each board: <strong>female 2.54 mm 4-way housing, each contact
+DOUBLE-CRIMPED</strong> (in + out); INA3 is the chain end</td>
+<td>Crimp by net: the INA226 header (GND / SCL / SDA / VCC) and TMP102
+orders differ</td>
 </tr>
 <tr>
 <td>14</td>
 <td><strong>TETHER-P</strong></td>
 <td>2 × 22 + GND-logic 22</td>
-<td>169 / 167 on-carrier to the riser top; GND-logic 42</td>
-<td><strong>power pair 1.17 m each, GND-logic 1.05 m</strong>
-(on-carrier + <strong>1.0 m outside the bay</strong>, ~110 mm margin).
-Outside the bay, CAD's routed bound (full run 2026-11-21 23:24) is 890
-mm for the power pair and 888 mm for GND-logic, riser top → wand XHP-6,
-longest across poses: the centreline along the arm's back face 441.5
-(riser → shoulder 87.5 / 85.8, shoulder → elbow 100.5, elbow → wrist
-94.7, wrist → XHP-6 158.8), service loops at the 5 joints 323 (wrap
-radius × 120°: base 38, shoulder 75, elbow 72, wrist pitch 71, wrist
-roll 67) and 25 mm bend/tie slack per joint (125). It is an upper bound
-(every joint at its worst end at once), not a simulated cable:
-<strong>check it with a string run on Halo at full extension and full
-wrist roll before crimping the wand end.</strong> Bay exit = the riser
-tops at the servo-base opening (cad/Assemblies file frame, mm): power
-pair (245.1, −60.3, 88.7), GND-logic (243.4, −60.3, 88.7), signal
-(238.4, −60.3, 88.7). Wand inlet = the JST XHP-6 shell's mating face, in
-the BigClaw (claw) frame: (226.983, −133.413, 468.845) mm, mating along
-+Z, pin row along +X</td>
-<td>Block tether pair, <strong>HL-PBB A2 / B2</strong> (D-1459: A1 /
-B1): <strong>E0508</strong>; GND-logic → G469 <strong>pin 9</strong>
-(shared ferrule)</td>
-<td>Wand <strong>6-pin JST-XHP female</strong>: pins <strong>1 / 2 /
-6</strong></td>
-<td>Crimp by net; the two legs interleave in one housing (§10.5.2)</td>
+<td>174–176 in the bay + CAD's routed bound outside the bay (890 power
+pair / 888 GND-logic, riser top → wand XHP-6, longest across poses)</td>
+<td><strong>power pair 1.17 m each, GND-logic 1.05 m</strong> (upper
+bounds; string-run on Halo before crimping)</td>
+<td>HL-PBB <strong>A2 / B2: E0508</strong>; GND-logic → <strong>G469 pin
+9</strong></td>
+<td>Wand 6-pin <strong>1 / 2 / 6</strong> (JST-XH)</td>
+<td><code>GND-logic</code> never at the block</td>
 </tr>
 <tr>
 <td>15</td>
 <td><strong>TETHER-S</strong></td>
 <td>3 × 26</td>
-<td>28 / 26 / 25 on-carrier (G469 odd row → riser top)</td>
-<td><strong>1.03 m each</strong> (on-carrier + 1.0 m outside the bay;
-CAD's routed bound 883 mm, same route and string-run check as row
-14)</td>
+<td>30 in the bay + 883 outside</td>
+<td><strong>1.03 m each</strong></td>
 <td>G469 <strong>3 / 5 / 1</strong> (shared ferrules)</td>
 <td>Same 6-pin housing: pins <strong>3 / 4 / 5</strong></td>
 <td>Separate from TETHER-P until the shell</td>
 </tr>
 <tr>
 <td>15a</td>
-<td><strong>PHONE-IN</strong> <em>(creator edition; with rows 14–15 when
-the robot also carries the wand, as Ultra does)</em></td>
+<td><strong>PHONE-IN</strong> <em>(Creator builds)</em></td>
 <td>2 × 18, twisted</td>
-<td><strong>22</strong> (from A6/B6; wired run 36)</td>
-<td><strong>150</strong></td>
-<td>Block <strong>A6: E1008</strong> (V+); <strong>B6: one E1508 shared
-with the LAMP 22 AWG</strong> (row 3) (GND)</td>
-<td><strong>Soldered</strong> to the IP6518's two corner VIN pads (DC
-end); <strong>meter polarity before first power</strong> (no reverse
+<td>206 (IP6518 on the mains-side wall)</td>
+<td><strong>250</strong></td>
+<td>HL-PBB <strong>A6: E1008</strong> (V+); <strong>B6: one E1508 shared
+with the LAMP 22 AWG</strong> (row 3)</td>
+<td><strong>Soldered</strong> to the IP6518's two corner VIN pads;
+<strong>meter polarity before first power</strong> (no reverse
 protection)</td>
-<td><strong>No fuse</strong>. The cut includes the climb from the
-carrier top (Z 48) to the raised board (underside Z 67) and ~12 mm along
-it to a corner pad (~35 mm, ⏳ pad positions not calipered). Tie in the
-zip-tie groove on a DC-end post (Z 56–59), ≤ 30 mm from the pads</td>
+<td><strong>No fuse.</strong> Leave a service loop if the wall lifts
+with the carrier</td>
 </tr>
 <tr>
 <td>15b</td>
-<td><strong>PHONE-USB</strong> <em>(creator edition)</em></td>
-<td>bought C-to-C, 1.5 m, right-angle at the IP6518 end</td>
-<td>— (leaves the carrier)</td>
-<td><strong>Bought 1.5 m 90° C-to-C, "PD Type-C 60 W" (3 A), replacing
-the factory 1 m, which is too short.</strong> Ordered 2026-11-22, qty 2
-(Ultra, the only Creator build, plus a spare; Halo and Nova carry no
-IP6518 or phone cable), no ETA. Silicone jacket and plug size not
-published. ⏳ <strong>On arrival</strong> (listing photo: ONE 90° end, a
-flat side-exit paddle with the cable leaving along the long axis of the
-C oval, so a 180° flip picks ±X; the other end straight, to the phone):
-<strong>(a) IP6518 end: the paddle HEIGHT is the binding size</strong>
-(across the C oval's short axis, vertical in the bay). The paddle sits
-over the DROK, whose top edge is at Z 59.7, with the receptacle centre
-at Z 64.75 and 1.0 mm kept, so the paddle can be <strong>≤ 8.1 mm tall
-centred on the plug</strong> (CAD probe 2026-11-22: 8 clears by 1.05, 10
-by 0.05, 12 collides). Reach and thickness along −Y are fine (fence
-8.7–10.8 mm away for paddles up to 7 thick × 20 long), and ±X exit makes
-no difference. Caliper the paddle height, where the plug sits within it,
-and the DROK's PCB top edge above its top mounting holes (CAD carries an
-estimate of 3.5; a lower real edge buys room back). Over ~8 mm, the
-fallback is raising the IP6518 posts, which eats the operator's 7 mm lid
-margin: operator's call. INA3 (wall, X ≥ 261, ~15 mm behind in Y) and
-the DROK-OUT leads are not gated. <strong>(b) Phone end:</strong> the
-cradle gate proves a 12.5 × 7 plug reaching 25 mm below the phone's
-bottom edge, for every phone variant, portrait and landscape. Measure
-the straight plug plus strain relief; if it's over 25 mm, CAD re-runs
-the cradle gate at that reach. Also check the jacket stays flexible
-through the service loops. Same route as the tether (operator: cradle
-and wand tether the same): 890 outside the bay (row 14) + ~90 receptacle
-→ opening = ~0.98 m before the cradle end</td>
-<td>IP6518 USB-C (underside, USB end), <strong>right-angle plug turning
-−X</strong>, tied in the zip-tie groove on the USB-end −X post, ~20 mm
-from the receptacle; then +Y along the board's −X side to the tether
-riser and up the servo-base opening (**~90 mm** receptacle → opening,
-⏳)</td>
-<td>The phone in the BigClaw cradle</td>
-<td><strong>High-flex silicone, 3 A, ≥ 24 AWG VBUS.</strong> One
-continuous cable up the tether route, service loops at each joint, a
-generous one at the wrist roll</td>
+<td><strong>PHONE-USB</strong> <em>(Creator builds)</em></td>
+<td>bought C-to-C, 1.5 m, right-angle at one end</td>
+<td>95 in the bay to the lid window</td>
+<td><strong>Bought 1.5 m 90° C-to-C, "PD Type-C 60 W" (3 A)</strong>,
+ordered 2026-11-22, qty 2 (Ultra + spare)</td>
+<td>IP6518 USB-C (underside)</td>
+<td>Phone in the BigClaw cradle, along the tether route</td>
+<td>~1.0–1.1 m used of 1.5 m. ⏳ On arrival: caliper the plug ends and
+check the right-angle end clears at the wall spot (CAD)</td>
 </tr>
 <tr>
 <td>16</td>
 <td><strong>PIR-FL / FR / BL / BR</strong></td>
-<td><strong>3 × 26 AWG silicone, BUILT FROM SCRATCH</strong> (Fermerry,
-in stock), lightly twisted</td>
-<td><strong>By position: FL / FR = the fan-side (back-wall) pair, moved
-up to board centre 68</strong> (leaves the board's bottom edge at ~52
-and drops onto the carrier), wired run <strong>265 / 317</strong>;
-<strong>BL / BR = the other pair, centre 25</strong>, wired run 57 /
-97</td>
-<td><strong>470 / 510 / 240 / 280</strong> (exact cuts, no stock-length
-limit; the fan-side pair keeps its cuts, ≥ 190 over the raised wired
-run) = plan + 110 (rule above) <strong>+ 5</strong> (BL / BR: centre Z
-25, board Z 9–41) <strong>+ 12</strong> (header on a SIDE edge, ~12 mm
-from the board centre; 6656f6f) + the along-row allowance (60; BR
-55).</td>
-<td>PIR 3-pin header (on a long side edge), <strong>crimp by NET after
-reading the HC-SR501 silk</strong>; pin order varies between boards.
-<strong>Back PIRs:</strong> straight <strong>Dupont 3-way
-female</strong> (PEBA kit), header toward the back wall. <strong>Front
-PIRs:</strong> jumper end UP, header on the side <strong>away from the
-PSU</strong>, <strong>≤ 12.5 mm behind the board</strong>: soldered
-leads + heat-shrink, or a right-angle plug, <strong>operator's choice at
-assembly</strong> (a straight Dupont does not fit there)</td>
-<td>Each lead runs individually to the G469 (no Ys). OUT → <strong>36 /
-11 / 38 / 40</strong> (E0208). All four 5 V → <strong>pin 2</strong>,
-all four GND → <strong>pin 6</strong>, <strong>4-in-1 AIRIC violet
-ferrule each</strong> (4 × 26 ≈ 0.52 mm², the bench-proven case)</td>
-<td><strong>Colours:</strong> <strong>red = 5 V, black = GND</strong>,
-OUT colour per position so the four are told apart at the G469:
-<strong>FL yellow, FR white, BL blue, BR green</strong> (Fermerry's
-6-colour set). Label both ends with the route ID.
-<strong>Build:</strong> cut, twist lightly (~1 turn / 30 mm: keeps the
-triple together in the forks, reduces pickup on OUT), strip, crimp the
-PIR end, then the G469 ferrules: OUT single, 5 V/GND into the shared
-4-in-1 crimp (all four leads present, same strip length, twist, crimp
-once, <strong>tug-test each wire</strong>). Nothing else on pins 2/6.
-<strong>PIR-BR (option B):</strong> climbs at the G469's +X end; OUT
-runs ~55 mm along the even row to pin 40. <strong>Do not build these
-leads from the in-stock 24 AWG 6-wire:</strong> 4 × 24 AWG ≈ 0.82 mm²
-will not go in the pin 2/6 ferrule (proven to 0.516 mm²). Operator
-ruling: Fermerry 26 AWG.</td>
+<td><strong>3 × 26 AWG silicone, built from scratch</strong>, lightly
+twisted</td>
+<td><strong>227 / 276 / 48 / 233</strong> (FL / FR = the fan-side pair
+at centre 68; BL / BR at centre 25)</td>
+<td><strong>260 / 310 / 80 / 265</strong></td>
+<td>PIR: <strong>Dupont 3-way female</strong>, crimped by net (read the
+HC-SR501 silk)</td>
+<td>G469: OUT → <strong>36 / 11 / 38 / 40</strong>; 5 V → <strong>pin
+2</strong>, GND → <strong>pin 6</strong> (4-into-1 ferrules)</td>
+<td>Individually to the G469, no Ys</td>
 </tr>
 <tr>
 <td>17</td>
 <td><strong>SPS30</strong></td>
 <td>4 × 26 + vendor ZH1.5 pigtail</td>
-<td><strong>119</strong> on-carrier (opening → riser strip → corridor →
-signal lane → G469 even row)</td>
-<td><strong>290</strong> on-carrier (+ row 60: climbs at −X, pins 4/8/10
-at +X) <strong>+ measure</strong> the drop below the opening</td>
+<td>84–90 on-carrier (over the G469 stack)</td>
+<td><strong>125</strong> on-carrier <strong>+ measure</strong> the drop
+below the opening</td>
 <td>SPS30 ZH1.5 (vendor) + staggered solder splices</td>
 <td>G469 <strong>4 / 8 / 10 / 20</strong> (E0208; <strong>pin 4 = two
-conductors in one ferrule</strong> with the ZE15's 5 V, per the landing
-map)</td>
-<td>Card B2; SEL floats</td>
+conductors in one ferrule</strong> with the ZE15's 5 V)</td>
+<td>Card B2</td>
 </tr>
 <tr>
 <td>18</td>
 <td><strong>ZE15</strong></td>
 <td>4 × 26</td>
-<td><strong>119</strong> on-carrier (same path; the <strong>21 / 25 pair
-peels to the G469 odd row</strong>)</td>
-<td><strong>290</strong> on-carrier (+ row 60 for pin 4) <strong>+
-measure</strong> the drop to the sensor</td>
+<td>84–90 on-carrier</td>
+<td><strong>125</strong> on-carrier <strong>+ measure</strong> the drop
+to the sensor</td>
 <td>ZE15 header pins: solder + heat-shrink</td>
 <td>G469 <strong>4 / 25 / 24 / 21</strong></td>
 <td>Card B3</td>
@@ -6659,35 +5761,8 @@ fitted</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Ultra (HL-PBB) length corrections, ⏳ ±10 mm (CAD estimate,
-2026-11-15; cut long and trim).</strong> The Plan and Cut columns
-(layout 43d7befb) still land on the <strong>D-1459</strong> terminals:
-CAD's routes end on the D-1459 cages. Apply these corrections
-<strong>once</strong>, on top of the Cut column. On the HL-PBB (cx 238.1
-/ cy −20.5; board X 203.1–273.1, Y −31.5..−9.5; cages at 5.0 pitch along
-both long edges; feed tower at the −X end, entries facing −X), adjust
-the cut:</p>
-<ul>
-<li><strong>BLK-IN (row 4): +37 mm.</strong> It comes out from under the
-board's −X end and turns back +X into the tower.</li>
-<li><strong>+Y-edge outputs, A1 B1 A2 B2 A3 B3 (DROK-IN, TETHER-P,
-FAN1-P): −5 mm each.</strong> About 18 mm shorter along the band, 12.5
-mm longer on the drop to the board edge.</li>
-<li><strong>−Y-edge outputs, A4 B4 A5 B5 B6 (FAN2-P, MUS-IN, LAMP): −21
-mm each.</strong> About 18 mm shorter along the band, 3.5 mm shorter on
-the drop. PHONE-IN (row 15a) needs no correction: its route already
-lands on HL-PBB A6 / B6.</li>
-<li>Before fitting the HL-PBB, <strong>trim its 4 long edge pins (6–7
-mm) to ≤ 5 mm</strong> (operator).</li>
-</ul>
 <p><strong>Wire totals per gauge, one Ultra Creator build (rows 1–19,
-incl. 14, 15 and 15a)</strong> A sum of the Cut column above × conductor
-count, with the HL-PBB corrections and the "+ row" allowances in. Every
-on-carrier run is checked against CAD's wired model (a6d507ed): each cut
-is longer than its wired run. The tether (rows 14–15) is CAD's routed
-bound across poses (2026-11-21). ⏳ <strong>Two runs leave the model and
-are still estimates:</strong> DROK-OUT's climb from the riser top to the
-STM32, and the SPS30 / ZE15 drops below the opening.</p>
+incl. 14, 15 and 15a):</strong> the Cut column × conductor count.</p>
 <table>
 <thead>
 <tr>
@@ -6698,64 +5773,56 @@ STM32, and the SPS30 / ZE15 drops below the opening.</p>
 </thead>
 <tbody>
 <tr>
+<td><strong>16 AWG</strong></td>
+<td><strong>~1.2 m</strong> (red ~0.64, black ~0.58)</td>
+<td>BUCK-IN 0.30, BUCK-OUT 0.29 to the lid window, 6a 0.06;
+<strong>estimated:</strong> BUCK-OUT's climb to the STM32 ~0.56 (2 ×
+~0.28). Four builds use ~2.5 m red / ~2.3 m black of the ~4 m each in
+stock</td>
+</tr>
+<tr>
 <td><strong>18 AWG</strong></td>
-<td><strong>~5.8 m (~19 ft)</strong></td>
-<td>CH1 0.36, ROCKER 0.74, BLK-IN 0.49, DROK-IN 0.77, BATT ~0.88,
-PHONE-IN 0.30, MAINS 1.20 (5 pieces, row 1), DROK-OUT 0.52 to the riser
-top; <strong>estimated:</strong> DROK-OUT's climb up the servo opening
-to the STM32 ~0.55 (2 × ~0.28)</td>
+<td><strong>~3.1 m (~10 ft)</strong></td>
+<td>MAINS 1.11 (5 pieces), CH1 0.20, ROCKER 0.50, BLK-IN 0.13, BATT
+0.66, PHONE-IN 0.50</td>
 </tr>
 <tr>
 <td><strong>22 AWG</strong></td>
-<td><strong>~4.9 m (~16 ft)</strong></td>
-<td>LAMP 0.35, MUS-IN 0.44, FAN1-P 0.39, FAN2-P 0.30, TETHER-P 3.39 (2 ×
-1.17 + 1.05, row 14)</td>
+<td><strong>~4.5 m (~15 ft)</strong></td>
+<td>LAMP 0.25, MUS-IN 0.51, FAN1-P / FAN2-P 0.30, TETHER-P 3.39</td>
 </tr>
 <tr>
 <td><strong>26 AWG</strong></td>
-<td><strong>~17.7 m (~58 ft)</strong> + the two sensor drops</td>
-<td>FAN-SIG 0.94, I²C chain 6.36, PIRs 4.50, SPS30 1.40, ZE15 1.40,
-TETHER-S 3.09 (3 × 1.03, row 15); <strong>plus measure:</strong> the
-SPS30 and ZE15 drops below the opening</td>
-</tr>
-<tr>
-<td>24 AWG</td>
-<td>none</td>
-<td>not in the bay plan (v1 as-built used it for some sensor tails)</td>
-</tr>
-<tr>
-<td>16 AWG</td>
-<td>none cut</td>
-<td>only F1's factory pigtail</td>
+<td><strong>~9.4 m (~31 ft)</strong> + the two sensor drops</td>
+<td>FAN-SIG 0.62, I²C chain 1.92, PIRs 2.75, SPS30 + ZE15 1.00, TETHER-S
+3.09</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Not included:</strong> factory cables (USB-C, fan leads,
-PHONE-USB, the FFC), the wand's internal wiring, and the load-test
-pigtails. Buy ~20 % over these totals for strip lengths, a bad crimp and
-trim. <strong>Per build:</strong> a <strong>Pro / ceiling</strong> build
-(wand, no phone) drops 15a (−0.30 m / ~1 ft of 18 AWG); a
-<strong>Creator phone-only</strong> build (no wand) drops 14 and 15
-(−3.4 m / ~11 ft of 22 AWG, −3.1 m / ~10 ft of 26 AWG).</p>
-<p><strong>Build order</strong> (the Order column, grouped):</p>
+PHONE-USB, the FFC), the wand's internal wiring, and load-test pigtails.
+Buy ~20 % over for strips, a bad crimp and trim. A <strong>Pro /
+ceiling</strong> build (wand, no phone) drops 15a; a <strong>Creator
+phone-only</strong> build drops 14 and 15.</p>
+<p><strong>Build order:</strong></p>
 <ol type="1">
 <li><strong>Off-carrier mains first</strong> (row 1), with the earth
-check. DC rocker blades take <strong>4.8 mm red flags</strong>, the rear
-AC rocker <strong>straight red 4.8 mm FDFNY</strong>; replace any
-temporary 6.3 mm flag and tug-test each (§11.3 blade-size note). Nothing
-LV is powered before it passes.</li>
-<li><strong>Bench-build the carrier-local harnesses with the carrier OFF
-the bay:</strong> the power hub (rows 2–5, 8, 11), the I²C chain (row
-13), and FAN-SIG / PIR / sensor tails up to their G469 ferrules.</li>
-<li><strong>Fit the carrier</strong> (strap fasteners), then make the
+check. DC rocker blades take <strong>red 4.8 mm flags</strong>, the rear
+AC rocker and the C14 <strong>straight red 4.8 mm uxcell
+FDFN1-187</strong>; tug-test each. Nothing LV is powered before it
+passes.</li>
+<li><strong>Bench-build the carrier-local harnesses with the carrier off
+the bay:</strong> the power hub (rows 2–4, 8, 11), the I²C chain (row
+13), FAN-SIG / PIR / sensor tails up to their G469 ferrules.</li>
+<li><strong>Fit the carrier</strong> (its 2 front-stub screws), then the
 <strong>cross-boundary</strong> connections: CH1 at the PSU, BATT (row
-7, polarity metered first), DROK-IN/OUT, USB-C, the tether legs, the
-FFC. INA226-DROK is screwed to the fence front wall above the DROK; land
-DROK-OUT (row 6) through it.</li>
+7, polarity metered first), USB-C, the tether legs, the FFC.</li>
+<li><strong>Buck last:</strong> the ZK-SJ20 goes on only after it passes
+its bench gate (§5c); then rows 5, 6 and 6a.</li>
 <li><strong>§16.1 pre-power checks</strong> (incl. the AC input-side
 termination tug-test), then the §16.2 power-up. INA226-BATT must read
-<strong>positive</strong> on first charge; INA226-DROK must read
-positive with the arm powered.</li>
+<strong>positive</strong> on first charge; INA3 must read positive with
+the arm powered.</li>
 </ol>
 <p><strong>Which rows per build:</strong> every build: rows 1–13 and
 16–19. <strong>Pro / ceiling (wand):</strong> + 14–15. <strong>Creator,

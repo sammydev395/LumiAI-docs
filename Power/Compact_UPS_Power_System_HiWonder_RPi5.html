@@ -54,7 +54,7 @@ within the bay envelope.</p>
    │
    ├─► CH2 → LiFePO4 Battery Pack (12.8V 10Ah, 5.5×2.1mm barrel connector)
    │
-   └─► CH1 → Master Power Switch (DC) → Bay D-1459 dual-bus distribution block (A bus V+ / B bus GND, unmodified; v1 as-built: modified APIELE)  (13.8 V)
+   └─► CH1 → Master Power Switch (DC) → Bay HL-PBB dual-bus distribution block (A bus V+ / B bus GND, unmodified; v1 as-built: modified APIELE)  (13.8 V)
              ├─► DROK buck (9 V)          ← STM32-DEDICATED (2026-06-28 split)
              │      │
              │      ▼
@@ -65,7 +65,7 @@ within the bay envelope.</p>
              │      wand +3.3 V logic (via D-1352 GPIO chain)
              │
              ├─► Lumi Wand v2.0 driver: PCA9685 + 12× LED driver modules
-             │      (13.8 V direct from PSU via the bay distribution block V+ bus) [Split 2026-06-28, D-1459 of record 2026-09-29]          │      │      Peak ~2.4 A @ 33 W (measured 2026-09-01); tether V+ single pin 1, GND single pin 2
+             │      (13.8 V direct from PSU via the bay distribution block V+ bus) [Split 2026-06-28, HL-PBB of record 2026-09-29]          │      │      Peak ~2.4 A @ 33 W (measured 2026-09-01); tether V+ single pin 1, GND single pin 2
              │      ▼
              │   Wand head: 3× RGBW LED stars on CNC heatsink (gripper holds the wand)
              │
@@ -78,17 +78,12 @@ within the bay envelope.</p>
                     ▼
                  Mecanum Chassis Motors (not in production)</code></pre>
 <blockquote>
-<p>🎯 <strong>Distribution block — design of record 2026-09-29:</strong>
-<strong>CZH-Labs D-1459</strong> or <strong>YRYAR
-HL-PBB-2-6-MINI</strong> dual-bus distribution module, ferrule-based,
-zero modification — <strong>from the NOVA build on</strong> (next build,
-Ultra-compatible kit in stock). <strong>Halo v1 keeps its as-built
-modified APIELE. The APIELE is retired (operator): no new APIELE
-installs, and the Ultra bay uses an HL-PBB-2-6-MINI</strong> (spec +
-port map: <a
-href="../Power_Bay_Design.html#1137-apiele-barrier-strip--physical-spec"><code>Power_Bay_Design.md</code>
-§11.3.1</a>). Wiring + port map: <a
-href="../Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+<p>🎯 <strong>Distribution block:</strong> <strong>YRYAR
+HL-PBB-2-6-MINI</strong> dual-bus module, ferrule-based, no
+modification, on <strong>every build</strong> (operator, 2026-11-24):
+Ultra, Nova, Halo HV, and Halo when its bay is rebuilt. Halo v1 as built
+keeps its modified APIELE until then. Wiring + port map: <a
+href="../Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
 §11.3</a>; part spec: <a
 href="../Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
 §1.4</a>.</p>
@@ -98,7 +93,7 @@ href="../Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-
 LED rail was previously fed from the DROK at 10.6 V (shared with STM32).
 Under the new split, the DROK is STM32-only at 9 V, and the wand LED
 rail runs <strong>direct from the PSU 13.8 V</strong> via the bay
-<strong>dual-bus distribution block</strong> (D-1459 design of record
+<strong>dual-bus distribution block</strong> (HL-PBB design of record
 2026-09-29; Halo v1 as-built used a single modified APIELE barrier
 strip) mounted above the PSU top. Top row = V+ (bussed with red jumper
 strip), bottom row = GND (bussed with black jumper strip); the 5
@@ -194,7 +189,7 @@ side</td>
 Robot 2W3W — see <a
 href="../Lumi_Wand_Integration.html"><code>Lumi_Wand_Integration.md</code></a>
 §6.2 for 3-variant BoM)</td>
-<td><strong>13.8 V input direct from PSU</strong> via the bay D-1459
+<td><strong>13.8 V input direct from PSU</strong> via the bay HL-PBB
 distribution block (design of record 2026-09-29; was modified-APIELE
 2026-07-29, and 10.6 V via DROK pre-split), I²C from RPi 5</td>
 <td>12-channel constant-current LED driver on 2× internal perfboard
@@ -313,7 +308,7 @@ planned 2026-10-13, HAT ordered</td>
 <td>1.5 A typ / 2.9 A peak committed (module: 3 A peak / ~2 A continuous
 — <strong>meter gate ≤1.8 A, Phase 7.6</strong>)</td>
 <td>7.5 W typ / 15 W peak</td>
-<td>D-1459 from CH1 → 3 A ATC fuse → MusRock on the PSU cover (beside
+<td>HL-PBB from CH1 → 3 A ATC fuse → MusRock on the PSU cover (beside
 the G469, moved one hole right) → C-to-C into the Waveshare PCIe TO M.2
 USB HAT+ (NVMe boot SSD + mic serial/UAC + sound-card stick). Net CH1
 delta ≈ +0.1 A: the STM32 internal 5 V regulator sheds the same
@@ -332,7 +327,7 @@ was missing from this table</strong></td>
 <td>13.8 V direct</td>
 <td><strong>~2.4 A</strong> all-12-full-white; ~1.0 A typical scene</td>
 <td><strong>33 W</strong> peak / ~14 W typical</td>
-<td>Bay D-1459 distribution block from CH1 (<a
+<td>Bay HL-PBB distribution block from CH1 (<a
 href="../Lumi_Wand_Integration.html#51-power-chain">split-rails
 2026-06-28</a>). Measured 2026-09-01 — <a
 href="../Lumi_Wand_Integration.html#53-power-draw-summary">Integration
@@ -1175,7 +1170,7 @@ connector with wire pigtail (typically 16-18 AWG)</td>
 2026-10-13</td>
 <td>22 AWG silicone / E0508 in (D16/D17) / C-to-C out</td>
 <td>ATC inline holder + plain USB-C cable</td>
-<td>D-1459 next free pair → 3 A fuse → MusRock (PSU cover, beside the
+<td>HL-PBB next free pair → 3 A fuse → MusRock (PSU cover, beside the
 G469 moved one hole right) → C-to-C → HAT power-only USB-C. ⛔ <em>Rev
 1: DROK #2 + pigtail — superseded same day (no room for a 2nd
 DROK).</em></td>

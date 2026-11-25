@@ -619,7 +619,7 @@ KESHY board.</p>
 <p><strong>Split rails.</strong> The wand LED rail is fed
 <strong>directly from the PSU 13.8 V rail</strong> through the bay
 <strong>dual-bus distribution block</strong> (<a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
 §11.3</a>); the DROK buck feeds only the STM32 board, at <strong>7.5
 V</strong> (operator 2026-11-02; the STM32 input is also the arm's
 servo-bus voltage). Reasons: the STM32 board is the power hub for the
@@ -629,15 +629,12 @@ the drivers more Vf headroom with no buck feeding a buck. The wand draws
 <strong>~2.4 A at 13.8 V</strong> (<a
 href="#53-power-draw-summary">§5.3</a>). Tether wiring: <a
 href="#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand">§10.5.2</a>.</p>
-<p>🎯 <strong>Distribution block:</strong> <strong>CZH-Labs
-D-1459</strong> or <strong>YRYAR HL-PBB-2-6-MINI</strong> dual-bus
-module, ferrule-based, no modification — <strong>from the Nova build
-on</strong>. <strong>Halo v1 as-built uses the modified APIELE</strong>
-barrier strip (retired: Ultra and new builds use the HL-PBB) (spec +
-port map: <a
-href="Power_Bay_Design.html#1137-apiele-barrier-strip--physical-spec"><code>Power_Bay_Design.md</code>
-§11.3.1</a>). Wiring + port map: <a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+<p>🎯 <strong>Distribution block:</strong> <strong>YRYAR
+HL-PBB-2-6-MINI</strong> dual-bus module, ferrule-based, no
+modification, on <strong>every build</strong> (operator, 2026-11-24):
+Ultra, Nova, Halo HV, and Halo when its bay is rebuilt. Halo v1 as built
+keeps its modified APIELE until then. Wiring + port map: <a
+href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
 §11.3</a>; part spec: <a
 href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
 §1.4</a>.</p>
@@ -668,7 +665,7 @@ href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alt
                                      └─► (other bay 13.8 V loads — INA226, etc.)
 
 
-                                     Wand tether: power leg (D-1459) + signal leg (G469),
+                                     Wand tether: power leg (HL-PBB) + signal leg (G469),
                                      meeting at ONE 6-pin JST-XH in the wand END PLATE
                                                      │
                                                      ▼
@@ -5225,7 +5222,7 @@ End-to-end diagram (power bay → arm → gripper → wand)</h3>
 <blockquote>
 <p>The tether is <strong>two independent cables up the arm</strong> — a
 <strong>power leg</strong> (13.8 V / <code>GND-power</code> /
-<code>GND-logic</code>, 22 AWG) off the D-1459, and a <strong>signal
+<code>GND-logic</code>, 22 AWG) off the HL-PBB, and a <strong>signal
 leg</strong> (SDA / SCL / 3V3) off the G469 — because they come from
 different sources. But they <strong>terminate in ONE 6-pin
 JST-XH</strong> at the wand's <strong>END PLATE</strong>, pins 1/2/6 and
@@ -5236,7 +5233,7 @@ href="#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand
 <p><strong>Power leg:</strong> 13.8 V and <code>GND-power</code> come
 <strong>direct from the PSU via the bay distribution block
 A1/B1</strong> (<a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--d-1459--hl-pbb-2-6-mini-dual-bus-distribution-module-adopted-2026-09-29"><code>Power_Bay_Design.md</code>
+href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
 §11.3</a>), not via the DROK and not via the G469. ⚡ <strong>The one
 power-leg wire that DOES land on the G469 is <code>GND-logic</code>, at
 pin 9</strong>: it must reach Pi ground, not PSU negative, or the wand's
@@ -5275,7 +5272,7 @@ from the Pi5 GPIO via the G469.</p>
          │                                                       │
          ▼                                                       │
    ┌───────────────────────────────────────────────────────────┐ │
-   │  D-1459 dual-bus distribution block (A=V+ / B=GND)        │ │
+   │  HL-PBB dual-bus distribution block (A=V+ / B=GND)        │ │
    │  — internal front-to-back copper conductors REMOVED so    │ │
    │  top row + bottom row are electrically independent.       │ │
    │  &quot;Power Distribution Block&quot; for the bay per §11.3 of      │ │
@@ -5329,7 +5326,7 @@ from the Pi5 GPIO via the G469.</p>
                      └── +13.8 V (wand V+) ─────┐                │
                                                  │                │
                                         (13.8 V + GND-power      │
-                                         land at D-1459 A1/B1,    │
+                                         land at HL-PBB A2/B2,    │
                                          top + bottom row.        │
                                          NOT &quot;unused G469       │
                                          screws&quot; — see note)      │
@@ -5354,13 +5351,13 @@ from the Pi5 GPIO via the G469.</p>
                      │                                 = GND-logic          │
                      │                                                      │
                      │  ⚡ GND-logic rides the POWER cable but lands         │
-                     │     HERE, on PI GROUND — never at the D-1459.        │
-                     │     Land it at the D-1459 and the wand&#39;s star        │
+                     │     HERE, on PI GROUND — never at the HL-PBB.        │
+                     │     Land it at the HL-PBB and the wand&#39;s star        │
                      │     ground is undone (§10.5.2).                      │
                      └───────────┬──────────────────────────┬───────────────┘
                                  │                          │
              +13.8 V ────────────┤                          │
-             GND-power ──────────┤  (both from D-1459 A1/B1)│
+             GND-power ──────────┤  (both from HL-PBB A2/B2)│
                                  ▼                          ▼
                     ┌──────────────────────────┐  ┌──────────────────────────────┐
                     │  WAND TETHER — POWER LEG │  │  WAND TETHER — SIGNAL LEG    │
@@ -5373,8 +5370,8 @@ from the Pi5 GPIO via the G469.</p>
                     │  pin 3 = GND-logic       │  │   6 nets total on 2 cables   │
                     │          (green, 24 AWG) │  │                              │
                     └────────────┬─────────────┘  └──────────────┬───────────────┘
-                       ↑ 13.8 V + GND-power → D-1459 A1/B1       │
-                         GND-logic → G469 PIN 9, NOT the D-1459  │
+                       ↑ 13.8 V + GND-power → HL-PBB A2/B2       │
+                         GND-logic → G469 PIN 9, NOT the HL-PBB  │
                          (the star ground — §10.5.2)             │
                                  │                               │
 ══════════════════════════════════│═══════════════════════════════│═══════════
@@ -5667,7 +5664,7 @@ href="#93b-end-cap--end-plate--retaining-ring-v911-active-3d-printed">§9.3b</a>
 <p>⚠️ <strong>At the BAY end they are two separate runs.</strong> Power
 and I²C+3V3 come from different sources — 13.8 V /
 <code>GND-power</code> / <code>GND-logic</code> off the
-<strong>D-1459</strong>, SDA / SCL / 3V3 off the <strong>G469</strong> —
+<strong>HL-PBB</strong>, SDA / SCL / 3V3 off the <strong>G469</strong> —
 and run independently up the arm with no shared jacket. They meet only
 at the wand's 6-pin shell.</p>
 <table>
@@ -5733,7 +5730,7 @@ so 203 mV is far below anything that matters. 22 AWG carries ~7 A at 30
 <td><strong>1</strong></td>
 <td><strong>13.8 V</strong> (from PSU direct)</td>
 <td>power</td>
-<td>Bay D-1459 distribution block, position <strong>A1</strong> (V+ bus
+<td>Bay HL-PBB distribution block, position <strong>A2</strong> (V+ bus
 from PSU CH1)</td>
 <td><strong>22 AWG</strong> (locked 2026-09-05) — crimps directly into
 the XH, ~203 mV drop at the measured **~2.4 A** peak (<a
@@ -5743,7 +5740,7 @@ href="#53-power-draw-summary">§5.3</a>).</td>
 <td><strong>2</strong></td>
 <td><strong><code>GND-power</code></strong></td>
 <td>power</td>
-<td>Bay D-1459 distribution block, position <strong>B1</strong> (GND bus
+<td>Bay HL-PBB distribution block, position <strong>B2</strong> (GND bus
 from PSU CH1 GND)</td>
 <td><strong>22 AWG</strong>, same as pin 1</td>
 </tr>
@@ -5790,7 +5787,7 @@ href="Lumi_Wand_Flashlight_Variant.html#384-p-ground-bus-board-40--locked-2026-0
 INTERLEAVE.</strong> The power leg takes pins <strong>1, 2 and
 6</strong>; the signal leg takes <strong>3, 4 and 5</strong>.
 <code>GND-logic</code> rides the power cable but lands on <strong>Pi
-ground</strong>, not the D-1459. Crimp by <strong>net label</strong>,
+ground</strong>, not the HL-PBB. Crimp by <strong>net label</strong>,
 never by leg order.</p>
 <blockquote>
 <h3 id="zap-why-there-are-two-grounds--gnd-power-and-gnd-logic">⚡ Why
@@ -5804,7 +5801,7 @@ Pi's, against ~990 mV of low-level margin, carrying the drivers'
 switching content.</p>
 <p><strong>A second ground wire on its own is worse than none.</strong>
 Landing a <code>GND-logic</code> wire at G469 pin 9 (Pi ground) while
-<code>GND-power</code> lands at the D-1459 (PSU negative), with the two
+<code>GND-power</code> lands at the HL-PBB (PSU negative), with the two
 tied inside the wand, parallels the return between two bay nodes that
 are already tied. LED current then splits by conductance:</p>
 <table>
@@ -5837,7 +5834,7 @@ are already tied. LED current then splits by conductance:</p>
 nets inside the wand</strong> (separate strips on every rail, <a
 href="#1053-the-three-rails--one-board-built-three-times">§10.5.3</a>),
 so the LED current has <strong>exactly one path home</strong>. They meet
-at a single star point: in the bay (<code>GND-power</code> → D-1459 B
+at a single star point: in the bay (<code>GND-power</code> → HL-PBB B
 bus, <code>GND-logic</code> → <strong>G469 pin 9</strong>) or at the
 pack in the flashlight SKU.</p>
 <p>⚠️ <strong>The one consequence:</strong> the PCA9685 drives the
@@ -6018,7 +6015,7 @@ post face presses the copper there.</li>
 <code>GND-power</code> returns the drivers and the fan;
 <code>GND-logic</code> returns the PCA9685 and the TMP102. They meet at
 one point only: in the power bay for the tethered wand
-(<code>GND-power</code> at the D-1459, <code>GND-logic</code> at G469
+(<code>GND-power</code> at the HL-PBB, <code>GND-logic</code> at G469
 <strong>pin 9</strong>), or at the pack for the flashlight (<a
 href="Lumi_Wand_Flashlight_Variant.html#384-p-ground-bus-board-40--locked-2026-09-19">Flashlight
 §3.8.4</a>). The PCA's PWM lines therefore see up to −102 mV of
@@ -6531,7 +6528,7 @@ end-plate inlet</strong>, pins <strong>1, 2 and 6</strong>) —
 <td>3× <strong>22 AWG</strong> (13.8 V / <code>GND-power</code> /
 <code>GND-logic</code>; continuous — <a
 href="#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand">§10.5.2</a>)</td>
-<td>bay end = 13.8 V + GND-power ferruled into the D-1459 block,
+<td>bay end = 13.8 V + GND-power ferruled into the HL-PBB block,
 <strong>GND-logic ferruled into G469 pin 9</strong> / wand end =
 <strong>3 of the 6 contacts</strong> in the shared 6-pin female</td>
 </tr>
