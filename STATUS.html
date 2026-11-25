@@ -1564,17 +1564,27 @@ limit 6.0); 5.27 cm3 of lip trees (29.6 %) -&gt; 0, plate 24 3 h 11 /
 54.6 g -&gt; 2 h 36 / 49.7 g, 0 floating starts; the X1C 16 copy bare
 too (was 11.8 %); the lip's underside (the clamp face on the extension
 flange) prints as a bare overhang, CAD's 45 deg lip chamfer if it is
-rough. <strong>PARTS COVERAGE GATE</strong>
+rough. <strong>X1C 15 = the KNOB CRADLE parts, back on a plate</strong>
+(LumiAI CTO 2026-11-25: the operator's 11-17 order keeps the knob cradle
+current, plates included, until the quick release is proven; the CTO's
+11-14 CRADLE_DRAFT_OUT had dropped them): jaw frame (X180, strong auto
+trees for its 248.8 mm2 ledge at z 16.6, 6.4 %) + knob frame + top T
+ledge + both side T ledges, red HS PETG slot 2, the released knob
+geometry (exports unchanged since 11-10; flag-off proof); 1 h 46 / 32.9
+g, 0 floating starts; appended LAST (no plate number moves). Their TPU
+pads are on the 0.6 book's plates 01 / 02 (HOLD 0.6 nozzle = the nozzle
+swap). <strong>PARTS COVERAGE GATE</strong>
 (<code>cad/print/gate_parts_coverage.py &lt;X1C&gt; &lt;H2S&gt;</code>,
-LumiAI CTO 2026-11-25): every part the builder knows (its printer map
-DIST + every stem with PART_SETTINGS: the carrier, tray, bars, stubs,
-cradle parts, lock station) is on a printable plate in one of the two
-books; run by slice_all on every book build (it pairs the sliced book
-with the other one in cad/print) (a part only on a HOLD plate is
-reported as held; RETIRED_STEMS and NOT_ON_A_PLATE carry their reasons);
-PASS today (75 parts; held: the desk fence halves; retired: the old LV
-fence halves, the untabbed straps, the knob-frame T ledge, the cradle's
-4th arm; off: the cut test coupons); bites
+LumiAI CTO 2026-11-25): every part the builder knows (DIST + every
+PART_SETTINGS stem + every cradle stem it names, loops included: 91
+parts) is on a printable plate in one of the THREE books (X1C, H2S, the
+H2S 0.6 TPU book, whose HOLD 0.6 nozzle plates count as held); run by
+slice_all on every book build (it pairs the sliced book with the other
+one in cad/print) (a part only on a HOLD plate is reported as held;
+RETIRED_STEMS and NOT_ON_A_PLATE carry their reasons); PASS today (75
+parts; held: the desk fence halves; retired: the old LV fence halves,
+the untabbed straps, the knob-frame T ledge, the cradle's 4th arm; off:
+the cut test coupons); bites
 <code>LUMI_COVERAGE_BITE=lumi_wand_cyl_ear</code> (DIST) and
 <code>=lumi_powerbay_carrier_HV</code> (non-DIST) FAIL. <strong>X1C BOOK
 = 14 PLATES, the ASA plates dropped</strong> (operator 2026-11-25, via
