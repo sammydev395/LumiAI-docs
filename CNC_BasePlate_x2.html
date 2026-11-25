@@ -30,6 +30,24 @@ the carriage holes on 2026-11-24 ("rail carriages still stay"), so all
 18 are drilled. Same 38-edge fence outline, engrave and scribe as the
 other plates.</p>
 <blockquote>
+<p>🛑 <strong>HOLD — LumiAI_Base_Plate_HV.nc is NOT FOR CUTTING
+(2026-11-24, CTO).</strong> The NC is built at PSU length 159 (front PSU
+holes 154.0 apart along the length); CAD's committed HV plate uses 158
+(153.0 apart), so the NC and the CAD plate disagree by 1 mm on the front
+PSU hole. Do not cut this file, and do not cut Nova's plate from it,
+until the operator calipers the PSC-150 hole spacing. Then CAD and CNC
+regenerate from the same value, and this hold comes off.</p>
+</blockquote>
+<blockquote>
+<p>🔧 <strong>Assembly order (CAD 2026-11-24, plate gate):</strong> all
+8 carriage holes clear the fence wall with the M3 head (r 2.75; bite
+273.3 mm3), but <strong>CARRIAGE.R.3 and CARRIAGE.L.2 have fence
+material over them at Z 44–60</strong>: bolt the rail carriages to the
+plate <strong>before the fence goes on</strong>, or use a short L-key.
+This check had been silently skipped on HV plate builds until 2026-11-24
+(it read a stale fence filename); it now runs on every build.</p>
+</blockquote>
+<blockquote>
 <p>⏳ <strong>Open check: PSU case length.</strong> The front PSU hole
 follows the PSC-150-12 case length. The operator says it is "officially
 159"; the model constant <code>HV_PSU_LEN</code> still reads 158

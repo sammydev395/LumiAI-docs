@@ -4144,6 +4144,30 @@ session already made it.</p>
 </blockquote>
 <h2 id="recently-decided">Recently decided</h2>
 <ul>
+<li>2026-11-24 (operator directly + CTO; CAD): <strong>the LV power-bay
+CARRIER is DROPPED. There is ONE carrier for LV and HV bays (the HV v3
+carrier).</strong> It "never went into production", was printed 2–3
+times, and was never wired. Its build path was removed from
+<code>lumi_powerbay_carrier.py</code> (4,743 → 1,710 lines; the HV deck
+rebuilds identical). <code>lumi_powerbay_carrier</code> exports (step /
+stl / _ASSY / output DRAFT) were git rm'd. <strong>X1C 21 = "21 RETIRED
+- do not print"</strong> (3dPrint). The <strong>LV PSU strap + tab cap
+stay</strong> (Halo / Ultra spares, X1C 22 unchanged, byte-identical
+blobs). They moved to the new <code>lumi_powerbay_psu_strap.py</code>,
+which is gate-only by default (rebuild == committed export) and
+re-exports only with <code>LUMI_EXPORT=1</code>.
+<code>check_assembly_fit</code> lost checks 3–4 (carrier holes).
+Electronics: <code>gen_carrier_figures.py</code> /
+<code>check_figures_match_docs.py</code> read the deleted DRAFT layout
+and need re-pointing; the D-1459 text in the docs is theirs. <strong>Sum
+rule</strong> on every bay volume probe (<code>lumi_probe</code>,
+b6df1f72). It exposed the HV plate's carriage-head check, which had been
+SKIPPED since 36a0b571 (fixed; it now reads <code>_HV_ceiling</code>; a
+missing fence stops the build). <strong>Assembly order on Nova (carriage
+holes):</strong> CARRIAGE.R.3 and L.2 have fence material over them at Z
+44–60. <strong>Bolt the rail carriages BEFORE the fence goes
+on</strong>, or use a short L-key (head zones clear; this is not a
+clash).</li>
 <li>2026-11-22 (CAD routed tether, full run 2026-11-21 23:24;
 Electronics): <strong>tether cuts set in <a
 href="Power_Bay_Design.html">Power_Bay §16c</a> rows 14–15:</strong> 1.0 m
