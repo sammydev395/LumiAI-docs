@@ -35,17 +35,27 @@ operator measured the PSC-150-12 mounting holes at 153.5 mm centre to
 centre along the length, so the case length is 158.5 (CAD plate
 @7c7ad472, <code>HV_PSU_LEN</code> = 158.5). The NC is built from that
 value: front PSU hole FILE Y −113.934, machine Y −115.477; back PSU hole
-unchanged (machine −42.167, 38.023). ⛔ The earlier build at 159
-(@4b4ce90d, front hole −115.977) was 0.5 mm off and is superseded; the
-HOLD that stood on this file earlier today is lifted by the regenerated
-NC. The 8 POST and 8 carriage holes do not depend on it.</p>
+unchanged (machine −42.167, 38.023). The 8 POST and 8 carriage holes do
+not depend on it.</p>
 </blockquote>
 <blockquote>
 <p>ℹ️ <strong>Countersinks (CAD, 2026-11-24):</strong> the operator uses
 flat-head M3 for the rail carriages so they sit flush. Neither the model
 nor the NC has a countersink: the carriage holes are plain Ø3.4 through.
-Decision pending with the operator: hand-countersink the 8 carriage
-holes (90°, to about Ø6), or add a spot op to the NC.</p>
+<strong>Decided (operator, via CTO/CAD):</strong> the operator
+countersinks the 8 carriage holes by hand (90°, to about Ø6 for the flat
+M3 head). No countersink op in the NC; the holes stay plain Ø3.4
+through.</p>
+</blockquote>
+<blockquote>
+<p>🔧 <strong>Assembly order (CAD 2026-11-24, plate gate):</strong> all
+8 carriage holes clear the fence wall with the M3 head (r 2.75; bite
+273.3 mm3), but <strong>CARRIAGE.R.3 and CARRIAGE.L.2 have fence
+material over them at Z 44–60</strong>: bolt the rail carriages to the
+plate <strong>before the fence goes on</strong>, or use a short L-key.
+The plate build runs this check on every build and stops if the fence
+STEP is missing. The carriage holes are countersunk by hand for
+flat-head M3 (see above).</p>
 </blockquote>
 <p>Regenerate:
 <code>LUMI_BAY_HV=1 ~/.local/bin/FreeCAD-weekly-2026.11.11 -c "exec(open('cad/freecad/gen_baseplate_nc.py').read()); import sys; sys.exit(0)"</code>
