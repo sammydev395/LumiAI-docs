@@ -775,8 +775,11 @@ need a rebuild on the new exports (3D Printing).</td>
 <td></td>
 </tr>
 <tr>
-<td>🔶 <strong>Halo HV BAY v3: fence + plate + bars/tray + carrier BUILT
-(operator + CTO 2026-11-24; real battery + PSC-150 fitted by the
+<td>🔶 <strong>BAY v3 = the ONE bay for every build (Ultra, Halo, Nova,
+Halo HV): fence + bars/tray + carrier (+ the plate for new builds); NO
+print hold (operator 2026-11-24: "there are no more holds ... It's for
+everything"); file names keep <code>_HV</code> for now (book paths).
+Built (operator + CTO 2026-11-24; real battery + PSC-150 fitted by the
 operator; render <a
 href="images/hardware/hv_bay_built_v3.png">hv_bay_built_v3.png</a>)</strong></td>
 <td><strong>Battery:</strong> the real pack is 70 front-to-back
@@ -1021,65 +1024,12 @@ coupon and spring ≤30 mΩ (M1.2 screws in hand)</td>
 <td>gates the whole 22 AWG G469 harness</td>
 </tr>
 <tr>
-<td>🔶 <strong>POWER-BAY CARRIER: HL-PBB posts for Ultra; DROK IN/OUT
-ends swapped, PHONE-IN on A6/B6 (CAD <code>a3742963</code>; X1C plate 21
-released with the fence front half, as a pair)</strong></td>
-<td><strong>X1C plate 21 = carrier <code>a3742963</code>, released
-together with the fence front half (plate 12), as a pair (CTO
-2026-11-15): the fence front affects the carrier (operator), so the two
-plates are held and released together, built on one CAD commit, and
-print once Karma passes both.</strong> The carrier (gates PASS, 106 ok):
-the DROK's IN block is at its button end (X 193) and OUT at its POT end
-(X 266) (operator). "DROK in" runs the trunk → Y_BB → X_DOUT → the YF
-lane → X 193; "DROK out" leaves at X_DIN, climbs to Y_BB and runs to the
-riser; PHONE-IN lands on block A6 / B6. The YF-lane fork posts move with
-them. <strong>Fork seats stack real wire heights</strong>
-(<code>bundle_dims</code>: each column is its conductors' own heights
-summed, tallest first into the shorter column, as the wired assembly's
-packing() stacks them; a seat holding one wire size is unchanged): the
-two seats that carry the Deans pair (2 × 18 AWG on edge, 6.7 tall), at
-(251.9, −42.0) and (245.4, −42.0), are 27.25 tall, and the tallest fork
-on the carrier is 28.47, its top at Z 76.46, 13.24 under the lid.
-<strong>Fork lid gate</strong> (<code>FORK_LID_CLEAR</code> 3.0, probed
-on the solid): no plastic above Z 86.7 (LID_Z 89.7 − 3.0) inside any
-route fork's footprint; its bite rebuilds the (251.9, −42.0) post with
-every row at the tallest conductor's height and reads Z 91.75, 66 mm³
-over the line. The H2S book has no carrier plate. <strong>Plate 22
-(straps + tab cap) is unaffected and stays released.</strong>
-<code>lumi_powerbay_carrier.py</code> (gates PASS): Ultra's block is the
-<strong>HL-PBB-2-6-MINI</strong> (operator). One carrier carries both
-footprints. The HL-PBB is a RAISED board: 2 × M3 posts on its O4 holes
-64 c/c (operator caliper) at (206.1, −20.5) / (270.1, −20.5), 13.5 tall
-(board top Z 84.5, 5.2 under the lid), feed = the −X tower. The X_T2 /
-X_TRUNK lanes run under it. Forks under it stay below its pins (5 mm,
-operator; <strong>trim the 4 long 6–7 mm edge pins to ≤ 5 before
-fitting</strong>) or below its bare PCB between the cage rows. Fan 2
-power leaves its splice on the trunk lane, so no turn sits under the
-pins. <strong>Bay TMP102: soldered chain-end leads (no header / plug),
-on 8 mm posts</strong> (Electronics), so no HL-PBB pin overhangs it in
-plan. <strong>X1C book plate 21 = <code>CARRIER a3742963</code>
-(3dPrint, measured on the book's own mesh):</strong> the carrier alone
-on the plate, 228.4 × 124.5 × 40.4 (X 13.8..242.2, Y 68.3..192.7), flat,
-posts up, long axis along X (<code>R_Z90</code>), outer-only 10 mm brim,
-ending 53.3 from the back edge (BACK_KEEPOUT 30), 58.3 from the front
-and 3.8 from the left and right edges; grey PETG+ slot 3, 0.2 layers, 3
-walls, 25 % infill, no supports, outer brim 10 / gap 0, outer wall 50.
-Highest plastic Z 84.35 (the mains towers), 5.35 under the lid, no
-vertex above Z 86.7; the mesh top inside each of the 56 route-fork
-footprints agrees with CAD's layout file (tallest 76.46), and the same
-probe on the <code>f45172dc</code> carrier reads 91.74 on the two Deans
-posts. verify PASS (0 failures), gate_slots PASS, gate_floating plate 21
-PASS (0 floating regions). The carrier and the fence front half are the
-only meshes that differ from the previous book. Print-gate read on this
-carrier's STEP: one valid solid, 0 cantilevers, 0 curved ceilings, 0
-steep unsupported faces, 2 bridges of 2.0 mm; a 12 mm ledge added at its
-top edge reads as a cantilever. The INA226-DROK (INA3) is on the fence
-front wall, not on this carrier. <strong>Figures (2026-11-15):</strong>
-gen_carrier_figures.py output (routing PNG + HTML with the INA226-DROK
-board and its row 6 / row 13 runs from the wired assembly's run file,
-mounting points with the HL-PBB posts, in-fence, IP6518) on this carrier
-+ fence; check_figures_match_docs.py ok; plate 12 carries the fence
-front half of the same commit (the FENCE row).</td>
+<td>⛔ <strong>LV power-bay carrier: DROPPED (operator 2026-11-24); X1C
+plate 21 = "21 RETIRED - do not print" (3dPrint 77a452e1)</strong></td>
+<td>The bay's one carrier is the BAY v3 carrier above
+(<code>lumi_powerbay_carrier.py</code>, <code>main_hv</code>; CAD
+8638bb4e). The LV PSU strap + tab cap stay printable (X1C 22) from
+<code>lumi_powerbay_psu_strap.py</code>.</td>
 <td></td>
 </tr>
 <tr>
@@ -4157,6 +4107,21 @@ session already made it.</p>
 </blockquote>
 <h2 id="recently-decided">Recently decided</h2>
 <ul>
+<li>2026-11-24 (operator via Electronics-Assembly + CTO; CAD):
+<strong>Ultra takes the BAY v3 set</strong> (fence, bars + tray,
+carrier) <strong>on its own base plate with its PSC-100.</strong> No
+plate holes are needed for the set: the fence posts match, the tray is
+located by the bay, and the bars screw to the fence. <strong>The PSC-100
+moves 13.0 mm back</strong> (X unchanged), so its terminal strip sits
+where the PSC-150's does: its back face is 5.6 from the pack, the same
+as the PSC-150, and the deck slot (Y 25–45) and the buck are unchanged.
+The operator marks through the PSU's holes and drills the 2 new ones by
+hand; the model puts them at FILE (190.36, −84.43) / (272.61, 39.57).
+One route set serves both PSUs (the same terminal line). ⏳ Open before
+drilling: the new front hole is 6.48 c-c from carriage hole (196.37,
+−82.00), and that carriage head sits under the PSU footprint. Which face
+each head is on, and whether the PSU has feet, is the operator's to
+confirm.</li>
 <li>2026-11-24 (operator directly + CTO; CAD): <strong>the LV power-bay
 CARRIER is DROPPED. There is ONE carrier for LV and HV bays (the HV v3
 carrier).</strong> It "never went into production", was printed 2–3
