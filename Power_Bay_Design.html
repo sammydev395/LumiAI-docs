@@ -3905,7 +3905,7 @@ W, silk "IP6518_A1V1.0"; Creator builds)</td>
 wall's lower straight, front-right corner, 93.6 mm from the mains
 (CAD)</td>
 <td>M2.5 self-tap, diagonal pair</td>
-<td>PHONE-IN 234–237 routed; USB-C 71 to the lid window (CAD 3debe125).
+<td>PHONE-IN 232.9 routed; USB-C 71 to the lid window (CAD 3debe125).
 Vent slots only if the IC reads &gt; 70 °C after 30 min of a 45 W
 charge</td>
 </tr>
@@ -4132,34 +4132,23 @@ resized.</li>
 <li><strong>Its own forks, in its own lane.</strong> <strong>Never share
 a fork, tie or bundle with ANY LV conductor.</strong> <strong>≥ 8 mm
 from every LV route, board, screw, ferrule and fork.</strong> Crossings
-with LV only at 90 ± 10°, mains above, in its own raised hook (one sits
+with LV only at 90 ± 10°, mains above, in its own raised hold (one sits
 over F1's nose end, 9.4 mm clear).</li>
-<li><strong>Holds: rigid mains-only hooks printed into the carrier and
-towers</strong> (CAD hook-fork coupon 2, 88681a19). Nothing flexes: a
-45° ramp leads in, the item passes under an <strong>R 1.0 pinch
-corner</strong>, then sits <strong>free</strong> in the seat (no
-standing pressure), and a pull locks it against the hook face. The
-measured mains jacket wall is only ~0.3–0.4 mm, so the squeeze at the
-pass is capped at <strong>≤ ~0.15 per jacket</strong>:
-<ul>
-<li><strong>M, the tied L / N / E bundle</strong> (Ø3.70–4.00, one
-mains-only bundle where the three run together, C1 → PSU): pinch
-<strong>0.30 at Ø4.00</strong> (~0.10–0.17 per jacket); free at Ø3.70,
-where it only locates.</li>
-<li><strong>M1, one conductor</strong> (the L leg alone, rocker LOAD →
-C1): pass <strong>0.15 at Ø2.00</strong>, ~0 at Ø1.85.</li>
-<li><strong>Tie slots</strong> (two 4.2 × 1.8 through-slots just past
-the hook end, one each side) <strong>only at the two strain-relief
-holds: C1 at the C14 and the L leg's first hold at the rocker
-LOAD.</strong> A zip tie, snug and not cinched, binds the wire to the
-hook there and carries the pull; every other mains hook only
-locates.</li>
-<li>Every face the jacket slides over is radiused (R 1 corner, R 1
-channel ends, 45° ramp) with no seams or stringing; pitch ≤ 50 mm.
-PETG/ASA is fine, since the hook isn't the insulation.
-<strong>Assembly:</strong> inspect the jacket after seating; a scuff or
-nick means a new wire.</li>
-</ul></li>
+<li><strong>Holds: six mains tie caps</strong> (carrier release
+9ef299b1), towers at (266, 99), (281, 91), (289, 70), (289, 48), (266,
+109.5) and <strong>C1 (231, 109.5)</strong>. The L / N / E bundle
+(Ø3.70–4.00, mains only) rests in a <strong>saddle on the tower top (R
+2.1, 1.0 deep, R 1 edges)</strong> and is held by <strong>one zip tie
+through the cap's tunnel</strong>: snug, not cinched, <strong>mains
+only, no LV in or touching the tie</strong>, head and flush-trimmed tail
+on the cap side away from the jacket and from LV (nearest LV to a mains
+tie, loop and head modelled: 11.35). The tie holds the bundle in every
+orientation, the inverted ceiling build included. <strong>C1's tie is
+the C14-end strain relief.</strong> <strong>The L leg's first
+hold</strong>, on the fence post block at (243.45, 126.75, Z 35), keeps
+its own strain-relief tie. <strong>Assembly:</strong> inspect the jacket
+after tying; a scuff or nick means a new wire. PETG/ASA is fine, since
+the cap isn't the insulation.</li>
 <li><strong>Never over the carrier's top face or the LV half of the
 slot:</strong> the run reaches the strip through the slot's +X opening
 at the L/N/⏚ end.</li>
@@ -4172,9 +4161,9 @@ tug-test every mains termination (§16.1).</li>
 termination</strong>, so it's the last to break. Earth bond stays a ring
 lug (A5).</li>
 <li><strong>Carrier removal must not disturb mains
-terminations:</strong> <strong>open hooks</strong> the cable lifts out
-of (cut the two strain-relief ties), plus a service loop near the inlet,
-so the carrier lifts off without un-terminating anything.</li>
+terminations:</strong> <strong>cut the mains ties and lift the bundle
+off its saddles; never un-terminate.</strong> A service loop near the
+inlet lets the carrier lift off with every termination intact.</li>
 <li><strong>Terminations:</strong> 18 AWG takes the <strong>red-band
 (22–18)</strong> fully insulated Fastons and forks; the C14 N double
 crimp (2 × 18 AWG) goes into a red one too (operator). Straight fully
@@ -5507,7 +5496,8 @@ Carrier harness build list — every harness, by route ID (every build,
 (Ultra, Nova, Halo HV; Halo at its rebuild). Route IDs and gauges match
 the §11.3.9 harness table. <strong>Routed</strong> = CAD's wired bay
 (e74bddb2; Ø3.3 re-gate 2c45839e; lid-window ends e974f78a; IP6518 +
-buck-clear risers 3debe125), centreline face to face, no strip or slack.
+buck-clear risers 3debe125; tie anchors + mains tie caps, carrier
+release 9ef299b1), centreline face to face, no strip or slack.
 <strong>Cut</strong> = routed + both strips + ~20 mm, rounded up. Every
 18 AWG run is gated at Ø3.3, above the stock's measured Ø1.85–2.00 (CAD
 2c45839e, all PASS: mains ≥ 8 at 8.65 nearest, BATT pair 1.66 to the
@@ -5524,18 +5514,24 @@ a mid-span loop sags toward the PSU and the mains towers: every LV run
 must stay <strong>≥ 8 mm from L / N / E at full sag</strong>. A printed
 rib is a retention stop only, never mains insulation; the gap stays
 air.</p>
-<p><strong>Lane bundles (default: zip ties).</strong> Wires that share a
-fork channel are tied into one lane bundle: a nylon zip tie (stock,
-Assembly Guide §1) at each fork and every ~40 mm between. Ties go on
-<strong>after crimping</strong>, snug but not cinched on the silicone,
-trimmed flush with no tail toward a wire, and are cut for service.
-<strong>Alternative:</strong> a heat-shrink band from the 2:1 kit, slid
-on before the second end is crimped: <strong>Ø3</strong> for two 22 AWG;
-<strong>Ø5</strong> for three or four 22 AWG, or two or three 18 AWG;
-<strong>Ø8</strong> for four 18 AWG, or two to four 16 AWG (sized so the
-band slides over the bundle and still grips it at half its diameter).
-<strong>Never tie mains with LV:</strong> L / N / E are bundled only
-with each other, in their own clips.</p>
+<p><strong>Holds (carrier release 9ef299b1): every run is zip-tied,
+nothing clips.</strong> Ties are nylon (stock, Assembly Guide §1),
+fitted <strong>after crimping</strong>, snug but not cinched on the
+silicone, trimmed flush with no tail toward a wire, and cut for service.
+<strong>Deck (LV only):</strong> each deck run is tied to one of the
+<strong>16 low tie anchors</strong> (a 4 × 10 tunnel 4 above the deck);
+wires sharing a channel are tied together into one lane bundle.
+<strong>Standoff ties (LV only, under the TMP102 PCB, the board not
+loaded, cuttable with it in place):</strong> PIR back-left → standoff
+(186.5, 3.5); PIR back-right → (186.5, 23.9); tether power → (186.5,
+3.5) at two sites. <strong>DC rocker run:</strong> tied on top of its
+retain tower. <strong>Mains:</strong> its own six tie caps (§11.3.9
+mains route, item 4); <strong>never tie mains with LV.</strong>
+<strong>Alternative to a lane tie:</strong> a heat-shrink band from the
+2:1 kit, slid on before the second end is crimped: <strong>Ø3</strong>
+for two 22 AWG; <strong>Ø5</strong> for three or four 22 AWG, or two or
+three 18 AWG; <strong>Ø8</strong> for four 18 AWG, or two to four 16
+AWG.</p>
 <table>
 <thead>
 <tr>
@@ -5554,11 +5550,11 @@ with each other, in their own clips.</p>
 <td>1</td>
 <td><strong>MAINS</strong></td>
 <td>3 × 18 AWG silicone, 600 V-rated, as-is</td>
-<td><strong>L</strong> ~284 (79 from the rear AC rocker LOAD, then the
-shared lane), <strong>N / E</strong> 203–208 from the C14; jumpers
-<strong>A2</strong> C14 L → AC rocker LINE, <strong>A4a</strong> C14 N →
-AC rocker LAMP</td>
-<td><strong>L 320, N 245, E 260; A2 135, A4a 150</strong> (jumpers:
+<td><strong>L 277.9</strong> (94.8 rocker LOAD → C1, then 183.1 in the L
+/ N / E bundle), <strong>N / E 214.6</strong> (31.5 C14 → C1 + 183.1);
+jumpers <strong>A2</strong> C14 L → AC rocker LINE, <strong>A4a</strong>
+C14 N → AC rocker LAMP</td>
+<td><strong>L 315, N 255, E 270; A2 135, A4a 150</strong> (jumpers:
 string-check)</td>
 <td>C14 and rear AC rocker: <strong>straight fully insulated 4.8 mm
 Fastons, red (uxcell FDFN1-187)</strong>; the C14 N double crimp (A4 +
@@ -5754,8 +5750,9 @@ bounds; string-run on Halo before crimping)</td>
 <td>15a</td>
 <td><strong>PHONE-IN</strong> <em>(Creator builds)</em></td>
 <td>2 × 22, twisted</td>
-<td>234–237: up the +X wall beside the IP6518, through the notch in the
-carrier corner, over the buck at Z 85, down to A6 / B6</td>
+<td>232.9: IP6518 VIN pads → riser to the deck → along the +X strip (X
+279.5) → over the buck along Y 17 → up HV5's lane (X 245) → under the
+HL-PBB along Y 50 → A6 / B6, all on the deck, tied to its anchors</td>
 <td><strong>280</strong></td>
 <td>HL-PBB <strong>A6: E0508</strong> (V+); <strong>B6: one E7508 shared
 with the LAMP 22 AWG</strong> (row 3)</td>
@@ -5849,7 +5846,7 @@ the bench (operator, 2026-11-24)</td>
 <tr>
 <td><strong>18 AWG</strong></td>
 <td><strong>~2.6 m (~8.5 ft)</strong></td>
-<td>MAINS 1.11 (5 pieces), CH1 0.20, ROCKER 0.50, BLK-IN 0.13, BATT
+<td>MAINS 1.13 (5 pieces), CH1 0.20, ROCKER 0.50, BLK-IN 0.13, BATT
 0.66</td>
 </tr>
 <tr>

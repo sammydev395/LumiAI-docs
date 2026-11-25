@@ -225,7 +225,7 @@ back ~5 cm.</td>
 heat-shrink kits; plenty in all sizes, operator 2026-11-24)</td>
 <td>Assorted lengths / widths</td>
 <td><strong>Stock.</strong> Carrier lane bundles: the default tie for
-wires sharing a fork channel (Power_Bay §16c <em>Lane bundles</em>), and
+wires sharing a fork channel (Power_Bay §16c <em>Holds</em>), and
 general harness grouping. Fit after crimping; snug, not cinched on
 silicone; trim flush; cut to service.</td>
 </tr>
@@ -3095,6 +3095,16 @@ href="Power_Bay_Design.html#1139-power-bay-carrier--layout-requirements-in-desig
 nylon</strong>); one distribution block per robot; INA226-MAIN +
 INA226-BATT side by side; F1 in its cradle; the mains on its own
 right-edge lane.</p></li>
+<li><p><strong>Service (carrier release 9ef299b1):</strong></p>
+<ol type="1">
+<li>To reach the MECCANIXITY breakout screws: cut the stretch-post ties
+and lift the raised bundle (I²C TMP102 → INA3, Mus-14 in) aside.</li>
+<li>To remove the carrier (desk build): lift the IP6518 IN pair aside
+from the right stub screw first. No unsoldering.</li>
+<li>Mains: cut the mains tie caps' ties and lift the bundle off its
+saddles; never un-terminate (Power_Bay §11.3.9 mains route, item
+8).</li>
+</ol></li>
 <li><p><strong>Wiring schematic:</strong> routes are unchanged through
 v18d, and the route IDs are the labels embossed on the carrier.</p>
 <p><img src="images/power_bay/carrier_wiring.png"
