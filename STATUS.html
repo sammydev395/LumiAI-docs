@@ -1539,12 +1539,15 @@ reprinted): male (the shell's M88×3 on a 4 mm grip, grip down) + female
 24.8 g; the female's internal 45° flank slices as "Bridge" layer by
 layer -- watch it for droop). <strong>X1C 21 RETIRED</strong> (operator
 2026-11-24: the LV power-bay carrier is DROPPED, one carrier for LV and
-HV, the HV one; CAD <code>8638bb4e</code> deleted its exports): an EMPTY
-placeholder plate named "21 RETIRED - do not print", so X1C 22-35 keep
-their numbers (LumiAI CTO, option B; renumber only at the next
-deliberate book reset). X1C 22 (PSU strap + tab cap + tabbed straps L/R)
-and 36 (straps) stay as spares / reprints for Halo and Ultra; the PSU
-strap and tab cap now build from
+HV, the HV one; CAD <code>8638bb4e</code> deleted its exports): a
+placeholder plate named "21 RETIRED - do not print" carrying only the
+RETIRED tag (20 × 10 × 0.6 PLA slot 1,
+<code>cad/print/gen_retired_tag.py</code>; an empty plate breaks
+Studio's CLI slice-all, rc -50, LumiAI 3DPrinter; verify now FAILS an
+empty plate), so X1C 22-35 keep their numbers (LumiAI CTO, option B;
+renumber only at the next deliberate book reset). X1C 22 (PSU strap +
+tab cap + tabbed straps L/R) and 36 (straps) stay as spares / reprints
+for Halo and Ultra; the PSU strap and tab cap now build from
 <code>lumi_powerbay_psu_strap.py</code>, exports byte-identical. X1C
 verify PASS; the H2S book is unaffected (rebuilt byte-identical).
 <strong>H2S 34 = TEST, the LENS-PLATE MEMBRANE</strong> (CAD
