@@ -573,5 +573,67 @@ layer line + an across-layer strength row; U-slot unchanged.</td>
 forks hold, the carrier (H2S 29) prints in blue S1. Fit not yet
 tested.</td>
 </tr>
+<tr>
+<td>2026-11-25</td>
+<td>H2S / Ext / NylonX (Generic PA-CF)</td>
+<td>lumi_wand_cyl_lens_plate_MEMBRANE_TEST.stl (alias of exports
+lumi_wand_cyl_lens_plate.stl)</td>
+<td>1</td>
+<td>test</td>
+<td>89f083dae9549ac9</td>
+<td>H2S 27 @ ed13b0fb (membrane lens plate, no supports by design)</td>
+<td>failed</td>
+<td>Ext mapping confirmed (65280). First layer clean on camera at L2;
+clean through L7 by MQTT (260/65, about 1.2 min a layer, no HMS). Then
+the whole part, towers included, came off the bed and was carried on the
+nozzle (operator); H2S HMS 0x03001A00/0x00020001 at the loss. An early
+adhesion failure, not the membrane (the bridge is at L87). No frames
+between L3 and the loss: the combined watcher had exited on the X1C
+pause (now one watcher per printer). Bed, glue and NylonX dryness to be
+checked by the operator.</td>
+</tr>
+<tr>
+<td>2026-11-25</td>
+<td>X1C / S2 / red HS PETG</td>
+<td>lumi_bigclaw_phone_cradle_aback_qr_lock_station_pawl.stl</td>
+<td>1</td>
+<td>test</td>
+<td>ab24efef6072ad15</td>
+<td>X1C 28 @ b3b3f703 (now X1C 14 @ 0e5936c0; production pawl CAD
+faa0db97, frame + carrier deleted in Studio)</td>
+<td>printed</td>
+<td>Production pawl, flat (tab 7.0, flared neck). 95 layers. Paused at
+L2 by the X1C's AI detection (0x03008003) on a purge-string clump beside
+the coupon; the operator cleared it and resumed. All three parts were
+building cleanly at L20; finished clean. Remove by flexing the plate,
+never lever the tab. Fit not yet tested.</td>
+</tr>
+<tr>
+<td>2026-11-25</td>
+<td>X1C / S2 / red HS PETG</td>
+<td>lumi_bigclaw_phone_cradle_aback_qr_lock_station_block.stl</td>
+<td>1</td>
+<td>test</td>
+<td>e0362e1d7dabae49</td>
+<td>X1C 28 @ b3b3f703 (now X1C 14 @ 0e5936c0)</td>
+<td>printed</td>
+<td>Same job. The same block STL as 11-24, now printed on its station -y
+side with a painted tree under the lug only; its locating face prints on
+support interface, so check the slide fit.</td>
+</tr>
+<tr>
+<td>2026-11-25</td>
+<td>X1C / S2 / red HS PETG</td>
+<td>lumi_powerbay_latch_fork_coupon.stl</td>
+<td>1</td>
+<td>test</td>
+<td>9d7f3e6c58533f9b</td>
+<td>X1C 28 @ b3b3f703 (now X1C 14 @ 0e5936c0; latch-fork coupon rev 3,
+CAD 605ac631)</td>
+<td>printed</td>
+<td>Same job. Hole compensation 0; all 14 arm samples sliced at 1.60
+(DELL flex-slot gate). Arm slots open on camera at L2. Pull / fit result
+not reported yet.</td>
+</tr>
 </tbody>
 </table></body></html>
