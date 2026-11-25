@@ -1470,36 +1470,49 @@ plate shares the part settings (it already prints flipped). LumiAI
 3DPrinter's gate on book <code>b487e158</code> (de069b23): PASS -- H2S
 04 clean, 0 warnings, floating PASS, 9 h 42, the ring's support 0 mm³
 (was 7,724); H2S 31 (screw-pad HV fence) sliceable, held (0 warnings, 7
-h 58). Install waits for Studio to close on the DELL. <strong>H2S 31 /
-32 (HV fence back half + HV tray) are STALE</strong> (LumiAI CTO
-2026-11-24): 31 now takes the CEILING variant
-<code>lumi_baseplate_fence_HV_ceiling_back_half</code> (CAD
-<code>36a0b571</code> renamed the HV fence exports per logo orientation
-and deleted the plain ones; Halo HV = ceiling; never mix variants on a
-plate), its rear clamp-slot enforcer removed (the rear rocker frame
-stands there; left / right slot and the 4 bar-pad enforcers unchanged,
-areas re-asserted), the tray on d0070831; both behind the HV bay v3
-(<code>b9ed6d4d</code>); HELD and named STALE; rebuilt only when the
-whole HV set is done (operator: late January). <strong>H2S 33 = TEST,
+h 58). Install waits for Studio to close on the DELL. <strong>ULTRA'S
+MERGED BAY v3 SET</strong> (operator lifted every hold on the merged bay
+set and OK'd the wired-bay assembly review 2026-11-24, via LumiAI CTO;
+CAD <code>f0105c7a</code> + the fork coupon <code>ccf48e07</code>; Ultra
+= DESK fence logo, Halo / Nova / Halo HV take the ceiling variant when
+their sets are built, never mixed): <strong>H2S 31</strong> fence back
+half DESK (ASA black slot 2, plate edge down, turned 90° for the +X
+airflow rule, manual trees on the 4 bar pads + 2 clamp-slot roofs + 2
+PSU-strap pads, boxes re-asserted on the f0105c7a mesh; 8 h 08 / 185.0
+g, 0 floating starts); <strong>H2S 32</strong> fence front half DESK =
+<strong>HOLD</strong> (operator: the front slot grille gets CENTRED; CAD
+changes this half next, then 32 is rebuilt; built and painted already:
+front clamp-slot roof + the two z 68.5 PSU-block ledges); <strong>H2S 35
+= TEST, the carrier FORK COUPON</strong> (3 sections cut from the
+f0105c7a carrier: the tallest deck fork, the 16 AWG buck stretch post,
+the mains clip tower; yellow PETG+ slot 4, no supports, brim 10; 49 min
+/ 7.0 g) -- print it and load the forks by hand BEFORE the carrier;
+<strong>H2S 36</strong> the CARRIER (operator's pick (b): yellow PETG+
+slot 4, full 10 brim, no supports; 4 h 50 / 74.0 g); <strong>X1C
+21</strong> the battery TRAY + front and back BARS + both carrier STUBS
+(grey PETG+ slot 3, the battery-part rule; flat, no supports; tray no
+brim, stubs solid with brim 10; 2 h 57 / 64.8 g) -- the merged bay uses
+tray + bars, NOT straps (X1C 22 / 36 stay as spares for robots on the
+old bay). The old LV fence plates (H2S 09 / 10, X1C 11 / 12) are
+superseded for new builds but stay until the operator retires them. The
+H2S book is at Studio's 36-plate cap. Both books verify PASS and
+slice-all clean on the GMKtec (Studio 2.9.1.70; only plate 5 / 6's
+waived EBC specks); 3DPrinter's DELL gate next. <strong>H2S 33 = TEST,
 the wand 45° thread fit pair</strong> (CAD <code>6e8d733b</code>,
 operator 2026-11-24: print and screw together before any full part is
 reprinted): male (the shell's M88×3 on a 4 mm grip, grip down) + female
 (the ring's band, thread end down), ASA black slot 2, no supports, brim
 10; LumiAI 3DPrinter's gate PASS (0 warnings, 0 floating starts, 1 h 05,
 24.8 g; the female's internal 45° flank slices as "Bridge" layer by
-layer -- watch it for droop). <strong>X1C 21 RETIRED</strong> (operator
-2026-11-24: the LV power-bay carrier is DROPPED, one carrier for LV and
-HV, the HV one; CAD <code>8638bb4e</code> deleted its exports): a
-placeholder plate named "21 RETIRED - do not print" carrying only the
-RETIRED tag (20 × 10 × 0.6 PLA slot 1,
-<code>cad/print/gen_retired_tag.py</code>; an empty plate breaks
-Studio's CLI slice-all, rc -50, LumiAI 3DPrinter; verify now FAILS an
-empty plate), so X1C 22-35 keep their numbers (LumiAI CTO, option B;
-renumber only at the next deliberate book reset). X1C 22 (PSU strap +
-tab cap + tabbed straps L/R) and 36 (straps) stay as spares / reprints
-for Halo and Ultra; the PSU strap and tab cap now build from
-<code>lumi_powerbay_psu_strap.py</code>, exports byte-identical. X1C
-verify PASS; the H2S book is unaffected (rebuilt byte-identical).
+layer -- watch it for droop). <strong>The LV power-bay carrier is
+DROPPED</strong> (operator 2026-11-24: one carrier for LV and HV; CAD
+<code>8638bb4e</code> deleted its exports); X1C 21 now holds the bay v3
+battery parts (above), numbers 22-36 unchanged; X1C 22 (PSU strap + tab
+cap + tabbed straps L/R) and 36 stay as spares / reprints for Halo and
+Ultra; the PSU strap and tab cap build from
+<code>lumi_powerbay_psu_strap.py</code>. verify FAILS an empty plate (an
+empty plate breaks Studio's CLI slice-all, rc -50); a retired plate
+carries the RETIRED tag (<code>cad/print/gen_retired_tag.py</code>).
 <strong>H2S 34 = TEST, the LENS-PLATE MEMBRANE</strong> (CAD
 <code>ba1fcf25</code>, operator "Go with the membrane" 2026-11-24, via
 LumiAI CTO): ONE uxcell lens plate with the sacrificial one-layer
