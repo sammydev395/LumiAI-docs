@@ -1566,32 +1566,35 @@ too (was 11.8 %); the lip's underside (the clamp face on the extension
 flange) prints as a bare overhang, CAD's 45 deg lip chamfer if it is
 rough. <strong>PARTS COVERAGE GATE</strong>
 (<code>cad/print/gate_parts_coverage.py &lt;X1C&gt; &lt;H2S&gt;</code>,
-LumiAI CTO 2026-11-25): every part in the builder's printer map (DIST)
-is on a printable plate in one of the two books (a part only on a HOLD
-plate is reported as held; RETIRED_STEMS and NOT_ON_A_PLATE carry their
-reasons); PASS today (39 parts; held: the desk fence front half;
-retired: the old LV fence halves; off: 3 cut test coupons); bite
-<code>LUMI_COVERAGE_BITE=&lt;stem&gt;</code> FAILS. Limit: DIST lists
-the parts with a printer split, not every later part (cradle, bay).
-<strong>X1C BOOK = 14 PLATES, the ASA plates dropped</strong> (operator
-2026-11-25, via LumiAI CTO: "you can drop those plates from the X1C";
-the X1C has no ASA, so its 14 "H2S S2 ASA black" plates would have
-printed silently in PLA / PETG): old 3 end plates, 4 / 5 shells, 6 EBC
-covers, 7 / 8 / 9 ext halves, 10 / 13 base covers, 16 wand rings, 17
-head ring + lens plate, 22 rear cap (each keeps its H2S plate), and old
-11 / 12, the OLD LV fence halves, which leave BOTH books (bay v3
-replaces them for every robot; their CAD + STLs stay). Old -&gt; new:
-1-&gt;1, 2-&gt;2, 14-&gt;3, 15-&gt;4, 18-&gt;5, 19-&gt;6, 20-&gt;7,
-21-&gt;8, 23-&gt;9, 24-&gt;10, 25-&gt;11, 26-&gt;12, 27-&gt;13,
-28-&gt;14 (the lock station). verify row PLATE MATERIAL vs SLOT: every
-plate's named material = the filament of the slots its objects print
-from in that book (bite <code>LUMI_VERIFY_BITE_MATERIAL=1</code>).
-<strong>FENCE PIR openings: no support today</strong> (LumiAI CTO
-2026-11-25): every fence half prints MANUAL trees only (the
-support-interface layers touch only the slot roofs, PSU ledges, bar pads
-and DROK bosses; forced bed-only the slices are identical); the trees
-the operator saw were on his older fence prints. verify row: a fence
-half on AUTO support FAILS (bite
+LumiAI CTO 2026-11-25): every part the builder knows (its printer map
+DIST + every stem with PART_SETTINGS: the carrier, tray, bars, stubs,
+cradle parts, lock station) is on a printable plate in one of the two
+books; run by slice_all on every book build (it pairs the sliced book
+with the other one in cad/print) (a part only on a HOLD plate is
+reported as held; RETIRED_STEMS and NOT_ON_A_PLATE carry their reasons);
+PASS today (75 parts; held: the desk fence halves; retired: the old LV
+fence halves, the untabbed straps, the knob-frame T ledge, the cradle's
+4th arm; off: the cut test coupons); bites
+<code>LUMI_COVERAGE_BITE=lumi_wand_cyl_ear</code> (DIST) and
+<code>=lumi_powerbay_carrier_HV</code> (non-DIST) FAIL. <strong>X1C BOOK
+= 14 PLATES, the ASA plates dropped</strong> (operator 2026-11-25, via
+LumiAI CTO: "you can drop those plates from the X1C"; the X1C has no
+ASA, so its 14 "H2S S2 ASA black" plates would have printed silently in
+PLA / PETG): old 3 end plates, 4 / 5 shells, 6 EBC covers, 7 / 8 / 9 ext
+halves, 10 / 13 base covers, 16 wand rings, 17 head ring + lens plate,
+22 rear cap (each keeps its H2S plate), and old 11 / 12, the OLD LV
+fence halves, which leave BOTH books (bay v3 replaces them for every
+robot; their CAD + STLs stay). Old -&gt; new: 1-&gt;1, 2-&gt;2,
+14-&gt;3, 15-&gt;4, 18-&gt;5, 19-&gt;6, 20-&gt;7, 21-&gt;8, 23-&gt;9,
+24-&gt;10, 25-&gt;11, 26-&gt;12, 27-&gt;13, 28-&gt;14 (the lock
+station). verify row PLATE MATERIAL vs SLOT: every plate's named
+material = the filament of the slots its objects print from in that book
+(bite <code>LUMI_VERIFY_BITE_MATERIAL=1</code>). <strong>FENCE PIR
+openings: no support today</strong> (LumiAI CTO 2026-11-25): every fence
+half prints MANUAL trees only (the support-interface layers touch only
+the slot roofs, PSU ledges, bar pads and DROK bosses; forced bed-only
+the slices are identical); the trees the operator saw were on his older
+fence prints. verify row: a fence half on AUTO support FAILS (bite
 <code>LUMI_VERIFY_BITE_FENCE_AUTO=1</code>). <strong>SUPPORT BUDGET
 GATE</strong> in slice_all
 (<code>cad/print/gate_support_budget.py</code>): each part's support
