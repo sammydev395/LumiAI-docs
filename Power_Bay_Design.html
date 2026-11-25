@@ -2793,7 +2793,7 @@ the rest of the AC.</strong></p></li>
 <li><p><strong>DC rocker (13.8 V) — ferrule at the block + flag Faston
 at the rocker:</strong> the DC LAMP tap is a plain 22 AWG wire from
 <strong>HL-PBB B6</strong> (GND bus, E0508; on Creator builds shared
-with PHONE-IN's GND in one E1508) to the rocker's LAMP blade (flag 4.8 ×
+with PHONE-IN's GND in one E7508) to the rocker's LAMP blade (flag 4.8 ×
 0.8 mm Faston, red 22–18).</p></li>
 </ul>
 <p><strong>AC inlet socket part spec:</strong> QTEATAK WPF-1 (IEC 320
@@ -2845,7 +2845,7 @@ total —</p>
 (BLK-IN, 18 AWG silicone).</li>
 <li><strong>LAMP</strong> — tapped from <strong>GND at HL-PBB
 B6</strong> (22 AWG, E0508; on Creator builds shared with PHONE-IN's GND
-in one E1508), so the lamp lights whenever the switch is closed.</li>
+in one E7508), so the lamp lights whenever the switch is closed.</li>
 </ol>
 <p>GND is never switched: the block's IN-B comes straight from
 INA226-MAIN's GND screw. Ends at the rocker: fully insulated
@@ -3116,7 +3116,7 @@ bus)</td>
 blade</td>
 <td>22 AWG silicone</td>
 <td><strong>E0508</strong> at B6 (Creator builds: one
-<strong>E1508</strong> with D20) + <strong>flag</strong> 4.8 × 0.8 mm
+<strong>E7508</strong> with D20) + <strong>flag</strong> 4.8 × 0.8 mm
 Faston, red 22–18, at the rocker</td>
 </tr>
 <tr>
@@ -3231,17 +3231,17 @@ the block↔︎G469 signal runs</td>
 <td><strong>D19</strong></td>
 <td>HL-PBB <strong>A6</strong> → IP6518 <strong>VIN+</strong> corner pad
 (Creator builds)</td>
-<td>18 AWG silicone, twisted with D20</td>
-<td><strong>E1008 ferrule</strong> at A6; solder at the pad; meter
+<td>22 AWG silicone, twisted with D20</td>
+<td><strong>E0508 ferrule</strong> at A6; solder at the pad; meter
 polarity before first power</td>
 </tr>
 <tr>
 <td><strong>D20</strong></td>
 <td>HL-PBB <strong>B6</strong> (<strong>shared with D8a LAMP</strong>) →
 IP6518 <strong>VIN−</strong> corner pad (Creator builds)</td>
-<td>18 AWG silicone</td>
-<td><strong>One E1508 ferrule holding D20 (18) + D8a LAMP (22)</strong>,
-1.15 mm² total; solder at the pad</td>
+<td>22 AWG silicone</td>
+<td><strong>One E7508 ferrule holding D20 (22) + D8a LAMP (22)</strong>,
+~0.65 mm² total; solder at the pad</td>
 </tr>
 <tr>
 <td><strong>D18</strong></td>
@@ -3609,7 +3609,7 @@ href="Electronics_Bay_Design.html">Electronics_Bay_Design §3.6.2</a>)</td>
 <tr>
 <td><strong>A6</strong></td>
 <td>V+</td>
-<td><strong>Creator builds: PHONE-IN V+</strong> (D19, 18 AWG, E1008) →
+<td><strong>Creator builds: PHONE-IN V+</strong> (D19, 22 AWG, E0508) →
 IP6518 VIN+. Otherwise spare</td>
 <td>≤ 3.4 A (45 W PD)</td>
 </tr>
@@ -3617,8 +3617,8 @@ IP6518 VIN+. Otherwise spare</td>
 <td><strong>B6</strong></td>
 <td>GND</td>
 <td>DC rocker LAMP tap (D8a, 22 AWG, E0508). <strong>Creator
-builds:</strong> LAMP + PHONE-IN GND (D20, 18 AWG) <strong>in one
-E1508</strong> (1.15 mm²)</td>
+builds:</strong> LAMP + PHONE-IN GND (D20, 22 AWG) <strong>in one
+E7508</strong> (~0.65 mm²)</td>
 <td>mA + ≤ 3.4 A</td>
 </tr>
 <tr>
@@ -3704,8 +3704,8 @@ rule).</li>
 down, <strong>tug-test</strong>. One conductor per cage, except where
 the port map doubles one: <strong>up to 3 conductors in ONE
 ferrule</strong> (operator 2026-11-15), the ferrule sized by their TOTAL
-cross-section (today only B6 on Creator builds: LAMP 20 + PHONE-IN GND
-18 in one E1508). Strip both to 10 mm, twist together, crimp once,
+cross-section (today only B6 on Creator builds: LAMP 22 + PHONE-IN GND
+22 in one E7508). Strip both to 10 mm, twist together, crimp once,
 tug-test each conductor.
 <ul>
 <li><strong>Fan branches (A3/B3, A4/B4):</strong> 22 AWG from the cage →
@@ -3900,8 +3900,9 @@ W, silk "IP6518_A1V1.0"; Creator builds)</td>
 wall's lower straight, front-right corner, 93.6 mm from the mains
 (CAD)</td>
 <td>M2.5 self-tap, diagonal pair</td>
-<td>PHONE-IN 206 mm routed; USB-C 95 mm to the lid window. Vent slots
-only if the IC reads &gt; 70 °C after 30 min of a 45 W charge</td>
+<td>PHONE-IN 234–237 routed; USB-C 71 to the lid window (CAD 3debe125).
+Vent slots only if the IC reads &gt; 70 °C after 30 min of a 45 W
+charge</td>
 </tr>
 <tr>
 <td><strong>NOT on the carrier</strong></td>
@@ -4215,7 +4216,7 @@ screw (the single logic-to-power GND tie)</td>
 <td>18+22</td>
 <td>INA226-MAIN ISENSE− → LINE; LOAD → block input (via BLK-IN); LAMP
 (22) → <strong>B6</strong> (Creator: doubled with PHONE-IN GND in one
-E1508)</td>
+E7508)</td>
 </tr>
 <tr>
 <td>BLK-IN</td>
@@ -4311,9 +4312,9 @@ G469 <strong>9</strong> (GND-logic) → wand 6-pin 1 / 2 / 6</td>
 <td>PHONE-IN</td>
 <td>Phone charger feed (creator edition)</td>
 <td>2</td>
-<td>18</td>
-<td>Block <strong>A6</strong> (V+, E1008) / <strong>B6</strong> (GND,
-doubled with LAMP in one E1508) → IP6518 corner VIN pads, soldered,
+<td>22</td>
+<td>Block <strong>A6</strong> (V+, E0508) / <strong>B6</strong> (GND,
+doubled with LAMP in one E7508) → IP6518 corner VIN pads, soldered,
 twisted, <strong>unfused</strong></td>
 </tr>
 <tr>
@@ -4411,7 +4412,7 @@ A-type, blue stripe UP both ends</td>
 <p><strong>Per edition:</strong> <strong>Pro / ceiling (wand):
 TETHER-P</strong> (22 AWG) on the tether pair, with
 <strong>TETHER-S</strong> and the wand's GND-logic conductor at G469 pin
-9. <strong>Creator: PHONE-IN</strong> (18 AWG) on <strong>A6 +
+9. <strong>Creator: PHONE-IN</strong> (22 AWG) on <strong>A6 +
 B6</strong> (B6 doubled with LAMP) + <strong>PHONE-USB</strong>, and the
 wand tether stays wired when the robot also carries the wand
 (<strong>Ultra Creator runs both</strong>, operator 2026-11-15).
@@ -5467,13 +5468,14 @@ Carrier harness build list — every harness, by route ID (every build,
 <p><strong>Scope:</strong> the one power-bay carrier, every build
 (Ultra, Nova, Halo HV; Halo at its rebuild). Route IDs and gauges match
 the §11.3.9 harness table. <strong>Routed</strong> = CAD's wired bay
-(e74bddb2; Ø3.3 re-gate 2c45839e; lid-window ends e974f78a), centreline
-face to face, no strip or slack. <strong>Cut</strong> = routed + both
-strips + ~20 mm, rounded up. Every 18 AWG run is gated at Ø3.3 (the
-stock measures Ø2.8–3.3; CAD 2c45839e, all PASS: mains ≥ 8 at 8.65
-nearest, BATT pair 1.66 to the pack and wall). The 16 AWG buck runs pass
-at Ø3.6 (CAD f0105c7a), above the stock's listed Ø3.0. String-run the
-mains on the carrier before crimping.</p>
+(e74bddb2; Ø3.3 re-gate 2c45839e; lid-window ends e974f78a; IP6518 +
+buck-clear risers 3debe125), centreline face to face, no strip or slack.
+<strong>Cut</strong> = routed + both strips + ~20 mm, rounded up. Every
+18 AWG run is gated at Ø3.3 (the stock measures Ø2.8–3.3; CAD 2c45839e,
+all PASS: mains ≥ 8 at 8.65 nearest, BATT pair 1.66 to the pack and
+wall). The 16 AWG buck runs pass at Ø3.6 (CAD f0105c7a), above the
+stock's listed Ø3.0. String-run the mains on the carrier before
+crimping.</p>
 <table>
 <thead>
 <tr>
@@ -5530,7 +5532,7 @@ GND</td>
 <td>INA226-MAIN ISENSE− <strong>E1008</strong> (LINE)</td>
 <td>KCD1 LINE / LOAD / LAMP: <strong>flag 4.8 mm Fastons, red</strong>;
 LAMP (22) → <strong>B6</strong>: its own E0508, or on Creator builds
-inside PHONE-IN's GND <strong>E1508</strong></td>
+inside PHONE-IN's GND <strong>E7508</strong></td>
 <td>Upstream of the whole bus. LOAD continues as BLK-IN</td>
 </tr>
 <tr>
@@ -5560,7 +5562,7 @@ one won't seat)</td>
 <td>6</td>
 <td><strong>BUCK-OUT</strong></td>
 <td><strong>2 × 16 AWG</strong>, red / black</td>
-<td>109–122 to the lid window (mid-lane at Y −99.5, raised to Z 67.5
+<td>110–123 to the lid window (mid-lane at Y −99.5, raised to Z 67.5
 over the breakout)</td>
 <td><strong>160 to the lid window + measure</strong> the climb up the
 servo opening to the STM32</td>
@@ -5609,7 +5611,7 @@ Meter polarity before connecting</td>
 <td>9</td>
 <td><strong>USB-C</strong></td>
 <td>factory C-to-C</td>
-<td>93</td>
+<td>94</td>
 <td>factory <strong>0.46 m</strong></td>
 <td>Mus-14 USB-C</td>
 <td>HAT POWER</td>
@@ -5669,7 +5671,7 @@ orders differ</td>
 <td>14</td>
 <td><strong>TETHER-P</strong></td>
 <td>2 × 22 + GND-logic 22</td>
-<td>186–189 in the bay + CAD's bound outside the bay (≤ 904 power pair /
+<td>187–190 in the bay + CAD's bound outside the bay (≤ 904 power pair /
 ≤ 902 GND-logic, riser top → wand XHP-6, longest across poses)</td>
 <td><strong>power pair 1.17 m each, GND-logic 1.05 m</strong> (upper
 bounds; string-run on Halo before crimping)</td>
@@ -5682,7 +5684,7 @@ bounds; string-run on Halo before crimping)</td>
 <td>15</td>
 <td><strong>TETHER-S</strong></td>
 <td>3 × 26</td>
-<td>43 in the bay + ≤ 897 outside</td>
+<td>44 in the bay + ≤ 897 outside</td>
 <td><strong>1.03 m each</strong></td>
 <td>G469 <strong>3 / 5 / 1</strong> (shared ferrules)</td>
 <td>Same 6-pin housing: pins <strong>3 / 4 / 5</strong></td>
@@ -5691,10 +5693,11 @@ bounds; string-run on Halo before crimping)</td>
 <tr>
 <td>15a</td>
 <td><strong>PHONE-IN</strong> <em>(Creator builds)</em></td>
-<td>2 × 18, twisted</td>
-<td>206 (IP6518 on the mains-side wall)</td>
-<td><strong>250</strong></td>
-<td>HL-PBB <strong>A6: E1008</strong> (V+); <strong>B6: one E1508 shared
+<td>2 × 22, twisted</td>
+<td>234–237: up the +X wall beside the IP6518, through the notch in the
+carrier corner, over the buck at Z 85, down to A6 / B6</td>
+<td><strong>280</strong></td>
+<td>HL-PBB <strong>A6: E0508</strong> (V+); <strong>B6: one E7508 shared
 with the LAMP 22 AWG</strong> (row 3)</td>
 <td><strong>Soldered</strong> to the IP6518's two corner VIN pads;
 <strong>meter polarity before first power</strong> (no reverse
@@ -5706,7 +5709,7 @@ with the carrier</td>
 <td>15b</td>
 <td><strong>PHONE-USB</strong> <em>(Creator builds)</em></td>
 <td>bought C-to-C, 1.5 m, right-angle at one end</td>
-<td>95 in the bay to the lid window</td>
+<td>71 in the bay to the lid window</td>
 <td><strong>Bought 1.5 m 90° C-to-C, "PD Type-C 60 W" (3 A)</strong>,
 ordered 2026-11-22, qty 2 (Ultra + spare)</td>
 <td>IP6518 USB-C (underside)</td>
@@ -5785,14 +5788,15 @@ stock</td>
 </tr>
 <tr>
 <td><strong>18 AWG</strong></td>
-<td><strong>~3.1 m (~10 ft)</strong></td>
+<td><strong>~2.6 m (~8.5 ft)</strong></td>
 <td>MAINS 1.11 (5 pieces), CH1 0.20, ROCKER 0.50, BLK-IN 0.13, BATT
-0.66, PHONE-IN 0.50</td>
+0.66</td>
 </tr>
 <tr>
 <td><strong>22 AWG</strong></td>
-<td><strong>~4.5 m (~15 ft)</strong></td>
-<td>LAMP 0.25, MUS-IN 0.51, FAN1-P / FAN2-P 0.30, TETHER-P 3.39</td>
+<td><strong>~5.0 m (~16.5 ft)</strong></td>
+<td>LAMP 0.25, MUS-IN 0.51, FAN1-P / FAN2-P 0.30, TETHER-P 3.39,
+PHONE-IN 0.56</td>
 </tr>
 <tr>
 <td><strong>26 AWG</strong></td>
