@@ -1602,15 +1602,26 @@ meshes); the production lens plates stay PINNED pre-membrane. GMKtec
 slice-all clean, 0 floating starts on every wand plate except H2S 03's
 operator-waived layer-86 ear start (unchanged); e.g. H2S 04 499 min /
 141.9 g (was 515 / 140.8), H2S 30 191 / 54.6 (was 198 / 50.7).
-<strong>X1C 35 = the REWORKED lock station</strong> (CAD
-<code>35ffb362</code>; the first print's guide-rod collar, 0.57 of wall,
-broke and the rod rode 0.47 over the plate top): an M1.6 x 12 PAN-HEAD
-SELF-TAPPER guide (not M2: an M2 head keeps 0.8 under it only back up
-over the plate top) in a flat counterbore, its head FULLY HOME (sunk
-0.2: head and tip clear by 0.05 at the float extremes), the axis lowered
-to -1.1 (the shank 0.3 under the plate top), no collars, the tongue 3.3,
-the pawl's slot open on top; station 41/41, strength 24/24, cradle QR
-rows 17/17; render
+<strong>X1C 28 TEST PAWL ON ITS -Y SIDE</strong> (LumiAI CTO 2026-11-25,
+"side, accept teeth for the test"; operator: "The pawl was obviously
+placed wrong on the print book"): the flat pawl's 14 mm tab split on a
+layer line at its base during bed removal (Print_Log); on its side the
+tab is in the layers (rock pry ~72 N, release 11.2 MPa &lt;= 16.7) and
+the teeth bend across them (the hard stop's 53.1 N: 16.0 MPa vs ~25
+between layers, 1.56x, accepted for the TEST: watch them at the hard
+stop); 0 floating starts, no supports, 1 h 27; render
+<code>docs/images/hardware/qr_pawl_orientation_flat_vs_side.png</code>.
+Remove every part by FLEXING the plate, never levering a standing tab.
+Production fix next in CAD: the tab neck thicker in +x + a 45° root
+flare, printed FLAT. <strong>X1C 35 = the REWORKED lock station</strong>
+(CAD <code>35ffb362</code>; the first print's guide-rod collar, 0.57 of
+wall, broke and the rod rode 0.47 over the plate top): an M1.6 x 12
+PAN-HEAD SELF-TAPPER guide (not M2: an M2 head keeps 0.8 under it only
+back up over the plate top) in a flat counterbore, its head FULLY HOME
+(sunk 0.2: head and tip clear by 0.05 at the float extremes), the axis
+lowered to -1.1 (the shank 0.3 under the plate top), no collars, the
+tongue 3.3, the pawl's slot open on top; station 41/41, strength 24/24,
+cradle QR rows 17/17; render
 <code>docs/images/hardware/qr_guide_screw_before_after.png</code>
 (LumiAI CTO approved); frame + block meshes unchanged (reprint the
 carrier + pawl). <strong>H2S 33 = TEST, the wand 45° thread fit
