@@ -3717,15 +3717,25 @@ forward. <strong>M3 × 12 ×4</strong> down through the pads.</li>
 </ol>
 <p><strong>C. Boards onto the carrier (on the bench)</strong></p>
 <ol type="1">
-<li><p><strong>INA3, Mus-14, TMP102</strong>, and <strong>F1's
+<li><p><strong>Solder first, on the bench, with the boards
+loose:</strong></p>
+<ul>
+<li><strong>MUS-IN</strong> (#12) to the Mus-14's IN pads (Ø3);</li>
+<li>the <strong>I²C hops #23 / #24</strong> to the TMP102's 0.1" row, by
+net (or crimp their housing for its header);</li>
+<li>the cooler pigtails' PH housings. The other ends hang free until E2
+/ E4.</li>
+</ul></li>
+<li><p>Then <strong>INA3, Mus-14, TMP102</strong>, and <strong>F1's
 holder</strong> in its cradle, each with its screws and pre-check
 (§16f.1).</p></li>
-<li><p><strong>Buck dry-fit</strong> (unit 1, before its gate): set it
-on the seat and try <strong>all 4 M3 × 12</strong> and a <strong>2.5–3
-mm flat driver on all 4 terminal screws</strong>, straight down beside
-the LCD. CAD models the buck as two boxes, so only the real board proves
-the driver paths. If any path is blocked, stop and tell CAD. Then lift
-it off for its §5c bench gate.</p></li>
+<li><p><strong>Buck dry-fit</strong> (unit 1, in hand, before its gate;
+nothing else waits on it): set it on the seat and try <strong>all 4 M3 ×
+12</strong> and a <strong>2.5–3 mm flat driver on all 4 terminal
+screws</strong>, straight down beside the LCD. CAD models the buck as
+two boxes, so only the real board proves the driver paths. If any path
+is blocked, stop and tell CAD. Then lift it off for its §5c bench
+gate.</p></li>
 <li><p><strong>Not yet</strong> (each sits over a tie that must be
 closed first; CAD tie-closure probe on the desk map):</p>
 <table>
@@ -3862,7 +3872,7 @@ green / yellow. Signals: any stock colour, named on the flag.
 <tr>
 <td><strong>#3 CH1</strong></td>
 <td>2 × 18, red / black, twisted</td>
-<td><strong>100</strong></td>
+<td><strong>100</strong> · PSU end LONG</td>
 <td>PSU +V / −V: red forks, bent up (ratchet)</td>
 <td>+V → INA-MAIN ISENSE+ <strong>E1008</strong>; −V → INA-MAIN GND
 screw in <strong>one E2508 with BLK-IN −</strong> (ferrule crimper)</td>
@@ -3985,7 +3995,9 @@ single-crimped)</td>
 <td>Vendor pigtail: staggered splices (iron, Ø3)</td>
 <td>G469 <strong>4</strong> (violet, see below) / <strong>8 / 10 / 20:
 E0208</strong></td>
-<td>Drop below the opening measured at fit</td>
+<td>90 in the bay, <strong>free</strong> (no hold on the map): dressed
+along the G469's odd row to the opening. Drop below the opening measured
+at fit</td>
 </tr>
 <tr>
 <td><strong>#17 ZE15</strong></td>
@@ -3998,13 +4010,17 @@ E0208</strong></td>
 </tr>
 <tr>
 <td><strong>Pi5 cooler</strong> (Ultra only)</td>
-<td>factory 4-wire lead</td>
-<td>factory · LONG</td>
-<td>Cooler</td>
-<td>G469 <strong>4</strong> (5 V, in the violet with SPS30 + ZE15: 3
-conductors), <strong>12 PWM / 14 GND / 18 TACH: E0208</strong></td>
-<td>Cooler lead thinner than 26: fold the strip back double in the
-E0208</td>
+<td>2 pigtails of 26 AWG: PWR red / black, SIG blue / yellow</td>
+<td>measured at fit · Pi end LONG</td>
+<td>A soldered <strong>2-pin JST-PH housing</strong> per pigtail (iron,
+Ø3), mating the cooler's own PWR and SIG PH females</td>
+<td>G469: red → <strong>4</strong> (5 V, in the violet with SPS30 +
+ZE15: 3 conductors, bench-proven up to 4 × 26), black →
+<strong>14</strong>, blue → <strong>12</strong> PWM, yellow →
+<strong>18</strong> tach: <strong>E0208</strong> (ferrule crimper)</td>
+<td>Fed <strong>ferrule end first</strong> down the electronics-bay
+floor slots between the controller card and the Pi 5 mount, over the
+G469 (operator 2026-11-18). Free: no hold on the map</td>
 </tr>
 <tr>
 <td><strong>#15 PHONE-IN</strong></td>
@@ -4031,7 +4047,9 @@ electronics bay</td>
 <td>factory</td>
 <td>IP6518 USB-C (underside)</td>
 <td>Phone cradle</td>
-<td>99.4 in the bay, round the buck's front</td>
+<td>99.4 in the bay, round the buck's front at Z 80.
+<strong>Free:</strong> no hold on the map, on purpose (a factory cable
+off a plug)</td>
 </tr>
 <tr>
 <td><strong>FFC</strong></td>
@@ -4146,6 +4164,11 @@ named):</strong></p>
 <td>SPS30, ZE15, sensor ends</td>
 <td>Drops measured at fit</td>
 <td>E10</td>
+</tr>
+<tr>
+<td>CH1, PSU end (forks)</td>
+<td>The PSU terminal screw size (fork size) isn't measured yet</td>
+<td>E5</td>
 </tr>
 <tr>
 <td>FAN1-P / FAN2-P, fan end</td>
@@ -4391,6 +4414,547 @@ its parts)</td>
 </tr>
 </tbody>
 </table>
+<h2
+id="16g-halo-ceiling-build-pack-carrier-b6a53ce7--ceiling-fence-bench-order">16g.
+Halo ceiling build pack: carrier b6a53ce7 + ceiling fence (bench
+order)</h2>
+<p><strong>The build:</strong></p>
+<ul>
+<li>Halo, the <strong>ceiling build of bay v3</strong>: the ceiling
+fence with <strong>4 PIRs</strong> and the ceiling logo, the same three
+clamp slots.</li>
+<li>The <strong>wand tether IN</strong> (rows 14–15). <strong>No
+phone:</strong> no IP6518 rows.</li>
+<li>The same carrier (b6a53ce7) and the same buck seat and screws.</li>
+<li>Halo keeps <strong>its own base plate and its PSC-100</strong>.</li>
+</ul>
+<p>Route numbers (<strong>#n</strong>) and holds (<strong>Fn</strong>)
+are the <strong>ceiling</strong> map's, <a
+href="images/power_bay/carrier_routing_ceiling.html"><code>carrier_routing_ceiling.html</code></a>
+(28 runs, 27 holds). <strong>They differ from the desk map's:</strong>
+use this section and this map for Halo only. Everything not listed here
+works as in <a
+href="#16f-creator-desk-build-pack-ultra-carrier-b6a53ce7--desk-fence-bench-order">§16f</a>.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Ultra (§16f)</strong></th>
+<th><strong>Halo (§16g)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fence</td>
+<td>Desk halves, no PIRs, logo upright</td>
+<td>Ceiling halves, <strong>4 PIRs</strong>, ceiling logo</td>
+</tr>
+<tr>
+<td>Runs present</td>
+<td>Rows 1–13, 15a–15b, 17–19 + Pi5 cooler (desk map #1–24)</td>
+<td>Rows 1–13, <strong>14–15</strong>, <strong>16</strong>, 17–19
+(ceiling map #1–28)</td>
+</tr>
+<tr>
+<td>PIRs (G469 2 / 6 / 11 / 36 / 38 / 40)</td>
+<td>—</td>
+<td><strong>4</strong>, own leads, no Ys (Halo's 4 HC-SR501s move
+over)</td>
+</tr>
+<tr>
+<td>Wand tether (HL-PBB A2 / B2; G469 1 / 3 / 5 / 9 shared)</td>
+<td>—</td>
+<td><strong>IN</strong>: TETHER-P + TETHER-S</td>
+</tr>
+<tr>
+<td>Phone (IP6518; PHONE-IN at A6 / B6; PHONE-USB)</td>
+<td>IN</td>
+<td>— (A6 empty; <strong>LAMP alone at B6, own E0508</strong>)</td>
+</tr>
+<tr>
+<td>Pi5 cooler on the G469 (4 / 12 / 14 / 18)</td>
+<td>IN</td>
+<td>—</td>
+</tr>
+<tr>
+<td>PSU / base plate</td>
+<td>PSC-100 moved 13.0 back, 2 hand-drilled holes</td>
+<td><strong>Halo's own plate + PSC-100</strong> (⏳ position: CAD,
+2026-11-26 morning)</td>
+</tr>
+<tr>
+<td>Boards that go on mid-wiring</td>
+<td>Breakout + G469, INA-MAIN, INA-BATT, HL-PBB</td>
+<td>The same <strong>+ the TMP102 + one front PIR board</strong></td>
+</tr>
+<tr>
+<td>Buck (ZK-SJ20)</td>
+<td>Unit 1, gated, fitted at E9</td>
+<td><strong>Last, separate step (§16g.7)</strong>, when a unit arrives
+(~Dec 6). The bay is finished and checked without it</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Read first:</strong></p>
+<ul>
+<li><strong>The buck is not in this build until §16g.7.</strong>
+<ul>
+<li>HV5 BUCK-IN is laid and tied with the under-board runs (its anchors
+close only before the boards), but <strong>neither end is
+landed</strong>: HL-PBB <strong>A1 / B1 stay empty</strong> and both
+ends are taped.</li>
+<li>HV6a and HV6 are cut and flagged, laid in §16g.7.</li>
+<li>With no buck, <strong>the arm and the STM32 stay dark</strong>. The
+Pi runs from the HAT via the Mus-14, so the bay, sensors, I²C chain,
+PIRs and tether are all checked without it.</li>
+</ul></li>
+<li><strong>Empty on this build:</strong> HL-PBB <strong>A6</strong>
+(and A1 / B1 until §16g.7); G469 <strong>12 / 14 / 18</strong> (no Pi5
+cooler) and <strong>33 / 34 / 37</strong> (reserved).</li>
+<li><strong>Same rules as §16f:</strong> "crimp everything" = every end
+not marked LONG; one tape flag per end, route ID + end.</li>
+</ul>
+<h3 id="16g1-moved-over-from-halos-existing-bay-step-a0">16g.1 Moved
+over from Halo's existing bay (step A0)</h3>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Goes to</th>
+<th>Before it goes on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>G469</td>
+<td>The new carrier</td>
+<td>Unscrew every terminal and <strong>cut every old wire off at its
+ferrule</strong>; no old ferrule is reused (new cuts, new ferrules).
+Meter its holes once</td>
+</tr>
+<tr>
+<td>MECCANIXITY breakout (male)</td>
+<td>The new carrier, under the G469</td>
+<td>Pin-1 rule (§11.3.9)</td>
+</tr>
+<tr>
+<td>INA226-MAIN (0x44)</td>
+<td>The new carrier, on its <strong>Ø2.0 pair</strong> (never the live
+Ø2.2 shunt pads it sat on with nylon)</td>
+<td>Re-check its address bridges (0x44) and the pull-up state</td>
+</tr>
+<tr>
+<td>Bay TMP102 (SparkFun, 0x48)</td>
+<td>The new carrier (matches the 20.3 grid of its posts)</td>
+<td>ADD0 → GND kept; header or 0.1" row as §11.3.9</td>
+</tr>
+<tr>
+<td>HC-SR501 PIRs ×4</td>
+<td>The ceiling fence</td>
+<td><strong>Cut off the old Y harnesses</strong>; new individual leads
+(row 16)</td>
+</tr>
+<tr>
+<td>NF-A4x20 fans ×2</td>
+<td>The ceiling fence back wall (M3 inserts + M3 × 25 ×4 each)</td>
+<td>Cut at the old splice. <strong>Measure what's left of each
+lead:</strong> FAN1 runs 99 mm and FAN2 165 mm to their splice points.
+If a lead is short, the splice moves and FAN-P / FAN-SIG are cut
+longer</td>
+</tr>
+<tr>
+<td>Mus-14</td>
+<td>The new carrier</td>
+<td>Output 5.0–5.2 V no-load re-checked at power-up</td>
+</tr>
+<tr>
+<td>FFC 40-way 500 mm</td>
+<td>As before</td>
+<td>Blue stripe up both ends</td>
+</tr>
+<tr>
+<td>PSC-100, pack</td>
+<td>Halo's plate</td>
+<td>See A1 / A2</td>
+</tr>
+</tbody>
+</table>
+<p><strong>A0, strip-down:</strong></p>
+<ol type="1">
+<li>Unplug the mains, unmate the battery, then take Halo's old bay
+apart: the old cover boards and their nylon hardware, the DROK and the
+APIELE block (both retired, not reused), the old fence and its fans,
+PIRs, rockers and C14.</li>
+<li>Bag and label each reused part.</li>
+<li>Old harnesses: keep none, except each fan's own stock lead.</li>
+</ol>
+<p><strong>Stock for the new parts:</strong> §16f.1's stock-vs-need
+table. Halo needs INA226 ×2 new (BATT, INA3); one each of HL-PBB, F1
+holder, rockers, C14; everything else is moved over. The ZK-SJ20 comes
+later.</p>
+<h3 id="16g2-mount-order">16g.2 Mount order</h3>
+<p>As <a
+href="#16f2-mount-order-components-first-except-four-boards">§16f.2</a>,
+with these changes:</p>
+<ul>
+<li><strong>A1:</strong> Halo's own plate and PSC-100. ⏳ CAD confirms
+on 2026-11-26 whether its PSU moves to the bay v3 terminal line as
+Ultra's did, and the PSU-to-pack gap to check.</li>
+<li><strong>A2:</strong> Halo's pack. The BATT pack-end termination
+follows its lead (XT30 or barrel); the unfused stub stays ≤ 150 either
+way.</li>
+<li><strong>B1:</strong> add <strong>3 of the 4 PIRs</strong> on the
+ceiling fence (M2 × 10 Torx + nut, 2 each): front pair low (centre Z
+25), fan-side pair at centre 68. <strong>The front-left PIR board
+waits</strong> for the F3 tie (E2). ⏳ CAD: nut-side access to that
+board with the carrier in.</li>
+<li><strong>C1:</strong> INA3 and the Mus-14 on the bench; F1's holder
+in its cradle. <strong>The TMP102 waits</strong> (its standoff ties F7 /
+F8 / F9 close first). <strong>No IP6518.</strong> No buck dry-fit until
+a unit arrives.</li>
+</ul>
+<h3 id="16g3-crimp--cut-list-rows-that-differ-from-16f3">16g.3 Crimp +
+cut list (rows that differ from §16f.3)</h3>
+<p>Lengths are CAD's ceiling wired bay. <strong>Three PIR cuts
+grow</strong> past §16c's (routed + strips + ~20).</p>
+<table>
+<thead>
+<tr>
+<th># / ID</th>
+<th>Conductors</th>
+<th>Cut (mm)</th>
+<th>End A (tool)</th>
+<th>End B (tool)</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>#4 ROCKER, LAMP leg</strong></td>
+<td>1 × 22</td>
+<td>250</td>
+<td>DC rocker LAMP flag (flag crimper)</td>
+<td><strong>B6: own E0508</strong></td>
+<td>No phone, so no E7508</td>
+</tr>
+<tr>
+<td><strong>#14 TETHER-P</strong></td>
+<td>2 × 22 red / black</td>
+<td><strong>1.17 m</strong> each · wand end LONG</td>
+<td>HL-PBB <strong>A2 / B2: E0508</strong></td>
+<td>Wand <strong>XHP-6 pins 1 / 2</strong> (PEBA, XH dies)</td>
+<td>194 in the bay. String-run on Halo before the wand end is
+crimped</td>
+</tr>
+<tr>
+<td><strong>#15 TETHER-S</strong></td>
+<td><strong>1 × 22 GND-logic</strong> + 3 × 26</td>
+<td><strong>1.05 m</strong> (22) · <strong>1.03 m</strong> (26) · wand
+end LONG</td>
+<td>GND-logic → G469 <strong>9</strong>; SIG → G469 <strong>3 / 5 /
+1</strong>; each in an <strong>AIRIC violet</strong> with its chain
+conductor</td>
+<td>Same XHP-6: GND-logic <strong>6</strong>, SIG <strong>3 / 4 /
+5</strong></td>
+<td><strong>GND-logic never at the block.</strong> Separate from
+TETHER-P until the shell</td>
+</tr>
+<tr>
+<td><strong>#18 PIR-BL</strong></td>
+<td>3 × 26, lightly twisted</td>
+<td><strong>80</strong></td>
+<td>PIR: <strong>Dupont 3-way female</strong> by net (PEBA; read the
+HC-SR501 silk)</td>
+<td>G469 OUT <strong>38: E0208</strong></td>
+<td>Routed 50</td>
+</tr>
+<tr>
+<td><strong>#19 PIR-BR</strong></td>
+<td>3 × 26</td>
+<td><strong>280</strong> (was 265)</td>
+<td>Same</td>
+<td>G469 OUT <strong>40: E0208</strong></td>
+<td>Routed 244</td>
+</tr>
+<tr>
+<td><strong>#20 PIR-FL</strong></td>
+<td>3 × 26</td>
+<td><strong>270</strong> (was 260)</td>
+<td>Same</td>
+<td>G469 OUT <strong>36: E0208</strong></td>
+<td>Routed 237</td>
+</tr>
+<tr>
+<td><strong>#21 PIR-FR</strong></td>
+<td>3 × 26</td>
+<td><strong>320</strong> (was 310)</td>
+<td>Same</td>
+<td>G469 OUT <strong>11: E0208</strong></td>
+<td>Routed 285</td>
+</tr>
+<tr>
+<td>PIR 5 V / GND (all 4)</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>All 4 × 5 V → <strong>pin 2</strong> and all 4 × GND → <strong>pin
+6</strong>: <strong>one AIRIC violet each</strong></td>
+<td>No Ys</td>
+</tr>
+<tr>
+<td><strong>#25 I²C hop 1</strong></td>
+<td>4 × 26</td>
+<td>115</td>
+<td>G469 <strong>3 / 5 / 1 / 9: AIRIC violet</strong>, shared with the
+tether conductors</td>
+<td>INA-MAIN housing</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>#17 SPS30 / ZE15</strong></td>
+<td>8 × 26</td>
+<td>125 each</td>
+<td>G469 <strong>4</strong>: AIRIC violet, 2 conductors (no cooler)</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>#9 / #10 / #11 (buck runs)</strong></td>
+<td>16 AWG</td>
+<td>as §16f</td>
+<td><strong>Crimp only in §16g.7</strong></td>
+<td>—</td>
+<td>HV5 is laid in E2 with both ends taped</td>
+</tr>
+<tr>
+<td>PHONE-IN, PHONE-C, Pi5 cooler</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td><strong>Not on Halo</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>G469 ferrules, this build:</strong></p>
+<ul>
+<li><strong>E0208 ×11:</strong> 8 / 10 / 20 / 21 / 24 / 25 / 11 / 36 /
+38 / 40, + 1 spare.</li>
+<li><strong>AIRIC violet ×12:</strong> 1 / 3 / 5 / 9 (chain + tether), 2
+and 6 (4 PIRs each), 4, 17, 29, 31, 32, + 1 spare.</li>
+</ul>
+<p><strong>Other ferrules:</strong> E0508 ×9 (A2 / B2, A3 / B3, A4 / B4,
+A5 / B5, B6), E1008 ×6, E2508 ×1, no E7508, E1508 ×10 (all crimped in
+§16g.7).</p>
+<p><strong>Housings:</strong> I²C 4 × 2.54 mm 4-way (16 contacts); PIRs
+4 × Dupont 3-way (12 contacts); wand end 1 × XHP-6.</p>
+<p><strong>Totals, this build (cut × conductors):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Gauge</th>
+<th>Total</th>
+<th>Change from Ultra</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>16 AWG</td>
+<td>~1.46 m (crimped in §16g.7)</td>
+<td>same</td>
+</tr>
+<tr>
+<td>18 AWG mains</td>
+<td>~1.13 m</td>
+<td>same</td>
+</tr>
+<tr>
+<td>18 AWG</td>
+<td>~1.51 m</td>
+<td>same</td>
+</tr>
+<tr>
+<td>22 AWG</td>
+<td><strong>~4.48 m</strong></td>
+<td>+ TETHER-P 2.34 + GND-logic 1.05; − PHONE-IN 0.56</td>
+</tr>
+<tr>
+<td>26 AWG</td>
+<td><strong>~9.48 m</strong> + the sensor drops</td>
+<td>+ PIRs 2.85, + TETHER-S 3.09</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Left long and bare:</strong> as §16f.3, without the Pi5
+cooler or the BATT XT30 assumption, plus:</p>
+<ul>
+<li>the <strong>tether's wand end</strong>: string-run from the riser
+top to the wand's 6-pin across the arm's poses, then crimped;</li>
+<li><strong>every 16 AWG end</strong> (§16g.7).</li>
+</ul>
+<h3 id="16g4-wiring-order-ceiling-map-holds">16g.4 Wiring order (ceiling
+map holds)</h3>
+<p><strong>Holds:</strong> as §16f.4. <strong>Close from the
+side:</strong> <strong>F2</strong> (INA3), <strong>F12 / F16</strong>
+(beside the HL-PBB).</p>
+<ol type="1">
+<li><strong>Mains</strong> (#1, #2), after the 4 carrier → bar screws:
+<ul>
+<li>L leg on <strong>F26 (Z 30)</strong> / <strong>F27 (Z
+52)</strong>;</li>
+<li>tie caps <strong>F23 (C1), F25, F20, F21, F17, F13</strong>;</li>
+<li>forks and ring on PSU L / N / ⏚.</li>
+</ul></li>
+<li><strong>The under-board runs: lay and tie before their
+boards</strong> (board ends free, flagged):
+<ul>
+<li><strong>F3:</strong> #18 PIR-BL. <strong>Then mount the front-left
+PIR board</strong> (M2 × 10 + nut ×2).</li>
+<li><strong>F5:</strong> #19 PIR-BR, #20 PIR-FL, #21 PIR-FR, #24
+FAN-SIG.</li>
+<li><strong>TMP102 standoff ties F7 / F9 / F8:</strong> #20, #21, #14
+TETHER-P.</li>
+<li><strong>F19:</strong> #7 / #8 BATT, #20, #21, #22 FAN1, #23 FAN2,
+#27 I²C.</li>
+<li><strong>F14:</strong> #8, <strong>#9 HV5</strong> (both ends taped),
+#20, #21, #22, #23, #27.</li>
+<li><strong>F15:</strong> #3 CH1, #8, #9, #12 MUS-IN, #13 FAN-P, #14
+TETHER-P.</li>
+</ul></li>
+<li><strong>Now the five boards:</strong>
+<ul>
+<li>breakout + G469; INA226-MAIN; INA226-BATT; <strong>TMP102</strong>
+(M2.5 × 8 ×4 on its 8 mm posts); HL-PBB (A1 / B1 left empty).</li>
+<li>Land their ends: as §16f E3, <strong>without A1 / B1 and
+A6</strong>, with LAMP alone at B6.</li>
+</ul></li>
+<li><strong>I²C chain</strong> (#25–28): #25 at <strong>F10</strong>;
+#27 already tied; #28 on the stretch posts <strong>F6 /
+F1</strong>.</li>
+<li><strong>CH1</strong> (#3, also at <strong>F11</strong>) on PSU +V /
+−V. <strong>ROCKER</strong> (#4) at <strong>F22</strong>. ROCKER +
+BLK-IN flags on the DC rocker.</li>
+<li><strong>The rest of the deck:</strong>
+<ul>
+<li><strong>MUS-IN</strong> (#12): F15 → F11 → F10 → <strong>F6 /
+F1</strong> → the Mus-14.</li>
+<li><strong>Fan leads:</strong> FAN1 (#22) also at F11 / F10; FAN2 (#23)
+also at <strong>F24</strong> / F11. <strong>FAN-P</strong> (#13) at F11;
+splices Ø3 each, staggered.</li>
+<li><strong>FAN-SIG</strong> (#24): F5 → <strong>F6</strong> → G469 29 /
+31 / 32 / 17.</li>
+<li><strong>PIRs to the G469:</strong> PIR-BR (#19) on the stretch posts
+<strong>F6 / F4</strong>; PIR-FL / FR (#20 / #21) through <strong>F10 /
+F11</strong> (FR also at <strong>F24</strong>); OUT to 36 / 11 / 38 /
+40, 5 V to 2, GND to 6.</li>
+<li><strong>TETHER-P</strong> (#14): F15 → F11 → F8 →
+<strong>F6</strong> → the riser.</li>
+<li><strong>TETHER-S</strong> (#15): G469 → the riser, beside TETHER-P,
+not bundled.</li>
+</ul></li>
+<li><strong>BATT:</strong> pack pigtail measured; pack end soldered; F1
+joints (Ø5); #6 at <strong>F16 / F18</strong>; meter the whole lead for
+polarity before it ever mates.</li>
+<li><strong>Up through the opening:</strong>
+<ul>
+<li><strong>USB-C</strong> (#16) at the stretch post
+<strong>F4</strong>, slack up into the electronics bay;</li>
+<li><strong>FFC</strong>; <strong>SPS30 / ZE15</strong> (#17);</li>
+<li><strong>the tether</strong>, up to the wand: string-run, then crimp
+the XHP-6 at the wand end.</li>
+</ul></li>
+</ol>
+<h3 id="16g5-checks-and-first-power-up-no-buck">16g.5 Checks and first
+power-up (no buck)</h3>
+<p><a href="#16f5-checks-before-power-and-first-power-up">§16f.5</a>,
+except:</p>
+<ul>
+<li><strong>F2:</strong> drop the PHONE-IN check. <strong>HL-PBB A1 / B1
+empty</strong>, and HV5's taped ends clear of everything.</li>
+<li><strong>Power-up step 2:</strong>
+<ul>
+<li>no IP6518;</li>
+<li>add <strong>wand feed at A2 = 13.8 V vs B2</strong>;</li>
+<li>at the wand end's 6-pin, before the wand is plugged in: <strong>1 =
+13.8 V, 2 = GND, 6 = GND-logic, 3 / 4 / 5 = SDA / SCL /
+3V3</strong>.</li>
+</ul></li>
+<li><strong>Step 3 (buck): skipped until §16g.7.</strong> The arm stays
+dark.</li>
+<li><strong>Step 5:</strong>
+<ul>
+<li><code>i2cdetect -y 1</code> shows 0x44 / 0x45 / 0x47 / 0x48
+<strong>+ the wand's 0x49</strong>, with the wand plugged in;</li>
+<li>each PIR's OUT toggles on its G469 pin (36 / 11 / 38 / 40) when you
+wave.</li>
+</ul></li>
+</ul>
+<h3 id="16g6-open-items-for-the-halo-bench">16g.6 Open items for the
+Halo bench</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Needed by</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PSC-100 position on Halo's plate and the PSU-to-pack gap (CAD,
+2026-11-26)</td>
+<td>A1</td>
+</tr>
+<tr>
+<td>Nut-side access to the front-left PIR board with the carrier in
+(CAD)</td>
+<td>E2</td>
+</tr>
+<tr>
+<td>Halo's pack lead (XT30 or barrel) and its factory pigtail length
+(stub ≤ 150)</td>
+<td>E7</td>
+</tr>
+<tr>
+<td>PSC-100 CH2 lead end + its fuse rating; PSU terminal screw size</td>
+<td>E7</td>
+</tr>
+<tr>
+<td>What's left of each fan's stock lead after the old splice is
+cut</td>
+<td>E6</td>
+</tr>
+<tr>
+<td>Tether string-run length, riser top → wand 6-pin across the
+poses</td>
+<td>E8</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="16g7-the-buck-last-separate-step-when-a-unit-arrives-dec-6">16g.7
+The buck: last, separate step (when a unit arrives, ~Dec 6)</h3>
+<ol type="1">
+<li><strong>Bench gate</strong>, Power_Bay §5c, on the new unit at
+<strong>7.50 V</strong>. Dry-fit it on the seat first and try the 4
+screws and the terminal-screw driver path.</li>
+<li><strong>Power off and unplug:</strong> mains out, battery unmated,
+F1's fuse out.</li>
+<li>Untape HV5 (#9). Crimp its ends (E1508, or bare twisted strands if
+the opening won't take one) and <strong>land A1 / B1</strong>.</li>
+<li><strong>Drop the buck</strong> on its seat: <strong>M3 × 12
+×4</strong>. Land HV5 at IN from above.</li>
+<li><strong>HV6a</strong> (#11) OUT+ → INA3 IN+, tie <strong>F2</strong>
+from the side. <strong>HV6</strong> (#10) OUT− and INA3 IN− at the
+stretch post <strong>F4</strong>, then up the opening. Climb measured,
+Deans soldered, STM32 leg 100. Deans left unmated.</li>
+<li><strong>Power up:</strong>
+<ul>
+<li>buck output <strong>7.50 V</strong> at the Deans;</li>
+<li>mate the Deans: the STM32 and the arm power up;</li>
+<li><strong>INA3 (0x47) reads positive</strong> with the arm
+powered.</li>
+</ul></li>
+</ol>
 <h2 id="related-docs">Related Docs</h2>
 <ul>
 <li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> —
