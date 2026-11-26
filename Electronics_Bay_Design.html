@@ -1278,28 +1278,29 @@ fence frame is Z + 30. The operator marked the boards' holes on the STEP
 <code>cad/reference/step/base plate + rpi5 holes + stm32 holes + back eb cover.stp</code>);
 these positions are not caliper measurements.</p>
 <ul>
-<li><strong>STM32 carrier:</strong> holes at <strong>(205.6, 4.3) →
+<li><p><strong>STM32 carrier:</strong> holes at <strong>(205.6, 4.3) →
 (254.6, 42.3)</strong>, the 49 along X. <strong>CONFIRMED</strong>
 2026-11-25 on a STEP the operator marked (their Circles 007–010). If the
 holes were centred on the 73 × 65 board, the board would run into the
 slanted back panel. So either the holes are off-centre or the board is
 turned. ⏳ One caliper reading (hole centre to the nearest edges)
-settles it.</li>
-<li><strong>Pi 5: set B</strong>, holes at X <strong>212.9 /
+settles it.</p></li>
+<li><p><strong>Pi 5: set B</strong>, holes at X <strong>212.9 /
 270.9</strong> (the 58 along X), with the jacks toward −X.
 <strong>Operator-confirmed 2026-11-25</strong>: the hole circles on the
 STEP were marked looking at the base plate from underneath. The plate is
 also drilled for the mirror set, 3.8 mm away; that set is not used. The
 as-built top-view photos (2026-11-25) were taken <strong>before the HAT
 went on</strong>, so they show the board positions and turns, not the Pi
-stack height.</li>
-<li><strong>HAT POWER USB-C cable (D18, Assembly Guide #14, 0.46
+stack height.</p></li>
+<li><p><strong>HAT POWER USB-C cable (D18, Assembly Guide #14, 0.46
 m):</strong> 102 mm in the power bay, ~150–195 mm up to the HAT, leaving
 **~165–210 mm of slack**. It sits as one flat loop (~100 × 40 × 9) over
 the STM32 core stack, under the lid, beside the Pi and clear of its
 cooler, not coiled. It clears the lid by ≥ 5.2 even with the STM32 stack
-3 mm taller than estimated (CAD model).</li>
-<li><strong>Measured by the operator, 2026-11-25 (Ultra):</strong>
+3 mm taller than estimated (CAD model).</p></li>
+<li><p><strong>Measured by the operator, 2026-11-25
+(Ultra):</strong></p>
 <ul>
 <li><strong>Waveshare HAT+:</strong> sits <strong>above the Pi</strong>
 on <strong>15 mm standoffs</strong>, 1.3 clear of the Active Cooler
@@ -1313,14 +1314,21 @@ tallest part on it <strong>~18</strong> above the carrier.</li>
 <strong>14</strong>, header <strong>~9</strong> (heights above the Pi
 board). The USB stacks clear the HAT's 15 mm standoffs by ~1.</li>
 </ul></li>
-<li><strong>Stack vs the lid (model inside height 44.88):</strong> with
-the 15 mm HAT standoff and the measured 8 mm pass-through pins, the
-inverted FPC breakout tops out <strong>~2.2</strong> under the lid (CAD
-model). Two inputs are still unmeasured: the Pi's floor standoff (5 +
-1.6 PCB assumed) and the breakout stack above the pins (11.5 assumed).
-Each mm either is off moves the gap by a mm. The hardware check of
-2026-10-18 confirmed it fits. ⏳ A caliper reading of the bay inside
-height is still open.</li>
+<li><p><strong>Stack vs the lid (model inside height 44.88):</strong>
+the stack, from the plate: Pi standoff <strong>5</strong>, Pi PCB 1.6,
+HAT standoff <strong>15</strong>, HAT PCB 1.6, pins <strong>8</strong>,
+so the pin tips are at <strong>31.2</strong>. The breakout's socket is
+blind and the pins go up inside it:</p>
+<ul>
+<li><strong>seated flush</strong> (the assembly order): top
+~<strong>33.8</strong>, so **~11 under the lid** (~10 under 43.75);</li>
+<li><strong>worst case, socket riding on the pin tips:</strong> top
+~<strong>41.3</strong>, so **~3.6 under the lid** (~2.4 under
+43.75).</li>
+</ul>
+<p>The two 1.6 PCB thicknesses and the 8.5 socket are typical values,
+not measured. Consistent with the 2026-10-18 hardware check. ⏳ A
+caliper reading of the bay inside height is still open.</p></li>
 </ul>
 <p><strong>The inverted MECCANIXITY FPC breakout board above the Pi5
 does NOT collide with any part of the STM32 stack</strong> — the FPC
