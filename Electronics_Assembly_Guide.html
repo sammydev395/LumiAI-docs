@@ -2828,9 +2828,9 @@ Nova takes the PSC-150 (§17.4)</li>
 <li>🟢 HL-PBB-2-6-MINI: 3 on hand (Ultra, Halo, Nova)</li>
 <li>🟢 Power-bay carrier self-taps <strong>M1.7 × 6</strong>: XunLiu
 stainless button head with washer, <strong>1 × 100 pcs, arrived
-2026-10-29</strong> (≤ 16 per robot with the MAIN + BATT adapter; plenty
-for Ultra, Halo and Nova). <strong>M2.5 × 8</strong> (CLAHJQX pan):
-ordered with it. The HL-PBB's 2 × M3 × 8 come from stock.</li>
+2026-10-29</strong> (≤ 16 per robot with the MAIN adapter; plenty for
+Ultra, Halo and Nova). <strong>M2.5 × 8</strong> (CLAHJQX pan): ordered
+with it. The HL-PBB's 2 × M3 × 8 come from stock.</li>
 <li>🟢 PIR leads built from scratch (Electronics 40e356f): ~4.5 m of 26
 AWG Fermerry silicone per robot (carrier v18d cuts 460/510/240/280) + 4
 Dupont 3-way housings + 12 female pins (PEBA kit), all in stock</li>
@@ -2928,8 +2928,9 @@ board as Halo's INA226-MAIN</td>
 <td><strong>in transit</strong> (collected by carrier 2026-10-23)</td>
 <td>✅ Meets the spec (Electronics c52bde5): R002 confirmed from the
 listing photo's shunt body code. Holes fit the carrier's posts (INA3
-fit-checked 2026-11-26); MAIN + BATT go on one printed adapter for
-placement. INA226-BATT for Halo, Ultra, Nova + 1 spare</td>
+fit-checked 2026-11-26); BATT and INA3 go straight on; MAIN goes on a
+printed adapter for placement. INA226-BATT for Halo, Ultra, Nova + 1
+spare</td>
 </tr>
 <tr>
 <td><strong>HC-SR501 PIR</strong> (HC-SR501-BLUE, 10-pack)</td>
@@ -3432,13 +3433,13 @@ the bar tabs into the bars (Ø2.5 pilots), slim driver ≤ 6 mm</td>
 <tr>
 <td>INA226-MAIN, INA226-BATT</td>
 <td>1 + 1</td>
-<td>On <strong>one printed adapter</strong> over their four carrier
-posts, which re-places them: MAIN ~20 mm into the left strip, header
-toward −Y; BATT's spot is <strong>not set</strong> (the last candidate
-sat on the F1 fuse holder; CAD is moving it). ⏳ CAD releases the
-adapter. The bar screw at (174.6, 62.5) under MAIN's spot goes in first
-(D3). Screws through the board's <strong>two small corner holes at the
-header end</strong> only, never the shunt pads</td>
+<td><strong>MAIN on a printed adapter</strong> over its two carrier
+posts, which re-places it: X 165.5–186.5 / Y 40–65, seat 58.0, header
+toward −Y. ⏳ CAD releases the adapter. The bar screw at (174.6, 62.5)
+under MAIN's spot goes in first (D3). <strong>BATT straight on its own
+printed posts, unchanged</strong> (M1.7 × 6 ×2). Screws through the
+board's <strong>two small corner holes at the header end</strong> only,
+never the shunt pads</td>
 <td>Meter each mounting hole open to every pin</td>
 </tr>
 <tr>
@@ -3825,15 +3826,14 @@ PHONE-IN is soldered to it (E5).</li>
 id="16f3-crimp--cut-list-the-whole-loom-before-any-wire-is-run">16f.3
 Crimp + cut list: the whole loom before any wire is run</h3>
 <blockquote>
-<p><strong>INA226-MAIN and INA226-BATT sit on one printed
-adapter.</strong> MAIN: X 163.5–184.5 / Y 50–75, header −Y, terminals
-+Y. <strong>INA226-BATT's spot is not set:</strong> the last candidate
-sat on the F1 fuse holder, and CAD is moving it. MAIN's rows (#3, #4,
-#5, #21) carry <strong>provisional</strong> lengths with +20 margin
-(MAIN's final spot moves ~1 mm); they stay LONG at the board end until
-CAD's wired-bay gate. <strong>BATT's rows (#7 F1 → BATT, #8 BATT → CH2,
-#22 MAIN → BATT, #23 BATT → TMP102) are LONG: length pending the INA
-adapter placement, do not cut to length.</strong></p>
+<p><strong>INA226-MAIN moves onto a printed adapter</strong> (X
+165.5–186.5 / Y 40–65, seat 58.0, header −Y, terminals +Y).
+<strong>INA226-BATT stays on its own printed posts</strong>, so BATT's
+runs (#6–8, #23) keep their original routes and lengths. MAIN's rows
+(#3, #4, #5, #21) carry <strong>provisional</strong> lengths with +20
+margin and stay LONG at the board end until CAD's wired-bay gate.
+<strong>#22 (MAIN → BATT) re-routes</strong> from MAIN's Dupont back
+(176, 21) to BATT's (192.5, 57): LONG, length pending the gate.</p>
 </blockquote>
 <p>Cuts are §16c's, checked against CAD's desk wired bay (24 runs):
 <strong>one cut changed, MUS-IN 255 → 270</strong> (routed 225 on the
@@ -3955,9 +3955,7 @@ window</td>
 <tr>
 <td><strong>#6–8 BATT +</strong></td>
 <td>3 pieces, 18 red</td>
-<td><strong>120</strong> (pack → F1) · pieces 2 + 3 (#7 F1 → INA-BATT,
-#8 INA-BATT → CH2 BAT+) <strong>LONG: length pending the INA adapter
-placement, do not cut to length</strong></td>
+<td><strong>120 · 70 · 150</strong> · first piece LONG</td>
 <td>Pack: <strong>XT30</strong> cup (iron, Ø3) → F1 pigtail (iron,
 <strong>Ø5</strong> over the joint)</td>
 <td>F1 pigtail → INA-BATT <strong>IN− E1008</strong>; INA-BATT
@@ -4014,9 +4012,9 @@ out), by net</td>
 <tr>
 <td><strong>#22–24 I²C hops 2 / 3 / 4</strong></td>
 <td>4 × 26 each</td>
-<td>#22 + #23 <strong>LONG: length pending the INA adapter placement, do
-not cut to length</strong> · #24 <strong>205</strong> (provisional, +20
-margin until CAD's wired-bay gate)</td>
+<td>#22 <strong>LONG: length pending CAD's wired-bay gate (new route),
+do not cut to length</strong> · #23 <strong>120</strong> · #24
+<strong>205</strong></td>
 <td>INA-MAIN → INA-BATT → TMP102 → <strong>INA3</strong> (chain end,
 single-crimped)</td>
 <td>—</td>
@@ -4129,9 +4127,8 @@ and a bad crimp):</strong></p>
 </tr>
 <tr>
 <td><strong>18 AWG</strong></td>
-<td><strong>~1.79 m</strong> + BATT pieces 2 + 3 (pending)</td>
-<td>CH1 0.35, ROCKER 0.48, BLK-IN 0.29, BATT 0.12 + BATT − 0.34 + the 2
-held pieces</td>
+<td><strong>~1.80 m</strong></td>
+<td>CH1 0.35, ROCKER 0.48, BLK-IN 0.29, BATT 0.68</td>
 </tr>
 <tr>
 <td><strong>22 AWG</strong></td>
@@ -4140,9 +4137,8 @@ held pieces</td>
 </tr>
 <tr>
 <td><strong>26 AWG</strong></td>
-<td><strong>~3.02 m</strong> + #22 + #23 (pending) + the two sensor
-drops</td>
-<td>FAN-SIG 0.62, I²C 1.40 (#21 + #24), SPS30 + ZE15 1.00</td>
+<td><strong>~3.50 m</strong> + #22 (pending) + the two sensor drops</td>
+<td>FAN-SIG 0.62, I²C 1.88 (#21, #23, #24), SPS30 + ZE15 1.00</td>
 </tr>
 </tbody>
 </table>
@@ -4263,11 +4259,10 @@ FAN-P.</li>
 <ul>
 <li><strong>breakout + G469</strong> (M3 × 8 ×2, then the G469, 3V3/5V
 corner over silk-1, + M2 × 8 ×2);</li>
-<li><strong>INA226-MAIN</strong> and <strong>INA226-BATT</strong> on
-their shared printed adapter (§16f.1), after the bar screw at (174.6,
-62.5) under MAIN's spot (D3). MAIN's runs carry provisional lengths,
-LONG at the board end; BATT's runs are LONG, length pending the INA
-adapter placement (§16f.3);</li>
+<li><strong>INA226-MAIN</strong> on its printed adapter (§16f.1), after
+the bar screw at (174.6, 62.5) under MAIN's spot (D3), and
+<strong>INA226-BATT</strong> on its own posts. MAIN's runs and #22 carry
+provisional lengths, LONG at the board end (§16f.3);</li>
 <li><strong>HL-PBB</strong> (M3 × 8 ×2, holes metered open to both buses
 first).</li>
 <li>Then land their ends from above:

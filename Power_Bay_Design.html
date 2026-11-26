@@ -1379,9 +1379,10 @@ cut on the GND side, never cut between battery and BMS.</li>
 <li><strong>Mount the INA226 on the carrier</strong> through the board's
 <strong>two small corner holes at the header end</strong> (dead), never
 the live shunt pads (§11.3.9): INA3 straight onto its posts (M1.7 × 6
-×2); INA226-MAIN and INA226-BATT on <strong>one printed adapter</strong>
-over their four posts, which re-places them so both headers seat and
-take housings. ⏳ CAD releases the adapter.</li>
+×2); INA226-BATT straight onto its own posts too; INA226-MAIN on
+<strong>a printed adapter</strong> over its two posts, which re-places
+it (X 165.5–186.5 / Y 40–65, seat 58.0) so both headers seat and take
+housings. ⏳ CAD releases the adapter.</li>
 <li><strong>Wire the 4 screw terminals</strong> (keep leads short — the
 2 mΩ shunt is on-board, no external shunt or long sense-lead runs):
 <ul>
@@ -1690,11 +1691,12 @@ peak on a short 18 AWG run is well inside palette ampacity. <strong>Keep
 the battery leads short (&lt; 20 cm)</strong> per the UPS doc.</li>
 <li><strong>Mounting (§11.3.9):</strong> each INA226 mounts through its
 <strong>two small corner holes at the header end</strong> (dead, NOT the
-live ISENSE± shunt pads): INA3 straight onto its carrier posts, MAIN +
-BATT on one printed adapter over theirs (§11.3.9), so there are no live
-screw heads and the nylon-only + ≥ 3 mm live-head rules don't apply to
-the mount; ✅ <strong>the two boards go SIDE BY SIDE, each on its own
-printed posts</strong> (operator, 2026-10-22).</li>
+live ISENSE± shunt pads): INA3 and INA226-BATT straight onto their
+carrier posts, MAIN on a printed adapter over its own (§11.3.9), so
+there are no live screw heads and the nylon-only + ≥ 3 mm live-head
+rules don't apply to the mount; ✅ <strong>the two boards go SIDE BY
+SIDE, each on its own printed posts</strong> (operator,
+2026-10-22).</li>
 </ul>
 <h3 id="5a5-logic-landing-g469">5a.5 Logic landing (G469)</h3>
 <table>
@@ -3958,12 +3960,13 @@ uses (nylon hardware only, §5.1).</td>
 <td>1.6 mm; header + terminal pins below → <strong>post ≥ 4
 mm</strong></td>
 <td><strong>INA3: straight onto its posts, M1.7 × 6 ×2.</strong>
-<strong>MAIN + BATT: on one printed adapter</strong> over their four
-existing posts (no carrier reprint). As printed, their header ends face
+<strong>BATT: straight onto its posts, M1.7 × 6 ×2. MAIN: on a printed
+adapter</strong> over its two existing posts (no carrier reprint), at X
+165.5–186.5 / Y 40–65, seat 58.0. As printed, the two header ends face
 each other on posts 5 mm apart, and with 5 mm of pins each they can't
-both seat or take housings; the adapter re-places them. ⏳ CAD releases
-it. Continuity-check each mounting hole open to every terminal and
-header pin first</td>
+both seat or take housings; the adapter moves MAIN clear. ⏳ CAD
+releases it. Continuity-check each mounting hole open to every terminal
+and header pin first</td>
 <td>With dead holes, <strong>no live screw heads</strong>: the
 nylon-only rule and the ≥ 3 mm live-head rule don't apply to the carrier
 INA226 mount (the terminal-block screws on top are still live, so keep
