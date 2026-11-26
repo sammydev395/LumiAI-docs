@@ -1985,51 +1985,172 @@ kept ≥ 50 % open (64.5 %)</td>
 </tr>
 <tr>
 <td>Size / weight</td>
-<td>109 × 64.5 × 46 mm (seller, hand-measured; <strong>caliper on
-arrival</strong>); 194 g. Hole pattern not listed (caliper on
-arrival)</td>
+<td><strong>Measured on unit 1 (operator, 2026-11-25; the listing's
+figures don't match):</strong> 4 × <strong>Ø3.5 (M3)</strong> holes on
+<strong>104.0 along × 54.8 across</strong>; heatsink <strong>99.75 ×
+59.4 × 10</strong> on 5 mm struts, its bottom <strong>16.5 below the
+board's underside</strong>, flush with the terminal-side long edge; coil
+<strong>32</strong> above the board; LCD on a daughter board (top
+<strong>20</strong> above the board) along the terminal-free long edge.
+194 g (seller)</td>
 </tr>
 </tbody>
 </table>
 <p><img src="images/hardware/zk_sj20_overview.png"
 alt="ZK-SJ20 300 W automatic buck-boost module with LCD: input terminals left, output terminals right, toroid inductor in the middle, display with MPPT and ON LEDs and the IN/OUT and ON/OFF buttons." /></p>
-<p><strong>Terminals:</strong> IN on one short end, OUT on the other,
-2-position side-entry blocks. On the carrier the <strong>IN end faces
-the block (back)</strong> and the <strong>OUT end faces INA3
-(front)</strong>. Buck runs are <strong>16 AWG</strong> silicone (red /
-black) with <strong>E1508</strong> ferrules (caliper the terminal
-opening on arrival); see §16c rows 5 / 6 / 6a.</p>
+<p><strong>Terminals (unit 1):</strong> 2-position side-entry blocks at
+the two short ends, <strong>~2 mm from the holes</strong>: <strong>IN on
+the left end, seen with the LCD edge toward you</strong>, OUT on the
+right. ⏳ The opening for an E1508 on 16 AWG is still to caliper (HV_Bay
+B16). On the carrier the <strong>IN end faces the block (back)</strong>
+and the <strong>OUT end faces INA3 (front)</strong>. Buck runs are
+<strong>16 AWG</strong> silicone (red / black) with
+<strong>E1508</strong> ferrules (caliper the terminal opening on
+arrival); see §16c rows 5 / 6 / 6a.</p>
 <p><strong>Setup before it ever connects to the robot (bench, e-load,
 meter on the output):</strong></p>
 <ol type="1">
-<li><strong>CV pot → 7.50 V on LV</strong> (never above 8.4 V: servo and
-board limit) or <strong>12.0 V on HV</strong>, then seal it with a dab
-of varnish.</li>
-<li><strong>MPPT pot fully down (≤ 7 V)</strong>, so the board never
-throttles its output to hold the input on a sagging battery.</li>
-<li><strong>CC pot → 18 A</strong> (operator, 2026-11-24). It is
+<li><p><strong>CV pot → 7.50 V on LV</strong> (never above 8.4 V: servo
+and board limit) or <strong>12.0 V on HV</strong>, then seal it with a
+dab of varnish.</p></li>
+<li><p><strong>MPPT pot fully down (≤ 7 V)</strong>, so the board never
+throttles its output to hold the input on a sagging battery.</p></li>
+<li><p><strong>CC pot → 18 A</strong> (operator, 2026-11-24). It is
 headroom: real servo load is ≤ 7–8 A. CC limits current (the rail sags);
-it doesn't latch.</li>
-<li><strong>Power-on default ON:</strong> press ON/OFF for 2 s until the
-display reads <strong>ON</strong>. Without it the output stays off after
-a power cycle and the STM32 and Pi never boot.</li>
-<li>⚠️ <strong>No overvolt setting and no key lock:</strong> a
+it doesn't latch. <strong>The display has no CC setpoint view</strong>
+(no key shows it; only the live output current), so set it the seller's
+way:</p>
+<ol type="1">
+<li><strong>Zero the current reading:</strong> no load, hold
+<strong>IN/OUT for 10 s</strong> until it reads <strong>0.00
+A</strong>.</li>
+<li><strong>CV first</strong> (step 1), and the <strong>MPPT pot fully
+down</strong> (step 2): the <strong>MPPT LED must be OFF</strong>. With
+it on, the input-hold is limiting current, and the reading isn't the CC
+limit.</li>
+<li><strong>Short OUT + to OUT −</strong> with a short 16 AWG jumper (or
+through the e-load), for <strong>≤ 1 min</strong>. The output sits near
+0 V, so the source supplies only a few watts; the 100 W PSU is
+fine.</li>
+<li><strong>Turn the CC pot</strong> until the display reads
+<strong>18.0 A</strong> (5.0 A for the bench-gate proof, step 4 below).
+Remove the jumper; the rail returns to the CV setpoint.</li>
+<li>The display is ±0.03 A; check it against the meter (in series, 10 A
+range) at 5 A in the bench gate, never at 18 A.</li>
+</ol>
+<p><strong>Keys (seller's guide):</strong> IN/OUT tap cycles the top
+line (input V / output V / MPPT V); IN/OUT long press switches the
+bottom line between current and power; ON/OFF tap toggles the output;
+ON/OFF 2 s sets the power-on default (step 4).</p></li>
+<li><p><strong>Power-on default ON:</strong> press ON/OFF for 2 s until
+the display reads <strong>ON</strong>. Without it the output stays off
+after a power cycle and the STM32 and Pi never boot.</p></li>
+<li><p>⚠️ <strong>No overvolt setting and no key lock:</strong> a
 buck-boost can output far above its input, so a mis-set CV pot can put
 20 V+ on the board. Check the output on the meter after any
-handling.</li>
+handling.</p></li>
 </ol>
-<p><strong>Bench gate on the first unit, before any robot:</strong></p>
+<p><strong>Bench gate, unit 1, LV setting (before any robot).</strong>
+The HV 12.0 V / 10 A / 10 min check is separate (<a
+href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code></a>).</p>
 <ul>
-<li>e-load at <strong>18 A for 10 min</strong>, from 13.8 V and from the
-battery: CC holds with the rail sagging, no latch;</li>
-<li>record what <strong>OPP</strong> does (latch or auto-retry) and what
-clears it;</li>
-<li><strong>10 power cycles</strong>, timing time-to-setpoint; the STM32
-and Pi boot every time;</li>
-<li><strong>mains pull under servo load</strong>: no Pi reset;</li>
-<li>heatsink temperature in the bay airflow; the 5 V fan goes on only if
-it runs hot.</li>
+<li><strong>Source:</strong> the bay PSU at 13.8 V (PSC-100-12,
+<strong>100 W</strong>), and the battery <strong>through F1 (10
+A)</strong>. <strong>Load:</strong> the e-load in CC mode. <strong>Meter
+on the OUT terminals</strong>; trust it over the display.</li>
+<li><strong>Load cap: 8 A out (~60 W) on this bench.</strong> A full 18
+A at 7.5 V needs ~150 W in: over the PSU's 100 W, and ~11.5 A from the
+battery, past F1. So the CC behaviour is proven at a low setpoint, and
+the 18 A setting is never loaded here. OPP (300 W) is out of reach on
+this bench and isn't tested.</li>
+<li><strong>No CC setpoint view</strong> (seller's key guide): CC is set
+the seller's way, by <strong>shorting OUT + to OUT − with a short 16 AWG
+jumper</strong> (≤ 1 min) and turning the CC pot while reading the live
+current on the display, <strong>MPPT LED off</strong>. A short draws
+only a few watts from the source, because the output sits near 0 V.
+Current is checked on the meter <strong>in series on OUT+ (10 A range, ≤
+8 A only)</strong>.</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Step</th>
+<th>Pass</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Input 13.8 V, no load. Hold IN/OUT 10 s to zero the current reading
+(display 0.00 A). CV pot → 7.50 on the meter; record the display reading
+next to it</td>
+<td>Meter <strong>7.48–7.52</strong></td>
+</tr>
+<tr>
+<td>2</td>
+<td>MPPT pot fully down (≤ 7 V)</td>
+<td>MPPT LED off</td>
+</tr>
+<tr>
+<td>3</td>
+<td>ON/OFF held 2 s until the display reads <strong>ON</strong>
+(power-on default)</td>
+<td>Display ON</td>
+</tr>
+<tr>
+<td>4</td>
+<td><strong>CC proof at a low setpoint:</strong> jumper across OUT, CC
+pot → <strong>5.0 A</strong> on the display; remove the jumper. E-load 7
+A</td>
+<td>Meter current holds <strong>5.0 ± 0.3 A</strong> (the display within
+± 0.1 of the meter), the rail sags, output stays ON (no latch, no
+OFF)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>E-load back to 3 A</td>
+<td>Rail back to <strong>7.45–7.55</strong></td>
+</tr>
+<tr>
+<td>6</td>
+<td>Jumper across OUT again (≤ 1 min), MPPT LED off: CC pot →
+<strong>18.0 A</strong> on the display; remove the jumper</td>
+<td>Display <strong>18.0 A</strong> under the short; rail back to 7.50
+with no load</td>
+</tr>
+<tr>
+<td>7</td>
+<td>E-load 8 A for <strong>10 min</strong> from 13.8 V, no fan, in still
+air</td>
+<td>Rail <strong>7.40–7.55</strong> throughout; heatsink (display
+temperature) <strong>≤ 60 °C</strong>; no OFF or OPP</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Battery through F1, e-load 8 A for <strong>2 min</strong></td>
+<td>Rail <strong>7.40–7.55</strong>; F1 intact; record the input current
+(~5 A)</td>
+</tr>
+<tr>
+<td>9</td>
+<td>E-load 2 A; <strong>10 input power cycles</strong> (source off ≥ 5
+s, then on); meter on MIN/MAX (or a scope)</td>
+<td>Output comes back ON <strong>every time without a key
+press</strong>; time to 7.50 recorded; <strong>peak never above 8.0
+V</strong> (servo limit 8.4)</td>
+</tr>
+<tr>
+<td>10</td>
+<td>No load: read again, then seal the CV pot with varnish</td>
+<td><strong>7.48–7.52</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Not in this gate (first robot power-up):</strong> the STM32
+and Pi boot on every power cycle, and a mains pull under servo load
+gives no Pi reset (§16.2). If the heatsink passes 60 °C in the bay, fit
+the 5 V fan.</p>
 <h2 id="6-tmp102-power-bay--header-solder--mount--wiring">6. TMP102
 (Power-Bay) — Header Solder + Mount + Wiring</h2>
 <p><strong>Goal:</strong> install the bay-thermal TMP102 in the
