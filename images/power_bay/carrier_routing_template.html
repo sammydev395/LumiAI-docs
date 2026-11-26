@@ -187,7 +187,7 @@ DATA.harness.forEach((h, hi) => {
     const r = R.get(i), row = document.createElement("div");
     row.className = "r"; row.id = "row" + i;
     row.innerHTML = `<input type="checkbox" id="cb${i}">${swatch(r.colors)}<div class="rt"><b></b><div class="ft"></div></div>`;
-    row.querySelector("b").textContent = `#${i}  ${r.rid}  ·  ${r.cond}  ·  ${r.plan} mm`;
+    row.querySelector("b").textContent = `#${i}  ${r.rid}  ·  ${r.cond}  ·  ${r.plan} mm routed`;
     row.querySelector(".ft").textContent = `${r.from} → ${r.to}`;
     row.querySelector("input").onclick = ev => { ev.stopPropagation(); ev.target.checked ? visible.add(i) : visible.delete(i); if (!ev.target.checked && focus === i) focus = null; apply(); };
     row.onclick = () => setFocus(i);
@@ -220,7 +220,7 @@ stage.addEventListener("pointermove", ev => {
   t.innerHTML = `<b></b><br><span></span><br><span></span>`;
   t.querySelector("b").textContent = `#${i} ${r.rid} — ${DATA.harness[r.h].name}`;
   t.querySelectorAll("span")[0].textContent = `${r.from} → ${r.to}`;
-  t.querySelectorAll("span")[1].textContent = `${r.cond}, plan ${r.plan} mm (click to focus)`;
+  t.querySelectorAll("span")[1].textContent = `${r.cond}, routed ${r.plan} mm (click to focus)`;
   tip.appendChild(t); tip.style.display = "block";
   let x = ev.clientX - b.left + 14, y = ev.clientY - b.top + 14;
   if (x + 340 > b.width) x = Math.max(4, ev.clientX - b.left - 350);
