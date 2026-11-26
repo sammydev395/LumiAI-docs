@@ -4719,13 +4719,12 @@ state)</p>
 </tr>
 <tr>
 <td>Nozzle temp</td>
-<td><strong>240–265 °C, target 260</strong> — matches MatterHackers' own
-X1-series number exactly.</td>
+<td><strong>285 °C, first layer and the rest</strong> (the preset's
+range set to 240–290, so Studio neither warns nor clamps).</td>
 </tr>
 <tr>
 <td>Bed temp</td>
-<td><strong>60–65 °C + glue</strong> (MatterHackers' own Bambu guidance
-— 100 °C sits ABOVE PA12's Tg).</td>
+<td><strong>95 °C, first layer and the rest.</strong></td>
 </tr>
 <tr>
 <td>Nozzle hardware</td>
@@ -4736,23 +4735,24 @@ loading</strong> (MH). A 0.6 nozzle prints CF nylon stronger but rougher
 </tr>
 <tr>
 <td>Chamber</td>
-<td><strong>Chamber heater OFF</strong> (MatterHackers' X1E advice —
-PA12 does not want a PA6-style hot chamber; the preset now carries
-<code>chamber_temperatures 0</code>, ee1c405). <strong>X1C: closed lid +
-front door stays</strong> — as passive draft protection, not to heat.
-<strong>H2S: heater off, door closed.</strong></td>
+<td><strong>55 °C, and the print waits for it.</strong> The stock H2S
+start G-code sets the airduct to heating mode (aux and chamber fans
+off), starts the chamber early (M141), then blocks on M191 S55 before
+the bed wait (M190): that wait is the soak (bed and nozzle at
+temperature, door closed, before layer 1). No exhaust or chamber fan
+runs during the print.</td>
 </tr>
 <tr>
 <td>Bed plate + prep</td>
-<td><strong>Textured or smooth PEI both work (MH)</strong> — the
-operator's H2S has only textured, so <strong>Textured PEI is the
-production plate</strong> (bed 65 °C + glue); the same on the X1C. Wash
-with soap and water first (no IPA), fresh even glue coat. ⚠️ <strong>On
-PEI the glue is a RELEASE layer protecting the plate as much as
-adhesion</strong> — NylonX "sticks a lot" (operator) and nylon can tear
-flakes out of PEI. See bed-adhesion note below. On the H2S the lens
-plate’s bottom face takes the textured-plate imprint — cosmetic only (it
-faces the heatsink).</td>
+<td><strong>Textured PEI</strong> (the H2S's production plate), washed
+with soap and hot water (no IPA). <strong>Glue: the Bambu PVA glue
+stick, a thick coat over the whole footprint, brim and purge line
+included. Never regular Magigoo.</strong> <strong>Z-trim −0.05</strong>
+on the textured plate (slot 5's filament start G-code;
+<code>gate_ztrim</code> checks it), so layer 1 is pressed into the
+texture. Remove cold: the parts come off with a fingernail. <strong>Bed
+recipe proven 2026-11-26 on H2S 27 (Ø79, no trees, held to the
+end).</strong></td>
 </tr>
 <tr>
 <td>Orientation</td>
@@ -4762,7 +4762,22 @@ bed-adhesion note below.</td>
 </tr>
 <tr>
 <td>Supports</td>
-<td><strong>OFF for both</strong></td>
+<td><strong>Head ring: off. Lens plate: trees under the lips</strong>
+(operator 11-26: the unsupported membrane strings).</td>
+</tr>
+<tr>
+<td>First layer</td>
+<td><strong>The book's first-layer speeds: walls and brim 50 mm/s,
+bottom surface 87.5 mm/s in the moves</strong> (set 105, the slot's 8
+mm³/s cap trimming the widest lines). <code>gate_l1_speed.py</code>
+checks the moves against the book's first-layer settings and fails an
+object whose own first-layer setting is slower than it lays (Studio
+2.9.1 ignores per-object first-layer speeds).</td>
+</tr>
+<tr>
+<td>Part fan</td>
+<td><strong>Off through layer 14, then at most 20 %</strong> (fan max
+and the overhang fan). Aux fan 0.</td>
 </tr>
 <tr>
 <td>Feed</td>
@@ -5011,12 +5026,12 @@ profile (base: Bambu Studio "Generic PA-CF")</h4>
 <p>NylonX (Matterhackers nylon + CF) has no dedicated Bambu Studio
 preset, so start from the <strong>Generic PA-CF</strong> filament
 profile and adapt it. The values below are that preset as-shipped.
-<strong>The one change NylonX needs is temperature:</strong> drop the
-nozzle from PA-CF's 290 °C to <strong>240–265 °C (target 260)</strong>
-and the bed to <strong>60–65 °C + glue</strong> (per the Material &amp;
-machine table above). The volumetric-flow cap (8 mm³/s), cooling, and
-ramming values are good NylonX starting points as-is. Confirm against
-the Matterhackers NylonX spec sheet for your spool.</p>
+<strong>NylonX runs the values in the Material &amp; machine table
+above</strong> (nozzle 285 °C, bed 95 °C, chamber 55 °C, z-trim −0.05,
+the PVA glue stick). The volumetric-flow cap (8 mm³/s) and the ramming
+values stay as shipped; the part fan is capped (off through layer 14,
+then at most 20 %). Confirm against the Matterhackers NylonX spec sheet
+for your spool.</p>
 </blockquote>
 <p><strong>Filament tab</strong></p>
 <table>
@@ -5131,8 +5146,8 @@ the Matterhackers NylonX spec sheet for your spool.</p>
 <tr>
 <td></td>
 <td>Nozzle</td>
-<td>Initial 290 / Other 290 °C → <strong>use 250–265 °C for
-NylonX</strong></td>
+<td>Initial 290 / Other 290 °C → <strong>NylonX: 285 °C</strong> (the
+Material &amp; machine table)</td>
 </tr>
 <tr>
 <td>Volumetric speed limitation</td>
@@ -5172,12 +5187,9 @@ NylonX</strong></td>
 </tbody>
 </table>
 <blockquote>
-<p>Bed-temperature note: this PA-CF preset runs all engineering/PEI
-plates at 100 °C. <strong>For NylonX OVERRIDE that: 60–65 °C +
-glue</strong> — 100 °C sits above PA12's Tg (MatterHackers, 2026-10-14).
-The 290 °C nozzle figure is the genuine PA-CF value and should be
-dropped to <strong>240–265 °C (target 260)</strong> for NylonX — that
-nozzle temp is the main override.</p>
+<p>Temperature note: this PA-CF preset runs all engineering/PEI plates
+at 100 °C and the nozzle at 290 °C. <strong>NylonX runs bed 95 °C and
+nozzle 285 °C</strong> (the Material &amp; machine table).</p>
 </blockquote>
 <p><strong>Cooling tab</strong></p>
 <table>
@@ -5359,24 +5371,27 @@ hold it</td>
 </tr>
 <tr>
 <td><strong>Bed temp</strong></td>
-<td><strong>60–65 °C + glue</strong></td>
-<td>MatterHackers' Bambu number; 100 °C sits above PA12's Tg.</td>
+<td><strong>95 °C</strong></td>
+<td>Bed recipe proven 2026-11-26 on H2S 27 (Ø79, no trees, held to the
+end).</td>
 </tr>
 <tr>
 <td><strong>Chamber</strong></td>
-<td><strong>Heater OFF</strong>; X1C closed lid + front door for drafts
-only; H2S heater off, door closed</td>
-<td>PA12 does not want a PA6-style hot chamber (MH X1E advice).</td>
+<td><strong>55 °C, the start waits for it (M191); door
+closed</strong></td>
+<td>The wait is the soak before layer 1.</td>
 </tr>
 <tr>
 <td><strong>Part fan</strong></td>
-<td>0% for the first ~5 layers</td>
-<td>Any first-layer cooling lifts nylon instantly</td>
+<td><strong>Off through layer 14, then at most 20 %</strong></td>
+<td>Cooling lifts nylon.</td>
 </tr>
 <tr>
 <td><strong>Surface prep</strong></td>
-<td>Soap-and-water wash, then fresh glue stick (no IPA, 2026-10-18)</td>
-<td>Nylon won't grip old glazed glue; alcohol degrades PEI</td>
+<td>Soap-and-water wash (no IPA), then <strong>the Bambu PVA glue stick,
+thick, over the whole footprint incl. brim and purge; never regular
+Magigoo</strong>; z-trim −0.05</td>
+<td>Layer 1 pressed into the texture holds; bare plate releases.</td>
 </tr>
 <tr>
 <td><strong>First layer height</strong></td>
@@ -5390,193 +5405,17 @@ special first-layer treatment for the bottom thread turn is needed</td>
 <strong>raft</strong>, or add mouse-ear tabs at the outer points of the
 ring. Keep the part centred on the bed (best heat + adhesion) — which
 the slicer already does.</p>
-<h4
-id="supports--no_entry-not-needed-since-v99-read-before-printing">Supports
-— ⛔ NOT needed since v9.9 (read before printing)</h4>
-<blockquote>
-<p>⛔ <strong>SUPERSEDED 2026-09-23 — neither head part needs support
-any more.</strong> The whole problem below was that a
-<strong>single</strong> part had to carry both the threaded sleeve and a
-disc roofing the open Ø64 bore. Splitting the head removed the roof: the
-ring is an open annulus and the plate prints flat on the bed.
-<strong>Turn supports OFF for both.</strong> The text is kept because
-the reasoning still applies to any future part that roofs an open
-bore.</p>
-</blockquote>
-<details><summary>⛔ Original — supports for the one-piece head cap, retained as record</summary>
-
-<p><strong>Supports are mandatory for the head cap and must stay
-enabled.</strong> Printed rings-up, the sleeve prints as a hollow tube
-(Z=0..10 mm, no support needed), but the <strong>disc then has to close
-across the open Ø64 bore</strong> — a ~64 mm flat span that cannot
-bridge. Without support under it the disc sags into the cavity and the
-part fails just above the sleeve. (Re-orienting does not help:
-rings-down lands only the three Ø24 ring tops on the bed <em>and</em>
-still needs disc support, so it's worse on both counts. Rings-up +
-supports is the correct, least-bad route.)</p>
-<p>The goal is to support the disc underside <strong>without fouling the
-M70×3 internal thread or the heatsink slip-fit bore.</strong> These are
-the validated settings:</p>
-<table>
-<thead>
-<tr>
-<th>Group</th>
-<th>Setting</th>
-<th>Value</th>
-<th>Why</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Support</td>
-<td>Enable support</td>
-<td>On</td>
-<td>Required — disc roof over the open bore</td>
-</tr>
-<tr>
-<td></td>
-<td>Type</td>
-<td>Tree (Slim)</td>
-<td>Branches climb the open bore and touch only the disc</td>
-</tr>
-<tr>
-<td></td>
-<td>Threshold angle</td>
-<td>55°</td>
-<td>Catches the flat disc underside</td>
-</tr>
-<tr>
-<td></td>
-<td><strong>On build plate only</strong></td>
-<td><strong>On</strong></td>
-<td>Supports grow from the bed up the bore → pull straight out the open
-bottom; nothing anchors to the part</td>
-</tr>
-<tr>
-<td></td>
-<td>Support critical regions only</td>
-<td>On</td>
-<td>Only supports the overhangs that would actually fail</td>
-</tr>
-<tr>
-<td></td>
-<td>Remove small overhangs</td>
-<td>On</td>
-<td>Skips trivial nubs</td>
-</tr>
-<tr>
-<td>Raft</td>
-<td>Raft layers</td>
-<td>0</td>
-<td>Brim (not raft) handles adhesion; see bed-adhesion note</td>
-</tr>
-<tr>
-<td>Advanced</td>
-<td>Initial layer density</td>
-<td>90%</td>
-<td>Solid support footing on the plate</td>
-</tr>
-<tr>
-<td></td>
-<td>Top Z distance</td>
-<td>0.2 mm</td>
-<td>Gap for clean release from the disc underside</td>
-</tr>
-<tr>
-<td></td>
-<td>Bottom Z distance</td>
-<td>0.2 mm</td>
-<td>—</td>
-</tr>
-<tr>
-<td></td>
-<td>Top interface layers</td>
-<td>2</td>
-<td>Dense cap = flat disc underside + clean Ø21.3 apertures</td>
-</tr>
-<tr>
-<td></td>
-<td><strong>Support/object XY distance</strong></td>
-<td><strong>0.5 mm</strong></td>
-<td><strong>The key one — keeps branches clear of the internal thread
-crests so removal doesn't chew up the thread</strong></td>
-</tr>
-<tr>
-<td></td>
-<td>Support/object first layer gap</td>
-<td>0.2 mm</td>
-<td>—</td>
-</tr>
-<tr>
-<td></td>
-<td>Independent support layer height</td>
-<td>On</td>
-<td>Lets supports print faster than the 0.20 mm body</td>
-</tr>
-<tr>
-<td>Tree Support</td>
-<td>Branch distance</td>
-<td>10 mm</td>
-<td>—</td>
-</tr>
-<tr>
-<td></td>
-<td>Branch diameter</td>
-<td>2 mm</td>
-<td>—</td>
-</tr>
-<tr>
-<td></td>
-<td>Branch angle</td>
-<td>60°</td>
-<td>—</td>
-</tr>
-<tr>
-<td></td>
-<td>Branch diameter angle</td>
-<td>5°</td>
-<td>—</td>
-</tr>
-</tbody>
-</table>
-<p><strong>After the print:</strong></p>
-<ul class="task-list">
-<li><label><input type="checkbox" />Pull all support material out
-<strong>from the open bottom</strong> of the sleeve.</label></li>
-<li><label><input type="checkbox" />Confirm the <strong>internal M70×3
-thread is clean</strong> — no fused support stubs on the thread crests.
-Test-thread onto a shell half.</label></li>
-<li><label><input type="checkbox" />Confirm the <strong>three Ø21.3 lens
-apertures are clear</strong> and round (a lens cup must pass
-through).</label></li>
-<li><label><input type="checkbox" />Check the <strong>disc underside is
-flat</strong> enough to seat the heatsink/LED stack. Minor scarring here
-is cosmetic-only — it faces the heatsink, not an optical
-surface.</label></li>
-</ul>
-<p><em>NylonX bonds tightly to its own supports — expect to need pliers
-and light cleanup. The 0.2 mm top gap + 0.5 mm XY distance are what make
-removal manageable; don't drop them to zero.</em></p>
-<blockquote>
-<p><strong>Field note (first successful print, NylonX).</strong>
-Confirmed printable with the settings above. Two practical
-takeaways:</p>
-<ul>
-<li><strong>Support removal from under the cap is not trivial</strong> —
-NylonX is tough and the supports don't snap off cleanly. Plan for
-patient work with pliers / flush cutters from the open bottom. The
-<strong>M70×3 thread came out clean enough to mate</strong> despite
-this, so the 0.5 mm XY distance is doing its job.</li>
-<li><strong>Smooth the disc underside (inside top of the cap)
-afterward.</strong> It comes off the supports with a slightly rough
-witness-mark finish. A <strong>Dremel with a sanding drum on a light
-touch</strong> skims it smooth in seconds. Keep it light and even — this
-face seats the heatsink/LED stack, so <em>flat</em> matters more than
-polish, and don't thin the 2 mm disc.</li>
-</ul>
-</blockquote>
-</details>
-
+<h4 id="supports">Supports</h4>
+<p><strong>Head ring: none</strong> (an open annulus, lip down).
+<strong>Lens plate: trees under the tower lips</strong> (operator
+2026-11-26: the unsupported membrane strings in NylonX). Tree (auto),
+style <strong>strong</strong>, <strong>on build plate only</strong>: the
+trees grow from the bed up through the three open apertures and carry
+the sacrificial membrane under each lip (the lip's underside is the
+O-ring seat); the book also paints the lip level (321 mm² at print z
+13.7). The membrane is cut out after printing (knife or step drill),
+which leaves the seat as designed; the trees leave no marks inside that
+matter (operator 2026-11-26).</p>
 <h3 id="why-nylonx-for-the-lens-plate">Why NylonX for the lens
 plate</h3>
 <p>The head cap surrounds the heatsink + 3 LED stars — the only zone
@@ -5837,13 +5676,13 @@ half. If fit is good (light play, ~0.5 mm slip clearance per side),
 commit to printing the second half (~3-4 hr).</li>
 <li><strong>NylonX is dry by then (≥48 h at the PrintDry's 85 °C
 preset)</strong> → print the <strong>lens plate</strong> (disc on bed,
-towers up) from the <strong>PrintDry</strong> → extruder (~2-3 hr,
-hardened steel nozzle, <strong>240–265 °C nozzle (target 260)</strong>,
-<strong>60–65 °C bed + glue</strong>, <strong>chamber heater
-off</strong>, <strong>supports OFF</strong>).head ring** in the same
-breath until 2026-10-17 — the ring is <strong>ASA</strong> now (H2S slot
-2, door closed), so it is not a NylonX dryer print and does not wait on
-this cycle.*</li>
+towers up) from the <strong>PrintDry</strong> → extruder (~1.5 h,
+hardened steel nozzle, <strong>285 °C nozzle</strong>, <strong>95 °C
+bed</strong>, <strong>chamber 55 °C</strong>, <strong>the PVA glue stick
+(never regular Magigoo)</strong>, <strong>trees under the
+lips</strong>).head ring** in the same breath until 2026-10-17 — the
+ring is <strong>ASA</strong> now (H2S slot 2, door closed), so it is not
+a NylonX dryer print and does not wait on this cycle.*</li>
 <li><strong>Alignment fixture</strong> can be printed any time from
 scrap filament (~30 min).</li>
 </ol>
