@@ -2630,25 +2630,26 @@ BUY</strong>: 18 for Halo, Ultra and Nova (+ spares)</td>
 <tr>
 <td><strong>Power-bay carrier screws, self-tap only</strong> (operator
 2026-10-22; CAD self-tap-only gate): <strong>counts per robot:</strong>
-<strong>M1.7 × 6 button-head-with-washer self-tap ×10</strong>
-(INA226-MAIN + INA226-BATT × 2 on the carrier, INA226-DROK (INA3) × 2 on
-the carrier, Mus-14 × 4; Ø1.3 pilots; <strong>dry-fit one screw per
-board</strong>: if the washer flange sits on the INA226 header plastic,
-use a plain M1.7 pan head or a nylon washer instead); <strong>M2.5 × 8
-pan self-tap ×4</strong> for the one TMP102 (+ 2 for the IP6518 on the
-mains-side wall, Creator builds); <strong>M2 × 8 pan self-tap
-×2</strong> for the G469's 2 support posts (Ø1.6 pilots; posts stop
-0.1–0.5 under the seated board, shim at fit); <strong>M3 × 8 pan
-self-tap ×4</strong> (the block: HL-PBB ×2, breakout ×2); carrier →
-bars: 4 more M3 × 8 pan self-taps through the bar tabs' Ø3.4 holes (slim
-driver ≤ 6 mm); <strong>M3 × 12 pan self-tap ×4</strong> for the battery
-hold-down pads (from above, Ø2.5 blind pilots). <strong>M3 × 12 pan
-self-tap ×4</strong> for the ZK-SJ20 (into the seat's end bars + deck,
-no shims) and <strong>M3 × 10 pan self-tap ×2</strong> for the carrier's
-front ears (into the fence's front pads, Ø2.5 pilots) (carrier release
-b6a53ce7; both in stock). The PSU is screwed to the base plate, not
-strapped. G469 stacked on the breakout header <strong>plus 2 carrier
-posts</strong> (operator: header-only was wobbly).</td>
+<strong>M1.7 × 6 button-head-with-washer self-tap ×12</strong>
+(INA226-MAIN × 4: adapter → posts 2 + board → adapter 2; INA226-BATT × 2
+on the carrier, INA226-DROK (INA3) × 2 on the carrier, Mus-14 × 4; Ø1.3
+pilots; <strong>dry-fit one screw per board</strong>: if the washer
+flange sits on the INA226 header plastic, use a plain M1.7 pan head or a
+nylon washer instead); <strong>M2.5 × 8 pan self-tap ×4</strong> for the
+one TMP102 (+ 2 for the IP6518 on the mains-side wall, Creator builds);
+<strong>M2 × 8 pan self-tap ×2</strong> for the G469's 2 support posts
+(Ø1.6 pilots; posts stop 0.1–0.5 under the seated board, shim at fit);
+<strong>M3 × 8 pan self-tap ×4</strong> (the block: HL-PBB ×2, breakout
+×2); carrier → bars: 4 more M3 × 8 pan self-taps through the bar tabs'
+Ø3.4 holes (slim driver ≤ 6 mm); <strong>M3 × 12 pan self-tap
+×4</strong> for the battery hold-down pads (from above, Ø2.5 blind
+pilots). <strong>M3 × 12 pan self-tap ×4</strong> for the ZK-SJ20 (into
+the seat's end bars + deck, no shims) and <strong>M3 × 10 pan self-tap
+×2</strong> for the carrier's front ears (into the fence's front pads,
+Ø2.5 pilots) (carrier release b6a53ce7; both in stock). The PSU is
+screwed to the base plate, not strapped. G469 stacked on the breakout
+header <strong>plus 2 carrier posts</strong> (operator: header-only was
+wobbly).</td>
 <td>per robot</td>
 <td>Power-bay carrier</td>
 <td>M1.7 × 6 (XunLiu stainless, button head with washer, 100 pcs) and
@@ -2828,7 +2829,7 @@ Nova takes the PSC-150 (§17.4)</li>
 <li>🟢 HL-PBB-2-6-MINI: 3 on hand (Ultra, Halo, Nova)</li>
 <li>🟢 Power-bay carrier self-taps <strong>M1.7 × 6</strong>: XunLiu
 stainless button head with washer, <strong>1 × 100 pcs, arrived
-2026-10-29</strong> (≤ 16 per robot with the MAIN adapter; plenty for
+2026-10-29</strong> (12 per robot with the MAIN adapter; plenty for
 Ultra, Halo and Nova). <strong>M2.5 × 8</strong> (CLAHJQX pan): ordered
 with it. The HL-PBB's 2 × M3 × 8 come from stock.</li>
 <li>🟢 PIR leads built from scratch (Electronics 40e356f): ~4.5 m of 26
@@ -3435,11 +3436,15 @@ the bar tabs into the bars (Ø2.5 pilots), slim driver ≤ 6 mm</td>
 <td>1 + 1</td>
 <td><strong>MAIN on a printed adapter</strong> over its two carrier
 posts, which re-places it: X 165.5–186.5 / Y 40–65, seat 58.0, header
-toward −Y. ⏳ CAD releases the adapter. The bar screw at (174.6, 62.5)
-under MAIN's spot goes in first (D3). <strong>BATT straight on its own
-printed posts, unchanged</strong> (M1.7 × 6 ×2). Screws through the
-board's <strong>two small corner holes at the header end</strong> only,
-never the shunt pads</td>
+toward −Y. Adapter: CAD ba0107c9, X1C plate 16, prints on the CTO's go.
+<strong>Order: the bar screw at (174.6, 62.5) first (D3, MAIN covers
+it), then the adapter (M1.7 × 6 ×2 into MAIN's two printed posts through
+Ø2.0, heads in counterbores), then the board (M1.7 × 6 ×2 into the
+adapter's pilots).</strong> BATT and MAIN fit independently; neither
+covers the other's screws. <strong>BATT straight on its own printed
+posts, unchanged</strong> (M1.7 × 6 ×2). Screws through the board's
+<strong>two small corner holes at the header end</strong> only, never
+the shunt pads</td>
 <td>Meter each mounting hole open to every pin</td>
 </tr>
 <tr>
@@ -3593,7 +3598,7 @@ pre-built without it, and the swap waits for it (§16g)</strong></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Screw total, carrier + bay:</strong> M1.7 × 6 ×10 · M2 × 8 ×2
+<p><strong>Screw total, carrier + bay:</strong> M1.7 × 6 ×12 · M2 × 8 ×2
 · M2.5 × 8 ×6 · <strong>M3 × 8 ×8</strong> (block 2, breakout 2, bar
 tabs 4) · M3 × 10 ×2 · M3 × 12 ×8 · M3 pan self-tap ×2 (C14) · M3 × 25
 machine ×8 (fans). <strong>Torque (all self-taps into print):</strong>
