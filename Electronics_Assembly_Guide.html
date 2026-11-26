@@ -2827,9 +2827,9 @@ Nova takes the PSC-150 (§17.4)</li>
 <li>🟢 HL-PBB-2-6-MINI: 3 on hand (Ultra, Halo, Nova)</li>
 <li>🟢 Power-bay carrier self-taps <strong>M1.7 × 6</strong>: XunLiu
 stainless button head with washer, <strong>1 × 100 pcs, arrived
-2026-10-29</strong> (16 per robot with the INA adapters: 48 for Ultra,
-Halo and Nova). <strong>M2.5 × 8</strong> (CLAHJQX pan): ordered with
-it. The HL-PBB's 2 × M3 × 8 come from stock.</li>
+2026-10-29</strong> (≤ 16 per robot with the MAIN + BATT adapter; plenty
+for Ultra, Halo and Nova). <strong>M2.5 × 8</strong> (CLAHJQX pan):
+ordered with it. The HL-PBB's 2 × M3 × 8 come from stock.</li>
 <li>🟢 PIR leads built from scratch (Electronics 40e356f): ~4.5 m of 26
 AWG Fermerry silicone per robot (carrier v18d cuts 460/510/240/280) + 4
 Dupont 3-way housings + 12 female pins (PEBA kit), all in stock</li>
@@ -2926,10 +2926,9 @@ board as Halo's INA226-MAIN</td>
 <td>—</td>
 <td><strong>in transit</strong> (collected by carrier 2026-10-23)</td>
 <td>✅ Meets the spec (Electronics c52bde5): R002 confirmed from the
-listing photo's shunt body code. Mounting holes not calipered on
-arrival; the bay v3 carrier's posts don't match them (fit check
-2026-11-26), so the boards go on printed adapters. INA226-BATT for Halo,
-Ultra, Nova + 1 spare</td>
+listing photo's shunt body code. Holes fit the carrier's posts (INA3
+fit-checked 2026-11-26); MAIN + BATT go on one printed adapter for
+placement. INA226-BATT for Halo, Ultra, Nova + 1 spare</td>
 </tr>
 <tr>
 <td><strong>HC-SR501 PIR</strong> (HC-SR501-BLUE, 10-pack)</td>
@@ -3432,17 +3431,18 @@ the bar tabs into the bars (Ø2.5 pilots), slim driver ≤ 6 mm</td>
 <tr>
 <td>INA226-MAIN, INA226-BATT</td>
 <td>1 + 1</td>
-<td>On <strong>one shared printed INA adapter</strong> over the
-carrier's posts (the posts don't match the boards' holes). ⏳ CAD
-releases it after the board caliper. Screws through the board's
-<strong>dead mounting pair only</strong>, never the shunt pads</td>
+<td>On <strong>one printed adapter</strong> over their four carrier
+posts: as printed, their headers face each other 5 mm apart and can't
+both seat or take housings. ⏳ CAD releases it. Screws through the
+board's <strong>two small corner holes at the header end</strong> only,
+never the shunt pads</td>
 <td>Meter each mounting hole open to every pin</td>
 </tr>
 <tr>
 <td>INA3 (INA226, 0x47)</td>
 <td>1</td>
-<td>On <strong>its own printed INA adapter</strong> over its posts (⏳
-CAD, same release)</td>
+<td><strong>M1.7 × 6 ×2</strong> straight onto its posts (fit-checked
+2026-11-26)</td>
 <td>Same</td>
 </tr>
 <tr>
@@ -4425,12 +4425,6 @@ its parts)</td>
 <tr>
 <td>Pi5 cooler lead: length to the G469</td>
 <td>E10</td>
-</tr>
-<tr>
-<td><strong>INA226 holes, one board:</strong> dead pair c-c + Ø, inset
-from the header end, offset from the side edge, board L × W; are all
-three the same PCB? (sets CAD's INA adapters)</td>
-<td>C2 (INA3), E3 (MAIN + BATT)</td>
 </tr>
 </tbody>
 </table>

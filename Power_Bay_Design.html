@@ -1376,12 +1376,12 @@ PSC-100-12 CH1 +V output and Master Power Switch input). Two ends now
 exist: the <em>source</em> end (still soldered to PSC-100-12 CH1 +V) and
 the <em>load</em> end (still going to Master Power Switch input). Never
 cut on the GND side, never cut between battery and BMS.</li>
-<li><strong>Mount the INA226 on the carrier:</strong> on a
-<strong>printed INA adapter</strong> over the carrier's posts
-(INA226-MAIN and INA226-BATT side by side on one shared adapter; INA3 on
-its own), screwed through the board's <strong>dead mounting
-pair</strong>, never the live shunt pads (§11.3.9). ⏳ The adapters are
-released after one board is calipered.</li>
+<li><strong>Mount the INA226 on the carrier</strong> through the board's
+<strong>two small corner holes at the header end</strong> (dead), never
+the live shunt pads (§11.3.9): INA3 straight onto its posts (M1.7 × 6
+×2); INA226-MAIN and INA226-BATT on <strong>one printed adapter</strong>
+over their four posts, which re-places them so both headers seat and
+take housings. ⏳ CAD releases the adapter.</li>
 <li><strong>Wire the 4 screw terminals</strong> (keep leads short — the
 2 mΩ shunt is on-board, no external shunt or long sense-lead runs):
 <ul>
@@ -1688,14 +1688,13 @@ the INA226 screw terminals (bare twisted strands if a ferrule won't
 seat, §11.4); the uxcell F1 holder keeps its factory 16 AWG pigtail. 8 A
 peak on a short 18 AWG run is well inside palette ampacity. <strong>Keep
 the battery leads short (&lt; 20 cm)</strong> per the UPS doc.</li>
-<li><strong>Mounting (§11.3.9):</strong> each INA226 mounts on a
-<strong>printed INA adapter</strong> over the carrier's posts, through
-its <strong>dedicated mounting holes</strong> (dead holes on the header
-edge, NOT the live ISENSE± shunt pads; ⏳ pattern to caliper, §11.3.9),
-so there are no live screw heads and the nylon-only + ≥ 3 mm live-head
-rules don't apply to the mount; ✅ <strong>the two boards go SIDE BY
-SIDE, each on its own printed posts</strong> (operator,
-2026-10-22).</li>
+<li><strong>Mounting (§11.3.9):</strong> each INA226 mounts through its
+<strong>two small corner holes at the header end</strong> (dead, NOT the
+live ISENSE± shunt pads): INA3 straight onto its carrier posts, MAIN +
+BATT on one printed adapter over theirs (§11.3.9), so there are no live
+screw heads and the nylon-only + ≥ 3 mm live-head rules don't apply to
+the mount; ✅ <strong>the two boards go SIDE BY SIDE, each on its own
+printed posts</strong> (operator, 2026-10-22).</li>
 </ul>
 <h3 id="5a5-logic-landing-g469">5a.5 Logic landing (G469)</h3>
 <table>
@@ -3943,27 +3942,28 @@ above</td>
 <tr>
 <td><strong>INA226-MAIN + INA226-BATT</strong> (side by side) +
 <strong>INA3</strong></td>
-<td>board L × W ⏳</td>
-<td><strong>Dedicated mounting pair on the header edge (away from the
-terminal blocks): ⏳ pattern NOT calipered.</strong> The bay v3
-carrier's posts don't match the boards (operator fit check 2026-11-26).
-Neither the old "2 × Ø2.0 at 17.5 c-c" (one reading of Halo's board,
-method not recorded) nor the carrier's photo-scaled Ø3.1 @ 16.0 is
-confirmed. One caliper of a bench board sets it: dead pair c-c + Ø,
-inset from the header end, offset from the side edge, L × W, and whether
-all three boards are the same PCB. 🚫 <strong>NEVER the other pair near
-the terminal blocks:</strong> those are the big square <strong>ISENSE+ /
-ISENSE− shunt pads</strong> (silk "V+ / V−", R002 between them),
-carrying bus voltage + full load current. They are the LIVE holes Halo's
-cover mount uses (nylon hardware only, §5.1).</td>
+<td><strong>25 × 21</strong> (operator caliper, one R002 board,
+2026-11-26). Header pins <strong>project 5 past the header edge</strong>
+(an edge / horizontal header); terminal blocks <strong>flush with the
+opposite 21 mm edge</strong></td>
+<td><strong>Two small mounting holes at the header-end corners</strong>,
+~Ø1.5 (approximate; an M1.7 passes), hole edge **~2 from the header-end
+edge**. The carrier's posts (Ø1.3 pilots, 17.5 c-c, CAD) are
+<strong>fit-checked on the real board</strong>: INA3 screws onto its two
+posts cleanly. 🚫 <strong>NEVER the other pair near the terminal
+blocks:</strong> those are the big square <strong>ISENSE+ / ISENSE−
+shunt pads</strong> (silk "V+ / V−", R002 between them), carrying bus
+voltage + full load current. They are the LIVE holes Halo's cover mount
+uses (nylon hardware only, §5.1).</td>
 <td>1.6 mm; header + terminal pins below → <strong>post ≥ 4
 mm</strong></td>
-<td><strong>Yes, on printed INA adapters</strong> over the existing
-carrier posts (one shared MAIN + BATT adapter, one for INA3; no carrier
-reprint). The screws go through the dead pair <strong>after a continuity
-check</strong> that each hole is open to every terminal and header pin.
-Screw size follows the calipered hole. ⏳ CAD releases the adapters
-after the caliper</td>
+<td><strong>INA3: straight onto its posts, M1.7 × 6 ×2.</strong>
+<strong>MAIN + BATT: on one printed adapter</strong> over their four
+existing posts (no carrier reprint). As printed, their header ends face
+each other on posts 5 mm apart, and with 5 mm of pins each they can't
+both seat or take housings; the adapter re-places them. ⏳ CAD releases
+it. Continuity-check each mounting hole open to every terminal and
+header pin first</td>
 <td>With dead holes, <strong>no live screw heads</strong>: the
 nylon-only rule and the ≥ 3 mm live-head rule don't apply to the carrier
 INA226 mount (the terminal-block screws on top are still live, so keep
@@ -5499,9 +5499,10 @@ design</strong>, so VBUS reads pack voltage. Record it</td>
 <td><strong>Mounting holes → tell CAD</strong></td>
 <td>Caliper the hole pattern + Ø; check each is dead (continuity to
 every terminal)</td>
-<td>⏳ <strong>Not done on arrival.</strong> The bay v3 carrier's posts
-don't match (fit check 2026-11-26), so CAD's printed INA adapters take
-this caliper. Never mount through a hole that's live</td>
+<td>✅ <strong>Done on one board (operator, 2026-11-26):</strong> 25 ×
+21, two ~Ø1.5 corner holes at the header end, hole edge ~2 from that
+edge; the carrier's posts fit (INA3 fit-checked). Never mount through a
+hole that's live</td>
 </tr>
 <tr>
 <td>Headers</td>
@@ -5520,12 +5521,11 @@ holes. Every described feature matches this doc's GODIYMODULES reference
 IIC Address" box, same orange V+(VBUS)/ISENSE+ + green ISENSE−/GND pair,
 same header order, same square-ISENSE± and corner-hole layout).
 <strong>So the §5a math (CAL 2560) and the 0x45 recipe carry
-over.</strong> The mounting holes did not: the carrier's posts don't
-match the boards in hand (fit check 2026-11-26). <strong>Arrival checks
-still owed:</strong> read the shunt code on the part in hand; caliper
-the mounting pair and meter it dead; continuity-ID the A0/A1 pads per
-§5.2 before bridging. Electronics matched the relayed description, not
-the photo itself.</p>
+over.</strong> The mounting holes fit the carrier's posts (INA3
+fit-checked, 2026-11-26). <strong>Arrival checks still owed:</strong>
+read the shunt code on the part in hand; meter the mounting pair dead;
+continuity-ID the A0/A1 pads per §5.2 before bridging. Electronics
+matched the relayed description, not the photo itself.</p>
 <p><strong>Target spec (qty 4: INA226-BATT for Halo, Ultra, Nova + 1
 spare):</strong></p>
 <ul>
