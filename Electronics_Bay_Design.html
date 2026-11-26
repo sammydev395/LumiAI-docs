@@ -1217,6 +1217,67 @@ the USB-C port on the core board, ~5 mm above core PCB)</td>
 </tr>
 </tbody>
 </table>
+<h3
+id="vendor-dimension-drawings--vendor-spec-not-measured-2026-11-25-for-cads-bay-capture">Vendor
+dimension drawings — VENDOR SPEC, not measured (2026-11-25, for CAD's
+bay capture)</h3>
+<p>Every number below is read off the vendor's own drawing. None is a
+bench measurement. All are mm.</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Source</th>
+<th>Numbers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Raspberry Pi 5</strong></td>
+<td>Raspberry Pi Ltd mechanical drawing <strong>RP-008347-DS</strong>
+(no revision printed on the sheet)</td>
+<td>Board <strong>85 × 56</strong>. 4 mounting holes
+<strong>Ø2.7</strong>, pattern <strong>58 × 49</strong>, centres
+<strong>3.5</strong> in from the GPIO end and from the long edge.
+Ethernet and USB stacks overhang the far short edge by
+<strong>3</strong>. Positions along the bottom edge from the GPIO-end
+edge: USB-C power centre <strong>11.2</strong>, micro-HDMI
+<strong>25.8</strong> / <strong>39.2</strong>. Positions from the bottom
+edge on the far short edge: Ethernet centre <strong>10.2</strong>, USB
+stacks <strong>29.1</strong> / <strong>47</strong>. Header <strong>2 ×
+20</strong> along the top edge.</td>
+</tr>
+<tr>
+<td><strong>Raspberry Pi Active Cooler</strong></td>
+<td>Raspberry Pi Ltd product brief <strong>RP-008188-DS</strong>,
+"Physical specification", published January 2026</td>
+<td>Footprint <strong>63.50 × 42.50</strong> (heatsink); fan block
+<strong>30 × 30</strong>; overall height <strong>13.70</strong>, drawn
+from the board face to the top of the spring-pin heads. Read 13.70 as
+above the Pi PCB top.</td>
+</tr>
+<tr>
+<td><strong>Waveshare PCIe TO M.2 USB HAT+</strong></td>
+<td>Waveshare product page, "Outline dimensions" image
+(<code>PCIe-TO-M.2-USB-HAT-Plus-details-size.jpg</code>, no
+revision)</td>
+<td>Board <strong>85.00 × 56.50</strong>; holes <strong>58.00 ×
+49.00</strong>, matching the Pi. Top view with the 40-pin pass-through
+along one long edge. <strong>3 × USB-A</strong> overhang the short edge
+opposite the M.2 slot, at <strong>19.00</strong> and
+<strong>18.00</strong> centre pitch; <strong>1 × USB-A</strong> on the
+long edge away from the header, <strong>34.00</strong> from its centre
+to the M.2-end edge. <strong>POWER USB-C</strong> on the same long edge
+near the M.2-end corner (the <strong>6.70</strong> dimension sits
+between it and the corner hole; the drawing doesn't make clear which
+features it spans). A <strong>10.00</strong> wide notch in the same long
+edge. The PCIe FPC connector is mid-board, under the "2230" boss. ⏳
+<strong>Standoff height not on the drawing.</strong> Waveshare's
+instructions fit the Active Cooler under the HAT, so the standoff must
+clear 13.70.</td>
+</tr>
+</tbody>
+</table>
 <p><strong>The inverted MECCANIXITY FPC breakout board above the Pi5
 does NOT collide with any part of the STM32 stack</strong> — the FPC
 board's horizontal footprint sits clear of the STM32 core area (the
