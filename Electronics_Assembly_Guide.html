@@ -3345,9 +3345,12 @@ marked LONG.</strong> The <em>Left long</em> list says when each of
 those gets finished.</li>
 <li><strong>One labelling rule:</strong> a masking-tape flag on
 <strong>both ends</strong> of every conductor, 25 mm from the strip,
-reading <strong>route ID + end</strong>: e.g. <code>HV5 A1</code>,
-<code>HV5 BUCK IN+</code>, <code>BATT F1&gt;INA</code>. Remove the flags
-after the §16.1 checks pass.</li>
+reading <strong>robot + route ID + end</strong>: e.g.
+<code>U HV5 A1</code>, <code>U HV5 BUCK IN+</code>,
+<code>U BATT F1&gt;INA</code> (<strong>U</strong> = Ultra,
+<strong>H</strong> = Halo; the two maps number their runs differently).
+<strong>One parts tray per robot.</strong> Remove the flags after the
+§16.1 checks pass.</li>
 </ul>
 <h3 id="16f1-parts-and-tools-laid-out">16f.1 Parts and tools laid
 out</h3>
@@ -4520,7 +4523,9 @@ SPS30 / ZE15.</li>
 (and A1 / B1 until §16g.7); G469 <strong>12 / 14 / 18</strong> (no Pi5
 cooler) and <strong>33 / 34 / 37</strong> (reserved).</li>
 <li><strong>Same rules as §16f:</strong> "crimp everything" = every end
-not marked LONG; one tape flag per end, route ID + end.</li>
+not marked LONG; one tape flag per end, <strong><code>H</code> + route
+ID + end</strong> (e.g. <code>H HV5 A1</code>), and Halo's parts in
+their own tray.</li>
 </ul>
 <h3 id="16g1-moved-over-from-halos-existing-bay-step-a0">16g.1 Moved
 over from Halo's existing bay (step A0)</h3>
