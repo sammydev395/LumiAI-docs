@@ -1045,8 +1045,9 @@ G469.</strong></td>
 </tr>
 <tr>
 <td>STM32 blue terminal block (D14 / D15, Deans pigtails)</td>
-<td>18 AWG</td>
-<td><strong>E1008</strong> (in the XHF kit)</td>
+<td>16 AWG</td>
+<td><strong>E1508</strong> (in the XHF kit; bare twisted strands if it
+won't seat)</td>
 </tr>
 <tr>
 <td>INA226-MAIN / INA226-BATT screw terminals</td>
@@ -3914,9 +3915,9 @@ W, silk "IP6518_A1V1.0"; Creator builds)</td>
 wall's lower straight, front-right corner, 93.6 mm from the mains
 (CAD)</td>
 <td>M2.5 self-tap, diagonal pair</td>
-<td>PHONE-IN 233.6 routed; USB-C 71 to the lid window (CAD 3debe125).
-Vent slots only if the IC reads &gt; 70 °C after 30 min of a 45 W
-charge</td>
+<td>PHONE-IN 233.6 routed; USB-C 99.4 to the lid window, round the
+buck's front (CAD b6a53ce7). Vent slots only if the IC reads &gt; 70 °C
+after 30 min of a 45 W charge</td>
 </tr>
 <tr>
 <td><strong>NOT on the carrier</strong></td>
@@ -4024,7 +4025,7 @@ on the fence back wall pull air front → back, and the PSU's <strong>hex
 top grating is its only vent</strong> (UPS doc, Cooling). A carrier
 spanning the PSU top can choke it unless it's mostly open. The deck
 height sets the air gap above the grating; the ZK-SJ20's heatsink hangs
-through to 3.0 mm above it. Requirements:</p>
+through to 3.5 mm above it. Requirements:</p>
 <ul>
 <li><strong>≥ 50 % open area over the PSU footprint</strong>: a
 rib/lattice frame with boards on bosses, not a solid plate.</li>
@@ -4853,8 +4854,9 @@ HAT</strong></td>
 trip</td>
 </tr>
 <tr>
-<td>Wand feed at distribution-block A1 (13.8 V direct from PSU CH1)</td>
-<td>13.8 V vs B1</td>
+<td>Wand feed at distribution-block A2 (13.8 V direct from PSU CH1;
+tether builds)</td>
+<td>13.8 V vs B2</td>
 <td>Feed or landing fault</td>
 </tr>
 <tr>
@@ -5673,8 +5675,8 @@ polarity before connecting</td>
 <td>8</td>
 <td><strong>MUS-IN</strong></td>
 <td>2 × 22</td>
-<td>218–220</td>
-<td><strong>255</strong></td>
+<td>225 (desk wired bay, CAD 34233681)</td>
+<td><strong>270</strong></td>
 <td>HL-PBB <strong>A5 / B5: E0508</strong></td>
 <td>Mus-14 IN+ / IN− <strong>solder pads</strong> + heat-shrink</td>
 <td>Twisted pair</td>
@@ -5842,8 +5844,9 @@ fitted</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Wire totals per gauge, one Ultra Creator build (rows 1–19,
-incl. 14, 15 and 15a):</strong> the Cut column × conductor count.</p>
+<p><strong>Wire totals per gauge, every row 1–19 (a superset: no single
+build runs both 14–15 and 15a; the Ultra desk build's own totals are in
+Assembly Guide §16f):</strong> the Cut column × conductor count.</p>
 <table>
 <thead>
 <tr>
@@ -5870,7 +5873,7 @@ the bench (operator, 2026-11-24)</td>
 <tr>
 <td><strong>22 AWG</strong></td>
 <td><strong>~5.0 m (~16.5 ft)</strong></td>
-<td>LAMP 0.25, MUS-IN 0.51, FAN1-P / FAN2-P 0.30, TETHER-P 3.39,
+<td>LAMP 0.25, MUS-IN 0.54, FAN1-P / FAN2-P 0.30, TETHER-P 3.39,
 PHONE-IN 0.56</td>
 </tr>
 <tr>
@@ -5907,11 +5910,13 @@ termination tug-test), then the §16.2 power-up. INA226-BATT must read
 <strong>positive</strong> on first charge; INA3 must read positive with
 the arm powered.</li>
 </ol>
-<p><strong>Which rows per build:</strong> every build: rows 1–13 and
-16–19. <strong>Pro / ceiling (wand):</strong> + 14–15. <strong>Creator,
-phone only:</strong> + 15a–15b. <strong>Ultra Creator (desktop dev unit:
-phone AND wand, operator 2026-11-15):</strong> + 14–15
-<strong>and</strong> 15a–15b.</p>
+<p><strong>Which rows per build:</strong> every ceiling build: rows 1–13
+and 16–19 (desk builds drop 16: the desk fence has no PIRs). <strong>Pro
+/ ceiling (wand):</strong> + 14–15. <strong>Creator, phone
+only:</strong> + 15a–15b. <strong>Ultra (Creator desk build, phone only,
+no tether, operator 2026-11-25):</strong> rows 1–13, 15a–15b and 17–19
+(no PIRs on the desk fence); bench pack: <a
+href="Electronics_Assembly_Guide.html">Assembly Guide §16f</a>.</p>
 <h2 id="17-related-docs">17. Related Docs</h2>
 <ul>
 <li><p><a href="HV_Bay_Design.html"><code>HV_Bay_Design.md</code></a> —
