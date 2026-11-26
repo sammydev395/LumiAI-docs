@@ -3830,9 +3830,9 @@ adapter.</strong> MAIN: X 163.5–184.5 / Y 50–75, header −Y, terminals
 sat on the F1 fuse holder, and CAD is moving it. MAIN's rows (#3, #4,
 #5, #21) carry <strong>provisional</strong> lengths with +20 margin
 (MAIN's final spot moves ~1 mm); they stay LONG at the board end until
-CAD's wired-bay gate. <strong>BATT's rows (#6–8 pieces 2 + 3, #22, #23)
-are ON HOLD:</strong> don't cut them until CAD sends the new spot and
-lengths.</p>
+CAD's wired-bay gate. <strong>BATT's rows (#7 F1 → BATT, #8 BATT → CH2,
+#22 MAIN → BATT, #23 BATT → TMP102) are LONG: length pending the INA
+adapter placement, do not cut to length.</strong></p>
 </blockquote>
 <p>Cuts are §16c's, checked against CAD's desk wired bay (24 runs):
 <strong>one cut changed, MUS-IN 255 → 270</strong> (routed 225 on the
@@ -3954,9 +3954,9 @@ window</td>
 <tr>
 <td><strong>#6–8 BATT +</strong></td>
 <td>3 pieces, 18 red</td>
-<td><strong>120</strong> (pack → F1) · pieces 2 + 3 (F1 → INA-BATT,
-INA-BATT → CH2 BAT+) <strong>ON HOLD</strong> until INA-BATT's new
-spot</td>
+<td><strong>120</strong> (pack → F1) · pieces 2 + 3 (#7 F1 → INA-BATT,
+#8 INA-BATT → CH2 BAT+) <strong>LONG: length pending the INA adapter
+placement, do not cut to length</strong></td>
 <td>Pack: <strong>XT30</strong> cup (iron, Ø3) → F1 pigtail (iron,
 <strong>Ø5</strong> over the joint)</td>
 <td>F1 pigtail → INA-BATT <strong>IN− E1008</strong>; INA-BATT
@@ -4013,9 +4013,9 @@ out), by net</td>
 <tr>
 <td><strong>#22–24 I²C hops 2 / 3 / 4</strong></td>
 <td>4 × 26 each</td>
-<td>#22 + #23 <strong>ON HOLD</strong> until INA-BATT's new spot · #24
-<strong>205</strong> (provisional, +20 margin until CAD's wired-bay
-gate)</td>
+<td>#22 + #23 <strong>LONG: length pending the INA adapter placement, do
+not cut to length</strong> · #24 <strong>205</strong> (provisional, +20
+margin until CAD's wired-bay gate)</td>
 <td>INA-MAIN → INA-BATT → TMP102 → <strong>INA3</strong> (chain end,
 single-crimped)</td>
 <td>—</td>
@@ -4128,7 +4128,7 @@ and a bad crimp):</strong></p>
 </tr>
 <tr>
 <td><strong>18 AWG</strong></td>
-<td><strong>~1.79 m</strong> + BATT pieces 2 + 3 (on hold)</td>
+<td><strong>~1.79 m</strong> + BATT pieces 2 + 3 (pending)</td>
 <td>CH1 0.35, ROCKER 0.48, BLK-IN 0.29, BATT 0.12 + BATT − 0.34 + the 2
 held pieces</td>
 </tr>
@@ -4139,7 +4139,7 @@ held pieces</td>
 </tr>
 <tr>
 <td><strong>26 AWG</strong></td>
-<td><strong>~3.02 m</strong> + #22 + #23 (on hold) + the two sensor
+<td><strong>~3.02 m</strong> + #22 + #23 (pending) + the two sensor
 drops</td>
 <td>FAN-SIG 0.62, I²C 1.40 (#21 + #24), SPS30 + ZE15 1.00</td>
 </tr>
@@ -4265,8 +4265,8 @@ corner over silk-1, + M2 × 8 ×2);</li>
 <li><strong>INA226-MAIN</strong> and <strong>INA226-BATT</strong> on
 their shared printed adapter (§16f.1), after the bar screw at (174.6,
 62.5) under MAIN's spot (D3). MAIN's runs carry provisional lengths,
-LONG at the board end; BATT's runs are on hold until its new spot
-(§16f.3);</li>
+LONG at the board end; BATT's runs are LONG, length pending the INA
+adapter placement (§16f.3);</li>
 <li><strong>HL-PBB</strong> (M3 × 8 ×2, holes metered open to both buses
 first).</li>
 <li>Then land their ends from above:
