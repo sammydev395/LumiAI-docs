@@ -4491,7 +4491,8 @@ over)</td>
 <td>Buck (ZK-SJ20)</td>
 <td>Unit 1, gated, fitted at E9</td>
 <td><strong>Last, separate step (§16g.7)</strong>, when a unit arrives
-(~Dec 6). The bay is finished and checked without it</td>
+(~Dec 6). The bay is finished and its power side checked without it; the
+Pi-side checks wait for it</td>
 </tr>
 </tbody>
 </table>
@@ -4504,9 +4505,16 @@ close only before the boards), but <strong>neither end is
 landed</strong>: HL-PBB <strong>A1 / B1 stay empty</strong> and both
 ends are taped.</li>
 <li>HV6a and HV6 are cut and flagged, laid in §16g.7.</li>
-<li>With no buck, <strong>the arm and the STM32 stay dark</strong>. The
-Pi runs from the HAT via the Mus-14, so the bay, sensors, I²C chain,
-PIRs and tether are all checked without it.</li>
+<li>With no buck, <strong>the STM32, the arm and the Pi 5 stay
+dark</strong>. The Pi boots from the STM32's 5 V port; the Mus-14 only
+feeds the HAT's own loads, and the HAT doesn't backfeed the Pi (BringUp
+7.6).</li>
+<li><strong>Checked before the buck (no Pi):</strong> mains and earth,
+every rail on the 13.8 V bus, the Mus-14's 5 V, both rocker lamps, the
+fans at full speed, and the wand feed at the 6-pin.</li>
+<li><strong>Wait for §16g.7 (they need the Pi):</strong> G469 3V3 / 5V,
+<code>i2cdetect</code>, INA readings, fan PWM / tach, PIRs, wand 0x49,
+SPS30 / ZE15.</li>
 </ul></li>
 <li><strong>Empty on this build:</strong> HL-PBB <strong>A6</strong>
 (and A1 / B1 until §16g.7); G469 <strong>12 / 14 / 18</strong> (no Pi5
@@ -4608,10 +4616,13 @@ ceiling fence (M2 × 10 Torx + nut, 2 each): front pair low (centre Z
 25), fan-side pair at centre 68. <strong>The front-left PIR board
 waits</strong> for the F3 tie (E2). ⏳ CAD: nut-side access to that
 board with the carrier in.</li>
-<li><strong>C1:</strong> INA3 and the Mus-14 on the bench; F1's holder
-in its cradle. <strong>The TMP102 waits</strong> (its standoff ties F7 /
-F8 / F9 close first). <strong>No IP6518.</strong> No buck dry-fit until
-a unit arrives.</li>
+<li><strong>C1:</strong> solder MUS-IN to the Mus-14 pads and
+<strong>I²C #27 / #28 to the moved-over TMP102's 0.1" row</strong> (or
+crimp its housing) on the bench, then INA3 and the Mus-14 on the
+carrier; F1's holder in its cradle. <strong>The TMP102 itself
+waits</strong> (its standoff ties F7 / F8 / F9 close first), its leads
+hanging free. <strong>No IP6518.</strong> No buck dry-fit until a unit
+arrives.</li>
 </ul>
 <h3 id="16g3-crimp--cut-list-rows-that-differ-from-16f3">16g.3 Crimp +
 cut list (rows that differ from §16f.3)</h3>
@@ -4796,7 +4807,8 @@ top to the wand's 6-pin across the arm's poses, then crimped;</li>
 map holds)</h3>
 <p><strong>Holds:</strong> as §16f.4. <strong>Close from the
 side:</strong> <strong>F2</strong> (INA3), <strong>F12 / F16</strong>
-(beside the HL-PBB).</p>
+(beside the HL-PBB). <strong>TETHER-S (#15) is free on purpose:</strong>
+no hold on the map, it runs beside TETHER-P to the riser.</p>
 <ol type="1">
 <li><strong>Mains</strong> (#1, #2), after the 4 carrier → bar screws:
 <ul>
@@ -4817,7 +4829,8 @@ TETHER-P.</li>
 <li><strong>F19:</strong> #7 / #8 BATT, #20, #21, #22 FAN1, #23 FAN2,
 #27 I²C.</li>
 <li><strong>F14:</strong> #8, <strong>#9 HV5</strong> (both ends taped),
-#20, #21, #22, #23, #27.</li>
+#20, #21, #22, #23, #27. HV5 also at <strong>F12</strong> (beside the
+HL-PBB, close from the side), tied now.</li>
 <li><strong>F15:</strong> #3 CH1, #8, #9, #12 MUS-IN, #13 FAN-P, #14
 TETHER-P.</li>
 </ul></li>
@@ -4879,12 +4892,15 @@ empty</strong>, and HV5's taped ends clear of everything.</li>
 13.8 V, 2 = GND, 6 = GND-logic, 3 / 4 / 5 = SDA / SCL /
 3V3</strong>.</li>
 </ul></li>
-<li><strong>Step 3 (buck): skipped until §16g.7.</strong> The arm stays
-dark.</li>
-<li><strong>Step 5:</strong>
+<li><strong>Steps 3–5 wait for §16g.7.</strong> No buck → no STM32 → no
+Pi. Before the buck, stop after step 2 (+ the battery: F1 in, pack
+mated, CH1 holds with the AC unplugged).</li>
+<li><strong>After §16g.7:</strong>
 <ul>
+<li>G469 pin 1 = 3.3 V, pins 2 / 4 = 5 V;</li>
 <li><code>i2cdetect -y 1</code> shows 0x44 / 0x45 / 0x47 / 0x48
 <strong>+ the wand's 0x49</strong>, with the wand plugged in;</li>
+<li>INA-BATT positive on charge;</li>
 <li>each PIR's OUT toggles on its G469 pin (36 / 11 / 38 / 40) when you
 wave.</li>
 </ul></li>
@@ -4950,10 +4966,12 @@ Deans soldered, STM32 leg 100. Deans left unmated.</li>
 <li><strong>Power up:</strong>
 <ul>
 <li>buck output <strong>7.50 V</strong> at the Deans;</li>
-<li>mate the Deans: the STM32 and the arm power up;</li>
+<li>mate the Deans: the STM32, the arm and then the Pi power up;</li>
 <li><strong>INA3 (0x47) reads positive</strong> with the arm
 powered.</li>
 </ul></li>
+<li><strong>Now run the Pi-side checks</strong> that waited (§16g.5
+<em>After §16g.7</em>), then BringUp Phases 3–7.</li>
 </ol>
 <h2 id="related-docs">Related Docs</h2>
 <ul>

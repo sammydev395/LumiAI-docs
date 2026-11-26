@@ -8,15 +8,27 @@ MECCANIXITY FFC chain, PSU, HL-PBB 13.8 V distribution block,
 INA226-MAIN, TMP102-bay, TMP102-wand, PCA9685, 12× LED drivers, LED
 MCPCB stack, wand fan, 2× bay fans, 4× HC-SR501 PIR array on the fence
 slants, SPS30 + ZE15-CO on the base plate, arm servos, BigClaw gripper,
-DROK converter, AC inlet + 2× rockers, all harnessing).</p>
+ZK-SJ20 servo-rail buck, AC inlet + 2× rockers, all harnessing).</p>
 <blockquote>
-<p><strong>Carrier era (2026-10-23):</strong> Nova, and Halo/Ultra once
-carriered, mount the power bay on the printed power-bay carrier
-(Power_Bay §11.3.9), not the PSU cover. Wiring + build order: Power_Bay
-§16c; schematic <code>images/power_bay/carrier_wiring.png</code>. Bay
-I²C devices daisy-chain (0x44 / 0x45 / 0x48 on one chain). Phases below
-note where a carrier build differs; steps without a carrier note are the
-Halo v1 as-built (PSU-cover) path.</p>
+<p><strong>Bay v3 (carrier b6a53ce7), every build from
+2026-11-26:</strong> one printed power-bay carrier (Power_Bay §11.3.9),
+the HL-PBB block, the ZK-SJ20 servo-rail buck (7.50 V), F1 the only
+fuse, the DC rocker upstream of the whole 13.8 V bus. Bay I²C devices
+daisy-chain: <strong>0x44 MAIN · 0x45 BATT · 0x47 INA3 (buck output) ·
+0x48 TMP102</strong>. <strong>Build packs (parts, mount order, crimp +
+cut list, wiring, checks):</strong></p>
+<ul>
+<li><strong>Ultra = Creator desk build:</strong> phone (IP6518),
+<strong>no wand tether, no PIRs</strong> (operator 2026-11-25). <a
+href="Electronics_Assembly_Guide.html#16f-creator-desk-build-pack-ultra-carrier-b6a53ce7--desk-fence-bench-order">Assembly
+Guide §16f</a>.</li>
+<li><strong>Halo = ceiling build:</strong> 4 PIRs + the wand tether, no
+phone; its buck is a later, separate step. <a
+href="Electronics_Assembly_Guide.html#16g-halo-ceiling-build-pack-carrier-b6a53ce7--ceiling-fence-bench-order">Assembly
+Guide §16g</a>.</li>
+</ul>
+<p>Phases 4 (wand TMP102), 5 (wand) and 6 (PIRs) apply to <strong>Halo
+(ceiling) only</strong>; Ultra skips them.</p>
 </blockquote>
 <p><strong>Read this doc top-to-bottom in order.</strong> Each phase
 gates the next — do not skip. Every phase points to the authoritative
@@ -27,9 +39,10 @@ and go/no-go layer, not a re-derivation of wiring.</p>
 <code>raspberrypidev</code>, the Ultra-gen2 build; arm only, no wheels).
 Where a step names Ultra's host <code>raspberrypistage</code>, Halo uses
 <code>raspberrypidev</code> (<code>192.168.1.158</code>). Per-unit
-progress is tracked in <a
-href="#build-status--halo-raspberrypidev">Build status — Halo</a>.
-<strong>Owning workstream:</strong> LumiAI-Ultra electronics build.</p>
+progress: <a
+href="#build-status--bay-v3-rebuild-ultra--halo-2026-11-26">Build status
+— bay v3 rebuild</a>. <strong>Owning workstream:</strong> LumiAI-Ultra
+electronics build.</p>
 <hr />
 <h2 id="phase-order-at-a-glance">Phase order at a glance</h2>
 <table>
@@ -43,12 +56,13 @@ href="#build-status--halo-raspberrypidev">Build status — Halo</a>.
 <tbody>
 <tr>
 <td><strong>0</strong></td>
-<td>Power-only. 110 V AC → PSU 13.8 V → INA226 (in-series, no readout) →
-distribution-block bus → DROK 7.5 V → STM32 → Pi5 boot. Fans spin at 100
-%. Wand tether energized. <strong>No GPIO / I²C / UART signal wiring
-yet.</strong></td>
-<td>AC + DC rails at nominal voltages; STM32 + Pi5 boot; both bay fans
-spin; wand tether shows 13.8 V.</td>
+<td>Power-up of the bay v3 carrier: 110 V AC → PSU 13.8 V → INA226-MAIN
+→ DC rocker → HL-PBB bus → ZK-SJ20 7.50 V → INA3 → STM32 → Pi5 (5 V
+port); Mus-14 5 V → HAT loads. Halo: the STM32 + Pi wait for its buck.
+Fans at 100 %. Ultra: IP6518 phone charger. Halo: wand tether
+energized.</td>
+<td>Earth check passed; every rail at nominal (§16f.5 / §16g.5); Pi5
+boots; I²C chain answers 0x44 / 0x45 / 0x47 / 0x48.</td>
 </tr>
 <tr>
 <td><strong>1 (CONDITIONAL — skip by default)</strong></td>
@@ -76,7 +90,7 @@ at 0x44. First I²C traffic on the shared bus.</td>
 current.</td>
 </tr>
 <tr>
-<td><strong>4</strong></td>
+<td><strong>4</strong> <em>(Halo: wand part; both: bay)</em></td>
 <td>TMP102 thermal telemetry: <strong>TMP102-bay</strong> at 0x48 +
 <strong>TMP102-wand</strong> at 0x49 (wand tether SDA/SCL now landed at
 G469).</td>
@@ -84,7 +98,7 @@ G469).</td>
 ±2 °C of a bench reference thermometer.</td>
 </tr>
 <tr>
-<td><strong>5</strong></td>
+<td><strong>5</strong> <em>(Halo only)</em></td>
 <td>PCA9685 (wand) at 0x41 (A0 bridged so the HAT INA219 keeps factory
 0x40) + wand LED bring-up. All 12 LED drivers respond to PWM sweeps.
 Wand fan runs on PCA9685 ch13 PWM, powered from the fan rail's
@@ -93,7 +107,8 @@ Wand fan runs on PCA9685 ch13 PWM, powered from the fan rail's
 smoothly at bench; wand-side TMP102 rises when LEDs on.</td>
 </tr>
 <tr>
-<td><strong>6</strong></td>
+<td><strong>6</strong> <em>(Halo only: desk builds have no
+PIRs)</em></td>
 <td>PIR presence array (4× HC-SR501) on G469 GPIO 16/17/20/21. Combiner
 harness + per-PIR bench config.</td>
 <td>Each of 4 PIRs triggers <code>/presence/pir</code> independently; no
@@ -132,91 +147,115 @@ for its own phase gates.</td>
 </tbody>
 </table>
 <hr />
-<h2 id="build-status--halo-raspberrypidev">Build status — Halo
-(raspberrypidev)</h2>
-<p>Status as of <strong>2026-09-28</strong>. Halo is a <strong>fresh
-build</strong> (FPC → Ultra conversion with a user-machined base plate,
-new base servo, add-back elbow, new BigClaw gripper), so the conditional
-Phase 1 was <strong>required</strong>. Evidence for each line lives in
-the phase section it links to.</p>
+<h2 id="build-status--bay-v3-rebuild-ultra--halo-2026-11-26">Build
+status — bay v3 rebuild (Ultra + Halo, 2026-11-26)</h2>
+<p>Both bays are being rebuilt on the bay v3 carrier this week (target:
+both up by 2026-11-29/30). The arm-side phases (1, 2, 8) carry over from
+the earlier builds; every bay phase is re-run on the new bay.</p>
+<p><strong>Ultra (raspberrypistage), Creator desk build: <a
+href="Electronics_Assembly_Guide.html#16f-creator-desk-build-pack-ultra-carrier-b6a53ce7--desk-fence-bench-order">§16f</a></strong></p>
 <table>
 <thead>
 <tr>
 <th>Phase</th>
 <th>Status</th>
-<th>Date</th>
-<th>Evidence / notes</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>0</strong> Power-only</td>
-<td>✅ Done</td>
-<td>2026-09-22</td>
-<td>Replacement STM32 controller <strong>shipped blank</strong> and was
-flashed over UART (<a
-href="LumiAI_Hardware_Integration.html#hiwonder-stm32-controller--firmware-flashing-replacement-boards-ship-blank">firmware
-flashing procedure</a>). Board answers with battery ≈ 9.0–9.3 V.</td>
+<td><strong>0</strong> Power-up</td>
+<td>⬜ Build starts 2026-11-26</td>
+<td>ZK-SJ20 unit 1: its §5c bench gate first</td>
 </tr>
 <tr>
-<td><strong>1</strong> Arm servo bus (conditional)</td>
-<td>✅ Done</td>
-<td>2026-09-27</td>
-<td>All six IDs unique, every joint indexed, pose parity with Ultra, ROS
-stack live under <code>/halo</code>. See <a
-href="#phase-1-as-run-on-halo-2026-09-27--procedure-and-lessons">Phase 1
-as run on Halo</a>.</td>
+<td><strong>3</strong> Fans + INA226 ×3</td>
+<td>⬜</td>
+<td>0x44 / 0x45 / 0x47</td>
 </tr>
 <tr>
-<td><strong>2</strong> BigClaw gripper</td>
-<td>✅ Done</td>
-<td>2026-09-28</td>
-<td>Full open (200) / close (500); the wand held through full arm
-motion; a <strong>3 cm block held firmly</strong> with the servo not
-warm. Grip needs <strong>one-sided adhesive rubber pads on both the jaws
-and the wand ear's jaw cradles</strong>. See <a
-href="#phase-2-status-on-halo">Phase 2 status on Halo</a>.</td>
+<td><strong>4</strong> TMP102-bay</td>
+<td>⬜</td>
+<td>0x48 only (no wand)</td>
 </tr>
 <tr>
-<td><strong>3</strong> Fans + INA226</td>
-<td>🟡 INA226 only</td>
-<td>2026-09-23</td>
-<td>INA226-MAIN answers at <strong>0x44</strong>, reads <strong>13.71
-V</strong> through the full G469 + FFC chain. Fan PWM + tach not
-started.</td>
-</tr>
-<tr>
-<td><strong>4</strong> TMP102</td>
-<td>⬜ Not started</td>
+<td><strong>5 / 6</strong> Wand, PIRs</td>
 <td>—</td>
-<td>Next sensor phase (TMP102-bay 0x48).</td>
+<td>Not on this build</td>
+</tr>
+<tr>
+<td><strong>7</strong> SPS30 + ZE15</td>
+<td>⬜</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>7.7</strong> INA226-BATT + pull-the-AC</td>
+<td>⬜</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Pi5 cooler on the G469</td>
+<td>⬜</td>
+<td>Ultra only, §3 below</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Halo (raspberrypidev), ceiling build: <a
+href="Electronics_Assembly_Guide.html#16g-halo-ceiling-build-pack-carrier-b6a53ce7--ceiling-fence-bench-order">§16g</a></strong></p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong> Power-up, bay</td>
+<td>⬜ Starts after Ultra's carrier fits</td>
+<td>Power side only: without the buck the STM32 and the Pi stay
+dark</td>
+</tr>
+<tr>
+<td><strong>0</strong> Buck (§16g.7)</td>
+<td>⬜</td>
+<td>When a ZK-SJ20 unit arrives (~Dec 6). Phases 3–7 follow it</td>
+</tr>
+<tr>
+<td><strong>1 / 2 / 8</strong> Arm, gripper, gamepad + HOME</td>
+<td>✅ 2026-09-27/28</td>
+<td>Carried over; re-check HOME once the buck lands</td>
+</tr>
+<tr>
+<td><strong>3</strong> Fans + INA226 ×3</td>
+<td>⬜</td>
+<td>Fans and INA226-MAIN moved over from the old bay</td>
+</tr>
+<tr>
+<td><strong>4</strong> TMP102 bay + wand</td>
+<td>⬜</td>
+<td>0x48 + 0x49</td>
 </tr>
 <tr>
 <td><strong>5</strong> PCA9685 + wand LEDs</td>
-<td>⬜ Not started</td>
-<td>—</td>
+<td>⬜</td>
 <td>—</td>
 </tr>
 <tr>
 <td><strong>6</strong> PIR array</td>
-<td>🔵 In progress (next)</td>
-<td>2026-09-28</td>
-<td>Next phase being worked.</td>
+<td>⬜</td>
+<td>Halo's 4 PIRs, new individual leads</td>
 </tr>
 <tr>
-<td><strong>7</strong> Hazard sensors</td>
-<td>⬜ Not started</td>
-<td>—</td>
+<td><strong>7</strong> SPS30 + ZE15</td>
+<td>⬜</td>
 <td>—</td>
 </tr>
 <tr>
-<td><strong>8</strong> Gamepad + HOME</td>
-<td>✅ Done (operator sign-off)</td>
-<td>2026-09-28</td>
-<td>Brought up before phases 3–7 by operator decision. Full range on
-every axis at full speed, and <strong>HOME verified on both Halo and
-Ultra</strong> (hold B, then long-press START). See <a
-href="#phase-8-status-on-halo">Phase 8 status on Halo</a>.</td>
+<td><strong>7.7</strong> INA226-BATT + pull-the-AC</td>
+<td>⬜</td>
+<td>—</td>
 </tr>
 </tbody>
 </table>
@@ -224,88 +263,79 @@ href="#phase-8-status-on-halo">Phase 8 status on Halo</a>.</td>
 <h2 id="phase-0--power-only-bring-up">Phase 0 — Power-only bring-up</h2>
 <p><strong>Goal:</strong> everything electrically UP, nothing
 intelligent yet.</p>
-<p><strong>Authoritative reference:</strong> <a
-href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §11.3
-"Phase 0 bring-up (wiring-only, no GPIO signals)" — the 15-row wiring
-segment map (A1-A5 AC, D1-D15 DC/fans/wand) plus the 8-step verify
-checklist.</p>
+<p><strong>Authoritative reference:</strong> the build pack's checks: <a
+href="Electronics_Assembly_Guide.html#16f5-checks-before-power-and-first-power-up">§16f.5</a>
+(Ultra) / <a
+href="Electronics_Assembly_Guide.html#16g5-checks-and-first-power-up-no-buck">§16g.5</a>
+(Halo), built on <a
+href="Power_Bay_Design.html#16-power-up-verification-the-smoke-test-checklist">Power_Bay
+§16.1–16.2</a>. The ZK-SJ20 passes its <a
+href="Power_Bay_Design.html">Power_Bay §5c</a> bench gate before it goes
+into any bay.</p>
+<p><strong>Before any power (system off):</strong></p>
+<ul>
+<li><strong>Earth: C14 E ↔︎ PSU case metal &lt; 0.1 Ω.</strong> Tug-test
+every mains termination.</li>
+<li>No shorts: HL-PBB A ↔︎ B, PSU +V ↔︎ −V, BATT + ↔︎ − at the pack
+connector.</li>
+<li>BATT lead metered end-to-end for polarity before it ever mates.
+Ultra: PHONE-IN polarity at the IP6518 pads.</li>
+<li>INA226 shunts ~2 mΩ; the I²C nets metered back to their G469 pins;
+G469 pin 1 ↔︎ Pi GPIO 1 through the FFC.</li>
+</ul>
 <p><strong>Steady state after Phase 0:</strong></p>
 <ul>
-<li>PSU CH1 = 13.8 V ± 0.1</li>
-<li>Distribution-block A bus = 13.8 V; B bus = GND</li>
-</ul>
-<blockquote>
-<p>🎯 <strong>Distribution block — design of record 2026-09-29:</strong>
-<strong>YRYAR HL-PBB-2-6-MINI</strong> (block of record; Ultra's block)
-or <strong>HL-PBB</strong> dual-bus distribution module, ferrule-based,
-zero modification, one per robot on the power-bay carrier (spec: <a
-href="Power_Bay_Design.html#1132-yryar-hl-pbb-2-6-mini--physical-spec-bay-block-of-record-from-nova"><code>Power_Bay_Design.md</code>
-§11.3.2</a>). Wiring + port map: <a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
-§11.3</a>; part spec: <a
-href="Electronics_Assembly_Guide.html#14-available-but-not-in-current-design-alternates"><code>Electronics_Assembly_Guide.md</code>
-§1.4</a>.</p>
-</blockquote>
-<ul>
-<li>Wand tether V+ = 13.6-13.9 V at the <strong>6-pin end-plate inlet,
-pin 1</strong> — measured against <strong>pin 2
+<li>PSU CH1 = 13.8 V ± 0.1.</li>
+<li><strong>DC rocker ON:</strong> HL-PBB A bus = 13.8 V, B bus =
+GND.</li>
+<li><strong>Mus-14</strong> USB-C = 5.0–5.2 V no-load,
+<strong>before</strong> the HAT cable goes in (it feeds the HAT's own
+loads; the HAT doesn't backfeed the Pi).</li>
+<li><strong>ZK-SJ20</strong> = <strong>7.50 V</strong> at the unmated
+Deans; mated, the STM32 blue terminal reads 7.5 V, the STM32 boots and
+<strong>powers the Pi5 from its 5 V port</strong> (green + red LEDs; SSH
+reachable). <strong>Halo: until its buck lands (§16g.7), the STM32 and
+the Pi stay dark; only the power-side lines here can be
+checked.</strong></li>
+<li>Battery: F1 fuse in, pack mated; <strong>INA226-BATT reads
+positive</strong> (charging).</li>
+<li>Both bay fans at full RPM (PWM floating = 100 %).</li>
+<li><strong>Ultra:</strong> IP6518 cool with no load, then charges a
+phone.</li>
+<li><strong>Halo:</strong> wand feed at A2 = 13.8 V vs B2; at the wand
+end's 6-pin, <strong>pin 1 = 13.6–13.9 V vs pin 2
 (<code>GND-power</code>)</strong>, not pin 6 (<code>GND-logic</code>)
 (<a
-href="Lumi_Wand_Integration.html#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand">§10.5.2</a>)</li>
-<li>Fan-power JST-XH open-circuit = 13.8 V (both fans run 13.8 V direct
-from the distribution block)</li>
-<li>DROK output = 7.5 V ± 0.1 (never above 8.4 V: it is also the
-servo-bus voltage)</li>
-<li>STM32 blue terminal input = 7.5 V</li>
-<li>STM32 booted (indicator LEDs on)</li>
-<li>Pi5 booted (green + red LEDs; <code>raspberrypistage</code>
-reachable via SSH)</li>
-<li>Both bay fans spinning <strong>at full RPM</strong> (~5000 RPM, loud
-— PWM input floating = 100 % duty)</li>
-<li><strong>No I²C / UART / GPIO signal traffic yet</strong> — all
-sensor + control wiring lives in Phases 3-7</li>
+href="Lumi_Wand_Integration.html#1052-tether-wire-schedule--one-6-pin-at-the-wand-end-60-80-cm-ultra--wand">§10.5.2</a>).</li>
+<li><strong>G469 polarity + pin-1 check</strong> (<a
+href="Power_Bay_Design.html#4-power-bay-g469-terminal-block--ffc-chain-mount">§4
+step 5</a>): pin 1 = 3.3 V, pins 2 / 4 = 5 V vs GND. Any other reading
+fails Phase 0 and gates every downstream phase.</li>
+<li><code>i2cdetect -y 1</code>: <strong>0x44, 0x45, 0x47, 0x48</strong>
+(Halo + wand: also 0x49). INA3 (0x47) reads positive with the arm
+powered.</li>
 </ul>
 <p><strong>Hazards:</strong></p>
 <ul>
-<li>The fan V+ leg runs straight from the distribution block to the fan
-lead — no inline diodes (<a
-href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §11.3.3
-bay-fan branch). Bench-verify with the fan-power JST-XH open-circuit
-measurement — 13.8 V vs 0 V discriminates a good branch from an open or
-mis-landed one.</li>
-<li>Fans at full RPM are LOUD. Expected — do not chase.</li>
-<li><strong>DC rocker cuts DROK only</strong> (per <a
-href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> §11.3
-topology): fans + wand rail stay live when DC is OFF. Do NOT assume DC
-OFF = bay dead.</li>
+<li><strong>The DC rocker is upstream of the whole 13.8 V bus:</strong>
+DC OFF kills the block, the buck, the Mus-14, the fans, the phone
+charger and the tether. The PSU and its mains strip stay live whenever
+the C14 is plugged in, and the battery keeps CH1 up through AC loss.
+Unplug the C14 and unmate the battery before touching the bay.</li>
+<li><strong>F1 (10 A, at the pack) is the only fuse.</strong> Every
+block branch is unfused by design.</li>
+<li>The ZK-SJ20's CC is headroom (18 A); it limits, it doesn't latch.
+Its CV must never sit above 8.4 V (the servo-bus voltage).</li>
+<li>Fans at full RPM are loud. Expected; don't chase it.</li>
+<li>Both illuminated rockers must light when ON. A dark lamp = LAMP tap
+wrong; always-lit = LINE / LOAD swapped.</li>
 </ul>
 <p><strong>Related memory / decisions:</strong></p>
 <ul>
 <li><a
-href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_bay_rail_split_stm32_vs_wand.html"><code>memory/project_bay_rail_split_stm32_vs_wand.md</code></a>
-— split-rails topology (wand direct 13.8 V, STM32 via DROK 7.5 V, fans
-13.8 V direct, no diode chain).</li>
-<li><a
 href="../../.claude/projects/-home-sammydev295-Repos-LumiAI-Ultra/memory/project_lumi_bay_ffc_assembly_rules.html"><code>memory/project_lumi_bay_ffc_assembly_rules.md</code></a>
-— MECCANIXITY breakout + FFC assembly rules (physical mount is complete
-before Phase 0; these rules govern that mount).</li>
+— MECCANIXITY breakout + FFC assembly rules.</li>
 </ul>
-<p><strong>MUST DO before declaring Phase 0 complete → <a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
-§11.3 "Phase 0 verify checklist"</a>.</strong> Walk the full 8-step
-verify checklist end-to-end — AC rocker continuity, PSU CH1 output,
-distribution-block bus at 13.8 V, fan-side 13.8 V direct (no diode
-chain), wand bulkhead at 13.6-13.9 V, DROK output at 7.5 V, STM32
-blue-terminal at 7.5 V, and the <strong>G469 polarity + pin-1 alignment
-check</strong> (<a
-href="Power_Bay_Design.html#4-power-bay-g469-terminal-block--ffc-chain-mount">§4
-step 5</a> — probe G469 pin 1 <code>3V3</code> and pin 4 <code>5V</code>
-vs GND, expect ~3.3 V and ~5 V; any other reading fails Phase 0 and
-gates every downstream phase). Also verify <strong>both illuminated
-rockers light up when ON</strong> — dark lamp = LAMP tap wrong;
-always-lit = LINE/LOAD swapped (<a
-href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module">§11.3
-diagnostic tree</a>).</p>
 <hr />
 <h2
 id="phase-1--arm-servo-bus-wake-up--per-joint-verification-conditional--skip-by-default">Phase
@@ -1664,8 +1694,9 @@ pose</strong>, so the snap is zero-distance. Restarting any ROS node
 the signature: joints reading ≈ 210/500/110/825/600/500 right after a
 port open mean the board just reset.</li>
 <li><strong>Power discipline:</strong> AC rocker OFF between wiring
-changes. DC rocker cuts DROK-only (fans + wand rail stay live when DC is
-OFF).</li>
+changes. The DC rocker is upstream of the whole 13.8 V bus (bay v3): DC
+OFF darkens the block and everything on it, but the PSU and its mains
+strip stay live while the C14 is plugged in.</li>
 <li><strong>Wand thermal discipline:</strong> do not hold full-bright
 &gt; 30 s on the LED bank without airflow. TMP102-wand telemetry (Phase
 4) must be live before any sustained LED work.</li>
