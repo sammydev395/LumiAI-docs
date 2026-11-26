@@ -23,8 +23,11 @@ cut list, wiring, checks):</strong></p>
 href="Electronics_Assembly_Guide.html#16f-creator-desk-build-pack-ultra-carrier-b6a53ce7--desk-fence-bench-order">Assembly
 Guide §16f</a>.</li>
 <li><strong>Halo = ceiling build:</strong> 4 PIRs + the wand tether, no
-phone; its buck is a later, separate step. <a
-href="Electronics_Assembly_Guide.html#16g-halo-ceiling-build-pack-carrier-b6a53ce7--ceiling-fence-bench-order">Assembly
+phone, no SPS30 / ZE15. Its new bay is <strong>pre-built off the
+robot</strong> and swapped in, in about half a day, on the day its
+ZK-SJ20 has passed its gate (~Dec 6); until then Halo runs on its old
+bay. <a
+href="Electronics_Assembly_Guide.html#16g-halo-ceiling-build-pack-pre-build-off-the-robot-then-a-half-day-swap-carrier-b6a53ce7--ceiling-fence">Assembly
 Guide §16g</a>.</li>
 </ul>
 <p>Phases 4 (wand TMP102), 5 (wand) and 6 (PIRs) apply to <strong>Halo
@@ -201,7 +204,7 @@ href="Electronics_Assembly_Guide.html#16f-creator-desk-build-pack-ultra-carrier-
 </tbody>
 </table>
 <p><strong>Halo (raspberrypidev), ceiling build: <a
-href="Electronics_Assembly_Guide.html#16g-halo-ceiling-build-pack-carrier-b6a53ce7--ceiling-fence-bench-order">§16g</a></strong></p>
+href="Electronics_Assembly_Guide.html#16g-halo-ceiling-build-pack-pre-build-off-the-robot-then-a-half-day-swap-carrier-b6a53ce7--ceiling-fence">§16g</a></strong></p>
 <table>
 <thead>
 <tr>
@@ -212,15 +215,19 @@ href="Electronics_Assembly_Guide.html#16g-halo-ceiling-build-pack-carrier-b6a53c
 </thead>
 <tbody>
 <tr>
-<td><strong>0</strong> Power-up, bay</td>
-<td>⬜ Starts after Ultra's carrier fits</td>
-<td>Power side only: without the buck the STM32 and the Pi stay
-dark</td>
+<td>Part 0: PIRs out of the old bay</td>
+<td>⬜</td>
+<td>The only touch to the running Halo until the swap</td>
 </tr>
 <tr>
-<td><strong>0</strong> Buck (§16g.7)</td>
+<td>Part 1–2: pre-build + bench check (off the robot)</td>
 <td>⬜</td>
-<td>When a ZK-SJ20 unit arrives (~Dec 6). Phases 3–7 follow it</td>
+<td>From stock; buck fitted once it passes its gate (~Dec 6)</td>
+</tr>
+<tr>
+<td><strong>0</strong> Power-up (Part 3, the swap)</td>
+<td>⬜</td>
+<td>~Half a day, the day the buck is ready</td>
 </tr>
 <tr>
 <td><strong>1 / 2 / 8</strong> Arm, gripper, gamepad + HOME</td>
@@ -249,13 +256,13 @@ dark</td>
 </tr>
 <tr>
 <td><strong>7</strong> SPS30 + ZE15</td>
-<td>⬜</td>
 <td>—</td>
+<td>Not wired on Halo (operator 2026-11-25)</td>
 </tr>
 <tr>
 <td><strong>7.7</strong> INA226-BATT + pull-the-AC</td>
 <td>⬜</td>
-<td>—</td>
+<td>After the swap</td>
 </tr>
 </tbody>
 </table>
@@ -266,8 +273,8 @@ intelligent yet.</p>
 <p><strong>Authoritative reference:</strong> the build pack's checks: <a
 href="Electronics_Assembly_Guide.html#16f5-checks-before-power-and-first-power-up">§16f.5</a>
 (Ultra) / <a
-href="Electronics_Assembly_Guide.html#16g5-checks-and-first-power-up-no-buck">§16g.5</a>
-(Halo), built on <a
+href="Electronics_Assembly_Guide.html#16g6-part-3-the-swap-on-the-day-the-buck-has-passed-its-gate-about-half-a-day">§16g.6</a>
+(Halo, the swap), built on <a
 href="Power_Bay_Design.html#16-power-up-verification-the-smoke-test-checklist">Power_Bay
 §16.1–16.2</a>. The ZK-SJ20 passes its <a
 href="Power_Bay_Design.html">Power_Bay §5c</a> bench gate before it goes
