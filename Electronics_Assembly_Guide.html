@@ -4555,10 +4555,18 @@ inventory)</h3>
 </thead>
 <tbody>
 <tr>
-<td>Ceiling fence halves + 2 battery bars + carrier (b6a53ce7)</td>
+<td>Ceiling fence halves + 2 battery bars + carrier (b6a53ce7) +
+<strong>battery tray / pad</strong></td>
 <td>1 set</td>
 <td>Prints</td>
 <td>Snap the 4 pad gussets off before the bars</td>
+</tr>
+<tr>
+<td>FFC 40-way 0.5 mm A-type, 500 mm</td>
+<td>1</td>
+<td>Stock (8–9 spare)</td>
+<td>Its power-bay end plugged into the new breakout in Part 1 (blue
+stripe up)</td>
 </tr>
 <tr>
 <td>G469 + MECCANIXITY breakout (male)</td>
@@ -4645,9 +4653,11 @@ and the fence posts;</li>
 <li>the <strong>battery pack</strong>;</li>
 <li>the <strong>upper deck</strong> (Hiwonder plate with the STM32, Pi
 5, HAT and arm);</li>
-<li>the <strong>FFC</strong>, the <strong>Mus-14 → HAT USB-C
-cable</strong> (or a spare from stock) and the
-<strong>wand</strong>.</li>
+<li>the <strong>Mus-14 → HAT USB-C cable</strong> (or a spare from
+stock) and the <strong>wand</strong>;</li>
+<li><strong>Halo's STM32 leg with its Deans half</strong> (16 AWG, from
+the old DROK): reused, so BUCK-OUT's mating Deans half is soldered in
+Part 1.</li>
 </ul>
 <p>Everything else is new.</p>
 <h3 id="16g3-crimp--cut-list-rows-that-differ-from-16f3">16g.3 Crimp +
@@ -4824,16 +4834,27 @@ A5 / B5, B6), E1008 ×6, E2508 ×1, no E7508, E1508 ×10 (all crimped in
 </tr>
 </tbody>
 </table>
-<p><strong>Left long and bare until the swap (Part 3)</strong>,
-everything else finished in Part 1:</p>
+<p><strong>Finished in Part 1 from measurements, nothing left for the
+iron at the swap:</strong></p>
 <ul>
-<li><strong>MAINS L / N / E, PSU end;</strong> <strong>CH1, PSU
-end;</strong> <strong>BATT #8, PSU CH2 end;</strong> <strong>BATT #6,
-pack end</strong> (Halo's pack lead and pigtail are measured on the
-running robot without unplugging it, so the mating connector can be
-fitted in Part 1);</li>
-<li><strong>BUCK-OUT's STM32 end + Deans</strong> (the climb is measured
-at the swap);</li>
+<li><strong>PSU ends (MAINS L / N / ⏚, CH1, BATT #8 → CH2):</strong>
+<ul>
+<li>take the terminal <strong>screw size</strong> and the <strong>CH2
+lead's end</strong> (connector or bare, fuse rating) from
+<strong>Ultra's PSC-100-12</strong> at its build (same model);</li>
+<li>crimp Halo's forks / ring and fit the CH2 mating end to those.</li>
+<li>The lengths are CAD's, at the bay v3 terminal line. ⏳ If CAD's Q2
+says Halo's PSU is <strong>not</strong> on that line, these ends stay
+<strong>long and bare</strong> until the swap.</li>
+</ul></li>
+<li><strong>BATT #6, pack end:</strong> Halo's pack lead and pigtail are
+measured on the running robot without unplugging it; the mating
+connector is fitted in Part 1.</li>
+<li><strong>BUCK-OUT's Deans:</strong> Halo already has an STM32 leg
+with a Deans half (from the old DROK), and it's reused. Measure the
+climb from the lid window to that Deans on the running Halo without
+unplugging anything, then cut BUCK-OUT and solder the <strong>mating
+Deans half</strong> in Part 1.</li>
 <li>the <strong>tether's wand end:</strong> measure the run on the
 running Halo (riser top → wand 6-pin across the arm's poses) without
 touching its wiring, then crimp the XHP-6 in Part 1. Only the plug-in
@@ -4915,8 +4936,11 @@ splices Ø3, staggered.</li>
 F4</strong>; PIR-FL / FR through <strong>F10 / F11</strong> (FR also
 <strong>F24</strong>). OUT → 36 / 11 / 38 / 40, 5 V → 2, GND → 6.</li>
 <li><strong>TETHER-P</strong> (#14): F15 → F11 → F8 → F6 → the riser.
-<strong>TETHER-S</strong> (#15): free, beside it. Wand-end XHP-6 crimped
-to the length measured on the running Halo.</li>
+<strong>TETHER-S</strong> (#15): free, beside it. <strong>A new
+tether</strong> (the old one stays in the old bay): wand-end XHP-6
+crimped to the length measured on the running Halo; the outside run is
+coiled and bagged until it's routed along the arm at the swap (Part 3
+step 10).</li>
 </ul></li>
 <li><strong>BATT on the carrier:</strong>
 <ul>
@@ -5022,11 +5046,12 @@ day)</h3>
 then AC rocker OFF; unplug the C14; unmate the battery.</li>
 <li><strong>Disconnect the upper deck from the old bay:</strong>
 <ul>
-<li>the FFC at the power-bay breakout;</li>
+<li>the old FFC at the elec-bay breakout (it comes out with the old
+bay);</li>
 <li>the Mus-14 → HAT USB-C at the Mus-14;</li>
 <li>the old DROK's Deans at the STM32 leg;</li>
-<li>the tether's bay end at the old landings (the wand end stays plugged
-into the wand).</li>
+<li><strong>the old tether:</strong> unplug it at the wand's 6-pin and
+cut it free of the arm's ties; it comes out with the old fence.</li>
 </ul></li>
 <li><strong>Lift the upper deck</strong> (Hiwonder plate with the elec
 bay and the arm) off the fence posts and support it beside the base.
@@ -5049,9 +5074,9 @@ straight down onto the 6 posts, over the PSU and the pack. Feed the
 pack's lead up beside F1 as it goes down.</li>
 <li><strong>The landings that could only be made on the robot:</strong>
 <ul>
-<li>crimp and land <strong>mains L / N / ⏚</strong> at the PSU (forks +
-ring) and <strong>CH1</strong> at +V / −V (sized to the screw);</li>
-<li>join <strong>BATT #8</strong> to the PSU's CH2 lead, and mate
+<li>land the pre-crimped <strong>mains L / N / ⏚</strong> forks + ring
+at the PSU and <strong>CH1</strong> at +V / −V (screw down only);</li>
+<li>connect <strong>BATT #8</strong> to the PSU's CH2 lead, and mate
 <strong>BATT #6</strong> to the pack's lead (after the polarity check,
 step 9);</li>
 <li>fit F1's fuse.</li>
@@ -5064,9 +5089,12 @@ step 9);</li>
 </ul></li>
 <li><strong>Through the opening and the deck back on:</strong>
 <ul>
-<li>BUCK-OUT's climb measured, Deans soldered, STM32 leg 100;</li>
-<li>the tether up to the wand;</li>
-<li>FFC into the new breakout (blue stripe up);</li>
+<li>BUCK-OUT up the opening to Halo's STM32-leg Deans (left
+unmated);</li>
+<li><strong>the new tether</strong> up the opening and along the arm's
+route, tied where the old one was, XHP-6 into the wand;</li>
+<li>the new FFC's top end into the elec-bay breakout in place of the old
+one (blue stripe up);</li>
 <li>the Mus-14 → HAT cable. Then lower the upper deck back onto the
 posts. Deans left unmated.</li>
 </ul></li>
@@ -5088,9 +5116,10 @@ wand;</li>
 </ul></li>
 </ol>
 <p><strong>12 steps.</strong> Steps 1–5 strip the old bay; 6–10 fit the
-new one; 11–12 bring it up. Only the PSU terminals (mains, CH1, CH2) and
-the pack connection are made on the robot (CAD: they land on parts fixed
-to the plate).</p>
+new one; 11–12 bring it up. On the robot: screwing down the PSU
+terminals, the pack and CH2 connections, routing the new tether along
+the arm, and plugging in the FFC, the Deans and USB-C. No crimping, no
+soldering.</p>
 <h3 id="16g7-open-items-for-the-halo-pre-build">16g.7 Open items for the
 Halo pre-build</h3>
 <table>
@@ -5102,8 +5131,9 @@ Halo pre-build</h3>
 </thead>
 <tbody>
 <tr>
-<td>CAD Q2: Halo's PSC-100 stays or moves (2 holes)</td>
-<td>Part 3 step 5</td>
+<td>CAD Q2: Halo's PSC-100 stays or moves; if it moves, a <strong>1:1
+printed drill template</strong> for the 2 holes</td>
+<td>Before the swap (template printed in Part 1)</td>
 </tr>
 <tr>
 <td>Halo's pack lead (XT30 or barrel) + factory pigtail length, measured
@@ -5116,8 +5146,14 @@ the poses)</td>
 <td>Part 1 step 9</td>
 </tr>
 <tr>
-<td>PSC-100 terminal screw size; CH2 lead end + its fuse rating</td>
-<td>Part 3 step 8</td>
+<td>PSC-100 terminal screw size; CH2 lead end + its fuse rating (from
+Ultra's PSC-100 at its build)</td>
+<td>Part 1, before crimping the PSU ends</td>
+</tr>
+<tr>
+<td>BUCK-OUT climb to Halo's existing Deans, measured on the running
+Halo</td>
+<td>Part 1, before the Deans is soldered</td>
 </tr>
 <tr>
 <td>ZK-SJ20 unit 2–4 arrival (~Dec 6) and its §5c gate</td>
