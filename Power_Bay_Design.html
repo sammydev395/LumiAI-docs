@@ -473,16 +473,15 @@ external-sensor wire and the wand-tether I²C + 3.3 V tap (see
 <code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code> §2 inter-bay
 routing).</p>
 <blockquote>
-<p><strong>NVMe HAT context (Geekworm X1001, current build):</strong>
-the Pi5 also carries a <strong>Geekworm X1001 PCIe-to-M.2 HAT</strong>
-for the NVMe SSD (see <a
-href="LumiAI_Hardware_Integration.html#geekworm-x1001-pcie-to-m2-nvme-hat-current-nvme-carrier"><code>LumiAI_Hardware_Integration.md</code>
-§"Geekworm X1001 NVMe HAT"</a>). The X1001 uses the Pi5's <strong>PCIe
-FPC connector</strong>, NOT the Pi5 GPIO — it does NOT stack on the GPIO
-pins and does NOT block the FPC-breakout header stack described below.
-The X1001 board sits vertically beside the Pi5 with the M.2 SSD
-extending horizontally above the Pi5's active cooler; the Pi5 GPIO 2×40
-header remains fully accessible for our tall-header stack.</p>
+<p><strong>NVMe HAT context:</strong> Ultra and Halo each carry the
+<strong>Waveshare PCIe TO M.2 USB HAT+</strong> (NVMe boot SSD, 4 USB 3
+ports, INA219 at 0x40), on the Pi5's PCIe FPC and <strong>stacked on the
+GPIO header</strong> with its own <strong>40-pin pass-through on
+top</strong>. The inverted FPC breakout plugs onto that pass-through, so
+no extension header is needed (<a
+href="Electronics_Bay_Design.html#36-waveshare-pcie-to-m2-usb-hat--nvme--usb-hub--ina219-bay-fed-5-v"><code>Electronics_Bay_Design.md</code>
+§3.6</a> and the Pi5 stack section). The Geekworm X1001 it replaced is
+retired.</p>
 </blockquote>
 <p><strong>Parts</strong> (BOM lines 1–4 in
 <code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code> §13). Naming convention
@@ -1163,7 +1162,7 @@ STM32-ward, the breakout's pin 1 lands correctly over Pi5 GPIO pin 1
 pinout reference at the top of this section for the pin map).</p>
 <p><img
 src="images/electronics_bay/elecbay_pi5_stack_asbuilt_20260923.png"
-alt="Electronics bay as-built, 2026-09-23 — Pi5 stack with the FPC breakout above it (silk face and both pin-number columns visible = the correct-to-read face), 40P GPIO FFC exiting toward the bay wall, Kingston NVMe on the X1001 carrier at right on its own PCIe FPC (the black S2Pi ribbon — NOT the GPIO chain), STM32 controller carrier at lower left. Working state: the INA226 in the power bay reads the bus through this chain." /></p>
+alt="Electronics bay as-built, 2026-09-23, before the Waveshare HAT+ replaced the X1001 (today the breakout sits on the HAT&#39;s pass-through) — Pi5 stack with the FPC breakout above it (silk face and both pin-number columns visible = the correct-to-read face), 40P GPIO FFC exiting toward the bay wall, Kingston NVMe on the X1001 carrier at right on its own PCIe FPC (the black S2Pi ribbon — NOT the GPIO chain), STM32 controller carrier at lower left. Working state: the INA226 in the power bay reads the bus through this chain." /></p>
 <p><img src="images/hardware/elecbay_fpc_orientation.png"
 alt="Elec-bay FPC breakout — inverted mount and the rotation that sets pin 1. SIDE view: Pi5 on 5 mm standoffs, GPIO pins into the extra-tall 2×20 stacking header, breakout INVERTED on the header&#39;s 12 mm upper pins with its blind female socket face DOWN, FPC connector on the now-top face, FFC folding 180° back over the board toward the back-cover exit (blue stripe UP both ends, no flip). PLAN view: rotating the inverted board so the FPC connector end points AT the STM32 carrier is the entire alignment — it puts breakout pin 1 over Pi5 pin 1 (the square-pad corner pin at the SD-card end). Bottom boxes: the 4-step assembly order, and the 180°-wrong consequence — pin 1 ↔ pin 40 end-to-end, step-5 symptom = G469 &quot;3V3&quot; terminal reads a floating GPIO level instead of 3.3 V; fix by rotating the breakout, never by re-wiring. Companion figure to the power-bay G469 mating diagram in step 3." /></p>
 <p><strong>Post-boot verification (belt-and-suspenders after step 5
