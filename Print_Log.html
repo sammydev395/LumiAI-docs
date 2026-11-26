@@ -794,5 +794,25 @@ the bed at L1 was removed by the operator mid-print. Fit (operator check
 11-26): fits the printed carrier b6a53ce7 with INA226-MAIN on it, and
 BATT and INA3 on their own posts: "they all fit".</td>
 </tr>
+<tr>
+<td>2026-11-26</td>
+<td>H2S / Ext / NylonX (Generic PA-CF)</td>
+<td>lumi_nylonx_adhesion_coupon_square_A/B/C + disc_A/B/C (30x30x0.6
+squares, Ø30x2.0 discs)</td>
+<td>6</td>
+<td>test</td>
+<td>n/a (book-made coupons)</td>
+<td>H2S 33 @ b08cbfe8 (TEST -- NYLONX BED ADHESION, NO GLUE)</td>
+<td>failed</td>
+<td>Bed adhesion test, washed textured PEI, NO glue. Recipe from the
+G-code: M145 P1 heating airduct, M141 S55, M191 S55 wait, then M190 S95;
+nozzle 260; layer 1 at 28.4 mm/s; part and aux fans off. Started 11:22;
+chamber read 55 of 55 and bed 95.0 / 95.0 each minute; L1 to L3 normal,
+err 0. Cancelled at L3 at about 11:38 (print_error 0x0300400C, print
+cancelled). Camera after the stop: the squares (complete at L3) warped
+into shallow pyramids and the discs curled up at their edges; the camera
+can't show which parts left the bed. Cold-removal result per piece not
+yet reported.</td>
+</tr>
 </tbody>
 </table></body></html>
