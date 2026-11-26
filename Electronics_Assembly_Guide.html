@@ -2925,8 +2925,9 @@ board as Halo's INA226-MAIN</td>
 <td>—</td>
 <td><strong>in transit</strong> (collected by carrier 2026-10-23)</td>
 <td>✅ Meets the spec (Electronics c52bde5): R002 confirmed from the
-listing photo's shunt body code. The carrier's existing posts fit it
-(dead Ø2.0 @ 17.5 mm pair); verify on arrival. INA226-BATT for Halo,
+listing photo's shunt body code. Mounting holes not calipered on
+arrival; the bay v3 carrier's posts don't match them (fit check
+2026-11-26), so the boards go on printed adapters. INA226-BATT for Halo,
 Ultra, Nova + 1 spare</td>
 </tr>
 <tr>
@@ -3430,14 +3431,17 @@ the bar tabs into the bars (Ø2.5 pilots), slim driver ≤ 6 mm</td>
 <tr>
 <td>INA226-MAIN, INA226-BATT</td>
 <td>1 + 1</td>
-<td><strong>M1.7 × 6 ×2 each</strong>, the <strong>Ø2.0 pair
-only</strong>, never the Ø2.2 shunt pads</td>
-<td>Meter each Ø2.0 hole open to every pin</td>
+<td>On <strong>one shared printed INA adapter</strong> over the
+carrier's posts (the posts don't match the boards' holes). ⏳ CAD
+releases it after the board caliper. Screws through the board's
+<strong>dead mounting pair only</strong>, never the shunt pads</td>
+<td>Meter each mounting hole open to every pin</td>
 </tr>
 <tr>
 <td>INA3 (INA226, 0x47)</td>
 <td>1</td>
-<td><strong>M1.7 × 6 ×2</strong></td>
+<td>On <strong>its own printed INA adapter</strong> over its posts (⏳
+CAD, same release)</td>
 <td>Same</td>
 </tr>
 <tr>
@@ -4231,8 +4235,8 @@ FAN-P.</li>
 <ul>
 <li><strong>breakout + G469</strong> (M3 × 8 ×2, then the G469, 3V3/5V
 corner over silk-1, + M2 × 8 ×2);</li>
-<li><strong>INA226-MAIN</strong> and <strong>INA226-BATT</strong> (M1.7
-× 6 ×2 each, Ø2.0 pair);</li>
+<li><strong>INA226-MAIN</strong> and <strong>INA226-BATT</strong> on
+their shared printed adapter (§16f.1);</li>
 <li><strong>HL-PBB</strong> (M3 × 8 ×2, holes metered open to both buses
 first).</li>
 <li>Then land their ends from above:
@@ -4420,6 +4424,12 @@ its parts)</td>
 <tr>
 <td>Pi5 cooler lead: length to the G469</td>
 <td>E10</td>
+</tr>
+<tr>
+<td><strong>INA226 holes, one board:</strong> dead pair c-c + Ø, inset
+from the header end, offset from the side edge, board L × W; are all
+three the same PCB? (sets CAD's INA adapters)</td>
+<td>C2 (INA3), E3 (MAIN + BATT)</td>
 </tr>
 </tbody>
 </table>
