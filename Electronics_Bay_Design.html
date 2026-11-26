@@ -1279,18 +1279,26 @@ clear 13.70.</td>
 </tbody>
 </table>
 <p><strong>Board positions from the vendor STEP's floor-plate holes
-(CAD, 2026-11-25; model, not measured):</strong> these are in the vendor
-STEP's frame; the fence frame is Z + 30.</p>
+(CAD, 2026-11-25):</strong> these are in the vendor STEP's frame; the
+fence frame is Z + 30. The operator matched the holes to the boards on
+the STEP; these positions are not caliper measurements.</p>
 <ul>
-<li><strong>STM32 carrier:</strong> its 49 × 38 hole pattern matches
-exactly one hole set, with corners at <strong>(205.6, 4.3) → (254.6,
-42.3)</strong> and the 49 along X. If the holes were centred on the 73 ×
-65 board, the board would run into the slanted back panel. So either the
-holes are off-centre or the board is turned. ⏳ One caliper reading
-(hole centre to the nearest edges) settles it.</li>
-<li><strong>Pi 5:</strong> its 58 × 49 pattern matches <strong>4 hole
-sets (A–D)</strong>, all with the 58 along X, in the bay's rear half. ⏳
-One photo settles which.</li>
+<li><strong>STM32 carrier:</strong> holes at <strong>(205.6, 4.3) →
+(254.6, 42.3)</strong>, the 49 along X. <strong>CONFIRMED</strong>
+2026-11-25 on a STEP the operator marked (their Circles 007–010). If the
+holes were centred on the 73 × 65 board, the board would run into the
+slanted back panel. So either the holes are off-centre or the board is
+turned. ⏳ One caliper reading (hole centre to the nearest edges)
+settles it.</li>
+<li><strong>Pi 5:</strong> holes at <strong>(189.1, 68.0) → (247.1,
+117.0)</strong>, the 58 along X. <strong>SETTLED</strong> 2026-11-25 on
+the operator-marked STEP (their Circles 003–006). ⏳ Which way each
+board faces and where the cable ends exit: a bench photo.</li>
+<li><strong>HAT POWER USB-C cable (D18, Assembly Guide #14, 0.46
+m):</strong> 102 mm in the power bay, ~150–195 mm up to the HAT, leaving
+**~165–210 mm of slack**. It sits as one flat loop (~100 × 40 × 9) over
+the STM32 core stack, under the lid, beside the Pi and clear of its
+cooler (CAD model).</li>
 <li><strong>Stack vs the lid (model inside height 44.88):</strong> this
 depends on the HAT standoff height. At <strong>14 mm</strong> the
 inverted FPC breakout tops out <strong>2.7</strong> under the lid; at
