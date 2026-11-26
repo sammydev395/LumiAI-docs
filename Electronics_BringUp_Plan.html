@@ -921,9 +921,9 @@ lead to its strip.</li>
 <ol type="1">
 <li><code>i2cdetect -y 1</code> on Pi5 → <strong>0x41</strong> (PCA9685,
 A0 bridged) now visible alongside 0x44 + 0x48 + 0x49 (and 0x40 = the HAT
-INA219 once Phase 7.6 is in). <strong>A scan showing 0x40-but-no-0x41
-pre-HAT means the A0 bridge was missed — stop, bridge it first
-(Integration §21).</strong></li>
+INA219). <strong>A scan showing 0x40-but-no-0x41 pre-HAT means the A0
+bridge was missed — stop, bridge it first (Integration
+§21).</strong></li>
 <li>Launch <code>wand_led_node</code> → set all 12 channels to 0 % duty.
 LEDs off. Wand fan may still be off (fan lives on ch13).</li>
 <li>Set <strong>channel 0</strong> to 5 % duty. Only that channel's LED
@@ -1445,10 +1445,12 @@ with the arm moving once Phase 8 motion exists.</li>
 <code>/dev/iflytek_halo</code>, clean 16 kHz capture through
 whisper.cpp, 4-quadrant DOA within ±5° (hung, robot frame).</p>
 <hr />
-<h2
-id="phase-76--waveshare-hat--bay-5-v-rail--added-2026-10-13-gated-on-hat-arrival">Phase
-7.6 — Waveshare HAT + bay 5 V rail — added 2026-10-13, GATED ON HAT
-ARRIVAL</h2>
+<h2 id="phase-76--waveshare-hat--bay-5-v-rail">Phase 7.6 — Waveshare HAT
++ bay 5 V rail</h2>
+<p><strong>Status:</strong> the HAT is fitted on <strong>Ultra and
+Halo</strong> (NVMe boot). The Mus-14 bay 5 V rail goes in with each
+robot's bay v3 build (<a href="Electronics_Assembly_Guide.html">Assembly
+Guide §16f / §16g</a>).</p>
 <p><strong>Wiring + bench steps:</strong></p>
 <ol type="1">
 <li>Land <strong>D16/D17</strong> per <a

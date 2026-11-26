@@ -239,8 +239,9 @@ Halo, Ultra and Nova stay LV (7.4 V servos, ZK-SJ20 at 7.5 V).</li>
 <h2 id="2-raspberry-pi-5-16-gb--the-bay-compute-node">2. Raspberry Pi 5
 (16 GB) — the bay compute node</h2>
 <ul>
-<li><strong>RPi5 16 GB</strong> (Pi 5 top SKU) with <strong>NVMe
-HAT</strong> underneath for storage.</li>
+<li><strong>RPi5 16 GB</strong> (Pi 5 top SKU) with the
+<strong>Waveshare PCIe TO M.2 USB HAT+</strong> stacked on top (NVMe
+boot SSD, §3.6).</li>
 <li><strong>Power in:</strong> 5 V @ ~5 A via USB-C from the STM32
 board's 5 V 5 A external power port (§3.2 cable).</li>
 <li><strong>HDMI out:</strong> unused in the production config — Pi5
@@ -1169,14 +1170,6 @@ area: the Pi5 (left in the layout) and the STM32 carrier + core board
 (center).</p>
 <p><img src="images/electronics_bay/stm32_carrier_core_bay_layout.png"
 alt="Hiwonder manual p. 89–90: the STM32 core board and the carrier&#39;s port callouts (USB, bus servo, 5 V 5 A out, power terminal, switch). This is a vendor page, not a photo of the bay." /></p>
-<blockquote>
-<p>⛔ 2026-11-25: this caption used to call the image a bay interior
-photo, "Pi5 at LEFT, STM32 at CENTER". It is the vendor manual page. The
-2026-09-23 as-built photo
-(<code>elecbay_pi5_stack_asbuilt_20260923.png</code>, Geekworm-HAT era)
-shows the STM32 carrier to the left of the Pi5. ⏳ Measured X / Y
-positions of both boards: not recorded anywhere yet.</p>
-</blockquote>
 <h3
 id="stm32-stack-bay-floor--stm32-push-button-tops--informational-no-vertical-collision-with-pi5-stack">STM32
 stack (bay floor → STM32 push-button tops) — informational, no vertical
@@ -1292,21 +1285,14 @@ holes were centred on the 73 × 65 board, the board would run into the
 slanted back panel. So either the holes are off-centre or the board is
 turned. ⏳ One caliper reading (hole centre to the nearest edges)
 settles it.</li>
-<li><strong>Pi 5: set A or set B, ⏳ pending the operator.</strong> The
-plate is drilled for both mirror sets, which sit 3.8 mm apart; what
-differs is which way the jacks face. <strong>A:</strong> holes
-<strong>(189.1, 68.0) → (247.1, 117.0)</strong>. <strong>B:</strong>
-holes at X <strong>212.9 / 270.9</strong>. Both have the 58 along X. The
-as-built top-view photos (2026-11-25) put the jacks toward −X, which is
-<strong>B</strong>. A holds only if the marked STEP was viewed from
-below. Which robot the photos show is also still open.</li>
-</ul>
-<blockquote>
-<p>⛔ 2026-11-25: this line used to say "SETTLED: set A (operator-marked
-STEP, Circles 003–006)". Tonight's top-view photos point to the mirror
-set, B.</p>
-</blockquote>
-<ul>
+<li><strong>Pi 5: set B</strong>, holes at X <strong>212.9 /
+270.9</strong> (the 58 along X), with the jacks toward −X.
+<strong>Operator-confirmed 2026-11-25</strong>: the hole circles on the
+STEP were marked looking at the base plate from underneath. The plate is
+also drilled for the mirror set, 3.8 mm away; that set is not used. The
+as-built top-view photos (2026-11-25) were taken <strong>before the HAT
+went on</strong>, so they show the board positions and turns, not the Pi
+stack height.</li>
 <li><strong>HAT POWER USB-C cable (D18, Assembly Guide #14, 0.46
 m):</strong> 102 mm in the power bay, ~150–195 mm up to the HAT, leaving
 **~165–210 mm of slack**. It sits as one flat loop (~100 × 40 × 9) over
@@ -1443,13 +1429,6 @@ href="Electronics_Assembly_Guide.html">Assembly Guide §16f</a>). It stays
 a twisted pair of its own and is never bundled with the FFC / USB
 harness.</li>
 </ul>
-<blockquote>
-<p>⛔ 2026-11-25: this used to say BUCK-OUT came up "through openings in
-the Hiwonder black base plate directly beneath the STM32 board". As
-built and on the bay v3 carrier maps (CAD 34233681), it climbs the servo
-opening through the lid window. No opening under the STM32 is in
-use.</p>
-</blockquote>
 <p><strong>Static-side / moving-side notes:</strong> the electronics bay
 lid is static (screws into fence). The Hiwonder base-plate opening is
 ALSO static. Vertical stack, bottom-up:</p>
@@ -1482,13 +1461,6 @@ jackets are still preferred for the STM32 bus cable's arm-side segment
 placement CAD exists yet: CAD's electronics-bay capture (CTO,
 2026-11-25) is the first one.</li>
 <li>Land the STM32 controller card the same way.</li>
-</ol>
-<blockquote>
-<p>⛔ 2026-11-25: steps 1–2 used to point at "the fence CAD + PSU-top
-mounting" for the Pi5 and STM32 positions. No such CAD exists; the fence
-CAD is the power bay's.</p>
-</blockquote>
-<ol start="3" type="1">
 <li>Wire the STM32 power port from the ZK-SJ20 output (V+ / GND, 16
 AWG), only after the buck has passed its bench gate and reads 7.50 V (<a
 href="Electronics_Assembly_Guide.html">Assembly Guide §16e</a>).</li>
