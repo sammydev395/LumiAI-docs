@@ -3434,10 +3434,10 @@ the bar tabs into the bars (Ø2.5 pilots), slim driver ≤ 6 mm</td>
 <td>On <strong>one printed adapter</strong> over their four carrier
 posts, which re-places them: MAIN ~20 mm into the left strip, header
 toward −Y; BATT ~30 mm toward the battery, turned 90° (header −X,
-terminals toward the battery / F1). ⏳ CAD releases it; a strap-post
-screw under MAIN's new spot goes in first (⏳ CAD names it). Screws
-through the board's <strong>two small corner holes at the header
-end</strong> only, never the shunt pads</td>
+terminals toward the battery / F1). ⏳ CAD releases it. The bar screw at
+(174.6, 62.5) under MAIN's spot goes in first (D3). Screws through the
+board's <strong>two small corner holes at the header end</strong> only,
+never the shunt pads</td>
 <td>Meter each mounting hole open to every pin</td>
 </tr>
 <tr>
@@ -3799,7 +3799,10 @@ the right ear.</li>
 <li><strong>Carrier → bars: M3 × 8 pan self-tap ×4</strong> at the 4 bar
 tabs, <strong>slim driver ≤ 6 mm</strong>: a fat handle meets the mains
 towers at the right pair. <strong>Drive the right pair before any mains
-goes in.</strong></li>
+goes in.</strong> The left-front one (<strong>174.6, 62.5</strong>) sits
+under INA226-MAIN's adapter, ~10 below the board with no angled access,
+so it must be in before E3. To reach it later, MAIN and its adapter come
+off (2 + 2 screws).</li>
 </ol>
 <p><strong>The exception to "components first", plainly:</strong>
 <strong>four boards go on during wiring (E3), not before:</strong> the
@@ -3821,13 +3824,12 @@ PHONE-IN is soldered to it (E5).</li>
 id="16f3-crimp--cut-list-the-whole-loom-before-any-wire-is-run">16f.3
 Crimp + cut list: the whole loom before any wire is run</h3>
 <blockquote>
-<p>⏳ <strong>INA226-MAIN and INA226-BATT are moving</strong> (one
-printed adapter: MAIN ~20 mm into the left strip, header toward −Y; BATT
-~30 mm toward the battery, turned 90°, header −X, terminals toward the
-battery / F1). Every row below tagged <strong>LONG: length pending the
-INA adapter placement</strong> lands on MAIN or BATT or passes under
-them: <strong>leave it LONG, do not cut it to length</strong> until
-CAD's new lengths are in this table. Every other row is unchanged.</p>
+<p><strong>INA226-MAIN and INA226-BATT sit on one printed
+adapter</strong> (MAIN X 163.5–184.5 / Y 50–75, header −Y, terminals +Y;
+BATT X 216–241 / Y 79.5–100.5, header −X, terminals +X). The rows that
+land on them carry <strong>provisional</strong> lengths from CAD's
+re-routed model with +20 margin. CAD's wired-bay gate confirms them, so
+those rows stay LONG at the board end.</p>
 </blockquote>
 <p>Cuts are §16c's, checked against CAD's desk wired bay (24 runs):
 <strong>one cut changed, MUS-IN 255 → 270</strong> (routed 225 on the
@@ -3892,8 +3894,8 @@ green / yellow. Signals: any stock colour, named on the flag.
 <tr>
 <td><strong>#3 CH1</strong></td>
 <td>2 × 18, red / black, twisted</td>
-<td><strong>100</strong> · PSU end LONG · ⏳ <strong>LONG: length
-pending the INA adapter placement, do not cut to length</strong></td>
+<td><strong>176</strong> · PSU end LONG (provisional, +20 margin until
+CAD's wired-bay gate)</td>
 <td>PSU +V / −V: red forks, bent up (ratchet)</td>
 <td>+V → INA-MAIN ISENSE+ <strong>E1008</strong>; −V → INA-MAIN GND
 screw in <strong>one E2508 with BLK-IN −</strong> (ferrule crimper)</td>
@@ -3902,8 +3904,8 @@ screw in <strong>one E2508 with BLK-IN −</strong> (ferrule crimper)</td>
 <tr>
 <td><strong>#4 ROCKER</strong></td>
 <td>2 × 18 red + 1 × 22 (LAMP)</td>
-<td><strong>250</strong> · ⏳ <strong>LONG: length pending the INA
-adapter placement, do not cut to length</strong></td>
+<td><strong>241</strong> (provisional, +20 margin until CAD's wired-bay
+gate)</td>
 <td>INA-MAIN ISENSE− <strong>E1008</strong> (LINE)</td>
 <td>DC rocker LINE / LOAD / LAMP: <strong>red flags</strong> (flag
 crimper)</td>
@@ -3912,8 +3914,8 @@ crimper)</td>
 <tr>
 <td><strong>#5 BLK-IN</strong></td>
 <td>2 × 18, red / black</td>
-<td><strong>65</strong> · ⏳ <strong>LONG: length pending the INA
-adapter placement, do not cut to length</strong></td>
+<td><strong>147</strong> (provisional, +20 margin until CAD's wired-bay
+gate)</td>
 <td>Rocker LOAD flag; − in INA-MAIN GND's E2508 (CH1 row)</td>
 <td>HL-PBB <strong>IN-A / IN-B: E1008</strong></td>
 <td>—</td>
@@ -3921,8 +3923,7 @@ adapter placement, do not cut to length</strong></td>
 <tr>
 <td><strong>#9 HV5 BUCK-IN</strong></td>
 <td>2 × 16, red / black, twisted</td>
-<td><strong>150</strong> · buck end LONG · ⏳ <strong>LONG: length
-pending the INA adapter placement, do not cut to length</strong></td>
+<td><strong>150</strong> · buck end LONG</td>
 <td>HL-PBB <strong>A1 / B1: E1508</strong></td>
 <td>ZK-SJ20 IN+ / IN−: <strong>E1508</strong>, or bare twisted strands
 if it won't seat</td>
@@ -3950,9 +3951,9 @@ window</td>
 <tr>
 <td><strong>#6–8 BATT +</strong></td>
 <td>3 pieces, 18 red</td>
-<td><strong>120 · 70 · 150</strong> · first piece LONG · ⏳
-<strong>LONG: length pending the INA adapter placement, do not cut to
-length</strong></td>
+<td><strong>120 · 136 · 182</strong> · first piece LONG (F1 → INA-BATT
+and INA-BATT → CH2 BAT+(provisional, +20 margin until CAD's wired-bay
+gate)</td>
 <td>Pack: <strong>XT30</strong> cup (iron, Ø3) → F1 pigtail (iron,
 <strong>Ø5</strong> over the joint)</td>
 <td>F1 pigtail → INA-BATT <strong>IN− E1008</strong>; INA-BATT
@@ -3971,8 +3972,7 @@ pigtail first</strong></td>
 <tr>
 <td><strong>#12 MUS-IN</strong></td>
 <td>2 × 22, twisted</td>
-<td><strong>270</strong> · ⏳ <strong>LONG: length pending the INA
-adapter placement, do not cut to length</strong></td>
+<td><strong>270</strong></td>
 <td>HL-PBB <strong>A5 / B5: E0508</strong></td>
 <td>Mus-14 IN+ / IN− pads (iron, Ø3)</td>
 <td>—</td>
@@ -3980,8 +3980,7 @@ adapter placement, do not cut to length</strong></td>
 <tr>
 <td><strong>#13 FAN1-P / FAN2-P</strong></td>
 <td>2 × 22 each</td>
-<td><strong>75</strong> each · LONG · ⏳ <strong>LONG: length pending
-the INA adapter placement, do not cut to length</strong></td>
+<td><strong>75</strong> each · LONG</td>
 <td>HL-PBB <strong>A3 / B3, A4 / B4: E0508</strong></td>
 <td>Splice to the fan's stock lead (iron, Ø3 each, staggered ≥ 10)</td>
 <td>String-check against the splice point</td>
@@ -4000,8 +3999,8 @@ leads → <strong>17</strong> in one AIRIC violet</td>
 <tr>
 <td><strong>#21 I²C hop 1</strong></td>
 <td>4 × 26</td>
-<td><strong>115</strong> · ⏳ <strong>LONG: length pending the INA
-adapter placement, do not cut to length</strong></td>
+<td><strong>146</strong> (provisional, +20 margin until CAD's wired-bay
+gate)</td>
 <td>G469 <strong>3 SDA / 5 SCL / 1 3V3 / 9 GND: E0208</strong> each (the
 wand is gone, one conductor per pin)</td>
 <td>INA-MAIN housing (PEBA)</td>
@@ -4011,8 +4010,8 @@ out), by net</td>
 <tr>
 <td><strong>#22–24 I²C hops 2 / 3 / 4</strong></td>
 <td>4 × 26 each</td>
-<td><strong>40 / 120 / 205</strong> · ⏳ <strong>LONG: length pending
-the INA adapter placement, do not cut to length</strong></td>
+<td><strong>174 / 128 / 205</strong> (provisional, +20 margin until
+CAD's wired-bay gate)</td>
 <td>INA-MAIN → INA-BATT → TMP102 → <strong>INA3</strong> (chain end,
 single-crimped)</td>
 <td>—</td>
@@ -4125,18 +4124,18 @@ and a bad crimp):</strong></p>
 </tr>
 <tr>
 <td><strong>18 AWG</strong></td>
-<td><strong>~1.51 m</strong></td>
-<td>CH1 0.20, ROCKER 0.50, BLK-IN 0.13, BATT 0.68</td>
+<td><strong>~1.91 m</strong></td>
+<td>CH1 0.35, ROCKER 0.48, BLK-IN 0.29, BATT 0.78</td>
 </tr>
 <tr>
 <td><strong>22 AWG</strong></td>
-<td><strong>~1.65 m</strong></td>
-<td>LAMP 0.25, MUS-IN 0.54, FAN-P 0.30, PHONE-IN 0.56</td>
+<td><strong>~1.64 m</strong></td>
+<td>LAMP 0.24, MUS-IN 0.54, FAN-P 0.30, PHONE-IN 0.56</td>
 </tr>
 <tr>
 <td><strong>26 AWG</strong></td>
-<td><strong>~3.54 m</strong> + the two sensor drops</td>
-<td>FAN-SIG 0.62, I²C 1.92, SPS30 + ZE15 1.00</td>
+<td><strong>~4.23 m</strong> + the two sensor drops</td>
+<td>FAN-SIG 0.62, I²C 2.61, SPS30 + ZE15 1.00</td>
 </tr>
 </tbody>
 </table>
@@ -4258,9 +4257,9 @@ FAN-P.</li>
 <li><strong>breakout + G469</strong> (M3 × 8 ×2, then the G469, 3V3/5V
 corner over silk-1, + M2 × 8 ×2);</li>
 <li><strong>INA226-MAIN</strong> and <strong>INA226-BATT</strong> on
-their shared printed adapter (§16f.1), after the strap-post screw under
-MAIN's new spot (⏳ CAD). The runs landing on them are LONG until §16f.3
-has their new lengths;</li>
+their shared printed adapter (§16f.1), after the bar screw at (174.6,
+62.5) under MAIN's spot (D3). The runs landing on them carry provisional
+lengths, LONG at the board end (§16f.3);</li>
 <li><strong>HL-PBB</strong> (M3 × 8 ×2, holes metered open to both buses
 first).</li>
 <li>Then land their ends from above:
