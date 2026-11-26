@@ -20,11 +20,11 @@ Settings changes since a proven print are not detected by the hash.</li>
 (any printer) PVA glue stick, never regular Magigoo (H2S 33 / 27,
 2026-11-26).</li>
 <li>H2S 32 and 4 are from the fixed book ecb0a8c7 (installed 14:56:45,
-H2S <code>14CB272DF7A80FF0</code>); 27 and 33 are retired
-placeholders.</li>
+H2S <code>5494E0302B6CE269</code>, 1a4ae488 at 15:17:07: head ring bare
+on 4 and 10); 27 and 33 are retired placeholders.</li>
 </ul>
-<h2 id="h2s-32-and-4-fixed-book-ecb0a8c7">H2S 32 and 4 (fixed book
-ecb0a8c7)</h2>
+<h2 id="h2s-32-4-and-10-fixed-book-1a4ae488">H2S 32, 4 and 10 (fixed
+book 1a4ae488)</h2>
 <h3 id="h2s-32-32-test-flip-proof-y-bottom-19-mm---h2s-s2-asa-black">H2S
 32: 32 TEST flip proof (+Y bottom 19 mm) - H2S S2 ASA black</h3>
 <table>
@@ -35,7 +35,7 @@ ecb0a8c7)</h2>
 </tr>
 <tr>
 <td>Time / mass</td>
-<td>1h 17m 11s total, 58.2 min model; 16.76 g</td>
+<td>1h 17m 12s total, 58.2 min model; 16.76 g</td>
 </tr>
 <tr>
 <td>Studio warnings</td>
@@ -60,6 +60,16 @@ Y 130–201</td>
 <tr>
 <td>Support cluster 1</td>
 <td>X 140–153, Y 147–178; top z 3.72; interface z 3.08–3.72</td>
+</tr>
+<tr>
+<td>EXPECTED (3dPrint/CAD names, checked against the G-code)</td>
+<td>(a) one tree block OUTSIDE the shell under the first thread turn
+across the end notch: interface z 3.08–3.72 in the G-code, about 280
+mm³; pull it out sideways through the notch. (b) a pin-sized blob under
+the band's end at the cut face (x ~172, y ~198), ~8 mm³, flick off.
+Nothing else, nothing on the thread (gate_mating_faces PASS). My G-code
+total for both: 300 mm³ (support 236 + transition 26 + interface
+39).</td>
 </tr>
 <tr>
 <td>Picture</td>
@@ -106,10 +116,10 @@ Shell +Y + -Y + head ring - H2S S2 ASA black</h3>
 (log 3c9bc83161c15ec5, now f28bf7b1519f987f)</td>
 </tr>
 <tr>
-<td><code>lumi_wand_cyl_head_ring-supports.stl</code></td>
-<td>supports AUTO (tree(auto)); brim outer_only 12; source @ 8b00f5e0
-2026-11-24 1830; differs: export STL changed since the 2026-11-24 print
-(log 0ade23996e05c3c3, now 1b0b1ae17d53d5ea)</td>
+<td><code>lumi_wand_cyl_head_ring.stl</code></td>
+<td>supports off; brim outer_only 12; source @ 8b00f5e0 2026-11-24 1830;
+differs: export STL changed since the 2026-11-24 print (log
+0ade23996e05c3c3, now 1b0b1ae17d53d5ea)</td>
 </tr>
 <tr>
 <td>Supports</td>
@@ -134,6 +144,17 @@ Shell +Y + -Y + head ring - H2S S2 ASA black</h3>
 <tr>
 <td>Support cluster 4</td>
 <td>X 264–271, Y 122–123; top z 84.68; interface z 84.04–84.68</td>
+</tr>
+<tr>
+<td>EXPECTED (3dPrint/CAD names, checked against the G-code)</td>
+<td>Notch-chord block on each shell (as 32, z 3.08–3.72); +Y bottom PCA
+wedge underside (interface z 22.92–23.56, painted, pull down through the
+open middle); both top PCA wedges' inside faces (z 84.04–84.68,
+documented leftovers, knife pass per Build Plan §4.1); two thin trunks
+beside the −Y cut-face ends (X 264–271) feeding the −Y top wedge; head
+ring BARE. 3dPrint/CAD's total 7,532 mm³; my G-code count of all support
+moves is 9,944 mm³ (support body 9,365); the methods differ.
+gate_mating_faces PASS (3 named faces).</td>
 </tr>
 <tr>
 <td>Picture</td>
@@ -709,9 +730,9 @@ tower 50</td>
 </tbody>
 </table>
 <h3
-id="h2s-10-10-hold-do-not-print---head-ring--lens-plate-s5-nylonx---h2s-s2-asa-black">H2S
-10: 10 HOLD do not print - Head ring + lens plate S5 NylonX - H2S S2 ASA
-black</h3>
+id="h2s-10-10-unproven---head-ring--lens-plate-pva-glue-stick-s5-nylonx---h2s-s2-asa-black">H2S
+10: 10 UNPROVEN - Head ring + lens plate (PVA glue stick) S5 NylonX -
+H2S S2 ASA black</h3>
 <table>
 <tbody>
 <tr>
@@ -732,10 +753,10 @@ PA-CF @BBL H2S 0.4 nozzle-1)</td>
 <td>regular Magigoo (H2S house glue)</td>
 </tr>
 <tr>
-<td><code>lumi_wand_cyl_head_ring-supports.stl</code></td>
-<td>supports AUTO (tree(auto)); brim outer_only 12; source @ 8b00f5e0
-2026-11-24 1830; differs: export STL changed since the 2026-11-24 print
-(log 0ade23996e05c3c3, now 1b0b1ae17d53d5ea)</td>
+<td><code>lumi_wand_cyl_head_ring.stl</code></td>
+<td>supports off; brim outer_only 12; source @ 8b00f5e0 2026-11-24 1830;
+differs: export STL changed since the 2026-11-24 print (log
+0ade23996e05c3c3, now 1b0b1ae17d53d5ea)</td>
 </tr>
 <tr>
 <td><code>lumi_wand_cyl_lens_plate-supports.stl</code></td>
@@ -752,6 +773,14 @@ pre-membrane (fallback until the membrane TE; never printed OK (last row
 <tr>
 <td>Support cluster 1</td>
 <td>X 216–263, Y 146–189; top z 13.64; interface z 13.00–13.64</td>
+</tr>
+<tr>
+<td>EXPECTED</td>
+<td>Head ring BARE (gate_mating_faces names its internal thread: PASS).
+Lens plate: painted trees in the three bores up to the membrane,
+interface z 13.00–13.64, 3,189 mm³ in my G-code count (3dPrint/CAD:
+1,985). Note: the lens plate's earlier 'failed' log rows were the
+membrane test (alias), not this pinned pre-membrane plate.</td>
 </tr>
 <tr>
 <td>Picture</td>
