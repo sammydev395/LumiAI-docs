@@ -279,6 +279,27 @@ walls, 76.0 / 76.0 mm2 above the housing across the pin's plane.</td>
 <td></td>
 </tr>
 <tr>
+<td>🔶 <strong>QR single-pawl station ASSY macro FAILS one row (found
+2026-11-26 by 3dPrint/CAD; on the CTO's list, not fixed)</strong></td>
+<td><code>lumi_bigclaw_cradle_qr_lock_station_assy.py</code>: "LOCKED:
+the spring meets no part" -- the 1.0 x 8 x 15 sits 0.05 into the ridge
+block's seat (5 of 6 rows); the macro therefore does not export, so its
+two <code>_ASSY.stl</code> twins (exports move <code>abf5614f</code>)
+were meshed from the committed <code>_ASSY.step</code> files.</td>
+<td>Fix with the next QR station change.</td>
+</tr>
+<tr>
+<td>🔶 <strong><code>lumi_bigclaw_catch_bracket_aback.py</code> _SWAPS
+stale (found 2026-11-26 by 3dPrint/CAD; on the CTO's list, not
+fixed)</strong></td>
+<td>One swap target,
+<code>raw["lumi_bigclaw_phone_cradle_aback_grip_post"].BoundBox</code>,
+no longer occurs in <code>lumi_bigclaw_catch_bracket.py</code> (already
+so at HEAD before the exports move), so the A-back catch macro stops at
+its own assert before it runs.</td>
+<td>Re-point the swap at the catch macro's current text.</td>
+</tr>
+<tr>
 <td>🔴 <strong>Cradle QUICK RELEASE, a CANDIDATE: the knob cradle stays
 the CURRENT design. The sprung path is in the cradle macro behind a
 switch that is OFF (present, inert, incomplete); the working TEST
