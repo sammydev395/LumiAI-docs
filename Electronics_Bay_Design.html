@@ -1162,11 +1162,21 @@ regulator + protection is in the path.</li>
 board:</strong></p>
 <p>The electronics bay is <strong>~43.75 mm</strong> high inside (bay
 floor to underside of the HiWonder OEM lid — fixed, cannot be raised).
-It contains TWO independent vertical stacks that share the same
-horizontal footprint area: the Pi5 (left in the layout) and the STM32
-carrier + core board (center).</p>
+⏳ No caliper record backs 43.75. The vendor STEP reads 44.88 (plate top
+to lid underside), and the bench measurement settles it. It contains TWO
+independent vertical stacks that share the same horizontal footprint
+area: the Pi5 (left in the layout) and the STM32 carrier + core board
+(center).</p>
 <p><img src="images/electronics_bay/stm32_carrier_core_bay_layout.png"
-alt="Electronics bay interior — Pi5 on 5 mm standoffs at LEFT, STM32 carrier + core assembly at CENTER. Blue arrows label the STM32 carrier board and the STM32 core board that sits on top of it." /></p>
+alt="Hiwonder manual p. 89–90: the STM32 core board and the carrier&#39;s port callouts (USB, bus servo, 5 V 5 A out, power terminal, switch). This is a vendor page, not a photo of the bay." /></p>
+<blockquote>
+<p>⛔ 2026-11-25: this caption used to call the image a bay interior
+photo, "Pi5 at LEFT, STM32 at CENTER". It is the vendor manual page. The
+2026-09-23 as-built photo
+(<code>elecbay_pi5_stack_asbuilt_20260923.png</code>, Geekworm-HAT era)
+shows the STM32 carrier to the left of the Pi5. ⏳ Measured X / Y
+positions of both boards: not recorded anywhere yet.</p>
+</blockquote>
 <h3
 id="stm32-stack-bay-floor--stm32-push-button-tops--informational-no-vertical-collision-with-pi5-stack">STM32
 stack (bay floor → STM32 push-button tops) — informational, no vertical
@@ -1317,20 +1327,25 @@ base-servo hole, and up the arm to each servo.</li>
 small zip tie every 40-50 mm) to keep the bay tidy. Leave a <strong>~30
 mm service loop</strong> at the back-cover exit so the electronics bay
 lid can lift for service without tugging on any connector.</p>
-<p><strong>Route B — direct opening in black base plate under the STM32
-board</strong> (for the STM32's power feed):</p>
+<p><strong>Route B — the STM32's power feed (BUCK-OUT), up the servo
+opening:</strong></p>
 <ul>
 <li><strong>ZK-SJ20 7.5 V output → STM32 blue terminal block</strong>
-(power-in; 16 AWG, Power_Bay §16c) — routes UP from the power bay (the
-buck sits on the carrier deck) through <strong>openings in the Hiwonder
-black base plate directly beneath the STM32 board</strong>, and lands at
-the STM32's blue-terminal-block power-input header. Does NOT go through
-the back-cover hole; does NOT share the base-servo harness. Keeping the
-STM32 power feed on its own opening isolates it from the signal harness
-(no inductive coupling from the servo-rail current into the FFC / USB
-cables) and keeps the entry point right under the STM32's terminal block
-for the shortest possible power lead.</li>
+(16 AWG, Power_Bay §16c row 6): leaves the carrier deck through the
+<strong>lid window</strong>, climbs <strong>the base-servo
+opening</strong> to a Deans joint, then a 100 mm STM32 leg lands at the
+blue terminal (E1508). The climb is measured at fit (<a
+href="Electronics_Assembly_Guide.html">Assembly Guide §16f</a>). It stays
+a twisted pair of its own and is never bundled with the FFC / USB
+harness.</li>
 </ul>
+<blockquote>
+<p>⛔ 2026-11-25: this used to say BUCK-OUT came up "through openings in
+the Hiwonder black base plate directly beneath the STM32 board". As
+built and on the bay v3 carrier maps (CAD 34233681), it climbs the servo
+opening through the lid window. No opening under the STM32 is in
+use.</p>
+</blockquote>
 <p><strong>Static-side / moving-side notes:</strong> the electronics bay
 lid is static (screws into fence). The Hiwonder base-plate opening is
 ALSO static. Vertical stack, bottom-up:</p>
@@ -1359,9 +1374,17 @@ jackets are still preferred for the STM32 bus cable's arm-side segment
 (above the base servo) for the twist tolerance there.</p>
 <p><strong>Bring-up sequence:</strong></p>
 <ol type="1">
-<li>Land Pi5 in the bay per the (separately-owned) Electronics-bay
-agent's fence CAD + PSU-top mounting.</li>
-<li>Land STM32 controller card per the fence CAD.</li>
+<li>Land the Pi5 in the bay where it sits on the robot today. ⏳ No
+placement CAD exists yet: CAD's electronics-bay capture (CTO,
+2026-11-25) is the first one.</li>
+<li>Land the STM32 controller card the same way.</li>
+</ol>
+<blockquote>
+<p>⛔ 2026-11-25: steps 1–2 used to point at "the fence CAD + PSU-top
+mounting" for the Pi5 and STM32 positions. No such CAD exists; the fence
+CAD is the power bay's.</p>
+</blockquote>
+<ol start="3" type="1">
 <li>Wire the STM32 power port from the ZK-SJ20 output (V+ / GND, 16
 AWG), only after the buck has passed its bench gate and reads 7.50 V (<a
 href="Electronics_Assembly_Guide.html">Assembly Guide §16e</a>).</li>
