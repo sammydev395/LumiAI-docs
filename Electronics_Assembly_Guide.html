@@ -3127,10 +3127,11 @@ saddles; never un-terminate (Power_Bay §11.3.9 mains route, item
 v18d, and the route IDs are the labels embossed on the carrier.</p>
 <p><img src="images/power_bay/carrier_wiring.png"
 alt="Power-bay carrier wiring schematic: every harness by its CAD route ID." /></p></li>
-<li><p><strong>Routing diagrams, one per build (carrier b6a53ce7, CAD
-34233681):</strong> where each route runs on the carrier: lanes, holds
-(Fn), entries. <strong>Desk (Ultra, Creator):</strong> below.
-<strong>Ceiling (Halo):</strong> <a
+<li><p><strong>Routing diagrams, one per build (CAD dae51147 routes;
+desk = Ultra's b6a53ce7 + the INA-MAIN adapter, ceiling = Halo's carrier
+revision f9d5881c):</strong> where each route runs on the carrier:
+lanes, holds (Fn), entries. <strong>Desk (Ultra, Creator):</strong>
+below. <strong>Ceiling (Halo):</strong> <a
 href="images/power_bay/carrier_routing_ceiling.png">carrier_routing_ceiling.png</a>.
 Run and hold numbers differ between the two maps: wire from your build's
 own. Mounting points and the fit in the fence are in <a
@@ -4449,9 +4450,9 @@ its parts)</td>
 </tbody>
 </table>
 <h2
-id="16g-halo-ceiling-build-pack-pre-build-off-the-robot-then-a-half-day-swap-carrier-b6a53ce7--ceiling-fence">16g.
+id="16g-halo-ceiling-build-pack-pre-build-off-the-robot-then-a-half-day-swap-halos-own-carrier--ceiling-fence">16g.
 Halo ceiling build pack: pre-build off the robot, then a half-day swap
-(carrier b6a53ce7 + ceiling fence)</h2>
+(Halo's own carrier + ceiling fence)</h2>
 <blockquote>
 <p><strong>Halo can't run on the new bay until its ZK-SJ20 has passed
 its bench gate (est. 2026-12-06).</strong> The new carrier has no place
@@ -4478,7 +4479,15 @@ fence with <strong>4 PIRs</strong> and the ceiling logo.</li>
 <li>The <strong>wand tether IN</strong> (rows 14–15). <strong>No
 phone.</strong> <strong>No SPS30 / ZE15</strong> (not wired on Halo
 today).</li>
-<li>The same carrier, buck seat and screws as Ultra.</li>
+<li><strong>Halo's own carrier: CAD's revision f9d5881c</strong>, not
+Ultra's b6a53ce7 print. INA-MAIN sits on <strong>native raised
+posts</strong> at the adapter's spot (X 165.5–186.5 / Y 40–65, seat
+58.0), so <strong>no adapter</strong>: M1.7 × 6 ×2 straight into the
+posts. G469 posts relieved on the inside; INA3 + Mus-14 as on Ultra.
+<strong>Not printed yet (operator prints it ~Sat 11-28); until then
+Halo's carrier is NOT READY.</strong> The carrier → bar screw at (174.6,
+62.5) still sits under MAIN's footprint: drive it before MAIN.</li>
+<li>The same buck seat and the other screws as Ultra.</li>
 <li>Halo keeps <strong>its own base plate and its PSC-100</strong>.</li>
 </ul>
 <p>Route numbers (<strong>#n</strong>) and holds (<strong>Fn</strong>)
@@ -4585,10 +4594,12 @@ inventory)</h3>
 </thead>
 <tbody>
 <tr>
-<td><strong>Prints:</strong> the second carrier (b6a53ce7, <strong>H2S
-29</strong>); the ceiling fence front half (<strong>H2S 30</strong>),
-back half (⏳ plate being booked) and rear cap (<strong>H2S
-20</strong>); the battery tray + 2 bars (<strong>X1C 5</strong>)</td>
+<td><strong>Prints:</strong> Halo's carrier (revision f9d5881c,
+<strong>H2S 29 rebooked with it</strong>, ~Sat 11-28; the H2S 29 printed
+11-25 is Ultra's b6a53ce7, NOT for Halo); the ceiling fence front half
+(<strong>H2S 30</strong>), back half (⏳ plate being booked) and rear
+cap (<strong>H2S 20</strong>); the battery tray + 2 bars (<strong>X1C
+5</strong>)</td>
 <td>1 set</td>
 <td>Print books</td>
 <td>Snap the 4 pad gussets off before the bars</td>
@@ -4784,7 +4795,7 @@ HC-SR501 silk)</td>
 <tr>
 <td><strong>#25 I²C hop 1</strong></td>
 <td>4 × 26</td>
-<td>115</td>
+<td><strong>105</strong></td>
 <td>G469 <strong>3 / 5 / 1 / 9: AIRIC violet</strong>, shared with the
 tether conductors</td>
 <td>INA-MAIN housing</td>
@@ -4851,17 +4862,17 @@ A5 / B5, B6), E1008 ×6, E2508 ×1, no E7508, E1508 ×10 (all crimped in
 </tr>
 <tr>
 <td>18 AWG</td>
-<td>~1.51 m</td>
+<td>~1.61 m</td>
 <td>same</td>
 </tr>
 <tr>
 <td>22 AWG</td>
-<td><strong>~4.48 m</strong></td>
+<td><strong>~4.45 m</strong></td>
 <td>+ TETHER-P 2.34 + GND-logic 1.05; − PHONE-IN 0.56</td>
 </tr>
 <tr>
 <td>26 AWG</td>
-<td><strong>~8.48 m</strong></td>
+<td><strong>~8.70 m</strong></td>
 <td>+ PIRs 2.85, + TETHER-S 3.09, − SPS30 / ZE15 1.00</td>
 </tr>
 </tbody>
