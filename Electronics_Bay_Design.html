@@ -1278,6 +1278,27 @@ clear 13.70.</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Board positions from the vendor STEP's floor-plate holes
+(CAD, 2026-11-25; model, not measured):</strong> these are in the vendor
+STEP's frame; the fence frame is Z + 30.</p>
+<ul>
+<li><strong>STM32 carrier:</strong> its 49 × 38 hole pattern matches
+exactly one hole set, with corners at <strong>(205.6, 4.3) → (254.6,
+42.3)</strong> and the 49 along X. If the holes were centred on the 73 ×
+65 board, the board would run into the slanted back panel. So either the
+holes are off-centre or the board is turned. ⏳ One caliper reading
+(hole centre to the nearest edges) settles it.</li>
+<li><strong>Pi 5:</strong> its 58 × 49 pattern matches <strong>4 hole
+sets (A–D)</strong>, all with the 58 along X, in the bay's rear half. ⏳
+One photo settles which.</li>
+<li><strong>Stack vs the lid (model inside height 44.88):</strong> this
+depends on the HAT standoff height. At <strong>14 mm</strong> the
+inverted FPC breakout tops out <strong>2.7</strong> under the lid; at
+<strong>16 mm</strong> the gap is <strong>0.7</strong>; at <strong>18
+mm</strong> it hits the lid. The stack fits on the robot today, so the
+standoff is <strong>≤ ~16</strong>. ⏳ A caliper reading settles
+it.</li>
+</ul>
 <p><strong>The inverted MECCANIXITY FPC breakout board above the Pi5
 does NOT collide with any part of the STM32 stack</strong> — the FPC
 board's horizontal footprint sits clear of the STM32 core area (the
