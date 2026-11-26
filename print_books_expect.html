@@ -1,0 +1,323 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>print_books_expect</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.5.1/github-markdown-light.css"><style>.markdown-body{max-width:980px;margin:24px auto;padding:0 16px}</style></head><body class="markdown-body"><h1
+id="print-books-what-to-expect-per-plate">Print books: what to expect,
+per plate</h1>
+<p>Generated from the installed books' own slices (G-code moves, not
+config) by LumiAI 3DPrinter, 2026-11-26, so that no plate surprises the
+operator when he opens the book to print.</p>
+<p>Per plate: material / slot; time and mass; Studio warnings; bed prep
+(house glue by name); per object: supports (off / painted only / AUTO),
+brim, and proven-or-not against the Print_Log; support clusters with
+where they sit and their interface heights; layer-1 speeds from the
+moves; and a three-view picture of every support cluster over the part
+(grey part, red support, orange interface).</p>
+<ul>
+<li>Installed books: X1C <code>8709FD7518FBF929</code> (c9dd886a), H2S
+<code>9853D9E34BC1D901</code> (24694133).</li>
+<li>"Proven" means a Print_Log row with result ok/printed and the same
+export STL hash. The log starts 2026-11-19; older prints are unrecorded.
+Settings changes since a proven print are not detected by the hash.</li>
+<li>Bed prep: X1C FlashForge glue stick; H2S regular Magigoo; NylonX
+(any printer) PVA glue stick, never regular Magigoo (H2S 33 / 27,
+2026-11-26).</li>
+<li>Plates H2S 32 and 4 come last, on 3dPrint/CAD's fixed book.</li>
+</ul>
+<h2 id="x1c-next-to-print-first">X1C (next to print first)</h2>
+<h3 id="x1c-17-17-qr-twin-pawl-station---x1c-s2-red-petg">X1C 17: 17 QR
+twin-pawl station - X1C S2 red PETG</h3>
+<table>
+<tbody>
+<tr>
+<td>Material / slot</td>
+<td>slot 2 PETG (PolyLite PETG @BBL X1C)</td>
+</tr>
+<tr>
+<td>Time / mass</td>
+<td>1h 53m 27s total, 105.5 min model; 27.12 g</td>
+</tr>
+<tr>
+<td>Studio warnings</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Bed prep</td>
+<td>FlashForge glue stick (X1C house glue)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_frame-supports.stl</code></td>
+<td>supports painted only; brim outer_only 10; no Print_Log row (the log
+starts 2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_block.stl</code></td>
+<td>supports off; brim outer_only 10; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_carrier.stl</code></td>
+<td>supports off; brim outer_only 10; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_pawl_py.stl</code></td>
+<td>supports off; brim outer_only 10; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_pawl_my.stl</code></td>
+<td>supports off; brim outer_only 10; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_insert_py.stl</code></td>
+<td>supports off; brim outer_only 10; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_insert_my.stl</code></td>
+<td>supports off; brim outer_only 10; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td>Supports</td>
+<td>479 mm³ (Support 292, Support transition 76, Support interface 111);
+top of support z 5.80; interface z bands 4.68–5.80; footprint X 50–235,
+Y 140–164</td>
+</tr>
+<tr>
+<td>Support cluster 1</td>
+<td>X 50–71, Y 140–164; top z 5.80; interface z 4.68–5.80</td>
+</tr>
+<tr>
+<td>Picture</td>
+<td><img src="images/print_expect/x1c_17.png"
+alt="X1C 17 supports" /></td>
+</tr>
+<tr>
+<td>Layer 1 speeds (moves)</td>
+<td>Bottom surface 103/105; Brim 30; Inner wall 30; Outer wall 30</td>
+</tr>
+</tbody>
+</table>
+<h3 id="x1c-5-05-bay-v3-battery-tray--bars---x1c-s3-petg">X1C 5: 05 Bay
+v3 battery tray + bars - X1C S3 PETG</h3>
+<table>
+<tbody>
+<tr>
+<td>Material / slot</td>
+<td>slot 3 PETG (PolyLite PETG @BBL X1C)</td>
+</tr>
+<tr>
+<td>Time / mass</td>
+<td>2h 55m 50s total, 167.9 min model; 64.69 g</td>
+</tr>
+<tr>
+<td>Studio warnings</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Bed prep</td>
+<td>FlashForge glue stick (X1C house glue)</td>
+</tr>
+<tr>
+<td><code>lumi_battery_tray_HV.stl</code></td>
+<td>supports off; brim no_brim 8; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_battery_bar_front_HV.stl</code></td>
+<td>supports off; brim no_brim 8; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_battery_bar_back_HV.stl</code></td>
+<td>supports off; brim no_brim 8; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td>Supports</td>
+<td>none in the G-code</td>
+</tr>
+<tr>
+<td>Layer 1 speeds (moves)</td>
+<td>Bottom surface 105; Inner wall 30; Outer wall 30</td>
+</tr>
+</tbody>
+</table>
+<h3 id="x1c-16-16-ina226-main-adapter---x1c-s3-grey-petg">X1C 16: 16
+INA226 MAIN adapter - X1C S3 grey PETG</h3>
+<table>
+<tbody>
+<tr>
+<td>Material / slot</td>
+<td>slot 3 PETG (PolyLite PETG @BBL X1C)</td>
+</tr>
+<tr>
+<td>Time / mass</td>
+<td>48m 46s total, 40.8 min model; 8.95 g</td>
+</tr>
+<tr>
+<td>Studio warnings</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Bed prep</td>
+<td>FlashForge glue stick (X1C house glue)</td>
+</tr>
+<tr>
+<td><code>lumi_ina226_adapter_MAIN.stl</code></td>
+<td>supports off; brim outer_only 10; proven 2026-11-26 (ok, same STL
+07f33de6da5e5cd7)</td>
+</tr>
+<tr>
+<td>Supports</td>
+<td>none in the G-code</td>
+</tr>
+<tr>
+<td>Layer 1 speeds (moves)</td>
+<td>Bottom surface 105; Brim 30; Gap infill 30; Inner wall 30; Outer
+wall 30</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="x1c-14-14-main-lock-station-pawl--latch-fork-coupon---x1c-s2-red-hs-petg">X1C
+14: 14 Main lock station (pawl) + latch-fork coupon - X1C S2 red HS
+PETG</h3>
+<table>
+<tbody>
+<tr>
+<td>Material / slot</td>
+<td>slot 2 PETG (PolyLite PETG @BBL X1C)</td>
+</tr>
+<tr>
+<td>Time / mass</td>
+<td>2h 43m 49s total, 155.9 min model; 47.40 g</td>
+</tr>
+<tr>
+<td>Studio warnings</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Bed prep</td>
+<td>FlashForge glue stick (X1C house glue)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_qr_lock_station_frame.stl</code></td>
+<td>supports off; brim outer_only 10; proven 2026-11-24 (ok, same STL
+ed7bb5da8a457020)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_qr_lock_station_block-supports.stl</code></td>
+<td>supports painted only; brim outer_only 10; proven 2026-11-25
+(printed, same STL e0362e1d7dabae49)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_qr_lock_station_carrier.stl</code></td>
+<td>supports off; brim outer_only 10; proven 2026-11-25 (printed, same
+STL 7e48c2ae7f9f2354)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_qr_lock_station_pawl.stl</code></td>
+<td>supports off; brim outer_only 10; proven 2026-11-25 (printed, same
+STL ab24efef6072ad15)</td>
+</tr>
+<tr>
+<td><code>lumi_powerbay_latch_fork_coupon.stl</code></td>
+<td>supports off; brim outer_only 10; proven 2026-11-25 (printed, same
+STL 9d7f3e6c58533f9b)</td>
+</tr>
+<tr>
+<td>Supports</td>
+<td>197 mm³ (Support 81, Support transition 51, Support interface 66);
+top of support z 2.20; interface z bands 1.20–2.20; footprint X 61–222,
+Y 88–171</td>
+</tr>
+<tr>
+<td>Support cluster 1</td>
+<td>X 61–78, Y 88–101; top z 2.20; interface z 1.20–2.20</td>
+</tr>
+<tr>
+<td>Picture</td>
+<td><img src="images/print_expect/x1c_14.png"
+alt="X1C 14 supports" /></td>
+</tr>
+<tr>
+<td>Layer 1 speeds (moves)</td>
+<td>Bottom surface 105; Brim 30; Inner wall 30; Outer wall 30; Support
+30</td>
+</tr>
+</tbody>
+</table>
+<h3
+id="x1c-15-15-knob-cradle---jaw-frame--knob-frame--3-t-ledges---x1c-s2-red-hs-petg">X1C
+15: 15 Knob cradle - jaw frame + knob frame + 3 T ledges - X1C S2 red HS
+PETG</h3>
+<table>
+<tbody>
+<tr>
+<td>Material / slot</td>
+<td>slot 2 PETG (PolyLite PETG @BBL X1C)</td>
+</tr>
+<tr>
+<td>Time / mass</td>
+<td>1h 55m 43s total, 107.8 min model; 33.29 g</td>
+</tr>
+<tr>
+<td>Studio warnings</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Bed prep</td>
+<td>FlashForge glue stick (X1C house glue)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_jaw_frame-supports.stl</code></td>
+<td>supports AUTO (tree(auto)); brim outer_only 10; no Print_Log row
+(the log starts 2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_knob_frame.stl</code></td>
+<td>supports off; brim outer_only 10; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_T_ledge.stl</code></td>
+<td>supports off; brim outer_only 10; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_side_T_ledge_L.stl</code></td>
+<td>supports off; brim outer_only 10; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_side_T_ledge_fixed.stl</code></td>
+<td>supports off; brim outer_only 10; no Print_Log row (the log starts
+2026-11-19; older prints unrecorded)</td>
+</tr>
+<tr>
+<td>Supports</td>
+<td>1586 mm³ (Support 1315, Support transition 110, Support interface
+161); top of support z 16.20; interface z bands 15.10–16.20; footprint X
+53–219, Y 72–194</td>
+</tr>
+<tr>
+<td>Support cluster 1</td>
+<td>X 54–65, Y 115–152; top z 16.20; interface z 15.10–16.20</td>
+</tr>
+<tr>
+<td>Support cluster 2</td>
+<td>X 53–64, Y 170–194; top z 16.20; interface z 15.10–16.20</td>
+</tr>
+<tr>
+<td>Picture</td>
+<td><img src="images/print_expect/x1c_15.png"
+alt="X1C 15 supports" /></td>
+</tr>
+<tr>
+<td>Layer 1 speeds (moves)</td>
+<td>Bottom surface 105; Brim 30; Inner wall 30; Outer wall 30; Support
+30</td>
+</tr>
+</tbody>
+</table></body></html>
