@@ -1280,8 +1280,10 @@ clear 13.70.</td>
 </table>
 <p><strong>Board positions from the vendor STEP's floor-plate holes
 (CAD, 2026-11-25):</strong> these are in the vendor STEP's frame; the
-fence frame is Z + 30. The operator matched the holes to the boards on
-the STEP; these positions are not caliper measurements.</p>
+fence frame is Z + 30. The operator marked the boards' holes on the STEP
+(af319cae,
+<code>cad/reference/step/base plate + rpi5 holes + stm32 holes + back eb cover.stp</code>);
+these positions are not caliper measurements.</p>
 <ul>
 <li><strong>STM32 carrier:</strong> holes at <strong>(205.6, 4.3) →
 (254.6, 42.3)</strong>, the 49 along X. <strong>CONFIRMED</strong>
@@ -1298,7 +1300,8 @@ board faces and where the cable ends exit: a bench photo.</li>
 m):</strong> 102 mm in the power bay, ~150–195 mm up to the HAT, leaving
 **~165–210 mm of slack**. It sits as one flat loop (~100 × 40 × 9) over
 the STM32 core stack, under the lid, beside the Pi and clear of its
-cooler (CAD model).</li>
+cooler, not coiled. It clears the lid by ≥ 5.2 even with the STM32 stack
+3 mm taller than estimated (CAD model).</li>
 <li><strong>Stack vs the lid (model inside height 44.88):</strong> this
 depends on the HAT standoff height. At <strong>14 mm</strong> the
 inverted FPC breakout tops out <strong>2.7</strong> under the lid; at
