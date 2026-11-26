@@ -5642,14 +5642,15 @@ the §11.3.9 harness table. <strong>Routed</strong> = CAD's wired bay
 (e74bddb2; Ø3.3 re-gate 2c45839e; lid-window ends e974f78a; IP6518 +
 buck-clear risers 3debe125; tie anchors + mains tie caps, carrier
 release 9ef299b1; wiring map 38d204ba; buck +5.0 seat, front ears,
-PHONE-USB reroute, carrier release b6a53ce7), centreline face to face,
-no strip or slack. <strong>Cut</strong> = routed + both strips + ~20 mm,
-rounded up. Every 18 AWG run is gated at Ø3.3, above the stock's
-measured Ø1.85–2.00 (CAD 2c45839e, all PASS: mains ≥ 8 at 8.65 nearest,
-BATT pair 1.66 to the pack and wall). The 16 AWG buck runs pass at Ø3.6
-(CAD f0105c7a), above the stock's measured Ø2.60–2.75. Retention (forks,
-hooks, clips) is checked at the low end of each range (§11.3.9 cable
-ODs). String-run the mains on the carrier before crimping.</p>
+PHONE-USB reroute, carrier release b6a53ce7; INA226-MAIN on its adapter
+at X 165.5–186.5 / Y 40–65, desk wired bay PASS 0 FAIL), centreline face
+to face, no strip or slack. <strong>Cut</strong> = routed + both strips
++ ~20 mm, rounded up. Every 18 AWG run is gated at Ø3.3, above the
+stock's measured Ø1.85–2.00 (CAD 2c45839e, all PASS: mains ≥ 8 at 8.65
+nearest, BATT pair 1.66 to the pack and wall). The 16 AWG buck runs pass
+at Ø3.6 (CAD f0105c7a), above the stock's measured Ø2.60–2.75. Retention
+(forks, hooks, clips) is checked at the low end of each range (§11.3.9
+cable ODs). String-run the mains on the carrier before crimping.</p>
 <p><strong>Dressing (every run, mains included):</strong> the cut's
 slack goes at the <strong>ends</strong>, as a short loop within
 <strong>30–50 mm of each terminal</strong> (the ~20 mm of the cut, or
@@ -5716,8 +5717,8 @@ from each end. ⚠️ <strong>Earth check before first power:</strong> C14 E
 <td>2</td>
 <td><strong>CH1</strong></td>
 <td>2 × 18</td>
-<td>61</td>
-<td><strong>100</strong></td>
+<td>+V 102.4 / −V 92.1</td>
+<td><strong>140</strong></td>
 <td>PSU +V / −V screws: <strong>Kuject fork lugs</strong>, bent up</td>
 <td>+V → INA226-MAIN ISENSE+ <strong>E1008</strong>; −V → INA226-MAIN
 <strong>GND screw</strong>, in one <strong>E2508</strong> with BLK-IN's
@@ -5728,8 +5729,8 @@ GND</td>
 <td>3</td>
 <td><strong>ROCKER</strong></td>
 <td>2 × 18 + 1 × 22</td>
-<td>167–175 (rocker rear, under fan 1)</td>
-<td><strong>250</strong> (incl. ~40 service loop)</td>
+<td>LINE 136.9 / LOAD 137.5 / LAMP 137.2 (rocker rear, under fan 1)</td>
+<td><strong>215</strong> (incl. ~40 service loop)</td>
 <td>INA226-MAIN ISENSE− <strong>E1008</strong> (LINE)</td>
 <td>KCD1 LINE / LOAD / LAMP: <strong>flag 4.8 mm Fastons, red</strong>;
 LAMP (22) → <strong>B6</strong>: its own E0508, or on Creator builds
@@ -5740,8 +5741,8 @@ inside PHONE-IN's GND <strong>E7508</strong></td>
 <td>4</td>
 <td><strong>BLK-IN</strong></td>
 <td>2 × 18</td>
-<td>17–29</td>
-<td><strong>65</strong></td>
+<td>69.2–69.8 (INA226-MAIN → block)</td>
+<td><strong>110</strong></td>
 <td>Rocker LOAD Faston; INA226-MAIN GND screw (in CH1 −V's
 <strong>E2508</strong>)</td>
 <td>HL-PBB <strong>IN-A / IN-B: E1008</strong></td>
@@ -5860,9 +5861,10 @@ pull-up; pull-ups' other ends → <strong>17</strong></td>
 <td>13</td>
 <td><strong>I2C</strong> (chain)</td>
 <td>4 × 26 per hop</td>
-<td>G469 → INA-MAIN 78–80 · INA-MAIN → INA-BATT 2 · INA-BATT → TMP102
-81–84 · TMP102 → INA3 171</td>
-<td><strong>115 / 40 / 120 / 205</strong></td>
+<td>G469 → INA-MAIN 65.4–68.1 · INA-MAIN → INA-BATT 62.4–67.6 (Dupont
+back (176, 21) → (192.5, 57)) · INA-BATT → TMP102 81–84 · TMP102 → INA3
+171</td>
+<td><strong>105 / 105 / 120 / 205</strong></td>
 <td>G469 <strong>3 SDA / 5 SCL / 1 3V3 / 9 GND</strong> (shared ferrules
 per the landing map)</td>
 <td>Each board: <strong>female 2.54 mm 4-way housing, each contact
@@ -5996,20 +5998,20 @@ the bench (operator, 2026-11-24)</td>
 </tr>
 <tr>
 <td><strong>18 AWG</strong></td>
-<td><strong>~2.6 m (~8.5 ft)</strong></td>
-<td>MAINS 1.13 (5 pieces), CH1 0.20, ROCKER 0.50, BLK-IN 0.13, BATT
+<td><strong>~2.7 m (~9 ft)</strong></td>
+<td>MAINS 1.13 (5 pieces), CH1 0.28, ROCKER 0.43, BLK-IN 0.22, BATT
 0.68</td>
 </tr>
 <tr>
 <td><strong>22 AWG</strong></td>
 <td><strong>~5.0 m (~16.5 ft)</strong></td>
-<td>LAMP 0.25, MUS-IN 0.54, FAN1-P / FAN2-P 0.30, TETHER-P 3.39,
+<td>LAMP 0.22, MUS-IN 0.54, FAN1-P / FAN2-P 0.30, TETHER-P 3.39,
 PHONE-IN 0.56</td>
 </tr>
 <tr>
 <td><strong>26 AWG</strong></td>
-<td><strong>~9.5 m (~31 ft)</strong> + the two sensor drops</td>
-<td>FAN-SIG 0.62, I²C chain 1.92, PIRs 2.85, SPS30 + ZE15 1.00, TETHER-S
+<td><strong>~9.7 m (~32 ft)</strong> + the two sensor drops</td>
+<td>FAN-SIG 0.62, I²C chain 2.14, PIRs 2.85, SPS30 + ZE15 1.00, TETHER-S
 3.09</td>
 </tr>
 </tbody>

@@ -3826,18 +3826,14 @@ PHONE-IN is soldered to it (E5).</li>
 id="16f3-crimp--cut-list-the-whole-loom-before-any-wire-is-run">16f.3
 Crimp + cut list: the whole loom before any wire is run</h3>
 <blockquote>
-<p><strong>INA226-MAIN moves onto a printed adapter</strong> (X
-165.5–186.5 / Y 40–65, seat 58.0, header −Y, terminals +Y).
-<strong>INA226-BATT stays on its own printed posts</strong>, so BATT's
-runs (#6–8, #23) keep their original routes and lengths. MAIN's rows
-(#3, #4, #5, #21) carry <strong>provisional</strong> lengths with +20
-margin and stay LONG at the board end until CAD's wired-bay gate.
-<strong>#22 (MAIN → BATT) re-routes</strong> from MAIN's Dupont back
-(176, 21) to BATT's (192.5, 57): LONG, length pending the gate.</p>
+<p><strong>INA226-MAIN sits on a printed adapter</strong> (X 165.5–186.5
+/ Y 40–65, seat 58.0, header −Y, terminals +Y); <strong>INA226-BATT
+stays on its own printed posts.</strong> Every cut below is final: CAD's
+desk wired bay with MAIN in this spot passes (0 FAIL; route gates pass
+desk + ceiling).</p>
 </blockquote>
-<p>Cuts are §16c's, checked against CAD's desk wired bay (24 runs):
-<strong>one cut changed, MUS-IN 255 → 270</strong> (routed 225 on the
-desk). Every other cut covers its desk length + strips + ~20.
+<p>Cuts are §16c's, checked against CAD's desk wired bay (24 runs, MAIN
+on its adapter). Every cut covers its desk length + strips + ~20.
 <strong>Colour:</strong> red = +, black = −. Mains: L brown, N blue, E
 green / yellow. Signals: any stock colour, named on the flag.
 <strong>Twist</strong> = 1 twist per ~25 mm.</p>
@@ -3898,8 +3894,7 @@ green / yellow. Signals: any stock colour, named on the flag.
 <tr>
 <td><strong>#3 CH1</strong></td>
 <td>2 × 18, red / black, twisted</td>
-<td><strong>176</strong> · PSU end LONG (provisional, +20 margin until
-CAD's wired-bay gate)</td>
+<td><strong>140</strong></td>
 <td>PSU +V / −V: red forks, bent up (ratchet)</td>
 <td>+V → INA-MAIN ISENSE+ <strong>E1008</strong>; −V → INA-MAIN GND
 screw in <strong>one E2508 with BLK-IN −</strong> (ferrule crimper)</td>
@@ -3908,8 +3903,7 @@ screw in <strong>one E2508 with BLK-IN −</strong> (ferrule crimper)</td>
 <tr>
 <td><strong>#4 ROCKER</strong></td>
 <td>2 × 18 red + 1 × 22 (LAMP)</td>
-<td><strong>241</strong> (provisional, +20 margin until CAD's wired-bay
-gate)</td>
+<td><strong>215</strong> (incl. ~40 service loop)</td>
 <td>INA-MAIN ISENSE− <strong>E1008</strong> (LINE)</td>
 <td>DC rocker LINE / LOAD / LAMP: <strong>red flags</strong> (flag
 crimper)</td>
@@ -3918,8 +3912,7 @@ crimper)</td>
 <tr>
 <td><strong>#5 BLK-IN</strong></td>
 <td>2 × 18, red / black</td>
-<td><strong>147</strong> (provisional, +20 margin until CAD's wired-bay
-gate)</td>
+<td><strong>110</strong></td>
 <td>Rocker LOAD flag; − in INA-MAIN GND's E2508 (CH1 row)</td>
 <td>HL-PBB <strong>IN-A / IN-B: E1008</strong></td>
 <td>—</td>
@@ -4001,8 +3994,7 @@ leads → <strong>17</strong> in one AIRIC violet</td>
 <tr>
 <td><strong>#21 I²C hop 1</strong></td>
 <td>4 × 26</td>
-<td><strong>146</strong> (provisional, +20 margin until CAD's wired-bay
-gate)</td>
+<td><strong>105</strong></td>
 <td>G469 <strong>3 SDA / 5 SCL / 1 3V3 / 9 GND: E0208</strong> each (the
 wand is gone, one conductor per pin)</td>
 <td>INA-MAIN housing (PEBA)</td>
@@ -4012,9 +4004,7 @@ out), by net</td>
 <tr>
 <td><strong>#22–24 I²C hops 2 / 3 / 4</strong></td>
 <td>4 × 26 each</td>
-<td>#22 <strong>LONG: length pending CAD's wired-bay gate (new route),
-do not cut to length</strong> · #23 <strong>120</strong> · #24
-<strong>205</strong></td>
+<td><strong>105 / 120 / 205</strong></td>
 <td>INA-MAIN → INA-BATT → TMP102 → <strong>INA3</strong> (chain end,
 single-crimped)</td>
 <td>—</td>
@@ -4127,18 +4117,18 @@ and a bad crimp):</strong></p>
 </tr>
 <tr>
 <td><strong>18 AWG</strong></td>
-<td><strong>~1.80 m</strong></td>
-<td>CH1 0.35, ROCKER 0.48, BLK-IN 0.29, BATT 0.68</td>
+<td><strong>~1.61 m</strong></td>
+<td>CH1 0.28, ROCKER 0.43, BLK-IN 0.22, BATT 0.68</td>
 </tr>
 <tr>
 <td><strong>22 AWG</strong></td>
-<td><strong>~1.64 m</strong></td>
-<td>LAMP 0.24, MUS-IN 0.54, FAN-P 0.30, PHONE-IN 0.56</td>
+<td><strong>~1.62 m</strong></td>
+<td>LAMP 0.22, MUS-IN 0.54, FAN-P 0.30, PHONE-IN 0.56</td>
 </tr>
 <tr>
 <td><strong>26 AWG</strong></td>
-<td><strong>~3.50 m</strong> + #22 (pending) + the two sensor drops</td>
-<td>FAN-SIG 0.62, I²C 1.88 (#21, #23, #24), SPS30 + ZE15 1.00</td>
+<td><strong>~3.76 m</strong> + the two sensor drops</td>
+<td>FAN-SIG 0.62, I²C 2.14, SPS30 + ZE15 1.00</td>
 </tr>
 </tbody>
 </table>
@@ -4261,8 +4251,8 @@ FAN-P.</li>
 corner over silk-1, + M2 × 8 ×2);</li>
 <li><strong>INA226-MAIN</strong> on its printed adapter (§16f.1), after
 the bar screw at (174.6, 62.5) under MAIN's spot (D3), and
-<strong>INA226-BATT</strong> on its own posts. MAIN's runs and #22 carry
-provisional lengths, LONG at the board end (§16f.3);</li>
+<strong>INA226-BATT</strong> on its own posts. Their runs are cut to
+§16f.3;</li>
 <li><strong>HL-PBB</strong> (M3 × 8 ×2, holes metered open to both buses
 first).</li>
 <li>Then land their ends from above:
@@ -4717,7 +4707,7 @@ PIR cuts grow</strong> past §16c's (routed + strips + ~20).</p>
 <tr>
 <td><strong>#4 ROCKER, LAMP leg</strong></td>
 <td>1 × 22</td>
-<td>250</td>
+<td>215</td>
 <td>DC rocker LAMP flag (flag crimper)</td>
 <td><strong>B6: own E0508</strong></td>
 <td>No phone, so no E7508</td>
