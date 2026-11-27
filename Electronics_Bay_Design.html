@@ -1253,6 +1253,32 @@ mates the core's JST: <strong>TO CALIPER</strong></td>
 </tr>
 </tbody>
 </table>
+<p><strong>Integration rules (XMOS XVF3800 user guide v3.2.1, in the
+datasheets folder):</strong></p>
+<ul>
+<li><strong>Mono, LEFT channel.</strong> The pipeline is mono and the
+AEC reference is the LEFT channel (I²S channel 0); the right is ignored.
+The host plays speech <strong>mono or on the left channel</strong>, or
+the echo canceller has no reference.</li>
+<li><strong>Speaker in its linear range:</strong> THD under 3–5 % at max
+volume, and at max volume the mics keep 6–10 dB headroom before
+overload. Nominal 75 dB SPL at the user's ear for −18 dBFS. Set the max
+volume on the bench against those numbers.</li>
+<li><strong>Head / shell (CAD):</strong> speaker as far from the mics as
+practical; its rear chamber sealed or the speaker foam-decoupled;
+transducers rigidly fixed or fully foam-decoupled, never loose; no
+rattling panels or connectors; fans away from the mics; the mic ports
+get a clear path to the user.</li>
+<li><strong>Mic spacing:</strong> XMOS advises at least two mics ~10 cm
+apart for low-frequency performance. The Seeed array is 44 mm (62
+diagonal) and ships tuned as is: a known limit, not a change.</li>
+<li><strong>Software:</strong> DoA via
+<code>AUDIO_MGR_SELECTED_AZIMUTHS</code> (speaker azimuth, NaN with no
+speech; auto-beam azimuth). Default output L = processed, R = raw mic
+(<code>AUDIO_MGR_OP_L / _R</code>; category 6 source 3 = the auto-select
+beam). DFU has one upgrade slot; the factory image stays as the
+fallback.</li>
+</ul>
 <p><strong>Links:</strong></p>
 <ul>
 <li><strong>USB:</strong> the core board to a <strong>HAT
