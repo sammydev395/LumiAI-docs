@@ -2318,7 +2318,7 @@ v3 carrier - H2S S1 blue HS PETG</h3>
 </tr>
 <tr>
 <td>Time / mass</td>
-<td>4h 25m 56s total, 258.8 min model; 71.76 g</td>
+<td>4h 27m 30s total, 260.4 min model; 72.82 g</td>
 </tr>
 <tr>
 <td>Studio warnings</td>
@@ -2330,13 +2330,24 @@ v3 carrier - H2S S1 blue HS PETG</h3>
 </tr>
 <tr>
 <td><code>lumi_powerbay_carrier_HV.stl</code></td>
-<td>supports off; brim outer_only 10; source @ PINNED the H2S book's own
-(21848c1d) shells + flip proof, un; last printed 2026-11-25 (ok); the
-book PINS its mesh, export hash not comparable</td>
+<td>supports off; brim outer_only 10; source @ f9d5881c 2026-11-26 1134;
+differs: export STL changed since the 2026-11-25 print (log
+6f1ad90f9e5c0c7f, now 679b079cf8f05d2c)</td>
 </tr>
 <tr>
 <td>Supports</td>
 <td>none in the G-code</td>
+</tr>
+<tr>
+<td>EXPECTED</td>
+<td>No supports (support off; hole compensation 0 on the object, so the
+pilots print to size). UNPROVEN, Halo's carrier for Saturday: differs
+from the 11-25 Ultra print (b6a53ce7, Print_Log 1cd0f411 / cdcdddb5) in
+the INA226-MAIN posts moved to the adapter spot (built into the deck)
+and the G469 posts notched on their inside faces (CAD f9d5881c). NOT in
+this revision: the front INA226 (INA3) moved for connector room, the
+operator's item 2 of 11-26 ("Till 1, 2, and 3 are done, the Halo carrier
+is not ready"); see the CTO.</td>
 </tr>
 <tr>
 <td>Layer 1 speeds (moves)</td>
