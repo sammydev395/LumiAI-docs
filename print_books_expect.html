@@ -1674,27 +1674,19 @@ tower 50</td>
 </tr>
 </tbody>
 </table>
-<h3 id="h2s-3-03-end-plates---h2s-s2-asa-black">H2S 3: 03 End plates -
-H2S S2 ASA black</h3>
+<h3
+id="h2s-3-03-unproven---end-plates-break-away-blocks---h2s-s2-asa-black">H2S
+3: 03 UNPROVEN - End plates, break-away blocks - H2S S2 ASA black</h3>
 <table>
 <tbody>
-<tr>
-<td>HOLD</td>
-<td><strong>HOLD - rebook coming (end plate + ear break-away blocks),
-CTO 11-27.</strong> gate_gcode_floating FAILS on the ear: an overhang
-wall starts in air at layer 86, z 13.80 (35.9 mm of line in 44 moves at
-X 281.3 / Y 163.8). Same finding the operator waived on 2026-11-22
-(Studio itself is clean); the waiver is superseded by this hold. Not
-shown in the first version of this sheet because the sheet did not list
-waived gate findings.</td>
-</tr>
 <tr>
 <td>Material / slot</td>
 <td>slot 2 ASA (Generic ASA @BBL H2S 0.4 nozzle)</td>
 </tr>
 <tr>
 <td>Time / mass</td>
-<td>2h 24m 8s total, 125.2 min model; 33.65 g</td>
+<td>2h 26m 41s; 35.51 g (3dPrint/CAD's prepush slice, Studio 2.9.1
+CLI)</td>
 </tr>
 <tr>
 <td>Studio warnings</td>
@@ -1705,58 +1697,44 @@ waived gate findings.</td>
 <td>regular Magigoo (H2S house glue)</td>
 </tr>
 <tr>
-<td><code>lumi_wand_cyl_endcap_plate-supports.stl</code></td>
-<td>supports AUTO (tree(auto)); brim outer_only 10; source @ 8b00f5e0
-2026-11-24 1830; no Print_Log row (the log starts 2026-11-19; older
-prints unrecorded)</td>
+<td><code>lumi_wand_cyl_endcap_plate.stl</code> (its print copy
+<code>lumi_wand_cyl_endcap_plate_print</code>)</td>
+<td>supports OFF: a break-away block under the JST-holder recess floor;
+brim outer_only 10; source @ 0b173950 2026-11-27 0837; no Print_Log
+row</td>
 </tr>
 <tr>
 <td><code>lumi_wand_ext_tail_plate-supports.stl</code></td>
-<td>supports AUTO (tree(auto)); brim outer_only 10; source @ 8b00f5e0
-2026-11-24 1830; no Print_Log row (the log starts 2026-11-19; older
-prints unrecorded)</td>
+<td>supports AUTO but none generated (prints bare); brim outer_only 10;
+source @ 8b00f5e0 2026-11-24 1830; no Print_Log row</td>
 </tr>
 <tr>
-<td><code>lumi_wand_cyl_ear.stl</code></td>
-<td>supports off; brim outer_only 10; source @ 8b00f5e0 2026-11-24 1830;
-no Print_Log row (the log starts 2026-11-19; older prints
-unrecorded)</td>
+<td><code>lumi_wand_cyl_ear.stl</code> (its print copy
+<code>lumi_wand_cyl_ear_print</code>)</td>
+<td>supports off: a break-away block in its catch groove; brim
+outer_only 10; source @ a8a1209a 2026-11-27 0851; no Print_Log row</td>
 </tr>
 <tr>
 <td>Supports</td>
-<td>363 mm³ (Support 147, Support transition 89, Support interface 128);
-top of support z 1.32; interface z bands 0.68–1.32; footprint X 67–103,
-Y 119–187</td>
+<td>none in the G-code (0 support moves)</td>
 </tr>
 <tr>
-<td>Support cluster 1</td>
-<td>X 67–103, Y 119–143; top z 1.32; interface z 0.68–1.32</td>
-</tr>
-<tr>
-<td>EXPECTED (3dPrint/CAD names, checked against the G-code + the wand
-CAD)</td>
-<td>tree(auto) under ONE face only: the END PLATE's
-(<code>lumi_wand_cyl_endcap_plate</code>, printed flipped) 1.5-deep
-JST-HOLDER RECESS, whose floor is a 218 mm² flat 1.50 over the bed (r
-22.7–36.3, the 6-pin side). NOT a mating face: the JST holder stands
-~1.3 clear of it by design (wand CAD: "the ~1.3 mm of air between plate
-top and cradle is NOT slop"), so tree marks there touch nothing. The
-recess runs out past the plate's rim: pull the trees out sideways
-through that open end. No trees under the rim flange / seat (z 3.0–3.1)
-or the key tabs; the tail plate and the ear print bare. Real support
-lines 233 mm³ (363 counts zero-length moves). Current: all three STLs
-last changed at 8b00f5e0 = the book's sources (3dPrint/CAD
-2026-11-27)</td>
+<td>EXPECTED (3dPrint/CAD names, checked against the G-code)</td>
+<td>NO TREES. Two free-standing break-away blocks print with the parts,
+each one empty layer under the face it holds (gate_breakaway_grid
+credits both): (1) END PLATE: a U-shaped block in its 1.5-deep
+JST-holder recess (around the plug's through-hole), top print z 1.31
+under the recess floor at 1.50 -- slide it out through the recess's open
+rim end; (2) EAR: a block in its catch groove, top 13.47 under the
+groove's floor at 13.70 (2.0 behind the catch tongue's back, not a
+mating face) -- pull it out of the groove's mouth in the ear's end face.
+Neither touches a mating face (both 0.3 off the walls). The old plate
+failed gate_gcode_floating on the ear (32.9 mm over air at z 13.80):
+fixed. The ear's provisional ledge waiver is retired</td>
 </tr>
 <tr>
 <td>Picture</td>
-<td><img src="images/print_expect/h2s_03.png"
-alt="H2S 3 supports" /></td>
-</tr>
-<tr>
-<td>Layer 1 speeds (moves)</td>
-<td>Bottom surface 30/105; Brim 50; Inner wall 50; Outer wall 50; Prime
-tower 50; Support 50</td>
+<td><img src="images/print_expect/h2s_03.png" alt="H2S 3 blocks" /></td>
 </tr>
 </tbody>
 </table>
