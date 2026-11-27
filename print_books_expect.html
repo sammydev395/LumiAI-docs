@@ -23,6 +23,62 @@ Settings changes since a proven print are not detected by the hash.</li>
 H2S <code>5494E0302B6CE269</code>, 1a4ae488 at 15:17:07: head ring bare
 on 4 and 10); 27 and 33 are retired placeholders.</li>
 </ul>
+<h2
+id="standing-waivers-accepted-gate-findings-they-do-not-block-but-you-should-know-them">Standing
+waivers (accepted gate findings; they do not block, but you should know
+them)</h2>
+<table>
+<thead>
+<tr>
+<th>Plate</th>
+<th>Waiver</th>
+<th>Who / when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>H2S 3</td>
+<td><del>gate_gcode_floating: ear overhang wall starts in air, layer 86,
+z 13.80, 35.9 mm</del> <strong>SUPERSEDED: plate on HOLD for the
+rebook</strong></td>
+<td>operator 11-22; CTO hold 11-27</td>
+</tr>
+<tr>
+<td>H2S 5</td>
+<td>Studio "floating regions" warning on one EBC cover (the 0.2 mm
+outer-wall speck pair at layer 116, z 18.6)</td>
+<td>operator 11-10 / 11-23</td>
+</tr>
+<tr>
+<td>H2S 6</td>
+<td>Studio overhang regions on the ext −Y half (build-plate-only
+supports; turning that off would put supports in the thread)</td>
+<td>operator 11-22, CTO 11-24</td>
+</tr>
+<tr>
+<td>H2S 4</td>
+<td>Flat-ledge provisional: head ring cantilever 1.61 mm at z 5.96; +Y
+shell 4.08 mm at z 71.40; −Y shell 2.11 mm at z 3.24</td>
+<td>LEDGE_WAIVERS (CTO 11-25)</td>
+</tr>
+<tr>
+<td>H2S 10 / 14</td>
+<td>Flat-ledge provisional: lens plate cantilever 1.73 mm at z 13.96 (10
+also: head ring 1.61 mm at z 5.96)</td>
+<td>LEDGE_WAIVERS</td>
+</tr>
+<tr>
+<td>H2S 8</td>
+<td>Flat-ledge provisional: base cover base cantilever 2.01 mm at z
+4.36</td>
+<td>LEDGE_WAIVERS</td>
+</tr>
+</tbody>
+</table>
+<p>Note: the install gate re-runs the floating / ledge gates on CHANGED
+plates only; a waiver on an unchanged plate stays standing until the CTO
+or the operator lifts it. This list is from the installed slices
+(2026-11-27).</p>
 <h2 id="h2s-32-4-and-10-fixed-book-1a4ae488">H2S 32, 4 and 10 (fixed
 book 1a4ae488)</h2>
 <h3 id="h2s-32-32-test-flip-proof-y-bottom-19-mm---h2s-s2-asa-black">H2S
