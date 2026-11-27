@@ -188,8 +188,9 @@ across the skirt notch only (223 mm³ in their count), pulled out
 sideways through the notch. gate_mating_faces: 32 PASS at ecb0a8c7, FAIL
 at 3fbea4c2 (the bite); 4 PASS (both shells).</p>
 <h2 id="x1c-next-to-print-first">X1C, next to print first</h2>
-<h3 id="x1c-17-17-qr-twin-pawl-station---x1c-s2-red-petg">X1C 17: 17 QR
-twin-pawl station - X1C S2 red PETG</h3>
+<h3
+id="x1c-17-17-unproven---qr-twin-pawl-station-rev-2---x1c-s2-red-petg">X1C
+17: 17 UNPROVEN - QR twin-pawl station rev 2 - X1C S2 red PETG</h3>
 <table>
 <tbody>
 <tr>
@@ -198,7 +199,8 @@ twin-pawl station - X1C S2 red PETG</h3>
 </tr>
 <tr>
 <td>Time / mass</td>
-<td>1h 53m 27s total, 105.5 min model; 27.12 g</td>
+<td>1h 52m 16s; 26.99 g (3dPrint/CAD's prepush slice, Studio 2.9.1
+CLI)</td>
 </tr>
 <tr>
 <td>Studio warnings</td>
@@ -210,55 +212,67 @@ twin-pawl station - X1C S2 red PETG</h3>
 </tr>
 <tr>
 <td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_frame-supports.stl</code></td>
-<td>supports painted only; brim outer_only 10; source @ af17637e
-2026-11-26 1228; no Print_Log row (the log starts 2026-11-19; older
-prints unrecorded)</td>
+<td>supports painted only; brim outer_only 10; source @ 8588512c
+2026-11-26 2002; no Print_Log row (revision 2, never printed)</td>
 </tr>
 <tr>
 <td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_block.stl</code></td>
-<td>supports off; brim outer_only 10; source @ 1d9ef7ea 2026-11-26 1215;
-no Print_Log row (the log starts 2026-11-19; older prints
-unrecorded)</td>
+<td>supports off; brim outer_only 10; source @ 1d9ef7ea 2026-11-26 1215
+(unchanged in rev 2); no Print_Log row</td>
 </tr>
 <tr>
 <td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_carrier.stl</code></td>
-<td>supports off; brim outer_only 10; source @ 9b678c62 2026-11-26 1224;
-no Print_Log row (the log starts 2026-11-19; older prints
-unrecorded)</td>
+<td>supports off; brim outer_only 10; source @ 8588512c 2026-11-26 2002;
+no Print_Log row (revision 2, never printed)</td>
 </tr>
 <tr>
 <td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_pawl_py.stl</code></td>
-<td>supports off; brim outer_only 10; source @ 9b678c62 2026-11-26 1224;
-no Print_Log row (the log starts 2026-11-19; older prints
-unrecorded)</td>
+<td>supports off; brim outer_only 10; source @ 8588512c 2026-11-26 2002;
+no Print_Log row (revision 2, never printed)</td>
 </tr>
 <tr>
 <td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_pawl_my.stl</code></td>
-<td>supports off; brim outer_only 10; source @ 9b678c62 2026-11-26 1224;
-no Print_Log row (the log starts 2026-11-19; older prints
-unrecorded)</td>
+<td>supports off; brim outer_only 10; source @ 8588512c 2026-11-26 2002;
+no Print_Log row (revision 2, never printed)</td>
 </tr>
 <tr>
 <td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_insert_py.stl</code></td>
-<td>supports off; brim outer_only 10; source @ 9b678c62 2026-11-26 1224;
-no Print_Log row (the log starts 2026-11-19; older prints
-unrecorded)</td>
+<td>supports off; brim outer_only 10; source @ dd57979c 2026-11-26 2006;
+no Print_Log row (revision 2, never printed)</td>
 </tr>
 <tr>
 <td><code>lumi_bigclaw_phone_cradle_aback_qr_twin_station_insert_my.stl</code></td>
-<td>supports off; brim outer_only 10; source @ 9b678c62 2026-11-26 1224;
-no Print_Log row (the log starts 2026-11-19; older prints
-unrecorded)</td>
+<td>supports off; brim outer_only 10; source @ dd57979c 2026-11-26 2006;
+no Print_Log row (revision 2, never printed)</td>
 </tr>
 <tr>
 <td>Supports</td>
-<td>479 mm³ (Support 292, Support transition 76, Support interface 111);
-top of support z 5.80; interface z bands 4.68–5.80; footprint X 50–235,
-Y 140–164</td>
+<td>474 mm³ (Support 287, Support transition 76, Support interface 111),
+all on the frame (272 mm³ = 2.0 % of it by the support budget); top of
+support z 5.80; interface z 5.24–5.80; footprint X 51–70, Y 141–164</td>
 </tr>
 <tr>
-<td>Support cluster 1</td>
-<td>X 50–71, Y 140–164; top z 5.80; interface z 4.68–5.80</td>
+<td>EXPECTED (3dPrint/CAD names, checked against the G-code)</td>
+<td>two painted tree strips under the frame's two tunnel walls (Y
+141–148 and 158–164, X 51–70): pull them out through the channel's open
+end. Every other piece prints bare: the carrier's four rail tongues (2.7
+off its +x face), the pawls' open-top shaft U / B's trough / the tab
+grooves, the inserts' 30° mouth ramp and angled screw slot</td>
+</tr>
+<tr>
+<td>Not printed (bench stock)</td>
+<td>main spring 1.0 × 8 × 15; 3 × 0.5 × 4 × 5 springs on a 1.75 PETG
+filament shaft cut to 10.9 (pressed into pawl A's U); 2 × HanTof M2 × 8
+pan self-taps (one per insert, 25° from above)</td>
+</tr>
+<tr>
+<td>Assembly</td>
+<td>frame first (inserts, screws, ridge block, main spring relaxed) →
+bench: shaft into pawl A, 3 springs, pawl B → squeeze, drop into the
+carrier onto its rails → one thumb: ramp, click, locked. Steps:
+<code>docs/images/hardware/review/qr_twin_rev2_step1_frame.png</code> …
+<code>step6_locked.png</code>; ASSY STEP
+<code>cad/exports/step/coupons/lumi_bigclaw_phone_cradle_aback_qr_twin_station_ASSY.step</code></td>
 </tr>
 <tr>
 <td>Picture</td>
@@ -267,7 +281,8 @@ alt="X1C 17 supports" /></td>
 </tr>
 <tr>
 <td>Layer 1 speeds (moves)</td>
-<td>Bottom surface 103/105; Brim 30; Inner wall 30; Outer wall 30</td>
+<td>Bottom surface 103/105; Brim 30; Inner wall 30; Outer wall 30
+(settings unchanged from rev 1)</td>
 </tr>
 </tbody>
 </table>
