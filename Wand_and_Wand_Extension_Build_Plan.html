@@ -902,6 +902,54 @@ Extension</a>, <a
 href="3D_Printing_Guide.html#33a-cell-cartridge-solder-free-user-replaceable-pack">§3.3a
 Cell Cartridge</a>.</p>
 </blockquote>
+<h3 id="2a0-fit-up-measurements-owed-before-the-shell-halves-print">2A.0
+Fit-up measurements owed before the shell halves print</h3>
+<p>The wand CAD and its wired gate
+(<code>cad/freecad/lumi_wand_wired_assembly.py</code>) still run on
+estimates for these; measure them on the real parts and give the numbers
+to 3dPrint/CAD, which re-runs the wired gate before the halves
+print:</p>
+<table>
+<thead>
+<tr>
+<th>Measure (calipers / string)</th>
+<th>Feeds</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A trimmed KESHY driver with its leads on: L × W × max height, and
+where the leads exit</td>
+<td>the driver seats and the wired gate's KESHY stubs (header pin 1 at
+the power end is an estimate, ⏳ in the gate log)</td>
+</tr>
+<tr>
+<td>The PCA9685 with its header trimmed and leads on: size, and which
+end is CH0</td>
+<td>the PCA wedges and the DW / FAN-W route lengths</td>
+</tr>
+<tr>
+<td>A seated 4-pin DuPont on the PCA header: its height (1.0 is allowed
+to the 0° drivers)</td>
+<td>the PCA-to-driver clearance row</td>
+</tr>
+<tr>
+<td>The DL bundle (12 twisted 26 AWG pairs): its diameter where it runs
+up the 5 mm annulus</td>
+<td>the heatsink annulus (<code>HEATSINK_OD</code>) and the wired gate's
+bundle tube</td>
+</tr>
+<tr>
+<td>Every string-measured lead length that differs from <a
+href="Lumi_Wand_Integration.html">Integration §10.5.9</a></td>
+<td>the wired gate's length report (cuts carry slack)</td>
+</tr>
+<tr>
+<td>The VHB tape thickness as applied (3M 4910)</td>
+<td><code>VHB_T</code> (1.0 nominal) in the driver's radial seat</td>
+</tr>
+</tbody>
+</table>
 <h3 id="2a1-pre-flight--60-seconds-before-the-first-slice">2A.1
 Pre-flight — 60 seconds, before the first slice</h3>
 <ol type="1">
