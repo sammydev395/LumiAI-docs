@@ -20,8 +20,9 @@ Settings changes since a proven print are not detected by the hash.</li>
 (any printer) PVA glue stick, never regular Magigoo (H2S 33 / 27,
 2026-11-26).</li>
 <li>H2S 32 and 4 are from the fixed book ecb0a8c7 (installed 14:56:45,
-H2S <code>5494E0302B6CE269</code>, 1a4ae488 at 15:17:07: head ring bare
-on 4 and 10); 27 and 33 are retired placeholders.</li>
+H2S now <code>01797ECD61E00735</code>, 3955ce80 at 13:45:34; fences 25 /
+26 / 30 / 31 on clamp-slot blocks); 27 and 33 are retired
+placeholders.</li>
 </ul>
 <h2
 id="standing-waivers-accepted-gate-findings-they-do-not-block-but-you-should-know-them">Standing
@@ -68,6 +69,12 @@ shell 4.08 mm at z 71.40; −Y shell 2.11 mm at z 3.24</td>
 <td>Flat-ledge provisional: lens plate cantilever 1.73 mm at z 13.96 (10
 also: head ring 1.61 mm at z 5.96)</td>
 <td>LEDGE_WAIVERS</td>
+</tr>
+<tr>
+<td>H2S 31</td>
+<td>Flat-ledge: PIR mouth outer loops, z 80.84, 76.5 mm of line ≥ 1.5
+(worst cantilever 6.13 mm), UNPROVEN; bound to rev 80d6fee6</td>
+<td>CTO decision (LEDGE_WAIVERS + verify REACH_OK)</td>
 </tr>
 <tr>
 <td>H2S 8</td>
@@ -646,8 +653,10 @@ tower 50; Support 50</td>
 </tr>
 </tbody>
 </table>
-<h3 id="h2s-25-25-bay-v3-fence-back-desk-ultra---h2s-s2-asa-black">H2S
-25: 25 Bay v3 fence back DESK (Ultra) - H2S S2 ASA black</h3>
+<h3
+id="h2s-25-25-unproven---bay-v3-fence-back-desk-ultra-clamp-blocks---h2s-s2-asa-black">H2S
+25: 25 UNPROVEN - Bay v3 fence back DESK (Ultra), clamp blocks - H2S S2
+ASA black</h3>
 <table>
 <tbody>
 <tr>
@@ -656,7 +665,7 @@ tower 50; Support 50</td>
 </tr>
 <tr>
 <td>Time / mass</td>
-<td>8h 2m 12s total, 463.2 min model; 182.10 g</td>
+<td>8h 1m 57s total, 463.0 min model; 182.59 g</td>
 </tr>
 <tr>
 <td>Studio warnings</td>
@@ -668,38 +677,33 @@ tower 50; Support 50</td>
 </tr>
 <tr>
 <td><code>lumi_baseplate_fence_HV_desk_back_half-supports.stl</code></td>
-<td>supports painted only; brim outer_and_inner 10; source @ 29e1338b
-2026-11-25 1840; no Print_Log row (the log starts 2026-11-19; older
+<td>supports painted only; brim outer_and_inner 10; source @ 80d6fee6
+2026-11-27 1322; no Print_Log row (the log starts 2026-11-19; older
 prints unrecorded)</td>
 </tr>
 <tr>
 <td>Supports</td>
-<td>1326 mm³ (Support 625, Support transition 298, Support interface
-402); top of support z 3.08; interface z bands 1.80–3.08; footprint X
-67–226, Y 78–247</td>
+<td>none in the G-code</td>
 </tr>
 <tr>
-<td>Support cluster 1</td>
-<td>X 170–226, Y 78–96; top z 3.08; interface z 1.80–3.08</td>
-</tr>
-<tr>
-<td>Support cluster 2</td>
-<td>X 170–225, Y 231–247; top z 3.08; interface z 1.80–3.08</td>
-</tr>
-<tr>
-<td>Picture</td>
-<td><img src="images/print_expect/h2s_25.png"
-alt="H2S 25 supports" /></td>
+<td>EXPECTED</td>
+<td>No trees. Six clamp-slot break-away blocks (block tops z 3.07, slot
+roofs from z 3.40; gate_breakaway_grid 6/6 with exactly one empty
+layer): pull each block out through its clamp slot. CAD 80d6fee6,
+UNPROVEN. Note: the copy printing on 11-27 from ~08:50 is the PREVIOUS
+book (painted trees under the base lip), not this one.</td>
 </tr>
 <tr>
 <td>Layer 1 speeds (moves)</td>
-<td>Bottom surface 105; Brim 30/50; Inner wall 50; Outer wall 50; Prime
-tower 50; Support 50</td>
+<td>Bottom surface 105; Brim 50; Inner wall 50; Outer wall 50; Prime
+tower 50</td>
 </tr>
 </tbody>
 </table>
-<h3 id="h2s-26-26-bay-v3-fence-front-desk-ultra---h2s-s2-asa-black">H2S
-26: 26 Bay v3 fence front DESK (Ultra) - H2S S2 ASA black</h3>
+<h3
+id="h2s-26-26-unproven---bay-v3-fence-front-desk-ultra-clamp-block---h2s-s2-asa-black">H2S
+26: 26 UNPROVEN - Bay v3 fence front DESK (Ultra), clamp block - H2S S2
+ASA black</h3>
 <table>
 <tbody>
 <tr>
@@ -708,7 +712,7 @@ tower 50; Support 50</td>
 </tr>
 <tr>
 <td>Time / mass</td>
-<td>2h 52m 57s total, 154.0 min model; 69.74 g</td>
+<td>2h 52m 41s total, 153.7 min model; 69.96 g</td>
 </tr>
 <tr>
 <td>Studio warnings</td>
@@ -720,29 +724,23 @@ tower 50; Support 50</td>
 </tr>
 <tr>
 <td><code>lumi_baseplate_fence_HV_desk_front_half-supports.stl</code></td>
-<td>supports painted only; brim outer_and_inner 10; source @ 29e1338b
-2026-11-25 1840; no Print_Log row (the log starts 2026-11-19; older
+<td>supports painted only; brim outer_and_inner 10; source @ 80d6fee6
+2026-11-27 1322; no Print_Log row (the log starts 2026-11-19; older
 prints unrecorded)</td>
 </tr>
 <tr>
 <td>Supports</td>
-<td>690 mm³ (Support 327, Support transition 153, Support interface
-211); top of support z 3.08; interface z bands 1.80–3.08; footprint X
-101–239, Y 160–210</td>
+<td>none in the G-code</td>
 </tr>
 <tr>
-<td>Support cluster 1</td>
-<td>X 142–197, Y 193–210; top z 3.08; interface z 1.80–3.08</td>
-</tr>
-<tr>
-<td>Picture</td>
-<td><img src="images/print_expect/h2s_26.png"
-alt="H2S 26 supports" /></td>
+<td>EXPECTED</td>
+<td>No trees. One clamp-slot break-away block (gate_breakaway_grid 1/1):
+pull it out through the slot. CAD 80d6fee6, UNPROVEN.</td>
 </tr>
 <tr>
 <td>Layer 1 speeds (moves)</td>
 <td>Bottom surface 105; Brim 50; Gap infill 50; Inner wall 50; Outer
-wall 50; Prime tower 50; Support 50</td>
+wall 50; Prime tower 50</td>
 </tr>
 </tbody>
 </table>
@@ -2449,8 +2447,9 @@ Outer wall 50; Prime tower 50</td>
 </tbody>
 </table>
 <h3
-id="h2s-30-30-bay-v3-fence-front-ceiling-halo-nova---h2s-s2-asa-black">H2S
-30: 30 Bay v3 fence front CEILING (Halo-Nova) - H2S S2 ASA black</h3>
+id="h2s-30-30-unproven---bay-v3-fence-front-ceiling-halo-clamp-block---h2s-s2-asa-black">H2S
+30: 30 UNPROVEN - Bay v3 fence front CEILING (Halo), clamp block - H2S
+S2 ASA black</h3>
 <table>
 <tbody>
 <tr>
@@ -2459,7 +2458,7 @@ id="h2s-30-30-bay-v3-fence-front-ceiling-halo-nova---h2s-s2-asa-black">H2S
 </tr>
 <tr>
 <td>Time / mass</td>
-<td>3h 21m 57s total, 183.0 min model; 74.98 g</td>
+<td>3h 21m 37s total, 182.7 min model; 75.20 g</td>
 </tr>
 <tr>
 <td>Studio warnings</td>
@@ -2471,15 +2470,15 @@ id="h2s-30-30-bay-v3-fence-front-ceiling-halo-nova---h2s-s2-asa-black">H2S
 </tr>
 <tr>
 <td><code>lumi_baseplate_fence_HV_ceiling_front_half-supports.stl</code></td>
-<td>supports painted only; brim outer_and_inner 10; source @ 30eda168
-2026-11-25 1800; no Print_Log row (the log starts 2026-11-19; older
+<td>supports painted only; brim outer_and_inner 10; source @ 80d6fee6
+2026-11-27 1322; no Print_Log row (the log starts 2026-11-19; older
 prints unrecorded)</td>
 </tr>
 <tr>
 <td>Supports</td>
-<td>9291 mm³ (Support 8487, Support transition 334, Support interface
-471); top of support z 68.36; interface z bands 1.80–3.08, 66.76–68.36;
-footprint X 91–247, Y 155–210</td>
+<td>7215 mm³ (Support 6860, Support transition 145, Support interface
+210); top of support z 68.36; interface z bands 66.76–68.36; footprint X
+91–247, Y 155–194</td>
 </tr>
 <tr>
 <td>Support cluster 1</td>
@@ -2487,18 +2486,14 @@ footprint X 91–247, Y 155–210</td>
 </tr>
 <tr>
 <td>Support cluster 2</td>
-<td>X 211–247, Y 156–194; top z 68.36; interface z 1.80–3.08,
-66.76–68.36</td>
+<td>X 211–247, Y 156–194; top z 68.36; interface z 66.76–68.36</td>
 </tr>
 <tr>
-<td>Support cluster 3</td>
-<td>X 142–197, Y 193–210; top z 3.08; interface z 1.80–3.08</td>
-</tr>
-<tr>
-<td>EXPECTED (3dPrint/CAD names, checked against the G-code)</td>
-<td>Painted trees under the clamp-slot roof (interface z 1.80–3.08 in
-the G-code) and under the two R1 PIR roofs (z 66.76–68.36). Pull out
-through the PIR mouths and the slot. 9,291 mm³ in my count.</td>
+<td>EXPECTED</td>
+<td>Trees only under the two R1 PIR roofs (interface z 66.76–68.36,
+7,215 mm³); pull them out through the PIR mouths. One clamp-slot
+break-away block (1/1): pull it out through the slot. CAD 80d6fee6,
+UNPROVEN.</td>
 </tr>
 <tr>
 <td>Picture</td>
@@ -2507,14 +2502,15 @@ alt="H2S 30 supports" /></td>
 </tr>
 <tr>
 <td>Layer 1 speeds (moves)</td>
-<td>Bottom surface 105; Brim 30/50; Gap infill 50; Inner wall 50; Outer
+<td>Bottom surface 105; Brim 50; Gap infill 50; Inner wall 50; Outer
 wall 50; Prime tower 50; Support 50</td>
 </tr>
 </tbody>
 </table>
 <h3
-id="h2s-31-31-bay-v3-fence-back-ceiling-halo-nova---h2s-s2-asa-black">H2S
-31: 31 Bay v3 fence back CEILING (Halo-Nova) - H2S S2 ASA black</h3>
+id="h2s-31-31-unproven---bay-v3-fence-back-ceiling-halo-clamp-blocks---h2s-s2-asa-black">H2S
+31: 31 UNPROVEN - Bay v3 fence back CEILING (Halo), clamp blocks - H2S
+S2 ASA black</h3>
 <table>
 <tbody>
 <tr>
@@ -2523,7 +2519,7 @@ id="h2s-31-31-bay-v3-fence-back-ceiling-halo-nova---h2s-s2-asa-black">H2S
 </tr>
 <tr>
 <td>Time / mass</td>
-<td>8h 5m 15s total, 466.3 min model; 180.63 g</td>
+<td>8h 5m 4s total, 466.1 min model; 181.10 g</td>
 </tr>
 <tr>
 <td>Studio warnings</td>
@@ -2535,33 +2531,27 @@ id="h2s-31-31-bay-v3-fence-back-ceiling-halo-nova---h2s-s2-asa-black">H2S
 </tr>
 <tr>
 <td><code>lumi_baseplate_fence_HV_ceiling_back_half-supports.stl</code></td>
-<td>supports painted only; brim outer_and_inner 10; source @ 30eda168
-2026-11-25 1800; no Print_Log row (the log starts 2026-11-19; older
+<td>supports painted only; brim outer_and_inner 10; source @ 80d6fee6
+2026-11-27 1322; no Print_Log row (the log starts 2026-11-19; older
 prints unrecorded)</td>
 </tr>
 <tr>
 <td>Supports</td>
-<td>1328 mm³ (Support 621, Support transition 299, Support interface
-408); top of support z 3.08; interface z bands 1.80–3.08; footprint X
-67–226, Y 78–247</td>
+<td>none in the G-code</td>
 </tr>
 <tr>
-<td>Support cluster 1</td>
-<td>X 170–226, Y 78–96; top z 3.08; interface z 1.80–3.08</td>
-</tr>
-<tr>
-<td>Support cluster 2</td>
-<td>X 170–225, Y 231–247; top z 3.08; interface z 1.80–3.08</td>
-</tr>
-<tr>
-<td>Picture</td>
-<td><img src="images/print_expect/h2s_31.png"
-alt="H2S 31 supports" /></td>
+<td>EXPECTED</td>
+<td>No trees. Six clamp-slot break-away blocks (6/6): pull each out
+through its slot. <strong>STANDING WAIVER (read before printing): PIR
+mouth outer loops, z 80.84, 76.5 mm of line ≥ 1.5 over air (worst
+cantilever 6.13 mm), UNPROVEN</strong>; gate_gcode_ledge LEDGE_WAIVERS +
+verify_3mf REACH_OK, re-bound from 30eda168 to rev 80d6fee6 (CTO
+decision). CAD 80d6fee6.</td>
 </tr>
 <tr>
 <td>Layer 1 speeds (moves)</td>
 <td>Bottom surface 105; Brim 50; Inner wall 50; Outer wall 50; Prime
-tower 50; Support 50</td>
+tower 50</td>
 </tr>
 </tbody>
 </table>
