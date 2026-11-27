@@ -251,9 +251,9 @@ board (reSpeaker, §3.7) are on the HAT's USB ports</strong>; until the
 reSpeaker is fitted, the owned iFLYTEK set sits there (§3.6, operator
 ruling 2026-10-27: "The OAK-D plugs into the HAT … as does the
 iflytek"). The Pi's native ports carry the <strong>STM32 control/serial
-link (§3.3, black #1)</strong> and the gamepad dongle; <strong>blue #1 /
-blue #2 are free</strong>. The iFLYTEK R818 set needs two USB links
-(serial + UAC). Blue vs black selection notes in each section.</li>
+link (§3.3, a BLUE USB 3 port, operator 2026-11-27)</strong> and the
+gamepad dongle; <strong>the other blue port is free</strong>. Blue vs
+black selection notes in each section.</li>
 <li><strong>Ethernet:</strong> unused — Wi-Fi only.</li>
 <li><strong>GPIO 40-pin header:</strong> extended via HAT pass-through +
 FFC chain to the G469 screw terminal block in the bay for wand-tether
@@ -264,6 +264,129 @@ SDA/SCL/+3.3 V + PIR + INA226 signals (see
 <h2
 id="3-cable--adapter-bom-all-right-angled-to-fit-the-bay-envelope">3.
 Cable + Adapter BoM (all right-angled to fit the bay envelope)</h2>
+<p><strong>Angle rule (operator 2026-11-27):</strong> a USB-A plug in a
+<strong>right-hand</strong> port is <strong>right-angled</strong>; in a
+<strong>left-hand</strong> port, <strong>left-angled</strong>. Right /
+left is seen looking at the Pi from its Ethernet / USB end, or at the
+HAT's USB ports. <strong>Exit:</strong> the camera cable, the bus-servo
+lead and the GPIO FFC leave through the <strong>back angled cover's
+cable hole</strong> (Route A, §4).</p>
+<p><strong>E-bay cable table (for CAD's wiring model).</strong> TO
+CALIPER = no source; nothing here is to buy.</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Cable</th>
+<th>From → to</th>
+<th>Part / length</th>
+<th>OD / width, plug bodies</th>
+<th>§</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E1</td>
+<td><strong>Camera</strong></td>
+<td>HAT USB 3 port → out the back-cover hole → down the arm → OAK-D
+S2</td>
+<td>GELRHONR USB-A → USB-C 90°, "Black-Left", <strong>1 m</strong>, USB
+3 5 Gbps</td>
+<td>Left-angled both ends (per the listing; the bend direction at each
+plug and both bodies TO CALIPER); OD TO CALIPER</td>
+<td>3.1</td>
+</tr>
+<tr>
+<td>E2</td>
+<td><strong>STM32 child board → Pi 5</strong> (control / serial)</td>
+<td>STM32 core USB-C → <strong>Pi 5 BLUE USB-A (USB 3)</strong></td>
+<td>chenyang USB-C angled → 90° USB 3.0 A, <strong>30 cm</strong>,
+Type-03</td>
+<td>USB-A angle per the rule above; OD + both bodies TO CALIPER</td>
+<td>3.3</td>
+</tr>
+<tr>
+<td>E3</td>
+<td><strong>STM32 carrier → Pi 5 power</strong></td>
+<td>STM32 5 V 5 A USB-C OUT → Pi 5 USB-C PWR</td>
+<td>right-angle USB-C ↔︎ USB-C, <strong>0.5 ft (~15 cm)</strong>, 65
+W</td>
+<td>Right-angle both ends; OD + bodies TO CALIPER</td>
+<td>3.2</td>
+</tr>
+<tr>
+<td>E4</td>
+<td><strong>Bus-servo lead</strong></td>
+<td>STM32 carrier bus-servo port → out the back-cover hole → base-servo
+hole → up the arm (servo daisy chain)</td>
+<td>Hiwonder bus-servo lead (arm kit)</td>
+<td>Connector, length, OD: TO CALIPER</td>
+<td>4 (Route A)</td>
+</tr>
+<tr>
+<td>E5</td>
+<td><strong>GPIO FFC</strong></td>
+<td>MECCANIXITY breakout on the <strong>HAT's 40-pin header</strong>
+(inverted) → folds back → out the back-cover hole → power-bay
+breakout</td>
+<td>MECCANIXITY FFC 40-pin, 0.5 mm, A-type, <strong>500 mm</strong>;
+blue stripe UP both ends</td>
+<td>Width ≈ 21 mm (40 × 0.5 pitch + edges: TO CALIPER), thickness TO
+CALIPER</td>
+<td>3.5</td>
+</tr>
+<tr>
+<td>E6</td>
+<td><strong>Audio USB</strong></td>
+<td>reSpeaker core (USB-C or PH2.0 4-pin USB) → a HAT USB-A</td>
+<td>⏳ the operator names it; <strong>left-angle USB-A</strong> at the
+HAT (operator)</td>
+<td>TO CALIPER</td>
+<td>3.7</td>
+</tr>
+<tr>
+<td>E7</td>
+<td><strong>Mic FPC</strong></td>
+<td>reSpeaker mic array → core board</td>
+<td>24-pin 0.5 mm FPC, <strong>20 cm</strong> (in the box); never across
+a moving joint</td>
+<td>Width ≈ 13 mm (TO CALIPER)</td>
+<td>3.7</td>
+</tr>
+<tr>
+<td>E8</td>
+<td><strong>Speaker lead</strong></td>
+<td>Core speaker JST (PH 2-pin) → TLZWLA 5090</td>
+<td>The speaker's own lead</td>
+<td>Length, plug, mating: TO CALIPER</td>
+<td>3.7</td>
+</tr>
+<tr>
+<td>E9</td>
+<td><strong>Amp 12 V</strong></td>
+<td>13.8 V bay rail → core 12 V terminal</td>
+<td>Unfused 22 AWG pair (F1 only)</td>
+<td>Length set at CAD's route</td>
+<td>3.7</td>
+</tr>
+<tr>
+<td>E10</td>
+<td><strong>HAT power (#14)</strong></td>
+<td>Mus-14 USB-C → HAT POWER, via the lid window</td>
+<td>HOTNOW USB-C ↔︎ USB-C 90°, <strong>0.46 m</strong></td>
+<td>OD TYPICAL 4.0 (TO CALIPER), plug body TO CALIPER</td>
+<td>Power_Bay</td>
+</tr>
+<tr>
+<td>E11</td>
+<td><strong>PCIe FPC</strong></td>
+<td>Pi 5 PCIe → HAT</td>
+<td>16-pin, comes with the HAT</td>
+<td>—</td>
+<td>3.6</td>
+</tr>
+</tbody>
+</table>
 <h3 id="31-pi5-usb--oak-d-s2-camera-single-cable">3.1 Pi5 USB → OAK-D S2
 camera (single cable)</h3>
 <p><strong>Camera: Luxonis OAK-D S2</strong> — stereo depth camera + 12
@@ -364,6 +487,8 @@ href="https://a.co/d/0fyf4ezg">Amazon</a> (ASIN B0714LJP4F)</li>
 USB-C, 25 cm, 18 W, USB 3.0 5 Gbps (<a
 href="https://a.co/d/07s7pIXW">Amazon</a>, B0B8N8DDPW). Ultra uses this
 one for its WonderEcho voice module.</li>
+<li><strong>Port (operator 2026-11-27):</strong> a Pi 5 <strong>BLUE
+USB-A (USB 3)</strong> port; USB-A angle per the §3 angle rule.</li>
 <li><strong>Function:</strong> the STM32 exposes a <strong>USB-C control
 / serial interface</strong> (CH340, <code>/dev/stm32_ultra</code>)
 distinct from its 5 V 5 A power OUT port. That control port connects to
@@ -783,9 +908,10 @@ sound-card stick is a 3rd USB device.</td>
 </tr>
 <tr>
 <td><strong>Ports — design of record</strong></td>
-<td>✅ <strong>The OAK-D S2 AND the iFLYTEK set plug into the
-HAT</strong> (operator ruling 2026-10-27: "The OAK-D plugs into the HAT
-… as does the iflytek"). Verified live on Ultra the same day: OAK
+<td>✅ <strong>The OAK-D S2 AND the audio core board (reSpeaker, §3.7;
+the owned iFLYTEK set until then) plug into the HAT</strong> (operator
+ruling 2026-10-27: "The OAK-D plugs into the HAT … as does the
+iflytek"). Verified live on Ultra the same day: OAK
 <code>03e7:f63b</code> at <strong>5 Gb/s on the HAT's VL805</strong>,
 the mic's CH340 + UAC behind a hub on the HAT, and both native Pi blue
 ports empty. <strong>Ultra's mic is the WonderEcho today</strong>
@@ -1576,8 +1702,6 @@ screw terminal chain in the power bay.</li>
 <li><strong>OAK-D S2 camera cable</strong> — GELRHONR USB-A→USB-C 1 m
 (§3.1). HAT-side plug stays in the electronics bay; USB-C tail runs
 through the back-cover exit and down the arm to the camera.</li>
-<li><em>(Not on this route: the iFLYTEK / sound-card USB runs drop
-through the EB cover's data lane — §3.4 run table.)</em></li>
 <li><strong>Servo bus cable from STM32</strong> — carries the arm's
 servo daisy chain (LX-225, HTS-16L, HTS-25L, HTS-25L per gripper — the
 Hiwonder bus servo protocol on a single UART / power pair). Routes from
@@ -1637,8 +1761,9 @@ AWG), only after the buck has passed its bench gate and reads 7.50 V (<a
 href="Electronics_Assembly_Guide.html">Assembly Guide §16e</a>).</li>
 <li>Plug the STM32's 5 V 5 A external USB-C port into the Pi5's USB-C
 PWR port using the §3.2 right-angle 0.5 ft cable.</li>
-<li>Plug the STM32's USB-C control port into Pi5 black #1 using the §3.3
-flat-silicone 20 cm cable.</li>
+<li>Plug the STM32's USB-C control port into a Pi5 <strong>BLUE</strong>
+USB-A (USB 3) port using the §3.3 chenyang 30 cm cable, USB-A angle per
+the §3 angle rule.</li>
 <li>Fit the §3.1 GELRHONR 1 m cable into a HAT USB 3 port (USB-A end);
 the USB-C end plugs into the OAK-D S2 at the arm tip when the
 wand+camera assembly goes on.</li>
