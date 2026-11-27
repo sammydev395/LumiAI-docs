@@ -2350,44 +2350,21 @@ Towers keep 55.5 mm². Carrier + shroud PASS.</td>
 <td></td>
 </tr>
 <tr>
-<td>🔶 <strong>HALO HAT 5 V BAY RAIL (planned 2026-10-13, rev
-2)</strong></td>
-<td>🛠️ <strong>Bench 2026-11-02 → 11-06: <a
-href="Bench_Plan_2026-11-02_to_11-06.html">Bench_Plan_2026-11-02_to_11-06</a></strong>
-(Mus-14 on Halo + drop test on Halo's HAT/SSD/OAK/iFLYTEK, direction
-(b), wand fit-up; 4 operator questions at its top). Waveshare HAT
-<strong>installed on Halo</strong> (NVMe boot, Pi-GPIO-fed today); bay
-feed: <strong>MusRock Mus-14 dual-USB-C buck</strong> (9–36 V→FIXED 5 V,
-3 A with the bay's external cooling, 30×25 mm; 5-pack on hand) off
-D-1459 → 3 A ATC → C-to-C to the HAT (<strong>Halo: taps the DROK input
-screws, NO F4</strong>, F2 only, operator 2026-11-04); <strong>mounts on
-the PSU cover beside the G469 (G469 moves one hole right)</strong>.
-<strong>Interim</strong> (operator 2026-10-30): Mus-14 + the HOTNOW 1.5
-ft (on hand, pending the gate); a 5 A e-marked ~0.5–0.6 m cable only if
-the HOTNOW fails. Even a 5 A cable gives ≈ 4.80–4.84 V at the 2.6 A peak
-from a 5.00 V unit, so meter the unit first. <strong>Planned:</strong>
-LM25116 300 W CC/CV (CV 5.20 V) + Maixbomr 18 AWG lead, 🔴 <strong>NOT
-ORDERED</strong> (Purchasing 2026-11-02: LM25116 absent from AliExpress
-orders; Maixbomr not in 2026 Amazon orders); CAD reserves its carrier
-spot (≈ 61 × 53 × 28). Budget 1.5 A typ / 2.9 A peak committed; net CH1
-≈ +0.1 A; master fuse unchanged; STM32 5 V rail regains ~1–2 A.
-<strong>Prep: copper heatsink ≥10×10 on the buck IC (not the inductor),
-thermal tape — 3 A with the bay's external cooling</strong> (Easycargo
-10 mm coppers ✅ <strong>arrived</strong>, operator-confirmed 2026-10-17
-— the 7.6 step-1 heatsink gate no longer waits on delivery;). GATES
-(BringUp <strong>Phase 7.6</strong>): <strong>voltage-under-load ≥4.90 V
-at the HAT through fio+audio</strong> with current logged (load-shed
-fallback: mic stays on Pi native ports), ripple scope &lt;100 mV p-p,
-heatsink temp check, dual-feed backfeed check — ✅ <strong>direction (a)
-PASSED on Ultra 2026-10-17</strong>: 5.1 V proven AT the HAT POWER input
-(inline USB-C meter), header pin 2 = 0 V, Pi dark → HAT input isolated
-from the Pi 5 V rail, dual feed OK that direction; ⚠️ direction (b) (Pi
-on, MusRock off: HAT loads must NOT ride the Pi rail; no voltage on the
-unpowered MusRock output) still runs at Halo's swap, 2 min, BringUp 7.6
-step 5. <strong>HAT passes all 40 GPIO pins through (Ultra-confirmed
-2026-10-16)</strong> → at the swap the FFC breakout re-seats on the
-HAT's header, extra-tall stacking header retired — ⏳ flags on EBD §4 +
-Power_Bay §4, keyed as Phase 7.6 step 6. Blocked on HAT arrival.</td>
+<td>🔶 <strong>HAT 5 V BAY RAIL — Mus-14 (Ultra + Halo, bay
+v3)</strong></td>
+<td>Waveshare HAT on <strong>Ultra and Halo</strong> (NVMe boot). Halo's
+HAT runs from the Pi's GPIO 5 V until its bay v3 build. Feed:
+<strong>MusRock Mus-14</strong> (fixed 5 V, 3 A with the bay's cooling;
+5-pack on hand) from <strong>HL-PBB A5 / B5</strong>, 22 AWG twisted
+pair, <strong>no fuse of its own (F1 only)</strong>, on the carrier
+(M1.7 × 6 ×4), copper heatsink on the buck IC; HAT power via <strong>#14
+HOTNOW C-to-C 0.46 m</strong> (Assembly Guide §16f / §16g). Gates in <a
+href="Electronics_BringUp_Plan.html">BringUp Phase 7.6</a>: no-load
+5.0–5.2 V, backfeed (a) ✅ passed on Ultra 2026-10-17 + (b) owed at each
+build, <strong><code>vbus_min</code> ≥ 4.90 V in states T0–T6</strong>
+with the audio board on the HAT, 20-boot soak, path check. If the gate
+fails: a 5 A e-marked cable, then load-shed. HAT INA219 stays at
+0x40.</td>
 <td></td>
 </tr>
 <tr>

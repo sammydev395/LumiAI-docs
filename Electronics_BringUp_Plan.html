@@ -1455,8 +1455,8 @@ Guide §16f / §16g</a>).</p>
 <ol type="1">
 <li>Land <strong>D16/D17</strong> per <a
 href="Power_Bay_Design.html#1133-distribution-module-port-assignments-a-bus--v-b-bus--gnd">Power_Bay
-§11.3.3</a> (A5 → 3 A ATC → MusRock IN+; B5 → IN−; 22 AWG twisted pair,
-E0508).</li>
+§11.3.3</a> (A5 → MusRock IN+; B5 → IN−; 22 AWG twisted pair, E0508; no
+fuse of its own, F1 at the pack is the only fuse).</li>
 <li><strong>MusRock no-load check before the HAT ever connects:</strong>
 5.0–5.2 V at both USB-C sockets (§16.2 row).</li>
 <li><strong>C-to-C:</strong> the HOTNOW 1.5 ft first (on hand; route ≥
@@ -1469,8 +1469,10 @@ bears</strong> — add caterpillar strip if the edge is bare.</li>
 <li><strong>Backfeed check — the one hazardous unknown, explicit pass
 criteria:</strong> (a) Pi OFF + MusRock rail ON → the Pi's 5 V rail
 reads <strong>~0 V</strong> (no back-powering through the HAT/PCIe); (b)
-MusRock OFF + Pi ON → <strong>no current into the MusRock
-outputs</strong>. Fail either way = stop and isolate before any soak.
+MusRock OFF + Pi ON (MusRock OFF = its IN+ ferrule out of A5 and taped,
+D18 still in the HAT) → MusRock output and input terminals read
+<strong>≈ 0 V</strong> (≥ ~0.5 V = the HAT back-drives the buck: unplug
+D18, stop). Fail either way = stop and isolate before any soak.
 <strong>Ultra runs this first (operator, 2026-10-17, single-supply
 method):</strong> robot main power OFF, the Pi's USB-C unplugged from
 the STM32 board, external 5 V into the HAT POWER port, meter GPIO
@@ -1557,10 +1559,9 @@ logs the BC-3 ≥4.90 V gate in-band (Ultra's
 <code>hat_power_logger</code> stays on 0x40 untouched).</li>
 <li>HAT swap: X1001 off, Waveshare on (same 16-pin FPC), SSD moves over.
 Wire the MusRock input from the HL-PBB per wiring step 1 (A5/B5, 22 AWG
-/ E0508 twisted pair, 3 A ATC inline; <strong>Halo:</strong> the DROK
-input screws, no F4, per the <a
-href="Bench_Plan_2026-11-02_to_11-06.html">Bench plan §3</a>) —
-<strong>same master-switched bus as the 7.5 V DROK, never separately
+/ E0508 twisted pair, no fuse of its own; Halo the same, at its bay v3
+build, <a href="Electronics_Assembly_Guide.html">Assembly Guide §16g</a>)
+— <strong>same master-switched bus as the 7.5 V DROK, never separately
 switched</strong> (late HAT rail = no boot drive).</li>
 <li><strong>BC-3 — boot soak + voltage-under-load gate:</strong> 20 cold
 power cycles at the master switch; NVMe boot success each time.
@@ -1571,7 +1572,25 @@ Pro-build max 2.11 A + stick ~0.5 A ≈ 2.6 A peak, EBD §3.6.2 Budget).
 <strong>If voltage sags: the planned LM25116 (CV 5.20 V) replaces the
 buck</strong>; if it still fails, load-shed — mic serial + UAC go to the
 Pi's native ports, HAT rail carries only HAT + SSD + stick (~1.1 A typ).
-Scope ripple at the HAT input under SSD load (&lt; ~100 mV p-p).</li>
+Scope ripple at the HAT input under SSD load (&lt; ~100 mV p-p).
+<ul>
+<li><strong>Pass = HAT INA219 <code>vbus_min</code> ≥ 4.90 V in every
+state, ≤ 5.25 V at idle</strong> (the gate binds on the minimum). Read
+per state: the inline meter at the MusRock socket, the INA219
+<code>vbus_min</code> and amps, <code>vcgencmd get_throttled</code>,
+<code>pmic_read_adc EXT5V_V</code>.</li>
+<li><strong>States:</strong> T0 off-robot, bench 13.8 V, no load, both
+sockets 5.0–5.2 · T1 on the robot, D18 not in the HAT, socket 5.0–5.2 ·
+T2 D18 in, Pi idle, OAK off (3 min) · T3 cold boot from the rocker,
+watch the minimum · T4 SSD stress (5 min) · T5 OAK streaming, normal
+MJPEG (5 min) · T6 OAK + SSD stress (10 min), re-run with the audio core
+board on the HAT and the speaker playing.</li>
+<li><strong>Tools:</strong> <code>hat_power_logger.service</code> (the
+only reader on 0x40, Multi-Robot <code>provision/ultra/</code>) and
+<code>~/&lt;robot&gt;_power_stress.sh</code> (Multi-Robot
+<code>provision/halo/halo_power_stress.sh</code>; <code>T5 T6</code>
+runs those two).</li>
+</ul></li>
 <li><strong>BC-4 — path confirmation:</strong> <code>fio</code> SSD
 stress with USB-C connected vs disconnected while watching the GPIO-5
 V-path current — confirms the M.2 actually rides the bay feed.</li>
