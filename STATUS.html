@@ -2173,27 +2173,26 @@ set in the builder, not just the project).</td>
 <td></td>
 </tr>
 <tr>
-<td>⛔ <strong>iFLYTEK MIC ARRAY — DROPPED as a fleet/production part
-(operator 2026-11-02): no more kits, not for new builds; the one owned
-kit stays in use on Ultra or Halo.</strong> Production replacement not
-chosen; leading candidate Seeed reSpeaker Flex XVF3800 Circular-4 (4
-mics, ~5 m claimed vs the 20 ft target, one USB-C with DOA, onboard 10 W
-amp): <strong>one unit (circular, no ESP32-S3, USB/I²S) arrived
-2026-11-17</strong> for the Halo range test; power it on USB only until
-the 13.8 V checks below pass. <strong>If adopted (operator
-2026-11-02):</strong> printed mount for the stock Flex boards (no custom
-PCB); speaker = 4 Ω on the Flex's own amp (echo-cancel reference);
-<strong>Flex 12 V terminal fed DIRECT from the 13.8 V bay rail, no buck,
-no add-on boards</strong> (ceiling arm: weight, space, part count),
-fused 22 AWG pair, ~1 A peak; checks: read the board's input parts or
-step a bench supply to 13.8 V with a meter before it goes on the arm,
-CH1 headroom on INA226-MAIN, bench hum check with the 12 V on vs off.
-Earlier POC record:</td>
-<td>Electrical plan committed (Electronics_Bay_Design §3.4 two-cable
-update, BringUp <strong>Phase 7.5</strong>, UPS 5 V row): UAC cable →
-Pi5 blue #2 via the CableCreation extension, serial CH340 → black #2
-(<strong>Pi5 USB now FULL</strong> — mic POC needs exactly 2 ports; the
-kit's "USB TO AUDIO" sound-card stick for speech OUTPUT is a
+<td>🔶 <strong>AUDIO — reSpeaker Flex XVF3800 Circular-4 + TLZWLA 5090
+10 W 4 Ω speaker (the design's audio, operator 2026-11-27; the iFLYTEK
+is not in the design)</strong></td>
+<td>Both ON HAND (reSpeaker 11-17, speaker 11-18; ⏳ operator confirms
+the 5090 is the "bigger speaker"). Spec + geometry: <a
+href="Electronics_Bay_Design.html#37-audio-system--seeed-respeaker-flex-xvf3800-circular-4--10-w-speaker-the-designs-audio-operator-2026-11-27">EBD
+§3.7</a>. USB to a HAT USB-A on a <strong>left-angle USB-A</strong>
+cable (operator; ⏳ he names the part and the core end). Amp: core 12 V
+terminal on <strong>unfused 22 AWG from the 13.8 V bay rail (F1
+only)</strong>; ⏳ owed bench test: step the 12 V input to 13.8 V before
+it goes on the robot. Mic FPC 20 cm, never across a moving joint. ⏳ TO
+CALIPER: speaker ears / holes / lead / plug, speaker JST series, PH
+4-pin USB pin order, FPC connector face on the array, weights. CAD
+models the e-bay wiring from it. The one owned iFLYTEK kit stays on
+Ultra or Halo until the reSpeaker replaces it; its record follows.
+Earlier POC record: Electrical plan committed (Electronics_Bay_Design
+§3.4 two-cable update, BringUp <strong>Phase 7.5</strong>, UPS 5 V row):
+UAC cable → Pi5 blue #2 via the CableCreation extension, serial CH340 →
+black #2 (<strong>Pi5 USB now FULL</strong> — mic POC needs exactly 2
+ports; the kit's "USB TO AUDIO" sound-card stick for speech OUTPUT is a
 <strong>3rd</strong> USB device, so the speaker/AEC phase forces the
 Ultra-style hub+NVMe HAT swap), bus-powered 0.4 A max, 16×10 grommeted
 cover slot, <code>/dev/iflytek_halo</code> udev pin,

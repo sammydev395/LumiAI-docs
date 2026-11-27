@@ -146,7 +146,7 @@ context):</strong></p>
                                          Downstream 5 V loads on the Pi5:
                                          - NVMe drive
                                          - OAK-D S2 (via §3.1)
-                                         - iFLYTEK mic array
+                                         - reSpeaker core board (USB 5 V; its amp runs on the 12 V terminal)
                                          - PIR modules (via GPIO)
                                          - Wand tether +3.3 V (via G469)</code></pre>
 <blockquote>
@@ -246,13 +246,14 @@ boot SSD, §3.6).</li>
 board's 5 V 5 A external power port (§3.2 cable).</li>
 <li><strong>HDMI out:</strong> unused in the production config — Pi5
 runs headless (SSH / VNC over Wi-Fi for bench debug).</li>
-<li><strong>USB-A ports:</strong> ✅ <strong>OAK-D S2 and the iFLYTEK
-set are on the HAT's USB ports</strong> (§3.6, operator ruling
-2026-10-27: "The OAK-D plugs into the HAT … as does the iflytek"). The
-Pi's native ports carry the <strong>STM32 control/serial link (§3.3,
-black #1)</strong> and the gamepad dongle; <strong>blue #1 / blue #2 are
-free</strong>. The iFLYTEK R818 set needs two USB links (serial + UAC).
-Blue vs black selection notes in each section.</li>
+<li><strong>USB-A ports:</strong> ✅ <strong>OAK-D S2 and the audio core
+board (reSpeaker, §3.7) are on the HAT's USB ports</strong>; until the
+reSpeaker is fitted, the owned iFLYTEK set sits there (§3.6, operator
+ruling 2026-10-27: "The OAK-D plugs into the HAT … as does the
+iflytek"). The Pi's native ports carry the <strong>STM32 control/serial
+link (§3.3, black #1)</strong> and the gamepad dongle; <strong>blue #1 /
+blue #2 are free</strong>. The iFLYTEK R818 set needs two USB links
+(serial + UAC). Blue vs black selection notes in each section.</li>
 <li><strong>Ethernet:</strong> unused — Wi-Fi only.</li>
 <li><strong>GPIO 40-pin header:</strong> extended via HAT pass-through +
 FFC chain to the G469 screw terminal block in the bay for wand-tether
@@ -388,11 +389,11 @@ id="34-iflytek-far-field-microphone-array-hiwonder-r818--ring-6-mic--two-usb-cab
 iFLYTEK Far-Field Microphone Array (HiWonder R818 + ring 6-mic) — two
 USB cables, bus-powered, EB-cover mount</h3>
 <blockquote>
-<p>⛔ <strong>iFLYTEK DROPPED as a fleet/production part (operator
-2026-11-02): no more kits, not for new builds. The one kit already owned
-stays in use on Ultra or Halo. Production replacement not
-chosen.</strong> This section stays valid for the one owned kit; nothing
-here is to be bought or built into new robots.</p>
+<p><strong>Not in this design.</strong> The design's audio is the
+reSpeaker Flex XVF3800 Circular-4 + 10 W speaker, <a
+href="#37-audio-system--seeed-respeaker-flex-xvf3800-circular-4--10-w-speaker-the-designs-audio-operator-2026-11-27">§3.7</a>.
+The iFLYTEK is not bought or built into new robots; this section
+describes the one owned kit only.</p>
 </blockquote>
 <p>The shipping hardware (HiWonder lessons) is a <strong>two-board
 set</strong> — the <strong>R818 noise-reduction board</strong> (90 × 50
@@ -1144,6 +1145,123 @@ cost).</td>
 </tr>
 </tbody>
 </table>
+<h3
+id="37-audio-system--seeed-respeaker-flex-xvf3800-circular-4--10-w-speaker-the-designs-audio-operator-2026-11-27">3.7
+Audio system — Seeed reSpeaker Flex XVF3800 Circular-4 + 10 W speaker
+(the design's audio, operator 2026-11-27)</h3>
+<p><strong>The design's voice I/O.</strong> The iFLYTEK set (§3.4) is
+not part of this design. Vendor files in the repo:
+<code>cad/reference/step/reSpeaker_xvf3800_flex_Separate.step</code>
+(core board), <code>…_flex_circular_260210.step</code> (mic array),
+<code>docs/datasheets/respeaker_xvf3800/</code> (XVF3800 datasheet, user
+guide, programming guide, flyer). Board facts below are VENDOR (Seeed
+wiki + product page, SKU 100005504) or STEP; anything else is <strong>TO
+CALIPER</strong>.</p>
+<p><strong>On hand:</strong> 1 set, reSpeaker Flex XVF3800 Circular-4
+"Without ESP32S3" (USB / I²S), received 2026-11-17. Box: core board,
+circular mic array board, 20 cm FPC, pin connectors (as received: check
+on the bench). Speaker: 1 × TLZWLA <strong>5090</strong> horn speaker,
+<strong>10 W 4 Ω, 50 × 90 × 37</strong>, enclosed, received 2026-11-18.
+It is the only speaker bought and matches the amp; ⏳ the operator
+confirms it is the "bigger speaker".</p>
+<table>
+<thead>
+<tr>
+<th>Board</th>
+<th>Facts</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Core board</strong></td>
+<td>XMOS XVF3800 (fw v3.2.1: AEC, AGC, DoA, beamforming, VAD, NS,
+de-reverb; 16 kHz, a 48 kHz 2-ch USB image exists). Codec TI
+TLV320AIC3104. Amp <strong>TI TPA3139D2 class D, up to 10 W into 4
+Ω</strong>. USB VID 0x2886 / PID 0x001A</td>
+<td>Vendor</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>PCB 70.5 × 52.2 × 1.51; 4 × Ø3.3 (M3) holes at 62.5 × 44.2
+c-c, 4.0 in from each edge.</strong> Tallest (Z from the PCB's bottom
+face): 2 × 4 2.54 header 10.55, electrolytics 9.3, speaker PH 2-pin 7.65
+(pins to −1.6), PH 4-pin USB 7.2, 3.5 mm jack 7.0 (side exit)</td>
+<td>STEP</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Two USB links, same UAC 2.0 + DFU:</strong> the
+<strong>USB-C</strong> (also 5 V in; firmware flashes through it, the
+one beside RST) and a <strong>PH2.0 4-pin locking "USB JST"</strong>
+(internal routing to the host; STEP part PH-4A-WT). Pin order of the PH
+4-pin: TO CALIPER</td>
+<td>Vendor / STEP</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Power:</strong> 5 V via USB-C or the 5 V JST; <strong>12 V
+via a 2-pin screw terminal (P1 priority), needed for full 10 W speaker
+output.</strong> 12 V in + USB data works; VBUS isn't needed to
+enumerate (Seeed tested 12 V / 2 A with a 4 Ω 5 W speaker)</td>
+<td>Vendor</td>
+</tr>
+<tr>
+<td></td>
+<td><strong>Audio out:</strong> 2-pin speaker JST (upright; solder pad
+as a hard-wire option; series / pitch TO CALIPER, STEP names it PH-2A-M)
+and a 3.5 mm AUX jack. <strong>With both connected, sound goes only to
+the 3.5 mm jack</strong>, so the jack stays empty</td>
+<td>Vendor</td>
+</tr>
+<tr>
+<td></td>
+<td>RST and Boot / SafeMode buttons (hold Boot at power-on); green PWR
+LED; LEDs settable over <code>xvf_host.py</code> (pyusb). XIAO footprint
+unpopulated; XTAG4 pad not fitted; IO headers (I²C, I²S, 5 V / GND,
+speaker)</td>
+<td>Vendor</td>
+</tr>
+<tr>
+<td><strong>Mic array</strong></td>
+<td>4 PDM MEMS mics, 44 mm spacing, 360° DoA, up to 5 m. <strong>PCB
+Ø72.5 × 1.51; 3 × Ø3.3 (M3) holes on R 31.25 at 0° / 120° /
+240°.</strong> <strong>Bottom-firing:</strong> the mic ports are on the
+Seeed-logo side, which faces the room, with matching holes in the shell;
+a sealed shell hurts pickup</td>
+<td>Vendor / STEP</td>
+</tr>
+<tr>
+<td><strong>Mic ↔︎ core</strong></td>
+<td>24-pin 0.5 mm FPC, locking latches both ends, 20 cm, keyed; contacts
+toward the connector's metal, stiffener out. Power off and open the
+latch to plug. <strong>Not for repeated flexing: it never crosses a
+moving joint.</strong> Longer lengths: not published</td>
+<td>Vendor</td>
+</tr>
+<tr>
+<td><strong>Speaker</strong></td>
+<td>TLZWLA 5090, 10 W 4 Ω, 50 × 90 × 37 horn, on the core's 2-pin
+speaker JST. Mounting ears / holes, lead length, plug and whether it
+mates the core's JST: <strong>TO CALIPER</strong></td>
+<td>Listing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Links:</strong></p>
+<ul>
+<li><strong>USB:</strong> the core board to a <strong>HAT
+USB-A</strong>, <strong>left-angle USB-A</strong> at the HAT end
+(operator). The core end and the cable part: ⏳ the operator names the
+cable.</li>
+<li><strong>12 V amp feed:</strong> <strong>unfused 22 AWG</strong> from
+the 13.8 V bay rail to the 2-pin terminal, protected by F1 at the pack
+(one fuse only). ⏳ <strong>Owed bench test before it goes on the
+robot:</strong> step the board's 12 V input to 13.8 V on a
+current-limited bench supply and meter it, since the board is rated "12
+V".</li>
+<li><strong>Weights</strong> (both boards, speaker): TO WEIGH.</li>
+</ul>
 <h2 id="4-assembly-notes">4. Assembly notes</h2>
 <p><strong>Cable-routing discipline:</strong></p>
 <ul>
