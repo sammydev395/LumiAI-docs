@@ -939,6 +939,25 @@ hold (whole set first).</strong></td>
 <td>the logo pick; the wired HV macro</td>
 </tr>
 <tr>
+<td>🔶 <strong>INA226-MAIN ADAPTER (Ultra) + HALO's next carrier (CAD
+2026-11-26)</strong></td>
+<td><strong>Ultra:</strong> the one-piece MAIN adapter
+(<code>lumi_ina226_adapter.py</code>, PASS 26/26) is booked on
+<strong>X1C 16</strong> (2 × MAIN, fef7725a); the review STEP
+<code>cad/exports/step/lumi_ina226_adapter_MAIN_ASSY.step</code> shows
+it on the printed carrier b6a53ce7 with the drive order (the M3 × 8 bar
+screw FIRST, then adapter → posts, then board → adapter). INA3 and the
+Mus-14 stay <strong>as is</strong> (operator 2026-11-26: "they work
+fine"); INA3's straight Dupont is FIT-CHECKED on the printed carrier.
+<strong>Halo:</strong> carrier <code>f9d5881c</code> (MAIN on raised
+posts at the adapter spot, BATT unchanged, the G469 post relief, the
+provenance + INA-zone gates; 106/106) is booked on <strong>H2S
+29</strong> for Saturday (3dPrint/CAD 2afcaf94);
+<strong>UNPROVEN</strong> until it prints (the mesh differs from the
+last good print).</td>
+<td></td>
+</tr>
+<tr>
 <td>🔶 <strong>Fence BACK half + both battery straps REBUILT for the
 battery +15 (operator 2026-11-18, renders approved; CAD
 <code>e20ae589</code>)</strong></td>
@@ -2970,6 +2989,22 @@ battery; strain relief 36–48.6 from each end (47 checks). Stages plan /
 bay / cradles / text / verify all PASS (styled items 3251, solids 2398;
 re-import puts every planned solid where planned). Battery shift held at
 0 until the back-PIR gap is measured.</td>
+</tr>
+<tr>
+<td>Full assembly with the ELECTRONICS BAY, its cable tube and its tree
+(CAD 2026-11-26)</td>
+<td><code>cad/Assemblies/Full Assembly - BigClaw - Camera - Arm.step</code>:
+the e-bay boards (<code>lumi_ebay_boards.py</code>, 25 gates, 50 bodies)
+grafted at identity on the bay's measured lift (base.json 30.3143).
+Tree: <strong>Electronics Bay</strong> → Pi 5 stack / HAT+ with NVMe /
+FPC breakout / STM32 carrier + child board; beside it <strong>Cables -
+soft bodies</strong> (the spare USB-C at its OD 4.0 TYPICAL as a tube,
+the FFC fold) and <strong>Reserved space - hide</strong> (the cable's
+reserved slab, 80 % transparent: a STEP cannot open 'hidden' in FreeCAD,
+INVISIBILITY is ignored by both importers). Day run 15:38 (cc274d60) and
+the tree run 20:36: OVERALL PASS, verify 39 gates incl. E-BAY TREE +
+RESERVED SPACE with their bites. The 4.0 OD waits for the operator's
+caliper.</td>
 </tr>
 <tr>
 <td>Phone Lift route check (CAD 2026-11-15, on the hung cradles of
