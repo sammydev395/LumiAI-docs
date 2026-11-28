@@ -372,8 +372,12 @@ lugs at the −X short end, soldered before the leg goes on</td>
 <tr>
 <td>E9</td>
 <td><strong>Amp 12 V</strong></td>
-<td>13.8 V bay rail → core 12 V terminal</td>
-<td>Unfused 22 AWG pair (F1 only)</td>
+<td><strong>Same row on every build; only the source tap
+differs.</strong> <strong>Halo HV:</strong> the HV servo-rail buck's
+12.0 V output (ZK-SJ20 OUT, beside the STM32 feed) → core 12 V terminal.
+<strong>LV builds (Halo, Ultra, Nova):</strong> not landed (board on USB
+power) until the 13.8 → 14.2 V bench test passes</td>
+<td>22 AWG twisted pair, no fuse of its own (F1 only)</td>
 <td>Length set at CAD's route</td>
 <td>3.7</td>
 </tr>
@@ -1442,11 +1446,25 @@ fallback.</li>
 USB-A</strong>, <strong>left-angle USB-A</strong> at the HAT end
 (operator). The core end and the cable part: ⏳ the operator names the
 cable.</li>
-<li><strong>12 V amp feed:</strong> <strong>unfused 22 AWG</strong> from
-the 13.8 V bay rail to the 2-pin terminal, protected by F1 at the pack
-(one fuse only). <strong>NOT confirmed for 13.8 V; the 12 V lead stays
-unlanded until it is.</strong> What the documents give:
+<li><strong>12 V amp feed (E9), one row for every build, the source tap
+differs</strong> (operator via CTO, 2026-11-28):
 <ul>
+<li><strong>Halo HV: from the HV servo-rail buck's 12.0 V
+output</strong> (ZK-SJ20 set 12.0 V; the 11-16 HV test held the servo
+port ≥ 11.1 V at 12.0 V; the operator ran ~11.8 V on the HV servos).
+Against the TPA3139D2 that is inside 3.5–14.4 V with ≥ 1.8 V margin even
+at a 12.6 V over-volt point. <strong>Headroom:</strong> the buck's CC is
+18 A, servos ≤ 7–8 A real, the amp ~1 A peak (10 W into 4 Ω at 12 V):
+fits. <strong>Sag:</strong> a servo stall surge that pulls the rail
+toward the amp's under-voltage point (7.5 V in BD mode) mutes the amp
+for that instant (a click or pop, no damage); at the tested ≥ 11.1 V it
+doesn't. <strong>Noise:</strong> the amp shares the servo return, so run
+the bench hum check (12 V lead on vs off, servos moving). 22 AWG twisted
+pair, no fuse of its own (F1 only).</li>
+<li><strong>LV builds (Halo, Ultra, Nova): no 12 V rail.</strong> The
+13.8 V bay rail is the only candidate, and it is open: <strong>NOT
+confirmed for 13.8 V; the 12 V lead stays unlanded until it is.</strong>
+What the documents give:</li>
 <li><strong>Amp, TI TPA3139D2</strong> (datasheet SLOS810A): recommended
 <strong>3.5–14.4 V</strong>, absolute max <strong>20 V</strong>,
 over-voltage shutdown <strong>15.8 V typ</strong>. Against the bay rail:
