@@ -494,6 +494,11 @@ observe LED state during bring-up.</li>
 <h2
 id="psc-100-12-ups-switching-power-supply-bay-138-v-rail-source">PSC-100-12
 UPS Switching Power Supply (bay 13.8 V rail source)</h2>
+<p><strong>Two PSUs in the fleet:</strong> the PSC-100-12 below (Ultra,
+Halo) and the <strong>PSC-150-12</strong> (Nova, Halo HV: 150 W, CH1 7.5
+A, same terminal strip, 158.5 × 98 × 30 case). Spec for both: <a
+href="Power_Bay_Design.html">Power_Bay §11.3.9 PSU terminal
+reference</a>.</p>
 <p><strong>Part:</strong> <em>PSC-100-12 UPS Switching Power Supply —
 100–240 V AC in, 100 W total, 13.8 V DC out with battery charge function
 (SMPS).</em> Dual-output 13.8 V rail: <strong>CH1 5.0 A nominal</strong>
@@ -686,10 +691,10 @@ battery</h3>
 <ul>
 <li><strong>Fleet-standard UPS battery</strong> for the LumiAI bay per
 <code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code>.</li>
-<li><strong>Wiring:</strong> connect BAT+ → 10 A fuse → PSC-100-12 CH2
-BAT+; connect BAT− → PSC-100-12 CH2 BAT− directly. Keep leads short
-(&lt; 20 cm) to minimize IR drop during the fault-clearing peak the BMS
-may need to sink.</li>
+<li><strong>Wiring:</strong> connect BAT+ → 10 A fuse → PSC-100-12 /
+PSC-150-12 CH2 BAT+; connect BAT− → PSC-100-12 / PSC-150-12 CH2 BAT−
+directly. Keep leads short (&lt; 20 cm) to minimize IR drop during the
+fault-clearing peak the BMS may need to sink.</li>
 <li><strong>Pack-side connectors as shipped (ALEAIVY, verified
 2026-08-05):</strong> the pack has <strong>two connectors</strong> on
 the discharge leads — a <strong>male XT30</strong> (main power, ~15 A
@@ -814,13 +819,13 @@ on load</td>
 <h3 id="lumi-integration-notes--drok">Lumi integration notes — DROK</h3>
 <ul>
 <li><p><strong>Fleet-standard STM32 rail source</strong> for the LumiAI
-bay: DROK input from PSC-100-12 CH1 (13.8 V) via distribution-block
-position A2, output to the STM32 controller's blue terminal-block power
-input at <strong>7.5 V</strong> (Hiwonder's own adapter voltage; it is
-also the arm's servo-bus voltage, ≤ 8.4 V ceiling) (see
-<code>Power_Bay_Design.md</code> §11.3 for the wiring path + power
-sequencing; <code>Electronics_Bay_Design.md</code> §4 Route B for the
-physical cable route).</p></li>
+bay: DROK input from PSC-100-12 / PSC-150-12 CH1 (13.8 V) via
+distribution-block position A2, output to the STM32 controller's blue
+terminal-block power input at <strong>7.5 V</strong> (Hiwonder's own
+adapter voltage; it is also the arm's servo-bus voltage, ≤ 8.4 V
+ceiling) (see <code>Power_Bay_Design.md</code> §11.3 for the wiring path
++ power sequencing; <code>Electronics_Bay_Design.md</code> §4 Route B
+for the physical cable route).</p></li>
 <li><p><strong>Bay mount:</strong> DROK mounts INSIDE the electronics
 bay on horizontal posts on the <strong>fence front vertical
 wall</strong>; the fence has external cutouts for the DROK's LCD, FUNC

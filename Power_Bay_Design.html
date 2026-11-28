@@ -1310,12 +1310,13 @@ EXTERNAL doc §13 BOM line 4.</p>
 <h2 id="5-ina226-power-monitor-install--mount--3-pad-mods--wiring">5.
 INA226 Power-Monitor Install — Mount + 3 Pad Mods + Wiring</h2>
 <p><strong>Goal:</strong> install the INA226 on the PSU-top in series on
-the PSC-100-12 CH1 trunk, set its I²C address to 0x44, disable its
-onboard SDA/SCL pull-ups (to honor the bus-pull-up reconciliation), and
-wire the logic header to the G469. The full board reference + photos
-live in <code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code> §2 "INA226
-board reference"; the board images are repeated below so assembly
-doesn't require opening that doc.</p>
+the PSC-100-12 / PSC-150-12 CH1 trunk, set its I²C address to 0x44,
+disable its onboard SDA/SCL pull-ups (to honor the bus-pull-up
+reconciliation), and wire the logic header to the G469. The full board
+reference + photos live in
+<code>EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code> §2 "INA226 board
+reference"; the board images are repeated below so assembly doesn't
+require opening that doc.</p>
 <p><img src="images/external_sensors/ina226_board_pinout.png"
 alt="INA226 board pinout — front view showing the four screw terminals along the top edge, silk-labeled left-to-right V+(VBUS) / ISENSE+ / ISENSE− / GND. The 2 mΩ shunt resistor (silk &quot;R002&quot;) sits between the ISENSE+ and ISENSE− terminals — all measured current flows through it. The 4-pin logic header (GND/SCL/SDA/VCC) is on the bottom edge." /></p>
 <p><img src="images/external_sensors/ina226_board_back.png"
@@ -1323,8 +1324,9 @@ alt="INA226 board back/silkscreen — confirms the header silk: &quot;GND IN+&qu
 <h3 id="51-mechanical-install--psu-top-in-series-on-ch1">5.1 Mechanical
 install — PSU-top, in series on CH1</h3>
 <p><strong>What this section does (in one line):</strong> put the INA226
-in the PSC-100-12 CH1 +V current path so all CH1 current flows through
-its on-board 2 mΩ shunt, and land its logic header at the G469.</p>
+in the PSC-100-12 / PSC-150-12 CH1 +V current path so all CH1 current
+flows through its on-board 2 mΩ shunt, and land its logic header at the
+G469.</p>
 <p><strong>Board terminology used below</strong> (all four silk labels
 sit on the top edge of the board, left → right when the 4-pin logic
 header is at the bottom):</p>
@@ -1367,15 +1369,16 @@ href="EXTERNAL_SENSOR_INTEGRATION_PLAN.html#ina226-board-reference-godiymodules-
 §2 "INA226 board reference"</a>.</p>
 <p><strong>Procedure:</strong></p>
 <ol type="1">
-<li><strong>Identify the PSC-100-12 CH1 +V output</strong> on the PSU
-top. Trace the existing wire that runs from CH1 +V → the Master Power
-Switch input. This is the wire we're going to cut and insert the INA226
-across.</li>
+<li><strong>Identify the PSC-100-12 / PSC-150-12 CH1 +V output</strong>
+on the PSU top. Trace the existing wire that runs from CH1 +V → the
+Master Power Switch input. This is the wire we're going to cut and
+insert the INA226 across.</li>
 <li><strong>Cut that wire on the LOAD side</strong> (i.e. between
-PSC-100-12 CH1 +V output and Master Power Switch input). Two ends now
-exist: the <em>source</em> end (still soldered to PSC-100-12 CH1 +V) and
-the <em>load</em> end (still going to Master Power Switch input). Never
-cut on the GND side, never cut between battery and BMS.</li>
+PSC-100-12 / PSC-150-12 CH1 +V output and Master Power Switch input).
+Two ends now exist: the <em>source</em> end (still soldered to
+PSC-100-12 / PSC-150-12 CH1 +V) and the <em>load</em> end (still going
+to Master Power Switch input). Never cut on the GND side, never cut
+between battery and BMS.</li>
 <li><strong>Mount the INA226 on the carrier</strong> through the board's
 <strong>two small corner holes at the header end</strong> (dead), never
 the live shunt pads (§11.3.9): INA3 straight onto its posts (M1.7 × 6
@@ -1390,8 +1393,9 @@ then the adapter, then the board.</li>
 <li><strong>Wire the 4 screw terminals</strong> (keep leads short — the
 2 mΩ shunt is on-board, no external shunt or long sense-lead runs):
 <ul>
-<li><strong>SOURCE end of the cut wire</strong> (goes to PSC-100-12 CH1
-+V) → <strong>ISENSE+</strong> (orange, terminal pin 2). 18 AWG.</li>
+<li><strong>SOURCE end of the cut wire</strong> (goes to PSC-100-12 /
+PSC-150-12 CH1 +V) → <strong>ISENSE+</strong> (orange, terminal pin 2).
+18 AWG.</li>
 <li><strong>LOAD end of the cut wire</strong> (goes to Master Power
 Switch input) → <strong>ISENSE−</strong> (green, terminal pin 3). 18
 AWG.</li>
@@ -1399,15 +1403,15 @@ AWG.</li>
 wire (18–20 AWG is fine, no current flows here) over to the
 <strong>ISENSE+</strong> terminal so both share the same source-side
 node. This is what gives the INA226 its bus-voltage reading.</li>
-<li><strong>GND</strong> (green, terminal pin 4) → PSC-100-12 CH1 GND /
-bay star ground. 18 AWG.</li>
+<li><strong>GND</strong> (green, terminal pin 4) → PSC-100-12 /
+PSC-150-12 CH1 GND / bay star ground. 18 AWG.</li>
 </ul></li>
 <li><strong>Verify the current direction is correct.</strong> Current
-must flow: PSC-100-12 CH1 +V → ISENSE+ → [2 mΩ shunt on board] → ISENSE−
-→ Master Power Switch. If you swap ISENSE+ and ISENSE−, the INA226 still
-works but reports current as NEGATIVE (magnitude is right, sign is
-wrong). Fix by unscrewing and swapping the two wires under ISENSE+ /
-ISENSE−.</li>
+must flow: PSC-100-12 / PSC-150-12 CH1 +V → ISENSE+ → [2 mΩ shunt on
+board] → ISENSE− → Master Power Switch. If you swap ISENSE+ and ISENSE−,
+the INA226 still works but reports current as NEGATIVE (magnitude is
+right, sign is wrong). Fix by unscrewing and swapping the two wires
+under ISENSE+ / ISENSE−.</li>
 </ol>
 <h3 id="52-address-pads--set-0x44">5.2 Address pads — set 0x44</h3>
 <p><strong>See <a
@@ -4263,8 +4267,9 @@ pack-to-wall gap. Gated ≥ 8 mm jacket-to-jacket from every LV conductor
 spool, marked <strong>600 V / 6 A</strong>, checked 2026-11-06).
 Unmarked silicone hookup is never used on mains: check the print on the
 spool. <strong>Current check:</strong> the PSC-100-12 draws about
-<strong>2.2 A RMS at 115 VAC</strong> at full 100 W load, with no PFC,
-and less at 230 V. That is about a third of the wire's 6 A, and nothing
+<strong>2.2 A RMS at 115 VAC</strong> at full 100 W load and the
+PSC-150-12 about <strong>3.3 A</strong> at full 150 W (scaled), no PFC,
+less at 230 V. That is a third to a half of the wire's 6 A, and nothing
 else is on the AC side. The 6 A rating is far below the 15–20 A wall
 breaker, though, which is one more reason for the <strong>slow-blow
 inlet fuse (T3.15A or T5A) while the PSU is an uncertified
@@ -4967,7 +4972,7 @@ A–B)</td>
 </thead>
 <tbody>
 <tr>
-<td>PSC-100-12 CH1 output</td>
+<td>PSC-100-12 / PSC-150-12 CH1 output</td>
 <td>13.8 V (AC) / 12 V (battery)</td>
 <td>PSU fault</td>
 </tr>

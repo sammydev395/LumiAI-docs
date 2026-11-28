@@ -3,15 +3,15 @@ id="battery-compact-ups-power-system-for-hiwonder-stm32--raspberry-pi-5">🔋
 Compact UPS Power System for HiWonder STM32 + Raspberry Pi 5</h1>
 <h2 id="gear-system-overview">⚙️ System Overview</h2>
 <p>A high-efficiency, single-path UPS setup using a <strong>MZMW
-PSC-100-12 UPS/Charge Function Switching Power Supply</strong>, a
-<strong>DROK DC Buck Converter (5.3-32 V in → 9 V out, set via CV pot, 8
-A continuous)</strong> that <strong>replaced the LY-KREE</strong> (the
-LY-KREE failed at the 12 V battery-mode input; the DROK handles the full
-input range in both AC and battery modes), <strong>LiFePO4 battery
-pack</strong>, and the <strong>Lumi Wand v2.0 LED driver
-assembly</strong> (PCA9685 + 12× PT4115 / 3 W 700 mA buck modules) for
-the gripper-held wand head. Designed for a compact robotic arm or
-ceiling-mounted controller assembly.</p>
+PSC-100-12 / PSC-150-12 UPS/Charge Function Switching Power
+Supply</strong>, a <strong>DROK DC Buck Converter (5.3-32 V in → 9 V
+out, set via CV pot, 8 A continuous)</strong> that <strong>replaced the
+LY-KREE</strong> (the LY-KREE failed at the 12 V battery-mode input; the
+DROK handles the full input range in both AC and battery modes),
+<strong>LiFePO4 battery pack</strong>, and the <strong>Lumi Wand v2.0
+LED driver assembly</strong> (PCA9685 + 12× PT4115 / 3 W 700 mA buck
+modules) for the gripper-held wand head. Designed for a compact robotic
+arm or ceiling-mounted controller assembly.</p>
 <p><strong>⚠️ Charging Voltage Note:</strong> The UPS CH2 outputs 13.8V
 @ 2A, while the LiFePO4 battery requires 14.6V for optimal charging. The
 battery's built-in BMS will manage charging, but charging may be slower
@@ -275,7 +275,7 @@ power switch output via spade connectors (both positive and ground)
 <td>12 V</td>
 <td>0–13.5 A</td>
 <td>0–162 W</td>
-<td>PSC-100-12</td>
+<td>PSC-100-12 / PSC-150-12</td>
 </tr>
 <tr>
 <td>├─ 9 V rail</td>
@@ -572,8 +572,8 @@ needed</td>
 <ul>
 <li>Pin 1 (black) → GND (shared with 12 V supply GND and Pi GND at one
 common ground point)</li>
-<li>Pin 2 (yellow) → +12 V from the PSC-100-12 CH1 dropped/regulated
-rail</li>
+<li>Pin 2 (yellow) → +12 V from the PSC-100-12 / PSC-150-12 CH1
+dropped/regulated rail</li>
 <li>Pin 3 (green) → tach back to Pi GPIO 5 or 6 with 10 kΩ pull-up to
 3.3 V</li>
 <li>Pin 4 (blue) → PWM from Pi GPIO 12</li>
@@ -657,7 +657,7 @@ low-voltage equipment)</li>
 <h2 id="toolbox-assembly--mounting-tips">🧰 Assembly / Mounting
 Tips</h2>
 <ul>
-<li>Mount <strong>PSC-100-12</strong> and <strong>DROK
+<li>Mount <strong>PSC-100-12 / PSC-150-12</strong> and <strong>DROK
 converter</strong> on an aluminum or polycarbonate base for
 airflow.</li>
 <li>Add a <strong>10 A inline glass fuse</strong> (6x30mm) in fuse
@@ -666,8 +666,8 @@ holder between battery positive and UPS CH2 BAT+.</li>
 connects directly to UPS CH2 via 10A fuse on positive side.</li>
 <li>Mount <strong>converter case</strong> on metal for heat
 spreading.</li>
-<li>Tie all grounds (PSC-100-12, converter, STM32, Pi, Motor Driver, LED
-Driver) together using 14 AWG wire.</li>
+<li>Tie all grounds (PSC-100-12 / PSC-150-12, converter, STM32, Pi,
+Motor Driver, LED Driver) together using 14 AWG wire.</li>
 <li>Verify output voltage (9.0 V ± 0.1) before connecting loads.</li>
 <li><strong>Motor Driver Power:</strong> Connect 2-pin power port
 directly to CH1 (12V) output via power distribution block or
@@ -800,7 +800,8 @@ protection.</li>
 <li>Safer than regular LiPo - more stable chemistry, longer cycle
 life.</li>
 <li>Higher energy density than SLA batteries.</li>
-<li>Full UPS behavior via PSC-100-12 (instant switchover).</li>
+<li>Full UPS behavior via PSC-100-12 / PSC-150-12 (instant
+switchover).</li>
 <li>Industrial reliability in a compact footprint.</li>
 <li>5.5×2.1mm barrel connector allows easy battery replacement.</li>
 </ul>
@@ -830,13 +831,13 @@ AC power is available.</li>
 <hr />
 <p><strong>Final Power Chain Summary:</strong></p>
 <p><strong>Production Configuration:</strong></p>
-<pre><code>AC → PSC-100-12 → 12 V bus (CH1) ──┬─► DROK buck (9 V) → 9 V rail → STM32 → Pi 5
+<pre><code>AC → PSC-100-12 / PSC-150-12 → 12 V bus (CH1) ──┬─► DROK buck (9 V) → 9 V rail → STM32 → Pi 5
                      │             └─► MOSFET LED Driver (IRFZ44N) → Gripper LEDs
                      │
                      └─► CH2 (13.8V @ 1.5A) → LiFePO4 Battery Pack (12.8V 10Ah, 5.5×2.1mm barrel) (fused)</code></pre>
 <p><strong>Development/Testing Configuration (with Motor
 Driver):</strong></p>
-<pre><code>AC → PSC-100-12 → 12 V bus (CH1) ──┬─► DROK buck (9 V) → 9 V rail → STM32 → Pi 5
+<pre><code>AC → PSC-100-12 / PSC-150-12 → 12 V bus (CH1) ──┬─► DROK buck (9 V) → 9 V rail → STM32 → Pi 5
                      │             ├─► 4-Channel Motor Driver → Mecanum Chassis [Dev/Test Only]
                      │             └─► MOSFET LED Driver (IRFZ44N) → Gripper LEDs
                      │
@@ -858,7 +859,7 @@ Product</a>)</p>
 <p><strong>Power Specifications:</strong></p>
 <ul>
 <li><strong>VM Power Supply Range:</strong> 5–15 V (perfect for 12V from
-PSC-100-12 CH1)</li>
+PSC-100-12 / PSC-150-12 CH1)</li>
 <li><strong>Single Channel Rated Current:</strong> 2 A continuous</li>
 <li><strong>Single Channel Peak Current:</strong> 2.5 A</li>
 <li><strong>Total Maximum Current:</strong> 8 A continuous (4 channels ×
@@ -875,12 +876,13 @@ a power distribution block or Y-splitter</p>
 power-switch output</li>
 </ul></li>
 <li><p><strong>Wiring:</strong></p>
-<pre><code>PSC-100-12 CH1 (12V) ──► Power Distribution Block
+<pre><code>PSC-100-12 / PSC-150-12 CH1 (12V) ──► Power Distribution Block
                          ├─► DROK converter (9V output)
                          └─► Power Switch OUTPUT ──► brass piggyback / quick-splice spade
                                (+ and ground) ──► 14 AWG soldered to Motor Driver 2-pin power port</code></pre></li>
 <li><p><strong>Ground Connection:</strong> Ensure motor driver GND is
-connected to common ground (PSC-100-12, converter, STM32, Pi5)</p></li>
+connected to common ground (PSC-100-12 / PSC-150-12, converter, STM32,
+Pi5)</p></li>
 </ol>
 <h3
 id="electric_plug-motor-driver-connector-spade-piggyback-brass-quick-splice">🔌
@@ -1046,7 +1048,7 @@ v2.0</strong> assembly: a 12-channel constant-current LED driver feeding
 printed PETG handle that the arm gripper holds. The legacy single-board
 IRFZ44N MOSFET driver is retired.</p>
 <p><strong>Architecture:</strong></p>
-<pre><code>PSC-100-12 CH1 (12 V) ──► Master Power Switch ──► Power Distribution Block
+<pre><code>PSC-100-12 / PSC-150-12 CH1 (12 V) ──► Master Power Switch ──► Power Distribution Block
                                                     ├─► DROK buck (9 V → STM32/Pi5)
                                                     └─► DROK adjustable buck (set to 10.6 V)
                                                             │
@@ -1119,8 +1121,8 @@ if you need it.</p>
 Final Production Wiring Summary &amp; Fuse List</h2>
 <h3 id="51-voltage-rails">5.1 Voltage Rails</h3>
 <ul>
-<li><strong>12 V trunk rail</strong> from PSC-100-12 CH1 (primary DC
-bus)</li>
+<li><strong>12 V trunk rail</strong> from PSC-100-12 / PSC-150-12 CH1
+(primary DC bus)</li>
 <li><strong>9 V logic rail</strong> from buck converter (STM32 + RPi
 5)</li>
 <li><strong>12 V motor rail</strong> (Mecanum driver VM)</li>
@@ -1130,8 +1132,8 @@ negative side via MOSFETs)</li>
 <h3 id="52-wire-gauges">5.2 Wire Gauges</h3>
 <ul>
 <li><strong>14 AWG:</strong> All main power wiring including UPS CH2
-leads, PSC-100-12 CH1 output → master fuse → distribution block, 12 V →
-7.5 V buck → STM32 power input, LED driver, and all ground
+leads, PSC-100-12 / PSC-150-12 CH1 output → master fuse → distribution
+block, 12 V → 7.5 V buck → STM32 power input, LED driver, and all ground
 connections</li>
 <li><strong>16-18 AWG:</strong> Battery leads (5.5×2.1mm barrel
 connector wire pigtail) - typically comes with the barrel connector, may
@@ -1192,10 +1194,10 @@ only)</td>
 </tbody>
 </table>
 <p>A 2 mΩ INA226 current-shunt is wired in series on the CH1 bus
-(PSC-100-12 CH1 → INA226 IN+ → IN- → Master Power Switch). Full sensor
-spec, I²C addressing/wiring, pull-ups and ROS integration: see
-<code>../EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code> (single source of
-truth).</p>
+(PSC-100-12 / PSC-150-12 CH1 → INA226 IN+ → IN- → Master Power Switch).
+Full sensor spec, I²C addressing/wiring, pull-ups and ROS integration:
+see <code>../EXTERNAL_SENSOR_INTEGRATION_PLAN.md</code> (single source
+of truth).</p>
 <p><strong>Connector Selection Rationale:</strong></p>
 <ul>
 <li><strong>5.5×2.1mm barrel (Battery):</strong> compact standard DC
@@ -1223,7 +1225,8 @@ needed.</li>
 </thead>
 <tbody>
 <tr>
-<td><strong>Master fuse on PSC-100-12 CH1 output</strong></td>
+<td><strong>Master fuse on PSC-100-12 / PSC-150-12 CH1
+output</strong></td>
 <td>ATC, mini-ANL, or similar</td>
 <td>10 A</td>
 <td>14 AWG</td>
@@ -1273,8 +1276,8 @@ BAT+)</td>
 </table>
 <h3 id="54-grounding">5.4 Grounding</h3>
 <ul>
-<li>All grounds (PSC-100-12, distribution block, buck converters, STM32,
-RPi 5, LED driver board, and motor driver if used for
+<li>All grounds (PSC-100-12 / PSC-150-12, distribution block, buck
+converters, STM32, RPi 5, LED driver board, and motor driver if used for
 development/testing) must be tied together at a <strong>common ground
 point</strong> on the distribution block</li>
 <li>Avoid ground loops by using a <strong>star-ground approach</strong>

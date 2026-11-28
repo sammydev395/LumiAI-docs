@@ -168,7 +168,7 @@ UPS→RPi5 12V    UPS→RPi5   12V      12AWG   12AWG    |          |           
 
 AC MAINS (120V)
     |
-    ├─► 120V AC (12 AWG) ──► PSC-100-12 PSU/UPS 
+    ├─► 120V AC (12 AWG) ──► PSC-100-12 / PSC-150-12 PSU/UPS 
     |
     └─► 120V AC (14 AWG) ──► (runs alongside ArmPi Ultra drop)
                                      |
@@ -286,9 +286,9 @@ battery backup.</p>
 Kohree fuse block):</strong> 12 V from Kohree fuse block → [15 A ATC
 fuse in the block] → 14 AWG drop along the bench → XT30 Male connector →
 XT30 Female connector (on Master Power Switch input)</p>
-<p><strong>Input 2 - UPS Battery Backup (13.8V from PSC-100-12
-CH1):</strong> UPS CH1 (13.8V @ 5.0A) → XT30 Male connector → XT30
-Female connector (on Master Power Switch input)</p>
+<p><strong>Input 2 - UPS Battery Backup (13.8V from PSC-100-12 /
+PSC-150-12 CH1):</strong> UPS CH1 (13.8V @ 5.0A) → XT30 Male connector →
+XT30 Female connector (on Master Power Switch input)</p>
 <p><strong>After Power Switch:</strong> Master Power Switch (DC) at
 robot location → Power Distribution Block (after switch) → Splits to two
 branches:</p>
@@ -428,8 +428,8 @@ spikes are handled by capacitors and PSU transient response.</li>
 STM32/RPi5 system and motor driver</li>
 <li>The motor driver operates from 9 V (via DROK converter) for stable
 operation in both AC and battery modes (Development/Testing only)</li>
-<li><strong>Cooling:</strong> Both PSC-100-12 PSU and DROK converter
-require cooling fans.
+<li><strong>Cooling:</strong> Both PSC-100-12 / PSC-150-12 PSU and DROK
+converter require cooling fans.
 <ul>
 <li><strong>PSU top fan (replaced 2026-05-09):</strong> original
 Thermalright TL-B6B 60×60×25 mm (~25 dB at 3000 RPM, audibly noisy at
@@ -460,12 +460,13 @@ Ultra 12V drop from main AC distribution</li>
 <ul>
 <li><strong>MR30 Male 3-Pin:</strong> On AC power line (110V/120V AC
 input)</li>
-<li><strong>MR30 Female 3-Pin:</strong> On PSC-100-12 UPS AC input</li>
+<li><strong>MR30 Female 3-Pin:</strong> On PSC-100-12 / PSC-150-12 UPS
+AC input</li>
 </ul></li>
 <li><strong>Connection:</strong> MR30 male plugs into MR30 female on UPS
 to provide AC power to the UPS</li>
 <li><strong>Purpose:</strong> Supplies AC mains power to the PSC-100-12
-UPS for normal operation and battery charging</li>
+/ PSC-150-12 UPS for normal operation and battery charging</li>
 <li><strong>Wire Gauge:</strong> 14 AWG for AC line (runs parallel to
 12V DC drop)</li>
 </ul>

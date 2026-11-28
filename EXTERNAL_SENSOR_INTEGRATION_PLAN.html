@@ -146,10 +146,10 @@ INA226 → 1× INA226</h3>
 <p>The original 2-sensor plan added a second INA226 on a secondary rail
 to separate "battery fault" from "servo stall." Per the canonical power
 doc (<code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code>) the
-real topology is: <strong>PSC-100-12 CH1 → INA226 (in series) → Master
-Switch → distribution</strong>, splitting into a <strong>DROK 7.5 V buck
-→ STM32 → Pi 5 + arm bus-servos</strong> branch (the DROK
-<em>replaced</em> the LY-KREE — there is no LY-KREE; the DROK
+real topology is: <strong>PSC-100-12 / PSC-150-12 CH1 → INA226 (in
+series) → Master Switch → distribution</strong>, splitting into a
+<strong>DROK 7.5 V buck → STM32 → Pi 5 + arm bus-servos</strong> branch
+(the DROK <em>replaced</em> the LY-KREE — there is no LY-KREE; the DROK
 <em>is</em> in the Pi/servo path) and a <strong>12 V MOSFET (IRFZ44N)
 LED-driver → gripper LEDs</strong> branch. A shunt on any single branch
 could still only report <em>"that branch's current is high"</em> — it
@@ -353,7 +353,7 @@ V, full 14.6 V, cutoff ~10 V).</p>
 <code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code>; INA226 is
 already installed &amp; integrated in <code>armpi_fpv_utils</code>,
 shown in the <code>launch_armpi_fpv_tuning.sh</code> status menu):</p>
-<pre class="text"><code>AC → PSC-100-12 CH1 (13.8 V rated; 14.2 V measured on AC / 12 V on battery)
+<pre class="text"><code>AC → PSC-100-12 / PSC-150-12 CH1 (13.8 V rated; 14.2 V measured on AC / 12 V on battery)
   → INA226-MAIN (in series: CH1 → IN+ → IN- → Master Switch)
   → Master Power Switch → Power Distribution Block
      ├─► DROK buck 7.5 V (12 A; replaced the LY-KREE) → STM32 → Pi 5 (5 V via STM32)
@@ -1809,17 +1809,18 @@ href="Power_Bay_Design.html#1122-wiring--cut-off-stock-4-pin-spade-lug-the-12-v-
 <strong>Fan-PWM</strong> is 3.3 V drive at 25 kHz on GPIO12 (both fans
 paralleled — Noctua PWM input is high-impedance).</li>
 <li><strong>Fan +12 V does NOT cross to the Pi.</strong> It is
-power-bay-local: PSC-100-12 CH1 → 13.8 V <strong>direct</strong> → fans
-(<strong>1N5408 diode chain RETIRED 2026-08-09</strong> — fans are
-Pi5-PWM-controlled after Phase 3, and the ~5 % over Noctua's 13.2 V
-rated max at raw 13.8 V is inside spec margin). Only the 4-wire signal
-quartet (PWM + 2 tach + GND ref) is on C3. Star-ground at the
-distribution block. <strong>The wand LED rail is likewise 13.8 V
-direct</strong> — after the 2026-06-28 split-rails topology change
-(distribution block finalized 2026-07-29), the wand takes 13.8 V direct
-from the PSU via the <strong>dual-bus HL-PBB distribution block</strong>
-(A bus V+ / B bus GND, no modification) mounted above the PSU top (LED
-drivers accept 5-35 V, no drop needed). See <a
+power-bay-local: PSC-100-12 / PSC-150-12 CH1 → 13.8 V
+<strong>direct</strong> → fans (<strong>1N5408 diode chain RETIRED
+2026-08-09</strong> — fans are Pi5-PWM-controlled after Phase 3, and the
+~5 % over Noctua's 13.2 V rated max at raw 13.8 V is inside spec
+margin). Only the 4-wire signal quartet (PWM + 2 tach + GND ref) is on
+C3. Star-ground at the distribution block. <strong>The wand LED rail is
+likewise 13.8 V direct</strong> — after the 2026-06-28 split-rails
+topology change (distribution block finalized 2026-07-29), the wand
+takes 13.8 V direct from the PSU via the <strong>dual-bus HL-PBB
+distribution block</strong> (A bus V+ / B bus GND, no modification)
+mounted above the PSU top (LED drivers accept 5-35 V, no drop needed).
+See <a
 href="Power_Bay_Design.html#113-bay-138-v-distribution--hl-pbb-2-6-mini-dual-bus-distribution-module"><code>Power_Bay_Design.md</code>
 §11.3</a> and <a
 href="Lumi_Wand_Integration.html#51-power-chain"><code>Lumi_Wand_Integration.md</code>
@@ -2564,8 +2565,8 @@ Appendix F (PIR Fence CAD) at the end of this doc.</p>
 2026-05-17):</strong></p>
 <ul>
 <li><strong>Electronics bay</strong> — RPi5 + STM32.</li>
-<li><strong>Power bay</strong> — battery + PSC-100-12 PSU/UPS + DROK +
-PIR + <strong>INA226</strong>.</li>
+<li><strong>Power bay</strong> — battery + PSC-100-12 / PSC-150-12
+PSU/UPS + DROK + PIR + <strong>INA226</strong>.</li>
 </ul>
 <blockquote>
 <p>The CAD solids parsed from <code>Base_Plate.step</code> are nominally
@@ -2576,12 +2577,12 @@ power/electronics split; reconcile when the CAD is opened.</p>
 <p><strong>Mounting surfaces (revised 2026-05-17 — split by what each
 sensor must sit near):</strong></p>
 <ul>
-<li><strong>INA226 → on top of the PSC-100-12 PSU</strong>, i.e.
-<em>inside the <strong>power bay</strong></em> (with the
-battery/UPS/DROK/PIR). It monitors the <strong>PSC-100-12 CH1 / main
-battery rail</strong> (confirmed 2026-05-17), so it must sit at that
-rail — short high-current sense leads. Its I²C (VCC/GND/SDA/SCL) is a
-<strong>short power-bay-local tail to the GPIO screw-terminal
+<li><strong>INA226 → on top of the PSC-100-12 / PSC-150-12 PSU</strong>,
+i.e. <em>inside the <strong>power bay</strong></em> (with the
+battery/UPS/DROK/PIR). It monitors the <strong>PSC-100-12 / PSC-150-12
+CH1 / main battery rail</strong> (confirmed 2026-05-17), so it must sit
+at that rail — short high-current sense leads. Its I²C (VCC/GND/SDA/SCL)
+is a <strong>short power-bay-local tail to the GPIO screw-terminal
 breakout</strong> — the Pi 40-pin header is extended <em>into</em> the
 power bay via the FFC chain (§2), so the I²C <strong>never leaves the
 power bay</strong>; the FFC (whole header) is the only inter-bay link.
@@ -3070,8 +3071,8 @@ become the 2nd PL011 TX/RX once the <code>dtoverlay</code> is applied
 <p><img src="images/external_sensors/ze15co_pinout.png"
 alt="ZE15-CO pin definition and layout — top-right corner shows the 15-pin numbering with pins 1-5 on the left column (5-pin header) and pins 6-15 on the right column (10-pin header). Full pin table below: PIN15=Vin (5-12V DC), PIN14+PIN5=GND, PIN1=3.0V output, PIN3=sensor fault output (1Hz 10% duty), PIN7=UART RXD (3V TTL), PIN8=UART TXD (3V TTL), PIN10=analog voltage output (0.4-2V = 0-500ppm), remaining pins NC or Reserved. Below the pin table: communication protocol section starts with the general UART settings 9600 baud / 8 data / 1 stop / no check." /></p>
 <h3
-id="power-monitor-ina226-main--on-the-psc-100-12-psu-top-revised-2026-05-17">Power
-monitor (INA226-MAIN) — on the PSC-100-12 PSU top (revised
+id="power-monitor-ina226-main--on-the-psc-100-12--psc-150-12-psu-top-revised-2026-05-17">Power
+monitor (INA226-MAIN) — on the PSC-100-12 / PSC-150-12 PSU top (revised
 2026-05-17)</h3>
 <blockquote>
 <p><strong>Carrier builds (2026-10-23):</strong> INA226-MAIN moves from
@@ -3082,24 +3083,24 @@ changes: it still sits in series on CH1, and its GND screw is still the
 single logic-to-power tie. Halo v1 keeps the PSU-top cover mount until
 its carrier.</p>
 </blockquote>
-<p>Mounted <strong>on top of the PSC-100-12 PSU</strong>, inside the
-<strong>power bay</strong> (battery + PSU/UPS + DROK + PIR) —
+<p>Mounted <strong>on top of the PSC-100-12 / PSC-150-12 PSU</strong>,
+inside the <strong>power bay</strong> (battery + PSU/UPS + DROK + PIR) —
 <strong>not</strong> the Base Plate, <strong>not</strong> the
-electronics bay (RPi5/STM32). It taps the <strong>PSC-100-12 CH1 / main
-battery rail</strong> (battery V + total system current; confirmed
-2026-05-17 — see §1 / §7), so it sits right at that rail to keep the
-high-current sense leads short; its I²C is a <strong>short
-power-bay-local tail to the GPIO screw-terminal breakout</strong> (the
-Pi header is extended into the power bay via the FFC chain, §2 — the I²C
-does <strong>not</strong> leave the power bay; the FFC is the only
-inter-bay link). This reinstates the original <code>armpi_ultra</code>
-PSU-top location (see §4).</p>
+electronics bay (RPi5/STM32). It taps the <strong>PSC-100-12 /
+PSC-150-12 CH1 / main battery rail</strong> (battery V + total system
+current; confirmed 2026-05-17 — see §1 / §7), so it sits right at that
+rail to keep the high-current sense leads short; its I²C is a
+<strong>short power-bay-local tail to the GPIO screw-terminal
+breakout</strong> (the Pi header is extended into the power bay via the
+FFC chain, §2 — the I²C does <strong>not</strong> leave the power bay;
+the FFC is the only inter-bay link). This reinstates the original
+<code>armpi_ultra</code> PSU-top location (see §4).</p>
 <ul>
 <li><strong>Standoffs:</strong> Brass M2/M2.5, 4–6 mm, isolating the PCB
 from the PSU case.</li>
 <li><strong>Orientation:</strong> screw terminals (IN+/IN−/GND) toward
-the PSC-100-12 CH1 tap — leads stay short since the module sits on the
-PSU.</li>
+the PSC-100-12 / PSC-150-12 CH1 tap — leads stay short since the module
+sits on the PSU.</li>
 <li><strong>Cable run:</strong> the rail tap is local at the PSU; the
 <strong>I²C</strong> (VCC/GND/SDA/SCL) is a short
 <em>power-bay-local</em> tail to the <strong>GPIO screw-terminal
@@ -3187,13 +3188,13 @@ id="presence-array-4-hc-sr501--power-bay-functional--base-plate-fence-slants-phy
 array (4× HC-SR501) — power bay (functional) / base-plate fence slants
 (physical)</h3>
 <p>Per the two-bay topology above, the PIR array belongs to the
-<strong>power bay</strong> functionally (battery + PSC-100-12 PSU/UPS +
-DROK + <strong>PIR</strong> + INA226) — its cabling and the GPIO harness
-are routed in that bay. Physically the 4 sensors mount on the <strong>4
-slanted corner facets of the base-plate fence</strong>, integrated into
-the parametric fence (printed-in-place retention, no aftermarket
-brackets) — full cutout/baffle/macro spec is in Appendix F and
-<code>lumi_baseplate_fence.py</code>.</p>
+<strong>power bay</strong> functionally (battery + PSC-100-12 /
+PSC-150-12 PSU/UPS + DROK + <strong>PIR</strong> + INA226) — its cabling
+and the GPIO harness are routed in that bay. Physically the 4 sensors
+mount on the <strong>4 slanted corner facets of the base-plate
+fence</strong>, integrated into the parametric fence (printed-in-place
+retention, no aftermarket brackets) — full cutout/baffle/macro spec is
+in Appendix F and <code>lumi_baseplate_fence.py</code>.</p>
 <p><strong>The PIRs go on the slants, deliberately NOT the louvered
 front/back walls.</strong> PIRs detect IR temperature differentials, and
 a <strong>fan-driven plume of warm air</strong> sweeping past louvers
@@ -3233,11 +3234,11 @@ Appendices E.3 (thermal mitigations) + F (CAD spec) and
 Plans</h2>
 <ul>
 <li>The <code>armpi_ultra</code> docs spec a single INA226 on top of the
-PSC-100-12 PSU at default 0x40. <strong>PSU-top location reinstated
-(2026-05-17)</strong> — the module must sit at the CH1 rail (short sense
-leads). Only delta from that plan: address <strong>0x44</strong>, not
-0x40 (avoids the PCA9685 0x40 conflict). The interim base-plate-mount
-proposal is withdrawn.</li>
+PSC-100-12 / PSC-150-12 PSU at default 0x40. <strong>PSU-top location
+reinstated (2026-05-17)</strong> — the module must sit at the CH1 rail
+(short sense leads). Only delta from that plan: address
+<strong>0x44</strong>, not 0x40 (avoids the PCA9685 0x40 conflict). The
+interim base-plate-mount proposal is withdrawn.</li>
 <li>The <code>armpi_fpv_utils</code> package on Ultra has an old
 single-INA226-at-0x40 node. <strong>Option A (recommended):</strong>
 disable it; the new Layer-4 node is the single source of truth.
@@ -3685,28 +3686,30 @@ may use it internally. Do NOT remove — monitor alongside.</li>
 <hr />
 <h2 id="9-wiring--install">9. Wiring &amp; Install</h2>
 <h3 id="ina226-main">INA226-MAIN</h3>
-<p><em>Module sits on top of the PSC-100-12 PSU (power bay) — CH1 sense
-leads are short and local; its I²C is a short tail to the power-bay GPIO
-screw-terminal breakout (the Pi header is extended into the power bay
-via the FFC chain, §2 — the I²C does not cross bays; the FFC does).
-Screw-terminal names below match the silkscreen on the board — see §2
-"INA226 board reference" for the full KF1 pinout table and colour
-coding.</em></p>
+<p><em>Module sits on top of the PSC-100-12 / PSC-150-12 PSU (power bay)
+— CH1 sense leads are short and local; its I²C is a short tail to the
+power-bay GPIO screw-terminal breakout (the Pi header is extended into
+the power bay via the FFC chain, §2 — the I²C does not cross bays; the
+FFC does). Screw-terminal names below match the silkscreen on the board
+— see §2 "INA226 board reference" for the full KF1 pinout table and
+colour coding.</em></p>
 <p><strong>Power side (4× KF1 screw terminals, top edge — cut the
-PSC-100-12 CH1 +V trunk and land the two ends across the on-board 2 mΩ
-shunt):</strong></p>
+PSC-100-12 / PSC-150-12 CH1 +V trunk and land the two ends across the
+on-board 2 mΩ shunt):</strong></p>
 <ul>
 <li><strong>V+(VBUS)</strong> (pin 1, orange) → SOURCE side of the cut
-(same node as PSC-100-12 CH1 +V output). Easiest install: short jumper
-wire from <strong>V+(VBUS)</strong> to <strong>ISENSE+</strong> so both
-terminals share the source-side node. 16 AWG.</li>
+(same node as PSC-100-12 / PSC-150-12 CH1 +V output). Easiest install:
+short jumper wire from <strong>V+(VBUS)</strong> to
+<strong>ISENSE+</strong> so both terminals share the source-side node.
+16 AWG.</li>
 <li><strong>ISENSE+</strong> (pin 2, orange) → SOURCE side of the cut
-(PSC-100-12 CH1 +V output). Current flows IN here. 16 AWG.</li>
+(PSC-100-12 / PSC-150-12 CH1 +V output). Current flows IN here. 16
+AWG.</li>
 <li><strong>ISENSE−</strong> (pin 3, green) → LOAD side of the cut (goes
 to whatever consumes CH1 +V — Master Power Switch INPUT positive /
 distribution-block input IN-A iN). Current flows OUT here. 16 AWG.</li>
-<li><strong>GND</strong> (pin 4, green) → PSC-100-12 CH1 GND / bay star
-ground. 16 AWG.</li>
+<li><strong>GND</strong> (pin 4, green) → PSC-100-12 / PSC-150-12 CH1
+GND / bay star ground. 16 AWG.</li>
 </ul>
 <p><strong>Logic side (4-pin header, bottom edge, silk
 <code>GND SCL SDA VCC</code> left→right):</strong></p>
@@ -4285,8 +4288,8 @@ cable.</strong> Full hardware + wiring spec in §2.</td>
 <td>7</td>
 <td><strong>INA226</strong> Voltage/Current Monitor Module (I²C
 <strong>0x44</strong>) — GODIYMODULES dev unit, generic prod</td>
-<td>INA226-MAIN power monitor on the PSC-100-12 CH1 trunk (§2 board
-reference + pad-mod recipe owns the full hardware spec)</td>
+<td>INA226-MAIN power monitor on the PSC-100-12 / PSC-150-12 CH1 trunk
+(§2 board reference + pad-mod recipe owns the full hardware spec)</td>
 <td>1</td>
 <td>—</td>
 <td>generic, ~$2–3 (prod)</td>
