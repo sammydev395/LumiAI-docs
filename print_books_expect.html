@@ -2224,11 +2224,13 @@ tower 50</td>
 </tr>
 </tbody>
 </table>
-<h3 id="h2s-19-19-wand-catch-bracket--pin---h2s-s3-petg">H2S 19: 19 Wand
-catch bracket + pin - H2S S3 PETG</h3>
-<p><strong>NOT READY (CTO 11-28, brimrisk):</strong> the wand catch
-bracket prints with NO brim, 91 mm tall on an 8.9 mm-wide footprint,
-never printed; waits for 3dPrint/CAD to add a brim or re-orient it.</p>
+<h3 id="h2s-19-19-unproven---wand-catch-bracket--pin---h2s-s3-petg">H2S
+19: 19 UNPROVEN - Wand catch bracket + pin - H2S S3 PETG</h3>
+<p><strong>brimrisk, resolved (3dPrint/CAD 11-28):</strong> the bracket
+now has an outer brim 10. It lies flat as booked (20.9 tall, 91 × 57
+overall; "91 tall" was the raw STL before the book's rotation), but its
+bed contact is an L of 8.2-wide arms up to 75 long, so the brim stays.
+UNPROVEN until printed.</p>
 <table>
 <tbody>
 <tr>
@@ -2237,7 +2239,8 @@ never printed; waits for 3dPrint/CAD to add a brim or re-orient it.</p>
 </tr>
 <tr>
 <td>Time / mass</td>
-<td>1h 2m 25s total, 55.5 min model; 16.65 g</td>
+<td>1h 4m 38s; 17.34 g (3dPrint/CAD's prepush slice: the bracket's brim
+added)</td>
 </tr>
 <tr>
 <td>Studio warnings</td>
@@ -2249,8 +2252,10 @@ never printed; waits for 3dPrint/CAD to add a brim or re-orient it.</p>
 </tr>
 <tr>
 <td><code>lumi_bigclaw_catch_bracket_wand.stl</code></td>
-<td>supports off; brim no_brim 8; source @ 227401e3 2026-11-07 0021; no
-Print_Log row (the log starts 2026-11-19; older prints unrecorded)</td>
+<td>supports off; <strong>brim outer_only 10</strong> (2026-11-28,
+brimrisk: lies flat, 20.9 tall, but its bed contact is an L of 8.2-wide
+arms up to 75 long); source @ 227401e3 2026-11-07 0021; no Print_Log row
+(the log starts 2026-11-19; older prints unrecorded)</td>
 </tr>
 <tr>
 <td><code>lumi_bigclaw_catch_lock_pin_wand.stl</code></td>
