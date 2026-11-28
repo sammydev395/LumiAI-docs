@@ -5232,6 +5232,55 @@ Halo</td>
 </tr>
 </tbody>
 </table>
+<h2
+id="16h-audio-respeaker-flex-xvf3800--tlzwla-5090-speaker-bench-steps">16h.
+Audio: reSpeaker Flex XVF3800 + TLZWLA 5090 speaker (bench steps)</h2>
+<p>Spec, geometry and integration rules: <a
+href="Electronics_Bay_Design.html#37-audio-system--seeed-respeaker-flex-xvf3800-circular-4--10-w-speaker-the-designs-audio-operator-2026-11-27">EBD
+§3.7</a>. Placement and routes are CAD's (option C). Lengths follow
+CAD's final route.</p>
+<p><strong>The speaker lead (a made part; the speaker has lugs only, no
+leads or plug):</strong></p>
+<ul>
+<li><strong>Wire:</strong> 10 W into 4 Ω is <strong>1.6 A RMS</strong>.
+The JST-PH 2.0 contact is rated 2 A and takes 24–32 AWG, so the lead is
+<strong>24 or 26 AWG</strong>, twisted. Over ~60 mm, 26 AWG drops ~0.01
+V: no loss that matters. 22 AWG does not fit a PH contact.</li>
+<li><strong>Parts, from stock only:</strong> a <strong>pre-made JST-PH
+2.0 female-female cable</strong> from the bench stock (§1: "JST-PH 2.0
+connectors, pre-made female-female cables"), cut to length: one housing
+with its crimped leads becomes the core end, the free ends solder to the
+lugs. No PH crimping is needed (the PEBA crimper has XH / Dupont dies,
+not PH). ⏳ <strong>The 2-pin count of that stock is not recorded: check
+the shelf.</strong> If no 2-pin PH cable is on hand, the core's
+<strong>speaker solder pad</strong> (vendor hard-wire option) takes the
+pair directly, with no part.</li>
+<li><strong>Polarity:</strong> match the core's speaker + / − silk to
+the speaker lug marks (red / + lug). Mono: the AEC reference is the LEFT
+channel (EBD §3.7).</li>
+</ul>
+<p><strong>Build steps:</strong></p>
+<ol type="1">
+<li>Cut the lead to <strong>CAD's final route + ~20 mm</strong> (option
+C: ~57 mm, magnet-hole leg → shroud notch → the lip's hole). Twist ~1
+turn per 25 mm.</li>
+<li>Tin the speaker lugs and the wire ends; solder, Ø3 heat-shrink over
+each lug joint. Pull-test.</li>
+<li>Meter: the speaker reads ~3–4 Ω across the housing's two contacts
+(DC resistance of a 4 Ω speaker), and neither contact is shorted to the
+frame.</li>
+<li>Plug the housing onto the core's 2-pin speaker connector (latch side
+per the connector), power off. <strong>Leave the 3.5 mm jack
+empty</strong> (with it plugged, the speaker is silent).</li>
+<li>Mic FPC: power off, open both latches, contacts toward the
+connector's metal, stiffener out; close the latches. Never routed across
+a moving joint.</li>
+<li><strong>Before the 12 V feed is landed on the robot:</strong> the
+owed bench test (EBD §3.7): step the 12 V terminal to 13.8 V on a
+current-limited bench supply, meter.</li>
+<li>First sound at low volume; set the max volume on the bench against
+the XMOS limits (THD 3–5 %, 6–10 dB mic headroom).</li>
+</ol>
 <h2 id="related-docs">Related Docs</h2>
 <ul>
 <li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> —
