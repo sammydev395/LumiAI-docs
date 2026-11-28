@@ -1739,1380 +1739,6 @@ device beside the analog ring</td>
 with the carrier mounted). Lane rule from EBD §3.4: the three USB runs
 (2/3/4) cross the cover through the <strong>data lane</strong>; nothing
 crosses the speaker lane.</p>
-<h2 id="17-nova-build--bill-of-materials-compiled-2026-10-20">17. Nova
-Build — Bill of Materials (compiled 2026-10-20)</h2>
-<p><strong>Nova</strong> is the next robot after Halo (name locked
-2026-06-14). It is a fleet codename: the product is still LumiAI Halo;
-Nova is <em>which</em> machine. It is an Ultra-compatible arm kit, with
-the same codebase as Halo and Ultra and per-unit config only. Host
-<code>lumiai-nova</code>, container <code>LumiNova</code>, namespace
-<code>/nova</code>, ROS_DOMAIN_ID 100.</p>
-<p>Compiled from every domain session on 2026-10-20: Electronics, CAD,
-3D Printing, CNC, Ultra, ROSMaster, Fleet and Marketing. Stock was
-checked against every inventory and order record in the repo.</p>
-<p><strong>Colour key (operator 2026-10-20):</strong></p>
-<ul>
-<li>🟢 <strong>we have it</strong> for Nova (on hand, spare, or comes
-with a kit we have).</li>
-<li>🔴 <strong>we need it</strong>: to buy, or it comes inside a kit we
-still have to buy.</li>
-<li>🟡 <strong>just enough for Halo</strong>: stock covered Halo, but
-there is no confirmed spare for Nova. Count it on the shelf (§17.9)
-before ordering.</li>
-</ul>
-<p><strong>Status key:</strong></p>
-<ul>
-<li><strong>ON HAND</strong>: the operator has it, set aside for
-Nova.</li>
-<li><strong>SPARE</strong>: the docs record a spare left after Halo and
-Ultra.</li>
-<li><strong>TO BUY</strong> / <strong>TO MAKE</strong> / <strong>TO
-PRINT</strong> / <strong>TO MACHINE</strong>: still to do.</li>
-<li><strong>COUNT</strong>: the docs give no usable count. Check the
-shelf before ordering (§17.9).</li>
-</ul>
-<h3 id="171-what-changes-from-halo">17.1 What changes from Halo</h3>
-<ol type="1">
-<li><strong>Distribution block: HL-PBB-2-6-MINI</strong> (16 A / 48 V, 2
-inputs, 6 output pairs), the only block on every build (operator
-2026-11-24). Halo keeps its modified APIELE until its bay is rebuilt;
-Ultra has no block yet and gets one; the D-1459 is a bench spare.
-<ul>
-<li>The §11.3.3 port map carries over 1:1.</li>
-<li>Mount: <strong>M3 × 8 pan self-tap ×2</strong> onto the power-bay
-carrier's two Ø7 posts (Ø2.5 pilots, §17.8 carrier-screw row), through
-its 2 × Ø4 holes at <strong>64 mm c/c</strong> (calipered; one per short
-end, centred, 1.5 mm from the edge). The board is 70 × 22 mm, 23 mm
-tall.</li>
-<li>Loads: bay peak ~8 A = 50 % of 16 A; busiest branch the servo-rail
-buck input, ~4.6 A at 13.8 V for ~8 A of servos at 7.5 V.</li>
-</ul></li>
-<li><strong>DC rocker UPSTREAM of the whole V+ bus</strong> (the Halo-v2
-fix):
-<code>PSU CH1 → INA226 → DC rocker LINE→LOAD → HL-PBB input</code>. ⚠️
-This segment-map row does not exist yet (Power_Bay_Design §11.3 note);
-draw it with Nova's map. The rocker now carries the full bus, ~8–9 A DC
-peak. <strong>Operator ruling (2026-10-20): the KCD1 stays.</strong>
-These switches have been in service for 6 months on AC and DC. The
-KCD1's documented ratings are AC only (6 A at 250 VAC / 10 A at 125
-VAC); Nova is the first build at full-bus current. Feel the switch body
-after a long run.</li>
-<li><strong>Bay power wiring 18 AWG / E1008 from day one</strong> (Halo
-v1 ran 16 AWG).</li>
-<li><strong>No extra-tall 2×20 stacking header</strong> — the HAT's
-pass-through gives the height.</li>
-<li><strong>PCA9685 (wand) ships at 0x41</strong>, with the A0 pad
-bridged. 0x40 is the HAT's INA219, which stays at its factory
-address.</li>
-<li><strong>EBC covers v6</strong> (CAD 2df29a1, watertight). Plate 06
-still prints with supports ON (critical-only): Studio flags the left
-cover with them off.</li>
-<li><strong>Production material is ASA</strong> for structural prints
-(§17.6).</li>
-<li><strong>Fence fans mount on self-tapping threaded inserts</strong>
-in the fence's existing Ø4.0 bores (operator 2026-10-20). The fence is
-unchanged and there is no CAD change.</li>
-<li>Not bought for Nova: the ArmPi hex servo base plate, the arm base
-plate and the STM32 (all come with the HiWonder arm kit), the APIELE,
-WonderEcho, X1001, extra-tall header, the Ultra mecanum
-chassis/motors/encoder module, and the legacy CNC ceiling channels.</li>
-</ol>
-<h3 id="172-arm-control-and-compute">17.2 Arm, control and compute</h3>
-<table>
-<thead>
-<tr>
-<th>Item</th>
-<th>Qty</th>
-<th>Use</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>HiWonder ArmPi Ultra arm, 6 bus servos (IDs 1–6) + hex servo base
-plate + arm base plate</td>
-<td>1 kit</td>
-<td>Arm</td>
-<td>🟢 <strong>ON HAND</strong> (operator)</td>
-</tr>
-<tr>
-<td>HiWonder STM32 controller (CH340 1a86:7523)</td>
-<td>1</td>
-<td>Servo bus, 5 V 5 A USB-C out to the Pi</td>
-<td>🟢 <strong>ON HAND</strong> (in the kit)</td>
-</tr>
-<tr>
-<td>BigClaw gripper body + HTS-25L servo (85 mm jaw, fleet
-standard)</td>
-<td>1</td>
-<td>End effector</td>
-<td>🟢 <strong>ON HAND</strong>: one extra BigClaw + HTS-25L for Nova
-(operator 2026-10-20)</td>
-</tr>
-<tr>
-<td>Rubber pads, one-sided adhesive (jaws + wand-ear cradles)</td>
-<td>1 set</td>
-<td>Gripper</td>
-<td>🟡 <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td><em>(optional accessory)</em> BigClaw <strong>phone cradle</strong>
-hardware: 1 × <strong>M4 × 40 hex bolt</strong>, 304 fully threaded, 7
-AF (uxcell, Amazon B07JFJGJ91); 1 × <strong>flat knurled thumb nut, M4,
-Ø20 × 5</strong>, 304 (MECCANIXITY, Amazon B0FJMQF9HD); 1 × <strong>M4
-DIN 125 washer</strong>; <strong>4</strong> × M3 × 12 self-tap (knob
-frame; +2 for the catch); <strong>2 × M4 × 16 pan self-tap</strong>
-(post → foot; HanTof kit); <strong>1 × HELIFOUNER 1/4"-20 steel screw-in
-insert, 10 mm</strong> (the post's base end); silicone grease</td>
-<td>1 set</td>
-<td>Holds 40 phones (80 variants, bare or slim case) in the BigClaw —
-BOM in <a
-href="LumiAI%20Robotic%20Arm%20System.html#mounts--payloads-one-arm-many-configurations">Robotic
-Arm System → Mounts &amp; Payloads</a></td>
-<td>🟡 <strong>ON HOLD</strong> until the printed fit is accepted: the
-M4 × 40 bolt and the thumb nut (to buy). Washer, M3 × 12, M4 × 16, the
-1/4"-20 insert and grease: <strong>Stock</strong></td>
-</tr>
-<tr>
-<td>Aluminium servo horn, base joint</td>
-<td>1</td>
-<td>Base servo</td>
-<td>🟢 <strong>ON HAND</strong>: comes with the BigClaw (operator
-2026-10-20)</td>
-</tr>
-<tr>
-<td><strong>Raspberry Pi 5, 16 GB</strong> (the production floor; 8 GB
-is bench only)</td>
-<td>1</td>
-<td>Compute</td>
-<td>🔴 <strong>TO BUY</strong> (operator 2026-10-20)</td>
-</tr>
-<tr>
-<td>Pi 5 active cooler (with a working tach)</td>
-<td>1</td>
-<td>Pi</td>
-<td>🟡 <strong>COUNT</strong>. ⚠️ Power it from the Pi fan header,
-<strong>never</strong> the RasAdapter/STM32 5 V (Ultra's 09-26
-lapse)</td>
-</tr>
-<tr>
-<td>Waveshare <strong>PCIe TO M.2 USB HAT+</strong> (INA219 0x40, R010
-shunt, isolated POWER input)</td>
-<td>1</td>
-<td>NVMe + 4× USB</td>
-<td>🔴 <strong>TO BUY</strong> (the two on record are on Ultra and
-Halo)</td>
-</tr>
-<tr>
-<td>NVMe M.2 SSD 2230–2280</td>
-<td>1</td>
-<td>Boot drive on the HAT</td>
-<td>🔴 <strong>TO BUY</strong>. Prefer a Samsung like Ultra's; a
-Kingston NV2 needs APST/ASPM disabled in cmdline (Halo, 10-16)</td>
-</tr>
-<tr>
-<td>microSD for the restic backup repo</td>
-<td>1</td>
-<td>Backups (Halo: 117 GB)</td>
-<td>🔴 <strong>TO BUY</strong>. Size for ~2.5× the raw image (~22 GB) +
-Docker images (~5–10 GiB)</td>
-</tr>
-<tr>
-<td>ShanWan gamepad + 2.4 GHz dongle (2563:0526, same button map
-fleet-wide)</td>
-<td>1 pair</td>
-<td>Teleop + latched SELECT E-stop</td>
-<td>🔴 <strong>TO BUY</strong>. Verify no cross-talk against BOTH
-Ultra's and Halo's dongles before trusting the E-stop</td>
-</tr>
-<tr>
-<td>Ethernet cable to the robot switch behind Devs_EXT</td>
-<td>1</td>
-<td>Wired net (Wi-Fi: Devs_EXT2)</td>
-<td>🟢 <strong>ON HAND</strong> (plenty)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="173-sensors-camera-voice">17.3 Sensors, camera, voice</h3>
-<table>
-<thead>
-<tr>
-<th>Item</th>
-<th>Qty</th>
-<th>Use</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Luxonis OAK-D S2, auto-focus (AF)</strong> (operator
-2026-10-20)</td>
-<td>1</td>
-<td>Arm-end camera → <strong>a HAT USB 3 port</strong> (operator ruling
-2026-10-27: "The OAK-D plugs into the HAT … as does the iflytek")</td>
-<td>🔴 <strong>TO BUY</strong></td>
-</tr>
-<tr>
-<td><strong>HiWonder far-field mic array, FULL bundle</strong>: R818 +
-ring 6-mic + casing + FFC + CH340 JST→USB-A + UAC JST→USB-A + brass
-standoffs + "USB TO AUDIO" stick + speaker + ferrite extension</td>
-<td>1 kit</td>
-<td>EB-cover carrier (§16)</td>
-<td>⛔ <strong>DO NOT BUY</strong>: <strong>iFLYTEK DROPPED as a
-fleet/production part (operator 2026-11-02): no more kits, not for new
-builds. The one kit already owned stays in use on Ultra or Halo.
-Production replacement not chosen.</strong></td>
-</tr>
-<tr>
-<td><strong>Seeed reSpeaker Flex XVF3800 Circular-4, without
-ESP32S3</strong> (USB / I²S): core board + circular 4-mic array + 20 cm
-24-pin FPC + pin connectors</td>
-<td>1 set</td>
-<td>The design's audio (<a
-href="Electronics_Bay_Design.html#37-audio-system--seeed-respeaker-flex-xvf3800-circular-4--10-w-speaker-the-designs-audio-operator-2026-11-27">EBD
-§3.7</a>): core USB → a HAT USB-A (left-angle USB-A, ⏳ operator names
-the cable); amp 12 V terminal on unfused 22 AWG from the 13.8 V bay
-rail</td>
-<td>✅ <strong>ON HAND: 1 set</strong> (received 2026-11-17). Box
-contents: check on the bench</td>
-</tr>
-<tr>
-<td><strong>TLZWLA 5090 horn speaker, 10 W 4 Ω, 50 × 90 ×
-37</strong></td>
-<td>1</td>
-<td>reSpeaker core speaker JST (⏳ plug / mating TO CALIPER)</td>
-<td>✅ <strong>ON HAND: 1</strong> (received 2026-11-18). The design's
-speaker (operator-confirmed 2026-11-27)</td>
-</tr>
-<tr>
-<td>GODIYMODULES <strong>INA226</strong> (R002), address mod →
-<strong>0x44</strong></td>
-<td>1</td>
-<td>In series on PSU CH1; self-taps onto its carrier posts (Halo v1
-as-built: PSU-cover studs)</td>
-<td>🟡 <strong>COUNT</strong>: 2 owned on record; Halo uses 1, an Ultra
-retrofit would take the other</td>
-</tr>
-<tr>
-<td>GODIYMODULES <strong>INA226-BATT</strong> (R002, stock 2 mΩ),
-address <strong>0x45</strong> (A0 = A1 = VS), both pull-ups lifted</td>
-<td>1</td>
-<td>Battery + lead: pack → F1 → shunt → PSU CH2 BAT+ (ISENSE+ toward the
-PSU: charge +, discharge −). Signed pack current/voltage + AC→battery
-switchover. <strong>Side by side with INA226-MAIN on the power-bay
-carrier</strong>, each on its own printed self-tap posts (operator
-2026-10-22; the carrier insulates every screw, so no nylon hardware).
-Mount detail Power_Bay §5a.4, 18 AWG + Kuject fork lugs, logic on G469
-pins 3/5/1/9. Power_Bay §5a, BringUp Phase 7.7 pull-the-AC gate
-(Electronics 02eed75, fleet-wide after Ultra's 10-22 mains-drop
-blackout)</td>
-<td>🟡 <strong>ORDERED, in transit</strong> (AliExpress):
-<strong>4</strong> (Halo, Ultra, Nova + 1 spare)</td>
-</tr>
-<tr>
-<td>SparkFun Qwiic <strong>TMP102</strong></td>
-<td>2</td>
-<td>Bay 0x48 (no mod) + wand 0x49 (ADD0 cut + V+ bridge)</td>
-<td>🟡 <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td><strong>HC-SR501</strong> PIR</td>
-<td>4 (2 packs)</td>
-<td>Fence corners → G469 GPIO 16/17/20/21</td>
-<td>🟡 <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td>Sensirion <strong>SPS30</strong> + Winsen
-<strong>ZE15-CO</strong></td>
-<td>1 + 1</td>
-<td>Bay hazard sensing (Ph7)</td>
-<td>🟢 <strong>ON HAND</strong>: "we have extra ones for nova in stock"
-(operator 2026-10-20). Nova gets them</td>
-</tr>
-<tr>
-<td><strong>Sunon MC40201V2-Q000-S99</strong>: 4020, 12 V, 4-wire PWM
-(AliExpress, SZYTF, ~$4 each)</td>
-<td>2</td>
-<td>Fence back wall; GPIO12 PWM, tach GPIO5/6. Mount: self-tapping
-inserts in the fence's existing Ø4.0 bores</td>
-<td>🔴 <strong>TO BUY</strong> (operator 2026-10-20: "nova will use the
-new fans we order"). Run each through the Power_Bay §11.2.0a acceptance
-test (no datasheet exists for this P/N; tach ≈ 12 V open-circuit =
-REJECT) and record its PWM open-circuit voltage (§11.2.0: ≤ 3.6 V direct
-drive, ~5 V add a 1 kΩ series resistor)</td>
-</tr>
-<tr>
-<td>Wand fan: <strong>ACP4010-12-PWM</strong> 40 × 40 × 10 mm, 12 V,
-4-pin PWM (AliExpress, ACP Cooling Fan Store, item 3256810252164814;
-replaces the Noctua NF-A4x10 in the wand)</td>
-<td>1</td>
-<td>Wand fan (PCA ch13)</td>
-<td>🟢 <strong>ON HAND</strong>: 1 spare (operator). <strong>Order 2
-more</strong> (operator 2026-10-20)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Fence fans:</strong> Nova moves off the Noctua NF-A4x20
-(Halo/Ultra) to the Sunon MC40201V2. Its one spec advantage is a 13.8 V
-family max, equal to the bus. Acceptance per Power_Bay §11.2.0a.</p>
-<h3 id="174-power-bay">17.4 Power bay</h3>
-<table>
-<thead>
-<tr>
-<th>Item</th>
-<th>Qty</th>
-<th>Use</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>MZMW PSC-150-12</strong> UPS PSU (13.8 V, 7.5 A CH1, 150
-W)</td>
-<td>1</td>
-<td>Mains → bay</td>
-<td>🟡 <strong>1 on hand</strong> (arrived 2026-11-23); Nova and Halo HV
-each take one: count with Purchasing. Every robot gets the new carrier
-and the PSU is the only difference: Ultra and Halo keep their
-PSC-100-12s (129 mm) on their existing base plates; Nova and Halo HV
-take the PSC-150-12 on the new base plates (operator 2026-11-24); the
-PSC-100 ordered 2026-10-22 for Nova is a spare</td>
-</tr>
-<tr>
-<td><strong>ALEAIVY LiFePO4 32700 4S1P</strong> 12.8 V 10 Ah (BMS, 5.5 ×
-2.1 barrel)</td>
-<td>1</td>
-<td>PSU CH2 battery</td>
-<td>🔴 <strong>TO BUY / COUNT</strong>. ⚠️ Verify the BMS has
-low-temperature charge cutoff</td>
-</tr>
-<tr>
-<td><strong>HL-PBB-2-6-MINI</strong> distribution module (AliExpress,
-Dongguan ARYRA; ~$6.85)</td>
-<td>1 per robot</td>
-<td>13.8 V distribution (A = V+, B = GND)</td>
-<td>🟢 <strong>3 ON HAND</strong> (1 earlier + 2 received 2026-10-22):
-Ultra, Nova, Halo's rebuild. 🔴 Halo HV needs 1 more</td>
-</tr>
-<tr>
-<td>CZH-Labs D-1459</td>
-<td>0</td>
-<td>Bench spare only</td>
-<td>🟢 <strong>1 on hand</strong></td>
-</tr>
-<tr>
-<td><strong>ZK-SJ20</strong> 300 W buck-boost CC/CV, display version
-(WAVGAT)</td>
-<td>1</td>
-<td>HL-PBB A1 / B1 → STM32 7.5 V (§16e)</td>
-<td>🟡 <strong>ORDERED</strong>, 4 in total: unit 1 before Nov 28 (bench
-gate ~Nov 27–28); 3 more (Halo, Nova, +1) in the first week of
-December</td>
-</tr>
-<tr>
-<td>HAT 5 V supply: the <strong>dual-USB-C buck, doc name MusRock
-Mus-14</strong>: the operator's "the DROK we bought last week" (one
-2026-10-13 order, qty 5, fixed 5 V, 3 A with the bay's external
-cooling), <strong>self-tapped onto the power-bay carrier</strong> (M1.7
-× 6)</td>
-<td>1</td>
-<td>HL-PBB → HAT POWER USB-C (D16–D18)</td>
-<td>🟢 <strong>ON HAND</strong> from the 5-pack. Interim buck; planned
-replacement = LM25116 300 W CC/CV (🔴 not ordered, EBD §3.6.2). The
-"DROK" and the Mus-14 are the same part (Electronics ed3e869)</td>
-</tr>
-<tr>
-<td>KCD1-104 / KCD1-106/2P illuminated rocker</td>
-<td>2</td>
-<td>1 AC + 1 DC: a <strong>rear-wall mirror pair</strong>, the DC rocker
-under fan 1 and the AC rocker under fan 2; the DC rocker is wired
-<strong>upstream</strong> of the block</td>
-<td>🟢 <strong>ON HAND</strong>: 6–7 in stock (operator 2026-10-20)</td>
-</tr>
-<tr>
-<td>IEC320 C14 panel inlet, <strong>AC-04C</strong> (the part in use) +
-C13 kettle cord</td>
-<td>1 + 1</td>
-<td>Fence back wall / wall feed</td>
-<td>🟢 C14: <strong>5 IN STOCK</strong> (AC-04C, TLZWLA Official Store,
-AliExpress, $1.59 ea). Cord <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td><strong>Locking C14 inlet</strong>: C14 with a cord-retention clip
-(wire bail over the C13 plug, on the inlet flange screws)
-<strong>or</strong> a V-Lock/IEC-Lock C14 + matching locking cord</td>
-<td>1 per robot</td>
-<td>Fence back wall, replaces the plain C14. Production item after
-Ultra's 10-22 blackout was traced to a <strong>loose connection at its
-AC inlet</strong> (male side; Electronics 4e866d1). ⚠️ <strong>Ultra's
-inlet was ALREADY a locking type</strong> (operator 2026-10-22), so a
-locking inlet alone did not prevent it: also check the inlet's
-terminations and seat the plug fully, and the robot must still ride
-through on battery. Fit-check against the fence cut-out depth before
-ordering in quantity</td>
-<td>🔴 <strong>TO BUY</strong>: 2 (Nova + Halo). Ultra has one as
-built.</td>
-</tr>
-<tr>
-<td>Fuses + holders — <strong>F1 only, on every build including Halo
-HV</strong> (no servo fuse, operator order 2026-11-24):
-<strong>F1</strong> 10 A fast-blow glass 6 × 30 (uxcell inline holder,
-16 AWG), battery + → PSU CH2 BAT+. No CH1, buck-branch or HAT-feed
-fuses.</td>
-<td>1 + holder</td>
-<td>Battery lead</td>
-<td>🟢 <strong>ON HAND</strong>: ≥ 10 spare 6 × 30 glass holders and
-glass fuses; fuse counts and F/T marking ⏳ to read</td>
-</tr>
-<tr>
-<td>Deans T-plug pair</td>
-<td>1</td>
-<td>Buck out → STM32 disconnect</td>
-<td>🟡 <strong>SPARE</strong> (RC stock, no count)</td>
-</tr>
-<tr>
-<td>5.5 × 2.1 male barrel pigtail</td>
-<td>1</td>
-<td>Battery → CH2</td>
-<td>🟡 <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td>MECCANIXITY FFC/FPC 40P breakout, <strong>female</strong> 2×20 (elec
-bay) + <strong>male</strong> 2×20 (power bay)</td>
-<td>1 + 1</td>
-<td>GPIO chain</td>
-<td>🟡 <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td>Geekworm <strong>G469</strong> GPIO terminal breakout</td>
-<td>1</td>
-<td>Power bay</td>
-<td>🟡 <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td>10 kΩ 1 % resistors</td>
-<td>2</td>
-<td>Fan tach pull-ups to 3V3</td>
-<td>🟢 <strong>SPARE</strong> (100-pc)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="175-usb-and-data-cables-every-cable-with-its-angle">17.5 USB and
-data cables (every cable, with its angle)</h3>
-<p><strong>Fleet layout rule (2026-10-17):</strong></p>
-<ul>
-<li>STM32 → Pi 5 <strong>native black #1</strong>.</li>
-<li>OAK-D → <strong>HAT USB 3 port</strong> (operator ruling 2026-10-27:
-"The OAK-D plugs into the HAT … as does the iflytek").</li>
-<li>Mic CH340, mic UAC and the sound-card dongle → <strong>HAT
-ports</strong>.</li>
-<li>Pi 5 native blue #1 / #2: <strong>free</strong>.</li>
-</ul>
-<p>All bay cables are right-angle; no straight-out plugs.</p>
-<blockquote>
-<p>⛔ <strong>U4 / U5 / U6 / U7 / U8 / U10 / U13 are the iFLYTEK set:
-iFLYTEK DROPPED as a fleet/production part (operator 2026-11-02): no
-more kits, not for new builds. The one kit already owned stays in use on
-Ultra or Halo. Production replacement not chosen.</strong> No buys; the
-owned kit keeps its own cables. Hold every mic-set buy until the
-replacement is picked.</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>#</th>
-<th>Cable (exact part)</th>
-<th>Qty</th>
-<th>From → to</th>
-<th>Angle</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>U1</td>
-<td><strong>GELRHONR</strong> USB-A → USB-C, 90°, 18 W,
-<strong>Black-Left, 1 m</strong>, USB 3 5 Gbps (<a
-href="https://a.co/d/06Ygfak8">Amazon</a>, B0BRFZW7NH; the cable Ultra
-uses)</td>
-<td>1</td>
-<td><strong>HAT USB 3 port</strong> → OAK-D S2 (⏳ re-check the 1 m
-length and the left-angle exit from the HAT's port position)</td>
-<td><strong>LEFT, both ends</strong></td>
-<td>🔴 <strong>TO BUY</strong> for Nova (Halo and Ultra each have one in
-service, operator 2026-11-02)</td>
-</tr>
-<tr>
-<td>U2</td>
-<td><strong>Right-angle USB-C ↔︎ USB-C, 0.5 ft (6 in), 65 W</strong>
-(3-pack)</td>
-<td>1</td>
-<td>STM32 5 V USB-C OUT → Pi 5 USB-C PWR</td>
-<td>right-angle, both ends</td>
-<td>🟡 <strong>SPARE</strong> (1 left of the 3-pack if Ultra + Halo each
-used one): <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td>U3</td>
-<td><strong>chenyang USB-C angled → 90° USB 3.0 A, 30 cm, Type-03, 5
-Gbps</strong> (<a href="https://a.co/d/0fyf4ezg">Amazon</a>, B0714LJP4F;
-the cable Ultra uses). Alternate: GELRHONR 90° short USB-A → USB-C, 25
-cm, USB 3.0 5 Gbps (<a href="https://a.co/d/07s7pIXW">Amazon</a>,
-B0B8N8DDPW)</td>
-<td>1</td>
-<td>STM32 USB-C control → Pi black #1 (udev
-<code>/dev/stm32_nova</code>)</td>
-<td>right-angle L-shape</td>
-<td>🔴 <strong>TO BUY</strong></td>
-</tr>
-<tr>
-<td>U4</td>
-<td>CH340 serial cable, JST-XH 6-pin → USB-A (in the mic kit)</td>
-<td>1</td>
-<td>R818 serial → HAT port</td>
-<td>straight</td>
-<td>🔴 <strong>TO MAKE</strong> from the kit: cut and re-crimp the XH
-end (string-measure + 3 cm)</td>
-</tr>
-<tr>
-<td>U5</td>
-<td>UAC cable, JST-XH → USB-A (in the mic kit)</td>
-<td>1</td>
-<td>R818 UAC → HAT port</td>
-<td>straight</td>
-<td>🔴 <strong>TO MAKE</strong> from the kit (keep D+/D− twisted)</td>
-</tr>
-<tr>
-<td>U6</td>
-<td><strong>USB 3.0 extension, 6″ (~0.15 m), Left Angle, M→F</strong>:
-the 6″ length of the CableCreation left-angle line (braided, 5 Gbps; the
-listing warns to check the USB-A male angle direction), in place of the
-<strong>CableCreation 1 ft</strong> (<a
-href="https://a.co/d/08DHvVpR">Amazon</a>, B01M1JZZV7) in use on Halo
-for the iFLYTEK, which is too long (operator 2026-10-20: "its too long,
-for nova we will get a 6" one"). ⏳ Confirm 6″ reaches on Halo before
-buying</td>
-<td>1 per build (Halo, Nova)</td>
-<td>iFLYTEK UAC → HAT port</td>
-<td><strong>LEFT</strong></td>
-<td>🔴 <strong>TO BUY</strong> (6″); the 1 ft spares (2 of the 3-pack)
-are the fallback</td>
-</tr>
-<tr>
-<td>U7</td>
-<td><strong>Left-angle USB extension, M→F</strong>, length
-string-measured at the speaker phase, + a clip-on ferrite (the dongle
-sits beside the analog mic ring)</td>
-<td>1</td>
-<td>Sound-card dongle (on the carrier, under the speaker) → down the
-data lane → HAT port</td>
-<td><strong>LEFT</strong></td>
-<td>⏳ length at the speaker phase (a 1 ft CableCreation spare may
-serve); clip-on ferrite <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td>U8</td>
-<td>Kit 12″ straight USB-A M→F extension</td>
-<td>1</td>
-<td>Dongle, V1 stopgap only</td>
-<td>straight</td>
-<td>🔴 comes in the mic kit</td>
-</tr>
-<tr>
-<td>U9</td>
-<td><strong>D18: HOTNOW USB-C ↔︎ USB-C 1.5 ft 90°, PD 65 W</strong> (<a
-href="https://a.co/d/09YEH9LF">Amazon</a>, 3-pack) — <strong>only if it
-fails the interim gate:</strong> a 5 A e-marked 240 W right-angle
-~0.5–0.6 m cable (candidate Poyiccot <a
-href="https://www.amazon.com/dp/B0CNYR9H17">B0CNYR9H17</a>)</td>
-<td>1</td>
-<td>MusRock → HAT POWER (D18), via the base-servo hole</td>
-<td>right-angle at the HAT end</td>
-<td>🟢 <strong>ON HAND</strong>, pending the interim gate test: the
-3-pack covers <strong>Halo + Ultra + Nova exactly, no spare</strong>; 5
-A cable: buy only if the HOTNOW fails</td>
-</tr>
-<tr>
-<td>U10</td>
-<td>Mic ring ↔︎ R818 FFC, <strong>60 mm if the ring connector is on its
-top/front face, 80 mm if on its BACK face</strong> (operator 2026-11-02;
-operator checks the face on the kit). Pin count, pitch and contact type
-(A same-side / B opposite): read off the kit FFC first</td>
-<td>1</td>
-<td>Ring → R818</td>
-<td>n/a</td>
-<td>🔴 <strong>TO BUY</strong> after the kit FFC is read (the kit's 12″
-Z-folded is the V1 fallback)</td>
-</tr>
-<tr>
-<td>U11</td>
-<td><strong>MECCANIXITY FFC 40-pin 0.5 mm A-type, 500 mm</strong></td>
-<td>1</td>
-<td>Elec-bay breakout → power-bay breakout, blue stripe UP both
-ends</td>
-<td>n/a</td>
-<td>🟢 <strong>SPARE</strong> (8–9 of the 10-pack)</td>
-</tr>
-<tr>
-<td>U12</td>
-<td>PCIe 16-pin FPC</td>
-<td>1</td>
-<td>Pi 5 PCIe → HAT</td>
-<td>n/a</td>
-<td>🔴 comes with the HAT</td>
-</tr>
-<tr>
-<td>U13</td>
-<td>Speaker SPK± + AEC RLN/RLP leads</td>
-<td>1 + 1</td>
-<td>Dongle → speaker / R818 reference</td>
-<td>twisted pairs</td>
-<td>🔴 kit leads; length set at the bench</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Other builds, same table:</strong></p>
-<ul>
-<li><strong>Halo:</strong> has U1 (GELRHONR 1 m, in service), U9
-(HOTNOW, on hand). The owned iFLYTEK kit stays on Halo or Ultra with its
-own cables; nothing to buy.</li>
-<li><strong>Ultra upgrade</strong> (mic: the WonderEcho, or the one
-owned iFLYTEK kit if it goes on Ultra; no iFLYTEK buys, operator
-2026-11-02): has U1 + U3 in service. Needs U9 (1 HOTNOW, on hand). If
-the owned iFLYTEK goes on Ultra, it moves with its own cables. No FFC
-U11 and no new boards.</li>
-</ul>
-<h3
-id="176-printed-parts-production-material-per-the-operator-2026-10-20">17.6
-Printed parts (production material per the operator, 2026-10-20)</h3>
-<p>Books: H2S = <code>lumiAi_Complete_PROD_H2S.3mf</code>, X1C =
-<code>lumiAi_Complete.3mf</code>.</p>
-<table>
-<thead>
-<tr>
-<th>Part (export stem)</th>
-<th>Qty</th>
-<th>Material / printer</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Fence front + back half</td>
-<td>1 + 1</td>
-<td><strong>ASA</strong> black, H2S S2 (trial; the red PETG+ fence is
-production-grade 10-19)</td>
-<td>Back ~4 h 40 m, front ~2 h 14 m</td>
-</tr>
-<tr>
-<td>Base cover top + base</td>
-<td>1 + 1</td>
-<td>blue PLA+, X1C S1</td>
-<td>Top roof −5.08, field pass 10-20</td>
-</tr>
-<tr>
-<td>EBC cover L + R (v6, 2df29a1)</td>
-<td>1 + 1</td>
-<td><strong>ASA</strong>, H2S S2, supports ON</td>
-<td>~2 h each</td>
-</tr>
-<tr>
-<td>Battery strap L + R</td>
-<td>1 + 1</td>
-<td>clear PETG+, X1C S4</td>
-<td></td>
-</tr>
-<tr>
-<td>Camera L-adapter <code>lumi_halo_camera_adapter</code></td>
-<td>1</td>
-<td><strong>grey PETG+</strong>, X1C S2</td>
-<td>~41 m</td>
-</tr>
-<tr>
-<td>Mic carrier <strong>v5</strong> (CAD 3b36242) + R818 shroud V1.1
-(<code>cad/freecad/output/…_DRAFT</code>)</td>
-<td>1 + 1</td>
-<td>clear PETG+, X1C S4</td>
-<td>Shroud production-ready 10-20</td>
-</tr>
-<tr>
-<td>SPS30 carrier plate + strap; ZE15-CO carrier</td>
-<td>1 + 1; 1</td>
-<td>blue PLA+, X1C S1</td>
-<td><strong>TO PRINT</strong>: Nova gets the hazard sensors</td>
-</tr>
-<tr>
-<td>Wand shell +Y / −Y</td>
-<td>1 + 1</td>
-<td><strong>ASA</strong>, H2S S2</td>
-<td>~5 h each</td>
-</tr>
-<tr>
-<td>Head ring</td>
-<td>1</td>
-<td><strong>ASA</strong>, H2S S2</td>
-<td></td>
-</tr>
-<tr>
-<td>Lens plate:
-<strong><code>lumi_wand_cyl_lens_plate_WHITE21</code></strong>
-(white-lens mandate 10-17)</td>
-<td>1</td>
-<td>NylonX, H2S S5 (PrintDry 85 °C ≥ 48 h)</td>
-<td><strong>WHITE21 confirmed</strong> (operator 2026-10-20); 2 to print
-in NylonX on 10-21</td>
-</tr>
-<tr>
-<td>End plate (holed) + blank end plate (flashlight tail)</td>
-<td>1 + 1</td>
-<td><strong>grey PETG+</strong>, X1C S2</td>
-<td>Done 10-20 for the current set</td>
-</tr>
-<tr>
-<td>End ring ×2 + retaining ring ×1</td>
-<td>3</td>
-<td><strong>ASA</strong>, H2S S2 (plate 25)</td>
-<td>All rings ASA (operator 10-20)</td>
-</tr>
-<tr>
-<td>Extension half +Y LilyGO / −Y</td>
-<td>1 + 1</td>
-<td><strong>ASA</strong>, H2S S2</td>
-<td>~4 h 15 m each; field pass 10-20, zero strings</td>
-</tr>
-<tr>
-<td>Cartridge: cap rigid, cap sprung, tube (print 2), cell spacer ×2, M8
-nut ×2</td>
-<td>set</td>
-<td><strong>grey PETG+</strong>, X1C S2</td>
-<td>Current set already printed (operator)</td>
-</tr>
-<tr>
-<td>Rail stops</td>
-<td>4</td>
-<td>PA-CF</td>
-<td><strong>TO PRINT</strong>: Nova ships with its own rail (operator
-2026-10-20)</td>
-</tr>
-<tr>
-<td><em>U-bracket</em></td>
-<td>—</td>
-<td>—</td>
-<td>Shop alignment jig, not a robot part</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Filament for one Nova:</strong></p>
-<table>
-<thead>
-<tr>
-<th>Filament</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>ASA black</td>
-<td>🟡 Spool open, <strong>COUNT</strong> remaining. ASA now covers most
-parts: allow ~1 kg per Nova</td>
-</tr>
-<tr>
-<td>NylonX</td>
-<td>🟢 0.5 kg on hand</td>
-</tr>
-<tr>
-<td>PETG+ clear</td>
-<td>🟢 ~1 kg, minus the shroud</td>
-</tr>
-<tr>
-<td>PETG+ black</td>
-<td>🟢 1 kg (now minor)</td>
-</tr>
-<tr>
-<td>PETG+ grey</td>
-<td>🟡 <strong>COUNT</strong>. The open spool tangled twice on 10-20;
-the operator may exchange it at Micro Center</td>
-</tr>
-<tr>
-<td>PLA+ blue</td>
-<td>🟡 <strong>COUNT</strong></td>
-</tr>
-</tbody>
-</table>
-<h3 id="177-machined-parts-cnc-session-2026-10-20">17.7 Machined parts
-(CNC session, 2026-10-20)</h3>
-<table>
-<thead>
-<tr>
-<th>Part</th>
-<th>Qty</th>
-<th>Stock</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>LumiAI main base plate (<code>LumiAI_Base_Plate.nc</code>, 22
-holes)</td>
-<td>1</td>
-<td><strong>uxcell 6061, 300 × 200 × 3 mm</strong> (Amazon, <a
-href="https://a.co/d/0a7k0UIZ">https://a.co/d/0a7k0UIZ</a>; the NC
-zeroes on the stock centre, so 200 × 300 fits; the finished part is 155
-× 277)</td>
-<td>🔴 <strong>TO BUY</strong> + <strong>TO MACHINE</strong> on the 3.00
-mm NC (<code>LumiAI_Base_Plate.nc</code>). Operator 2026-10-21: Nova and
-future base plates use this uxcell 6061 sheet; the remaining AliExpress
-<strong>1060 200 × 300 × 3</strong> is repurposed for camera-mount
-cutouts. <strong>Halo's base plate is already cut from the AliExpress
-1060 and installed</strong> (operator 2026-10-21); it stays until the
-Nova sheet is machined, then Halo gets a 6061 replacement cut in the
-same session (operator 2026-10-21). ⚠️ 1060 is very soft: check Halo's
-8× M3 carriage holes for elongation and the plate for sag
-periodically.</td>
-</tr>
-<tr>
-<td>OAK-D camera plate (<code>CameraMount_Oak-D.nc</code>, 91.3 × 51 ×
-2.04)</td>
-<td>1</td>
-<td><strong>uxcell 6061 sheet, 300 × 150 × 2 mm, ~185 mm unused</strong>
-(115 mm used; operator 2026-10-21): nest 3 plates on the existing 2 mm
-NC. Also for camera-mount cutouts (operator 2026-10-21): the spare
-<strong>5052, 200 × 200 × 2</strong> (blue sandblasted/anodized; the
-existing 2 mm NC) and the remaining <strong>AliExpress 1060, 200 × 300 ×
-3</strong> (⚠️ needs a 3 mm camera NC: the 2 mm NC's Z −3.0 won't break
-through).</td>
-<td>🟢 Stock <strong>ON HAND</strong> (operator: plenty) + <strong>TO
-MACHINE</strong>. <strong>Machine 3 in one fixture session: Halo + Nova
-+ a spare</strong> (operator 2026-10-20: once a plate is in the fixture,
-cut more, since every run means a chip mess and a clean-up)</td>
-</tr>
-<tr>
-<td>Wand heatsink puck Ø54 × 10
-(<code>lumi_wand_heatsink.nc</code>)</td>
-<td>1 per wand</td>
-<td><strong>Finned Al heatsink extrusion, 300 × 60, ~200 mm
-left</strong> (100 mm used; operator 2026-10-21)</td>
-<td>🟢 Stock <strong>ON HAND</strong> + <strong>TO MACHINE</strong>: 2
-pucks in the 2026-10-21 session (Nova gets a wand on day 1).</td>
-</tr>
-<tr>
-<td>ArmPi hex servo base plate</td>
-<td>0</td>
-<td>—</td>
-<td>🟢 Comes with the arm</td>
-</tr>
-</tbody>
-</table>
-<p>Tools: all in kit (MM-1000 takes OZ8 collets; 1/8" + 1/4" on
-hand).</p>
-<h3 id="178-fasteners-hardware-and-consumables-from-the-cad-macros">17.8
-Fasteners, hardware and consumables (from the CAD macros)</h3>
-<table>
-<thead>
-<tr>
-<th>Item</th>
-<th>Qty</th>
-<th>Where</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MGN15H rail (~302 mm, confirm vs Ceiling_Rail_Mount_Guide) +
-carriage</td>
-<td>2 + 2</td>
-<td>Ceiling mount</td>
-<td>🟢 <strong>ON HAND</strong>: Nova gets its own rail; "an extra one
-in stock" (operator 2026-10-20). Confirm it's the full set: 2 rails + 2
-carriages</td>
-</tr>
-<tr>
-<td>M3 SHCS (carriage → plate)</td>
-<td>8</td>
-<td>Base plate</td>
-<td>🟡 <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td>M4 female threaded standoff, Ø5.4 body (fence posts 1–6)</td>
-<td>6</td>
-<td>Fence</td>
-<td>🟡 <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td><strong>M4 M-F brass hex standoff, 30 mm</strong> (fence 60 →
-<strong>90 mm</strong>, operator 2026-10-22, for the power-bay carrier
-headroom): one added per fence post, between the plate stud and standoff
-#2 (CAD)</td>
-<td>6 per robot</td>
-<td>Fence posts 1–6</td>
-<td>🟡 <strong>COUNT</strong> in the brass multi-kit, else 🔴 <strong>TO
-BUY</strong>: 18 for Halo, Ultra and Nova (+ spares)</td>
-</tr>
-<tr>
-<td><strong>Power-bay carrier screws, self-tap only</strong> (operator
-2026-10-22; CAD self-tap-only gate): <strong>counts per robot:</strong>
-<strong>M1.7 × 6 button-head-with-washer self-tap ×12</strong>
-(INA226-MAIN × 4: adapter → posts 2 + board → adapter 2; INA226-BATT × 2
-on the carrier, INA226-DROK (INA3) × 2 on the carrier, Mus-14 × 4; Ø1.3
-pilots; <strong>dry-fit one screw per board</strong>: if the washer
-flange sits on the INA226 header plastic, use a plain M1.7 pan head or a
-nylon washer instead); <strong>M2.5 × 8 pan self-tap ×4</strong> for the
-one TMP102 (+ 2 for the IP6518 on the mains-side wall, Creator builds);
-<strong>M2 × 8 pan self-tap ×2</strong> for the G469's 2 support posts
-(Ø1.6 pilots; posts stop 0.1–0.5 under the seated board, shim at fit);
-<strong>M3 × 8 pan self-tap ×4</strong> (the block: HL-PBB ×2, breakout
-×2); carrier → bars: 4 more M3 × 8 pan self-taps through the bar tabs'
-Ø3.4 holes (slim driver ≤ 6 mm); <strong>M3 × 12 pan self-tap
-×4</strong> for the battery hold-down pads (from above, Ø2.5 blind
-pilots). <strong>M3 × 12 pan self-tap ×4</strong> for the ZK-SJ20 (into
-the seat's end bars + deck, no shims) and <strong>M3 × 10 pan self-tap
-×2</strong> for the carrier's front ears (into the fence's front pads,
-Ø2.5 pilots) (carrier release b6a53ce7; both in stock). The PSU is
-screwed to the base plate, not strapped. G469 stacked on the breakout
-header <strong>plus 2 carrier posts</strong> (operator: header-only was
-wobbly).</td>
-<td>per robot</td>
-<td>Power-bay carrier</td>
-<td>M1.7 × 6 (XunLiu stainless, button head with washer, 100 pcs) and
-M2.5 × 8 (CLAHJQX 304 stainless, Phillips pan, 100 pcs): ✅
-<strong>Stock</strong>, both arrived 2026-10-29. <strong>M2 × 8 and M3 ×
-8 pan self-taps: Stock</strong> (HanTof kit, §1.2)</td>
-</tr>
-<tr>
-<td>3/4″ M4 F standoff + M4 SHCS + M4 fender washer ≥ Ø15</td>
-<td>2 + 2 + 2</td>
-<td>Base-cover tubes</td>
-<td>🟡 <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td>Per EBC cover: 3/4″ M4 F standoff + M4 SHCS + plain 1″ post</td>
-<td>×2 covers</td>
-<td>EBC covers</td>
-<td>🟡 <strong>COUNT</strong></td>
-</tr>
-<tr>
-<td>M3 self-tapping threaded insert (for the existing Ø4.0 bores) +
-<strong>M3 × 25 machine screw</strong> (through the 20 mm NF-A4x20 frame
-into the insert)</td>
-<td>8 + 8</td>
-<td>Fence fans</td>
-<td>🟡 <strong>COUNT</strong> (inserts and screws: both kits stop at M3
-× 20)</td>
-</tr>
-<tr>
-<td>M2 × 10 Torx pan machine screw + M2 nut (PIR: through fence wall +
-PCB, nut on the PCB side)</td>
-<td>8 + 8</td>
-<td>Fence</td>
-<td><strong>Stock</strong> (GB2672 kit)</td>
-</tr>
-<tr>
-<td>M3 pan self-tap (AC inlet ×2, into the fence's M3 mount posts)</td>
-<td>2</td>
-<td>Fence</td>
-<td><strong>Stock</strong> (HanTof kit)</td>
-</tr>
-<tr>
-<td>M4 SHCS + 2 mm foam pad (battery straps)</td>
-<td>4 + 2</td>
-<td>Base plate</td>
-<td>🟡 <strong>COUNT</strong> (nut side not modelled: Electronics to
-confirm)</td>
-</tr>
-<tr>
-<td>M3 × 10 pan self-tap</td>
-<td>4</td>
-<td>Base cover</td>
-<td><strong>Stock</strong> (HanTof kit)</td>
-</tr>
-<tr>
-<td>Mic carrier <strong>v5</strong> (CAD 3b36242): 7× M3 × 8 pan
-self-tap, 4× M3 × 16 pan self-tap (R818/parts, unchanged) + <strong>4×
-M3 × 8 Torx pan MACHINE screws</strong> (304 SS, GB2672 kit) through the
-carrier's corner Ø3.4 holes and the elec-bay cover into the front/back
-plate flanges' M3 threads (M3 × 10 also clears), rubber washers, 1 mm
-foam</td>
-<td>set</td>
-<td>§16</td>
-<td>Self-taps (M3 × 8, M3 × 16): <strong>Stock</strong> (HanTof kit). M3
-× 8 Torx machine: <strong>Stock</strong> (GB2672 kit). The carrier lies
-flat on the cover; the cover's central Ø4.2 holes are unused</td>
-</tr>
-<tr>
-<td>Camera adapter: 2× M2 (servo) + 2× M3 (plate) Torx pan machine
-screws; OAK-D M4 pair</td>
-<td>set</td>
-<td>Camera</td>
-<td>M2 / M3: <strong>Stock</strong> (GB2672 kit). OAK-D <strong>M4
-machine pair: 🟡 COUNT</strong> (neither kit has M4 machine screws)</td>
-</tr>
-<tr>
-<td>Wand: 3× M3 SHCS (heatsink), M2 self-taps (KESHY posts ×6, JST-F ×2,
-cradle ears ×2), bulkhead M3 self-tap ×4 (verify v9.12), 3× VMQ O-ring
-(<strong>19 × 21 × 1.0</strong> for WHITE21)</td>
-<td>set</td>
-<td>Wand</td>
-<td>🟡 O-rings: 50 + 50 ordered 10-17 (confirm delivery)</td>
-</tr>
-<tr>
-<td>Cartridge: Keystone 5221 buttons + 5222 springs (4× 26700); contact
-plates 2× M1.2 × 3 round-head self-tap each (16 total; CAD draws × 2.5,
-the 3 mm tip breaks the cap's outboard face by 0.09 mm at r ≈ 18, clear
-of the stop ring); spacers 4× M1.2 × 3 CS each (8 total)</td>
-<td>set</td>
-<td>Cartridge</td>
-<td>✅ <strong>M1.2 Stock</strong>: uxcell 50× M1.2 × 3 round head +
-100× M1.2 × 3 countersunk, delivered 2026-10-07/08</td>
-</tr>
-<tr>
-<td>Wire 18 / 22 / 26 AWG silicone; 18 AWG mains-rated + green</td>
-<td>spools</td>
-<td>Bay</td>
-<td>🟡 18/22/26 <strong>SPARE</strong>; mains-rated
-<strong>COUNT</strong></td>
-</tr>
-<tr>
-<td>Ferrules E1008 / E0508 / E0308 / E0208 + AIRIC violet (E0508
-<strong>banned at the G469</strong>)</td>
-<td>kits</td>
-<td>All cage landings</td>
-<td>🟡 <strong>SPARE</strong> (no per-size count)</td>
-</tr>
-<tr>
-<td>JST-XH (TAREA 600-pc), Kuject terminals, Fastons, Tellegloww
-piggybacks (23+), heat-shrink, Permatex 81158, Wago</td>
-<td>kits</td>
-<td>General</td>
-<td>🟢 <strong>SPARE</strong></td>
-</tr>
-<tr>
-<td>Wand electronics (<strong>Nova gets a wand on day 1</strong>): KESHY
-3 W drivers ×12, PCA9685 (0x41; 🟢 <strong>3 in stock total, operator
-2026-10-25: Halo + Nova use 2, 1 spare</strong>), LED stars ×3 (2 RGBW +
-1 RGBWW), lens set, 8329TCM epoxy, ST1 rails ×3, 6-pin XH tether (22 AWG
-×3 + 26 AWG ×3, ~550–600 mm)</td>
-<td>set</td>
-<td>Wand</td>
-<td>🟡 KESHY: 29 on hand (Electronics) vs 14/15 in WI.
-<strong>COUNT</strong>. PCA9685: 3 boards owned. Stars: 10 + 10 owned,
-<strong>COUNT</strong> unbonded</td>
-</tr>
-</tbody>
-</table>
-<h3 id="179-count-on-the-shelf-no-usable-count-in-the-docs">17.9 Count
-on the shelf (no usable count in the docs)</h3>
-<p>Check these physically, then strike them from the order list or add
-them to it.</p>
-<ul>
-<li>🟡 <strong>Compute:</strong> spare Pi 5 cooler, NVMe, MECCANIXITY
-breakouts (female + male), G469.</li>
-<li>🟡 <strong>Arm:</strong> rubber pads.</li>
-<li>🟢 <strong>Sensors and bay boards (Electronics' inventory, operator
-counts 2026-11-25):</strong> TMP102 ×4 generic (2026-10-22 order) +
-Halo's mounted bay TMP102; HC-SR501 ×4 + Halo's 4; INA226 ×6 + Halo's 1;
-G469 ×2 + Halo's 1; NF-A4x20 bay fans ×4 + Halo's 2; rocker switches
-~12. Per-bay need vs stock: §16f.1. 🟡 M3 self-tapping threaded inserts
-×8 (fence fans): still to count.</li>
-<li>🟡 <strong>Power:</strong> ALEAIVY pack, C14 (5 in stock, AC-04C),
-4.8 flag Fastons (in stock, 2026-11-17), C13 cord, barrel pigtail,
-mains-rated 18 AWG.</li>
-<li>🟡 <strong>USB:</strong> 0.5 ft C-C (3-pack remainder),
-CableCreation (3-pack remainder).</li>
-<li>🟡 <strong>Hardware:</strong> M4 F standoffs (Ø5.4, 3/4″), plain 1″
-posts, M3 × 16 pan self-taps, M2/M3 screws, Keystone 5221/5222.</li>
-<li>🟡 <strong>Filament:</strong> ASA black, PETG+ grey, PLA+ blue
-remaining.</li>
-</ul>
-<h3 id="1710-order-list-confirmed-to-buy-as-of-2026-10-20">17.10 Order
-list (confirmed TO BUY as of 2026-10-20)</h3>
-<p><strong>Compute:</strong></p>
-<ul>
-<li>🔴 Raspberry Pi 5 16 GB</li>
-<li>🔴 Waveshare PCIe TO M.2 USB HAT+</li>
-<li>🔴 NVMe SSD (Samsung preferred)</li>
-<li>🔴 microSD (backup repo)</li>
-<li>🔴 ShanWan gamepad + dongle</li>
-</ul>
-<p><strong>Sensors:</strong></p>
-<ul>
-<li>🔴 OAK-D S2 <strong>auto-focus</strong></li>
-<li>✅ reSpeaker Flex XVF3800 Circular-4 (1 set) + TLZWLA 5090 10 W 4 Ω
-speaker (1): on hand, nothing to buy.</li>
-<li>⛔ HiWonder mic array full bundle: do not buy. <strong>iFLYTEK
-DROPPED as a fleet/production part (operator 2026-11-02): no more kits,
-not for new builds. The one kit already owned stays in use on Ultra or
-Halo. Production replacement not chosen.</strong></li>
-<li>🔴 Sunon MC40201V2-Q000-S99 fence fan ×2 (AliExpress)</li>
-<li>🔴 ACP4010-12-PWM wand fan ×2 (1 spare already on hand)</li>
-</ul>
-<p><strong>Power:</strong></p>
-<ul>
-<li>🟢 MZMW PSC-100-12: ordered 2026-10-22 (§17.10a); a spare now that
-Nova takes the PSC-150 (§17.4)</li>
-<li>🟢 HL-PBB-2-6-MINI: 3 on hand (Ultra, Halo, Nova)</li>
-<li>🟢 Power-bay carrier self-taps <strong>M1.7 × 6</strong>: XunLiu
-stainless button head with washer, <strong>1 × 100 pcs, arrived
-2026-10-29</strong> (12 per robot with the MAIN adapter; plenty for
-Ultra, Halo and Nova). <strong>M2.5 × 8</strong> (CLAHJQX pan self-tap,
-304, 100 pcs): <strong>arrived 2026-10-29</strong> with it. The HL-PBB's
-2 × M3 × 8 come from stock.</li>
-<li>🟢 PIR leads built from scratch (Electronics 40e356f): ~4.5 m of 26
-AWG Fermerry silicone per robot (carrier v18d cuts 460/510/240/280) + 4
-Dupont 3-way housings + 12 female pins (PEBA kit), all in stock</li>
-<li>🔴 M4 M-F brass hex standoff, 30 mm ×18 (+spares): taller 90 mm
-fence, 6 per robot; check the brass kit first</li>
-<li>🔴 Locking C14 inlet (retention clip or V-Lock + locking cord) ×2:
-Nova + Halo (Ultra already has one); fit-check one first</li>
-<li>🟡 Flashlight cartridge connector: <strong>XT30</strong> (operator,
-2026-11-05). <strong>IN STOCK</strong>: XT30/XT30U yellow, 10 male +
-female pairs (AliExpress). Not stated as genuine Amass: before first
-use, solder one pair and check the housing doesn't soften at the cup,
-and meter polarity per <a href="Power_Bay_Design.html">Power_Bay
-§16b.1</a>.</li>
-<li>🔴 ALEAIVY pack, unless the shelf count finds spares. The STM32 rail
-is the ZK-SJ20 (ordered, §17.4)</li>
-</ul>
-<p><strong>Cables:</strong></p>
-<ul>
-<li>⛔ U6 / U10 (iFLYTEK UAC extension, mic FFC): do not buy (iFLYTEK
-dropped as a fleet part)</li>
-<li>🔴 GELRHONR USB-A→C 1 m Black-Left</li>
-<li>🔴 20 cm flat A→C, unless spare</li>
-</ul>
-<p><strong>Aluminium:</strong></p>
-<ul>
-<li>🔴 uxcell 6061 sheet, 300 × 200 × 3 mm, <strong>×2</strong>: Nova
-base plate + Halo's 6061 replacement, machined together (<a
-href="https://a.co/d/0a7k0UIZ">https://a.co/d/0a7k0UIZ</a>)</li>
-</ul>
-<p><strong>CNC tooling:</strong></p>
-<ul>
-<li>🔴 SHARPRO 1/8" (Ø3.175) single-flute O-flute endmill, 1/4" shank,
-flute ≥ 15 mm, <strong>×2</strong> (only one on hand, in the chuck; CNC
-402902b)</li>
-</ul>
-<p>Camera-plate and heatsink stock are on hand.</p>
-<ul>
-<li>🔵 <strong>Creator edition only, buy WITH the 4 TB NVMe (not
-now):</strong> a low-profile <strong>M.2 2280 heatsink, ≤ 4 mm total
-incl. pad</strong>, aluminium / copper, top-side pad, adhesive or clips
-(no under-drive bands); fallback a 0.5–1 mm copper / graphene
-heat-spreader label. <strong>Measure first:</strong> the gaps under and
-above the drive on the real stack. Drive criteria + gate: EBD §3.6
-"Creator edition — 4 TB NVMe option".</li>
-</ul>
-<h3 id="1710a-ordered-2026-10-22-aliexpress">17.10a Ordered 2026-10-22
-(AliExpress)</h3>
-<p><strong>Arrival checklist:</strong> <a
-href="Power_Bay_Design.html">Power_Bay_Design.md §16b</a> (Electronics
-b586eac). It covers the battery XT30 lead + BMS ≥ 10 A, the INA226 shunt
-code (⚠️ R010 clips the ~8 A peaks), TMP102 ADD0 tied in the cable, and
-a CC/CV buck ≥ 8 A continuous. Caliper every board's holes for CAD.</p>
-<table>
-<thead>
-<tr>
-<th>Item</th>
-<th>Qty</th>
-<th>Total</th>
-<th>Status</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>MZMW <strong>PSC-100-12</strong> UPS PSU, 100–240 V, 100 W</td>
-<td>1</td>
-<td>$25.95</td>
-<td>confirmed</td>
-<td>Spare: Nova takes the PSC-150 (§17.4)</td>
-</tr>
-<tr>
-<td><strong>32700 4S1P 12 V 10 Ah LiFePO4</strong> pack, <strong>XT30 +
-JST</strong> leads</td>
-<td>1</td>
-<td>$39.96</td>
-<td>confirmed</td>
-<td>⚠️ XT30, NOT the ALEAIVY 5.5 × 2.1 barrel: needs an XT30 → CH2 lead
-(F1 stays first off the pack). Check the BMS low-temp cut-off on
-arrival</td>
-</tr>
-<tr>
-<td><strong>HL-PBB-2-6-MINI</strong> 16 A / 48 V distribution</td>
-<td>2</td>
-<td>$14.52</td>
-<td>received 2026-10-22</td>
-<td>The HL-PBB is the only block (operator 2026-11-24). 3 on hand with
-an earlier unit: Ultra, Nova, Halo's rebuild; Halo HV needs 1 more</td>
-</tr>
-<tr>
-<td><strong>INA226, R002 shunt</strong> (orange + green screw terminals,
-A0/A1 address pads, header GND/SCL/SDA/VCC): the same GODIYMODULES-style
-board as Halo's INA226-MAIN</td>
-<td>4</td>
-<td>—</td>
-<td><strong>in transit</strong> (collected by carrier 2026-10-23)</td>
-<td>✅ Meets the spec (Electronics c52bde5): R002 confirmed from the
-listing photo's shunt body code. Holes fit the carrier's posts (INA3
-fit-checked 2026-11-26); BATT and INA3 go straight on; MAIN goes on a
-printed adapter for placement. INA226-BATT for Halo, Ultra, Nova + 1
-spare</td>
-</tr>
-<tr>
-<td><strong>HC-SR501 PIR</strong> (HC-SR501-BLUE, 10-pack)</td>
-<td>10</td>
-<td>$11.64</td>
-<td>confirmed 2026-10-24</td>
-<td>Nova's 4 + spares. Same module the fence PIR mounts and the carrier
-PIR-corner keep-outs are modelled on; caliper the back-component height
-on arrival (CAD assumed 8.5)</td>
-</tr>
-<tr>
-<td><strong>SPS30</strong> particulate (dust) sensor</td>
-<td>1</td>
-<td>$24.27</td>
-<td>confirmed 2026-10-24</td>
-<td>Nova's hazard pair (§17.3) is covered + one spare. Check the
-variant/cable on arrival (listing SKU text is blank)</td>
-</tr>
-<tr>
-<td><strong>TMP102</strong> high-precision module</td>
-<td>4</td>
-<td>$7.63</td>
-<td>confirmed</td>
-<td>⚠️ Generic, not SparkFun Qwiic: check its hole pattern vs the
-carrier's 21 × 21 posts, the connector and the address pins on
-arrival</td>
-</tr>
-<tr>
-<td><strong>Geekworm G469</strong> terminal breakout</td>
-<td>2</td>
-<td>$20.71</td>
-<td><strong>shipped</strong></td>
-<td></td>
-</tr>
-<tr>
-<td><strong>40P FPC/FFC adapter board</strong> (0.5 mm → 2.54 mm)</td>
-<td>4</td>
-<td>$26.12</td>
-<td>confirmed</td>
-<td>The breakout the carrier is being made compatible with (53.87 ×
-25.81, 2 holes ~48.8 c/c, caliper on arrival)</td>
-</tr>
-<tr>
-<td>40P FFC/FPC 0.5 mm connector, straight header</td>
-<td>4</td>
-<td>$17.09</td>
-<td>confirmed</td>
-<td></td>
-</tr>
-<tr>
-<td><strong>Sunon MC40201V2-Q000-S99</strong> fence fan</td>
-<td>4</td>
-<td>$24.81</td>
-<td>confirmed</td>
-<td>Planned 2; 4 ordered (Electronics suggested 3–4). Acceptance test
-per Power_Bay §11.2.0a</td>
-</tr>
-<tr>
-<td><strong>ACP4010-12-PWM</strong> wand fan, 12 V, double ball</td>
-<td>1</td>
-<td>$13.52</td>
-<td>confirmed</td>
-<td>✅ Enough: 2 already in stock + this 1 = <strong>3 wand fans for 3
-wands</strong> (operator 2026-10-22)</td>
-</tr>
-<tr>
-<td>CC/CV buck converter, DC-DC</td>
-<td>1</td>
-<td>$14.66</td>
-<td>confirmed</td>
-<td>A CC/CV buck; the STM32 rail is now the ZK-SJ20, so this is a spare:
-confirm the part</td>
-</tr>
-</tbody>
-</table>
-<h3 id="1711-open-decisions">17.11 Open decisions</h3>
-<ol type="1">
-<li><strong>HAT 5 V source.</strong> The dual-USB-C buck (doc name
-Mus-14, fixed 5 V), 5 on hand, self-tapped onto the power-bay carrier.
-It stays unless the ≥ 4.90 V gate fails at install; the interim until
-the LM25116 300 W CC/CV buck (🔴 not ordered; CAD reserves its carrier
-spot, ≈ 61 × 53 × 28).</li>
-<li><strong>DC rocker — closed.</strong> The operator keeps the KCD1,
-which has 6 months of AC/DC service. The rockers are a <strong>rear-wall
-mirror pair</strong>: DC under fan 1, AC under fan 2.</li>
-<li><strong>Fusing — closed.</strong> One fuse on every build, Halo HV
-included: F1 on the battery lead, 10 A 6 × 30 glass, in stock. No servo
-fuse (operator order 2026-11-24).</li>
-<li><strong>HL-PBB mount:</strong> 2 × Ø4 holes at <strong>64 mm
-c/c</strong> (calipered). It self-taps onto the carrier's two posts with
-<strong>M3 × 8 pan self-taps</strong>.</li>
-<li><strong>Rail — closed.</strong> Nova gets its own rail (one spare in
-stock); 4 PA-CF rail stops to print.</li>
-<li><strong>Hazard sensors — closed.</strong> Nova gets the SPS30 +
-ZE15-CO, both in stock.</li>
-<li><strong>Wand — closed.</strong> Nova gets a wand on day 1 (operator
-2026-10-20). The heatsink, KESHY, PCA9685, LED, lens, tether and
-wand-fan lines all apply.</li>
-<li><strong>Lens plate — closed.</strong> WHITE21; 2 NylonX prints on
-2026-10-21 (H2S plate 23). ⏸ <em>2nd print on hold (operator 2026-10-23)
-until the uxcell-lens mechanical fit is confirmed.</em></li>
-<li><strong>OAK-D S2 — closed.</strong> Auto-focus.</li>
-<li><strong>U7 extension — closed.</strong> A 6″ left-angle USB 3.0 M→F
-extension (the 1 ft CableCreation is too long) + a clip-on ferrite.</li>
-<li><strong>"3 simple CNC plates" — closed.</strong> They are the OAK-D
-camera mounting plates; batch all 3 in one fixture session.</li>
-</ol>
-<h3 id="1712-bring-up-and-config-no-purchase-mirror-halo">17.12 Bring-up
-and config (no purchase; mirror Halo)</h3>
-<ul>
-<li><strong>Network:</strong>
-<ul>
-<li>hostname <code>lumiai-nova</code>, with
-<code>127.0.1.1 lumiai-nova</code> in its <code>/etc/hosts</code>.
-Without it, every sudo waits ~88 s on DNS.</li>
-<li>two static IPs (wired + Wi-Fi) with two AmpliFi DHCP reservations by
-MAC.</li>
-<li>GMKtec <code>/etc/hosts</code> + the fleet sync map.</li>
-</ul></li>
-<li><strong>Access:</strong> login user, GMKtec SSH key, NOPASSWD sudo,
-docker group.</li>
-<li><strong>Container:</strong> <code>LumiNova</code>
-(<code>lumiai-ultra:v1.0-dev</code>),
-<strong><code>--privileged -v /dev:/dev</code></strong>, never a frozen
-<code>--device</code> list (Rosmaster lost its gamepad and STM32 for 5
-days). Label <code>ai.lumi.fleet.role=ros-runtime</code>.</li>
-<li><strong>ROS:</strong> CycloneDDS with
-<code>/etc/sysctl.d/99-cyclonedds.conf</code> (rmem_max). udev
-<code>/dev/stm32_nova</code> by the ID_PATH of Pi native black #1, never
-a raw ttyUSBn.</li>
-<li><strong>Robot description:</strong> <code>nova.urdf.xacro</code> /
-controllers yaml / launch cloned from Halo (<code>/nova</code>),
-<code>auto_reconnect=true</code>, <code>recovery_glide_rad_s=0.4</code>,
-<code>nova_stack.service</code>.</li>
-<li><strong>Servo commissioning:</strong> IDs 1–6, horn index at pulse
-500, per-unit EEPROM offset trims to Ultra pose parity. Startup pose
-[210, 500, 110, 825, 600, 500].</li>
-<li><strong>Backups:</strong> restic daily/weekly + Docker images. In
-cron.d use <strong><code>MAILTO=""</code></strong>: a bare
-<code>MAILTO=</code> silently disabled every image backup on 10-11..13.
-Set <code>RESTIC_RUN_AS</code> to the repo owner.</li>
-<li><strong>Fleet:</strong> monitoring rows (Fleet session adds them
-once the hardware is up); Telegram name "Nova".</li>
-<li><strong>EBC cover fit:</strong> Nova is built on the ArmPi Ultra
-base plate from the start, unlike Halo (an FPV moved onto it, whose bay
-sits a little off). At assembly, caliper the elec bay wall END → each
-cover's panel inner face (front, back, top) and send the numbers to CAD,
-which will check the bay position in the assembly model (operator
-2026-10-20: "we'll caliper the nova when we get to it").</li>
-<li><strong>Labels:</strong>
-<ul>
-<li>an asset label on the unit: hostname, eth + Wi-Fi MAC, static
-IPs.</li>
-<li>a label on the gamepad dongle, so pads never swap between
-robots.</li>
-</ul></li>
-</ul>
 <h2
 id="16b-power-bay-carrier-build--where-it-lives-pointer-2026-10-23">16b.
 Power-bay carrier build — where it lives (pointer, 2026-10-23)</h2>
@@ -5285,6 +3911,1380 @@ current-limited bench supply, meter.</li>
 <li>First sound at low volume; set the max volume on the bench against
 the XMOS limits (THD 3–5 %, 6–10 dB mic headroom).</li>
 </ol>
+<h2 id="17-nova-build--bill-of-materials-compiled-2026-10-20">17. Nova
+Build — Bill of Materials (compiled 2026-10-20)</h2>
+<p><strong>Nova</strong> is the next robot after Halo (name locked
+2026-06-14). It is a fleet codename: the product is still LumiAI Halo;
+Nova is <em>which</em> machine. It is an Ultra-compatible arm kit, with
+the same codebase as Halo and Ultra and per-unit config only. Host
+<code>lumiai-nova</code>, container <code>LumiNova</code>, namespace
+<code>/nova</code>, ROS_DOMAIN_ID 100.</p>
+<p>Compiled from every domain session on 2026-10-20: Electronics, CAD,
+3D Printing, CNC, Ultra, ROSMaster, Fleet and Marketing. Stock was
+checked against every inventory and order record in the repo.</p>
+<p><strong>Colour key (operator 2026-10-20):</strong></p>
+<ul>
+<li>🟢 <strong>we have it</strong> for Nova (on hand, spare, or comes
+with a kit we have).</li>
+<li>🔴 <strong>we need it</strong>: to buy, or it comes inside a kit we
+still have to buy.</li>
+<li>🟡 <strong>just enough for Halo</strong>: stock covered Halo, but
+there is no confirmed spare for Nova. Count it on the shelf (§17.9)
+before ordering.</li>
+</ul>
+<p><strong>Status key:</strong></p>
+<ul>
+<li><strong>ON HAND</strong>: the operator has it, set aside for
+Nova.</li>
+<li><strong>SPARE</strong>: the docs record a spare left after Halo and
+Ultra.</li>
+<li><strong>TO BUY</strong> / <strong>TO MAKE</strong> / <strong>TO
+PRINT</strong> / <strong>TO MACHINE</strong>: still to do.</li>
+<li><strong>COUNT</strong>: the docs give no usable count. Check the
+shelf before ordering (§17.9).</li>
+</ul>
+<h3 id="171-what-changes-from-halo">17.1 What changes from Halo</h3>
+<ol type="1">
+<li><strong>Distribution block: HL-PBB-2-6-MINI</strong> (16 A / 48 V, 2
+inputs, 6 output pairs), the only block on every build (operator
+2026-11-24). Halo keeps its modified APIELE until its bay is rebuilt;
+Ultra has no block yet and gets one; the D-1459 is a bench spare.
+<ul>
+<li>The §11.3.3 port map carries over 1:1.</li>
+<li>Mount: <strong>M3 × 8 pan self-tap ×2</strong> onto the power-bay
+carrier's two Ø7 posts (Ø2.5 pilots, §17.8 carrier-screw row), through
+its 2 × Ø4 holes at <strong>64 mm c/c</strong> (calipered; one per short
+end, centred, 1.5 mm from the edge). The board is 70 × 22 mm, 23 mm
+tall.</li>
+<li>Loads: bay peak ~8 A = 50 % of 16 A; busiest branch the servo-rail
+buck input, ~4.6 A at 13.8 V for ~8 A of servos at 7.5 V.</li>
+</ul></li>
+<li><strong>DC rocker UPSTREAM of the whole V+ bus</strong> (the Halo-v2
+fix):
+<code>PSU CH1 → INA226 → DC rocker LINE→LOAD → HL-PBB input</code>. ⚠️
+This segment-map row does not exist yet (Power_Bay_Design §11.3 note);
+draw it with Nova's map. The rocker now carries the full bus, ~8–9 A DC
+peak. <strong>Operator ruling (2026-10-20): the KCD1 stays.</strong>
+These switches have been in service for 6 months on AC and DC. The
+KCD1's documented ratings are AC only (6 A at 250 VAC / 10 A at 125
+VAC); Nova is the first build at full-bus current. Feel the switch body
+after a long run.</li>
+<li><strong>Bay power wiring 18 AWG / E1008 from day one</strong> (Halo
+v1 ran 16 AWG).</li>
+<li><strong>No extra-tall 2×20 stacking header</strong> — the HAT's
+pass-through gives the height.</li>
+<li><strong>PCA9685 (wand) ships at 0x41</strong>, with the A0 pad
+bridged. 0x40 is the HAT's INA219, which stays at its factory
+address.</li>
+<li><strong>EBC covers v6</strong> (CAD 2df29a1, watertight). Plate 06
+still prints with supports ON (critical-only): Studio flags the left
+cover with them off.</li>
+<li><strong>Production material is ASA</strong> for structural prints
+(§17.6).</li>
+<li><strong>Fence fans mount on self-tapping threaded inserts</strong>
+in the fence's existing Ø4.0 bores (operator 2026-10-20). The fence is
+unchanged and there is no CAD change.</li>
+<li>Not bought for Nova: the ArmPi hex servo base plate, the arm base
+plate and the STM32 (all come with the HiWonder arm kit), the APIELE,
+WonderEcho, X1001, extra-tall header, the Ultra mecanum
+chassis/motors/encoder module, and the legacy CNC ceiling channels.</li>
+</ol>
+<h3 id="172-arm-control-and-compute">17.2 Arm, control and compute</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Use</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HiWonder ArmPi Ultra arm, 6 bus servos (IDs 1–6) + hex servo base
+plate + arm base plate</td>
+<td>1 kit</td>
+<td>Arm</td>
+<td>🟢 <strong>ON HAND</strong> (operator)</td>
+</tr>
+<tr>
+<td>HiWonder STM32 controller (CH340 1a86:7523)</td>
+<td>1</td>
+<td>Servo bus, 5 V 5 A USB-C out to the Pi</td>
+<td>🟢 <strong>ON HAND</strong> (in the kit)</td>
+</tr>
+<tr>
+<td>BigClaw gripper body + HTS-25L servo (85 mm jaw, fleet
+standard)</td>
+<td>1</td>
+<td>End effector</td>
+<td>🟢 <strong>ON HAND</strong>: one extra BigClaw + HTS-25L for Nova
+(operator 2026-10-20)</td>
+</tr>
+<tr>
+<td>Rubber pads, one-sided adhesive (jaws + wand-ear cradles)</td>
+<td>1 set</td>
+<td>Gripper</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td><em>(optional accessory)</em> BigClaw <strong>phone cradle</strong>
+hardware: 1 × <strong>M4 × 40 hex bolt</strong>, 304 fully threaded, 7
+AF (uxcell, Amazon B07JFJGJ91); 1 × <strong>flat knurled thumb nut, M4,
+Ø20 × 5</strong>, 304 (MECCANIXITY, Amazon B0FJMQF9HD); 1 × <strong>M4
+DIN 125 washer</strong>; <strong>4</strong> × M3 × 12 self-tap (knob
+frame; +2 for the catch); <strong>2 × M4 × 16 pan self-tap</strong>
+(post → foot; HanTof kit); <strong>1 × HELIFOUNER 1/4"-20 steel screw-in
+insert, 10 mm</strong> (the post's base end); silicone grease</td>
+<td>1 set</td>
+<td>Holds 40 phones (80 variants, bare or slim case) in the BigClaw —
+BOM in <a
+href="LumiAI%20Robotic%20Arm%20System.html#mounts--payloads-one-arm-many-configurations">Robotic
+Arm System → Mounts &amp; Payloads</a></td>
+<td>🟡 <strong>ON HOLD</strong> until the printed fit is accepted: the
+M4 × 40 bolt and the thumb nut (to buy). Washer, M3 × 12, M4 × 16, the
+1/4"-20 insert and grease: <strong>Stock</strong></td>
+</tr>
+<tr>
+<td>Aluminium servo horn, base joint</td>
+<td>1</td>
+<td>Base servo</td>
+<td>🟢 <strong>ON HAND</strong>: comes with the BigClaw (operator
+2026-10-20)</td>
+</tr>
+<tr>
+<td><strong>Raspberry Pi 5, 16 GB</strong> (the production floor; 8 GB
+is bench only)</td>
+<td>1</td>
+<td>Compute</td>
+<td>🔴 <strong>TO BUY</strong> (operator 2026-10-20)</td>
+</tr>
+<tr>
+<td>Pi 5 active cooler (with a working tach)</td>
+<td>1</td>
+<td>Pi</td>
+<td>🟡 <strong>COUNT</strong>. ⚠️ Power it from the Pi fan header,
+<strong>never</strong> the RasAdapter/STM32 5 V (Ultra's 09-26
+lapse)</td>
+</tr>
+<tr>
+<td>Waveshare <strong>PCIe TO M.2 USB HAT+</strong> (INA219 0x40, R010
+shunt, isolated POWER input)</td>
+<td>1</td>
+<td>NVMe + 4× USB</td>
+<td>🔴 <strong>TO BUY</strong> (the two on record are on Ultra and
+Halo)</td>
+</tr>
+<tr>
+<td>NVMe M.2 SSD 2230–2280</td>
+<td>1</td>
+<td>Boot drive on the HAT</td>
+<td>🔴 <strong>TO BUY</strong>. Prefer a Samsung like Ultra's; a
+Kingston NV2 needs APST/ASPM disabled in cmdline (Halo, 10-16)</td>
+</tr>
+<tr>
+<td>microSD for the restic backup repo</td>
+<td>1</td>
+<td>Backups (Halo: 117 GB)</td>
+<td>🔴 <strong>TO BUY</strong>. Size for ~2.5× the raw image (~22 GB) +
+Docker images (~5–10 GiB)</td>
+</tr>
+<tr>
+<td>ShanWan gamepad + 2.4 GHz dongle (2563:0526, same button map
+fleet-wide)</td>
+<td>1 pair</td>
+<td>Teleop + latched SELECT E-stop</td>
+<td>🔴 <strong>TO BUY</strong>. Verify no cross-talk against BOTH
+Ultra's and Halo's dongles before trusting the E-stop</td>
+</tr>
+<tr>
+<td>Ethernet cable to the robot switch behind Devs_EXT</td>
+<td>1</td>
+<td>Wired net (Wi-Fi: Devs_EXT2)</td>
+<td>🟢 <strong>ON HAND</strong> (plenty)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="173-sensors-camera-voice">17.3 Sensors, camera, voice</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Use</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Luxonis OAK-D S2, auto-focus (AF)</strong> (operator
+2026-10-20)</td>
+<td>1</td>
+<td>Arm-end camera → <strong>a HAT USB 3 port</strong> (operator ruling
+2026-10-27: "The OAK-D plugs into the HAT … as does the iflytek")</td>
+<td>🔴 <strong>TO BUY</strong></td>
+</tr>
+<tr>
+<td><strong>HiWonder far-field mic array, FULL bundle</strong>: R818 +
+ring 6-mic + casing + FFC + CH340 JST→USB-A + UAC JST→USB-A + brass
+standoffs + "USB TO AUDIO" stick + speaker + ferrite extension</td>
+<td>1 kit</td>
+<td>EB-cover carrier (§16)</td>
+<td>⛔ <strong>DO NOT BUY</strong>: <strong>iFLYTEK DROPPED as a
+fleet/production part (operator 2026-11-02): no more kits, not for new
+builds. The one kit already owned stays in use on Ultra or Halo.
+Production replacement not chosen.</strong></td>
+</tr>
+<tr>
+<td><strong>Seeed reSpeaker Flex XVF3800 Circular-4, without
+ESP32S3</strong> (USB / I²S): core board + circular 4-mic array + 20 cm
+24-pin FPC + pin connectors</td>
+<td>1 set</td>
+<td>The design's audio (<a
+href="Electronics_Bay_Design.html#37-audio-system--seeed-respeaker-flex-xvf3800-circular-4--10-w-speaker-the-designs-audio-operator-2026-11-27">EBD
+§3.7</a>): core USB → a HAT USB-A (left-angle USB-A, ⏳ operator names
+the cable); amp 12 V terminal on unfused 22 AWG from the 13.8 V bay
+rail</td>
+<td>✅ <strong>ON HAND: 1 set</strong> (received 2026-11-17). Box
+contents: check on the bench</td>
+</tr>
+<tr>
+<td><strong>TLZWLA 5090 horn speaker, 10 W 4 Ω, 50 × 90 ×
+37</strong></td>
+<td>1</td>
+<td>reSpeaker core speaker JST (⏳ plug / mating TO CALIPER)</td>
+<td>✅ <strong>ON HAND: 1</strong> (received 2026-11-18). The design's
+speaker (operator-confirmed 2026-11-27)</td>
+</tr>
+<tr>
+<td>GODIYMODULES <strong>INA226</strong> (R002), address mod →
+<strong>0x44</strong></td>
+<td>1</td>
+<td>In series on PSU CH1; self-taps onto its carrier posts (Halo v1
+as-built: PSU-cover studs)</td>
+<td>🟡 <strong>COUNT</strong>: 2 owned on record; Halo uses 1, an Ultra
+retrofit would take the other</td>
+</tr>
+<tr>
+<td>GODIYMODULES <strong>INA226-BATT</strong> (R002, stock 2 mΩ),
+address <strong>0x45</strong> (A0 = A1 = VS), both pull-ups lifted</td>
+<td>1</td>
+<td>Battery + lead: pack → F1 → shunt → PSU CH2 BAT+ (ISENSE+ toward the
+PSU: charge +, discharge −). Signed pack current/voltage + AC→battery
+switchover. <strong>Side by side with INA226-MAIN on the power-bay
+carrier</strong>, each on its own printed self-tap posts (operator
+2026-10-22; the carrier insulates every screw, so no nylon hardware).
+Mount detail Power_Bay §5a.4, 18 AWG + Kuject fork lugs, logic on G469
+pins 3/5/1/9. Power_Bay §5a, BringUp Phase 7.7 pull-the-AC gate
+(Electronics 02eed75, fleet-wide after Ultra's 10-22 mains-drop
+blackout)</td>
+<td>🟡 <strong>ORDERED, in transit</strong> (AliExpress):
+<strong>4</strong> (Halo, Ultra, Nova + 1 spare)</td>
+</tr>
+<tr>
+<td>SparkFun Qwiic <strong>TMP102</strong></td>
+<td>2</td>
+<td>Bay 0x48 (no mod) + wand 0x49 (ADD0 cut + V+ bridge)</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td><strong>HC-SR501</strong> PIR</td>
+<td>4 (2 packs)</td>
+<td>Fence corners → G469 GPIO 16/17/20/21</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>Sensirion <strong>SPS30</strong> + Winsen
+<strong>ZE15-CO</strong></td>
+<td>1 + 1</td>
+<td>Bay hazard sensing (Ph7)</td>
+<td>🟢 <strong>ON HAND</strong>: "we have extra ones for nova in stock"
+(operator 2026-10-20). Nova gets them</td>
+</tr>
+<tr>
+<td><strong>Sunon MC40201V2-Q000-S99</strong>: 4020, 12 V, 4-wire PWM
+(AliExpress, SZYTF, ~$4 each)</td>
+<td>2</td>
+<td>Fence back wall; GPIO12 PWM, tach GPIO5/6. Mount: self-tapping
+inserts in the fence's existing Ø4.0 bores</td>
+<td>🔴 <strong>TO BUY</strong> (operator 2026-10-20: "nova will use the
+new fans we order"). Run each through the Power_Bay §11.2.0a acceptance
+test (no datasheet exists for this P/N; tach ≈ 12 V open-circuit =
+REJECT) and record its PWM open-circuit voltage (§11.2.0: ≤ 3.6 V direct
+drive, ~5 V add a 1 kΩ series resistor)</td>
+</tr>
+<tr>
+<td>Wand fan: <strong>ACP4010-12-PWM</strong> 40 × 40 × 10 mm, 12 V,
+4-pin PWM (AliExpress, ACP Cooling Fan Store, item 3256810252164814;
+replaces the Noctua NF-A4x10 in the wand)</td>
+<td>1</td>
+<td>Wand fan (PCA ch13)</td>
+<td>🟢 <strong>ON HAND</strong>: 1 spare (operator). <strong>Order 2
+more</strong> (operator 2026-10-20)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Fence fans:</strong> Nova moves off the Noctua NF-A4x20
+(Halo/Ultra) to the Sunon MC40201V2. Its one spec advantage is a 13.8 V
+family max, equal to the bus. Acceptance per Power_Bay §11.2.0a.</p>
+<h3 id="174-power-bay">17.4 Power bay</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Use</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MZMW PSC-150-12</strong> UPS PSU (13.8 V, 7.5 A CH1, 150
+W)</td>
+<td>1</td>
+<td>Mains → bay</td>
+<td>🟡 <strong>1 on hand</strong> (arrived 2026-11-23); Nova and Halo HV
+each take one: count with Purchasing. Every robot gets the new carrier
+and the PSU is the only difference: Ultra and Halo keep their
+PSC-100-12s (129 mm) on their existing base plates; Nova and Halo HV
+take the PSC-150-12 on the new base plates (operator 2026-11-24); the
+PSC-100 ordered 2026-10-22 for Nova is a spare</td>
+</tr>
+<tr>
+<td><strong>ALEAIVY LiFePO4 32700 4S1P</strong> 12.8 V 10 Ah (BMS, 5.5 ×
+2.1 barrel)</td>
+<td>1</td>
+<td>PSU CH2 battery</td>
+<td>🔴 <strong>TO BUY / COUNT</strong>. ⚠️ Verify the BMS has
+low-temperature charge cutoff</td>
+</tr>
+<tr>
+<td><strong>HL-PBB-2-6-MINI</strong> distribution module (AliExpress,
+Dongguan ARYRA; ~$6.85)</td>
+<td>1 per robot</td>
+<td>13.8 V distribution (A = V+, B = GND)</td>
+<td>🟢 <strong>3 ON HAND</strong> (1 earlier + 2 received 2026-10-22):
+Ultra, Nova, Halo's rebuild. 🔴 Halo HV needs 1 more</td>
+</tr>
+<tr>
+<td>CZH-Labs D-1459</td>
+<td>0</td>
+<td>Bench spare only</td>
+<td>🟢 <strong>1 on hand</strong></td>
+</tr>
+<tr>
+<td><strong>ZK-SJ20</strong> 300 W buck-boost CC/CV, display version
+(WAVGAT)</td>
+<td>1</td>
+<td>HL-PBB A1 / B1 → STM32 7.5 V (§16e)</td>
+<td>🟡 <strong>ORDERED</strong>, 4 in total: unit 1 before Nov 28 (bench
+gate ~Nov 27–28); 3 more (Halo, Nova, +1) in the first week of
+December</td>
+</tr>
+<tr>
+<td>HAT 5 V supply: the <strong>dual-USB-C buck, doc name MusRock
+Mus-14</strong>: the operator's "the DROK we bought last week" (one
+2026-10-13 order, qty 5, fixed 5 V, 3 A with the bay's external
+cooling), <strong>self-tapped onto the power-bay carrier</strong> (M1.7
+× 6)</td>
+<td>1</td>
+<td>HL-PBB → HAT POWER USB-C (D16–D18)</td>
+<td>🟢 <strong>ON HAND</strong> from the 5-pack. Interim buck; planned
+replacement = LM25116 300 W CC/CV (🔴 not ordered, EBD §3.6.2). The
+"DROK" and the Mus-14 are the same part (Electronics ed3e869)</td>
+</tr>
+<tr>
+<td>KCD1-104 / KCD1-106/2P illuminated rocker</td>
+<td>2</td>
+<td>1 AC + 1 DC: a <strong>rear-wall mirror pair</strong>, the DC rocker
+under fan 1 and the AC rocker under fan 2; the DC rocker is wired
+<strong>upstream</strong> of the block</td>
+<td>🟢 <strong>ON HAND</strong>: 6–7 in stock (operator 2026-10-20)</td>
+</tr>
+<tr>
+<td>IEC320 C14 panel inlet, <strong>AC-04C</strong> (the part in use) +
+C13 kettle cord</td>
+<td>1 + 1</td>
+<td>Fence back wall / wall feed</td>
+<td>🟢 C14: <strong>5 IN STOCK</strong> (AC-04C, TLZWLA Official Store,
+AliExpress, $1.59 ea). Cord <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td><strong>Locking C14 inlet</strong>: C14 with a cord-retention clip
+(wire bail over the C13 plug, on the inlet flange screws)
+<strong>or</strong> a V-Lock/IEC-Lock C14 + matching locking cord</td>
+<td>1 per robot</td>
+<td>Fence back wall, replaces the plain C14. Production item after
+Ultra's 10-22 blackout was traced to a <strong>loose connection at its
+AC inlet</strong> (male side; Electronics 4e866d1). ⚠️ <strong>Ultra's
+inlet was ALREADY a locking type</strong> (operator 2026-10-22), so a
+locking inlet alone did not prevent it: also check the inlet's
+terminations and seat the plug fully, and the robot must still ride
+through on battery. Fit-check against the fence cut-out depth before
+ordering in quantity</td>
+<td>🔴 <strong>TO BUY</strong>: 2 (Nova + Halo). Ultra has one as
+built.</td>
+</tr>
+<tr>
+<td>Fuses + holders — <strong>F1 only, on every build including Halo
+HV</strong> (no servo fuse, operator order 2026-11-24):
+<strong>F1</strong> 10 A fast-blow glass 6 × 30 (uxcell inline holder,
+16 AWG), battery + → PSU CH2 BAT+. No CH1, buck-branch or HAT-feed
+fuses.</td>
+<td>1 + holder</td>
+<td>Battery lead</td>
+<td>🟢 <strong>ON HAND</strong>: ≥ 10 spare 6 × 30 glass holders and
+glass fuses; fuse counts and F/T marking ⏳ to read</td>
+</tr>
+<tr>
+<td>Deans T-plug pair</td>
+<td>1</td>
+<td>Buck out → STM32 disconnect</td>
+<td>🟡 <strong>SPARE</strong> (RC stock, no count)</td>
+</tr>
+<tr>
+<td>5.5 × 2.1 male barrel pigtail</td>
+<td>1</td>
+<td>Battery → CH2</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>MECCANIXITY FFC/FPC 40P breakout, <strong>female</strong> 2×20 (elec
+bay) + <strong>male</strong> 2×20 (power bay)</td>
+<td>1 + 1</td>
+<td>GPIO chain</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>Geekworm <strong>G469</strong> GPIO terminal breakout</td>
+<td>1</td>
+<td>Power bay</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>10 kΩ 1 % resistors</td>
+<td>2</td>
+<td>Fan tach pull-ups to 3V3</td>
+<td>🟢 <strong>SPARE</strong> (100-pc)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="175-usb-and-data-cables-every-cable-with-its-angle">17.5 USB and
+data cables (every cable, with its angle)</h3>
+<p><strong>Fleet layout rule (2026-10-17):</strong></p>
+<ul>
+<li>STM32 → Pi 5 <strong>native black #1</strong>.</li>
+<li>OAK-D → <strong>HAT USB 3 port</strong> (operator ruling 2026-10-27:
+"The OAK-D plugs into the HAT … as does the iflytek").</li>
+<li>Mic CH340, mic UAC and the sound-card dongle → <strong>HAT
+ports</strong>.</li>
+<li>Pi 5 native blue #1 / #2: <strong>free</strong>.</li>
+</ul>
+<p>All bay cables are right-angle; no straight-out plugs.</p>
+<blockquote>
+<p>⛔ <strong>U4 / U5 / U6 / U7 / U8 / U10 / U13 are the iFLYTEK set:
+iFLYTEK DROPPED as a fleet/production part (operator 2026-11-02): no
+more kits, not for new builds. The one kit already owned stays in use on
+Ultra or Halo. Production replacement not chosen.</strong> No buys; the
+owned kit keeps its own cables. Hold every mic-set buy until the
+replacement is picked.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Cable (exact part)</th>
+<th>Qty</th>
+<th>From → to</th>
+<th>Angle</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>U1</td>
+<td><strong>GELRHONR</strong> USB-A → USB-C, 90°, 18 W,
+<strong>Black-Left, 1 m</strong>, USB 3 5 Gbps (<a
+href="https://a.co/d/06Ygfak8">Amazon</a>, B0BRFZW7NH; the cable Ultra
+uses)</td>
+<td>1</td>
+<td><strong>HAT USB 3 port</strong> → OAK-D S2 (⏳ re-check the 1 m
+length and the left-angle exit from the HAT's port position)</td>
+<td><strong>LEFT, both ends</strong></td>
+<td>🔴 <strong>TO BUY</strong> for Nova (Halo and Ultra each have one in
+service, operator 2026-11-02)</td>
+</tr>
+<tr>
+<td>U2</td>
+<td><strong>Right-angle USB-C ↔︎ USB-C, 0.5 ft (6 in), 65 W</strong>
+(3-pack)</td>
+<td>1</td>
+<td>STM32 5 V USB-C OUT → Pi 5 USB-C PWR</td>
+<td>right-angle, both ends</td>
+<td>🟡 <strong>SPARE</strong> (1 left of the 3-pack if Ultra + Halo each
+used one): <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>U3</td>
+<td><strong>chenyang USB-C angled → 90° USB 3.0 A, 30 cm, Type-03, 5
+Gbps</strong> (<a href="https://a.co/d/0fyf4ezg">Amazon</a>, B0714LJP4F;
+the cable Ultra uses). Alternate: GELRHONR 90° short USB-A → USB-C, 25
+cm, USB 3.0 5 Gbps (<a href="https://a.co/d/07s7pIXW">Amazon</a>,
+B0B8N8DDPW)</td>
+<td>1</td>
+<td>STM32 USB-C control → Pi black #1 (udev
+<code>/dev/stm32_nova</code>)</td>
+<td>right-angle L-shape</td>
+<td>🔴 <strong>TO BUY</strong></td>
+</tr>
+<tr>
+<td>U4</td>
+<td>CH340 serial cable, JST-XH 6-pin → USB-A (in the mic kit)</td>
+<td>1</td>
+<td>R818 serial → HAT port</td>
+<td>straight</td>
+<td>🔴 <strong>TO MAKE</strong> from the kit: cut and re-crimp the XH
+end (string-measure + 3 cm)</td>
+</tr>
+<tr>
+<td>U5</td>
+<td>UAC cable, JST-XH → USB-A (in the mic kit)</td>
+<td>1</td>
+<td>R818 UAC → HAT port</td>
+<td>straight</td>
+<td>🔴 <strong>TO MAKE</strong> from the kit (keep D+/D− twisted)</td>
+</tr>
+<tr>
+<td>U6</td>
+<td><strong>USB 3.0 extension, 6″ (~0.15 m), Left Angle, M→F</strong>:
+the 6″ length of the CableCreation left-angle line (braided, 5 Gbps; the
+listing warns to check the USB-A male angle direction), in place of the
+<strong>CableCreation 1 ft</strong> (<a
+href="https://a.co/d/08DHvVpR">Amazon</a>, B01M1JZZV7) in use on Halo
+for the iFLYTEK, which is too long (operator 2026-10-20: "its too long,
+for nova we will get a 6" one"). ⏳ Confirm 6″ reaches on Halo before
+buying</td>
+<td>1 per build (Halo, Nova)</td>
+<td>iFLYTEK UAC → HAT port</td>
+<td><strong>LEFT</strong></td>
+<td>🔴 <strong>TO BUY</strong> (6″); the 1 ft spares (2 of the 3-pack)
+are the fallback</td>
+</tr>
+<tr>
+<td>U7</td>
+<td><strong>Left-angle USB extension, M→F</strong>, length
+string-measured at the speaker phase, + a clip-on ferrite (the dongle
+sits beside the analog mic ring)</td>
+<td>1</td>
+<td>Sound-card dongle (on the carrier, under the speaker) → down the
+data lane → HAT port</td>
+<td><strong>LEFT</strong></td>
+<td>⏳ length at the speaker phase (a 1 ft CableCreation spare may
+serve); clip-on ferrite <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>U8</td>
+<td>Kit 12″ straight USB-A M→F extension</td>
+<td>1</td>
+<td>Dongle, V1 stopgap only</td>
+<td>straight</td>
+<td>🔴 comes in the mic kit</td>
+</tr>
+<tr>
+<td>U9</td>
+<td><strong>D18: HOTNOW USB-C ↔︎ USB-C 1.5 ft 90°, PD 65 W</strong> (<a
+href="https://a.co/d/09YEH9LF">Amazon</a>, 3-pack) — <strong>only if it
+fails the interim gate:</strong> a 5 A e-marked 240 W right-angle
+~0.5–0.6 m cable (candidate Poyiccot <a
+href="https://www.amazon.com/dp/B0CNYR9H17">B0CNYR9H17</a>)</td>
+<td>1</td>
+<td>MusRock → HAT POWER (D18), via the base-servo hole</td>
+<td>right-angle at the HAT end</td>
+<td>🟢 <strong>ON HAND</strong>, pending the interim gate test: the
+3-pack covers <strong>Halo + Ultra + Nova exactly, no spare</strong>; 5
+A cable: buy only if the HOTNOW fails</td>
+</tr>
+<tr>
+<td>U10</td>
+<td>Mic ring ↔︎ R818 FFC, <strong>60 mm if the ring connector is on its
+top/front face, 80 mm if on its BACK face</strong> (operator 2026-11-02;
+operator checks the face on the kit). Pin count, pitch and contact type
+(A same-side / B opposite): read off the kit FFC first</td>
+<td>1</td>
+<td>Ring → R818</td>
+<td>n/a</td>
+<td>🔴 <strong>TO BUY</strong> after the kit FFC is read (the kit's 12″
+Z-folded is the V1 fallback)</td>
+</tr>
+<tr>
+<td>U11</td>
+<td><strong>MECCANIXITY FFC 40-pin 0.5 mm A-type, 500 mm</strong></td>
+<td>1</td>
+<td>Elec-bay breakout → power-bay breakout, blue stripe UP both
+ends</td>
+<td>n/a</td>
+<td>🟢 <strong>SPARE</strong> (8–9 of the 10-pack)</td>
+</tr>
+<tr>
+<td>U12</td>
+<td>PCIe 16-pin FPC</td>
+<td>1</td>
+<td>Pi 5 PCIe → HAT</td>
+<td>n/a</td>
+<td>🔴 comes with the HAT</td>
+</tr>
+<tr>
+<td>U13</td>
+<td>Speaker SPK± + AEC RLN/RLP leads</td>
+<td>1 + 1</td>
+<td>Dongle → speaker / R818 reference</td>
+<td>twisted pairs</td>
+<td>🔴 kit leads; length set at the bench</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Other builds, same table:</strong></p>
+<ul>
+<li><strong>Halo:</strong> has U1 (GELRHONR 1 m, in service), U9
+(HOTNOW, on hand). The owned iFLYTEK kit stays on Halo or Ultra with its
+own cables; nothing to buy.</li>
+<li><strong>Ultra upgrade</strong> (mic: the WonderEcho, or the one
+owned iFLYTEK kit if it goes on Ultra; no iFLYTEK buys, operator
+2026-11-02): has U1 + U3 in service. Needs U9 (1 HOTNOW, on hand). If
+the owned iFLYTEK goes on Ultra, it moves with its own cables. No FFC
+U11 and no new boards.</li>
+</ul>
+<h3
+id="176-printed-parts-production-material-per-the-operator-2026-10-20">17.6
+Printed parts (production material per the operator, 2026-10-20)</h3>
+<p>Books: H2S = <code>lumiAi_Complete_PROD_H2S.3mf</code>, X1C =
+<code>lumiAi_Complete.3mf</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Part (export stem)</th>
+<th>Qty</th>
+<th>Material / printer</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fence front + back half</td>
+<td>1 + 1</td>
+<td><strong>ASA</strong> black, H2S S2 (trial; the red PETG+ fence is
+production-grade 10-19)</td>
+<td>Back ~4 h 40 m, front ~2 h 14 m</td>
+</tr>
+<tr>
+<td>Base cover top + base</td>
+<td>1 + 1</td>
+<td>blue PLA+, X1C S1</td>
+<td>Top roof −5.08, field pass 10-20</td>
+</tr>
+<tr>
+<td>EBC cover L + R (v6, 2df29a1)</td>
+<td>1 + 1</td>
+<td><strong>ASA</strong>, H2S S2, supports ON</td>
+<td>~2 h each</td>
+</tr>
+<tr>
+<td>Battery strap L + R</td>
+<td>1 + 1</td>
+<td>clear PETG+, X1C S4</td>
+<td></td>
+</tr>
+<tr>
+<td>Camera L-adapter <code>lumi_halo_camera_adapter</code></td>
+<td>1</td>
+<td><strong>grey PETG+</strong>, X1C S2</td>
+<td>~41 m</td>
+</tr>
+<tr>
+<td>Mic carrier <strong>v5</strong> (CAD 3b36242) + R818 shroud V1.1
+(<code>cad/freecad/output/…_DRAFT</code>)</td>
+<td>1 + 1</td>
+<td>clear PETG+, X1C S4</td>
+<td>Shroud production-ready 10-20</td>
+</tr>
+<tr>
+<td>SPS30 carrier plate + strap; ZE15-CO carrier</td>
+<td>1 + 1; 1</td>
+<td>blue PLA+, X1C S1</td>
+<td><strong>TO PRINT</strong>: Nova gets the hazard sensors</td>
+</tr>
+<tr>
+<td>Wand shell +Y / −Y</td>
+<td>1 + 1</td>
+<td><strong>ASA</strong>, H2S S2</td>
+<td>~5 h each</td>
+</tr>
+<tr>
+<td>Head ring</td>
+<td>1</td>
+<td><strong>ASA</strong>, H2S S2</td>
+<td></td>
+</tr>
+<tr>
+<td>Lens plate:
+<strong><code>lumi_wand_cyl_lens_plate_WHITE21</code></strong>
+(white-lens mandate 10-17)</td>
+<td>1</td>
+<td>NylonX, H2S S5 (PrintDry 85 °C ≥ 48 h)</td>
+<td><strong>WHITE21 confirmed</strong> (operator 2026-10-20); 2 to print
+in NylonX on 10-21</td>
+</tr>
+<tr>
+<td>End plate (holed) + blank end plate (flashlight tail)</td>
+<td>1 + 1</td>
+<td><strong>grey PETG+</strong>, X1C S2</td>
+<td>Done 10-20 for the current set</td>
+</tr>
+<tr>
+<td>End ring ×2 + retaining ring ×1</td>
+<td>3</td>
+<td><strong>ASA</strong>, H2S S2 (plate 25)</td>
+<td>All rings ASA (operator 10-20)</td>
+</tr>
+<tr>
+<td>Extension half +Y LilyGO / −Y</td>
+<td>1 + 1</td>
+<td><strong>ASA</strong>, H2S S2</td>
+<td>~4 h 15 m each; field pass 10-20, zero strings</td>
+</tr>
+<tr>
+<td>Cartridge: cap rigid, cap sprung, tube (print 2), cell spacer ×2, M8
+nut ×2</td>
+<td>set</td>
+<td><strong>grey PETG+</strong>, X1C S2</td>
+<td>Current set already printed (operator)</td>
+</tr>
+<tr>
+<td>Rail stops</td>
+<td>4</td>
+<td>PA-CF</td>
+<td><strong>TO PRINT</strong>: Nova ships with its own rail (operator
+2026-10-20)</td>
+</tr>
+<tr>
+<td><em>U-bracket</em></td>
+<td>—</td>
+<td>—</td>
+<td>Shop alignment jig, not a robot part</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Filament for one Nova:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Filament</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ASA black</td>
+<td>🟡 Spool open, <strong>COUNT</strong> remaining. ASA now covers most
+parts: allow ~1 kg per Nova</td>
+</tr>
+<tr>
+<td>NylonX</td>
+<td>🟢 0.5 kg on hand</td>
+</tr>
+<tr>
+<td>PETG+ clear</td>
+<td>🟢 ~1 kg, minus the shroud</td>
+</tr>
+<tr>
+<td>PETG+ black</td>
+<td>🟢 1 kg (now minor)</td>
+</tr>
+<tr>
+<td>PETG+ grey</td>
+<td>🟡 <strong>COUNT</strong>. The open spool tangled twice on 10-20;
+the operator may exchange it at Micro Center</td>
+</tr>
+<tr>
+<td>PLA+ blue</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="177-machined-parts-cnc-session-2026-10-20">17.7 Machined parts
+(CNC session, 2026-10-20)</h3>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Qty</th>
+<th>Stock</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LumiAI main base plate (<code>LumiAI_Base_Plate.nc</code>, 22
+holes)</td>
+<td>1</td>
+<td><strong>uxcell 6061, 300 × 200 × 3 mm</strong> (Amazon, <a
+href="https://a.co/d/0a7k0UIZ">https://a.co/d/0a7k0UIZ</a>; the NC
+zeroes on the stock centre, so 200 × 300 fits; the finished part is 155
+× 277)</td>
+<td>🔴 <strong>TO BUY</strong> + <strong>TO MACHINE</strong> on the 3.00
+mm NC (<code>LumiAI_Base_Plate.nc</code>). Operator 2026-10-21: Nova and
+future base plates use this uxcell 6061 sheet; the remaining AliExpress
+<strong>1060 200 × 300 × 3</strong> is repurposed for camera-mount
+cutouts. <strong>Halo's base plate is already cut from the AliExpress
+1060 and installed</strong> (operator 2026-10-21); it stays until the
+Nova sheet is machined, then Halo gets a 6061 replacement cut in the
+same session (operator 2026-10-21). ⚠️ 1060 is very soft: check Halo's
+8× M3 carriage holes for elongation and the plate for sag
+periodically.</td>
+</tr>
+<tr>
+<td>OAK-D camera plate (<code>CameraMount_Oak-D.nc</code>, 91.3 × 51 ×
+2.04)</td>
+<td>1</td>
+<td><strong>uxcell 6061 sheet, 300 × 150 × 2 mm, ~185 mm unused</strong>
+(115 mm used; operator 2026-10-21): nest 3 plates on the existing 2 mm
+NC. Also for camera-mount cutouts (operator 2026-10-21): the spare
+<strong>5052, 200 × 200 × 2</strong> (blue sandblasted/anodized; the
+existing 2 mm NC) and the remaining <strong>AliExpress 1060, 200 × 300 ×
+3</strong> (⚠️ needs a 3 mm camera NC: the 2 mm NC's Z −3.0 won't break
+through).</td>
+<td>🟢 Stock <strong>ON HAND</strong> (operator: plenty) + <strong>TO
+MACHINE</strong>. <strong>Machine 3 in one fixture session: Halo + Nova
++ a spare</strong> (operator 2026-10-20: once a plate is in the fixture,
+cut more, since every run means a chip mess and a clean-up)</td>
+</tr>
+<tr>
+<td>Wand heatsink puck Ø54 × 10
+(<code>lumi_wand_heatsink.nc</code>)</td>
+<td>1 per wand</td>
+<td><strong>Finned Al heatsink extrusion, 300 × 60, ~200 mm
+left</strong> (100 mm used; operator 2026-10-21)</td>
+<td>🟢 Stock <strong>ON HAND</strong> + <strong>TO MACHINE</strong>: 2
+pucks in the 2026-10-21 session (Nova gets a wand on day 1).</td>
+</tr>
+<tr>
+<td>ArmPi hex servo base plate</td>
+<td>0</td>
+<td>—</td>
+<td>🟢 Comes with the arm</td>
+</tr>
+</tbody>
+</table>
+<p>Tools: all in kit (MM-1000 takes OZ8 collets; 1/8" + 1/4" on
+hand).</p>
+<h3 id="178-fasteners-hardware-and-consumables-from-the-cad-macros">17.8
+Fasteners, hardware and consumables (from the CAD macros)</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Where</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MGN15H rail (~302 mm, confirm vs Ceiling_Rail_Mount_Guide) +
+carriage</td>
+<td>2 + 2</td>
+<td>Ceiling mount</td>
+<td>🟢 <strong>ON HAND</strong>: Nova gets its own rail; "an extra one
+in stock" (operator 2026-10-20). Confirm it's the full set: 2 rails + 2
+carriages</td>
+</tr>
+<tr>
+<td>M3 SHCS (carriage → plate)</td>
+<td>8</td>
+<td>Base plate</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>M4 female threaded standoff, Ø5.4 body (fence posts 1–6)</td>
+<td>6</td>
+<td>Fence</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td><strong>M4 M-F brass hex standoff, 30 mm</strong> (fence 60 →
+<strong>90 mm</strong>, operator 2026-10-22, for the power-bay carrier
+headroom): one added per fence post, between the plate stud and standoff
+#2 (CAD)</td>
+<td>6 per robot</td>
+<td>Fence posts 1–6</td>
+<td>🟡 <strong>COUNT</strong> in the brass multi-kit, else 🔴 <strong>TO
+BUY</strong>: 18 for Halo, Ultra and Nova (+ spares)</td>
+</tr>
+<tr>
+<td><strong>Power-bay carrier screws, self-tap only</strong> (operator
+2026-10-22; CAD self-tap-only gate): <strong>counts per robot:</strong>
+<strong>M1.7 × 6 button-head-with-washer self-tap ×12</strong>
+(INA226-MAIN × 4: adapter → posts 2 + board → adapter 2; INA226-BATT × 2
+on the carrier, INA226-DROK (INA3) × 2 on the carrier, Mus-14 × 4; Ø1.3
+pilots; <strong>dry-fit one screw per board</strong>: if the washer
+flange sits on the INA226 header plastic, use a plain M1.7 pan head or a
+nylon washer instead); <strong>M2.5 × 8 pan self-tap ×4</strong> for the
+one TMP102 (+ 2 for the IP6518 on the mains-side wall, Creator builds);
+<strong>M2 × 8 pan self-tap ×2</strong> for the G469's 2 support posts
+(Ø1.6 pilots; posts stop 0.1–0.5 under the seated board, shim at fit);
+<strong>M3 × 8 pan self-tap ×4</strong> (the block: HL-PBB ×2, breakout
+×2); carrier → bars: 4 more M3 × 8 pan self-taps through the bar tabs'
+Ø3.4 holes (slim driver ≤ 6 mm); <strong>M3 × 12 pan self-tap
+×4</strong> for the battery hold-down pads (from above, Ø2.5 blind
+pilots). <strong>M3 × 12 pan self-tap ×4</strong> for the ZK-SJ20 (into
+the seat's end bars + deck, no shims) and <strong>M3 × 10 pan self-tap
+×2</strong> for the carrier's front ears (into the fence's front pads,
+Ø2.5 pilots) (carrier release b6a53ce7; both in stock). The PSU is
+screwed to the base plate, not strapped. G469 stacked on the breakout
+header <strong>plus 2 carrier posts</strong> (operator: header-only was
+wobbly).</td>
+<td>per robot</td>
+<td>Power-bay carrier</td>
+<td>M1.7 × 6 (XunLiu stainless, button head with washer, 100 pcs) and
+M2.5 × 8 (CLAHJQX 304 stainless, Phillips pan, 100 pcs): ✅
+<strong>Stock</strong>, both arrived 2026-10-29. <strong>M2 × 8 and M3 ×
+8 pan self-taps: Stock</strong> (HanTof kit, §1.2)</td>
+</tr>
+<tr>
+<td>3/4″ M4 F standoff + M4 SHCS + M4 fender washer ≥ Ø15</td>
+<td>2 + 2 + 2</td>
+<td>Base-cover tubes</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>Per EBC cover: 3/4″ M4 F standoff + M4 SHCS + plain 1″ post</td>
+<td>×2 covers</td>
+<td>EBC covers</td>
+<td>🟡 <strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>M3 self-tapping threaded insert (for the existing Ø4.0 bores) +
+<strong>M3 × 25 machine screw</strong> (through the 20 mm NF-A4x20 frame
+into the insert)</td>
+<td>8 + 8</td>
+<td>Fence fans</td>
+<td>🟡 <strong>COUNT</strong> (inserts and screws: both kits stop at M3
+× 20)</td>
+</tr>
+<tr>
+<td>M2 × 10 Torx pan machine screw + M2 nut (PIR: through fence wall +
+PCB, nut on the PCB side)</td>
+<td>8 + 8</td>
+<td>Fence</td>
+<td><strong>Stock</strong> (GB2672 kit)</td>
+</tr>
+<tr>
+<td>M3 pan self-tap (AC inlet ×2, into the fence's M3 mount posts)</td>
+<td>2</td>
+<td>Fence</td>
+<td><strong>Stock</strong> (HanTof kit)</td>
+</tr>
+<tr>
+<td>M4 SHCS + 2 mm foam pad (battery straps)</td>
+<td>4 + 2</td>
+<td>Base plate</td>
+<td>🟡 <strong>COUNT</strong> (nut side not modelled: Electronics to
+confirm)</td>
+</tr>
+<tr>
+<td>M3 × 10 pan self-tap</td>
+<td>4</td>
+<td>Base cover</td>
+<td><strong>Stock</strong> (HanTof kit)</td>
+</tr>
+<tr>
+<td>Mic carrier <strong>v5</strong> (CAD 3b36242): 7× M3 × 8 pan
+self-tap, 4× M3 × 16 pan self-tap (R818/parts, unchanged) + <strong>4×
+M3 × 8 Torx pan MACHINE screws</strong> (304 SS, GB2672 kit) through the
+carrier's corner Ø3.4 holes and the elec-bay cover into the front/back
+plate flanges' M3 threads (M3 × 10 also clears), rubber washers, 1 mm
+foam</td>
+<td>set</td>
+<td>§16</td>
+<td>Self-taps (M3 × 8, M3 × 16): <strong>Stock</strong> (HanTof kit). M3
+× 8 Torx machine: <strong>Stock</strong> (GB2672 kit). The carrier lies
+flat on the cover; the cover's central Ø4.2 holes are unused</td>
+</tr>
+<tr>
+<td>Camera adapter: 2× M2 (servo) + 2× M3 (plate) Torx pan machine
+screws; OAK-D M4 pair</td>
+<td>set</td>
+<td>Camera</td>
+<td>M2 / M3: <strong>Stock</strong> (GB2672 kit). OAK-D <strong>M4
+machine pair: 🟡 COUNT</strong> (neither kit has M4 machine screws)</td>
+</tr>
+<tr>
+<td>Wand: 3× M3 SHCS (heatsink), M2 self-taps (KESHY posts ×6, JST-F ×2,
+cradle ears ×2), bulkhead M3 self-tap ×4 (verify v9.12), 3× VMQ O-ring
+(<strong>19 × 21 × 1.0</strong> for WHITE21)</td>
+<td>set</td>
+<td>Wand</td>
+<td>🟡 O-rings: 50 + 50 ordered 10-17 (confirm delivery)</td>
+</tr>
+<tr>
+<td>Cartridge: Keystone 5221 buttons + 5222 springs (4× 26700); contact
+plates 2× M1.2 × 3 round-head self-tap each (16 total; CAD draws × 2.5,
+the 3 mm tip breaks the cap's outboard face by 0.09 mm at r ≈ 18, clear
+of the stop ring); spacers 4× M1.2 × 3 CS each (8 total)</td>
+<td>set</td>
+<td>Cartridge</td>
+<td>✅ <strong>M1.2 Stock</strong>: uxcell 50× M1.2 × 3 round head +
+100× M1.2 × 3 countersunk, delivered 2026-10-07/08</td>
+</tr>
+<tr>
+<td>Wire 18 / 22 / 26 AWG silicone; 18 AWG mains-rated + green</td>
+<td>spools</td>
+<td>Bay</td>
+<td>🟡 18/22/26 <strong>SPARE</strong>; mains-rated
+<strong>COUNT</strong></td>
+</tr>
+<tr>
+<td>Ferrules E1008 / E0508 / E0308 / E0208 + AIRIC violet (E0508
+<strong>banned at the G469</strong>)</td>
+<td>kits</td>
+<td>All cage landings</td>
+<td>🟡 <strong>SPARE</strong> (no per-size count)</td>
+</tr>
+<tr>
+<td>JST-XH (TAREA 600-pc), Kuject terminals, Fastons, Tellegloww
+piggybacks (23+), heat-shrink, Permatex 81158, Wago</td>
+<td>kits</td>
+<td>General</td>
+<td>🟢 <strong>SPARE</strong></td>
+</tr>
+<tr>
+<td>Wand electronics (<strong>Nova gets a wand on day 1</strong>): KESHY
+3 W drivers ×12, PCA9685 (0x41; 🟢 <strong>3 in stock total, operator
+2026-10-25: Halo + Nova use 2, 1 spare</strong>), LED stars ×3 (2 RGBW +
+1 RGBWW), lens set, 8329TCM epoxy, ST1 rails ×3, 6-pin XH tether (22 AWG
+×3 + 26 AWG ×3, ~550–600 mm)</td>
+<td>set</td>
+<td>Wand</td>
+<td>🟡 KESHY: 29 on hand (Electronics) vs 14/15 in WI.
+<strong>COUNT</strong>. PCA9685: 3 boards owned. Stars: 10 + 10 owned,
+<strong>COUNT</strong> unbonded</td>
+</tr>
+</tbody>
+</table>
+<h3 id="179-count-on-the-shelf-no-usable-count-in-the-docs">17.9 Count
+on the shelf (no usable count in the docs)</h3>
+<p>Check these physically, then strike them from the order list or add
+them to it.</p>
+<ul>
+<li>🟡 <strong>Compute:</strong> spare Pi 5 cooler, NVMe, MECCANIXITY
+breakouts (female + male), G469.</li>
+<li>🟡 <strong>Arm:</strong> rubber pads.</li>
+<li>🟢 <strong>Sensors and bay boards (Electronics' inventory, operator
+counts 2026-11-25):</strong> TMP102 ×4 generic (2026-10-22 order) +
+Halo's mounted bay TMP102; HC-SR501 ×4 + Halo's 4; INA226 ×6 + Halo's 1;
+G469 ×2 + Halo's 1; NF-A4x20 bay fans ×4 + Halo's 2; rocker switches
+~12. Per-bay need vs stock: §16f.1. 🟡 M3 self-tapping threaded inserts
+×8 (fence fans): still to count.</li>
+<li>🟡 <strong>Power:</strong> ALEAIVY pack, C14 (5 in stock, AC-04C),
+4.8 flag Fastons (in stock, 2026-11-17), C13 cord, barrel pigtail,
+mains-rated 18 AWG.</li>
+<li>🟡 <strong>USB:</strong> 0.5 ft C-C (3-pack remainder),
+CableCreation (3-pack remainder).</li>
+<li>🟡 <strong>Hardware:</strong> M4 F standoffs (Ø5.4, 3/4″), plain 1″
+posts, M3 × 16 pan self-taps, M2/M3 screws, Keystone 5221/5222.</li>
+<li>🟡 <strong>Filament:</strong> ASA black, PETG+ grey, PLA+ blue
+remaining.</li>
+</ul>
+<h3 id="1710-order-list-confirmed-to-buy-as-of-2026-10-20">17.10 Order
+list (confirmed TO BUY as of 2026-10-20)</h3>
+<p><strong>Compute:</strong></p>
+<ul>
+<li>🔴 Raspberry Pi 5 16 GB</li>
+<li>🔴 Waveshare PCIe TO M.2 USB HAT+</li>
+<li>🔴 NVMe SSD (Samsung preferred)</li>
+<li>🔴 microSD (backup repo)</li>
+<li>🔴 ShanWan gamepad + dongle</li>
+</ul>
+<p><strong>Sensors:</strong></p>
+<ul>
+<li>🔴 OAK-D S2 <strong>auto-focus</strong></li>
+<li>✅ reSpeaker Flex XVF3800 Circular-4 (1 set) + TLZWLA 5090 10 W 4 Ω
+speaker (1): on hand, nothing to buy.</li>
+<li>⛔ HiWonder mic array full bundle: do not buy. <strong>iFLYTEK
+DROPPED as a fleet/production part (operator 2026-11-02): no more kits,
+not for new builds. The one kit already owned stays in use on Ultra or
+Halo. Production replacement not chosen.</strong></li>
+<li>🔴 Sunon MC40201V2-Q000-S99 fence fan ×2 (AliExpress)</li>
+<li>🔴 ACP4010-12-PWM wand fan ×2 (1 spare already on hand)</li>
+</ul>
+<p><strong>Power:</strong></p>
+<ul>
+<li>🟢 MZMW PSC-100-12: ordered 2026-10-22 (§17.10a); a spare now that
+Nova takes the PSC-150 (§17.4)</li>
+<li>🟢 HL-PBB-2-6-MINI: 3 on hand (Ultra, Halo, Nova)</li>
+<li>🟢 Power-bay carrier self-taps <strong>M1.7 × 6</strong>: XunLiu
+stainless button head with washer, <strong>1 × 100 pcs, arrived
+2026-10-29</strong> (12 per robot with the MAIN adapter; plenty for
+Ultra, Halo and Nova). <strong>M2.5 × 8</strong> (CLAHJQX pan self-tap,
+304, 100 pcs): <strong>arrived 2026-10-29</strong> with it. The HL-PBB's
+2 × M3 × 8 come from stock.</li>
+<li>🟢 PIR leads built from scratch (Electronics 40e356f): ~4.5 m of 26
+AWG Fermerry silicone per robot (carrier v18d cuts 460/510/240/280) + 4
+Dupont 3-way housings + 12 female pins (PEBA kit), all in stock</li>
+<li>🔴 M4 M-F brass hex standoff, 30 mm ×18 (+spares): taller 90 mm
+fence, 6 per robot; check the brass kit first</li>
+<li>🔴 Locking C14 inlet (retention clip or V-Lock + locking cord) ×2:
+Nova + Halo (Ultra already has one); fit-check one first</li>
+<li>🟡 Flashlight cartridge connector: <strong>XT30</strong> (operator,
+2026-11-05). <strong>IN STOCK</strong>: XT30/XT30U yellow, 10 male +
+female pairs (AliExpress). Not stated as genuine Amass: before first
+use, solder one pair and check the housing doesn't soften at the cup,
+and meter polarity per <a href="Power_Bay_Design.html">Power_Bay
+§16b.1</a>.</li>
+<li>🔴 ALEAIVY pack, unless the shelf count finds spares. The STM32 rail
+is the ZK-SJ20 (ordered, §17.4)</li>
+</ul>
+<p><strong>Cables:</strong></p>
+<ul>
+<li>⛔ U6 / U10 (iFLYTEK UAC extension, mic FFC): do not buy (iFLYTEK
+dropped as a fleet part)</li>
+<li>🔴 GELRHONR USB-A→C 1 m Black-Left</li>
+<li>🔴 20 cm flat A→C, unless spare</li>
+</ul>
+<p><strong>Aluminium:</strong></p>
+<ul>
+<li>🔴 uxcell 6061 sheet, 300 × 200 × 3 mm, <strong>×2</strong>: Nova
+base plate + Halo's 6061 replacement, machined together (<a
+href="https://a.co/d/0a7k0UIZ">https://a.co/d/0a7k0UIZ</a>)</li>
+</ul>
+<p><strong>CNC tooling:</strong></p>
+<ul>
+<li>🔴 SHARPRO 1/8" (Ø3.175) single-flute O-flute endmill, 1/4" shank,
+flute ≥ 15 mm, <strong>×2</strong> (only one on hand, in the chuck; CNC
+402902b)</li>
+</ul>
+<p>Camera-plate and heatsink stock are on hand.</p>
+<ul>
+<li>🔵 <strong>Creator edition only, buy WITH the 4 TB NVMe (not
+now):</strong> a low-profile <strong>M.2 2280 heatsink, ≤ 4 mm total
+incl. pad</strong>, aluminium / copper, top-side pad, adhesive or clips
+(no under-drive bands); fallback a 0.5–1 mm copper / graphene
+heat-spreader label. <strong>Measure first:</strong> the gaps under and
+above the drive on the real stack. Drive criteria + gate: EBD §3.6
+"Creator edition — 4 TB NVMe option".</li>
+</ul>
+<h3 id="1710a-ordered-2026-10-22-aliexpress">17.10a Ordered 2026-10-22
+(AliExpress)</h3>
+<p><strong>Arrival checklist:</strong> <a
+href="Power_Bay_Design.html">Power_Bay_Design.md §16b</a> (Electronics
+b586eac). It covers the battery XT30 lead + BMS ≥ 10 A, the INA226 shunt
+code (⚠️ R010 clips the ~8 A peaks), TMP102 ADD0 tied in the cable, and
+a CC/CV buck ≥ 8 A continuous. Caliper every board's holes for CAD.</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Qty</th>
+<th>Total</th>
+<th>Status</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MZMW <strong>PSC-100-12</strong> UPS PSU, 100–240 V, 100 W</td>
+<td>1</td>
+<td>$25.95</td>
+<td>confirmed</td>
+<td>Spare: Nova takes the PSC-150 (§17.4)</td>
+</tr>
+<tr>
+<td><strong>32700 4S1P 12 V 10 Ah LiFePO4</strong> pack, <strong>XT30 +
+JST</strong> leads</td>
+<td>1</td>
+<td>$39.96</td>
+<td>confirmed</td>
+<td>⚠️ XT30, NOT the ALEAIVY 5.5 × 2.1 barrel: needs an XT30 → CH2 lead
+(F1 stays first off the pack). Check the BMS low-temp cut-off on
+arrival</td>
+</tr>
+<tr>
+<td><strong>HL-PBB-2-6-MINI</strong> 16 A / 48 V distribution</td>
+<td>2</td>
+<td>$14.52</td>
+<td>received 2026-10-22</td>
+<td>The HL-PBB is the only block (operator 2026-11-24). 3 on hand with
+an earlier unit: Ultra, Nova, Halo's rebuild; Halo HV needs 1 more</td>
+</tr>
+<tr>
+<td><strong>INA226, R002 shunt</strong> (orange + green screw terminals,
+A0/A1 address pads, header GND/SCL/SDA/VCC): the same GODIYMODULES-style
+board as Halo's INA226-MAIN</td>
+<td>4</td>
+<td>—</td>
+<td><strong>in transit</strong> (collected by carrier 2026-10-23)</td>
+<td>✅ Meets the spec (Electronics c52bde5): R002 confirmed from the
+listing photo's shunt body code. Holes fit the carrier's posts (INA3
+fit-checked 2026-11-26); BATT and INA3 go straight on; MAIN goes on a
+printed adapter for placement. INA226-BATT for Halo, Ultra, Nova + 1
+spare</td>
+</tr>
+<tr>
+<td><strong>HC-SR501 PIR</strong> (HC-SR501-BLUE, 10-pack)</td>
+<td>10</td>
+<td>$11.64</td>
+<td>confirmed 2026-10-24</td>
+<td>Nova's 4 + spares. Same module the fence PIR mounts and the carrier
+PIR-corner keep-outs are modelled on; caliper the back-component height
+on arrival (CAD assumed 8.5)</td>
+</tr>
+<tr>
+<td><strong>SPS30</strong> particulate (dust) sensor</td>
+<td>1</td>
+<td>$24.27</td>
+<td>confirmed 2026-10-24</td>
+<td>Nova's hazard pair (§17.3) is covered + one spare. Check the
+variant/cable on arrival (listing SKU text is blank)</td>
+</tr>
+<tr>
+<td><strong>TMP102</strong> high-precision module</td>
+<td>4</td>
+<td>$7.63</td>
+<td>confirmed</td>
+<td>⚠️ Generic, not SparkFun Qwiic: check its hole pattern vs the
+carrier's 21 × 21 posts, the connector and the address pins on
+arrival</td>
+</tr>
+<tr>
+<td><strong>Geekworm G469</strong> terminal breakout</td>
+<td>2</td>
+<td>$20.71</td>
+<td><strong>shipped</strong></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>40P FPC/FFC adapter board</strong> (0.5 mm → 2.54 mm)</td>
+<td>4</td>
+<td>$26.12</td>
+<td>confirmed</td>
+<td>The breakout the carrier is being made compatible with (53.87 ×
+25.81, 2 holes ~48.8 c/c, caliper on arrival)</td>
+</tr>
+<tr>
+<td>40P FFC/FPC 0.5 mm connector, straight header</td>
+<td>4</td>
+<td>$17.09</td>
+<td>confirmed</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Sunon MC40201V2-Q000-S99</strong> fence fan</td>
+<td>4</td>
+<td>$24.81</td>
+<td>confirmed</td>
+<td>Planned 2; 4 ordered (Electronics suggested 3–4). Acceptance test
+per Power_Bay §11.2.0a</td>
+</tr>
+<tr>
+<td><strong>ACP4010-12-PWM</strong> wand fan, 12 V, double ball</td>
+<td>1</td>
+<td>$13.52</td>
+<td>confirmed</td>
+<td>✅ Enough: 2 already in stock + this 1 = <strong>3 wand fans for 3
+wands</strong> (operator 2026-10-22)</td>
+</tr>
+<tr>
+<td>CC/CV buck converter, DC-DC</td>
+<td>1</td>
+<td>$14.66</td>
+<td>confirmed</td>
+<td>A CC/CV buck; the STM32 rail is now the ZK-SJ20, so this is a spare:
+confirm the part</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1711-open-decisions">17.11 Open decisions</h3>
+<ol type="1">
+<li><strong>HAT 5 V source.</strong> The dual-USB-C buck (doc name
+Mus-14, fixed 5 V), 5 on hand, self-tapped onto the power-bay carrier.
+It stays unless the ≥ 4.90 V gate fails at install; the interim until
+the LM25116 300 W CC/CV buck (🔴 not ordered; CAD reserves its carrier
+spot, ≈ 61 × 53 × 28).</li>
+<li><strong>DC rocker — closed.</strong> The operator keeps the KCD1,
+which has 6 months of AC/DC service. The rockers are a <strong>rear-wall
+mirror pair</strong>: DC under fan 1, AC under fan 2.</li>
+<li><strong>Fusing — closed.</strong> One fuse on every build, Halo HV
+included: F1 on the battery lead, 10 A 6 × 30 glass, in stock. No servo
+fuse (operator order 2026-11-24).</li>
+<li><strong>HL-PBB mount:</strong> 2 × Ø4 holes at <strong>64 mm
+c/c</strong> (calipered). It self-taps onto the carrier's two posts with
+<strong>M3 × 8 pan self-taps</strong>.</li>
+<li><strong>Rail — closed.</strong> Nova gets its own rail (one spare in
+stock); 4 PA-CF rail stops to print.</li>
+<li><strong>Hazard sensors — closed.</strong> Nova gets the SPS30 +
+ZE15-CO, both in stock.</li>
+<li><strong>Wand — closed.</strong> Nova gets a wand on day 1 (operator
+2026-10-20). The heatsink, KESHY, PCA9685, LED, lens, tether and
+wand-fan lines all apply.</li>
+<li><strong>Lens plate — closed.</strong> WHITE21; 2 NylonX prints on
+2026-10-21 (H2S plate 23). ⏸ <em>2nd print on hold (operator 2026-10-23)
+until the uxcell-lens mechanical fit is confirmed.</em></li>
+<li><strong>OAK-D S2 — closed.</strong> Auto-focus.</li>
+<li><strong>U7 extension — closed.</strong> A 6″ left-angle USB 3.0 M→F
+extension (the 1 ft CableCreation is too long) + a clip-on ferrite.</li>
+<li><strong>"3 simple CNC plates" — closed.</strong> They are the OAK-D
+camera mounting plates; batch all 3 in one fixture session.</li>
+</ol>
+<h3 id="1712-bring-up-and-config-no-purchase-mirror-halo">17.12 Bring-up
+and config (no purchase; mirror Halo)</h3>
+<ul>
+<li><strong>Network:</strong>
+<ul>
+<li>hostname <code>lumiai-nova</code>, with
+<code>127.0.1.1 lumiai-nova</code> in its <code>/etc/hosts</code>.
+Without it, every sudo waits ~88 s on DNS.</li>
+<li>two static IPs (wired + Wi-Fi) with two AmpliFi DHCP reservations by
+MAC.</li>
+<li>GMKtec <code>/etc/hosts</code> + the fleet sync map.</li>
+</ul></li>
+<li><strong>Access:</strong> login user, GMKtec SSH key, NOPASSWD sudo,
+docker group.</li>
+<li><strong>Container:</strong> <code>LumiNova</code>
+(<code>lumiai-ultra:v1.0-dev</code>),
+<strong><code>--privileged -v /dev:/dev</code></strong>, never a frozen
+<code>--device</code> list (Rosmaster lost its gamepad and STM32 for 5
+days). Label <code>ai.lumi.fleet.role=ros-runtime</code>.</li>
+<li><strong>ROS:</strong> CycloneDDS with
+<code>/etc/sysctl.d/99-cyclonedds.conf</code> (rmem_max). udev
+<code>/dev/stm32_nova</code> by the ID_PATH of Pi native black #1, never
+a raw ttyUSBn.</li>
+<li><strong>Robot description:</strong> <code>nova.urdf.xacro</code> /
+controllers yaml / launch cloned from Halo (<code>/nova</code>),
+<code>auto_reconnect=true</code>, <code>recovery_glide_rad_s=0.4</code>,
+<code>nova_stack.service</code>.</li>
+<li><strong>Servo commissioning:</strong> IDs 1–6, horn index at pulse
+500, per-unit EEPROM offset trims to Ultra pose parity. Startup pose
+[210, 500, 110, 825, 600, 500].</li>
+<li><strong>Backups:</strong> restic daily/weekly + Docker images. In
+cron.d use <strong><code>MAILTO=""</code></strong>: a bare
+<code>MAILTO=</code> silently disabled every image backup on 10-11..13.
+Set <code>RESTIC_RUN_AS</code> to the repo owner.</li>
+<li><strong>Fleet:</strong> monitoring rows (Fleet session adds them
+once the hardware is up); Telegram name "Nova".</li>
+<li><strong>EBC cover fit:</strong> Nova is built on the ArmPi Ultra
+base plate from the start, unlike Halo (an FPV moved onto it, whose bay
+sits a little off). At assembly, caliper the elec bay wall END → each
+cover's panel inner face (front, back, top) and send the numbers to CAD,
+which will check the bay position in the assembly model (operator
+2026-10-20: "we'll caliper the nova when we get to it").</li>
+<li><strong>Labels:</strong>
+<ul>
+<li>an asset label on the unit: hostname, eth + Wi-Fi MAC, static
+IPs.</li>
+<li>a label on the gamepad dongle, so pads never swap between
+robots.</li>
+</ul></li>
+</ul>
 <h2 id="related-docs">Related Docs</h2>
 <ul>
 <li><a href="Power_Bay_Design.html"><code>Power_Bay_Design.md</code></a> —
