@@ -148,8 +148,10 @@ wall 50; Prime tower 50; Support 50</td>
 </tr>
 </tbody>
 </table>
-<h3 id="h2s-4-04-shell-y---y--head-ring---h2s-s2-asa-black">H2S 4: 04
-Shell +Y + -Y + head ring - H2S S2 ASA black</h3>
+<h3
+id="h2s-4-04-unproven---shell-y---y--head-ring-fan-stops---h2s-s2-asa-black">H2S
+4: 04 UNPROVEN - Shell +Y + -Y + head ring, fan stops - H2S S2 ASA
+black</h3>
 <table>
 <tbody>
 <tr>
@@ -158,7 +160,8 @@ Shell +Y + -Y + head ring - H2S S2 ASA black</h3>
 </tr>
 <tr>
 <td>Time / mass</td>
-<td>8h 7m 46s total, 468.8 min model; 139.39 g</td>
+<td>8h 15m 25s; 141.51 g (3dPrint/CAD's prepush slice, Studio 2.9.1 CLI,
+wand CAD 8098299e: the fan stops at 1.0)</td>
 </tr>
 <tr>
 <td>Studio warnings</td>
@@ -176,8 +179,8 @@ Shell +Y + -Y + head ring - H2S S2 ASA black</h3>
 </tr>
 <tr>
 <td><code>lumi_wand_cyl_half_minus-supports.stl</code></td>
-<td>supports painted only; brim outer_and_inner 10; source @ d950c980
-2026-11-26 0908; differs: export STL changed since the 2026-11-24 print
+<td>supports painted only; brim outer_and_inner 10; source @ 8098299e
+2026-11-27 1544; differs: export STL changed since the 2026-11-24 print
 (log 3c9bc83161c15ec5, now f28bf7b1519f987f)</td>
 </tr>
 <tr>
@@ -188,37 +191,21 @@ differs: export STL changed since the 2026-11-24 print (log
 </tr>
 <tr>
 <td>Supports</td>
-<td>9944 mm³ (Support 9365, Support transition 230, Support interface
-349); top of support z 84.68; interface z bands 3.08–3.72, 22.92–23.56,
-84.04–84.68; footprint X 169–304, Y 122–203</td>
-</tr>
-<tr>
-<td>Support cluster 1</td>
-<td>X 169–221, Y 147–201; top z 84.68; interface z 3.08–3.72,
-22.92–23.56, 84.04–84.68</td>
-</tr>
-<tr>
-<td>Support cluster 2</td>
-<td>X 268–304, Y 125–180; top z 84.68; interface z 84.04–84.68</td>
-</tr>
-<tr>
-<td>Support cluster 3</td>
-<td>X 269–271, Y 199–203; top z 77.32; interface z 0.36–3.08,
-6.92–29.80, 37.00–44.36, 48.84–54.60, 70.12–77.32</td>
-</tr>
-<tr>
-<td>Support cluster 4</td>
-<td>X 264–271, Y 122–123; top z 84.68; interface z 84.04–84.68</td>
+<td>footprint X 169–304, Y 129–181 (G-code of the fan-stop slice); top
+of support z 84.68; interface z 3.40–84.68</td>
 </tr>
 <tr>
 <td>EXPECTED (3dPrint/CAD names, checked against the G-code)</td>
-<td>Notch-chord block on each shell (as 32, z 3.08–3.72); +Y bottom PCA
-wedge underside (interface z 22.92–23.56, painted, pull down through the
-open middle); both top PCA wedges' inside faces (z 84.04–84.68,
-documented leftovers, knife pass per Build Plan §4.1); two thin trunks
-beside the −Y cut-face ends (X 264–271) feeding the −Y top wedge; head
-ring BARE. 3dPrint/CAD's total 7,532 mm³; my G-code count of all support
-moves is 9,944 mm³ (support body 9,365); the methods differ.
+<td>NEW (fan stops at 1.0, the operator 11-27): the −Y shell's two fan
+stops (+X and −X) each print on a break-away block, one empty layer
+under the stop's face (gate_breakaway_grid PASS); snap both blocks off
+after the print. Notch-chord block on each shell (as 32, z 3.08–3.72);
++Y bottom PCA wedge underside (interface z 22.92–23.56, painted, pull
+down through the open middle); both top PCA wedges' inside faces (z
+84.04–84.68, documented leftovers, knife pass per Build Plan §4.1); two
+thin trunks beside the −Y cut-face ends (X 264–271) feeding the −Y top
+wedge; head ring BARE. 3dPrint/CAD's total 7,532 mm³; my G-code count of
+all support moves is 9,944 mm³ (support body 9,365); the methods differ.
 gate_mating_faces PASS (3 named faces).</td>
 </tr>
 <tr>
@@ -368,6 +355,72 @@ there. The G1 E1 gives that back (net 0), and Studio labels it 'Support'
 only because the strip was the last feature. It is an ordinary layer
 seam on the pawl's inner wall: nothing to flick off, no blocker or paint
 needed (3dPrint/CAD, from the G-code).</em></p>
+<h3
+id="x1c-18-18-unproven---cradle-t-knob-caps--fit-coupon---x1c-s2-red-petg">X1C
+18: 18 UNPROVEN - Cradle T knob caps + fit coupon - X1C S2 red PETG</h3>
+<p>Slide-on Ø14 knobs for the cradle's three T-ledge thumb screws
+(MECCANIXITY M2 × 8, Ø5 × 5 knurled head). The operator approved the
+design 2026-11-27. Print the <strong>fit coupon first</strong>: press
+each of its three hex sockets onto a spare M2 × 8 head and keep the one
+that goes on by thumb and does not spin. The caps on this plate are the
+middle size; if the coupon picks another, the caps are reprinted at that
+size.</p>
+<table>
+<tbody>
+<tr>
+<td>Material / slot</td>
+<td>slot 2 PETG (PolyLite PETG @BBL X1C)</td>
+</tr>
+<tr>
+<td>Time / mass</td>
+<td>47m 34s; 6.66 g (3dPrint/CAD's prepush slice, Studio 2.9.1 CLI, CAD
+fa7964ef)</td>
+</tr>
+<tr>
+<td>Studio warnings</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Bed prep</td>
+<td>FlashForge glue stick (X1C house glue)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_t_knob_cap_fit_coupon.stl</code></td>
+<td>supports off; brim outer_only 10; hole compensation 0 (the book's
+0.15 would grow the hex 0.15 a side and lose the crush); 0.16 layers,
+100 % gyroid; source @ fa7964ef 2026-11-27 1648; no Print_Log row
+(new)</td>
+</tr>
+<tr>
+<td><code>lumi_bigclaw_phone_cradle_aback_t_knob_cap.stl</code> × 3</td>
+<td>same settings; source @ fa7964ef 2026-11-27 1648; no Print_Log row
+(new)</td>
+</tr>
+<tr>
+<td>Supports</td>
+<td>none in the G-code</td>
+</tr>
+<tr>
+<td>EXPECTED (3dPrint/CAD names, checked against the G-code)</td>
+<td>four round pieces standing on their flat outer face, sockets open
+upward, nothing under or inside them. Coupon sockets left to right (x 0
+/ 14 / 28 in the part): hex 4.55 / 4.70 / 4.85 across the flats, marked
+1 / 2 / 3 notches on the underside rim. In the G-code each hex flat's
+wall line runs where drawn (gate_gcode_coverage: 100 % on all 8 judged
+flats).</td>
+</tr>
+<tr>
+<td>Not printed (bench stock)</td>
+<td>none: the caps press onto the three M2 × 8 thumb screws already in
+the cradle</td>
+</tr>
+<tr>
+<td>Picture</td>
+<td><img src="images/print_expect/x1c_18.png"
+alt="X1C 18 layer 1" /></td>
+</tr>
+</tbody>
+</table>
 <h3 id="x1c-5-05-bay-v3-battery-tray--bars---x1c-s3-petg">X1C 5: 05 Bay
 v3 battery tray + bars - X1C S3 PETG</h3>
 <table>
