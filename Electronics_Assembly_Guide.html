@@ -3905,15 +3905,52 @@ empty</strong> (with it plugged, the speaker is silent).</li>
 <li>Mic FPC: power off, open both latches, contacts toward the
 connector's metal, stiffener out; close the latches. Never routed across
 a moving joint.</li>
-<li><strong>12 V feed (E9), by build</strong> (EBD §3.7): <strong>Halo
-HV:</strong> land a 22 AWG twisted pair from the HV servo-rail buck's
-12.0 V output to the core's 12 V terminal (polarity metered first), then
-the bench hum check (12 V on vs off, servos moving). <strong>LV
-builds:</strong> leave E9 unlanded (USB power only) until the 12-min
-bench test at 13.8 V passes (EBD §3.7: idle current, touch-test, 10 min
-at max volume into the 5090).</li>
-<li>First sound at low volume; set the max volume on the bench against
-the XMOS limits (THD 3–5 %, 6–10 dB mic headroom).</li>
+<li><strong>12 V feed (E9), by build</strong> (EBD §3.7):
+<ul>
+<li><strong>Halo HV:</strong> land a 22 AWG twisted pair from the HV
+servo-rail buck's 12.0 V output to the core's 12 V terminal (polarity
+metered first), then the bench hum check (12 V on vs off, servos
+moving).</li>
+<li><strong>LV builds (Halo, Ultra, Nova): E9 stays unlanded (USB power
+only) until this bench test passes (~15 min):</strong>
+<ol type="1">
+<li>Bench supply <strong>13.8 V, current limit 1.5 A</strong>, off.
+Leads to the core's 12 V terminal (polarity metered); USB-C to the Pi;
+the 5090 on the speaker connector.</li>
+<li>Supply on, <strong>idle 1 min:</strong> current low and steady (tens
+of mA). <strong>Stop</strong> if it climbs, sits at the limit, or the
+supply drops into CC: an input part is conducting.</li>
+<li><strong>Touch test:</strong> the DO-214 diode by the terminal, the
+buck chip by the "100" inductor, the amp chip. Warm is fine; <strong>too
+hot to hold a finger on for 3 s = stop.</strong></li>
+<li><strong>Cap the volume BEFORE any sound.</strong> On the Pi:
+<code>aplay -l</code> (find the reSpeaker card number <em>N</em>),
+<code>amixer -c N scontrols</code> (the playback control, "PCM" /
+"PCM-1" in XMOS's guide),
+<code>amixer -c N sset '&lt;that control&gt;' -10dB</code>, then
+<code>sudo alsactl store</code>. <strong>The cap is from gain math, not
+measured:</strong> 10 W into 4 Ω is 6.3 V RMS at the speaker; the
+TPA3139D2's gain is 20 or 26 dB (Seeed doesn't say which) and the
+codec's full-scale output is ~1 V RMS (typical, unconfirmed), so −10 dB
+on the host holds ≤ 10 W at 26 dB gain and ~4 W at 20 dB. At 13.8 V the
+amp could otherwise drive ~19 W into 4 Ω, past the 5090's 10 W.</li>
+<li><strong>Play speech, not music or noise,</strong> looped at the cap
+for <strong>10 min</strong> (XMOS's calibration track, IEEE 269-2010
+male, or any speech recording; speech averages far below its peaks).
+Listen: continuous, never cutting in and out (OVP / UVP cycling). Smell:
+any hot-electronics smell = stop. Re-touch the same three parts at the
+end.</li>
+<li><strong>Pass</strong> = steady idle current, nothing too hot to
+hold, no smell, sound never cut out. Then E9 may land on the 13.8 V bay
+rail.</li>
+</ol></li>
+</ul></li>
+<li><strong>Final volume cap</strong> (after step 6, on the robot):
+raise the host cap only until the XMOS calibration track reads
+<strong>73 dBA ± 2 at 1 m</strong> (user guide §2.4) without exceeding
+THD 3–5 % or eating the mics' 6–10 dB headroom;
+<code>sudo alsactl store</code>. Never above the step-6 cap if the 5090
+sounds strained.</li>
 </ol>
 <h2 id="17-nova-build--bill-of-materials-compiled-2026-10-20">17. Nova
 Build — Bill of Materials (compiled 2026-10-20)</h2>

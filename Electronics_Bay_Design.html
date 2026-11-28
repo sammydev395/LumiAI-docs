@@ -338,14 +338,17 @@ CALIPER</td>
 <tr>
 <td>E6</td>
 <td><strong>Audio USB</strong></td>
-<td>reSpeaker core <strong>USB-C</strong> → a free HAT USB-A (CAD picks
-the port by route)</td>
-<td>Candidate from stock: <strong>GELRHONR 90° USB-A → USB-C, 25 cm,
-"Black-Right"</strong> (B0B8N8DDPW), Ultra's WonderEcho cable today,
-free once the reSpeaker replaces it; ⏳ CAD checks its length + bends
-against the route. Other on-hand, unassigned: Thzzhnno 1 m right-angle A
-→ C, SUNGUY 0.45 m (listings being read)</td>
-<td>A / C bend direction: TO CALIPER on the part; bodies TO CALIPER</td>
+<td>reSpeaker core <strong>USB-C</strong> (or its PH2.0 4-pin USB, silk
+5V · D− · D+ · GND) → HAT USB-A 1 or 2</td>
+<td><strong>NO STOCK CABLE FITS</strong> (CAD measured, 2026-11-28):
+only 11.4 mm free in front of HAT USB-A 1 / 2 (to the right EBC cover)
+and 13.7 in front of USB-A 4 (to the front panel), so every straight
+USB-A plug fails (GELRHONR 25 cm, Thzzhnno 1 m, SUNGUY 0.45 m), and a
+sideways USB-C can't reach the cover opening at R ≥ 12. The iFLYTEK
+kit's XH leads don't fit the PH header. ⏳ Operator decision</td>
+<td><strong>Fit envelope (CAD):</strong> USB-A end a SIDEWAYS 90° plug,
+overmould ≤ ~10.9, on USB-A 1 or 2; core end a <strong>DOWN</strong> 90°
+USB-C, or a PH2.0 4-pin plug; route ~150–170 mm</td>
 <td>3.7</td>
 </tr>
 <tr>
@@ -1492,26 +1495,12 @@ starts conducting at ~13.3 V), 13.8 V makes it conduct and heat; if it
 is a Schottky (reverse protection), 13.8 V is harmless. The buck's input
 rating is unknown too. The 470 µF 10 V caps can't be on the 12 V net
 (Seeed runs it at 12 V), so they're not the risk.</li>
-<li>⏳ <strong>Owed bench test, short form (~12 min, LV builds
-only):</strong>
-<ol type="1">
-<li>Bench supply set to <strong>13.8 V, current limit 1.5 A</strong>,
-off. Leads to the core's 12 V terminal (polarity metered), USB-C to the
-Pi for audio, the 5090 on the speaker connector.</li>
-<li>Supply on, <strong>idle 1 min</strong>: input current low and steady
-(tens of mA). <strong>Stop</strong> if it climbs, sits at the limit, or
-the supply drops into CC: an input part is conducting.</li>
-<li>Touch-test the input diode (the DO-214 part by the terminal), the
-buck chip by the "100" inductor and the amp chip: warm is fine;
-<strong>too hot to hold a finger on for 3 s = stop.</strong></li>
-<li>Play speech or music at <strong>max volume for 10 min</strong>.
-Listen: continuous sound, no cutting in and out (that is OVP / UVP
-cycling). Smell: any hot-electronics smell = stop. Re-touch the same
-three parts at the end.</li>
-<li><strong>Pass</strong> = steady idle current, no part too hot to
-hold, no smell, sound never cut out. Then E9 may land on the 13.8 V bay
-rail for LV builds.</li>
-</ol></li>
+<li>⏳ <strong>Owed bench test (~15 min, LV builds only):</strong> the
+step list is in <a
+href="Electronics_Assembly_Guide.html#16h-audio-respeaker-flex-xvf3800--tlzwla-5090-speaker-bench-steps">Assembly
+Guide §16h step 6</a>: 13.8 V on the terminal, idle current, a touch
+test, the host volume capped first, then 10 min of speech at the cap.
+Pass = E9 may land on the 13.8 V bay rail for LV builds.</li>
 </ul></li>
 <li><strong>Weights</strong> (both boards, speaker): TO WEIGH.</li>
 </ul>
