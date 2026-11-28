@@ -2184,18 +2184,23 @@ cable (operator; ⏳ he names the part and the core end). Amp: core 12 V
 terminal on <strong>unfused 22 AWG from the 13.8 V bay rail (F1
 only)</strong>; ⏳ owed bench test: step the 12 V input to 13.8 V before
 it goes on the robot. Mic FPC 20 cm, never across a moving joint. ⏳ TO
-CALIPER: speaker ears / holes / lead / plug, speaker JST series, PH
-4-pin USB pin order, FPC connector face on the array, weights. CAD
-models the e-bay wiring from it. The one owned iFLYTEK kit stays on
-Ultra or Halo until the reSpeaker replaces it; its record follows.
-Earlier POC record: Electrical plan committed (Electronics_Bay_Design
-§3.4 two-cable update, BringUp <strong>Phase 7.5</strong>, UPS 5 V row):
-UAC cable → Pi5 blue #2 via the CableCreation extension, serial CH340 →
-black #2 (<strong>Pi5 USB now FULL</strong> — mic POC needs exactly 2
-ports; the kit's "USB TO AUDIO" sound-card stick for speech OUTPUT is a
-<strong>3rd</strong> USB device, so the speaker/AEC phase forces the
-Ultra-style hub+NVMe HAT swap), bus-powered 0.4 A max, 16×10 grommeted
-cover slot, <code>/dev/iflytek_halo</code> udev pin,
+CALIPER: ear hole width / short-axis pitch, magnet Ø, weights.
+<strong>12 V on the 13.8 V rail NOT confirmed</strong> (TPA3139D2
+recommended max 14.4 V vs 14.2 V measured; 4 Ω load needs PBTL; other 12
+V-net parts unpublished): USB-only power until the bench test passes
+(EBD §3.7). E6 USB cable: the core's USB-C needs a downward C exit;
+every A→C in stock bends sideways or is straight (CAD trying a sideways
+exit / rotating the core). CAD models the e-bay wiring from it. The one
+owned iFLYTEK kit stays on Ultra or Halo until the reSpeaker replaces
+it; its record follows. Earlier POC record: Electrical plan committed
+(Electronics_Bay_Design §3.4 two-cable update, BringUp <strong>Phase
+7.5</strong>, UPS 5 V row): UAC cable → Pi5 blue #2 via the
+CableCreation extension, serial CH340 → black #2 (<strong>Pi5 USB now
+FULL</strong> — mic POC needs exactly 2 ports; the kit's "USB TO AUDIO"
+sound-card stick for speech OUTPUT is a <strong>3rd</strong> USB device,
+so the speaker/AEC phase forces the Ultra-style hub+NVMe HAT swap),
+bus-powered 0.4 A max, 16×10 grommeted cover slot,
+<code>/dev/iflytek_halo</code> udev pin,
 <code>usb_max_current_enable=1</code> check. Kit ON HAND, full bundle
 photographed: ring + <strong>ring-only white casing</strong> + R818 on
 its own brass standoffs + both USB cables + sound-card stick +

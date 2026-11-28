@@ -1340,8 +1340,8 @@ exit)</td>
 <td><strong>Two USB links, same UAC 2.0 + DFU:</strong> the
 <strong>USB-C</strong> (also 5 V in; firmware flashes through it, the
 one beside RST) and a <strong>PH2.0 4-pin locking "USB JST"</strong>
-(internal routing to the host; STEP part PH-4A-WT). Pin order of the PH
-4-pin: TO CALIPER</td>
+(internal routing to the host; STEP part PH-4A-WT). PH 4-pin silk order
+<strong>5V · D− · D+ · GND</strong> (vendor photo)</td>
 <td>Vendor / STEP</td>
 </tr>
 <tr>
@@ -1375,9 +1375,12 @@ speaker)</td>
 on a Ø62.5 pitch circle at 0° / 120° / 240°, each with a Ø6.0 keep-out;
 4 mic ports Ø0.6 on a 44 × 44 square (±22).</strong> The DXF's Ø52.5
 circle and its 28.68 / ~2.1 dimensions aren't tied to a feature: check
-on the board. <strong>Bottom-firing:</strong> the mic ports are on the
-Seeed-logo side, which faces the room, with matching holes in the shell;
-a sealed shell hurts pickup</td>
+on the board. <strong>FPC connector on the component face</strong> (same
+face as the mic packages), at the DoA 270° position (Seeed industrial
+datasheet, mic-ring photo: DoA 0° between MIC 1 and MIC 0, 90° at MIC
+1–2, 180° at MIC 2–3). <strong>Bottom-firing:</strong> the mic ports are
+on the Seeed-logo side, which faces the room, with matching holes in the
+shell; a sealed shell hurts pickup</td>
 <td>Vendor / STEP</td>
 </tr>
 <tr>
@@ -1441,10 +1444,33 @@ USB-A</strong>, <strong>left-angle USB-A</strong> at the HAT end
 cable.</li>
 <li><strong>12 V amp feed:</strong> <strong>unfused 22 AWG</strong> from
 the 13.8 V bay rail to the 2-pin terminal, protected by F1 at the pack
-(one fuse only). ⏳ <strong>Owed bench test before it goes on the
-robot:</strong> step the board's 12 V input to 13.8 V on a
-current-limited bench supply and meter it, since the board is rated "12
-V".</li>
+(one fuse only). <strong>NOT confirmed for 13.8 V; the 12 V lead stays
+unlanded until it is.</strong> What the documents give:
+<ul>
+<li><strong>Amp, TI TPA3139D2</strong> (datasheet SLOS810A): recommended
+<strong>3.5–14.4 V</strong>, absolute max <strong>20 V</strong>,
+over-voltage shutdown <strong>15.8 V typ</strong>. Against the bay rail:
+13.8 V nominal = 0.6 V under the recommended max; the PSC-100's
+<strong>measured 14.2 V on AC = 0.2 V under it</strong>; OVP 1.6 V
+above, abs max 5.8 V above. TI recommends <strong>25 V-rated PVCC
+capacitors above 12 V</strong>.</li>
+<li><strong>Load:</strong> TI's minimum load at 10–14.4 V is <strong>4.8
+Ω in BTL, 2.4 Ω in PBTL (mono)</strong>. The 5090 is 4 Ω, so at 13.8 V
+it is only in range if the board runs the amp in PBTL. Seeed doesn't say
+which mode; TI's own table lists 14.3 W into 4 Ω BTL at 12 V, so the two
+TI figures disagree.</li>
+<li><strong>Other parts on the 12 V net:</strong> not published (no
+Seeed schematic in the wiki, product page or industrial datasheet). The
+vendor photo shows the terminal feeding a buck (a "100" = 10 µH inductor
+beside it) and a DO-214AC diode; their part numbers and ratings aren't
+readable. The two red electrolytics are "HV1A477M" in the STEP, i.e. 470
+µF <strong>10 V</strong>; their net is unknown.</li>
+<li>⏳ <strong>Owed bench test</strong> (unchanged): step the 12 V input
+to 13.8 V, then 14.2 V, on a current-limited bench supply; meter the 5 V
+rail and the amp's supply pin; play at max volume into the 5090. Until
+it passes, the board runs on <strong>USB power only</strong> (the amp
+then runs from 5 V at reduced output).</li>
+</ul></li>
 <li><strong>Weights</strong> (both boards, speaker): TO WEIGH.</li>
 </ul>
 <h2 id="4-assembly-notes">4. Assembly notes</h2>
