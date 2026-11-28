@@ -353,7 +353,7 @@ V, full 14.6 V, cutoff ~10 V).</p>
 <code>Power/Compact_UPS_Power_System_HiWonder_RPi5.md</code>; INA226 is
 already installed &amp; integrated in <code>armpi_fpv_utils</code>,
 shown in the <code>launch_armpi_fpv_tuning.sh</code> status menu):</p>
-<pre class="text"><code>AC → PSC-100-12 / PSC-150-12 CH1 (13.8 V rated; 14.2 V measured on AC / 12 V on battery)
+<pre class="text"><code>AC → PSC-100-12 / PSC-150-12 CH1 (13.8 V rated; **13.7–13.8 V under load** on AC, operator load test 2026-11-28, 14.2 V at no load / 12 V on battery)
   → INA226-MAIN (in series: CH1 → IN+ → IN- → Master Switch)
   → Master Power Switch → Power Distribution Block
      ├─► DROK buck 7.5 V (12 A; replaced the LY-KREE) → STM32 → Pi 5 (5 V via STM32)
@@ -3604,9 +3604,11 @@ GPIO hook</td>
 </tbody>
 </table>
 <p>Cutoff: pack BMS cuts at ~10 V; thresholds keep us well above.
-Hysteresis 0.2 V. AC vs battery detected via the ~2.2 V CH1 step
-(<strong>14.2 V on AC</strong>, <strong>12.0 V on battery</strong> — per
-the canonical power doc) → <code>on_ac_power</code> boolean.</p>
+Hysteresis 0.2 V. AC vs battery detected via the ~1.7 V CH1 step
+(<strong>13.7–13.8 V on AC under load</strong>, operator load test
+2026-11-28 (14.2 V at no load), <strong>12.0 V on battery</strong>); the
+13.0 V <code>on_ac_power</code> threshold keeps 0.7 V margin →
+<code>on_ac_power</code> boolean.</p>
 <h3 id="72-air-quality--hazard-hint-sps30--co">7.2 Air-quality / hazard
 hint (SPS30 + CO)</h3>
 <ul>

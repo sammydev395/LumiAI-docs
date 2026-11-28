@@ -2186,13 +2186,15 @@ only)</strong>; ⏳ owed bench test: step the 12 V input to 13.8 V before
 it goes on the robot. Mic FPC 20 cm, never across a moving joint. ⏳ TO
 CALIPER: ear hole width / short-axis pitch, magnet Ø, weights.
 <strong>12 V on the 13.8 V rail NOT confirmed</strong> (TPA3139D2
-recommended max 14.4 V vs 14.2 V measured; 4 Ω load needs PBTL; other 12
-V-net parts unpublished): USB-only power until the bench test passes
-(EBD §3.7). E6 USB cable: the core's USB-C needs a downward C exit;
-every A→C in stock bends sideways or is straight (CAD trying a sideways
-exit / rotating the core). CAD models the e-bay wiring from it. The one
-owned iFLYTEK kit stays on Ultra or Halo until the reSpeaker replaces
-it; its record follows. Earlier POC record: Electrical plan committed
+recommended max 14.4 V vs the PSC-100's 13.7–13.8 V under load, operator
+load test 11-28: amp in range; the unknown input part, TVS or Schottky,
+decides it): LV builds USB-only until the 12-min bench test passes (EBD
+§3.7); Halo HV feeds it from the 12.0 V servo-rail buck. E6 USB cable:
+the core's USB-C needs a downward C exit; every A→C in stock bends
+sideways or is straight (CAD trying a sideways exit / rotating the
+core). CAD models the e-bay wiring from it. The one owned iFLYTEK kit
+stays on Ultra or Halo until the reSpeaker replaces it; its record
+follows. Earlier POC record: Electrical plan committed
 (Electronics_Bay_Design §3.4 two-cable update, BringUp <strong>Phase
 7.5</strong>, UPS 5 V row): UAC cable → Pi5 blue #2 via the
 CableCreation extension, serial CH340 → black #2 (<strong>Pi5 USB now

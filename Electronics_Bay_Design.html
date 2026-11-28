@@ -1468,10 +1468,12 @@ What the documents give:</li>
 <li><strong>Amp, TI TPA3139D2</strong> (datasheet SLOS810A): recommended
 <strong>3.5–14.4 V</strong>, absolute max <strong>20 V</strong>,
 over-voltage shutdown <strong>15.8 V typ</strong>. Against the bay rail:
-13.8 V nominal = 0.6 V under the recommended max; the PSC-100's
-<strong>measured 14.2 V on AC = 0.2 V under it</strong>; OVP 1.6 V
-above, abs max 5.8 V above. TI recommends <strong>25 V-rated PVCC
-capacitors above 12 V</strong>.</li>
+the PSC-100 delivers <strong>13.7 V, 13.8 V max, under load</strong>
+(operator load test 2026-11-28; the older 14.2 V was a no-load reading),
+so the amp has <strong>0.6 V</strong> under its recommended max, OVP
+<strong>2.0 V</strong> above, abs max 6.2 V above. The amp IC is in
+range. TI recommends <strong>25 V-rated PVCC capacitors above 12
+V</strong>.</li>
 <li><strong>Load:</strong> TI's minimum load at 10–14.4 V is <strong>4.8
 Ω in BTL, 2.4 Ω in PBTL (mono)</strong>. The 5090 is 4 Ω, so at 13.8 V
 it is only in range if the board runs the amp in PBTL. Seeed doesn't say
@@ -1483,11 +1485,33 @@ vendor photo shows the terminal feeding a buck (a "100" = 10 µH inductor
 beside it) and a DO-214AC diode; their part numbers and ratings aren't
 readable. The two red electrolytics are "HV1A477M" in the STEP, i.e. 470
 µF <strong>10 V</strong>; their net is unknown.</li>
-<li>⏳ <strong>Owed bench test</strong> (unchanged): step the 12 V input
-to 13.8 V, then 14.2 V, on a current-limited bench supply; meter the 5 V
-rail and the amp's supply pin; play at max volume into the 5090. Until
-it passes, the board runs on <strong>USB power only</strong> (the amp
-then runs from 5 V at reduced output).</li>
+<li><strong>Why the amp's margin doesn't close it:</strong> the rest of
+the 12 V net is unknown, and one part decides it. If the DO-214AC part
+on the input is a <strong>12 V TVS</strong> (an SMAJ12A-class part
+starts conducting at ~13.3 V), 13.8 V makes it conduct and heat; if it
+is a Schottky (reverse protection), 13.8 V is harmless. The buck's input
+rating is unknown too. The 470 µF 10 V caps can't be on the 12 V net
+(Seeed runs it at 12 V), so they're not the risk.</li>
+<li>⏳ <strong>Owed bench test, short form (~12 min, LV builds
+only):</strong>
+<ol type="1">
+<li>Bench supply set to <strong>13.8 V, current limit 1.5 A</strong>,
+off. Leads to the core's 12 V terminal (polarity metered), USB-C to the
+Pi for audio, the 5090 on the speaker connector.</li>
+<li>Supply on, <strong>idle 1 min</strong>: input current low and steady
+(tens of mA). <strong>Stop</strong> if it climbs, sits at the limit, or
+the supply drops into CC: an input part is conducting.</li>
+<li>Touch-test the input diode (the DO-214 part by the terminal), the
+buck chip by the "100" inductor and the amp chip: warm is fine;
+<strong>too hot to hold a finger on for 3 s = stop.</strong></li>
+<li>Play speech or music at <strong>max volume for 10 min</strong>.
+Listen: continuous sound, no cutting in and out (that is OVP / UVP
+cycling). Smell: any hot-electronics smell = stop. Re-touch the same
+three parts at the end.</li>
+<li><strong>Pass</strong> = steady idle current, no part too hot to
+hold, no smell, sound never cut out. Then E9 may land on the 13.8 V bay
+rail for LV builds.</li>
+</ol></li>
 </ul></li>
 <li><strong>Weights</strong> (both boards, speaker): TO WEIGH.</li>
 </ul>
